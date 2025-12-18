@@ -1,0 +1,10 @@
+// src/app/page.jsx (or wherever this Home component is)
+import Home2 from "./home/page";
+
+export default function Home() {
+  return (
+    <div className="bg-white">
+      <Home2 />
+    </div>
+  );
+}

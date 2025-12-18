@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE `lead` ADD COLUMN `formKey` VARCHAR(191) NULL,
+    ADD COLUMN `formType` VARCHAR(191) NULL,
+    ADD COLUMN `utmCampaign` VARCHAR(191) NULL,
+    ADD COLUMN `utmMedium` VARCHAR(191) NULL,
+    ADD COLUMN `utmSource` VARCHAR(191) NULL;

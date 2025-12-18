@@ -1,0 +1,709 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+model ChatConversation {
+  id        Int      @id @default(autoincrement())
+  visitorId String   // Unique visitor identifier
+  visitorName String?
+  visitorEmail String?
+  visitorPhone String?
+  status    String   @default("active") // active | closed | transferred
+  priority  String   @default("normal") // low | normal | high | urgent
+  
+  assignedTo   User? @relation("ChatAssignedTo", fields: [assignedToId], references: [id])
+  assignedToId Int?
+  
+  tags      String?
+  notes     String?
+  rating    Int? // 1-5
+  feedback  String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  closedAt  DateTime?
+  
+  messages ChatMessage[]
+}
+
+model ChatMessage {
+  id             Int      @id @default(autoincrement())
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId Int
+  
+  content   String   @db.Text
+  sender    String   // user | bot | agent
+  senderName String?
+  
+  type      String   @default("text") // text | image | file | system
+  fileUrl   String?
+  fileName  String?
+  
+  isRead    Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+}
+
+
+
+//// 1) Auth + Roles + Permissions
+
+model User {
+  id           Int     @id @default(autoincrement())
+  name         String?
+  email        String? @unique
+  username     String  @unique
+  passwordHash String
+
+  status       String  @default("active") // 'active' | 'suspended'
+  profileImage String?
+  phone        String?
+  whatsapp     String?
+  title        String?
+  department   String?
+  bio          String?
+
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  roles        UserRole[]
+  blogPosts    BlogPost[]
+  contentItems ContentItem[]
+  pages        Page[]
+  leadsOwned   Lead[]        @relation("LeadOwner")
+
+  ticketsOwned     Ticket[]        @relation("TicketOwner")
+  ticketsRequested Ticket[]        @relation("TicketRequester")
+  ticketComments   TicketComment[]
+
+  adminLogs    AdminLog[]
+  MediaItem    MediaItem[]
+  LeadActivity LeadActivity[]
+
+  chatsAssigned ChatConversation[] @relation("ChatAssignedTo")
+}
+
+model Role {
+  id           Int     @id @default(autoincrement())
+  name         String  @unique // 'admin' | 'manager' | 'writer' | 'agent'
+  displayName  String
+  description  String?
+  defaultRoute String?
+
+  users       UserRole[]
+  permissions RolePermission[]
+}
+
+model UserRole {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId Int
+
+  @@unique([userId, roleId])
+}
+
+model Permission {
+  id          Int     @id @default(autoincrement())
+  key         String  @unique
+  module      String?
+  description String?
+
+  roles RolePermission[]
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId       Int
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  permissionId Int
+
+  @@unique([roleId, permissionId])
+}
+
+//// 2) Blog / Insights
+
+model BlogCategory {
+  id        Int      @id @default(autoincrement())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts BlogPost[]
+}
+
+model BlogTag {
+  id    Int           @id @default(autoincrement())
+  name  String
+  slug  String        @unique
+  posts BlogPostTag[]
+}
+
+model BlogPostTag {
+  post   BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+  tag    BlogTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  Int
+
+  @@id([postId, tagId])
+}
+
+model BlogPost {
+  id              Int      @id @default(autoincrement())
+  type            String   @default("blog")
+  title           String
+  slug            String   @unique
+  excerpt         String?
+  contentJson     String?  @db.LongText
+  status          String   @default("draft")
+  featured        Boolean  @default(false)
+  pinned          Boolean  @default(false)
+  thumbnail       String?
+  heroImage       String?
+  readTimeMinutes Int?
+
+  seoTitle        String?
+  seoDescription  String?
+  seoImage        String?
+
+  publishedAt     DateTime?
+  scheduledFor    DateTime?
+
+  // NEW counters
+  viewCount       Int      @default(0)
+  likeCount       Int      @default(0)
+  shareCount      Int      @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  author   User?         @relation(fields: [authorId], references: [id])
+  authorId Int?
+  category BlogCategory? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+
+  tags      BlogPostTag[]
+  feedbacks BlogFeedback[]
+}
+
+model BlogFeedback {
+  id        Int      @id @default(autoincrement())
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  rating    Int      // 1-5
+  comment   String?  // optional future use
+  // Optional simple fingerprint (IP/user-agent) if you want
+  createdAt DateTime @default(now())
+}
+
+//// 3) E‑Guides
+
+model EGuide {
+  id           Int     @id @default(autoincrement())
+  slug         String  @unique
+  title        String
+  authorName   String?
+  authorRole   String?
+  coverImage   String?
+  category     String?
+  description  String?
+  readTimeText String?
+
+  summary      String?
+  sectionsJson String? @db.LongText
+
+  pdfUrl      String?
+  status      String    @default("draft")
+  publishedAt DateTime?
+
+  seoTitle       String?
+  seoDescription String?
+
+  downloadCount Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContentItem {
+  id          Int     @id @default(autoincrement())
+  type        String // 'case-study' | 'resource' | 'e-guide' | 'portfolio'
+  title       String
+  slug        String  @unique
+  excerpt     String?
+  contentJson String?
+  industry    String?
+  country     String?
+  clientName  String?
+  featured    Boolean @default(false)
+  thumbnail   String?
+  heroImage   String?
+
+  seoTitle       String?
+  seoDescription String?
+
+  status      String    @default("draft")
+  publishedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   User? @relation(fields: [authorId], references: [id])
+  authorId Int?
+
+  downloadCount Int @default(0)
+}
+
+//// 4) Portfolio / Case studies
+model PortfolioProject {
+  id          Int     @id @default(autoincrement())
+  key         String  @unique
+  type        String
+  title       String
+  category    String?
+  description String?
+  techStack   String?
+  platforms   String?
+  country     String?
+  bgImage     String?
+  bgColor     String?
+  icon        String?
+  phoneMockup String?
+  // badgesJson  String?
+  badgesJson  String? @db.Text
+
+
+  caseStudy   CaseStudy? @relation(fields: [caseStudyId], references: [id])
+  caseStudyId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CaseStudy {
+  id          Int     @id @default(autoincrement())
+  slug        String  @unique
+  title       String
+  subtitle    String?
+  logo        String?
+  heroBgImage String?
+  heroCircle  String?
+  heroMockups String?
+
+  brandingJson     String?
+  teamJson         String?
+  clientJson       String?
+  technologiesJson String?
+  overviewJson     String?
+  requirementsJson String?
+  goalsJson        String?
+  challengesJson   String?
+  // appScreensJson   String?
+    // appScreensJson   String? @db.Text
+  appScreensJson String? @db.LongText
+
+  resultsJson      String?
+  findYourAppJson  String?
+
+  seoTitle       String?
+  seoDescription String?
+
+  // NEW: opposite side of relation
+  portfolioProjects PortfolioProject[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//// 5) Generic pages (Services, Hire, Solutions, Company)
+
+model Page {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  key       String   // Required field
+  type      String   // 'service' | 'blog' | 'case-study' etc
+  excerpt   String?  @db.LongText
+  
+  // NO content field in schema
+  contentJson String? @db.LongText
+  
+  status    String   @default("draft") // 'draft' | 'published'
+  featured  Boolean  @default(false)
+  
+  // SEO
+  seoTitle       String?
+  seoDescription String? @db.LongText
+  seoImage       String?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  author     User?            @relation(fields: [authorId], references: [id])
+  authorId   Int?
+  navItems   NavigationItem[]
+  
+  @@index([type, status])
+  @@index([slug])
+}
+
+
+model NavigationItem {
+  id      Int     @id @default(autoincrement())
+  label   String
+  href    String
+  group   String? // 'primary' | 'footer' | 'admin'
+  order   Int     @default(0)
+  visible Boolean @default(true)
+
+  page   Page? @relation(fields: [pageId], references: [id])
+  pageId Int?
+}
+
+//// 6) People (Team + Employees listing)
+
+model TeamMember {
+  id          Int     @id @default(autoincrement())
+  name        String
+  title       String?
+  department  String?
+  photo       String?
+  bio         String?
+  linkedinUrl String?
+  order       Int     @default(0)
+  featured    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmployeeDirectoryItem {
+  id         Int     @id @default(autoincrement())
+  name       String
+  title      String?
+  department String?
+  photo      String?
+  email      String?
+  phone      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//// 7) Media / Gallery
+
+model MediaItem {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  filePath  String
+  thumbnail String?
+  type      String // 'image' | 'video'
+  category  String?
+  tags      String?
+  createdAt DateTime @default(now())
+
+  uploadedBy   User? @relation(fields: [uploadedById], references: [id])
+  uploadedById Int?
+}
+
+// model SiteEvent {
+//   id       Int      @id @default(autoincrement())
+//   title    String
+//   message  String
+
+//   ctaLabel String?
+//   ctaHref  String?
+
+//   status   String   @default("draft") // 'draft' | 'active'
+//   startsAt DateTime?
+//   endsAt   DateTime?
+
+//   // optional styling
+//   theme    String?  // 'black-friday' | 'christmas' | etc.
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+
+
+// model SiteEvent {
+//   id                   Int      @id @default(autoincrement())
+//   title                String
+//   message              String
+//   ctaLabel             String?
+//   ctaHref              String?
+//   status               String   @default("draft") // 'draft' | 'active'
+//   startsAt             DateTime?
+//   endsAt               DateTime?
+//   theme                String?  // 'black-friday' | 'christmas' | etc.
+
+//   // Behaviour config
+//   showOnSlugs          String?  // e.g. "/,/e-guides,/blog"
+//   triggerDelayMs       Int?     // e.g. 2000
+//   triggerScrollPercent Int?     // e.g. 30
+//   maxShowsPerUser      Int?     // e.g. 3
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+
+model SiteEvent {
+  id                   Int      @id @default(autoincrement())
+  title                String
+  message              String
+  ctaLabel             String?
+  ctaHref              String?
+  
+  // NEW: Image field
+  imageUrl             String?  // Banner/hero image URL
+  
+  status               String   @default("draft")
+  startsAt             DateTime?
+  endsAt               DateTime?
+  theme                String?
+  showOnSlugs          String?
+  triggerDelayMs       Int?
+  triggerScrollPercent Int?
+  maxShowsPerUser      Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+//// 8) Operations: Leads + Tickets
+
+model Lead {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String
+  phone    String?
+  whatsapp String?
+  source   String?
+  campaign String?
+  message  String?
+  status   String  @default("new")
+  tags     String?
+
+  // Forms meta
+  formType String? // 'inquiry' | 'service' | 'eguide' | ...
+  formKey  String? // e.g. 'home-inquiry', 'service-web-dev'
+
+  // Marketing UTM
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+
+  // Extra details
+  budgetLabel    String?
+  attachmentName String?
+  ndaAccepted    Boolean?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner   User? @relation("LeadOwner", fields: [ownerId], references: [id])
+  ownerId Int?
+
+  activities LeadActivity[]
+  tickets    Ticket[]
+}
+
+model LeadActivity {
+  id        Int      @id @default(autoincrement())
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId    Int
+  type      String
+  content   String?
+  createdAt DateTime @default(now())
+
+  createdBy   User? @relation(fields: [createdById], references: [id])
+  createdById Int?
+}
+
+model Ticket {
+  id          Int     @id @default(autoincrement())
+  title       String
+  description String?
+  status      String  @default("open") // open | in_progress | waiting | resolved | closed
+  priority    String  @default("medium") // low | medium | high | urgent
+  channel     String? // web | email | whatsapp | internal
+  tags        String?
+
+  // Linking
+  lead        Lead? @relation(fields: [leadId], references: [id])
+  leadId      Int?
+  requester   User? @relation("TicketRequester", fields: [requesterId], references: [id])
+  requesterId Int?
+  owner       User? @relation("TicketOwner", fields: [ownerId], references: [id])
+  ownerId     Int?
+
+  dueDate    DateTime?
+  resolvedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments TicketComment[]
+}
+
+model TicketComment {
+  id       Int    @id @default(autoincrement())
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+  ticketId Int
+
+  type       String @default("note") // note | reply | system
+  visibility String @default("internal") // internal | public
+  content    String
+
+  createdAt   DateTime @default(now())
+  createdBy   User?    @relation(fields: [createdById], references: [id])
+  createdById Int?
+}
+
+//// 9) Newsletter
+
+model NewsletterList {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subscribers NewsletterSubscription[]
+  campaigns   EmailCampaign[]
+}
+
+model NewsletterSubscription {
+  id             Int       @id @default(autoincrement())
+  email          String
+  name           String?
+  whatsapp       String?
+  status         String    @default("active")
+  source         String?
+  subscribedAt   DateTime  @default(now())
+  unsubscribedAt DateTime?
+
+  list   NewsletterList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId Int
+
+  events NewsletterEvent[]
+
+  @@unique([email, listId], name: "email_listId")
+}
+
+
+model NewsletterEvent {
+  id        Int      @id @default(autoincrement())
+  type      String
+  metaJson  String?
+  createdAt DateTime @default(now())
+
+  subscription   NewsletterSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscriptionId Int
+}
+
+model EmailCampaign {
+  id           Int       @id @default(autoincrement())
+  name         String
+  subject      String
+  preheader    String?
+  slug         String    @unique
+  status       String    @default("draft")
+  contentHtml  String?
+  contentText  String?
+  providerId   String?
+  scheduledFor DateTime?
+  sentAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  list   NewsletterList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId Int
+
+  logs EmailDeliveryLog[]
+}
+
+model EmailDeliveryLog {
+  id         Int      @id @default(autoincrement())
+  email      String
+  event      String
+  providerId String?
+  metaJson   String?
+  createdAt  DateTime @default(now())
+
+  campaign   EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  campaignId Int
+}
+model EmailTemplate {
+  id        Int      @id @default(autoincrement())
+  name      String
+  slug      String   @unique
+  subject   String
+  preview   String?  // short preview text
+  bodyHtml  String?  @db.LongText
+  bodyText  String?
+  category  String?  // 'welcome' | 'promo' | 'newsletter'
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+//// 10) Minimal WhatsApp integration (future-safe)
+
+model WhatsappIntegration {
+  id          Int      @id @default(autoincrement())
+  provider    String
+  phoneNumber String
+  name        String?
+  status      String   @default("active")
+  configJson  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+model WhatsappTemplate {
+  id        Int      @id @default(autoincrement())
+  name      String
+  category  String?  // 'welcome' | 'promo' | 'support' etc.
+  body      String   @db.LongText
+  language  String?  // e.g. 'en'
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//// 11) Admin audit
+
+model AdminLog {
+  id     Int   @id @default(autoincrement())
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  action     String
+  entityType String
+  entityId   Int?
+
+  payloadBeforeJson String?
+  payloadAfterJson  String?
+
+  ipAddress String?
+  userAgent String?
+
+  createdAt DateTime @default(now())
+}

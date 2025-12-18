@@ -1,0 +1,148 @@
+"use client"
+import { useState } from "react";
+import {
+    SiAngular, SiBootstrap, SiCss3, SiFlutter, SiGraphql, SiHtml5,
+    SiJavascript, SiLaravel, SiNodedotjs, SiNuxtdotjs, SiReact, SiVuedotjs,
+    SiExpress, SiDjango, SiSpring, SiRubyonrails, SiPhp, SiPython, SiFastapi,
+    SiMongodb, SiPostgresql, SiMysql, SiRedis, SiFirebase, SiSupabase,
+    SiAmazonaws, SiVercel, SiNetlify, SiDocker, SiKubernetes, SiHeroku,
+    SiWordpress, SiStrapi, SiContentful, SiSanity,
+    SiGoogleanalytics, SiMailchimp, SiHubspot,
+    SiArduino, SiRaspberrypi,
+    SiJest, SiCypress, SiSelenium
+} from "react-icons/si";
+
+const technologiesData = {
+    Frontend: [
+        { name: 'React', icon: SiReact, color: '#61DAFB' },
+        { name: 'Angular', icon: SiAngular, color: '#DD0031' },
+        { name: 'Vue.js', icon: SiVuedotjs, color: '#4FC08D' },
+        { name: 'Flutter', icon: SiFlutter, color: '#02569B' },
+        { name: 'JavaScript', icon: SiJavascript, color: '#F7DF1E' },
+        { name: 'HTML5', icon: SiHtml5, color: '#E34F26' },
+        { name: 'CSS3', icon: SiCss3, color: '#1572B6' },
+        { name: 'Bootstrap', icon: SiBootstrap, color: '#7952B3' },
+        { name: 'Nuxt.js', icon: SiNuxtdotjs, color: '#00DC82' }
+    ],
+    Backend: [
+        { name: 'Node.js', icon: SiNodedotjs, color: '#339933' },
+        { name: 'Express.js', icon: SiExpress, color: '#000000' },
+        { name: 'Django', icon: SiDjango, color: '#092E20' },
+        { name: 'Laravel', icon: SiLaravel, color: '#FF2D20' },
+        { name: 'Spring Boot', icon: SiSpring, color: '#6DB33F' },
+        { name: 'Ruby on Rails', icon: SiRubyonrails, color: '#CC0000' },
+        { name: 'PHP', icon: SiPhp, color: '#777BB4' },
+        { name: 'Python', icon: SiPython, color: '#3776AB' },
+        { name: 'FastAPI', icon: SiFastapi, color: '#009688' },
+        { name: 'GraphQL', icon: SiGraphql, color: '#E10098' }
+    ],
+    Databases: [
+        { name: 'MongoDB', icon: SiMongodb, color: '#47A248' },
+        { name: 'PostgreSQL', icon: SiPostgresql, color: '#4169E1' },
+        { name: 'MySQL', icon: SiMysql, color: '#4479A1' },
+        { name: 'Redis', icon: SiRedis, color: '#DC382D' },
+        { name: 'Firebase', icon: SiFirebase, color: '#FFCA28' },
+        { name: 'Supabase', icon: SiSupabase, color: '#3ECF8E' }
+    ],
+    Deployments: [
+/*         { name: 'AWS', icon: SiAmazonaws, color: '#FF9900' },
+ */        { name: 'Vercel', icon: SiVercel, color: '#000000' },
+        { name: 'Netlify', icon: SiNetlify, color: '#00C7B7' },
+        { name: 'Docker', icon: SiDocker, color: '#2496ED' },
+        { name: 'Kubernetes', icon: SiKubernetes, color: '#326CE5' },
+        { name: 'Heroku', icon: SiHeroku, color: '#430098' }
+    ],
+    CMS: [
+        { name: 'WordPress', icon: SiWordpress, color: '#21759B' },
+        { name: 'Strapi', icon: SiStrapi, color: '#2F2E8B' },
+        { name: 'Contentful', icon: SiContentful, color: '#2478CC' },
+        { name: 'Sanity', icon: SiSanity, color: '#F03E2F' }
+    ],
+    'Marketing Tools': [
+        { name: 'Google Analytics', icon: SiGoogleanalytics, color: '#E37400' },
+        { name: 'Mailchimp', icon: SiMailchimp, color: '#FFE01B' },
+        { name: 'HubSpot', icon: SiHubspot, color: '#FF7A59' }
+    ],
+    IoT: [
+        { name: 'Arduino', icon: SiArduino, color: '#00979D' },
+        { name: 'Raspberry Pi', icon: SiRaspberrypi, color: '#A22846' }
+    ],
+    Testing: [
+        { name: 'Jest', icon: SiJest, color: '#C21325' },
+        { name: 'Cypress', icon: SiCypress, color: '#17202C' },
+        { name: 'Selenium', icon: SiSelenium, color: '#43B02A' }
+    ]
+};
+
+const sidebarItems = [
+    'Frontend',
+    'Backend',
+    'Databases',
+    'Deployments',
+    'CMS',
+    'Marketing Tools',
+    'IoT',
+    'Testing'
+];
+
+export default function TechView() {
+    const [selectedTech, setSelectedTech] = useState('Frontend');
+
+    return (
+        <section className="bg-gradient-to-br from-blue-50 to-cyan-50 py-12 md:py-16 px-4 md:px-6">
+            <div className="max-w-7xl mx-auto">
+                {/* Header */}
+                <div className="mb-8 md:mb-12 text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                        Building Tomorrow's Apps with Today's Best Technologies
+                    </h2>
+                    <p className="text-gray-600 text-sm md:text-base max-w-4xl mx-auto leading-relaxed">
+                        At Softkingo, we consolidate only those technologies that are best in the market and are equipped to deliver best-performing & well-designed web & mobile app products for any industry & business vertical across the globe.
+                    </p>
+                </div>
+
+                <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
+                    {/* Sidebar */}
+                    <aside className="w-full lg:w-64 bg-sky-200 rounded-xl p-4 lg:p-6 lg:sticky lg:top-4 h-fit">
+                        <ul className="space-y-1">
+                            {sidebarItems.map((item) => (
+                                <li
+                                    key={item}
+                                    onClick={() => setSelectedTech(item)}
+                                    className={`px-4 py-3 rounded-lg cursor-pointer transition-all text-sm md:text-base ${
+                                        selectedTech === item
+                                            ? 'bg-white shadow-md font-semibold text-gray-800'
+                                            : 'text-gray-700 hover:bg-white/50'
+                                    }`}
+                                >
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </aside>
+
+                    {/* Tech Grid */}
+                    <div className="flex-1">
+                        <h3 className="text-2xl md:text-3xl font-bold py-4 md:py-5 text-gray-800">{selectedTech}</h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                            {technologiesData[selectedTech]?.map((tech, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-white hover:bg-sky-50 rounded-xl p-4 md:p-6 flex flex-col items-center justify-center shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group hover:-translate-y-1"
+                                >
+                                    <tech.icon
+                                        className="w-12 h-12 md:w-16 md:h-16 mb-3 transition-transform group-hover:scale-110 duration-300"
+                                        style={{ color: tech.color }}
+                                    />
+                                    <span className="text-xs md:text-sm font-medium text-gray-700 text-center">
+                                        {tech.name}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
