@@ -1,36 +1,181 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Softkingo Website (Next.js + Prisma + Admin CMS)
 
-## Getting Started
+A full-stack Next.js (App Router) website for Softkingo with:
+- Public site (marketing pages, blog/insights)
+- Admin panel for content management
+- Prisma + MySQL database
+- NextAuth (Credentials) authentication
+- Dynamic sitemap + robots.txt
 
-First, run the development server:
+---
 
-```bash
+## Tech Stack
+- **Next.js** (App Router)
+- Prisma ORM + MySQL
+- NextAuth (Credentials Provider)
+- Tailwind CSS
+
+---
+
+## Requirements
+- Node.js 18+ (recommended)
+- MySQL database (local or hosted)
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+Database
+DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+Auth (NextAuth)
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="YOUR_LONG_RANDOM_SECRET"
+
+text
+
+### Generate a secret
+Example:
+openssl rand -base64 32
+
+text
+
+> In production, set `NEXTAUTH_URL` to your live domain (e.g. `https://www.softkingo.com`). [web:369]
+
+---
+
+## Install & Run
+
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+text
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Open:
+- http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Prisma (DB Setup)
 
-To learn more about Next.js, take a look at the following resources:
+### 1) Generate Prisma Client
+npx prisma generate
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+text
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2) Run migrations (recommended for local/dev)
+npx prisma migrate dev
 
-## Deploy on Vercel
+text
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3) Prisma Studio (optional)
+npx prisma studio
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+text
+
+---
+
+## Authentication (Admin Login)
+
+- Admin login page: `/login`
+- Admin panel: `/admin`
+
+This project uses **NextAuth Credentials**:
+- Username + password
+- Passwords stored as `passwordHash` (bcrypt)
+- Roles stored via `UserRole` → `Role`
+
+If a user is not logged in, `/admin/*` routes should redirect to `/login?callbackUrl=/admin`.
+
+---
+
+## Content System Overview
+
+### Blog / Insights
+Stored in `BlogPost` model:
+- `type`: blog | featured | press-release | media | article | whitepaper | podcast (etc.)
+- `status`: draft | scheduled | published | archived
+- `publishedAt`: used for public visibility + sitemap
+
+### E‑Guides
+Stored in `EGuide` model:
+- Separate public pages: `/e-guides` and `/e-guides/[slug]`
+- Separate admin management (if enabled)
+
+### Pages (Services/Hire/Solutions)
+Stored in `Page` model:
+- `type`: service | hire | solution | etc.
+- `status`: draft | published
+
+---
+
+## SEO
+
+### Sitemap
+- URL: `/sitemap.xml`
+- Generated from:
+  - Public static routes
+  - Blog posts (published)
+  - Blog categories
+  - Case studies
+  - E‑Guides (published)
+  - Published pages (service/hire/solution etc.)
+
+### Robots.txt
+- URL: `/robots.txt`
+- Blocks private routes like `/admin`, `/login`, `/api`
+
+---
+
+## Project Structure (high level)
+
+src/
+app/
+(public)/
+(admin)/
+api/
+sitemap.js
+robots.txt/route.js
+lib/
+prisma.js
+prisma/
+schema.prisma
+
+text
+
+---
+
+## Deployment Notes
+
+- Set production env variables on the server:
+  - `DATABASE_URL`
+  - `NEXTAUTH_URL` (https://your-domain.com)
+  - `NEXTAUTH_SECRET`
+- Ensure database is reachable from the deployment environment.
+- Run migrations in CI/CD or manually on production.
+
+---
+
+## Troubleshooting
+
+### 401 on `/api/admin/*`
+Usually happens when:
+- User is not logged in (no session cookie)
+- Admin routes are not protected with a server-side redirect
+
+Fix:
+- Add `getServerSession(authOptions)` guard in admin layout and redirect to `/login`.
+
+### Hydration errors (head/body/html nesting)
+In App Router:
+- Only root `app/layout.js` should render `<html>` and `<body>`
+- Nested layouts must NOT render `<head>`, `<html>`, or `<body>`
+
+Use Next.js Metadata API instead.
+
+---
+
+## License
+Private / Internal project for Softkingo.
