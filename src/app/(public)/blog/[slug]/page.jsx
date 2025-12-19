@@ -153,8 +153,8 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
 
 export async function generateStaticParams() {
  
+  if (process.env.SKIP_SSG_DB === "true") return [];
   if (!process.env.DATABASE_URL) return [];
-
   const posts = await prisma.blogPost.findMany({
     where: { status: "published" },
     select: { slug: true },
