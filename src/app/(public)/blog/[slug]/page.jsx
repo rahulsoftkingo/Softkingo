@@ -150,8 +150,11 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
   return sections;
 }
 
-// Static params (SSG)
+
 export async function generateStaticParams() {
+ 
+  if (!process.env.DATABASE_URL) return [];
+
   const posts = await prisma.blogPost.findMany({
     where: { status: "published" },
     select: { slug: true },
@@ -159,6 +162,8 @@ export async function generateStaticParams() {
 
   return posts.map((p) => ({ slug: p.slug }));
 }
+
+export const dynamicParams = true;
 
 export default async function BlogSlugPage(props) {
   // Next 15: params is Promise
