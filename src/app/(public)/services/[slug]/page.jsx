@@ -56,8 +56,8 @@ const iconMap = {
 };
 
 export async function generateStaticParams() {
-  
-    if (process.env.SKIP_SSG_DB === "true") return [];
+
+  if (process.env.SKIP_SSG_DB === "true") return [];
   if (!process.env.DATABASE_URL) return [];
 
   const services = await prisma.page.findMany({
