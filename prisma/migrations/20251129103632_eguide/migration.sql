@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `eguide` ADD COLUMN `downloadCount` INTEGER NOT NULL DEFAULT 0;
