@@ -1,26 +1,26 @@
 import prisma from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const baseUrl = process.env.NEXTAUTH_URL || "https://www.softkingo.com";
 
 // 1) BlogPost.type -> public URL base
-// CHANGE these bases to match your actual folders:
 const BLOG_TYPE_TO_BASE = {
   blog: "/blog",
   featured: "/featured",
-  "press-release": "/press-releases", 
-  media: "/media-coverage",           
+  "press-release": "/press-releases",
+  media: "/media-coverage",
   article: "/articles",
   whitepaper: "/whitepapers",
   podcast: "/podcasts",
-  guide: "/guides",                   // add only if you actually use BlogPost.type="guide"
+  guide: "/guides",
 };
 
 // 2) Page.type -> public URL base
-// Based on your Prisma schema: Page.type is used for service/hire/solution etc.
 const PAGE_TYPE_TO_BASE = {
   service: "/services",
   hire: "/hire",
-  featured: "/featured",  
+  featured: "/featured",
   solution: "/solutions",
   guide: "/guides",
   article: "/articles",
@@ -48,7 +48,6 @@ export default async function sitemap() {
     "/portfolio",
     "/solutions",
     "/solutions/food-delivery",
-    // add more static public pages here if you have
   ].map((path) => ({
     url: `${baseUrl}${path}`,
     lastModified: new Date(),
@@ -56,11 +55,16 @@ export default async function sitemap() {
     priority: path === "" ? 1 : 0.8,
   }));
 
+  // Cloud Build / build-time: DB skip
+  if (process.env.SKIP_SSG_DB === "true") {
+    return staticRoutes;
+  }
+
   // BlogPost: include all published posts (publishedAt != null)
   const posts = await prisma.blogPost.findMany({
     where: {
       publishedAt: { not: null },
-      type: { in: Object.keys(BLOG_TYPE_TO_BASE) }, // only types we actually expose publicly
+      type: { in: Object.keys(BLOG_TYPE_TO_BASE) },
     },
     select: { slug: true, updatedAt: true, publishedAt: true, type: true },
   });
@@ -75,7 +79,7 @@ export default async function sitemap() {
     select: { slug: true, updatedAt: true },
   });
 
-  // EGuides (separate model)
+  // EGuides
   const eGuides = await prisma.eGuide.findMany({
     where: { publishedAt: { not: null } },
     select: { slug: true, updatedAt: true, publishedAt: true },
@@ -126,7 +130,6 @@ export default async function sitemap() {
       priority: 0.6,
     }));
 
-  // Page routes (services/hire/solutions/etc)
   const pageRoutes = pages
     .filter((p) => !!p.slug && !!PAGE_TYPE_TO_BASE[p.type])
     .map((p) => ({
@@ -136,7 +139,7 @@ export default async function sitemap() {
       priority: 0.65,
     }));
 
-  const all = [
+  return [
     ...staticRoutes,
     ...blogRoutes,
     ...blogCategoryRoutes,
@@ -144,8 +147,4 @@ export default async function sitemap() {
     ...eGuideRoutes,
     ...pageRoutes,
   ];
-
-  console.log("SITEMAP URL COUNT =", all.length);
-
-  return all;
 }

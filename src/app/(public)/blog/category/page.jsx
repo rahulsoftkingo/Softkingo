@@ -1,26 +1,4 @@
-// // src/app/(public)/blog/page
-// "use client";
-// import { useRef } from "react";
-
-
-// export default function Home() {
-//   const scrollRef = useRef(null);
-
-//   const handleScroll = () => {
-//     if (scrollRef.current) {
-//       scrollRef.current.scrollIntoView({ behavior: "smooth" });
-//     }
-//   };
-
-//   return (
-//     <div className="bg-white ">
-
-    
-
-//     </div>
-//   );
-// }
-
+// // src/app/(public)/blog/catogary/page
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
