@@ -265,7 +265,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import HeroCarousel from './HeroCarousel';
 import prisma from '@/lib/prisma';
-
+export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Our Portfolio | Mobile Apps, Websites & Digital Campaigns',
   description:
