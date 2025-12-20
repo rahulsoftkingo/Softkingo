@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+export const dynamic = "force-dynamic";
 
 // Simple helper: which date range to use
 function getDateRange(range) {

@@ -1,5 +1,6 @@
 // src/app/(admin)/admin/dashboard/page.jsx
 import prisma from '@/lib/prisma';
+export const dynamic = "force-dynamic";
 
 async function getDashboardData() {
   const [users, leads, tickets, blogPosts] = await Promise.all([
