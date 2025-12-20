@@ -6,6 +6,11 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY prisma ./prisma/
+
+# Set OpenSSL version for Prisma
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+ENV PRISMA_CLI_BINARY_TARGETS=linux-musl-openssl-3.0.x
+
 RUN npm ci
 RUN npx prisma generate
 
@@ -13,6 +18,11 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Set OpenSSL version for Prisma in builder
+ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+ENV PRISMA_CLI_BINARY_TARGETS=linux-musl-openssl-3.0.x
+
 RUN npx prisma generate
 RUN npm run build
 
