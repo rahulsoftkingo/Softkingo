@@ -1,10 +1,14 @@
 // src/app/(public)/blog/[slug]/page.jsx
-
 import Link from "next/link";
 import Image from "next/image";
 import { FaArrowLeft, FaCalendarAlt, FaEye, FaHeart, FaTag } from "react-icons/fa";
 import TocAndContentClient from "./TocAndContentClient";
 import prisma from "@/lib/prisma";
+
+// Force SSR (no build-time DB access)
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const dynamicParams = true;
 
 // TipTap JSON -> sections[] converter
 function mapTipTapToSections(rawJson, fallbackTitle) {
@@ -27,17 +31,13 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
   let subIndex = 0;
 
   const pushCurrent = () => {
-    if (currentSection.blocks.length) {
-      sections.push(currentSection);
-    }
+    if (currentSection.blocks.length) sections.push(currentSection);
   };
 
   for (const node of doc.content) {
-    // H2 => new section
     if (node.type === "heading") {
       const level = node.attrs?.level || 2;
-      const text =
-        node.content?.map((c) => c.text || "").join(" ").trim() || "";
+      const text = node.content?.map((c) => c.text || "").join(" ").trim() || "";
 
       if (level === 2) {
         pushCurrent();
@@ -60,19 +60,13 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
       continue;
     }
 
-    // Paragraph
     if (node.type === "paragraph") {
-      const text =
-        node.content?.map((c) => c.text || "").join(" ").trim() || "";
+      const text = node.content?.map((c) => c.text || "").join(" ").trim() || "";
       if (!text) continue;
-      currentSection.blocks.push({
-        type: "p",
-        text,
-      });
+      currentSection.blocks.push({ type: "p", text });
       continue;
     }
 
-    // Bullet list
     if (node.type === "bulletList") {
       const items = [];
       node.content?.forEach((li) => {
@@ -84,16 +78,10 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
             .trim() || "";
         if (liText) items.push(liText);
       });
-      if (items.length) {
-        currentSection.blocks.push({
-          type: "ul",
-          items,
-        });
-      }
+      if (items.length) currentSection.blocks.push({ type: "ul", items });
       continue;
     }
 
-    // Ordered list
     if (node.type === "orderedList") {
       const items = [];
       node.content?.forEach((li) => {
@@ -105,16 +93,10 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
             .trim() || "";
         if (liText) items.push(liText);
       });
-      if (items.length) {
-        currentSection.blocks.push({
-          type: "ol",
-          items,
-        });
-      }
+      if (items.length) currentSection.blocks.push({ type: "ol", items });
       continue;
     }
 
-    // Table
     if (node.type === "table") {
       const headers = [];
       const rows = [];
@@ -124,9 +106,7 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
           rowNode.content?.map((cell) => {
             const text =
               cell.content
-                ?.map((p) =>
-                  p.content?.map((c) => c.text || "").join(" ")
-                )
+                ?.map((p) => p.content?.map((c) => c.text || "").join(" "))
                 .join(" ")
                 .trim() || "";
             return text;
@@ -136,11 +116,7 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
       });
 
       if (headers.length && rows.length) {
-        currentSection.blocks.push({
-          type: "table",
-          headers,
-          rows,
-        });
+        currentSection.blocks.push({ type: "table", headers, rows });
       }
       continue;
     }
@@ -150,23 +126,7 @@ function mapTipTapToSections(rawJson, fallbackTitle) {
   return sections;
 }
 
-
-export async function generateStaticParams() {
- 
-  if (process.env.SKIP_SSG_DB === "true") return [];
-  if (!process.env.DATABASE_URL) return [];
-  const posts = await prisma.blogPost.findMany({
-    where: { status: "published" },
-    select: { slug: true },
-  });
-
-  return posts.map((p) => ({ slug: p.slug }));
-}
-
-export const dynamicParams = true;
-
 export default async function BlogSlugPage(props) {
-  // Next 15: params is Promise
   const { params } = props;
   const { slug } = await params;
 
@@ -174,12 +134,8 @@ export default async function BlogSlugPage(props) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center space-y-3">
-          <h1 className="text-xl font-semibold text-slate-900">
-            Invalid blog URL
-          </h1>
-          <p className="text-sm text-slate-500">
-            The blog slug is missing or invalid.
-          </p>
+          <h1 className="text-xl font-semibold text-slate-900">Invalid blog URL</h1>
+          <p className="text-sm text-slate-500">The blog slug is missing or invalid.</p>
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500"
@@ -192,7 +148,6 @@ export default async function BlogSlugPage(props) {
     );
   }
 
-  // Main post
   const post = await prisma.blogPost.findUnique({
     where: { slug },
     include: {
@@ -206,12 +161,8 @@ export default async function BlogSlugPage(props) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center space-y-3">
-          <h1 className="text-xl font-semibold text-slate-900">
-            Post not found
-          </h1>
-          <p className="text-sm text-slate-500">
-            This article is not available or has been unpublished.
-          </p>
+          <h1 className="text-xl font-semibold text-slate-900">Post not found</h1>
+          <p className="text-sm text-slate-500">This article is not available or has been unpublished.</p>
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500"
@@ -224,7 +175,6 @@ export default async function BlogSlugPage(props) {
     );
   }
 
-  // Related posts
   const relatedRaw = await prisma.blogPost.findMany({
     where: {
       status: "published",
@@ -252,23 +202,15 @@ export default async function BlogSlugPage(props) {
     likeCount: p.likeCount || 0,
   }));
 
-  // TipTap -> sections
   let sections = [];
-  if (post.contentJson) {
-    sections = mapTipTapToSections(post.contentJson, post.title);
-  }
+  if (post.contentJson) sections = mapTipTapToSections(post.contentJson, post.title);
 
   if (!Array.isArray(sections) || !sections.length) {
     sections = [
       {
         id: "content",
         title: post.title,
-        blocks: [
-          {
-            type: "p",
-            text: post.excerpt || "",
-          },
-        ],
+        blocks: [{ type: "p", text: post.excerpt || "" }],
       },
     ];
   }
@@ -282,12 +224,9 @@ export default async function BlogSlugPage(props) {
     : "";
 
   const heroImage =
-    post.heroImage ||
-    post.thumbnail ||
-    "/images/insights/launch-thumb.png";
+    post.heroImage || post.thumbnail || "/images/insights/launch-thumb.png";
 
-  const thumbnail =
-    post.thumbnail || heroImage;
+  const thumbnail = post.thumbnail || heroImage;
 
   const tags = post.tags.map((t) => t.tag.name);
   const readingTime = post.readTimeMinutes || 8;
@@ -300,16 +239,13 @@ export default async function BlogSlugPage(props) {
     excerpt: post.excerpt || "",
     thumbnail,
     heroImage,
-    publishedAt: post.publishedAt
-      ? post.publishedAt.toISOString()
-      : new Date().toISOString(),
+    publishedAt: post.publishedAt ? post.publishedAt.toISOString() : new Date().toISOString(),
     readingTime,
     tags,
     sections,
     viewCount: post.viewCount || 0,
     likeCount: post.likeCount || 0,
-      shareCount: post.shareCount || 0,
-
+    shareCount: post.shareCount || 0,
     author: post.author
       ? {
           name: post.author.name || post.author.username,
@@ -363,9 +299,7 @@ export default async function BlogSlugPage(props) {
               Blog
             </Link>
             <span>/</span>
-            <span className="text-sky-400 line-clamp-1">
-              {post.title}
-            </span>
+            <span className="text-sky-400 line-clamp-1">{post.title}</span>
           </nav>
 
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1.1fr)] gap-6 lg:gap-10 items-center">
@@ -373,14 +307,17 @@ export default async function BlogSlugPage(props) {
               <span className="inline-flex items-center rounded-full bg-sky-500/15 px-3 py-1 text-[11px] font-semibold text-sky-100 border border-sky-400/50">
                 {categoryLabel}
               </span>
+
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white leading-tight">
                 {post.title}
               </h1>
+
               {post.excerpt && (
                 <p className="text-sm sm:text-base text-slate-100/90 max-w-xl">
                   {post.excerpt}
                 </p>
               )}
+
               <div className="flex flex-wrap items-center gap-3 text-[11px] sm:text-xs text-slate-200/90">
                 {formattedDate && (
                   <span className="inline-flex items-center gap-1.5">
@@ -391,17 +328,18 @@ export default async function BlogSlugPage(props) {
                 <span>{readingTime} min read</span>
 
                 {typeof fullPost.viewCount === "number" && (
-  <span className="inline-flex items-center gap-1">
-    <FaEye className="h-3 w-3 text-slate-400" />
-    <span>{fullPost.viewCount}</span>
-  </span>
-)}
-{typeof fullPost.likeCount === "number" && (
-  <span className="inline-flex items-center gap-1">
-    <FaHeart className="h-3 w-3 text-rose-400" />
-    <span>{fullPost.likeCount}</span>
-  </span>
-)}
+                  <span className="inline-flex items-center gap-1">
+                    <FaEye className="h-3 w-3 text-slate-400" />
+                    <span>{fullPost.viewCount}</span>
+                  </span>
+                )}
+
+                {typeof fullPost.likeCount === "number" && (
+                  <span className="inline-flex items-center gap-1">
+                    <FaHeart className="h-3 w-3 text-rose-400" />
+                    <span>{fullPost.likeCount}</span>
+                  </span>
+                )}
 
                 {tags.length ? (
                   <span className="inline-flex items-center gap-1.5">
@@ -420,11 +358,7 @@ export default async function BlogSlugPage(props) {
                 ) : null}
               </div>
 
-              {/* Search box inside hero */}
-              <form
-                action="/blog"
-                className="pt-2 max-w-md"
-              >
+              <form action="/blog" className="pt-2 max-w-md">
                 <div className="relative">
                   <input
                     type="search"
@@ -437,19 +371,13 @@ export default async function BlogSlugPage(props) {
             </div>
 
             <div className="relative h-40 sm:h-52 md:h-90 lg:h-60 rounded-2xl overflow-hidden shadow-xl bg-slate-900/40 border border-slate-800/60">
-              <Image
-                src={thumbnail}
-                alt={post.title}
-                fill
-                className="object-cover"
-              />
+              <Image src={thumbnail} alt={post.title} fill className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/40 via-transparent to-sky-500/20" />
             </div>
           </div>
         </div>
       </header>
 
-      {/* MAIN layout handled in client subcomponent */}
       <TocAndContentClient post={fullPost} related={related} />
     </div>
   );

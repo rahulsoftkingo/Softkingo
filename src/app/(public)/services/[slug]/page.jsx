@@ -2,32 +2,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import { notFound } from 'next/navigation';
-import prisma from '@/lib/prisma';
-import Image from 'next/image';
-import Link from 'next/link';
-import LeadForm from '@/components/public/LeadForm';
-import TechView from '@/components/common/TechView';
-import MethodologySection from '@/components/common/MethodologySection';
+import { notFound } from "next/navigation";
+import prisma from "@/lib/prisma";
+import Image from "next/image";
+import Link from "next/link";
+import LeadForm from "@/components/public/LeadForm";
+import TechView from "@/components/common/TechView";
+import MethodologySection from "@/components/common/MethodologySection";
 import {
   FaMobileAlt,
   FaHandSparkles,
@@ -39,7 +20,12 @@ import {
   FaRobot,
   FaCogs,
   FaRegFileCode,
-} from 'react-icons/fa';
+} from "react-icons/fa";
+
+// Force SSR (no build-time DB access)
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const dynamicParams = true;
 
 // Icon mapping
 const iconMap = {
@@ -55,26 +41,12 @@ const iconMap = {
   FaRegFileCode,
 };
 
-export async function generateStaticParams() {
-
-  if (process.env.SKIP_SSG_DB === "true") return [];
-  if (!process.env.DATABASE_URL) return [];
-
-  const services = await prisma.page.findMany({
-    where: { type: 'service', status: 'published' },
-    select: { slug: true },
-  });
-
-  return services.map((service) => ({
-    slug: service.slug,
-  }));
-}
-
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  
+
+  // DB call now happens at request-time (SSR), not at build-time
   const service = await prisma.page.findUnique({
-    where: { slug, type: 'service' },
+    where: { slug, type: "service" },
     select: {
       title: true,
       seoTitle: true,
@@ -100,7 +72,7 @@ export default async function ServicePage({ params }) {
   const { slug } = await params;
 
   const service = await prisma.page.findUnique({
-    where: { slug, type: 'service' },
+    where: { slug, type: "service" },
     include: {
       author: {
         select: {
@@ -111,7 +83,7 @@ export default async function ServicePage({ params }) {
     },
   });
 
-  if (!service || service.status !== 'published') {
+  if (!service || service.status !== "published") {
     return notFound();
   }
 
@@ -124,7 +96,7 @@ export default async function ServicePage({ params }) {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={content.heroBg || '/images/services/default-bg.png'}
+            src={content.heroBg || "/images/services/default-bg.png"}
             alt={service.title}
             fill
             className="object-cover opacity-90"
@@ -141,7 +113,10 @@ export default async function ServicePage({ params }) {
                 Home
               </Link>
               <span>/</span>
-              <Link href="/services" className="hover:text-white transition-colors">
+              <Link
+                href="/services"
+                className="hover:text-white transition-colors"
+              >
                 Services
               </Link>
               <span>/</span>
@@ -214,8 +189,8 @@ export default async function ServicePage({ params }) {
               </div>
             </div>
 
-           
-            {/* <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
+            {/* Right - Lead Form Component */}
+            <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
               <LeadForm
                 formType="service"
                 formKey={service.slug}
@@ -223,98 +198,31 @@ export default async function ServicePage({ params }) {
                 title="Book a Free Consultation"
                 subtitle="Response within 1 Business Day!"
                 variant="hero"
+                showLogo={true}
+                showCompany={false}
+                showBudget={false}
+                showAttachment={false}
+                showNDA={false}
               />
-              
             </div>
-           */}
-
-{/* Right - Lead Form Component */}
-<div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
-  {/* <LeadForm
-    formType="service"
-    formKey={service.slug}
-    serviceName={service.title}
-    title="Book a Free Consultation"
-    subtitle="Response within 1 Business Day!"
-    variant="hero"
-    showWhatsApp={true}
-    showCompany={true}
-    showBudget={true}
-  /> */}
-<LeadForm
-  formType="service"
-  formKey={service.slug}
-  serviceName={service.title}
-  title="Book a Free Consultation"
-  subtitle="Response within 1 Business Day!"
-  variant="hero"
-  showLogo={true}
-  showCompany={false}
-  showBudget={false}
-  showAttachment={false}
-  showNDA={false}
-/>
-
-  
-</div>
-
           </div>
         </div>
 
-        <style >{`
+        <style>{`
           @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
           }
-
           @keyframes fadeInRight {
-            from {
-              opacity: 0;
-              transform: translateX(30px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
           }
-
-          .animate-fadeInUp {
-            animation: fadeInUp 0.6s ease-out;
-          }
-
-          .animate-fadeInRight {
-            animation: fadeInRight 0.8s ease-out;
-          }
-
-          .animation-delay-200 {
-            animation-delay: 0.2s;
-            opacity: 0;
-            animation-fill-mode: forwards;
-          }
-
-          .animation-delay-400 {
-            animation-delay: 0.4s;
-            opacity: 0;
-            animation-fill-mode: forwards;
-          }
-
-          .animation-delay-600 {
-            animation-delay: 0.6s;
-            opacity: 0;
-            animation-fill-mode: forwards;
-          }
-
-          .animation-delay-800 {
-            animation-delay: 0.8s;
-            opacity: 0;
-            animation-fill-mode: forwards;
-          }
+          .animate-fadeInUp { animation: fadeInUp 0.6s ease-out; }
+          .animate-fadeInRight { animation: fadeInRight 0.8s ease-out; }
+          .animation-delay-200 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
+          .animation-delay-400 { animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards; }
+          .animation-delay-600 { animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards; }
+          .animation-delay-800 { animation-delay: 0.8s; opacity: 0; animation-fill-mode: forwards; }
         `}</style>
       </section>
 
@@ -335,21 +243,19 @@ export default async function ServicePage({ params }) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {/* Stat Boxes */}
-              <StatBox 
-                value={content.stats.years} 
-                label={content.stats.yearsLabel} 
+              <StatBox
+                value={content.stats.years}
+                label={content.stats.yearsLabel}
                 color="from-emerald-400 to-emerald-600"
                 icon="⚡"
               />
-              <StatBox 
-                value={content.stats.projects} 
-                label={content.stats.projectsLabel} 
+              <StatBox
+                value={content.stats.projects}
+                label={content.stats.projectsLabel}
                 color="from-cyan-400 to-cyan-600"
                 icon="🚀"
               />
-              
-              {/* Main Image */}
+
               {content.mainImage && (
                 <div className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-2xl row-span-1 sm:row-span-3 h-64 sm:h-96 lg:h-auto shadow-xl">
                   <Image
@@ -362,22 +268,24 @@ export default async function ServicePage({ params }) {
                 </div>
               )}
 
-              <StatBox 
-                value={content.stats.team} 
-                label={content.stats.teamLabel} 
+              <StatBox
+                value={content.stats.team}
+                label={content.stats.teamLabel}
                 color="from-purple-400 to-purple-600"
                 icon="👥"
               />
-              <StatBox 
-                value={content.stats.rating} 
-                label={content.stats.ratingLabel} 
+              <StatBox
+                value={content.stats.rating}
+                label={content.stats.ratingLabel}
                 color="from-amber-400 to-amber-600"
                 icon="⭐"
               />
 
-              {/* Extra Images */}
               {content.extraImages?.map((img, idx) => (
-                <div key={idx} className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-2xl hidden lg:block shadow-lg">
+                <div
+                  key={idx}
+                  className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-2xl hidden lg:block shadow-lg"
+                >
                   <Image
                     src={img}
                     alt={`Extra ${idx + 1}`}
@@ -414,7 +322,11 @@ export default async function ServicePage({ params }) {
                     className="bg-white rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
                   >
                     <div className="mb-6 relative">
-                      <div className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br ${card.iconGradient || 'from-cyan-400 to-sky-600'} flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <div
+                        className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br ${
+                          card.iconGradient || "from-cyan-400 to-sky-600"
+                        } flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}
+                      >
                         <Icon className="w-8 h-8 md:w-10 md:h-10 text-white" />
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-cyan-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -433,10 +345,7 @@ export default async function ServicePage({ params }) {
         </section>
       )}
 
-      {/* Tech Stack */}
       <TechView />
-
-      {/* Methodology */}
       <MethodologySection />
     </main>
   );
@@ -445,14 +354,16 @@ export default async function ServicePage({ params }) {
 // Stat Box Component
 function StatBox({ value, label, color, icon }) {
   return (
-    <div className={`bg-gradient-to-br ${color} p-6 md:p-8 text-center rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}>
-      <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">{icon}</div>
+    <div
+      className={`bg-gradient-to-br ${color} p-6 md:p-8 text-center rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}
+    >
+      <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">
+        {icon}
+      </div>
       <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 group-hover:scale-105 transition-transform">
         {value}
       </h3>
-      <p className="text-white/90 font-medium text-sm md:text-base">
-        {label}
-      </p>
+      <p className="text-white/90 font-medium text-sm md:text-base">{label}</p>
     </div>
   );
 }
