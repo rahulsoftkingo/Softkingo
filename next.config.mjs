@@ -3,7 +3,7 @@ const nextConfig = {
   reactCompiler: true,
     // Force Webpack (disable Turbopack)
 
-  turbopack: false,
+  // turbopack: false,
 };
 
 export default nextConfig;
