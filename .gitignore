@@ -48,4 +48,4 @@ prisma/.env
 prisma/*.log
 
 # Uploads (recommended to NOT commit)
-public/uploads/
+# public/uploads/
