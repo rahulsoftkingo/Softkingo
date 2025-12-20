@@ -1,11 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactCompiler: true,
+    // Force Webpack (disable Turbopack)
 
-  // Disable Turbopack for build/runtime (use webpack instead)
-  experimental: {
-    turbo: false,
-  },
+  turbopack: false,
 };
 
 export default nextConfig;
