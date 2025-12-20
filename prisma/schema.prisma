@@ -10,19 +10,19 @@ datasource db {
 
 model ChatConversation {
   id        Int      @id @default(autoincrement())
-  visitorId String   // Unique visitor identifier
+  visitorId String
   visitorName String?
   visitorEmail String?
   visitorPhone String?
-  status    String   @default("active") // active | closed | transferred
-  priority  String   @default("normal") // low | normal | high | urgent
+  status    String   @default("active")
+  priority  String   @default("normal")
   
   assignedTo   User? @relation("ChatAssignedTo", fields: [assignedToId], references: [id])
   assignedToId Int?
   
   tags      String?
   notes     String?
-  rating    Int? // 1-5
+  rating    Int?
   feedback  String?
   
   createdAt DateTime @default(now())
@@ -30,6 +30,8 @@ model ChatConversation {
   closedAt  DateTime?
   
   messages ChatMessage[]
+  
+  @@map("chatconversation")
 }
 
 model ChatMessage {
@@ -38,21 +40,19 @@ model ChatMessage {
   conversationId Int
   
   content   String   @db.Text
-  sender    String   // user | bot | agent
+  sender    String
   senderName String?
   
-  type      String   @default("text") // text | image | file | system
+  type      String   @default("text")
   fileUrl   String?
   fileName  String?
   
   isRead    Boolean  @default(false)
   
   createdAt DateTime @default(now())
+  
+  @@map("chatmessage")
 }
-
-
-
-//// 1) Auth + Roles + Permissions
 
 model User {
   id           Int     @id @default(autoincrement())
@@ -61,7 +61,7 @@ model User {
   username     String  @unique
   passwordHash String
 
-  status       String  @default("active") // 'active' | 'suspended'
+  status       String  @default("active")
   profileImage String?
   phone        String?
   whatsapp     String?
@@ -88,17 +88,21 @@ model User {
   LeadActivity LeadActivity[]
 
   chatsAssigned ChatConversation[] @relation("ChatAssignedTo")
+  
+  @@map("user")
 }
 
 model Role {
   id           Int     @id @default(autoincrement())
-  name         String  @unique // 'admin' | 'manager' | 'writer' | 'agent'
+  name         String  @unique
   displayName  String
   description  String?
   defaultRoute String?
 
   users       UserRole[]
   permissions RolePermission[]
+  
+  @@map("role")
 }
 
 model UserRole {
@@ -109,6 +113,7 @@ model UserRole {
   roleId Int
 
   @@unique([userId, roleId])
+  @@map("userrole")
 }
 
 model Permission {
@@ -118,6 +123,8 @@ model Permission {
   description String?
 
   roles RolePermission[]
+  
+  @@map("permission")
 }
 
 model RolePermission {
@@ -128,9 +135,8 @@ model RolePermission {
   permissionId Int
 
   @@unique([roleId, permissionId])
+  @@map("rolepermission")
 }
-
-//// 2) Blog / Insights
 
 model BlogCategory {
   id        Int      @id @default(autoincrement())
@@ -140,6 +146,8 @@ model BlogCategory {
   updatedAt DateTime @updatedAt
 
   posts BlogPost[]
+  
+  @@map("blogcategory")
 }
 
 model BlogTag {
@@ -147,6 +155,8 @@ model BlogTag {
   name  String
   slug  String        @unique
   posts BlogPostTag[]
+  
+  @@map("blogtag")
 }
 
 model BlogPostTag {
@@ -156,6 +166,7 @@ model BlogPostTag {
   tagId  Int
 
   @@id([postId, tagId])
+  @@map("blogposttag")
 }
 
 model BlogPost {
@@ -179,7 +190,6 @@ model BlogPost {
   publishedAt     DateTime?
   scheduledFor    DateTime?
 
-  // NEW counters
   viewCount       Int      @default(0)
   likeCount       Int      @default(0)
   shareCount      Int      @default(0)
@@ -194,19 +204,20 @@ model BlogPost {
 
   tags      BlogPostTag[]
   feedbacks BlogFeedback[]
+  
+  @@map("blogpost")
 }
 
 model BlogFeedback {
   id        Int      @id @default(autoincrement())
   post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
-  rating    Int      // 1-5
-  comment   String?  // optional future use
-  // Optional simple fingerprint (IP/user-agent) if you want
+  rating    Int
+  comment   String?
   createdAt DateTime @default(now())
+  
+  @@map("blogfeedback")
 }
-
-//// 3) E‑Guides
 
 model EGuide {
   id           Int     @id @default(autoincrement())
@@ -233,11 +244,13 @@ model EGuide {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("eguide")
 }
 
 model ContentItem {
   id          Int     @id @default(autoincrement())
-  type        String // 'case-study' | 'resource' | 'e-guide' | 'portfolio'
+  type        String
   title       String
   slug        String  @unique
   excerpt     String?
@@ -262,9 +275,10 @@ model ContentItem {
   authorId Int?
 
   downloadCount Int @default(0)
+  
+  @@map("contentitem")
 }
 
-//// 4) Portfolio / Case studies
 model PortfolioProject {
   id          Int     @id @default(autoincrement())
   key         String  @unique
@@ -279,15 +293,15 @@ model PortfolioProject {
   bgColor     String?
   icon        String?
   phoneMockup String?
-  // badgesJson  String?
   badgesJson  String? @db.Text
-
 
   caseStudy   CaseStudy? @relation(fields: [caseStudyId], references: [id])
   caseStudyId Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("portfolioproject")
 }
 
 model CaseStudy {
@@ -308,8 +322,6 @@ model CaseStudy {
   requirementsJson String?
   goalsJson        String?
   challengesJson   String?
-  // appScreensJson   String?
-    // appScreensJson   String? @db.Text
   appScreensJson String? @db.LongText
 
   resultsJson      String?
@@ -318,61 +330,56 @@ model CaseStudy {
   seoTitle       String?
   seoDescription String?
 
-  // NEW: opposite side of relation
   portfolioProjects PortfolioProject[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("casestudy")
 }
-
-//// 5) Generic pages (Services, Hire, Solutions, Company)
 
 model Page {
   id        Int      @id @default(autoincrement())
   title     String
   slug      String   @unique
-  key       String   // Required field
-  type      String   // 'service' | 'blog' | 'case-study' etc
+  key       String
+  type      String
   excerpt   String?  @db.LongText
   
-  // NO content field in schema
   contentJson String? @db.LongText
   
-  status    String   @default("draft") // 'draft' | 'published'
+  status    String   @default("draft")
   featured  Boolean  @default(false)
   
-  // SEO
   seoTitle       String?
   seoDescription String? @db.LongText
   seoImage       String?
   
-  // Timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
-  // Relations
   author     User?            @relation(fields: [authorId], references: [id])
   authorId   Int?
   navItems   NavigationItem[]
   
   @@index([type, status])
   @@index([slug])
+  @@map("page")
 }
-
 
 model NavigationItem {
   id      Int     @id @default(autoincrement())
   label   String
   href    String
-  group   String? // 'primary' | 'footer' | 'admin'
+  group   String?
   order   Int     @default(0)
   visible Boolean @default(true)
 
   page   Page? @relation(fields: [pageId], references: [id])
   pageId Int?
+  
+  @@map("navigationitem")
 }
-
-//// 6) People (Team + Employees listing)
 
 model TeamMember {
   id          Int     @id @default(autoincrement())
@@ -387,6 +394,8 @@ model TeamMember {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("teammember")
 }
 
 model EmployeeDirectoryItem {
@@ -400,66 +409,25 @@ model EmployeeDirectoryItem {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("employeedirectoryitem")
 }
-
-//// 7) Media / Gallery
 
 model MediaItem {
   id        Int      @id @default(autoincrement())
   title     String?
   filePath  String
   thumbnail String?
-  type      String // 'image' | 'video'
+  type      String
   category  String?
   tags      String?
   createdAt DateTime @default(now())
 
   uploadedBy   User? @relation(fields: [uploadedById], references: [id])
   uploadedById Int?
+  
+  @@map("mediaitem")
 }
-
-// model SiteEvent {
-//   id       Int      @id @default(autoincrement())
-//   title    String
-//   message  String
-
-//   ctaLabel String?
-//   ctaHref  String?
-
-//   status   String   @default("draft") // 'draft' | 'active'
-//   startsAt DateTime?
-//   endsAt   DateTime?
-
-//   // optional styling
-//   theme    String?  // 'black-friday' | 'christmas' | etc.
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-
-
-// model SiteEvent {
-//   id                   Int      @id @default(autoincrement())
-//   title                String
-//   message              String
-//   ctaLabel             String?
-//   ctaHref              String?
-//   status               String   @default("draft") // 'draft' | 'active'
-//   startsAt             DateTime?
-//   endsAt               DateTime?
-//   theme                String?  // 'black-friday' | 'christmas' | etc.
-
-//   // Behaviour config
-//   showOnSlugs          String?  // e.g. "/,/e-guides,/blog"
-//   triggerDelayMs       Int?     // e.g. 2000
-//   triggerScrollPercent Int?     // e.g. 30
-//   maxShowsPerUser      Int?     // e.g. 3
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
 
 model SiteEvent {
   id                   Int      @id @default(autoincrement())
@@ -468,8 +436,7 @@ model SiteEvent {
   ctaLabel             String?
   ctaHref              String?
   
-  // NEW: Image field
-  imageUrl             String?  // Banner/hero image URL
+  imageUrl             String?
   
   status               String   @default("draft")
   startsAt             DateTime?
@@ -482,11 +449,9 @@ model SiteEvent {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("siteevent")
 }
-
-
-
-//// 8) Operations: Leads + Tickets
 
 model Lead {
   id       Int     @id @default(autoincrement())
@@ -500,16 +465,13 @@ model Lead {
   status   String  @default("new")
   tags     String?
 
-  // Forms meta
-  formType String? // 'inquiry' | 'service' | 'eguide' | ...
-  formKey  String? // e.g. 'home-inquiry', 'service-web-dev'
+  formType String?
+  formKey  String?
 
-  // Marketing UTM
   utmSource   String?
   utmMedium   String?
   utmCampaign String?
 
-  // Extra details
   budgetLabel    String?
   attachmentName String?
   ndaAccepted    Boolean?
@@ -522,6 +484,8 @@ model Lead {
 
   activities LeadActivity[]
   tickets    Ticket[]
+  
+  @@map("lead")
 }
 
 model LeadActivity {
@@ -534,18 +498,19 @@ model LeadActivity {
 
   createdBy   User? @relation(fields: [createdById], references: [id])
   createdById Int?
+  
+  @@map("leadactivity")
 }
 
 model Ticket {
   id          Int     @id @default(autoincrement())
   title       String
   description String?
-  status      String  @default("open") // open | in_progress | waiting | resolved | closed
-  priority    String  @default("medium") // low | medium | high | urgent
-  channel     String? // web | email | whatsapp | internal
+  status      String  @default("open")
+  priority    String  @default("medium")
+  channel     String?
   tags        String?
 
-  // Linking
   lead        Lead? @relation(fields: [leadId], references: [id])
   leadId      Int?
   requester   User? @relation("TicketRequester", fields: [requesterId], references: [id])
@@ -560,6 +525,8 @@ model Ticket {
   updatedAt DateTime @updatedAt
 
   comments TicketComment[]
+  
+  @@map("ticket")
 }
 
 model TicketComment {
@@ -567,16 +534,16 @@ model TicketComment {
   ticket   Ticket @relation(fields: [ticketId], references: [id])
   ticketId Int
 
-  type       String @default("note") // note | reply | system
-  visibility String @default("internal") // internal | public
+  type       String @default("note")
+  visibility String @default("internal")
   content    String
 
   createdAt   DateTime @default(now())
   createdBy   User?    @relation(fields: [createdById], references: [id])
   createdById Int?
+  
+  @@map("ticketcomment")
 }
-
-//// 9) Newsletter
 
 model NewsletterList {
   id          Int      @id @default(autoincrement())
@@ -588,6 +555,8 @@ model NewsletterList {
 
   subscribers NewsletterSubscription[]
   campaigns   EmailCampaign[]
+  
+  @@map("newsletterlist")
 }
 
 model NewsletterSubscription {
@@ -606,8 +575,8 @@ model NewsletterSubscription {
   events NewsletterEvent[]
 
   @@unique([email, listId], name: "email_listId")
+  @@map("newslettersubscription")
 }
-
 
 model NewsletterEvent {
   id        Int      @id @default(autoincrement())
@@ -617,6 +586,8 @@ model NewsletterEvent {
 
   subscription   NewsletterSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   subscriptionId Int
+  
+  @@map("newsletterevent")
 }
 
 model EmailCampaign {
@@ -639,6 +610,8 @@ model EmailCampaign {
   listId Int
 
   logs EmailDeliveryLog[]
+  
+  @@map("emailcampaign")
 }
 
 model EmailDeliveryLog {
@@ -651,23 +624,25 @@ model EmailDeliveryLog {
 
   campaign   EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   campaignId Int
+  
+  @@map("emaildeliverylog")
 }
+
 model EmailTemplate {
   id        Int      @id @default(autoincrement())
   name      String
   slug      String   @unique
   subject   String
-  preview   String?  // short preview text
+  preview   String?
   bodyHtml  String?  @db.LongText
   bodyText  String?
-  category  String?  // 'welcome' | 'promo' | 'newsletter'
+  category  String?
   status    String   @default("active")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("emailtemplate")
 }
-
-
-//// 10) Minimal WhatsApp integration (future-safe)
 
 model WhatsappIntegration {
   id          Int      @id @default(autoincrement())
@@ -678,19 +653,22 @@ model WhatsappIntegration {
   configJson  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  
+  @@map("whatsappintegration")
 }
+
 model WhatsappTemplate {
   id        Int      @id @default(autoincrement())
   name      String
-  category  String?  // 'welcome' | 'promo' | 'support' etc.
+  category  String?
   body      String   @db.LongText
-  language  String?  // e.g. 'en'
+  language  String?
   status    String   @default("active")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("whatsapptemplate")
 }
-
-//// 11) Admin audit
 
 model AdminLog {
   id     Int   @id @default(autoincrement())
@@ -708,4 +686,6 @@ model AdminLog {
   userAgent String?
 
   createdAt DateTime @default(now())
+  
+  @@map("adminlog")
 }
