@@ -2,20 +2,14 @@
 const nextConfig = {
   reactCompiler: true,
   
-  // Important: Standalone output for Docker
   output: 'standalone',
-
-  experimental: {
-    // Prisma files ko trace karne ke liye
-    outputFileTracingIncludes: {
-      "/*": ["./node_modules/.prisma/**", "./node_modules/@prisma/client/**"],
-    },
-    // Prisma ko external package mark karo
-    serverComponentsExternalPackages: ['@prisma/client', 'prisma'],
+  
+  // Move these outside experimental in Next.js 16+
+  serverExternalPackages: ['@prisma/client', 'prisma'],
+  
+  outputFileTracingIncludes: {
+    "/*": ["./node_modules/.prisma/**", "./node_modules/@prisma/client/**"],
   },
-
-  // If you ever want to force webpack in dev, keep it commented as you had.
-  // turbopack: false,
 };
 
 export default nextConfig;
