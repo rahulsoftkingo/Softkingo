@@ -1,8 +1,7 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine3.20 AS base
 
 FROM base AS deps
-# Install OpenSSL 1.1 compatibility layer
-RUN apk add --no-cache libc6-compat openssl1.1-compat
+RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
 
 COPY package*.json ./
@@ -21,9 +20,6 @@ RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
-
-# Install OpenSSL 1.1 compat in runtime too
-RUN apk add --no-cache openssl1.1-compat
 
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
