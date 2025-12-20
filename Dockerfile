@@ -1,30 +1,29 @@
 FROM node:20-alpine AS base
 
 FROM base AS deps
-RUN apk add --no-cache libc6-compat openssl
+# Install OpenSSL 1.1 compatibility layer
+RUN apk add --no-cache libc6-compat openssl1.1-compat
 WORKDIR /app
 
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Download Prisma engines for OpenSSL 3.x
 RUN npm ci
-RUN npx prisma generate --force-native-binaries
+RUN npx prisma generate
 
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Force regenerate with OpenSSL 3.x
-RUN npx prisma generate --force-native-binaries
-
-# Skip database operations during build
-ENV SKIP_ENV_VALIDATION=true
-RUN npm run build || true
+RUN npx prisma generate
+RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
+
+# Install OpenSSL 1.1 compat in runtime too
+RUN apk add --no-cache openssl1.1-compat
 
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
