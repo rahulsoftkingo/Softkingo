@@ -1,3 +1,4 @@
+// src/app/api/admin/blog/[id]/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
@@ -40,7 +41,13 @@ export async function GET(request, { params }) {
     return NextResponse.json({ message: 'Not found' }, { status: 404 });
   }
 
-  return NextResponse.json(post);
+  // ✅ Parse placements from JSON
+  const postData = {
+    ...post,
+    placements: post.placements ? JSON.parse(post.placements) : [],
+  };
+
+  return NextResponse.json(postData);
 }
 
 // PATCH /api/admin/blog/[id]
@@ -55,66 +62,94 @@ export async function PATCH(request, { params }) {
     return NextResponse.json({ message: 'Invalid id' }, { status: 400 });
   }
 
-  const body = await request.json();
-  const {
-    type,
-    title,
-    slug,
-    excerpt,
-    contentJson,
-    status,
-    featured,
-    pinned,
-    thumbnail,
-    heroImage,
-    readTimeMinutes,
-    seoTitle,
-    seoDescription,
-    seoImage,
-    categoryId,
-    tagIds,
-  } = body;
+  try {
+    const body = await request.json();
+    const {
+      type,
+      title,
+      slug,
+      excerpt,
+      contentJson,
+      status,
+      featured,
+      pinned,
+      placements, // ✅ NEW
+      thumbnail,
+      heroImage,
+      readTimeMinutes,
+      seoTitle,
+      seoDescription,
+      seoImage,
+      categoryId,
+      tagIds,
+    } = body;
 
-  const post = await prisma.blogPost.update({
-    where: { id },
-    data: {
-      ...(type !== undefined && { type }),
-      ...(title !== undefined && { title }),
-      ...(slug !== undefined && { slug }),
-      excerpt: excerpt === undefined ? undefined : excerpt || null,
-      contentJson:
-        contentJson === undefined ? undefined : contentJson || null,
-      ...(status !== undefined && { status }),
-      ...(featured !== undefined && { featured }),
-      ...(pinned !== undefined && { pinned }),
-      thumbnail: thumbnail === undefined ? undefined : thumbnail || null,
-      heroImage: heroImage === undefined ? undefined : heroImage || null,
-      readTimeMinutes:
-        readTimeMinutes === undefined ? undefined : readTimeMinutes || null,
-      seoTitle: seoTitle === undefined ? undefined : seoTitle || null,
-      seoDescription:
-        seoDescription === undefined ? undefined : seoDescription || null,
-      seoImage: seoImage === undefined ? undefined : seoImage || null,
-      categoryId:
-        categoryId === undefined ? undefined : categoryId || null,
-      ...(Array.isArray(tagIds)
-        ? {
-            tags: {
-              deleteMany: {}, // remove existing mappings
-              create: tagIds.map((tagId) => ({
-                tag: { connect: { id: tagId } },
-              })),
-            },
-          }
-        : {}),
-    },
-    include: {
-      category: true,
-      tags: { include: { tag: true } },
-    },
-  });
+    // ✅ Convert placements to JSON string
+    const placementsJson = placements !== undefined
+      ? (Array.isArray(placements) ? JSON.stringify(placements) : null)
+      : undefined;
 
-  return NextResponse.json(post);
+    const post = await prisma.blogPost.update({
+      where: { id },
+      data: {
+        ...(type !== undefined && { type }),
+        ...(title !== undefined && { title }),
+        ...(slug !== undefined && { slug }),
+        ...(placementsJson !== undefined && { placements: placementsJson }), // ✅ NEW
+        excerpt: excerpt === undefined ? undefined : excerpt || null,
+        contentJson:
+          contentJson === undefined ? undefined : contentJson || null,
+        ...(status !== undefined && { status }),
+        ...(featured !== undefined && { featured }),
+        ...(pinned !== undefined && { pinned }),
+        thumbnail: thumbnail === undefined ? undefined : thumbnail || null,
+        heroImage: heroImage === undefined ? undefined : heroImage || null,
+        readTimeMinutes:
+          readTimeMinutes === undefined ? undefined : readTimeMinutes || null,
+        seoTitle: seoTitle === undefined ? undefined : seoTitle || null,
+        seoDescription:
+          seoDescription === undefined ? undefined : seoDescription || null,
+        seoImage: seoImage === undefined ? undefined : seoImage || null,
+        categoryId:
+          categoryId === undefined ? undefined : categoryId || null,
+        ...(Array.isArray(tagIds)
+          ? {
+              tags: {
+                deleteMany: {},
+                create: tagIds.map((tagId) => ({
+                  tag: { connect: { id: tagId } },
+                })),
+              },
+            }
+          : {}),
+      },
+      include: {
+        category: true,
+        tags: { include: { tag: true } },
+      },
+    });
+
+    // ✅ Parse placements for response
+    const postData = {
+      ...post,
+      placements: post.placements ? JSON.parse(post.placements) : [],
+    };
+
+    return NextResponse.json(postData);
+  } catch (err) {
+    // ✅ Handle duplicate slug
+    if (err.code === 'P2002' && err.meta?.target?.includes('slug')) {
+      return NextResponse.json(
+        { message: 'Slug already exists. Please choose a different slug.' },
+        { status: 400 },
+      );
+    }
+    console.error('Blog update error', err);
+    return NextResponse.json(
+      { message: 'Failed to update post.' },
+      { status: 500 },
+    );
+  }
 }
 
 // DELETE /api/admin/blog/[id]

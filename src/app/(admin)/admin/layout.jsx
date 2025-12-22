@@ -34,7 +34,7 @@ export default async function AdminLayout({ children }) {
               
               {/* Main content with independent scrolling */}
               <main className="flex-1 p-4 lg:p-6 overflow-y-auto">
-                <div className="bg-white p-4lg:p-6 min-h-[calc(100vh-80px)] ">
+                <div className="bg-whitep-4lg:p-6 min-h-[calc(100vh-80px)] ">
                   {children}
                 </div>
               </main>

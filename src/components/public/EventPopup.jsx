@@ -151,7 +151,7 @@ export default function EventPopup() {
         </div>
       )}
       
-      <div className={`relative w-full max-w-4xl bg-slate-950 border border-sky-900/60 rounded-3xl shadow-[0_18px_50px_rgba(15,23,42,0.9)] overflow-hidden max-h-[90vh] transition-all duration-700 ${isVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-90 opacity-0 translate-y-8'}`}>
+      <div className={`relative w-full max-w-4xl bg-slate-950borderborder-sky-900/60rounded-3xlshadow-[0_18px_50px_rgba(15,23,42,0.9)] overflow-hidden max-h-[90vh] transition-all duration-700 ${isVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-90 opacity-0 translate-y-8'}`}>
         <div className="relative w-full">
           {event.imageUrl ? (
             <>
@@ -162,12 +162,12 @@ export default function EventPopup() {
               />
             </>
           ) : (
-            <div className="w-full h-[400px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950" />
+            <div className="w-full h-[400px] bg-gradient-to-brfrom-slate-900via-slate-800to-slate-950" />
           )}
 
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 z-10"
+            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10backdrop-blur-smborderborder-white/20 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 z-10"
             aria-label="Close"
           >
             <svg
@@ -197,7 +197,7 @@ export default function EventPopup() {
             )}
             </div>
 
-            <div className={`flex-1 flex flex-col justify-center items-center text-center max-w-3xl mx-auto space-y-4 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <div className={`flex-1 flex hidden flex-col justify-center items-center text-center max-w-3xl mx-auto space-y-4 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-2xl">
                 {event.title}
               </h2>

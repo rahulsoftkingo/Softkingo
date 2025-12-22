@@ -28,13 +28,13 @@ export default function WhatsAppButton() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-24 left-6 z-40">
+    <div className="fixed bottom-22 lg:bottom-18 left-6 z-40">
       {/* Tooltip */}
       {showTooltip && (
-        <div className="absolute bottom-full right-0 mb-4 animate-slideIn">
+        <div className="absolute bottom-full left-0 mb-4 animate-slideIn hidden">
           <div className="relative bg-white rounded-xl shadow-2xl p-4 max-w-[250px] border border-emerald-100">
             {/* Arrow */}
-            <div className="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b border-emerald-100 transform rotate-45"></div>
+            <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white border-r border-b border-emerald-100 transform rotate-45"></div>
             
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
@@ -79,10 +79,10 @@ export default function WhatsAppButton() {
         <span className="absolute inset-0 rounded-full bg-emerald-500 animate-pulse opacity-50"></span>
         
         {/* Button */}
-        <div className="relative w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-emerald-500/50">
+        <div className="relative w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-emerald-500/50">
           {/* WhatsApp Icon */}
           <svg
-            className="w-9 h-9 text-white"
+            className="w-6 h-6 text-white"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
@@ -90,15 +90,15 @@ export default function WhatsAppButton() {
           </svg>
           
           {/* Online indicator */}
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full border-2 border-emerald-600 flex items-center justify-center">
-            <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white rounded-full border-2 border-emerald-600 flex items-center justify-center">
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
           </span>
         </div>
 
         {/* Hover text */}
-        <div className="absolute right-full mr-4 px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <div className="absolute left-full ml-4 px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
           Chat on WhatsApp
-          <div className="absolute top-1/2 -right-1 w-2 h-2 bg-slate-900 transform rotate-45 -translate-y-1/2"></div>
+          <div className="absolute top-1/2 -left-1 w-2 h-2 bg-slate-900 transform rotate-45 -translate-y-1/2"></div>
         </div>
       </a>
 

@@ -8,21 +8,17 @@ function canManage(session) {
   return roles.some((r) => ['admin', 'manager', 'writer'].includes(r));
 }
 
-export async function GET() {
-  const tags = await prisma.blogTag.findMany({
-    orderBy: { name: 'asc' },
-  });
-  return NextResponse.json(tags);
-}
-
-export async function POST(req) {
+// PATCH /api/admin/blog-tags/[id]
+export async function PATCH(req, { params }) {
   const session = await getServerSession(authOptions);
   if (!session || !canManage(session)) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
+  const { id } = params;
   const body = await req.json();
   const { name, slug } = body;
+
   if (!name || !slug) {
     return NextResponse.json(
       { message: 'Name and slug required.' },
@@ -30,9 +26,45 @@ export async function POST(req) {
     );
   }
 
-  const tag = await prisma.blogTag.create({
-    data: { name, slug },
-  });
+  try {
+    const tag = await prisma.blogTag.update({
+      where: { id: parseInt(id) },
+      data: { name, slug },
+    });
+    return NextResponse.json(tag);
+  } catch (err) {
+    if (err.code === 'P2002') {
+      return NextResponse.json(
+        { message: 'Slug already exists.' },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json(
+      { message: 'Failed to update tag.' },
+      { status: 500 },
+    );
+  }
+}
 
-  return NextResponse.json(tag, { status: 201 });
+// DELETE /api/admin/blog-tags/[id]
+export async function DELETE(req, { params }) {
+  const session = await getServerSession(authOptions);
+  if (!session || !canManage(session)) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id } = params;
+
+  try {
+    await prisma.blogTag.delete({
+      where: { id: parseInt(id) },
+    });
+    return NextResponse.json({ message: 'Tag deleted.' });
+  } catch (err) {
+    console.error('Delete tag error:', err);
+    return NextResponse.json(
+      { message: 'Failed to delete tag. It may be in use.' },
+      { status: 500 },
+    );
+  }
 }

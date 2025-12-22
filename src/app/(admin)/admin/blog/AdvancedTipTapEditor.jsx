@@ -1,3 +1,4 @@
+// src/app/(admin)/AdvancedTipTapEditor.jsx
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -20,6 +21,10 @@ import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import CharacterCount from '@tiptap/extension-character-count';
 import Dropcursor from '@tiptap/extension-dropcursor';
+import FontFamily from '@tiptap/extension-font-family'; // ✅ NEW
+import Subscript from '@tiptap/extension-subscript'; // ✅ NEW
+import Superscript from '@tiptap/extension-superscript'; // ✅ NEW
+import Typography from '@tiptap/extension-typography'; // ✅ NEW (smart quotes, dashes)
 
 import {
   Bold,
@@ -35,6 +40,7 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
+  AlignJustify, // ✅ NEW
   Highlighter,
   Link2,
   Image as ImageIcon,
@@ -47,54 +53,76 @@ import {
   Plus,
   Minus,
   Type,
+  Palette,
+  Save,
+  Subscript as SubIcon,
+  Superscript as SupIcon,
 } from 'lucide-react';
 
 export default function AdvancedTipTapEditor({ value, onChange }) {
   const [isUploading, setIsUploading] = useState(false);
   const [wordCount, setWordCount] = useState(0);
-  const [showFloatingMenu, setShowFloatingMenu] = useState(false);
-  const [floatingMenuPosition, setFloatingMenuPosition] = useState({ x: 0, y: 0 });
-  const [showBubbleMenu, setShowBubbleMenu] = useState(false);
-  const [bubbleMenuPosition, setBubbleMenuPosition] = useState({ x: 0, y: 0 });
-  
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showFontPicker, setShowFontPicker] = useState(false);
+  const [currentColor, setCurrentColor] = useState('#000000');
+  const [currentFont, setCurrentFont] = useState('Inter');
+  const [isSaving, setIsSaving] = useState(false);
+
   const fileInputRef = useRef(null);
   const editorRef = useRef(null);
-  const bubbleMenuRef = useRef(null);
-  const floatingMenuRef = useRef(null);
+  const colorPickerRef = useRef(null);
 
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
       Color.configure({ types: [TextStyle.name, 'textStyle'] }),
       TextStyle,
+      FontFamily.configure({
+        types: ['textStyle'],
+      }),
       StarterKit.configure({
         table: false,
         horizontalRule: true,
+        history: {
+          depth: 100, // ✅ More undo steps
+          newGroupDelay: 500,
+        },
       }),
       Underline,
+      Subscript, // ✅ NEW
+      Superscript, // ✅ NEW
+      Typography, // ✅ Smart quotes & dashes
       Highlight.configure({ multicolor: true }),
       Link.configure({
-        openOnClick: true,
+        openOnClick: false, // ✅ Changed for better editing
         linkOnPaste: true,
-        HTMLAttributes: { class: 'editor-link' },
+        autolink: true, // ✅ Auto-detect URLs
+        HTMLAttributes: { class: 'editor-link', target: '_blank', rel: 'noopener noreferrer' },
       }),
       Image.configure({
-        inline: false,
+        inline: true, // ✅ Allow inline images
         allowBase64: false,
-        HTMLAttributes: { 
+        HTMLAttributes: {
           class: 'editor-image',
-          style: 'border-radius: 12px; margin: 1.5em auto; display: block; max-width: 100%; height: auto;'
         },
       }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],
+        alignments: ['left', 'center', 'right', 'justify'], // ✅ Added justify
       }),
       Placeholder.configure({
-        placeholder: 'Start writing your amazing content... Use the toolbar for formatting, images, tables, and more.',
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return 'What\'s the title?';
+          }
+          return 'Start writing your amazing content...';
+        },
       }),
       Table.configure({
         resizable: true,
-        HTMLAttributes: { 
+        handleWidth: 5,
+        cellMinWidth: 50,
+        HTMLAttributes: {
           class: 'editor-table',
         },
       }),
@@ -110,107 +138,91 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
       }),
       CharacterCount.configure({ mode: 'textSize' }),
       Dropcursor.configure({
-        width: 2,
+        width: 3,
         color: '#0ea5e9',
       }),
     ],
     content: safeParseDoc(value),
-    autofocus: false,
+    autofocus: 'end', // ✅ Auto focus at end
+    editorProps: {
+      attributes: {
+        class: 'prose prose-lg max-w-none focus:outline-none',
+        spellcheck: 'true', // ✅ Enable spellcheck
+      },
+      // ✅ Handle paste from Word/Google Docs
+      transformPastedHTML(html) {
+        return html
+          .replace(/<meta[^>]*>/g, '')
+          .replace(/<style[^>]*>.*?<\/style>/gs, '')
+          .replace(/class="[^"]*"/g, '')
+          .replace(/style="[^"]*"/g, '');
+      },
+    },
     onUpdate({ editor }) {
       const json = editor.getJSON();
-      onChange(JSON.stringify(json, null, 2));
-
-      const text = editor.getText();
-      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-      setWordCount(words);
+      onChange(JSON.stringify(json));
+      updateWordCount(editor);
+      
+      // ✅ Auto-save indicator
+      setIsSaving(true);
+      setTimeout(() => setIsSaving(false), 800);
     },
     onCreate({ editor }) {
-      const text = editor.getText();
-      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-      setWordCount(words);
+      updateWordCount(editor);
     },
   });
 
-  // Manual Bubble Menu Implementation
+  const updateWordCount = (ed) => {
+    const text = ed.getText();
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    setWordCount(words);
+  };
+
+  // ✅ Keyboard shortcuts helper
   useEffect(() => {
-    if (!editor || !editorRef.current) return;
+    if (!editor) return;
 
-    const updateBubbleMenu = () => {
-      const { state } = editor;
-      const { selection } = state;
-      const { empty, from, to } = selection;
-
-      // Show bubble menu when text is selected
-      if (!empty && from !== to) {
-        try {
-          const { view } = editor;
-          const start = view.coordsAtPos(from);
-          const end = view.coordsAtPos(to);
-          
-          const left = (start.left + end.left) / 2;
-          const top = start.top - 50; // Position above selection
-          
-          setBubbleMenuPosition({ x: left, y: top });
-          setShowBubbleMenu(true);
-        } catch {
-          setShowBubbleMenu(false);
-        }
-      } else {
-        setShowBubbleMenu(false);
+    const handleKeyDown = (e) => {
+      // Ctrl+K for link (like Google Docs)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setLinkPrompt();
+      }
+      
+      // Ctrl+Shift+7 for ordered list
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === '7') {
+        e.preventDefault();
+        editor.chain().focus().toggleOrderedList().run();
+      }
+      
+      // Ctrl+Shift+8 for bullet list
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === '8') {
+        e.preventDefault();
+        editor.chain().focus().toggleBulletList().run();
       }
     };
 
-    const updateFloatingMenu = () => {
-      const { state } = editor;
-      const { selection } = state;
-      const { empty } = selection;
-
-      // Show floating menu when cursor is in empty paragraph
-      if (empty) {
-        const { view } = editor;
-        const { from } = selection;
-        const coords = view.coordsAtPos(from);
-        
-        setFloatingMenuPosition({ x: coords.left, y: coords.top - 50 });
-        setShowFloatingMenu(true);
-      } else {
-        setShowFloatingMenu(false);
-      }
-    };
-
-    const handleClickOutside = (event) => {
-      if (bubbleMenuRef.current && !bubbleMenuRef.current.contains(event.target)) {
-        setShowBubbleMenu(false);
-      }
-      if (floatingMenuRef.current && !floatingMenuRef.current.contains(event.target)) {
-        setShowFloatingMenu(false);
-      }
-    };
-
-    editor.on('selectionUpdate', updateBubbleMenu);
-    editor.on('selectionUpdate', updateFloatingMenu);
-    editor.on('focus', updateFloatingMenu);
-    editor.on('blur', () => {
-      setShowBubbleMenu(false);
-      setShowFloatingMenu(false);
-    });
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      editor.off('selectionUpdate', updateBubbleMenu);
-      editor.off('selectionUpdate', updateFloatingMenu);
-      editor.off('focus', updateFloatingMenu);
-      editor.off('blur');
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [editor]);
+
+  // ✅ Click outside color picker
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) {
+        setShowColorPicker(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleImageUpload = async (file) => {
     setIsUploading(true);
     try {
       const fd = new FormData();
       fd.append('file', file);
+      fd.append('folder', 'blog'); // ✅ blog folder
 
       const res = await fetch('/api/admin/media/upload', {
         method: 'POST',
@@ -219,9 +231,10 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
 
       if (!res.ok) throw new Error('Upload failed');
       const data = await res.json();
-      return data.url || data.filePath;
+      return data.url;
     } catch (error) {
       console.error('Image upload failed:', error);
+      alert('Image upload failed. Please try again.');
       return null;
     } finally {
       setIsUploading(false);
@@ -234,30 +247,29 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
 
     const url = await handleImageUpload(file);
     if (url) {
-      editor
-        .chain()
-        .focus()
-        .setImage({
-          src: url,
-          alt: file.name,
-          title: file.name,
-        })
-        .run();
+      editor.chain().focus().setImage({ src: url, alt: file.name }).run();
     }
 
     event.target.value = '';
   };
 
-  useEffect(() => {
-    if (!editor) return;
-    if (!value) return;
-    try {
-      const parsed = JSON.parse(value);
-      editor.commands.setContent(parsed);
-    } catch {
-      // ignore invalid json
+  const setLinkPrompt = () => {
+    const previousUrl = editor.getAttributes('link').href || '';
+    const url = window.prompt('Enter URL:', previousUrl);
+
+    if (url === null) return;
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      return;
     }
-  }, [value, editor]);
+
+    editor
+      .chain()
+      .focus()
+      .extendMarkRange('link')
+      .setLink({ href: url, target: '_blank' })
+      .run();
+  };
 
   if (!editor) {
     return (
@@ -270,14 +282,25 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
 
   return (
     <div className="advanced-editor" ref={editorRef}>
-      {/* Top toolbar */}
+      {/* Toolbar */}
       <EditorToolbar
         editor={editor}
         onImageUpload={() => fileInputRef.current?.click()}
         isUploading={isUploading}
+        currentColor={currentColor}
+        setCurrentColor={setCurrentColor}
+        currentFont={currentFont}
+        setCurrentFont={setCurrentFont}
+        showColorPicker={showColorPicker}
+        setShowColorPicker={setShowColorPicker}
+        showFontPicker={showFontPicker}
+        setShowFontPicker={setShowFontPicker}
+        colorPickerRef={colorPickerRef}
+        setLinkPrompt={setLinkPrompt}
+        isSaving={isSaving}
       />
 
-      {/* Hidden file input for image upload */}
+      {/* Hidden file input */}
       <input
         type="file"
         ref={fileInputRef}
@@ -285,39 +308,6 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
         accept="image/*"
         className="hidden"
       />
-
-      {/* Manual Bubble Menu */}
-      {showBubbleMenu && (
-        <div 
-          ref={bubbleMenuRef}
-          className="bubble-menu"
-          style={{
-            position: 'fixed',
-            left: bubbleMenuPosition.x,
-            top: bubbleMenuPosition.y,
-            transform: 'translateX(-50%)',
-            zIndex: 9999,
-          }}
-        >
-          <BubbleToolbar editor={editor} />
-        </div>
-      )}
-
-      {/* Manual Floating Menu */}
-      {showFloatingMenu && (
-        <div 
-          ref={floatingMenuRef}
-          className="floating-menu"
-          style={{
-            position: 'fixed',
-            left: floatingMenuPosition.x,
-            top: floatingMenuPosition.y,
-            zIndex: 9998,
-          }}
-        >
-          <FloatingToolbar editor={editor} />
-        </div>
-      )}
 
       {/* Content */}
       <div className="editor-container">
@@ -331,480 +321,248 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
         editor={editor}
         wordCount={wordCount}
         isUploading={isUploading}
+        isSaving={isSaving}
       />
     </div>
   );
 }
 
-/** Manual Bubble Toolbar */
-function BubbleToolbar({ editor }) {
+function EditorToolbar({
+  editor,
+  onImageUpload,
+  isUploading,
+  currentColor,
+  setCurrentColor,
+  currentFont,
+  setCurrentFont,
+  showColorPicker,
+  setShowColorPicker,
+  showFontPicker,
+  setShowFontPicker,
+  colorPickerRef,
+  setLinkPrompt,
+  isSaving,
+}) {
   if (!editor) return null;
 
-  const isActive = (name, attrs) => editor.isActive(name, attrs);
+  const fonts = [
+    { value: 'Inter', label: 'Inter' },
+    { value: 'Arial', label: 'Arial' },
+    { value: 'Georgia', label: 'Georgia' },
+    { value: 'Times New Roman', label: 'Times New Roman' },
+    { value: 'Courier New', label: 'Courier' },
+    { value: 'Verdana', label: 'Verdana' },
+  ];
 
-  return (
-    <div className="bubble-toolbar">
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`bubble-btn ${isActive('bold') ? 'bubble-btn-active' : ''}`}
-        title="Bold"
-      >
-        <Bold size={14} />
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`bubble-btn ${isActive('italic') ? 'bubble-btn-active' : ''}`}
-        title="Italic"
-      >
-        <Italic size={14} />
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`bubble-btn ${isActive('underline') ? 'bubble-btn-active' : ''}`}
-        title="Underline"
-      >
-        <UnderlineIcon size={14} />
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          const prevUrl = editor.getAttributes('link').href || '';
-          const url = window.prompt('Link URL', prevUrl);
-          if (url === null) return;
-          if (url === '') {
-            editor.chain().focus().unsetLink().run();
-            return;
-          }
-          editor.chain().focus().setLink({ href: url, target: '_blank' }).run();
-        }}
-        className={`bubble-btn ${isActive('link') ? 'bubble-btn-active' : ''}`}
-        title="Link"
-      >
-        <Link2 size={14} />
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHighlight().run()}
-        className={`bubble-btn ${isActive('highlight') ? 'bubble-btn-active' : ''}`}
-        title="Highlight"
-      >
-        <Highlighter size={14} />
-      </button>
-    </div>
-  );
-}
+  const highlightColors = [
+    '#fef08a', // yellow
+    '#86efac', // green
+    '#7dd3fc', // blue
+    '#fda4af', // pink
+    '#c4b5fd', // purple
+  ];
 
-/** Manual Floating Toolbar */
-function FloatingToolbar({ editor }) {
-  if (!editor) return null;
-
-  return (
-    <div className="floating-toolbar">
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className="floating-btn"
-        title="Heading 1"
-      >
-        H1
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className="floating-btn"
-        title="Heading 2"
-      >
-        H2
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className="floating-btn"
-        title="Heading 3"
-      >
-        H3
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className="floating-btn"
-        title="Bullet List"
-      >
-        <List size={14} />
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className="floating-btn"
-        title="Numbered List"
-      >
-        <ListOrdered size={14} />
-      </button>
-      <button
-        type="button"
-        onClick={() => editor.chain().focus().toggleTaskList().run()}
-        className="floating-btn"
-        title="Task List"
-      >
-        <CheckSquare size={14} />
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
-        }}
-        className="floating-btn"
-        title="Insert Table"
-      >
-        <TableIcon size={14} />
-      </button>
-    </div>
-  );
-}
-
-function EditorToolbar({ editor, onImageUpload, isUploading }) {
-  const [currentColor, setCurrentColor] = useState('#000000');
-
-  if (!editor) return null;
-
-  const ToolbarButton = ({
-    active,
-    onClick,
-    icon: Icon,
-    title,
-    disabled = false,
-    variant = 'default',
-  }) => (
+  const ToolbarButton = ({ active, onClick, icon: Icon, title, disabled = false, variant = 'default' }) => (
     <button
       type="button"
       onClick={onClick}
       title={title}
       disabled={disabled}
-      className={`
-        toolbar-btn
-        ${active ? 'toolbar-btn-active' : ''}
-        ${disabled ? 'toolbar-btn-disabled' : ''}
-        ${variant === 'danger' ? 'toolbar-btn-danger' : ''}
-      `}
+      className={`toolbar-btn ${active ? 'toolbar-btn-active' : ''} ${disabled ? 'toolbar-btn-disabled' : ''} ${variant === 'danger' ? 'toolbar-btn-danger' : ''}`}
     >
       <Icon size={16} />
     </button>
   );
 
   const ToolbarSeparator = () => <div className="toolbar-separator" />;
-
-  const ToolbarGroup = ({ children }) => (
-    <div className="toolbar-group">{children}</div>
-  );
+  const ToolbarGroup = ({ children }) => <div className="toolbar-group">{children}</div>;
 
   const isActive = (name, attrs = {}) => editor.isActive(name, attrs);
-
-  const insertCtaBlock = () => {
-    editor
-      .chain()
-      .focus()
-      .insertContent({
-        type: 'div',
-        attrs: { class: 'cta-block' },
-        content: [
-          {
-            type: 'paragraph',
-            attrs: { class: 'cta-title' },
-            content: [{ type: 'text', text: '🚀 Ready to get started?' }],
-          },
-          {
-            type: 'paragraph',
-            attrs: { class: 'cta-description' },
-            content: [
-              {
-                type: 'text',
-                text: 'Join thousands of satisfied customers today.',
-              },
-            ],
-          },
-        ],
-      })
-      .run();
-  };
-
-  const insertTable = () => {
-    editor
-      .chain()
-      .focus()
-      .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-      .run();
-  };
-
-  const addColumn = () => {
-    editor.chain().focus().addColumnAfter().run();
-  };
-
-  const addRow = () => {
-    editor.chain().focus().addRowAfter().run();
-  };
-
-  const deleteColumn = () => {
-    editor.chain().focus().deleteColumn().run();
-  };
-
-  const deleteRow = () => {
-    editor.chain().focus().deleteRow().run();
-  };
-
-  const deleteTable = () => {
-    editor.chain().focus().deleteTable().run();
-  };
 
   return (
     <div className="editor-toolbar">
       <div className="toolbar-section">
-        {/* Text formatting */}
+        {/* History */}
         <ToolbarGroup>
           <ToolbarButton
-            active={isActive('bold')}
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            icon={Bold}
-            title="Bold"
+            onClick={() => editor.chain().focus().undo().run()}
+            icon={Undo}
+            title="Undo (Ctrl+Z)"
+            disabled={!editor.can().undo()}
           />
           <ToolbarButton
-            active={isActive('italic')}
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            icon={Italic}
-            title="Italic"
+            onClick={() => editor.chain().focus().redo().run()}
+            icon={Redo}
+            title="Redo (Ctrl+Y)"
+            disabled={!editor.can().redo()}
           />
-          <ToolbarButton
-            active={isActive('underline')}
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            icon={UnderlineIcon}
-            title="Underline"
-          />
-          <ToolbarButton
-            active={isActive('strike')}
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            icon={Strikethrough}
-            title="Strikethrough"
-          />
-          <ToolbarButton
-            active={isActive('highlight')}
-            onClick={() => editor.chain().focus().toggleHighlight().run()}
-            icon={Highlighter}
-            title="Highlight"
-          />
-          <ToolbarButton
-            active={isActive('code')}
-            onClick={() => editor.chain().focus().toggleCode().run()}
-            icon={Code}
-            title="Code"
-          />
+        </ToolbarGroup>
+
+        <ToolbarSeparator />
+
+        {/* Font Family */}
+        <div className="toolbar-group relative">
+          <button
+            type="button"
+            onClick={() => setShowFontPicker(!showFontPicker)}
+            className="toolbar-btn-select"
+            title="Font family"
+          >
+            <Type size={14} />
+            <span className="text-xs ml-1">{currentFont}</span>
+          </button>
+          {showFontPicker && (
+            <div className="font-picker-dropdown">
+              {fonts.map((font) => (
+                <button
+                  key={font.value}
+                  type="button"
+                  onClick={() => {
+                    editor.chain().focus().setFontFamily(font.value).run();
+                    setCurrentFont(font.label);
+                    setShowFontPicker(false);
+                  }}
+                  className="font-picker-item"
+                  style={{ fontFamily: font.value }}
+                >
+                  {font.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <ToolbarSeparator />
+
+        {/* Text formatting */}
+        <ToolbarGroup>
+          <ToolbarButton active={isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()} icon={Bold} title="Bold (Ctrl+B)" />
+          <ToolbarButton active={isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()} icon={Italic} title="Italic (Ctrl+I)" />
+          <ToolbarButton active={isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()} icon={UnderlineIcon} title="Underline (Ctrl+U)" />
+          <ToolbarButton active={isActive('strike')} onClick={() => editor.chain().focus().toggleStrike().run()} icon={Strikethrough} title="Strikethrough" />
+          <ToolbarButton active={isActive('subscript')} onClick={() => editor.chain().focus().toggleSubscript().run()} icon={SubIcon} title="Subscript" />
+          <ToolbarButton active={isActive('superscript')} onClick={() => editor.chain().focus().toggleSuperscript().run()} icon={SupIcon} title="Superscript" />
         </ToolbarGroup>
 
         <ToolbarSeparator />
 
         {/* Headings */}
         <ToolbarGroup>
-          <ToolbarButton
-            active={isActive('heading', { level: 1 })}
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-            icon={Heading1}
-            title="Heading 1"
-          />
-          <ToolbarButton
-            active={isActive('heading', { level: 2 })}
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-            icon={Heading2}
-            title="Heading 2"
-          />
-          <ToolbarButton
-            active={isActive('heading', { level: 3 })}
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
-            icon={Heading3}
-            title="Heading 3"
-          />
+          <ToolbarButton active={isActive('heading', { level: 1 })} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} icon={Heading1} title="Heading 1" />
+          <ToolbarButton active={isActive('heading', { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} icon={Heading2} title="Heading 2" />
+          <ToolbarButton active={isActive('heading', { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} icon={Heading3} title="Heading 3" />
         </ToolbarGroup>
 
         <ToolbarSeparator />
 
         {/* Lists */}
         <ToolbarGroup>
-          <ToolbarButton
-            active={isActive('bulletList')}
-            onClick={() =>
-              editor.chain().focus().toggleBulletList().run()
-            }
-            icon={List}
-            title="Bullet List"
-          />
-          <ToolbarButton
-            active={isActive('orderedList')}
-            onClick={() =>
-              editor.chain().focus().toggleOrderedList().run()
-            }
-            icon={ListOrdered}
-            title="Numbered List"
-          />
-          <ToolbarButton
-            active={isActive('taskList')}
-            onClick={() =>
-              editor.chain().focus().toggleTaskList().run()
-            }
-            icon={CheckSquare}
-            title="Task List"
-          />
+          <ToolbarButton active={isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()} icon={List} title="Bullet List (Ctrl+Shift+8)" />
+          <ToolbarButton active={isActive('orderedList')} onClick={() => editor.chain().focus().toggleOrderedList().run()} icon={ListOrdered} title="Numbered List (Ctrl+Shift+7)" />
+          <ToolbarButton active={isActive('taskList')} onClick={() => editor.chain().focus().toggleTaskList().run()} icon={CheckSquare} title="Task List" />
         </ToolbarGroup>
 
         <ToolbarSeparator />
 
         {/* Align */}
         <ToolbarGroup>
-          <ToolbarButton
-            active={isActive({ textAlign: 'left' })}
-            onClick={() =>
-              editor.chain().focus().setTextAlign('left').run()
-            }
-            icon={AlignLeft}
-            title="Align Left"
-          />
-          <ToolbarButton
-            active={isActive({ textAlign: 'center' })}
-            onClick={() =>
-              editor.chain().focus().setTextAlign('center').run()
-            }
-            icon={AlignCenter}
-            title="Align Center"
-          />
-          <ToolbarButton
-            active={isActive({ textAlign: 'right' })}
-            onClick={() =>
-              editor.chain().focus().setTextAlign('right').run()
-            }
-            icon={AlignRight}
-            title="Align Right"
-          />
+          <ToolbarButton active={isActive({ textAlign: 'left' })} onClick={() => editor.chain().focus().setTextAlign('left').run()} icon={AlignLeft} title="Align Left" />
+          <ToolbarButton active={isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()} icon={AlignCenter} title="Align Center" />
+          <ToolbarButton active={isActive({ textAlign: 'right' })} onClick={() => editor.chain().focus().setTextAlign('right').run()} icon={AlignRight} title="Align Right" />
+          <ToolbarButton active={isActive({ textAlign: 'justify' })} onClick={() => editor.chain().focus().setTextAlign('justify').run()} icon={AlignJustify} title="Justify" />
+        </ToolbarGroup>
+
+        <ToolbarSeparator />
+
+        {/* Color & Highlight */}
+        <ToolbarGroup>
+          <div className="relative" ref={colorPickerRef}>
+            <button
+              type="button"
+              onClick={() => setShowColorPicker(!showColorPicker)}
+              className="toolbar-btn"
+              title="Text Color"
+            >
+              <Palette size={16} />
+            </button>
+            {showColorPicker && (
+              <div className="color-picker-dropdown">
+                <div className="color-grid">
+                  {['#000000', '#374151', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#0284c7', '#4f46e5', '#9333ea', '#db2777'].map((color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      onClick={() => {
+                        editor.chain().focus().setColor(color).run();
+                        setCurrentColor(color);
+                      }}
+                      className="color-swatch"
+                      style={{ backgroundColor: color }}
+                      title={color}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleHighlight().run()}
+              className={`toolbar-btn ${isActive('highlight') ? 'toolbar-btn-active' : ''}`}
+              title="Highlight"
+            >
+              <Highlighter size={16} />
+            </button>
+          </div>
         </ToolbarGroup>
 
         <ToolbarSeparator />
 
         {/* Insert */}
         <ToolbarGroup>
-          <ToolbarButton
-            active={isActive('link')}
-            onClick={() => {
-              const prevUrl = editor.getAttributes('link').href || '';
-              const url = window.prompt('URL', prevUrl);
-              if (url === null) return;
-              if (url === '') {
-                editor.chain().focus().unsetLink().run();
-                return;
-              }
-              editor.chain().focus().setLink({ href: url }).run();
-            }}
-            icon={Link2}
-            title="Insert Link"
-          />
-          <ToolbarButton
-            onClick={onImageUpload}
-            icon={isUploading ? Upload : ImageIcon}
-            title={isUploading ? 'Uploading...' : 'Upload Image'}
-            disabled={isUploading}
-          />
+          <ToolbarButton onClick={setLinkPrompt} icon={Link2} title="Insert Link (Ctrl+K)" active={isActive('link')} />
+          <ToolbarButton onClick={onImageUpload} icon={isUploading ? Upload : ImageIcon} title={isUploading ? 'Uploading...' : 'Upload Image'} disabled={isUploading} />
           <ToolbarButton
             active={isActive('table')}
-            onClick={insertTable}
+            onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
             icon={TableIcon}
             title="Insert Table"
           />
           <ToolbarButton
-            onClick={insertCtaBlock}
-            icon={Sparkles}
-            title="Insert CTA Block"
+            onClick={() => editor.chain().focus().toggleCode().run()}
+            icon={Code}
+            title="Inline Code"
+            active={isActive('code')}
           />
         </ToolbarGroup>
 
-        <ToolbarSeparator />
-
-        {/* Table Controls */}
+        {/* Table Controls (show when in table) */}
         {isActive('table') && (
           <>
-            <ToolbarGroup>
-              <ToolbarButton
-                onClick={addColumn}
-                icon={Plus}
-                title="Add Column"
-              />
-              <ToolbarButton
-                onClick={addRow}
-                icon={Plus}
-                title="Add Row"
-              />
-              <ToolbarButton
-                onClick={deleteColumn}
-                icon={Minus}
-                title="Delete Column"
-                variant="danger"
-              />
-              <ToolbarButton
-                onClick={deleteRow}
-                icon={Minus}
-                title="Delete Row"
-                variant="danger"
-              />
-              <ToolbarButton
-                onClick={deleteTable}
-                icon={TableIcon}
-                title="Delete Table"
-                variant="danger"
-              />
-            </ToolbarGroup>
             <ToolbarSeparator />
+            <ToolbarGroup>
+              <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} icon={Plus} title="Add Column" />
+              <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} icon={Plus} title="Add Row" />
+              <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} icon={Minus} title="Delete Column" variant="danger" />
+              <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} icon={Minus} title="Delete Row" variant="danger" />
+              <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} icon={TableIcon} title="Delete Table" variant="danger" />
+            </ToolbarGroup>
           </>
         )}
-
-        {/* Color */}
-        <ToolbarGroup>
-          <div className="color-picker-wrapper">
-            <input
-              type="color"
-              value={currentColor}
-              onChange={(e) => {
-                setCurrentColor(e.target.value);
-                editor.chain().focus().setColor(e.target.value).run();
-              }}
-              className="color-picker"
-              title="Text Color"
-            />
-          </div>
-        </ToolbarGroup>
-
-        <ToolbarSeparator />
-
-        {/* History */}
-        <ToolbarGroup>
-          <ToolbarButton
-            onClick={() => editor.chain().focus().undo().run()}
-            icon={Undo}
-            title="Undo"
-          />
-          <ToolbarButton
-            onClick={() => editor.chain().focus().redo().run()}
-            icon={Redo}
-            title="Redo"
-          />
-        </ToolbarGroup>
       </div>
+
+      {isSaving && (
+        <div className="toolbar-saving">
+          <Save size={12} className="animate-pulse" />
+          <span>Saving...</span>
+        </div>
+      )}
     </div>
   );
 }
 
-function EditorStatusBar({ editor, wordCount, isUploading }) {
+function EditorStatusBar({ editor, wordCount, isUploading, isSaving }) {
   if (!editor) return null;
 
   const characters = editor.storage.characterCount?.characters() || 0;
@@ -814,22 +572,28 @@ function EditorStatusBar({ editor, wordCount, isUploading }) {
       <div className="status-left">
         <div className="status-item">
           <span className="status-label">Words:</span>
-          <span className="status-value">{wordCount}</span>
+          <span className="status-value">{wordCount.toLocaleString()}</span>
         </div>
         <div className="status-item">
           <span className="status-label">Characters:</span>
-          <span className="status-value">{characters}</span>
+          <span className="status-value">{characters.toLocaleString()}</span>
         </div>
         {isUploading && (
           <div className="status-item">
             <span className="uploading-indicator">Uploading image...</span>
           </div>
         )}
+        {isSaving && (
+          <div className="status-item">
+            <span className="text-sky-600 text-xs">✓ Autosaved</span>
+          </div>
+        )}
       </div>
       <div className="status-right">
-        <div className="status-item">
-          <span className="status-label">Mode:</span>
-          <span className="status-value">Rich Text</span>
+        <div className="status-item text-xs">
+          <kbd className="kbd">Ctrl+B</kbd> Bold •
+          <kbd className="kbd">Ctrl+K</kbd> Link •
+          <kbd className="kbd">Ctrl+Z</kbd> Undo
         </div>
       </div>
     </div>
@@ -840,9 +604,7 @@ function safeParseDoc(str) {
   if (!str) {
     return {
       type: 'doc',
-      content: [
-        { type: 'paragraph', content: [{ type: 'text', text: '' }] },
-      ],
+      content: [{ type: 'paragraph' }],
     };
   }
   try {
@@ -850,9 +612,7 @@ function safeParseDoc(str) {
   } catch {
     return {
       type: 'doc',
-      content: [
-        { type: 'paragraph', content: [{ type: 'text', text: '' }] },
-      ],
+      content: [{ type: 'paragraph' }],
     };
   }
 }

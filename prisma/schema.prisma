@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -9,279 +9,256 @@ datasource db {
 }
 
 model ChatConversation {
-  id        Int      @id @default(autoincrement())
-  visitorId String
-  visitorName String?
+  id           Int           @id @default(autoincrement())
+  visitorId    String
+  visitorName  String?
   visitorEmail String?
   visitorPhone String?
-  status    String   @default("active")
-  priority  String   @default("normal")
-  
-  assignedTo   User? @relation("ChatAssignedTo", fields: [assignedToId], references: [id])
+  status       String        @default("active")
+  priority     String        @default("normal")
   assignedToId Int?
-  
-  tags      String?
-  notes     String?
-  rating    Int?
-  feedback  String?
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  closedAt  DateTime?
-  
-  messages ChatMessage[]
-  
+  tags         String?
+  notes        String?
+  rating       Int?
+  feedback     String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  closedAt     DateTime?
+  assignedTo   User?         @relation("ChatAssignedTo", fields: [assignedToId], references: [id], map: "ChatConversation_assignedToId_fkey")
+  messages     ChatMessage[]
+
+  @@index([assignedToId], map: "ChatConversation_assignedToId_fkey")
   @@map("chatconversation")
 }
 
 model ChatMessage {
-  id             Int      @id @default(autoincrement())
-  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  id             Int              @id @default(autoincrement())
   conversationId Int
-  
-  content   String   @db.Text
-  sender    String
-  senderName String?
-  
-  type      String   @default("text")
-  fileUrl   String?
-  fileName  String?
-  
-  isRead    Boolean  @default(false)
-  
-  createdAt DateTime @default(now())
-  
+  content        String           @db.Text
+  sender         String
+  senderName     String?
+  type           String           @default("text")
+  fileUrl        String?
+  fileName       String?
+  isRead         Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade, map: "ChatMessage_conversationId_fkey")
+
+  @@index([conversationId], map: "ChatMessage_conversationId_fkey")
   @@map("chatmessage")
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  name         String?
-  email        String? @unique
-  username     String  @unique
-  passwordHash String
-
-  status       String  @default("active")
-  profileImage String?
-  phone        String?
-  whatsapp     String?
-  title        String?
-  department   String?
-  bio          String?
-
-  lastLoginAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  roles        UserRole[]
-  blogPosts    BlogPost[]
-  contentItems ContentItem[]
-  pages        Page[]
-  leadsOwned   Lead[]        @relation("LeadOwner")
-
-  ticketsOwned     Ticket[]        @relation("TicketOwner")
-  ticketsRequested Ticket[]        @relation("TicketRequester")
+  id               Int                @id @default(autoincrement())
+  name             String?
+  email            String?            @unique(map: "User_email_key")
+  username         String             @unique(map: "User_username_key")
+  passwordHash     String
+  status           String             @default("active")
+  profileImage     String?
+  phone            String?
+  whatsapp         String?
+  title            String?
+  department       String?
+  bio              String?
+  lastLoginAt      DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  adminLogs        AdminLog[]
+  blogPosts        BlogPost[]
+  chatsAssigned    ChatConversation[] @relation("ChatAssignedTo")
+  contentItems     ContentItem[]
+  leadsOwned       Lead[]             @relation("LeadOwner")
+  LeadActivity     LeadActivity[]
+  MediaItem        MediaItem[]
+  pages            Page[]
+  ticketsOwned     Ticket[]           @relation("TicketOwner")
+  ticketsRequested Ticket[]           @relation("TicketRequester")
   ticketComments   TicketComment[]
+  roles            UserRole[]
 
-  adminLogs    AdminLog[]
-  MediaItem    MediaItem[]
-  LeadActivity LeadActivity[]
-
-  chatsAssigned ChatConversation[] @relation("ChatAssignedTo")
-  
   @@map("user")
 }
 
 model Role {
-  id           Int     @id @default(autoincrement())
-  name         String  @unique
+  id           Int              @id @default(autoincrement())
+  name         String           @unique(map: "Role_name_key")
   displayName  String
   description  String?
   defaultRoute String?
+  permissions  RolePermission[]
+  users        UserRole[]
 
-  users       UserRole[]
-  permissions RolePermission[]
-  
   @@map("role")
 }
 
 model UserRole {
   id     Int  @id @default(autoincrement())
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int
-  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId Int
+  role   Role @relation(fields: [roleId], references: [id], onDelete: Cascade, map: "UserRole_roleId_fkey")
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, map: "UserRole_userId_fkey")
 
-  @@unique([userId, roleId])
+  @@unique([userId, roleId], map: "UserRole_userId_roleId_key")
+  @@index([roleId], map: "UserRole_roleId_fkey")
   @@map("userrole")
 }
 
 model Permission {
-  id          Int     @id @default(autoincrement())
-  key         String  @unique
+  id          Int              @id @default(autoincrement())
+  key         String           @unique(map: "Permission_key_key")
   module      String?
   description String?
+  roles       RolePermission[]
 
-  roles RolePermission[]
-  
   @@map("permission")
 }
 
 model RolePermission {
   id           Int        @id @default(autoincrement())
-  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   roleId       Int
-  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
   permissionId Int
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade, map: "RolePermission_permissionId_fkey")
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade, map: "RolePermission_roleId_fkey")
 
-  @@unique([roleId, permissionId])
+  @@unique([roleId, permissionId], map: "RolePermission_roleId_permissionId_key")
+  @@index([permissionId], map: "RolePermission_permissionId_fkey")
   @@map("rolepermission")
 }
 
 model BlogCategory {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
-  slug      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  slug      String     @unique(map: "BlogCategory_slug_key")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  posts     BlogPost[]
 
-  posts BlogPost[]
-  
   @@map("blogcategory")
 }
 
 model BlogTag {
   id    Int           @id @default(autoincrement())
   name  String
-  slug  String        @unique
+  slug  String        @unique(map: "BlogTag_slug_key")
   posts BlogPostTag[]
-  
+
   @@map("blogtag")
 }
 
 model BlogPostTag {
-  post   BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId Int
-  tag    BlogTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
   tagId  Int
+  post   BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade, map: "BlogPostTag_postId_fkey")
+  tag    BlogTag  @relation(fields: [tagId], references: [id], onDelete: Cascade, map: "BlogPostTag_tagId_fkey")
 
   @@id([postId, tagId])
+  @@index([tagId], map: "BlogPostTag_tagId_fkey")
   @@map("blogposttag")
 }
 
 model BlogPost {
-  id              Int      @id @default(autoincrement())
-  type            String   @default("blog")
+  id              Int            @id @default(autoincrement())
+  type            String         @default("blog")
+  placements      String?        @db.Text
   title           String
-  slug            String   @unique
+  slug            String         @unique(map: "BlogPost_slug_key")
   excerpt         String?
-  contentJson     String?  @db.LongText
-  status          String   @default("draft")
-  featured        Boolean  @default(false)
-  pinned          Boolean  @default(false)
+  contentJson     String?        @db.LongText
+  status          String         @default("draft")
+  featured        Boolean        @default(false)
+  pinned          Boolean        @default(false)
   thumbnail       String?
   heroImage       String?
   readTimeMinutes Int?
-
   seoTitle        String?
   seoDescription  String?
   seoImage        String?
-
   publishedAt     DateTime?
   scheduledFor    DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  authorId        Int?
+  categoryId      Int?
+  likeCount       Int            @default(0)
+  shareCount      Int            @default(0)
+  viewCount       Int            @default(0)
+  feedbacks       BlogFeedback[]
+  author          User?          @relation(fields: [authorId], references: [id], map: "BlogPost_authorId_fkey")
+  category        BlogCategory?  @relation(fields: [categoryId], references: [id], map: "BlogPost_categoryId_fkey")
+  tags            BlogPostTag[]
 
-  viewCount       Int      @default(0)
-  likeCount       Int      @default(0)
-  shareCount      Int      @default(0)
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  author   User?         @relation(fields: [authorId], references: [id])
-  authorId Int?
-  category BlogCategory? @relation(fields: [categoryId], references: [id])
-  categoryId Int?
-
-  tags      BlogPostTag[]
-  feedbacks BlogFeedback[]
-  
+  @@index([authorId], map: "BlogPost_authorId_fkey")
+  @@index([categoryId], map: "BlogPost_categoryId_fkey")
   @@map("blogpost")
 }
 
 model BlogFeedback {
   id        Int      @id @default(autoincrement())
-  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
   rating    Int
   comment   String?
   createdAt DateTime @default(now())
-  
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade, map: "BlogFeedback_postId_fkey")
+
+  @@index([postId], map: "BlogFeedback_postId_fkey")
   @@map("blogfeedback")
 }
 
 model EGuide {
-  id           Int     @id @default(autoincrement())
-  slug         String  @unique
-  title        String
-  authorName   String?
-  authorRole   String?
-  coverImage   String?
-  category     String?
-  description  String?
-  readTimeText String?
-
-  summary      String?
-  sectionsJson String? @db.LongText
-
-  pdfUrl      String?
-  status      String    @default("draft")
-  publishedAt DateTime?
-
+  id             Int       @id @default(autoincrement())
+  slug           String    @unique(map: "EGuide_slug_key")
+  title          String
+  authorName     String?
+  authorRole     String?
+  coverImage     String?
+  category       String?
+  description    String?
+  readTimeText   String?
+  summary        String?
+  sectionsJson   String?   @db.LongText
+  pdfUrl         String?
+  status         String    @default("draft")
+  publishedAt    DateTime?
   seoTitle       String?
   seoDescription String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  downloadCount  Int       @default(0)
 
-  downloadCount Int      @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
   @@map("eguide")
 }
 
 model ContentItem {
-  id          Int     @id @default(autoincrement())
-  type        String
-  title       String
-  slug        String  @unique
-  excerpt     String?
-  contentJson String?
-  industry    String?
-  country     String?
-  clientName  String?
-  featured    Boolean @default(false)
-  thumbnail   String?
-  heroImage   String?
-
+  id             Int       @id @default(autoincrement())
+  type           String
+  title          String
+  slug           String    @unique(map: "ContentItem_slug_key")
+  excerpt        String?
+  contentJson    String?
+  industry       String?
+  country        String?
+  clientName     String?
+  featured       Boolean   @default(false)
+  thumbnail      String?
+  heroImage      String?
   seoTitle       String?
   seoDescription String?
+  status         String    @default("draft")
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  authorId       Int?
+  downloadCount  Int       @default(0)
+  author         User?     @relation(fields: [authorId], references: [id], map: "ContentItem_authorId_fkey")
 
-  status      String    @default("draft")
-  publishedAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  author   User? @relation(fields: [authorId], references: [id])
-  authorId Int?
-
-  downloadCount Int @default(0)
-  
+  @@index([authorId], map: "ContentItem_authorId_fkey")
   @@map("contentitem")
 }
 
 model PortfolioProject {
-  id          Int     @id @default(autoincrement())
-  key         String  @unique
+  id          Int        @id @default(autoincrement())
+  key         String     @unique(map: "PortfolioProject_key_key")
   type        String
   title       String
   category    String?
@@ -293,77 +270,67 @@ model PortfolioProject {
   bgColor     String?
   icon        String?
   phoneMockup String?
-  badgesJson  String? @db.Text
-
-  caseStudy   CaseStudy? @relation(fields: [caseStudyId], references: [id])
+  badgesJson  String?    @db.Text
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   caseStudyId Int?
+  caseStudy   CaseStudy? @relation(fields: [caseStudyId], references: [id], map: "PortfolioProject_caseStudyId_fkey")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
+  @@index([caseStudyId], map: "PortfolioProject_caseStudyId_fkey")
   @@map("portfolioproject")
 }
 
 model CaseStudy {
-  id          Int     @id @default(autoincrement())
-  slug        String  @unique
-  title       String
-  subtitle    String?
-  logo        String?
-  heroBgImage String?
-  heroCircle  String?
-  heroMockups String?
-
-  brandingJson     String?
-  teamJson         String?
-  clientJson       String?
-  technologiesJson String?
-  overviewJson     String?
-  requirementsJson String?
-  goalsJson        String?
-  challengesJson   String?
-  appScreensJson String? @db.LongText
-
-  resultsJson      String?
-  findYourAppJson  String?
-
-  seoTitle       String?
-  seoDescription String?
-
+  id                Int                @id @default(autoincrement())
+  slug              String             @unique(map: "CaseStudy_slug_key")
+  title             String
+  subtitle          String?
+  logo              String?
+  heroBgImage       String?
+  heroCircle        String?
+  heroMockups       String?
+  brandingJson      String?
+  teamJson          String?
+  clientJson        String?
+  technologiesJson  String?
+  overviewJson      String?
+  requirementsJson  String?
+  goalsJson         String?
+  challengesJson    String?
+  appScreensJson    String?            @db.LongText
+  resultsJson       String?
+  findYourAppJson   String?
+  seoTitle          String?
+  seoDescription    String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
   portfolioProjects PortfolioProject[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
   @@map("casestudy")
 }
 
 model Page {
-  id        Int      @id @default(autoincrement())
-  title     String
-  slug      String   @unique
-  key       String
-  type      String
-  excerpt   String?  @db.LongText
-  
-  contentJson String? @db.LongText
-  
-  status    String   @default("draft")
-  featured  Boolean  @default(false)
-  
+  id             Int              @id @default(autoincrement())
+  key            String
+  title          String
+  slug           String           @unique(map: "Page_slug_key")
+  type           String
+  excerpt        String?          @db.LongText
+  contentJson    String?          @db.LongText
+  status         String           @default("draft")
+  featured       Boolean          @default(false)
   seoTitle       String?
-  seoDescription String? @db.LongText
+  seoDescription String?          @db.LongText
   seoImage       String?
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  author     User?            @relation(fields: [authorId], references: [id])
-  authorId   Int?
-  navItems   NavigationItem[]
-  
-  @@index([type, status])
-  @@index([slug])
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  authorId       Int?
+  navItems       NavigationItem[]
+  author         User?            @relation(fields: [authorId], references: [id], map: "Page_authorId_fkey")
+
+  @@index([authorId], map: "Page_authorId_fkey")
+  @@index([slug], map: "Page_slug_idx")
+  @@index([type, status], map: "Page_type_status_idx")
   @@map("page")
 }
 
@@ -374,264 +341,250 @@ model NavigationItem {
   group   String?
   order   Int     @default(0)
   visible Boolean @default(true)
+  pageId  Int?
+  page    Page?   @relation(fields: [pageId], references: [id], map: "NavigationItem_pageId_fkey")
 
-  page   Page? @relation(fields: [pageId], references: [id])
-  pageId Int?
-  
+  @@index([pageId], map: "NavigationItem_pageId_fkey")
   @@map("navigationitem")
 }
 
 model TeamMember {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   name        String
   title       String?
   department  String?
   photo       String?
   bio         String?
   linkedinUrl String?
-  order       Int     @default(0)
-  featured    Boolean @default(false)
+  order       Int      @default(0)
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
   @@map("teammember")
 }
 
 model EmployeeDirectoryItem {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String
   title      String?
   department String?
   photo      String?
   email      String?
   phone      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
   @@map("employeedirectoryitem")
 }
 
 model MediaItem {
-  id        Int      @id @default(autoincrement())
-  title     String?
-  filePath  String
-  thumbnail String?
-  type      String
-  category  String?
-  tags      String?
-  createdAt DateTime @default(now())
-
-  uploadedBy   User? @relation(fields: [uploadedById], references: [id])
+  id           Int      @id @default(autoincrement())
+  title        String?
+  filePath     String
+  thumbnail    String?
+  type         String
+  category     String?
+  tags         String?
+  createdAt    DateTime @default(now())
   uploadedById Int?
-  
+  uploadedBy   User?    @relation(fields: [uploadedById], references: [id], map: "MediaItem_uploadedById_fkey")
+
+  @@index([uploadedById], map: "MediaItem_uploadedById_fkey")
   @@map("mediaitem")
 }
 
 model SiteEvent {
-  id                   Int      @id @default(autoincrement())
+  id                   Int       @id @default(autoincrement())
   title                String
   message              String
   ctaLabel             String?
   ctaHref              String?
-  
-  imageUrl             String?
-  
-  status               String   @default("draft")
+  status               String    @default("draft")
   startsAt             DateTime?
   endsAt               DateTime?
   theme                String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  maxShowsPerUser      Int?
   showOnSlugs          String?
   triggerDelayMs       Int?
   triggerScrollPercent Int?
-  maxShowsPerUser      Int?
+  imageUrl             String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
   @@map("siteevent")
 }
 
 model Lead {
-  id       Int     @id @default(autoincrement())
-  name     String
-  email    String
-  phone    String?
-  whatsapp String?
-  source   String?
-  campaign String?
-  message  String?
-  status   String  @default("new")
-  tags     String?
-
-  formType String?
-  formKey  String?
-
-  utmSource   String?
-  utmMedium   String?
-  utmCampaign String?
-
-  budgetLabel    String?
+  id             Int            @id @default(autoincrement())
+  name           String
+  email          String
+  phone          String?
+  whatsapp       String?
+  source         String?
+  campaign       String?
+  message        String?
+  status         String         @default("new")
+  tags           String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  ownerId        Int?
+  formKey        String?
+  formType       String?
+  utmCampaign    String?
+  utmMedium      String?
+  utmSource      String?
   attachmentName String?
+  budgetLabel    String?
   ndaAccepted    Boolean?
+  owner          User?          @relation("LeadOwner", fields: [ownerId], references: [id], map: "Lead_ownerId_fkey")
+  activities     LeadActivity[]
+  tickets        Ticket[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  owner   User? @relation("LeadOwner", fields: [ownerId], references: [id])
-  ownerId Int?
-
-  activities LeadActivity[]
-  tickets    Ticket[]
-  
+  @@index([ownerId], map: "Lead_ownerId_fkey")
   @@map("lead")
 }
 
 model LeadActivity {
-  id        Int      @id @default(autoincrement())
-  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  leadId    Int
-  type      String
-  content   String?
-  createdAt DateTime @default(now())
-
-  createdBy   User? @relation(fields: [createdById], references: [id])
+  id          Int      @id @default(autoincrement())
+  leadId      Int
+  type        String
+  content     String?
+  createdAt   DateTime @default(now())
   createdById Int?
-  
+  createdBy   User?    @relation(fields: [createdById], references: [id], map: "LeadActivity_createdById_fkey")
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade, map: "LeadActivity_leadId_fkey")
+
+  @@index([createdById], map: "LeadActivity_createdById_fkey")
+  @@index([leadId], map: "LeadActivity_leadId_fkey")
   @@map("leadactivity")
 }
 
 model Ticket {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String?
-  status      String  @default("open")
-  priority    String  @default("medium")
+  id          Int             @id @default(autoincrement())
+  status      String          @default("open")
+  priority    String          @default("medium")
   channel     String?
-  tags        String?
-
-  lead        Lead? @relation(fields: [leadId], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  description String?
+  dueDate     DateTime?
   leadId      Int?
-  requester   User? @relation("TicketRequester", fields: [requesterId], references: [id])
-  requesterId Int?
-  owner       User? @relation("TicketOwner", fields: [ownerId], references: [id])
   ownerId     Int?
+  requesterId Int?
+  resolvedAt  DateTime?
+  tags        String?
+  title       String
+  lead        Lead?           @relation(fields: [leadId], references: [id], map: "Ticket_leadId_fkey")
+  owner       User?           @relation("TicketOwner", fields: [ownerId], references: [id], map: "Ticket_ownerId_fkey")
+  requester   User?           @relation("TicketRequester", fields: [requesterId], references: [id], map: "Ticket_requesterId_fkey")
+  comments    TicketComment[]
 
-  dueDate    DateTime?
-  resolvedAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  comments TicketComment[]
-  
+  @@index([leadId], map: "Ticket_leadId_fkey")
+  @@index([ownerId], map: "Ticket_ownerId_fkey")
+  @@index([requesterId], map: "Ticket_requesterId_fkey")
   @@map("ticket")
 }
 
 model TicketComment {
-  id       Int    @id @default(autoincrement())
-  ticket   Ticket @relation(fields: [ticketId], references: [id])
-  ticketId Int
-
-  type       String @default("note")
-  visibility String @default("internal")
-  content    String
-
+  id          Int      @id @default(autoincrement())
+  ticketId    Int
+  type        String   @default("note")
+  visibility  String   @default("internal")
+  content     String
   createdAt   DateTime @default(now())
-  createdBy   User?    @relation(fields: [createdById], references: [id])
   createdById Int?
-  
+  createdBy   User?    @relation(fields: [createdById], references: [id], map: "TicketComment_createdById_fkey")
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: NoAction, map: "TicketComment_ticketId_fkey")
+
+  @@index([createdById], map: "TicketComment_createdById_fkey")
+  @@index([ticketId], map: "TicketComment_ticketId_fkey")
   @@map("ticketcomment")
 }
 
 model NewsletterList {
-  id          Int      @id @default(autoincrement())
+  id          Int                      @id @default(autoincrement())
   name        String
-  slug        String   @unique
+  slug        String                   @unique(map: "NewsletterList_slug_key")
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  subscribers NewsletterSubscription[]
+  createdAt   DateTime                 @default(now())
+  updatedAt   DateTime                 @updatedAt
   campaigns   EmailCampaign[]
-  
+  subscribers NewsletterSubscription[]
+
   @@map("newsletterlist")
 }
 
 model NewsletterSubscription {
-  id             Int       @id @default(autoincrement())
+  id             Int               @id @default(autoincrement())
   email          String
   name           String?
   whatsapp       String?
-  status         String    @default("active")
+  status         String            @default("active")
   source         String?
-  subscribedAt   DateTime  @default(now())
+  subscribedAt   DateTime          @default(now())
   unsubscribedAt DateTime?
+  listId         Int
+  events         NewsletterEvent[]
+  list           NewsletterList    @relation(fields: [listId], references: [id], onDelete: Cascade, map: "NewsletterSubscription_listId_fkey")
 
-  list   NewsletterList @relation(fields: [listId], references: [id], onDelete: Cascade)
-  listId Int
-
-  events NewsletterEvent[]
-
-  @@unique([email, listId], name: "email_listId")
+  @@unique([email, listId], map: "NewsletterSubscription_email_listId_key")
+  @@index([listId], map: "NewsletterSubscription_listId_fkey")
   @@map("newslettersubscription")
 }
 
 model NewsletterEvent {
-  id        Int      @id @default(autoincrement())
-  type      String
-  metaJson  String?
-  createdAt DateTime @default(now())
-
-  subscription   NewsletterSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  id             Int                    @id @default(autoincrement())
+  type           String
+  metaJson       String?
+  createdAt      DateTime               @default(now())
   subscriptionId Int
-  
+  subscription   NewsletterSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade, map: "NewsletterEvent_subscriptionId_fkey")
+
+  @@index([subscriptionId], map: "NewsletterEvent_subscriptionId_fkey")
   @@map("newsletterevent")
 }
 
 model EmailCampaign {
-  id           Int       @id @default(autoincrement())
+  id           Int                @id @default(autoincrement())
   name         String
   subject      String
   preheader    String?
-  slug         String    @unique
-  status       String    @default("draft")
+  slug         String             @unique(map: "EmailCampaign_slug_key")
+  status       String             @default("draft")
   contentHtml  String?
   contentText  String?
   providerId   String?
   scheduledFor DateTime?
   sentAt       DateTime?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  listId       Int
+  list         NewsletterList     @relation(fields: [listId], references: [id], onDelete: Cascade, map: "EmailCampaign_listId_fkey")
+  logs         EmailDeliveryLog[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  list   NewsletterList @relation(fields: [listId], references: [id], onDelete: Cascade)
-  listId Int
-
-  logs EmailDeliveryLog[]
-  
+  @@index([listId], map: "EmailCampaign_listId_fkey")
   @@map("emailcampaign")
 }
 
 model EmailDeliveryLog {
-  id         Int      @id @default(autoincrement())
+  id         Int           @id @default(autoincrement())
   email      String
   event      String
   providerId String?
   metaJson   String?
-  createdAt  DateTime @default(now())
-
-  campaign   EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  createdAt  DateTime      @default(now())
   campaignId Int
-  
+  campaign   EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade, map: "EmailDeliveryLog_campaignId_fkey")
+
+  @@index([campaignId], map: "EmailDeliveryLog_campaignId_fkey")
   @@map("emaildeliverylog")
 }
 
 model EmailTemplate {
   id        Int      @id @default(autoincrement())
   name      String
-  slug      String   @unique
+  slug      String   @unique(map: "EmailTemplate_slug_key")
   subject   String
   preview   String?
   bodyHtml  String?  @db.LongText
@@ -640,7 +593,7 @@ model EmailTemplate {
   status    String   @default("active")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("emailtemplate")
 }
 
@@ -653,7 +606,7 @@ model WhatsappIntegration {
   configJson  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+
   @@map("whatsappintegration")
 }
 
@@ -666,26 +619,23 @@ model WhatsappTemplate {
   status    String   @default("active")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("whatsapptemplate")
 }
 
 model AdminLog {
-  id     Int   @id @default(autoincrement())
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
-
-  action     String
-  entityType String
-  entityId   Int?
-
+  id                Int      @id @default(autoincrement())
+  userId            Int?
+  action            String
+  entityType        String
+  entityId          Int?
   payloadBeforeJson String?
   payloadAfterJson  String?
+  ipAddress         String?
+  userAgent         String?
+  createdAt         DateTime @default(now())
+  user              User?    @relation(fields: [userId], references: [id], map: "AdminLog_userId_fkey")
 
-  ipAddress String?
-  userAgent String?
-
-  createdAt DateTime @default(now())
-  
+  @@index([userId], map: "AdminLog_userId_fkey")
   @@map("adminlog")
 }
