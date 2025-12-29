@@ -1,4 +1,5 @@
 steps:
+  # Build Docker image with DATABASE_URL
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
@@ -12,6 +13,7 @@ steps:
     secretEnv: ['DATABASE_URL']
     timeout: 1200s
 
+  # Push to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/softkingo:$SHORT_SHA']
 
