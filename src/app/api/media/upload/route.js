@@ -1,4 +1,4 @@
-// app/api/media/upload/route.js
+// src/app/api/media/upload/route.js (FINAL VERSION)
 import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
@@ -11,37 +11,43 @@ export async function POST(req) {
     const file = form.get("file");
     const folder = sanitizeRel(form.get("folder") || "");
     const overwrite = form.get("overwrite") === "true";
-    const customName = (form.get("name") || "").toString().trim(); // optional: user-defined
+    const customName = form.get("name")?.toString().trim() || "";
 
-    if (!file) return NextResponse.json({ error: "file required" }, { status: 400 });
+    if (!file) return NextResponse.json({ error: "File required" }, { status: 400 });
 
-    // ensure folder exists
-    await fs.mkdir(toAbsPublic(folder), { recursive: true }); 
+    // ✅ FIXED: Always use uploads/ prefix
+    const uploadFolder = `uploads/${folder}`;
+    await fs.mkdir(toAbsPublic(uploadFolder), { recursive: true });
 
     const original = file.name || "file";
     const ext = path.extname(original);
     const base = path.basename(original, ext);
 
-    const safeBase = (customName ? path.basename(customName, path.extname(customName)) : base)
-      .replace(/[^a-zA-Z0-9_-]/g, "_");
+    const safeBase = (customName || base)
+      .replace(/[^a-zA-Z0-9_-]/g, "_")
+      .substring(0, 100); // ✅ Max length
 
     const finalName = overwrite
-      ? `${safeBase}${ext || path.extname(customName) || ""}`
-      : `${safeBase}-${Date.now()}${ext || path.extname(customName) || ""}`;
+      ? `${safeBase}${ext}`
+      : `${safeBase}-${Date.now()}${ext}`;
 
-    const rel = sanitizeRel(path.join(folder, finalName));
+    const rel = sanitizeRel(path.join(uploadFolder, finalName)); // ✅ uploads/ included
     const abs = toAbsPublic(rel);
 
     const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    await fs.writeFile(abs, buffer);
+    await fs.writeFile(abs, Buffer.from(bytes));
 
     return NextResponse.json({
       ok: true,
-      file: { name: finalName, path: rel, url: toPublicUrl(rel) },
+      file: { 
+        name: finalName, 
+        path: rel, 
+        url: toPublicUrl(rel),
+        size: bytes.byteLength // ✅ Size added
+      },
     });
   } catch (e) {
-    console.error("upload error", e);
-    return NextResponse.json({ error: "upload failed" }, { status: 500 });
+    console.error("Upload error:", e);
+    return NextResponse.json({ error: `Upload failed: ${e.message}` }, { status: 500 });
   }
 }
