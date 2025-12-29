@@ -3,6 +3,9 @@
 import prisma from "@/lib/prisma";
 import BlogSliderClient from "@/app/(public)/home/blogs/BlogSliderClient";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function BlogSectionServer() {
   const blogs = await prisma.blogPost.findMany({
     where: {
