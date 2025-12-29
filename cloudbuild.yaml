@@ -1,34 +1,29 @@
 steps:
-  # Build Docker image with DATABASE_URL
+  # Build
   - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - -c
-      - |
-        docker build \
-          --build-arg DATABASE_URL=$$DATABASE_URL \
-          -t gcr.io/$PROJECT_ID/softkingo:$SHORT_SHA \
-          -t gcr.io/$PROJECT_ID/softkingo:latest \
-          -f Dockerfile .
+    args: 
+      - 'build'
+      - '--build-arg=DATABASE_URL=$$DATABASE_URL'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/softkingo:$SHORT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/softkingo:latest'
+      - '-f'
+      - 'Dockerfile'
+      - '.'
     secretEnv: ['DATABASE_URL']
     timeout: 1200s
-
-  # Push to Container Registry
+  # Push
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/softkingo:$SHORT_SHA']
-
 availableSecrets:
   secretManager:
     - versionName: projects/$PROJECT_NUMBER/secrets/DATABASE_URL/versions/latest
       env: DATABASE_URL
-
 options:
   logging: CLOUD_LOGGING_ONLY
   machineType: 'E2_HIGHCPU_8'
-
 timeout: 1800s
-
-
 images:
   - 'gcr.io/$PROJECT_ID/softkingo:$SHORT_SHA'
   - 'gcr.io/$PROJECT_ID/softkingo:latest'
