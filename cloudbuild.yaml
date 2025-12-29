@@ -28,6 +28,7 @@ options:
 
 timeout: 1800s
 
+
 images:
   - 'gcr.io/$PROJECT_ID/softkingo:$SHORT_SHA'
   - 'gcr.io/$PROJECT_ID/softkingo:latest'
