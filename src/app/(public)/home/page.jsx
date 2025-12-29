@@ -12,6 +12,8 @@ import Blogs from "./blogs/page";
 import { Container } from "postcss";
 
 import FooterForm from "@/components/footer/footer-form";
+
+export const dynamic = 'force-dynamic' 
 export default function Home() {
 
   return (
