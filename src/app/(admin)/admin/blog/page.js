@@ -20,6 +20,7 @@ import {
   ChevronRight,
   AlertCircle,
 } from 'lucide-react';
+ import { BLOG_SECTIONS } from "@/app/(public)/blog/sectionConfig";
 
 export default function BlogListPage() {
   const router = useRouter();
@@ -83,7 +84,16 @@ export default function BlogListPage() {
 
   const openNew = () => router.push('/admin/blog/new');
   const openEdit = (id) => router.push(`/admin/blog/edit/${id}`);
-  const openPreview = (slug) => window.open(`/blog/${slug}`, '_blank');
+  // const openPreview = (slug) => window.open(`/blog/${slug}`, '_blank');
+   const openPreview = (row) => {
+  const sectionKey =
+     Object.entries(BLOG_SECTIONS).find(([, cfg]) =>
+       cfg.types?.includes(row.type)
+     )?.[0] || "blog";
+
+   const base = BLOG_SECTIONS[sectionKey]?.slugBase || "/blog";
+   window.open(`${base}/${row.slug}`, "_blank");
+ };
 
   const closeImageModal = () => setSelectedImage(null);
 
@@ -415,7 +425,7 @@ export default function BlogListPage() {
                     <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => openPreview(row.slug)}
+                          onClick={() => openPreview(row)}
                           className="p-2 rounded-xl hover:bg-sky-100 text-sky-600 hover:text-sky-700 transition-all hidden md:inline-flex items-center"
                           title="Preview"
                         >

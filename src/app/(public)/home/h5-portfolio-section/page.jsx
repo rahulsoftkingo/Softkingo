@@ -1,294 +1,431 @@
-// app/page.js
+// src/app/(public)/home/h5-portfolio-section/page.jsx
 'use client';
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaArrowRight, FaCode, FaMobileAlt } from 'react-icons/fa';
+import Link from 'next/link';
+import Image from 'next/image';
 
-import { FaArrowRight } from 'react-icons/fa';
+const TYPE_BY_INDEX = ['app', 'web', 'digital'];
 
+function typeFromIndex(i) {
+  return TYPE_BY_INDEX[i] || 'app';
+}
+
+function tabLabel(type) {
+  if (type === 'app') return 'Mobile App';
+  if (type === 'web') return 'Website';
+  return 'Digital';
+}
+
+// RIGHT SIDE CAROUSEL
+function RightVisualCarousel({ items = [], type = 'app' }) {
+  const slides = useMemo(() => {
+    return (items || [])
+      .filter((p) => (p?.type || '').toLowerCase() === type)
+      .filter((p) => p?.phoneMockup || p?.bgImage)
+      .slice(0, 10);
+  }, [items, type]);
+
+  const [index, setIndex] = useState(0);
+  const touchStartX = useRef(null);
+
+  useEffect(() => setIndex(0), [type, slides.length]);
+
+  useEffect(() => {
+    if (!slides.length) return;
+    const id = setInterval(() => setIndex((prev) => (prev + 1) % slides.length), 3500);
+    return () => clearInterval(id);
+  }, [slides.length]);
+
+  const goPrev = () => slides.length && setIndex((p) => (p - 1 + slides.length) % slides.length);
+  const goNext = () => slides.length && setIndex((p) => (p + 1) % slides.length);
+
+  const onTouchStart = (e) => (touchStartX.current = e.touches?.[0]?.clientX ?? null);
+  const onTouchEnd = (e) => {
+    const start = touchStartX.current;
+    const end = e.changedTouches?.[0]?.clientX ?? null;
+    touchStartX.current = null;
+    if (start == null || end == null) return;
+    const dx = end - start;
+    if (Math.abs(dx) < 40) return;
+    dx > 0 ? goPrev() : goNext();
+  };
+
+  if (!slides.length) {
+    return (
+      <div className="relative w-full h-full">
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl shadow-2xl"></div>
+        <div className="absolute -top-4 -right-4 w-full h-full bg-white border border-sky-200 rounded-2xl transform rotate-3"></div>
+        <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center p-6">
+          <div className="text-6xl mb-4">📱</div>
+          <h3 className="text-sky-800 text-xl font-bold text-center">No Projects</h3>
+          <p className="text-sky-500 text-center mt-2">Coming Soon</p>
+        </div>
+      </div>
+    );
+  }
+
+  const href = slides[index]?.caseStudy?.slug ? `/case-studies/${slides[index].caseStudy.slug}` : '/case-studies';
+
+  return (
+    <div className="relative w-full h-full" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <AnimatePresence mode="wait">
+        {slides.map((slide, i) => {
+          const offset = i - index;
+          if (Math.abs(offset) > 1) return null;
+
+          const imgSrc = slide.phoneMockup || slide.bgImage;
+          const isActive = i === index;
+
+          return (
+            <motion.div
+              key={slide.id ?? `${slide.title}-${i}`}
+              initial={{ opacity: 0, scale: 0.9, rotateY: -10 }}
+              animate={{
+                opacity: isActive ? 1 : 0.3,
+                scale: isActive ? 1 : 0.95,
+                rotateY: isActive ? 0 : offset * 8,
+                zIndex: isActive ? 10 : 5,
+                x: offset * 30,
+              }}
+              exit={{ opacity: 0, scale: 0.9, rotateY: 10 }}
+              transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+              className="absolute inset-0"
+              style={{ pointerEvents: isActive ? 'auto' : 'none' }}
+            >
+              <Link href={isActive ? href : '#'} onClick={(e) => !isActive && e.preventDefault()}>
+                <div className="absolute inset-0 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl shadow-2xl"></div>
+                <div className="absolute -top-4 -right-4 w-full h-full bg-white border border-sky-200 rounded-2xl transform rotate-3"></div>
+
+                <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center p-6 transform transition-all duration-300 hover:rotate-1 hover:scale-105">
+                  <div className="relative w-full h-48 sm:h-56 md:h-64 mb-4">
+                    <Image
+                      src={imgSrc}
+                      alt={slide.title || 'Project'}
+                      fill
+                      className="object-contain drop-shadow-2xl"
+                      sizes="(max-width: 768px) 90vw, 400px"
+                      priority={i === index}
+                    />
+                  </div>
+
+                  {isActive && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-center"
+                    >
+                      <h3 className="text-sky-800 text-lg sm:text-xl font-bold">{slide.title}</h3>
+                      <p className="text-sky-600 text-xs sm:text-sm mt-2 line-clamp-2">
+                        {slide.category || tabLabel(type)}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
+              </Link>
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`rounded-full transition-all duration-300 ${
+              i === index ? 'w-5 h-1.5 bg-sky-800' : 'w-1.5 h-1.5 bg-sky-300 hover:bg-sky-500'
+            }`}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// MAIN PORTFOLIO SLIDER
 export default function PortfolioSlider() {
   const [activeSlide, setActiveSlide] = useState(0);
-  
+  const activeType = typeFromIndex(activeSlide);
+
+  const [projectsByType, setProjectsByType] = useState({ app: [], web: [], digital: [] });
+  const [statsByType, setStatsByType] = useState({ app: null, web: null, digital: null });
+  const [loading, setLoading] = useState(true);
+
   const slides = [
     {
       id: 1,
-      title: "App Development Portfolio",
-      description: "Innovative mobile solutions crafted with Flutter, React Native, and Swift. We build cross-platform applications that deliver exceptional user experiences.",
-      stats: [
-        { label: "Projects", value: "48+" },
-        { label: "Clients", value: "32" },
-        { label: "Rating", value: "4.9★" }
-      ],
-      color: "from-sky-600 to-sky-400",
-      image: (
-        <div className="relative w-full h-64 md:h-full">
-          <div className="absolute inset-0 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl shadow-2xl"></div>
-          <div className="absolute -top-4 -right-4 w-full h-full bg-white border  gradient-to-br from-blue-400 to-purple-500 rounded-2xl transform rotate-3"></div>
-          <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center p-6">
-          <img src='/images/services/web-bg.png' />
-            {/* <div className="text-white text-4xl mb-4">📱</div> */}
-            <h3 className="text-sky-800 text-xl font-bold text-center">Mobile Apps</h3>
-            <p className="text-sky-500 text-center mt-2">iOS & Android Solutions</p>
-          </div>
-        </div>
-      )
+      type: 'app',
+      title: 'Mobile App Development',
+      description:
+        'We transform your vision into powerful mobile experiences. From concept to deployment, our expert team builds native iOS, Android, and cross-platform apps using React Native, Flutter, and Swift that users love.',
+      color: 'from-sky-600 to-sky-400',
+      project: '320+',
+      clients: '260+',
+      countries: '50+',
     },
     {
       id: 2,
-      title: "Web Development Portfolio",
-      description: "Modern web applications built with Next.js, React, and Tailwind CSS. We create responsive, performant websites with optimal user experience.",
-      stats: [
-        { label: "Projects", value: "56+" },
-        { label: "Clients", value: "41" },
-        { label: "Rating", value: "4.8★" }
-      ],
-      color: "from-sky-600 to-sky-400",
-      image: (
-        <div className="relative w-full h-54 md:h-full">
-          <div className="absolute inset-0 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl shadow-2xl"></div>
-          <div className="absolute -top-4 -right-4 w-full h-full bg-white -gradient-to-br from-green-400 to-teal-500 rounded-2xl transform rotate-3"></div>
-          <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center p-6">
-          <img src='/images/services/web-bg.png' />
-            {/* <div className="text-white text-4xl mb-4">💻</div> */}
-            <h3 className="text-sky-800 text-xl font-bold text-center">Web Solutions</h3>
-            <p className="text-sky-500 text-center mt-2">Responsive & Modern</p>
-          </div>
-        </div>
-      )
+      type: 'web',
+      title: 'Web Development & Design',
+      description:
+        'Create stunning, high-performance web applications that drive results. We specialize in Next.js, React, and modern frameworks to build lightning-fast websites with pixel-perfect design and seamless user experiences.',
+      color: 'from-sky-600 to-sky-400',
+      project: '280+',
+      clients: '200+',
+      countries: '50+',
     },
     {
       id: 3,
-      title: "Digital Marketing Portfolio",
-      description: "Comprehensive digital solutions including UI/UX design, branding, and digital marketing strategies that drive business growth.",
-      stats: [
-        { label: "Projects", value: "36+" },
-        { label: "Clients", value: "28" },
-        { label: "Rating", value: "4.7★" }
-      ],
-      color: "from-sky-600 to-sky-400",
-      image: (
-        <div className="relative w-full h-64 md:h-full">
-          <div className="absolute inset-0 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl shadow-2xl"></div>
-          <div className="absolute -top-4 -right-4 w-full h-full bg-white -gradient-to-br from-amber-400 to-orange-500 rounded-2xl transform rotate-3"></div>
-          <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center p-6
+      type: 'digital',
+      title: 'Digital Marketing & Strategy',
+      description:
+        "Amplify your brand's online presence with data-driven marketing strategies. We deliver comprehensive SEO, social media campaigns, and conversion-optimized designs that accelerate your business growth.",
+      color: 'from-sky-600 to-sky-400',
+      project: '250+',
+      clients: '180',
+      countries: '50+',
+    },
+  ];
 
-          transform transition-all duration-300
-    hover:rotate-2 hover:scale-105">
-          <img src='/images/services/seo-bg.png' />
-            {/* <div className="text-white text-4xl mb-4">🎨</div> */}
-            <h3 className="text-sky-800 text-xl font-bold text-center">Digital Services</h3>
-            <p className="text-sky-500 text-center mt-2">Creative Solutions</p>
-          </div>
-        
+  useEffect(() => {
+    let alive = true;
 
-        </div>
-      )
+    async function load(type) {
+      try {
+        const res = await fetch(`/api/public/portfolio?type=${type}&take=50`);
+        const data = await res.json();
+        const arr = Array.isArray(data?.projects) ? data.projects : [];
+
+        return {
+          projects: arr.map((p) => ({ ...p, type: (p?.type || type).toLowerCase() })),
+          stats: data?.stats || null,
+        };
+      } catch {
+        return { projects: [], stats: null };
+      }
     }
+
+    Promise.all([load('app'), load('web'), load('digital')])
+      .then(([appData, webData, digitalData]) => {
+        if (!alive) return;
+
+        setProjectsByType({
+          app: appData.projects,
+          web: webData.projects,
+          digital: digitalData.projects,
+        });
+
+        setStatsByType({
+          app: appData.stats,
+          web: webData.stats,
+          digital: digitalData.stats,
+        });
+
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const allActiveItems = projectsByType[activeType] || [];
+  const currentStats = statsByType?.[activeType] || null;
+  const portfolioHref = `/portfolio?tab=${activeType}`;
+
+  const currentSlide = slides[activeSlide];
+
+  // ✅ STATIC (from slides)
+  const staticStats = [
+    { label: 'Projects', value: currentSlide.project || '0' },
+    { label: 'Clients', value: currentSlide.clients || '0' },
+    { label: 'Countries', value: currentSlide.countries || '0' },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-sky-200 py-12 px-4 sm:px-6">
+    <div className="w-full bg-gradient-to-br from-white to-sky-200 py-10 sm:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <motion.h1 
+        {/* Header */}
+        <div className="text-center mb-8 sm:mb-12">
+          <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-3xl md:text-4xl font-bold mb-4 text-sky-900"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900"
           >
-            Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-sky-600">Portfolio</span> 
+            Our{' '}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
+              Portfolio
+            </span>
           </motion.h1>
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto"
           >
             Discover our work across different domains. Click the categories below to explore.
           </motion.p>
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
           {slides.map((slide, index) => (
             <motion.button
               key={slide.id}
               onClick={() => setActiveSlide(index)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`px-4 md:px-6 py-2 md:py-2 lg:py-2 rounded-full font-xs md:font-medium text-xs md:text-sm  transition-all duration-300 ${
+              className={`px-4 md:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
                 activeSlide === index
-                  ? `bg-gradient-to-r ${slide.color} text-white font-xs md:text-sm text-xs md:font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 hover:bg-sky-60 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300`
-                  : "bg-white text-primary shadow-md hover:bg-gray-50"
+                  ? `bg-gradient-to-r ${slide.color} text-white shadow-lg shadow-sky-900/30`
+                  : 'bg-white text-sky-700 shadow-md hover:bg-gray-50'
               }`}
             >
-                {/* first word, only visible below md */}
-    <span className="inline md:hidden">
-      {slide.title.split(" ")[0]}
-    </span>
-    {/* full title, only visible from md up */}
-    <span className="hidden md:inline">
-      {slide.title}
-    </span>
-              {/* {slide.title.split(" ")[0]} */}
+              <span className="inline md:hidden">{slide.title.split(' ')[0]}</span>
+              <span className="hidden md:inline">{slide.title}</span>
             </motion.button>
           ))}
         </div>
 
-        {/* Slider Container - Mobile Card Style */}
-        <div className="md:hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSlide}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6"
-            >
-              {/* Visual Section (Top) */}
-              <div className="h-48">
-                {slides[activeSlide].image}
-              </div>
-              
-              {/* Content Section (Bottom) */}
-              <div className="p-6">
-                <div className="text-sm font-semibold text-gray-500 mb-2">
-                  PORTFOLIO CATEGORY
-                </div>
-                <h2 className="text-xl font-bold mb-3 text-gray-800">
-                  {slides[activeSlide].title}
-                </h2>
-                <p className="text-gray-600 mb-4">
-                  {slides[activeSlide].description}
-                </p>
-                
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-3 mb-5">
-                  {slides[activeSlide].stats.map((stat, i) => (
-                    <div 
-                      key={i}
-                      className="bg-gray-50 p-3 rounded-lg text-center"
-                    >
-                      <div className="text-lg font-bold text-sky-700">{stat.value}</div>
-                      <div className="text-xs text-gray-500">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
-                
-                <button className="w-full py-2.5 rounded-full bg-gradient-to-l from-primary via-sky-500 to-sky-600 text-white font-medium">
-                  View Projects
-                </button>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Slider Container - Desktop */}
-        <div className="hidden md:block relative bg-white rounded-3xl shadowxl overflow-hidden h-[500px]">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSlide}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.4 }}
-              className="absolute inset-0 flex"
-            >
-              {/* Content Section (Left) */}
-              <div className="w-1/2 p-10 flex flex-col justify-center">
-                <div className="mb-6">
-                  <div className="text-sm font-semibold text-gray-500 mb-2">
-                    PORTFOLIO CATEGORY
+        {/* MAIN CARD */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSlide}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="bg-white rounded-3xl shadow-xl overflow-hidden"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+              {/* LEFT CONTENT */}
+              <div className="p-6 sm:p-8 lg:p-10 order-2 md:order-1">
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+                  <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-600 mb-2 flex items-center gap-2">
+                    <span className="w-8 h-0.5 bg-sky-600"></span>
+                    Portfolio Category
                   </div>
-                  <h2 className="text-3xl font-bold mb-4 text-gray-800">
-                    {slides[activeSlide].title}
-                  </h2>
-                  <p className="text-lg text-gray-600 mb-6">
-                    {slides[activeSlide].description}
-                  </p>
-                </div>
-                
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                  {slides[activeSlide].stats.map((stat, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                      className="bg-gray-50 p-4 rounded-xl text-center shadow-sm"
-                    >
-                      <div className="text-2xl font-bold text-sky-700">{stat.value}</div>
-                      <div className="text-gray-500 text-sm">{stat.label}</div>
-                    </motion.div>
-                  ))}
-                </div>
-                
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-4 md:px-6 py-2 md:py-2 lg:py-2 rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white font-xs md:text-sm text-xs md:font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 hover:bg-sky-60 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300  self-start flex items-center group"
-                >
-                  View Projects <FaArrowRight className="ml-2 group-hover:ml-3 group-hover:translate-x-1 transition-transform" />
-                  
-                </motion.button>
-              </div>
-              
-              {/* Visual Section (Right) */}
-              <div className="w-1/2 p-8 flex items-center justify-center">
-                <div className="w-full h-full max-w-md">
-                  {slides[activeSlide].image}
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
 
-        {/* Dots Indicator */}
-        <div className="flex justify-center mt-8 space-x-2">
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-sky-800">{currentSlide.title}</h2>
+
+                  <p className="text-sm sm:text-base text-gray-600 mb-6 leading-relaxed">{currentSlide.description}</p>
+
+                  {/* STATIC STATS */}
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-5">
+                    {loading ? (
+                      [...Array(3)].map((_, i) => (
+                        <div key={i} className="bg-gray-100 p-3 sm:p-4 rounded-xl text-center animate-pulse">
+                          <div className="h-6 sm:h-8 bg-gray-200 rounded mb-2"></div>
+                          <div className="h-3 bg-gray-200 rounded"></div>
+                        </div>
+                      ))
+                    ) : (
+                      staticStats.map((stat, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: 0.1 * i }}
+                          className="bg-gradient-to-br from-sky-50 to-blue-50 p-3 sm:p-4 rounded-xl text-center shadow-sm border border-sky-100 hover:shadow-md transition-shadow"
+                        >
+                          <div className="text-lg sm:text-2xl font-bold text-sky-700">{stat.value}</div>
+                          <div className="text-[11px] sm:text-sm text-gray-600 font-medium">{stat.label}</div>
+                        </motion.div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* ✅ EXTRA INFO BELOW STATS - FROM API */}
+                  {!loading && currentStats && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-2 mb-6 border border-sky-100"
+                    >
+                      {/* Top Platforms */}
+                      {currentStats?.topPlatforms?.length > 0 && (
+                        <div className="mb-3 hidden">
+                          <div className="flex items-center gap-2 mb-2">
+                            <FaMobileAlt className="text-sky-600 text-sm" />
+                            <p className="text-xs font-semibold text-gray-700">Top Platforms:</p>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {currentStats.topPlatforms.map((platform, i) => (
+                              <span
+                                key={i}
+                                className="px-2.5 py-1 bg-white rounded-full text-[10px] font-medium text-sky-700 border border-sky-200"
+                              >
+                                {platform}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Top Technologies */}
+                      {currentStats?.topTech?.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 mb-2 hidden">
+                            <FaCode className="text-sky-600 text-sm" />
+                            <p className="text-xs font-semibold text-gray-700">Technologies:</p>
+                          </div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {currentStats.topTech.slice(0, 4).map((tech, i) => (
+                              <span
+                                key={i}
+                                className="px-2.5 py-1 bg-white rounded-full text-[10px] font-medium text-gray-700 border border-gray-200"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {/* Action Button */}
+                  <Link
+                    href={portfolioHref}
+                    className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 rounded-full bg-gradient-to-r from-sky-600 to-sky-500 text-white text-sm font-semibold hover:from-sky-700 hover:to-sky-600 shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  >
+                    Explore All Projects
+                    <FaArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
+              </div>
+
+              {/* RIGHT VISUAL CAROUSEL */}
+              <div className="p-6 sm:p-8 flex items-center justify-center order-1 md:order-2 bg-white">
+                <div className="w-full max-w-md h-[320px] sm:h-[380px] md:h-[420px]">
+                  <RightVisualCarousel items={allActiveItems} type={activeType} />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Bottom Dots */}
+        <div className="flex justify-center mt-6 sm:mt-8 space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setActiveSlide(index)}
-              className={`w-2.5 h-2.5 rounded-full transition-all ${
-                activeSlide === index
-                  ? "bg-sky-600 w-8"
-                  : "bg-gray-300"
+              className={`h-2.5 rounded-full transition-all ${
+                activeSlide === index ? 'bg-sky-600 w-8' : 'bg-gray-300 w-2.5'
               }`}
+              aria-label={`Slide ${index + 1}`}
             />
           ))}
-        </div>
-
-        {/* Testimonials */}
-        <div className="hidden mt-16 max-w-4xl mx-auto">
-          <h3 className="text-center text-xl font-semibold text-gray-700 mb-8">What Our Clients Say</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[...Array(3)].map((_, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white p-6 rounded-2xl shadow-md border border-gray-100"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 mr-3"></div>
-                  <div>
-                    <div className="font-medium">Client {i+1}</div>
-                    <div className="text-sm text-gray-500">Project: {slides[i].title.split(" ")[0]}</div>
-                  </div>
-                </div>
-                <p className="text-gray-600 italic">"Exceptional work on our {slides[i].title.split(" ")[0].toLowerCase()} project. Highly recommended!"</p>
-                <div className="flex mt-4">
-                  {[...Array(5)].map((_, star) => (
-                    <svg key={star} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

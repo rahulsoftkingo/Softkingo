@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FaStar, FaQuoteLeft, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 
 const ReviewsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -131,34 +132,40 @@ const ReviewsSection = () => {
   const displayedReviews = getDisplayedReviews();
 
   return (
-    <section className="relative w-full py-24 px-4 bg-gradient-to-br from-gray-50 to-white overflow-hidden">
+    <section className="relative w-full py-12 md:py-16 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-white overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-10 right-10 w-80 h-80 bg-[#28AFDF]/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse"></div>
       <div className="absolute bottom-20 left-10 w-72 h-72 bg-[#28AFDF]/20 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse animation-delay-2000"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-24">
+        
+<div className="text-center mb-22">
           <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: -18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
+            className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900"
           >
-            <span className="text-gray-800">What Our </span>
-            <span className="text-[#28AFDF] font-extrabold">Clients Say</span>
+            What Our{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
+              Clients Say
+            </span>
           </motion.h2>
+
           <motion.p
-            className="text-gray-600 max-w-2xl mx-auto text-lg"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ delay: 0.15, duration: 0.5 }}
+            className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto"
           >
-            Hear from industry leaders who have experienced our exceptional service firsthand
+            Real feedback from teams we&apos;ve worked with—focused on delivery quality, communication, and outcomes.
           </motion.p>
         </div>
-
+         <TestimonialCarousel columns={2} />
         <div
-          className="relative"
+          className="relative hidden"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
@@ -273,7 +280,7 @@ const ReviewsSection = () => {
             <div className="text-gray-600 mt-2">Client Satisfaction</div>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
-            <div className="text-3xl font-bold text-[#28AFDF]">250+</div>
+            <div className="text-3xl font-bold text-[#28AFDF]">850+</div>
             <div className="text-gray-600 mt-2">Projects Completed</div>
           </div>
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">

@@ -288,18 +288,18 @@ model CaseStudy {
   logo              String?
   heroBgImage       String?
   heroCircle        String?
-  heroMockups       String?
-  brandingJson      String?
-  teamJson          String?
-  clientJson        String?
-  technologiesJson  String?
-  overviewJson      String?
-  requirementsJson  String?
-  goalsJson         String?
-  challengesJson    String?
-  appScreensJson    String?            @db.LongText
-  resultsJson       String?
-  findYourAppJson   String?
+  heroMockups       String?          @db.Text
+  brandingJson      String?          @db.Text
+  teamJson          String?          @db.Text
+  clientJson        String?          @db.Text
+  technologiesJson  String?          @db.Text
+  overviewJson      String?          @db.Text
+  requirementsJson  String?          @db.Text
+  goalsJson         String?          @db.Text
+  challengesJson    String?          @db.Text
+  appScreensJson    String?          @db.LongText
+  resultsJson       String?          @db.Text
+  findYourAppJson   String?          @db.Text
   seoTitle          String?
   seoDescription    String?
   createdAt         DateTime           @default(now())

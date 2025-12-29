@@ -3,6 +3,7 @@ import Link from "next/link";
 import "./DropdownIcon.css";
 // import { ResourceItem } from "./InsightsMenu";
 import { FaArrowRight } from "react-icons/fa";
+import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
 
 import {
   FaMobileAlt,
@@ -66,6 +67,272 @@ export const ResourceItem = ({
     )} */}            
   </Link>
 );
+// const servicesData = [
+//   {
+//     id: "Mobileapptab",
+//     icon: <FaMobileAlt />,
+//     heading: "Mobile App Development",
+//     pageHref: "/services/mobile-app-development",
+//     title: "Top Mobile App Development Company",
+//     description:
+//       "Turning your app ideas into immersive mobile experiences. Our future‑ready mobile apps move and react along with your users.",
+//     links: [
+//       {
+//         href: "/services/mobile-app-development/android-app-development",
+//         title: "Android App Development",
+//         icon: <FaAndroid />,
+//       },
+//       {
+//         href: "/services/mobile-app-development/ios-app-development",
+//         title: "iOS App Development",
+//         icon: <FaApple />,
+//       },
+//       {
+//         href: "/services/mobile-app-development/hybrid-app-development",
+//         title: "Hybrid App Development",
+//         icon: <FaMobileAlt />,
+//       },
+//       {
+//         href: "/services/mobile-app-development/flutter-app-development",
+//         title: "Flutter App Development",
+//         icon: <FaReact />,
+//       },
+//       {
+//         href: "/services/mobile-app-development/react-native-app-development",
+//         title: "React Native App Development",
+//         icon: <FaReact />,
+//       },
+//       {
+//         href: "/services/mobile-app-development/kotlin-app-development",
+//         title: "Kotlin App Development",
+//         icon: <FaRegFileCode />,
+//       },
+//     ],
+//   },
+//   {
+//     id: "Webdevtab",
+//     icon: <FaDesktop />,
+//     heading: "Web & CMS Development",
+//     pageHref: "/services/web-cms-development",
+//     title: "Top Web & CMS Development Company",
+//     description:
+//       "Empowering businesses with fast, secure websites and CMS solutions that are easy to manage and scale.",
+//     links: [
+//       {
+//         href: "/services/web-cms-development/php-web-development",
+//         title: "PHP Web Development",
+//         icon: <FaRegFileCode />,
+//       },
+//       {
+//         href: "/services/web-cms-development/laravel-development",
+//         title: "Laravel Development",
+//         icon: <FaLaravel />,
+//       },
+//       {
+//         href: "/services/web-cms-development/reactjs-development",
+//         title: "React.js Development",
+//         icon: <FaReact />,
+//       },
+//       {
+//         href: "/services/web-cms-development/nextjs-development",
+//         title: "Next.js Development",
+//         icon: <FaReact />,
+//       },
+//       {
+//         href: "/services/web-cms-development/nodejs-development",
+//         title: "Node.js Development",
+//         icon: <FaServer />,
+//       },
+//       {
+//         href: "/services/web-cms-development/wordpress-development",
+//         title: "WordPress Development",
+//         icon: <FaWordpress />,
+//       },
+//     ],
+//   },
+//   {
+//     id: "Ecommercetab",
+//     icon: <FaShoppingCart />,
+//     heading: "eCommerce Development",
+//     pageHref: "/services/ecommerce-development",
+//     title: "Top eCommerce Development Company",
+//     description:
+//       "Building robust eCommerce platforms that convert visitors into loyal customers and drive recurring revenue.",
+//     links: [
+//       {
+//         href: "/services/ecommerce-development/shopify-development",
+//         title: "Shopify Development",
+//         icon: <FaShopify />,
+//       },
+//       {
+//         href: "/services/ecommerce-development/woocommerce-development",
+//         title: "WooCommerce Development",
+//         icon: <FaShoppingCart />,
+//       },
+//       {
+//         href: "/services/ecommerce-development/magento-development",
+//         title: "Magento Development",
+//         icon: <FaShoppingCart />,
+//       },
+//       {
+//         href: "/services/ecommerce-development/custom-ecommerce-development",
+//         title: "Custom eCommerce Solutions",
+//         icon: <FaRegFileCode />,
+//       },
+//     ],
+//   },
+//   {
+//     id: "Blockchaintab",
+//     icon: <FaBitcoin />,
+//     heading: "Blockchain Development",
+//     pageHref: "/services/blockchain-development",
+//     title: "Top Blockchain Development Company",
+//     description:
+//       "From smart contracts to NFT platforms, we build secure, transparent blockchain solutions for modern businesses.",
+//     links: [
+//       {
+//         href: "/services/blockchain-development/crypto-wallet-development",
+//         title: "Crypto Wallet Development",
+//         icon: <FaBitcoin />,
+//       },
+//       {
+//         href: "/services/blockchain-development/crypto-exchange-development",
+//         title: "Crypto Exchange Development",
+//         icon: <FaBitcoin />,
+//       },
+//       {
+//         href: "/services/blockchain-development/smart-contract-development",
+//         title: "Smart Contracts",
+//         icon: <FaRegFileCode />,
+//       },
+//       {
+//         href: "/services/blockchain-development/nft-marketplace-development",
+//         title: "NFT Marketplace",
+//         icon: <FaEye />,
+//       },
+//     ],
+//   },
+//   {
+//     id: "Digitalmarketingtab",
+//     icon: <FaSalesforce />,
+//     heading: "Digital & CRM Solutions",
+//     pageHref: "/services/digital-crm-solutions",
+//     title: "Digital Marketing & CRM Solutions",
+//     description:
+//       "End‑to‑end digital marketing & CRM implementations to help you attract, nurture and retain high‑value customers.",
+//     links: [
+//       {
+//         href: "/services/digital-crm-solutions/seo-organic-growth",
+//         title: "SEO & Organic Growth",
+//         icon: <FaSearch />,
+//       },
+//       {
+//         href: "/services/digital-crm-solutions/performance-marketing",
+//         title: "Performance Marketing",
+//         icon: <FaBullseye />,
+//       },
+//       {
+//         href: "/services/digital-crm-solutions/crm-implementation",
+//         title: "CRM Implementation",
+//         icon: <FaSalesforce />,
+//       },
+//       {
+//         href: "/services/digital-crm-solutions/marketing-automation",
+//         title: "Marketing Automation",
+//         icon: <FaMailBulk />,
+//       },
+//     ],
+//   },
+//   {
+//     id: "Aimltab",
+//     icon: <FaRobot />,
+//     heading: "AI & ML Solutions",
+//     pageHref: "/services/ai-ml-solutions",
+//     title: "Top AI & ML Development Company",
+//     description:
+//       "Use Artificial Intelligence and Machine Learning to automate decisions, personalize experiences and unlock insights from your data.",
+//     links: [
+//       {
+//         href: "/services/ai-ml-solutions/ai-chatbots-assistants",
+//         title: "AI Chatbots & Assistants",
+//         icon: <FaComments />,
+//       },
+//       {
+//         href: "/services/ai-ml-solutions/recommendation-engines",
+//         title: "Recommendation Engines",
+//         icon: <FaBrain />,
+//       },
+//       {
+//         href: "/services/ai-ml-solutions/computer-vision",
+//         title: "Computer Vision",
+//         icon: <FaCamera />,
+//       },
+//       {
+//         href: "/services/ai-ml-solutions/nlp-text-processing",
+//         title: "NLP & Text Processing",
+//         icon: <FaRegFileCode />,
+//       },
+//     ],
+//   },
+//   {
+//     id: "iottab",
+//     icon: <FaMicrochip />,
+//     heading: "IoT & Embedded",
+//     pageHref: "/services/iot-embedded-development",
+//     title: "Top IoT & Embedded Development Company",
+//     description:
+//       "Connecting physical devices with secure cloud platforms to create smart, data‑driven products and experiences.",
+//     links: [
+//       {
+//         href: "/services/iot-embedded-development/iot-app-development",
+//         title: "IoT App Development",
+//         icon: <FaMobileAlt />,
+//       },
+//       {
+//         href: "/services/iot-embedded-development/embedded-software",
+//         title: "Embedded Software",
+//         icon: <FaChip />,
+//       },
+//       {
+//         href: "/services/iot-embedded-development/iot-hardware-prototyping",
+//         title: "IoT Hardware Prototyping",
+//         icon: <FaTools />,
+//       },
+//       {
+//         href: "/services/iot-embedded-development/iot-dashboards-analytics",
+//         title: "IoT Dashboards & Analytics",
+//         icon: <FaChartLine />,
+//       },
+//     ],
+//   },
+//   {
+//     id: "DevOpstab",
+//     icon: <FaCogs />,
+//     heading: "DevOps & Cloud",
+//     pageHref: "/services/devops-cloud-engineering",
+//     title: "Top DevOps & Cloud Engineering Company",
+//     description:
+//       "Automate deployment pipelines, improve reliability and ship faster with our DevOps & cloud engineering team.",
+//     links: [
+//       {
+//         href: "/services/devops-cloud-engineering/ci-cd-pipelines",
+//         title: "CI/CD Pipelines",
+//         icon: <FaCogs />,
+//       },
+//       {
+//         href: "/services/devops-cloud-engineering/cloud-migration",
+//         title: "Cloud Migration",
+//         icon: <FaCloud />,
+//       },
+//       {
+//         href: "/services/devops-cloud-engineering/monitoring-observability",
+//         title: "Monitoring & Observability",
+//         icon: <FaEye />,
+//       },
+//     ],
+//   },
+// ];
+
 const servicesData = [
   {
     id: "Mobileapptab",
@@ -77,33 +344,33 @@ const servicesData = [
       "Turning your app ideas into immersive mobile experiences. Our future‑ready mobile apps move and react along with your users.",
     links: [
       {
-        href: "/services/mobile-app-development/android-app-development",
+        href: "/services/android-app-development",
         title: "Android App Development",
         icon: <FaAndroid />,
       },
       {
-        href: "/services/mobile-app-development/ios-app-development",
+        href: "/services/ios-app-development",
         title: "iOS App Development",
         icon: <FaApple />,
       },
       {
-        href: "/services/mobile-app-development/hybrid-app-development",
+        href: "/services/hybrid-app-development",
         title: "Hybrid App Development",
         icon: <FaMobileAlt />,
       },
       {
-        href: "/services/mobile-app-development/flutter-app-development",
-        title: "Flutter App Development",
-        icon: <FaReact />,
-      },
-      {
-        href: "/services/mobile-app-development/react-native-app-development",
+        href: "/services/react-native-app-development",
         title: "React Native App Development",
         icon: <FaReact />,
       },
       {
-        href: "/services/mobile-app-development/kotlin-app-development",
-        title: "Kotlin App Development",
+        href: "/services/flutter-native-app-development",
+        title: "Flutter App Development",
+        icon: <FaReact />,
+      },
+      {
+        href: "/services/app-ui-ux-design",
+        title: "App UI/UX Design",
         icon: <FaRegFileCode />,
       },
     ],
@@ -112,40 +379,40 @@ const servicesData = [
     id: "Webdevtab",
     icon: <FaDesktop />,
     heading: "Web & CMS Development",
-    pageHref: "/services/web-cms-development",
+    pageHref: "/services/web-development",
     title: "Top Web & CMS Development Company",
     description:
       "Empowering businesses with fast, secure websites and CMS solutions that are easy to manage and scale.",
     links: [
       {
-        href: "/services/web-cms-development/php-web-development",
-        title: "PHP Web Development",
+        href: "/services/custom-website-development",
+        title: "Custom Website Development",
         icon: <FaRegFileCode />,
       },
       {
-        href: "/services/web-cms-development/laravel-development",
-        title: "Laravel Development",
-        icon: <FaLaravel />,
-      },
-      {
-        href: "/services/web-cms-development/reactjs-development",
-        title: "React.js Development",
-        icon: <FaReact />,
-      },
-      {
-        href: "/services/web-cms-development/nextjs-development",
-        title: "Next.js Development",
-        icon: <FaReact />,
-      },
-      {
-        href: "/services/web-cms-development/nodejs-development",
-        title: "Node.js Development",
-        icon: <FaServer />,
-      },
-      {
-        href: "/services/web-cms-development/wordpress-development",
-        title: "WordPress Development",
+        href: "/services/cms-development",
+        title: "CMS Development",
         icon: <FaWordpress />,
+      },
+      {
+        href: "/services/web-app-development",
+        title: "Web Application Development",
+        icon: <FaReact />,
+      },
+      {
+        href: "/services/enterprise-web-development",
+        title: "Enterprise Web Development",
+        icon: <FaReact />,
+      },
+      {
+        href: "/services/website-redesign",
+        title: "Website Redesign",
+        icon: <FaRegFileCode />,
+      },
+      {
+        href: "/services/website-maintenance",
+        title: "Website Maintenance",
+        icon: <FaServer />,
       },
     ],
   },
@@ -159,24 +426,34 @@ const servicesData = [
       "Building robust eCommerce platforms that convert visitors into loyal customers and drive recurring revenue.",
     links: [
       {
-        href: "/services/ecommerce-development/shopify-development",
+        href: "/services/shopify-development",
         title: "Shopify Development",
         icon: <FaShopify />,
       },
       {
-        href: "/services/ecommerce-development/woocommerce-development",
+        href: "/services/woocommerce-development",
         title: "WooCommerce Development",
         icon: <FaShoppingCart />,
       },
       {
-        href: "/services/ecommerce-development/magento-development",
+        href: "/services/magento-development",
         title: "Magento Development",
         icon: <FaShoppingCart />,
       },
       {
-        href: "/services/ecommerce-development/custom-ecommerce-development",
-        title: "Custom eCommerce Solutions",
+        href: "/services/custom-ecommerce-development",
+        title: "Custom eCommerce Development",
         icon: <FaRegFileCode />,
+      },
+      {
+        href: "/services/multivendor-ecommerce-development",
+        title: "Multi-Vendor Marketplace",
+        icon: <FaShoppingCart />,
+      },
+      {
+        href: "/services/ecommerce-app-development",
+        title: "eCommerce App Development",
+        icon: <FaMobileAlt />,
       },
     ],
   },
@@ -190,86 +467,75 @@ const servicesData = [
       "From smart contracts to NFT platforms, we build secure, transparent blockchain solutions for modern businesses.",
     links: [
       {
-        href: "/services/blockchain-development/crypto-wallet-development",
+        href: "/services/crypto-wallet-development",
         title: "Crypto Wallet Development",
         icon: <FaBitcoin />,
       },
       {
-        href: "/services/blockchain-development/crypto-exchange-development",
-        title: "Crypto Exchange Development",
-        icon: <FaBitcoin />,
-      },
-      {
-        href: "/services/blockchain-development/smart-contract-development",
-        title: "Smart Contracts",
+        href: "/services/smart-contract-development",
+        title: "Smart Contract Development",
         icon: <FaRegFileCode />,
       },
       {
-        href: "/services/blockchain-development/nft-marketplace-development",
-        title: "NFT Marketplace",
+        href: "/services/nft-marketplace-development",
+        title: "NFT Marketplace Development",
         icon: <FaEye />,
       },
-    ],
-  },
-  {
-    id: "Digitalmarketingtab",
-    icon: <FaSalesforce />,
-    heading: "Digital & CRM Solutions",
-    pageHref: "/services/digital-crm-solutions",
-    title: "Digital Marketing & CRM Solutions",
-    description:
-      "End‑to‑end digital marketing & CRM implementations to help you attract, nurture and retain high‑value customers.",
-    links: [
       {
-        href: "/services/digital-crm-solutions/seo-organic-growth",
-        title: "SEO & Organic Growth",
-        icon: <FaSearch />,
+        href: "/services/dapp-development",
+        title: "DApp Development",
+        icon: <FaRegFileCode />,
       },
       {
-        href: "/services/digital-crm-solutions/performance-marketing",
-        title: "Performance Marketing",
-        icon: <FaBullseye />,
+        href: "/services/defi-development",
+        title: "DeFi Development",
+        icon: <FaBitcoin />,
       },
       {
-        href: "/services/digital-crm-solutions/crm-implementation",
-        title: "CRM Implementation",
-        icon: <FaSalesforce />,
-      },
-      {
-        href: "/services/digital-crm-solutions/marketing-automation",
-        title: "Marketing Automation",
-        icon: <FaMailBulk />,
+        href: "/services/token-development",
+        title: "Token Development",
+        icon: <FaBitcoin />,
       },
     ],
   },
   {
     id: "Aimltab",
     icon: <FaRobot />,
-    heading: "AI & ML Solutions",
-    pageHref: "/services/ai-ml-solutions",
+    heading: "AI & ML Services",
+    pageHref: "/services/ai-ml",
     title: "Top AI & ML Development Company",
     description:
       "Use Artificial Intelligence and Machine Learning to automate decisions, personalize experiences and unlock insights from your data.",
     links: [
       {
-        href: "/services/ai-ml-solutions/ai-chatbots-assistants",
-        title: "AI Chatbots & Assistants",
-        icon: <FaComments />,
+        href: "/services/ai-development",
+        title: "AI Development",
+        icon: <FaRobot />,
       },
       {
-        href: "/services/ai-ml-solutions/recommendation-engines",
-        title: "Recommendation Engines",
+        href: "/services/machine-learning-development",
+        title: "Machine Learning Development",
         icon: <FaBrain />,
       },
       {
-        href: "/services/ai-ml-solutions/computer-vision",
+        href: "/services/chatbot-development",
+        title: "Chatbot Development",
+        icon: <FaComments />,
+      },
+      {
+        href: "/services/predictive-analytics",
+        title: "Predictive Analytics",
+        icon: <FaChartLine />,
+      },
+      {
+        href: "/services/computer-vision",
         title: "Computer Vision",
         icon: <FaCamera />,
       },
       {
-        href: "/services/ai-ml-solutions/nlp-text-processing",
-        title: "NLP & Text Processing",
-        icon: <FaRegFileCode />,
+        href: "/services/recommendation-engine-development",
+        title: "Recommendation Engine Development",
+        icon: <FaBrain />,
       },
     ],
   },
@@ -277,30 +543,40 @@ const servicesData = [
     id: "iottab",
     icon: <FaMicrochip />,
     heading: "IoT & Embedded",
-    pageHref: "/services/iot-embedded-development",
+    pageHref: "/services/iot-embedded",
     title: "Top IoT & Embedded Development Company",
     description:
       "Connecting physical devices with secure cloud platforms to create smart, data‑driven products and experiences.",
     links: [
       {
-        href: "/services/iot-embedded-development/iot-app-development",
+        href: "/services/iot-app-development",
         title: "IoT App Development",
         icon: <FaMobileAlt />,
       },
       {
-        href: "/services/iot-embedded-development/embedded-software",
-        title: "Embedded Software",
+        href: "/services/embedded-software-development",
+        title: "Embedded Software Development",
         icon: <FaChip />,
       },
       {
-        href: "/services/iot-embedded-development/iot-hardware-prototyping",
-        title: "IoT Hardware Prototyping",
+        href: "/services/iiot",
+        title: "Industrial IoT (IIoT)",
+        icon: <FaMicrochip />,
+      },
+      {
+        href: "/services/device-integration",
+        title: "Device Integration",
         icon: <FaTools />,
       },
       {
-        href: "/services/iot-embedded-development/iot-dashboards-analytics",
-        title: "IoT Dashboards & Analytics",
-        icon: <FaChartLine />,
+        href: "/services/home-automation",
+        title: "Home Automation",
+        icon: <FaRegFileCode />,
+      },
+      {
+        href: "/services/aiot-app-development",
+        title: "AIoT App Development",
+        icon: <FaRobot />,
       },
     ],
   },
@@ -308,30 +584,44 @@ const servicesData = [
     id: "DevOpstab",
     icon: <FaCogs />,
     heading: "DevOps & Cloud",
-    pageHref: "/services/devops-cloud-engineering",
+    pageHref: "/services/devops-cloud",
     title: "Top DevOps & Cloud Engineering Company",
     description:
       "Automate deployment pipelines, improve reliability and ship faster with our DevOps & cloud engineering team.",
     links: [
       {
-        href: "/services/devops-cloud-engineering/ci-cd-pipelines",
-        title: "CI/CD Pipelines",
-        icon: <FaCogs />,
-      },
-      {
-        href: "/services/devops-cloud-engineering/cloud-migration",
+        href: "/services/cloud-migration",
         title: "Cloud Migration",
         icon: <FaCloud />,
       },
       {
-        href: "/services/devops-cloud-engineering/monitoring-observability",
-        title: "Monitoring & Observability",
-        icon: <FaEye />,
+        href: "/services/devops-automation",
+        title: "DevOps Automation",
+        icon: <FaCogs />,
+      },
+      {
+        href: "/services/ci-cd-pipeline",
+        title: "CI/CD Pipeline",
+        icon: <FaCogs />,
+      },
+      {
+        href: "/services/cloud-management",
+        title: "Cloud Management",
+        icon: <FaCloud />,
+      },
+      {
+        href: "/services/containerization",
+        title: "Containerization",
+        icon: <FaRegFileCode />,
+      },
+      {
+        href: "/services/server-security-optimization",
+        title: "Server Security Optimization",
+        icon: <FaServer />,
       },
     ],
   },
 ];
-
 
 const ServicesMenu = () => {
   const [activeTab, setActiveTab] = useState("Mobileapptab");
@@ -402,7 +692,7 @@ const ServicesMenu = () => {
 
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                   {currentService.links.map((link, index) => (
-                    <Link
+                    <div 
                       key={index}
                       href={link.href}
                       className="group flex items-center gap-3 p-3 rounded-xl border border-sky-100 bg-white hover:bg-sky-50 hover:border-sky-200 transition shadow-lg hover:shadow-md flex-col"
@@ -423,7 +713,7 @@ const ServicesMenu = () => {
                           Sub‑service under {currentService.heading}
                         </span>
                       </div>
-                    </Link>
+                    </div>
                   ))}
 
                  
@@ -437,7 +727,9 @@ const ServicesMenu = () => {
             {/* Right E‑Guide Section – light Softkingo style */}
             <div className="hidden xl:block w-1/4 h-full bg-white">
               <div className="h-full w-full border-l border-sky-100 bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 px-6 py-8 flex items-center">
-                <div className="bg-white/90 border border-sky-100 rounded-3xl p-5 flex flex-col justify-between h-full max-h-[500px] w-full shadow-[0_18px_40px_rgba(15,23,42,0.12)]">
+     <LatestEGuidePromoCardClient />
+
+                {/* <div className="bg-white/90 border border-sky-100 rounded-3xl p-5 flex flex-col justify-between h-full max-h-[500px] w-full shadow-[0_18px_40px_rgba(15,23,42,0.12)]">
                   <div>
                     <p className="text-[11px] tracking-[0.24em] uppercase text-sky-500">
                       E‑Guide
@@ -469,7 +761,8 @@ const ServicesMenu = () => {
                     Download Now
                     <FaArrowRight className="text-[0.75rem]" />
                   </Link>
-                </div>
+                </div> */}
+
               </div>
             </div>
 

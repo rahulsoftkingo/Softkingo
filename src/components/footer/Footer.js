@@ -11,52 +11,68 @@ import { TbBeta } from "react-icons/tb";
 import Image from "next/image";
 import Link from "next/link";
 import Form from "./footer-form";
+import { FaArrowRight } from "react-icons/fa";
 
 const Footer = () => {
   const offerings = [
-    "Software Development",
-    "Mobile App Development",
-    "Web Application Development",
-    "Front End Development",
-    "Remote Teams",
-    "Product Prototyping",
-    "Design Engineering",
-    // "Data Engineering",
-    // "Cloud & Infrastructure",
+    { label: "Software Development", href: "/services" },
+    { label: "Mobile App Development", href: "/services/mobile-app-development" },
+    { label: "Web & CMS Development", href: "/services/web-development" },
+    { label: "E-Commerce Development", href: "/services/ecommerce-development" },
+    { label: "Blockchain Development", href: "/services/blockchain-development" },
+    { label: "AI & ML Services", href: "/services/ai-ml" },
+    { label: "IoT & Embedded", href: "/services/iot-embedded" },
+    { label: "DevOps & Cloud", href: "/services/devops-cloud" },
   ];
 
   const companyLinks = [
-    "About Us",
-    "Our Team",
-    "Alliances",
-    "Celebrations",
-    "Awards",
-    "CSR",
-    "Career",
+    { label: "About Us", href: "/about" },
+    { label: "Our Team", href: "/our-team" },
+    { label: "Contact Us", href: "/contact" },
+    { label: "Solutions", href: "/solutions" },
+    { label: "Industries", href: "/industries" },
+    { label: "Career", href: "/careers" },
+    { label: "Portfolio", href: "/portfolio" },
+    { label: "Gallery", href: "/gallery" },
   ];
 
+
+  const insigightsLinks = [
+    { label: "Blog", href: "/blog" },
+    { label: "Featured", href: "/featured" },
+    { label: "Articals", href: "/articals" },
+    { label: "Whitepapers", href: "/whitepapers" },
+    { label: "Guides", href: "/guides" },
+    { label: "Press Releases", href: "/press-releases" },
+    { label: "Media Coverage", href: "/media-coverage" },
+    { label: "Podcasts", href: "/podcasts" },
+  ];
+
+
   const partnerLogos = [
-    "/images/Logo-3.png",
-    "/images/Logo-4.png",
-    "/images/Logo 5.png",
-    "/images/Logo 6.png",
-    "/images/Logo 7.png",
-    "/images/Logo 8.png",
-    "/images/Logo 9.png",
+    "/images/logo/cl1.png",
+    "/images/logo/CoreValentLogo.png",
+    "/images/logo/cl3.png",
+    "/images/logo/potafologo.png",
+    "/images/logo/cl4.png",
+    "/images/logo/practivoo.png",
+    "/images/logo/cl7.png",
   ];
 
   const socialIcons = [
-    { Icon: FaFacebookF, label: "Facebook" },
-    { Icon: FaLinkedin, label: "LinkedIn" },
-    { Icon: FaXTwitter, label: "X" },
-    { Icon: FaYoutube, label: "YouTube" },
-    { Icon: IoLogoInstagram, label: "Instagram" },
-    { Icon: TbBeta, label: "Clutch / Other" },
+    { Icon: FaFacebookF, label: "Facebook", href: "https://www.facebook.com/softkingo" },
+    { Icon: FaLinkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/softkingo" },
+    { Icon: FaXTwitter, label: "X", href: "https://x.com/softkingo" },
+    { Icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@softkingo" },
+    { Icon: IoLogoInstagram, label: "Instagram", href: "https://www.instagram.com/softkingo" },
+    { Icon: TbBeta, label: "Clutch", href: "https://clutch.co/profile/softkingo" },
   ];
 
+  const currentYear = new Date().getFullYear();
+
   return (
-    <div className="mt-12 mb-12">
-      <Form />
+    <div className="mt10 mb-12 md:mb-0">
+      {/* <Form /> */}
 
       <footer className="w-full bg-white text-slate-900 border-t border-slate-100 relative overflow-hidden">
         {/* subtle background shapes in white theme */}
@@ -85,6 +101,14 @@ const Footer = () => {
                   <span>Work</span>
                 </div>
               </div>
+              <Link
+                href="/e-guides"
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-sky-00  border border-sky-400 text-sky-400 text-xs font-semibold hover:shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:text-white  hover:bg-sky-500 transition-colors w-fit"
+              >
+                Download E‑Guides
+                <FaArrowRight className="text-[0.75rem]" />
+              </Link>
+
               <p className="text-sm text-slate-600 leading-relaxed">
                 Incepted in 2020, Softkingo has grown at an exponential pace
                 with clients across 107 countries. We offer a complete range of
@@ -113,7 +137,7 @@ const Footer = () => {
                 />
                 <FooterContactRow
                   title="Address"
-                  value="MON–FRI 10 AM–7 PM · H61, Block H, Sector 63, Noida, Uttar Pradesh 201301, India"
+                  value="MON–FRI 10 AM–7 PM · B-148, Block B, Sector 63, Noida, UP - 201301, India"
                   type="location"
                 />
               </div>
@@ -122,42 +146,62 @@ const Footer = () => {
             {/* Offerings */}
             <div className="space-y-5">
               <h3 className="text-xs font-semibold text-sky-700 tracking-[0.14em] uppercase">
-                Offerings
+                Services
               </h3>
               <ul className="space-y-2 text-sm">
                 {offerings.map((item) => (
-                  <li key={item}>
+                  <li key={item.href}>
                     <Link
-                      href={`/${item.toLowerCase().replace(/ /g, "-")}`}
+                      href={item.href}
                       className="text-slate-600 hover:text-sky-600 transition-colors"
                     >
-                      {item}
+                      {item.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
 
-            {/* Company Links */}
-            <div className="space-y-5">
-              <h3 className="text-xs font-semibold text-sky-700 tracking-[0.14em] uppercase">
-                Company
-              </h3>
-              <ul className="space-y-2 text-sm">
-                {companyLinks.map((item) => (
-                  <li key={item}>
-                    <Link
-                      href={`/${item.toLowerCase().replace(/ /g, "-")}`}
-                      className="text-slate-600 hover:text-sky-600 transition-colors"
-                    >
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            </div>
+            <div className="flex justify-between max-w-xs">
+              {/* Company Links */}
+              <div className="space-y-5">
+                <h3 className="text-xs font-semibold text-sky-700 tracking-[0.14em] uppercase">
+                  Company
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  {companyLinks.map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="text-slate-600 hover:text-sky-600 transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+              </div>
+              <div className="space-y-5">
+                <h3 className="text-xs font-semibold text-sky-700 tracking-[0.14em] uppercase">
+                  Insights
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  {insigightsLinks.map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className="text-slate-600 hover:text-sky-600 transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+              </div>
             </div>
           </div>
-
 
           {/* Partner Logos - Auto Carousel */}
           <div className="relative my-10 overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl p-4 mb-6 border border-sky-100 shadow-[0_14px_40px_rgba(15,23,42,0.06)]">
@@ -173,7 +217,7 @@ const Footer = () => {
                     key={index}
                     className="flex items-center justify-center min-w-[120px] sm:min-w-[140px] md:min-w-[160px]"
                   >
-                    <div className="bg-sky-50 rounded-xl  border border-slate-100 flex items-center justify-center h-14 w-full px-4">
+                    <div className="bg-white rounded-xl  border border-slate-100 flex items-center justify-center h-14 w-full px-4">
                       <Image
                         src={src}
                         alt={`Partner ${index + 1}`}
@@ -192,7 +236,7 @@ const Footer = () => {
             <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-white to-transparent" />
           </div>
 
-          <style global>{`
+          <style >{`
   @keyframes logo-scroll {
     0% {
       transform: translateX(0);
@@ -218,16 +262,18 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-5">
               {/* Copyright */}
               <p className="text-slate-500 text-xs md:text-sm">
-                © 2020–2025 Softkingo Technologies Pvt. Ltd. All rights
-                reserved.
+                © 2020–{currentYear} Softkingo Technologies Pvt. Ltd. All rights reserved.
               </p>
+
 
               {/* Social Icons */}
               <div className="flex flex-wrap justify-center gap-3">
-                {socialIcons.map(({ Icon, label }) => (
+                {socialIcons.map(({ Icon, label, href }) => (
                   <a
                     key={label}
-                    href="#"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={label}
                     className="w-9 h-9 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-sky-600 hover:border-sky-300 hover:bg-sky-50 transition-colors"
                   >
@@ -235,6 +281,7 @@ const Footer = () => {
                   </a>
                 ))}
               </div>
+
 
               {/* Legal Links */}
               <div className="flex flex-wrap justify-center gap-4 text-xs md:text-sm">

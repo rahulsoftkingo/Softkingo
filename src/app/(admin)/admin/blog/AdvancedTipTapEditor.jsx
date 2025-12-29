@@ -13,18 +13,22 @@ import TextAlign from '@tiptap/extension-text-align';
 import Color from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Placeholder from '@tiptap/extension-placeholder';
+
+// NOTE: if this import errors, change to:
+// import Table from '@tiptap/extension-table';
 import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
+
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import CharacterCount from '@tiptap/extension-character-count';
 import Dropcursor from '@tiptap/extension-dropcursor';
-import FontFamily from '@tiptap/extension-font-family'; // ✅ NEW
-import Subscript from '@tiptap/extension-subscript'; // ✅ NEW
-import Superscript from '@tiptap/extension-superscript'; // ✅ NEW
-import Typography from '@tiptap/extension-typography'; // ✅ NEW (smart quotes, dashes)
+import FontFamily from '@tiptap/extension-font-family';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
+import Typography from '@tiptap/extension-typography';
 
 import {
   Bold,
@@ -32,7 +36,6 @@ import {
   Underline as UnderlineIcon,
   Strikethrough,
   Code,
-  Heading1,
   Heading2,
   Heading3,
   List,
@@ -40,7 +43,7 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
-  AlignJustify, // ✅ NEW
+  AlignJustify,
   Highlighter,
   Link2,
   Image as ImageIcon,
@@ -49,7 +52,6 @@ import {
   Undo,
   Redo,
   Upload,
-  Sparkles,
   Plus,
   Minus,
   Type,
@@ -57,99 +59,111 @@ import {
   Save,
   Subscript as SubIcon,
   Superscript as SupIcon,
+  Text as TextIcon,
 } from 'lucide-react';
 
 export default function AdvancedTipTapEditor({ value, onChange }) {
   const [isUploading, setIsUploading] = useState(false);
   const [wordCount, setWordCount] = useState(0);
+
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showFontPicker, setShowFontPicker] = useState(false);
+  const [showFontSizePicker, setShowFontSizePicker] = useState(false);
+
   const [currentColor, setCurrentColor] = useState('#000000');
   const [currentFont, setCurrentFont] = useState('Inter');
+  const [currentFontSize, setCurrentFontSize] = useState('16px');
+
   const [isSaving, setIsSaving] = useState(false);
 
   const fileInputRef = useRef(null);
   const editorRef = useRef(null);
   const colorPickerRef = useRef(null);
+  const fontPickerRef = useRef(null);
+  const fontSizePickerRef = useRef(null);
 
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
       Color.configure({ types: [TextStyle.name, 'textStyle'] }),
       TextStyle,
-      FontFamily.configure({
-        types: ['textStyle'],
-      }),
+      FontFamily.configure({ types: ['textStyle'] }),
+
       StarterKit.configure({
+        // Keep table OFF here since we add Table extension separately
         table: false,
         horizontalRule: true,
+        heading: {
+          // ✅ REMOVE H1 => allow only 2..6
+          levels: [2, 3, 4, 5, 6],
+        },
         history: {
-          depth: 100, // ✅ More undo steps
+          depth: 100,
           newGroupDelay: 500,
         },
       }),
+
       Underline,
-      Subscript, // ✅ NEW
-      Superscript, // ✅ NEW
-      Typography, // ✅ Smart quotes & dashes
+      Subscript,
+      Superscript,
+      Typography,
+
       Highlight.configure({ multicolor: true }),
+
       Link.configure({
-        openOnClick: false, // ✅ Changed for better editing
+        openOnClick: false,
         linkOnPaste: true,
-        autolink: true, // ✅ Auto-detect URLs
-        HTMLAttributes: { class: 'editor-link', target: '_blank', rel: 'noopener noreferrer' },
-      }),
-      Image.configure({
-        inline: true, // ✅ Allow inline images
-        allowBase64: false,
+        autolink: true,
         HTMLAttributes: {
-          class: 'editor-image',
+          class: 'editor-link',
+          target: '_blank',
+          rel: 'noopener noreferrer',
         },
       }),
+
+      Image.configure({
+        inline: true,
+        allowBase64: false,
+        HTMLAttributes: { class: 'editor-image' },
+      }),
+
       TextAlign.configure({
         types: ['heading', 'paragraph'],
-        alignments: ['left', 'center', 'right', 'justify'], // ✅ Added justify
+        alignments: ['left', 'center', 'right', 'justify'],
       }),
+
       Placeholder.configure({
         placeholder: ({ node }) => {
-          if (node.type.name === 'heading') {
-            return 'What\'s the title?';
-          }
+          // ✅ since H1 removed, title can be H2
+          if (node.type.name === 'heading') return "What's the title?";
           return 'Start writing your amazing content...';
         },
       }),
+
       Table.configure({
         resizable: true,
         handleWidth: 5,
-        cellMinWidth: 50,
-        HTMLAttributes: {
-          class: 'editor-table',
-        },
+        cellMinWidth: 60,
+        HTMLAttributes: { class: 'editor-table' },
       }),
       TableRow,
       TableHeader,
       TableCell,
-      TaskList.configure({
-        HTMLAttributes: { class: 'editor-task-list' },
-      }),
-      TaskItem.configure({
-        nested: true,
-        HTMLAttributes: { class: 'editor-task-item' },
-      }),
+
+      TaskList.configure({ HTMLAttributes: { class: 'editor-task-list' } }),
+      TaskItem.configure({ nested: true, HTMLAttributes: { class: 'editor-task-item' } }),
+
       CharacterCount.configure({ mode: 'textSize' }),
-      Dropcursor.configure({
-        width: 3,
-        color: '#0ea5e9',
-      }),
+      Dropcursor.configure({ width: 3, color: '#0ea5e9' }),
     ],
     content: safeParseDoc(value),
-    autofocus: 'end', // ✅ Auto focus at end
+    autofocus: 'end',
     editorProps: {
       attributes: {
-        class: 'prose prose-lg max-w-none focus:outline-none',
-        spellcheck: 'true', // ✅ Enable spellcheck
+        // NOTE: keep simple class; styling should be in global css
+        class: 'focus:outline-none',
+        spellcheck: 'true',
       },
-      // ✅ Handle paste from Word/Google Docs
       transformPastedHTML(html) {
         return html
           .replace(/<meta[^>]*>/g, '')
@@ -160,10 +174,9 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     },
     onUpdate({ editor }) {
       const json = editor.getJSON();
-      onChange(JSON.stringify(json));
+      onChange?.(JSON.stringify(json));
       updateWordCount(editor);
-      
-      // ✅ Auto-save indicator
+
       setIsSaving(true);
       setTimeout(() => setIsSaving(false), 800);
     },
@@ -178,24 +191,24 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     setWordCount(words);
   };
 
-  // ✅ Keyboard shortcuts helper
+  // Keyboard shortcuts
   useEffect(() => {
     if (!editor) return;
 
     const handleKeyDown = (e) => {
-      // Ctrl+K for link (like Google Docs)
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      // Ctrl/Cmd + K => link
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setLinkPrompt();
       }
-      
-      // Ctrl+Shift+7 for ordered list
+
+      // Ctrl/Cmd + Shift + 7 => ordered list
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === '7') {
         e.preventDefault();
         editor.chain().focus().toggleOrderedList().run();
       }
-      
-      // Ctrl+Shift+8 for bullet list
+
+      // Ctrl/Cmd + Shift + 8 => bullet list
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === '8') {
         e.preventDefault();
         editor.chain().focus().toggleBulletList().run();
@@ -206,15 +219,15 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [editor]);
 
-  // ✅ Click outside color picker
+  // Click outside popovers
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) {
-        setShowColorPicker(false);
-      }
+    const onDown = (e) => {
+      if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) setShowColorPicker(false);
+      if (fontPickerRef.current && !fontPickerRef.current.contains(e.target)) setShowFontPicker(false);
+      if (fontSizePickerRef.current && !fontSizePickerRef.current.contains(e.target)) setShowFontSizePicker(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
   }, []);
 
   const handleImageUpload = async (file) => {
@@ -222,13 +235,9 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      fd.append('folder', 'blog'); // ✅ blog folder
+      fd.append('folder', 'blog');
 
-      const res = await fetch('/api/admin/media/upload', {
-        method: 'POST',
-        body: fd,
-      });
-
+      const res = await fetch('/api/admin/media/upload', { method: 'POST', body: fd });
       if (!res.ok) throw new Error('Upload failed');
       const data = await res.json();
       return data.url;
@@ -246,29 +255,31 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     if (!file || !editor) return;
 
     const url = await handleImageUpload(file);
-    if (url) {
-      editor.chain().focus().setImage({ src: url, alt: file.name }).run();
-    }
+    if (url) editor.chain().focus().setImage({ src: url, alt: file.name }).run();
 
     event.target.value = '';
   };
 
   const setLinkPrompt = () => {
+    if (!editor) return;
     const previousUrl = editor.getAttributes('link').href || '';
     const url = window.prompt('Enter URL:', previousUrl);
-
     if (url === null) return;
+
     if (url === '') {
       editor.chain().focus().extendMarkRange('link').unsetLink().run();
       return;
     }
 
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange('link')
-      .setLink({ href: url, target: '_blank' })
-      .run();
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url, target: '_blank' }).run();
+  };
+
+  // Font size helper using TextStyle mark
+  const applyFontSize = (size) => {
+    if (!editor) return;
+    editor.chain().focus().setMark('textStyle', { fontSize: size }).run();
+    setCurrentFontSize(size);
+    setShowFontSizePicker(false);
   };
 
   if (!editor) {
@@ -282,7 +293,6 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
 
   return (
     <div className="advanced-editor" ref={editorRef}>
-      {/* Toolbar */}
       <EditorToolbar
         editor={editor}
         onImageUpload={() => fileInputRef.current?.click()}
@@ -291,16 +301,21 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
         setCurrentColor={setCurrentColor}
         currentFont={currentFont}
         setCurrentFont={setCurrentFont}
+        currentFontSize={currentFontSize}
+        applyFontSize={applyFontSize}
         showColorPicker={showColorPicker}
         setShowColorPicker={setShowColorPicker}
         showFontPicker={showFontPicker}
         setShowFontPicker={setShowFontPicker}
+        showFontSizePicker={showFontSizePicker}
+        setShowFontSizePicker={setShowFontSizePicker}
         colorPickerRef={colorPickerRef}
+        fontPickerRef={fontPickerRef}
+        fontSizePickerRef={fontSizePickerRef}
         setLinkPrompt={setLinkPrompt}
         isSaving={isSaving}
       />
 
-      {/* Hidden file input */}
       <input
         type="file"
         ref={fileInputRef}
@@ -309,20 +324,15 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
         className="hidden"
       />
 
-      {/* Content */}
       <div className="editor-container">
         <div className="editor-scroll">
-          <EditorContent editor={editor} className="editor-content" />
+          <div className="editor-content">
+            <EditorContent editor={editor} />
+          </div>
         </div>
-      </div>
 
-      {/* Status bar */}
-      <EditorStatusBar
-        editor={editor}
-        wordCount={wordCount}
-        isUploading={isUploading}
-        isSaving={isSaving}
-      />
+        <EditorStatusBar editor={editor} wordCount={wordCount} isUploading={isUploading} isSaving={isSaving} />
+      </div>
     </div>
   );
 }
@@ -331,15 +341,29 @@ function EditorToolbar({
   editor,
   onImageUpload,
   isUploading,
+
   currentColor,
   setCurrentColor,
+
   currentFont,
   setCurrentFont,
+
+  currentFontSize,
+  applyFontSize,
+
   showColorPicker,
   setShowColorPicker,
+
   showFontPicker,
   setShowFontPicker,
+
+  showFontSizePicker,
+  setShowFontSizePicker,
+
   colorPickerRef,
+  fontPickerRef,
+  fontSizePickerRef,
+
   setLinkPrompt,
   isSaving,
 }) {
@@ -350,17 +374,15 @@ function EditorToolbar({
     { value: 'Arial', label: 'Arial' },
     { value: 'Georgia', label: 'Georgia' },
     { value: 'Times New Roman', label: 'Times New Roman' },
-    { value: 'Courier New', label: 'Courier' },
+    { value: 'Courier New', label: 'Courier New' },
     { value: 'Verdana', label: 'Verdana' },
   ];
 
-  const highlightColors = [
-    '#fef08a', // yellow
-    '#86efac', // green
-    '#7dd3fc', // blue
-    '#fda4af', // pink
-    '#c4b5fd', // purple
-  ];
+  const fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px'];
+
+  const colorPalette = ['#000000', '#374151', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#0284c7', '#4f46e5', '#9333ea', '#db2777'];
+
+  const isActive = (name, attrs = {}) => editor.isActive(name, attrs);
 
   const ToolbarButton = ({ active, onClick, icon: Icon, title, disabled = false, variant = 'default' }) => (
     <button
@@ -368,7 +390,12 @@ function EditorToolbar({
       onClick={onClick}
       title={title}
       disabled={disabled}
-      className={`toolbar-btn ${active ? 'toolbar-btn-active' : ''} ${disabled ? 'toolbar-btn-disabled' : ''} ${variant === 'danger' ? 'toolbar-btn-danger' : ''}`}
+      className={[
+        'toolbar-btn',
+        active ? 'toolbar-btn-active' : '',
+        disabled ? 'toolbar-btn-disabled' : '',
+        variant === 'danger' ? 'toolbar-btn-danger' : '',
+      ].join(' ')}
     >
       <Icon size={16} />
     </button>
@@ -377,12 +404,10 @@ function EditorToolbar({
   const ToolbarSeparator = () => <div className="toolbar-separator" />;
   const ToolbarGroup = ({ children }) => <div className="toolbar-group">{children}</div>;
 
-  const isActive = (name, attrs = {}) => editor.isActive(name, attrs);
-
   return (
     <div className="editor-toolbar">
       <div className="toolbar-section">
-        {/* History */}
+        {/* Undo / Redo */}
         <ToolbarGroup>
           <ToolbarButton
             onClick={() => editor.chain().focus().undo().run()}
@@ -400,8 +425,8 @@ function EditorToolbar({
 
         <ToolbarSeparator />
 
-        {/* Font Family */}
-        <div className="toolbar-group relative">
+        {/* Font family */}
+        <div className="toolbar-group relative" ref={fontPickerRef}>
           <button
             type="button"
             onClick={() => setShowFontPicker(!showFontPicker)}
@@ -409,8 +434,9 @@ function EditorToolbar({
             title="Font family"
           >
             <Type size={14} />
-            <span className="text-xs ml-1">{currentFont}</span>
+            <span className="toolbar-select-text">{currentFont}</span>
           </button>
+
           {showFontPicker && (
             <div className="font-picker-dropdown">
               {fonts.map((font) => (
@@ -432,9 +458,49 @@ function EditorToolbar({
           )}
         </div>
 
+        {/* Font size */}
+        <div className="toolbar-group relative" ref={fontSizePickerRef}>
+          <button
+            type="button"
+            onClick={() => setShowFontSizePicker(!showFontSizePicker)}
+            className="toolbar-btn-select"
+            title="Font size"
+          >
+            <TextIcon size={14} />
+            <span className="toolbar-select-text">{currentFontSize}</span>
+          </button>
+
+          {showFontSizePicker && (
+            <div className="font-picker-dropdown">
+              {fontSizes.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => applyFontSize(s)}
+                  className="font-picker-item"
+                >
+                  {s}
+                </button>
+              ))}
+              <div className="font-picker-divider" />
+              <button
+                type="button"
+                className="font-picker-item"
+                onClick={() => {
+                  editor.chain().focus().unsetMark('textStyle').run();
+                  setCurrentFontSize('16px');
+                  setShowFontSizePicker(false);
+                }}
+              >
+                Reset size
+              </button>
+            </div>
+          )}
+        </div>
+
         <ToolbarSeparator />
 
-        {/* Text formatting */}
+        {/* Formatting */}
         <ToolbarGroup>
           <ToolbarButton active={isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()} icon={Bold} title="Bold (Ctrl+B)" />
           <ToolbarButton active={isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()} icon={Italic} title="Italic (Ctrl+I)" />
@@ -442,15 +508,45 @@ function EditorToolbar({
           <ToolbarButton active={isActive('strike')} onClick={() => editor.chain().focus().toggleStrike().run()} icon={Strikethrough} title="Strikethrough" />
           <ToolbarButton active={isActive('subscript')} onClick={() => editor.chain().focus().toggleSubscript().run()} icon={SubIcon} title="Subscript" />
           <ToolbarButton active={isActive('superscript')} onClick={() => editor.chain().focus().toggleSuperscript().run()} icon={SupIcon} title="Superscript" />
+          <ToolbarButton active={isActive('code')} onClick={() => editor.chain().focus().toggleCode().run()} icon={Code} title="Inline Code" />
         </ToolbarGroup>
 
         <ToolbarSeparator />
 
-        {/* Headings */}
+        {/* Headings (H2–H6 only) */}
         <ToolbarGroup>
-          <ToolbarButton active={isActive('heading', { level: 1 })} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} icon={Heading1} title="Heading 1" />
-          <ToolbarButton active={isActive('heading', { level: 2 })} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} icon={Heading2} title="Heading 2" />
-          <ToolbarButton active={isActive('heading', { level: 3 })} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()} icon={Heading3} title="Heading 3" />
+          <ToolbarButton
+            active={isActive('heading', { level: 2 })}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            icon={Heading2}
+            title="Heading 2"
+          />
+          <ToolbarButton
+            active={isActive('heading', { level: 3 })}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+            icon={Heading3}
+            title="Heading 3"
+          />
+
+          {/* H4/H5/H6: icons not available in lucide by default; use same icons with different levels */}
+          <ToolbarButton
+            active={isActive('heading', { level: 4 })}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+            icon={Heading3}
+            title="Heading 4"
+          />
+          <ToolbarButton
+            active={isActive('heading', { level: 5 })}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
+            icon={Heading3}
+            title="Heading 5"
+          />
+          <ToolbarButton
+            active={isActive('heading', { level: 6 })}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
+            icon={Heading3}
+            title="Heading 6"
+          />
         </ToolbarGroup>
 
         <ToolbarSeparator />
@@ -485,16 +581,18 @@ function EditorToolbar({
             >
               <Palette size={16} />
             </button>
+
             {showColorPicker && (
               <div className="color-picker-dropdown">
                 <div className="color-grid">
-                  {['#000000', '#374151', '#dc2626', '#ea580c', '#ca8a04', '#16a34a', '#0284c7', '#4f46e5', '#9333ea', '#db2777'].map((color) => (
+                  {colorPalette.map((color) => (
                     <button
                       key={color}
                       type="button"
                       onClick={() => {
                         editor.chain().focus().setColor(color).run();
                         setCurrentColor(color);
+                        setShowColorPicker(false);
                       }}
                       className="color-swatch"
                       style={{ backgroundColor: color }}
@@ -502,19 +600,30 @@ function EditorToolbar({
                     />
                   ))}
                 </div>
+
+                <div className="color-picker-divider" />
+
+                <button
+                  type="button"
+                  className="color-reset"
+                  onClick={() => {
+                    editor.chain().focus().unsetColor().run();
+                    setCurrentColor('#000000');
+                    setShowColorPicker(false);
+                  }}
+                >
+                  Reset color
+                </button>
               </div>
             )}
           </div>
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => editor.chain().focus().toggleHighlight().run()}
-              className={`toolbar-btn ${isActive('highlight') ? 'toolbar-btn-active' : ''}`}
-              title="Highlight"
-            >
-              <Highlighter size={16} />
-            </button>
-          </div>
+
+          <ToolbarButton
+            active={isActive('highlight')}
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+            icon={Highlighter}
+            title="Highlight"
+          />
         </ToolbarGroup>
 
         <ToolbarSeparator />
@@ -529,15 +638,9 @@ function EditorToolbar({
             icon={TableIcon}
             title="Insert Table"
           />
-          <ToolbarButton
-            onClick={() => editor.chain().focus().toggleCode().run()}
-            icon={Code}
-            title="Inline Code"
-            active={isActive('code')}
-          />
         </ToolbarGroup>
 
-        {/* Table Controls (show when in table) */}
+        {/* Table Controls */}
         {isActive('table') && (
           <>
             <ToolbarSeparator />
@@ -550,14 +653,14 @@ function EditorToolbar({
             </ToolbarGroup>
           </>
         )}
-      </div>
 
-      {isSaving && (
-        <div className="toolbar-saving">
-          <Save size={12} className="animate-pulse" />
-          <span>Saving...</span>
-        </div>
-      )}
+        {isSaving && (
+          <div className="toolbar-saving">
+            <Save size={12} />
+            <span>Saving...</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -574,26 +677,30 @@ function EditorStatusBar({ editor, wordCount, isUploading, isSaving }) {
           <span className="status-label">Words:</span>
           <span className="status-value">{wordCount.toLocaleString()}</span>
         </div>
+
         <div className="status-item">
           <span className="status-label">Characters:</span>
           <span className="status-value">{characters.toLocaleString()}</span>
         </div>
+
         {isUploading && (
           <div className="status-item">
             <span className="uploading-indicator">Uploading image...</span>
           </div>
         )}
+
         {isSaving && (
           <div className="status-item">
-            <span className="text-sky-600 text-xs">✓ Autosaved</span>
+            <span className="status-saved">✓ Autosaved</span>
           </div>
         )}
       </div>
+
       <div className="status-right">
-        <div className="status-item text-xs">
-          <kbd className="kbd">Ctrl+B</kbd> Bold •
-          <kbd className="kbd">Ctrl+K</kbd> Link •
-          <kbd className="kbd">Ctrl+Z</kbd> Undo
+        <div className="status-item">
+          <kbd className="kbd">Ctrl</kbd>+<kbd className="kbd">B</kbd> Bold
+          <kbd className="kbd">Ctrl</kbd>+<kbd className="kbd">K</kbd> Link
+          <kbd className="kbd">Ctrl</kbd>+<kbd className="kbd">Z</kbd> Undo
         </div>
       </div>
     </div>
@@ -602,20 +709,15 @@ function EditorStatusBar({ editor, wordCount, isUploading, isSaving }) {
 
 function safeParseDoc(str) {
   if (!str) {
-    return {
-      type: 'doc',
-      content: [{ type: 'paragraph' }],
-    };
+    return { type: 'doc', content: [{ type: 'paragraph' }] };
   }
   try {
     return JSON.parse(str);
   } catch {
-    return {
-      type: 'doc',
-      content: [{ type: 'paragraph' }],
-    };
+    return { type: 'doc', content: [{ type: 'paragraph' }] };
   }
 }
+
 
 /* ---------- ENHANCED GLOBAL STYLES ---------- */
 

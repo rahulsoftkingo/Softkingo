@@ -2,9 +2,9 @@ import React from 'react';
 import { FaArrowRight } from "react-icons/fa"
 const craftings = [
   {
-    name: "5+",
+    name: "6+",
     featurs:
-      "5+ Years of Experience ",
+      "6+ Years of Experience ",
     image: "/images/crafting/Rectangle 94.png",
     postion: "CEO, Tech Innovations",
   },
@@ -33,28 +33,28 @@ const craftings = [
 
 function Crafting() {
   return (
-    <div className="bg-gradient-to-br from-white via-sky-100 to-sky-200 text-black  lg:h- flex justify-center ">
+    <div className="bg-gradient-to-br from-white via-sky-100 to-sky-200 text-black  lg:h- flex justify-center  py-10 sm:py-12 px-4 sm:px-6">
       {/* <div className='m-[60px] pt-[60px]  w-[1315px] max-h-[749px] '> */}
-      <div className='py-16 container mx-auto px-6 sm:px-8 md:px-12 lg:px-16 2xl:px-28 '>
-        <h2 className="text-3xl md:text-3xl lg:text-4xl 2xl:text-5xl font-[700px] mb-18 leading-normal pt-8 text-center lg:hidden">
+      <div className='max-w-7xl mx-auto '>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-[700px] mb-1 leading-normal pt-8 text-center lg:hidden text-sky-900">
           Crafting  
-          Digital <span className='text-primary font-bold'>
+          Digital <span className='bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 font-bold'>
             Experience
           </span>
 
-          {/* , <br/> <br/>At Scale  */}
+          , <br/>At Scale 
         </h2>
         <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12  items-center py-4 lg:py-8 ">
         <div>
-          <h2 className="text-3xl md:text-3xl lg:text-3xl 2xl:text-4xl font-[700px] mb-18 leading-normal pb-4 text-start hidden lg:block">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-[700px] mt-4 leading-normal pb-4 text-start hidden lg:block text-sky-900">
           Crafting  
-          Digital <span className='text-primary font-bold'>
+          Digital <span className='bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 font-bold'>
             Experience
           </span>
 
           , At Scale 
         </h2>
-          <p className="text-gray-700 mt- text-xs md:text-md lg:text-[15px] max-w-3xl leading-normal text-center md:text-start ">
+          <p className="text-gray-600 md:text-sky-800 mt- text-xs md:text-xl lg:text-[12px] max-w-3xl leading-normal text-center md:text-start ">
             From <b>450+ mobile apps</b> to 500+ web solutions, our certified experts bring innovation, precision, and impact trusted by millions, rated 5.0 on clutch.
           </p>
         </div>
@@ -63,8 +63,8 @@ function Crafting() {
           {craftings.map((craftings, i) => (
             <div key={i} className='borde border-primary rounded-2xl p-2 m- md:max-w-[25rem] md:h-[10rem] hover:shadow-lg md:flex md:flex-row justify-between bg-white flex-col-reverse hidden'>
               <div className='col-span-2 flex flex-col items-start text-center justify-end p-2 w-[15rem]'>
-                <h1 className='font-bold text-3xl 2xl:text-4xl text-primary mb-2 border- w-full text-start border-primary'>{craftings.name}</h1>
-                <p className='text-primary text-sm '>{craftings.featurs}</p>
+                <h1 className='font-bold text-3xl 2xl:text-4xl text-sky-800 mb-2 border- w-full text-start border-primary'>{craftings.name}</h1>
+                <p className='text-gray-600 text-sm '>{craftings.featurs}</p>
               </div>
               <div className='col-span-1 '>
                 <img src={craftings.image} className='h-full w-full fit'></img>
@@ -75,8 +75,8 @@ function Crafting() {
             {craftings.map((craftings, i) => (
             <div key={i} className='borde border-primary rounded-2xl p-2 md:h-[8rem] hover:shadow-lg md:flex md:flex-row justify-between bg-white flex-col-reverse '>
               <div className='col-span-2 flex flex-col items-start text-center justify-end p-2 '>
-                <h1 className='font-bold text-3xl 2xl:text-4xl text-primary mb-2 text-start border-primary'>{craftings.name}</h1>
-                <p className='text-primary text-[0.6rem] '>{craftings.featurs}</p>
+                <h1 className='font-bold text-3xl 2xl:text-4xl text-sky-800 mb-2 text-start border-primary'>{craftings.name}</h1>
+                <p className='text-gray-600 text-[0.6rem] '>{craftings.featurs}</p>
               </div>
               <div className='col-span-1 hidden'>
                 <img src={craftings.image} className='h-full w-full fit'></img>
@@ -85,7 +85,7 @@ function Crafting() {
           ))}
           </div>
           <section>
-            <div className='gap-4 flex  flex-col items-center text-center justify-evenly -sky-500 p-6 rounded-2xl shadow- bg-gradient-to-r from-sky-300 via-sky-200 to-sky-400 lg:max-w-[25rem] h-[8] lg:h-[10rem]'>
+            <div className='gap-4 flex  flex-col items-center text-center justify-evenly -sky-500 p-6 rounded-2xl shadow- bg-gradient-to-r from-sky-500 via-sky-300 to-sky-500 lg:max-w-[25rem] h-[9rem] lg:h-[10rem]'>
               <h1 className=' text-xl 2xl:text-2xl text-white font-semibold'>
                 Want To Start A Project?
               </h1>

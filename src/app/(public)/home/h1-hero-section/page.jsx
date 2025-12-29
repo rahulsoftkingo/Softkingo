@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { FaArrowRight, FaCode, FaMobileAlt, FaLaptopCode, FaChartLine } from 'react-icons/fa';
 
 import RightSec from './professionalcardstack';
+import Link from 'next/link';
 
 const HeroSection = () => {
   const controls = useAnimation();
@@ -75,7 +76,7 @@ const HeroSection = () => {
         animate={{ y: [0, -20, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
-        <FaCode className="text-primary text-2xl" />
+        <FaCode className="text-sky-400 text-2xl" />
       </motion.div>
 
       <motion.div
@@ -83,7 +84,7 @@ const HeroSection = () => {
         animate={{ y: [0, -25, 0] }}
         transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
       >
-        <FaMobileAlt className="text-primary text-2xl" />
+        <FaMobileAlt className="text-sky-400 text-2xl" />
       </motion.div>
 
       <motion.div
@@ -91,7 +92,7 @@ const HeroSection = () => {
         animate={{ y: [0, -15, 0] }}
         transition={{ duration: 4.5, repeat: Infinity, delay: 1 }}
       >
-        <FaLaptopCode className="text-primary text-2xl" />
+        <FaLaptopCode className="text-sky-400 text-2xl" />
       </motion.div>
 
       {/* Floating elements */}
@@ -130,7 +131,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8 }}
           >
             <motion.div
-              className="inline-block bg-sky-50 text-primary px-6 py-2 rounded-full mb-6 font-medium border border-[#28AFDF]/30 text-xs md:text-md text-center"
+              className="inline-block bg-sky-50 text-sky-400 px-6 py-2 rounded-full mb-6 font-medium border border-[#28AFDF]/30 text-xs md:text-md text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -145,7 +146,7 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
             >
               <span className="block mb-3">Innovative</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-primary">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
                 Digital Solutions
               </span>
               <span className="block mt-3">for Modern Enterprises</span>
@@ -167,23 +168,35 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
             >
-              <motion.button
-                className="px-4 md:px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white font-medium hover:bg-gradient-to-l hover:from-sky-600 hover:via-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 flex items-center justify-center group "
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span className="font-semibold text-bas text-xs md:text-md mr-3 group-hover:mr-4 transition-all">Get A Quote</span>
-                <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </motion.button>
+              {/* Contact Us (internal) */}
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  href="/contact"
+                  className="px-4 md:px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white font-medium hover:bg-gradient-to-l hover:from-sky-600 hover:via-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 flex items-center justify-center group"
+                >
+                  <span className="font-semibold text-bas text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
+                    Contact Us
+                  </span>
+                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
 
-              <motion.button
-                className="px-4 md:px-8 py-3 rounded-full bg-white text-[#28AFDF] border-border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-md transition-all duration-300 text-xs md:text-md "
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View Case Studies
-              </motion.button>
+              {/* Meeting (Calendly external) */}
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <a
+                  href="https://calendly.com/paramhans-softkingo/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 md:px-8 py-3 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center"
+                >
+                  <span className="font-semibold text-bas text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
+                    Meeting
+                  </span>
+                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </a>
+              </motion.div>
             </motion.div>
+
 
             <motion.div
               className="flex flex-wrap items-center gap-8"
@@ -205,10 +218,10 @@ const HeroSection = () => {
                 </div> */}
                 <div className="flex -space-x-3">
                   {[
-                    "/images/client/image 73.png",
-                    "/images/client/image 74.png",
-                    "/images/client/image 73.png",
-                    "/images/client1.png"
+                    "/images/client/client4.jpg",
+                    "/images/client/client1.png",
+                    "/images/client/client5.png",
+                    "/images/client/client6.png"
                   ].map((src, i) => (
                     <motion.div
                       key={i}
@@ -225,15 +238,15 @@ const HeroSection = () => {
                 </div>
 
                 <div className="ml-4">
-                  <p className="font-bold text-gray-800">500+</p>
-                  <p className="text-sm text-gray-600">Happy Clients</p>
+                  <p className="font-bold text-gray-800">Our</p>
+                  <p className="text-sm text-gray-600">Clients</p>
                 </div>
               </div>
 
-              <div className="h-8 w-px bg-gray-300"></div>
+              <div className="h-8 w-px bg-gray-300 md:flex hidden"></div>
 
               <div className="md:flex items-center hidden">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-300 to-primary flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-300 to-sky-800 flex items-center justify-center">
                   <span className="text-white font-bold">5+</span>
                 </div>
                 <div className="ml-4">

@@ -8,10 +8,10 @@ import Process from "./h7-process/page";
 import Strengths_Scroll from "./h8-strengths-scroll/page";
 import ReviewSection from "./h9-clients-review/page";
 import Blogs from "./blogs/page";
-
+ import Tech from "@/app/(public)/home/h10-technology/page"
 import { Container } from "postcss";
 
-
+import FooterForm from "@/components/footer/footer-form";
 export default function Home() {
 
   return (
@@ -30,7 +30,7 @@ export default function Home() {
       <Service />
        <Portfolio/>
       <Industries />
-
+<Tech/>
       <Process />
       {/* Pass the ref to Scroll */}
       <Strengths_Scroll />
@@ -40,6 +40,7 @@ export default function Home() {
       {/* <Client scrollRef={scrollRef} /> */}
      
       <Blogs />
+      <FooterForm/>
       {/* <Landing /> */}
       {/* <Services /> */}
 

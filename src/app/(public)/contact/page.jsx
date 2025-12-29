@@ -5,16 +5,17 @@ import Ouroffices from "@/components/common/Our-offices";
 import Faqaccordion from "@/components/common/Faqaccordion";
 import CTA from "@/components/common/Consultation-Cta";
 import InquiryForm from "@/components/public/InquiryForm";
+import TechAheadSection from "@/components/public/TechAheadSection";
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-[#E5F9FF] text-slate-900">
+    <main className="min-h-screen  text-slate-900">
       {/* HERO */}
       <section
         className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center"
         style={{ backgroundImage: "url('/images/contact-hero.png')" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/90 via-[#001322]/75 to-[#001322]/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-[#001322]/45 to-white/10" />
         <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center px-6">
           <div>
             <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-200/70 mb-3">
@@ -49,7 +50,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-10 lg:gap-14 items-start">
           {/* LEFT COLUMN */}
           <div className="space-y-8">
-            <div>
+            {/* <div>
               <h2 className="text-2xl lg:text-3xl font-extrabold text-[#0B3250]">
                 Talk to our team
               </h2>
@@ -58,10 +59,10 @@ export default function ContactPage() {
                 will review it and reach out with questions, suggestions, and a
                 clear engagement plan tailored to you.
               </p>
-            </div>
+            </div> */}
 
             {/* WHAT HAPPENS NEXT */}
-            <div className="rounded-2xl border border-white/80 bg-white/80 backdrop-blur-sm p-5 md:p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
+            {/* <div className="rounded-2xl border border-white/80 bg-white/80 backdrop-blur-sm p-5 md:p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
               <h3 className="text-sm font-semibold text-[#0B3250]">
                 What happens after you submit the form?
               </h3>
@@ -98,10 +99,10 @@ export default function ContactPage() {
                 </a>
                 .
               </p>
-            </div>
+            </div> */}
 
             {/* DIRECT CONTACT STRIP */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <ContactChip
                 label="Call us"
                 value="+91-7428750870"
@@ -116,10 +117,10 @@ export default function ContactPage() {
                 label="Visit our office"
                 value="B-148, Block B, Sector 63, Noida"
               />
-            </div>
+            </div> */}
 
             {/* TRUSTED BY */}
-            <div>
+            {/* <div>
               <p className="text-sm font-medium text-slate-700">Trusted by</p>
               <div className="mt-3 flex flex-wrap items-center gap-5">
                 <Image
@@ -141,7 +142,8 @@ export default function ContactPage() {
                   height={28}
                 />
               </div>
-            </div>
+            </div> */}
+               <TechAheadSection/>
           </div>
 
           {/* RIGHT COLUMN: REUSABLE FORM */}
@@ -158,7 +160,7 @@ export default function ContactPage() {
       </section>
 
       {/* ONE-STOP DIGITAL ENGINEERING PARTNER */}
-      <OneStopPartnerSection />
+      {/* <OneStopPartnerSection /> */}
 
       {/* JOIN OUR TEAM + CONTACT CARDS */}
       <JoinTeamSection />
@@ -245,7 +247,9 @@ function JoinTeamSection() {
               digital experiences. Share your profile with us or explore our
               current openings.
             </p>
-            <div className="flex flex-wrap gap-3 pt-2">
+            
+          </div>
+<div className="flex flex-wrap gap-3 pt-2 hidden">
               <button className="px-5 py-2 rounded-full border border-[#0B3250] text-sm text-[#0B3250] bg-white/90 hover:bg-white transition-colors shadow-[0_8px_18px_rgba(0,0,0,0.04)]">
                 Drop an Email
               </button>
@@ -253,9 +257,7 @@ function JoinTeamSection() {
                 See All Careers
               </button>
             </div>
-          </div>
-
-          <div className="rounded-[22px] bg-white/80 border border-white shadow-[0_18px_45px_rgba(0,0,0,0.08)] px-6 py-5">
+          <div className="rounded-[22px] bg-white/80 border border-white shadow-[0_18px_45px_rgba(0,0,0,0.08)] px-6 py-5 ">
             <p className="text-xs font-semibold tracking-wide text-sky-600 uppercase">
               Why work with us
             </p>

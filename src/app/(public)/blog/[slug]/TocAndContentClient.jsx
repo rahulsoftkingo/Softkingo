@@ -7,7 +7,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-
+// import TipTapBlocks from "@/components/content/TipTapBlocks";
+import EGuidePromoCard from "@/components/public/EGuidePromoCard";
 import { useEffect, useRef, useState } from "react";
 import {
   FaArrowLeft,
@@ -35,6 +36,7 @@ import ArticleRating from "@/app/(public)/blog/ArticleRating";
 import NewsletterStrip from "@/app/(public)/blog/NewsletterStrip";
 
 import { motion, AnimatePresence } from 'framer-motion';
+import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
 
 
 
@@ -80,14 +82,14 @@ useEffect(() => {
 
 
   return (
-    <main className="bg-slate-50">
+    <main className="bg-slate-50 public-article">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-        <section className="grid grid-cols-1 lg:grid-cols-[250px_minmax(0,1.9fr)_minmax(0,260px)] gap-6 lg:gap-8 items-start mb-8">
+        <section className="grid grid-cols-1 lg:grid-cols-[250px_minmax(0,1.9fr)_minmax(0,260px)] gap-6 lg:gap-8 items-start mb-8 ">
           {/* LEFT: TOC + socials */}
           <aside className="hidden lg:block sticky top-24 space-y-4">
           {/* <aside className="hidden lg:block sticky top-24 max-h-[70vh] overflow-auto space-y-4 pr-1"> */}
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm max-h-[70vh] overflow-auto hide-scrollbar">
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm max-h-[70vh] overflow-auto hide-scrollbar toc-card">
               <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-[0.18em] mb-3">
                 On this page
               </p>
@@ -136,7 +138,7 @@ useEffect(() => {
               </ul>
             </div>
 
-            <div className="bg-white border border-sky-100 rounded-2xl p-4 shadow-sm">
+            <div className="bg-white border border-sky-100 rounded-2xl p-4 shadow-sm share-card">
               <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-[0.18em] mb-3">
                 Share
               </p>
@@ -151,7 +153,7 @@ useEffect(() => {
           </aside>
 
           {/* CENTER: article */}
-          <article className="bg-white rounded-3xl shadow-[0_18px_45px_rgba(15,23,42,0.06)] border border-slate-200 overflow-hidden">
+          <article className="bg-white rounded-3xl shadow-[0_18px_45px_rgba(15,23,42,0.06)] border border-slate-200 overflow-hidden prose content-card modern-prose">
             <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-10">
               {post.sections.map((sec, index) => (
                 <section
@@ -162,18 +164,18 @@ useEffect(() => {
                   }}
                   className={`scroll-mt-28 ${
                     sec.id === "overview"
-                      ? "bg-sky-50/60 border border-sky-100 rounded-2xl px-4 sm:px-5 py-5"
-                      : ""
+                      ? "bg-sky-50/60 border border-sky-100 rounded-2xl px-4 sm:px-5 py-5 content-section overview-section"
+                      : "content-section"
                   }`}
                 >
                   <h2
-                    className={`text-xl sm:text-2xl font-semibold mb-3 ${
+                    className={`section-title text-xl sm:text-2xl font-semibold mb-3 ${
                       sec.id === "overview" ? "text-sky-800" : "text-slate-900"
                     }`}
                   >
                     {sec.title}
                   </h2>
-                  <div className="space-y-3 text-[13px] sm:text-[15px] text-slate-700 leading-relaxed">
+                  <div className="space-y-3 text-[13px] sm:text-[15px] text-slate-700 leading-relaxed  content-body">
                     {sec.blocks.map((block, idx) => {
                       if (block.type === "p") {
                         return (
@@ -188,7 +190,7 @@ useEffect(() => {
                           <h3
                             key={idx}
                             id={subId}
-                            className="text-[15px] sm:text-[16px] font-semibold text-slate-900 mt-5 border-l-4 border-sky-500 pl-3"
+                            className="sub-title text-[15px] sm:text-[16px] font-semibold text-slate-900 mt-5 border-l-4 border-sky-500 pl-3"
                           >
                             {block.text}
                           </h3>
@@ -198,7 +200,7 @@ useEffect(() => {
                         return (
                           <ul
                             key={idx}
-                            className="list-disc pl-5 space-y-1.5 marker:text-sky-500"
+                            className="content-ul list-disc pl-5 space-y-1.5 marker:text-sky-500"
                           >
                             {block.items.map((it, i) => (
                               <li key={i}>{it}</li>
@@ -210,7 +212,7 @@ useEffect(() => {
                         return (
                           <ol
                             key={idx}
-                            className="list-decimal pl-5 space-y-1.5 marker:text-sky-500"
+                            className="content-ol list-decimal pl-5 space-y-1.5 marker:text-sky-500"
                           >
                             {block.items.map((it, i) => (
                               <li key={i}>{it}</li>
@@ -262,7 +264,8 @@ useEffect(() => {
           {/* RIGHT: form + e-guide */}
           <aside className=" sm:grid sm:grid-cols-2 gap-8 lg:grid-cols-1 sticky top-24 space-y-4">
             <ContactSideForm />
-            <EGuideCard />
+            {/* <EGuideCard /> */}
+             <LatestEGuidePromoCardClient />
           </aside>
         </section>
 {/* <NewsletterStrip /> */}
@@ -299,14 +302,14 @@ function buildTocItems(sections) {
 
 function EnhancedTable({ table }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-sky-100 bg-sky-50/40 my-6">
-      <table className="min-w-full text-sm border-collapse">
+    <div className="overflow-x-auto rounded-2xl border border-sky-100 bg-sky-50/40 my-6 enhanced-table-wrap">
+      <table className="min-w-full text-sm border-collapse enhanced-table">
         <thead className="bg-sky-600/90">
-          <tr>
+          <tr className="code-block">
             {table.headers.map((h) => (
               <th
                 key={h}
-                className="px-4 py-2 text-left font-semibold text-white text-[12px] uppercase tracking-wide"
+                className="px-4 py-2 text-left font-semibold text-white text-[12px] uppercase tracking-wide  code-block__header"
               >
                 {h}
               </th>
@@ -406,7 +409,7 @@ function StatsBlock({ stats }) {
 // New Component: Image Block
 function ImageBlock({ image }) {
   return (
-    <div className="my-6 rounded-2xl overflow-hidden border border-slate-200">
+    <div className="my-6 rounded-2xl overflow-hidden border border-slate-200 image-block">
       <div className="relative h-64 bg-slate-100">
         <Image
           src={image.src}

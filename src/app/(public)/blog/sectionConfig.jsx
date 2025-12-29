@@ -1,27 +1,27 @@
 export const BLOG_SECTIONS = {
-  insights: {
-    title: "Insights",
-    slugBase: "/insights",
-    types: ["insight"],
-    heroBg: "/images/insights/hero-insights.png",
-    heroLabel: "Softkingo insights",
-    heroHeading: "Explore insights & strategies",
-    heroSub:
-      "Deep dives into product, UX and engineering decisions behind real projects.",
-    listHeading: "All insights",
-    emptyText: "No insights published yet.",
-    featuredCta: "Read insight →",
-    newsletterList: {
-      name: "Insights Newsletter",
-      slug: "insights-newsletter",
-      description: "Newsletter for insights, strategies and deep dives.",
-    },
-  },
+  // insights: {
+  //   title: "Insights",
+  //   slugBase: "/insights",
+  //   types: ["insights"],
+  //   heroBg: "/images/insights/hero-insights.jpg",
+  //   heroLabel: "Softkingo insights",
+  //   heroHeading: "Explore insights & strategies",
+  //   heroSub:
+  //     "Deep dives into product, UX and engineering decisions behind real projects.",
+  //   listHeading: "All insights",
+  //   emptyText: "No insights published yet.",
+  //   featuredCta: "Read insight →",
+  //   newsletterList: {
+  //     name: "Insights Newsletter",
+  //     slug: "insights-newsletter",
+  //     description: "Newsletter for insights, strategies and deep dives.",
+  //   },
+  // },
   blog: {
     title: "Blog",
     slugBase: "/blog",
     types: ["blog"],
-    heroBg: "/images/blog/hero-blog.png",
+    heroBg: "/images/insights/hero-blog.jpg",
     heroLabel: "Softkingo blog",
     heroHeading: "Ideas, insights & launch playbooks",
     heroSub:
@@ -39,7 +39,7 @@ export const BLOG_SECTIONS = {
     title: "Featured",
     slugBase: "/featured",
     types: ["featured"],
-    heroBg: "/images/featured/hero-featured.png",
+    heroBg: "/images/insights/hero-featured.jpg",
     heroLabel: "Featured stories",
     heroHeading: "Handpicked stories & case studies",
     heroSub:
@@ -53,29 +53,29 @@ export const BLOG_SECTIONS = {
       description: "Updates when we publish featured stories.",
     },
   },
-  "e-guides": {
-    title: "E‑Guides",
-    slugBase: "/e-guides",
-    types: ["e-guide"],
-    heroBg: "/images/guides/hero-eguides.png",
-    heroLabel: "Softkingo e‑guides",
-    heroHeading: "Step‑by‑step product playbooks",
-    heroSub:
-      "Structured guides to plan, build and scale web and mobile products.",
-    listHeading: "All e‑guides",
-    emptyText: "No e‑guides available yet.",
-    featuredCta: "View guide →",
-    newsletterList: {
-      name: "E‑Guides Newsletter",
-      slug: "eguides-newsletter",
-      description: "Get updates when new guides go live.",
-    },
-  },
+  // "e-guides": {
+  //   title: "E‑Guides",
+  //   slugBase: "/e-guides",
+  //   types: ["e-guide"],
+  //   heroBg: "/images/insights/hero-eguides.png",
+  //   heroLabel: "Softkingo e‑guides",
+  //   heroHeading: "Step‑by‑step product playbooks",
+  //   heroSub:
+  //     "Structured guides to plan, build and scale web and mobile products.",
+  //   listHeading: "All e‑guides",
+  //   emptyText: "No e‑guides available yet.",
+  //   featuredCta: "View guide →",
+  //   newsletterList: {
+  //     name: "E‑Guides Newsletter",
+  //     slug: "eguides-newsletter",
+  //     description: "Get updates when new guides go live.",
+  //   },
+  // },
   "press-releases": {
     title: "Press Releases",
     slugBase: "/press-releases",
     types: ["press-release"],
-    heroBg: "/images/press/hero-press.png",
+    heroBg: "/images/insights/hero-press.jpg",
     heroLabel: "Press releases",
     heroHeading: "Company launches & milestones",
     heroSub:
@@ -92,8 +92,8 @@ export const BLOG_SECTIONS = {
   guides: {
     title: "Product Guides",
     slugBase: "/guides",
-    types: ["product-guide"],
-    heroBg: "/images/guides/hero-guides.png",
+    types: ["guides"],
+    heroBg: "/images/insights/hero-guides.jpg",
     heroLabel: "Product guides",
     heroHeading: "Feature breakdowns & how‑tos",
     heroSub:
@@ -111,7 +111,7 @@ export const BLOG_SECTIONS = {
     title: "Media Coverage",
     slugBase: "/media-coverage",
     types: ["media-coverage"],
-    heroBg: "/images/media/hero-media.png",
+    heroBg: "/images/insights/hero-media.avif",
     heroLabel: "Media coverage",
     heroHeading: "What the world says about us",
     heroSub:
@@ -128,8 +128,8 @@ export const BLOG_SECTIONS = {
   articles: {
     title: "Articles",
     slugBase: "/articles",
-    types: ["article"],
-    heroBg: "/images/articles/hero-articles.png",
+    types: ["articles"],
+    heroBg: "/images/insights/hero-articles.jpg",
     heroLabel: "Technical articles",
     heroHeading: "Deep dives into tech & architecture",
     heroSub:
@@ -146,8 +146,8 @@ export const BLOG_SECTIONS = {
   whitepapers: {
     title: "Whitepapers",
     slugBase: "/whitepapers",
-    types: ["whitepaper"],
-    heroBg: "/images/whitepapers/hero-whitepapers.png",
+    types: ["whitepapers"],
+    heroBg: "/images/insights/hero-whitepapers.png",
     heroLabel: "Whitepapers",
     heroHeading: "Research‑backed tech documents",
     heroSub:
@@ -164,8 +164,8 @@ export const BLOG_SECTIONS = {
   podcasts: {
     title: "Podcasts",
     slugBase: "/podcasts",
-    types: ["podcast"],
-    heroBg: "/images/podcasts/hero-podcasts.png",
+    types: ["podcasts"],
+    heroBg: "/images/insights/hero-podcasts.webp",
     heroLabel: "Podcasts",
     heroHeading: "Conversations with builders",
     heroSub:

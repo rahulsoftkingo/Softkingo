@@ -19,11 +19,11 @@ const marqueeItems = Array.from({ length: repeatCount })
 
 export default function Feature() {
   return (
-    <div className="bg-white text-black py-8  overflow-hidden">
-      <div className="container mx-auto px-4 sm:px-8 md:px-12 lg:px-16 2xl:px-28 flex items-center">
+    <div className="bg-white text-black pb-8 pt-4 px-4 sm:px-6  overflow-hidden">
+      <div className="max-w-7xl mx-auto flex items-center">
         {/* Heading on top */}
         <div className="relative z-10 flex-shrink-0 pr-6 bg-whit h-full py-4 hidden md:flex">
-          <h1 className="text-md md:text-lg  lg:text-xl 2xl:text-2xl font-semibold">As <span className='text-primary'>Features</span> On</h1>
+          <h1 className="text-md md:text-lg  lg:text-xl 2xl:text-2xl font-semibold text-sky-900">As <span className='bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500'>Features</span> On</h1>
         </div>
 
         {/* Scrolling strip behind */}

@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Settings, Image, Lock, Share2, FileText, Globe } from 'lucide-react';
+import { Settings, Image, Lock, Share2, FileText, Globe, HardDrive } from "lucide-react";
 
 const tabs = [
   { href: '/admin/settings', label: 'General', icon: Settings },
@@ -12,6 +12,7 @@ const tabs = [
   { href: '/admin/settings/social', label: 'Social', icon: Share2 },
   { href: '/admin/settings/seo', label: 'SEO', icon: Globe },
   { href: '/admin/settings/footer', label: 'Footer', icon: FileText },
+  { href: "/admin/settings/storage", label: "Storage", icon: HardDrive },
 ];
 
 export default function SettingsLayout({ children }) {
