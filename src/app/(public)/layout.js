@@ -6,6 +6,9 @@ import ChatWidget from "@/components/public/ChatWidget";
 import WhatsAppButton from "@/components/public/WhatsAppButton";
 import { buildMetadata } from "@/lib/seo/metadata";
 
+export const dynamic = 'force-dynamic'  
+export const revalidate = 0 
+
 export async function generateMetadata() {
   return buildMetadata(); // Softkingo defaults
 }
