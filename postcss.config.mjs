@@ -4,11 +4,9 @@
 //   },
 // };
 
-// export default config;
 // postcss.config.mjs
 export default {
   plugins: {
-    tailwindcss: {},        // ✅ Correct name
-    autoprefixer: {},       // ✅ Required
-  },
+    "@tailwindcss/postcss": {}
+  }
 }
