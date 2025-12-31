@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ResourceItem } from './InsightsMenu';
-import "./DropdownIcon.css";
 import Link from "next/link";
 
 import { FaArrowRight } from "react-icons/fa"
@@ -53,6 +52,25 @@ const OurWorkMenu = () => {
           </div>
         </div>
       </div>
+            <style>{`.header_menu_tab_ic {
+    border-radius: 8px;
+    background: linear-gradient(180deg, #cedbdf 0%, #f0f4f4 100%), #d9d9d9;
+    flex: 0 0 45px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* color: rgb(95, 162, 188); */
+}
+.max_height{
+    height: calc(100% - 7rem);
+    max-height: calc(100% - 7rem);
+}
+
+.bg_gradent_l
+{
+    background: linear-gradient(305deg, #c6e7f3ed, transparent);
+}`}</style>
     </div>
   );
 };
