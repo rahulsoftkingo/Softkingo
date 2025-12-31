@@ -3,8 +3,10 @@
 
 import { useEffect, useState } from "react";
 import { FaPaperclip } from "react-icons/fa";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+// import PhoneInput from "react-phone-input-2";
+// import "react-phone-input-2/lib/style.css";
+import { FaPhone, FaGlobe } from "react-icons/fa";
+
 import BudgetSlider from "@/components/footer/BudgetSlider";
 
 const colorMap = {
@@ -370,31 +372,21 @@ function PhoneField({ phone, setPhone }) {
       <label className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-2 left-1">
         Phone Number<span className="text-red-500">*</span>
       </label>
-      <div className="relative -top-1">
-        <PhoneInput
-          country={"in"}
+      <div className="relative -top-1 flex items-center gap-2">
+        {/* Country flag + Phone input */}
+        <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md">
+          <FaGlobe className="text-sky-900 text-sm" />
+          <span className="text-xs font-medium text-slate-700">+91</span>
+        </div>
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Enter phone number"
           value={phone}
-          onChange={(value) => setPhone(value)}
-          inputProps={{
-            name: "phone",
-            required: true,
-          }}
-          containerStyle={{
-            border: "none",
-            width: "100%",
-          }}
-          inputStyle={{
-            border: "none",
-            boxShadow: "none",
-            backgroundColor: "transparent",
-            width: "100%",
-            fontSize: "0.875rem",
-          }}
-          buttonStyle={{
-            border: "none",
-            backgroundColor: "transparent",
-            borderRight: "1px solid #CBD5E1",
-          }}
+          onChange={(e) => setPhone(e.target.value)}
+          className="flex-1 border-none outline-none bg-transparent text-sm text-slate-700 pl-2 focus:ring-2 focus:ring-sky-300 rounded-md"
+          maxLength={15}
+          required
         />
       </div>
     </div>
