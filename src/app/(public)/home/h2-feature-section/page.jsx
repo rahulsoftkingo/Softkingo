@@ -1,21 +1,17 @@
 // Feature.jsx
 import React from 'react';
-import "./feature.css";
 
 const features = [
-  { name: "5+",    image: "/images/feature/image 183.png" },
-  { name: "5.0+",  image: "/images/feature/image 182.png" },
-  { name: "450+",  image: "/images/feature/image 185.png" },
-  { name: "50+",   image: "/images/feature/image 184.png" },
-   { name: "50+",   image: "/images/feature/BBC.png" },
+  { name: "5+", image: "/images/feature/image 183.png" },
+  { name: "5.0+", image: "/images/feature/image 182.png" },
+  { name: "450+", image: "/images/feature/image 185.png" },
+  { name: "50+", image: "/images/feature/image 184.png" },
+  { name: "50+", image: "/images/feature/BBC.png" },
 ];
 
-// triplicate for a true circle‐like loop
-// const marqueeItems = [...features, ...features];
-// repeatCount = however many times you want before the strip resets
 const repeatCount = 20;
 const marqueeItems = Array.from({ length: repeatCount })
-  .flatMap(() => features); 
+  .flatMap(() => features);
 
 export default function Feature() {
   return (
@@ -41,6 +37,20 @@ export default function Feature() {
           </div>
         </div>
       </div>
+      <style >{`
+       @keyframes marquee {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+       }
+
+       @layer utilities {
+         .animate-marquee {
+           animation: marquee 60s linear infinite;
+         }
+       }
+      `}</style>
     </div>
+    
   );
+  
 }

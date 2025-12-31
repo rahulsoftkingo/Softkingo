@@ -3,8 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { FaPaperclip } from "react-icons/fa";
-// import PhoneInput from "react-phone-input-2";
-// import "react-phone-input-2/lib/style.css";
 import { FaPhone, FaGlobe } from "react-icons/fa";
 
 import BudgetSlider from "@/components/footer/BudgetSlider";
