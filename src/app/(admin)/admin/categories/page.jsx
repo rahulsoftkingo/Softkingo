@@ -64,12 +64,21 @@ export default function BlogCategoriesPage() {
     tagPage * tagPerPage
   );
 
-  const loadCategories = async () => {
-    setLoadingCats(true);
-    const res = await fetch('/api/admin/blog-categories');
-    if (res.ok) setCategories(await res.json());
-    setLoadingCats(false);
-  };
+  // const loadCategories = async () => {
+  //   setLoadingCats(true);
+  //   const res = await fetch('/api/admin/blog-categories');
+  //   if (res.ok) setCategories(await res.json());
+  //   setLoadingCats(false);
+  // };
+const loadCategories = async () => {
+  setLoadingCats(true);
+  const res = await fetch('/api/admin/blog-categories');
+  if (res.ok) {
+    const data = await res.json();
+    setCategories(Array.isArray(data.categories) ? data.categories : []); // ✅ Safe array
+  }
+  setLoadingCats(false);
+};
 
   const loadTags = async () => {
     setLoadingTags(true);

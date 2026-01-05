@@ -2,7 +2,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -36,7 +36,7 @@ const AdvancedTipTapEditor = dynamic(() => import('../../AdvancedTipTapEditor'),
 const TABS = ['basics', 'content', 'seo', 'media'];
 
 const IMAGE_SIZES = {
-  thumbnail: { small: '800×450', medium: '1200×675', large: '1600×900' },
+  thumbnail: { small: '1200×630', medium: '1920×1080', large: '2560×1440' },
   hero: { small: '1280×720', medium: '1920×1080', large: '2560×1440' },
   seo: { standard: '1200×630' },
 };
@@ -127,6 +127,9 @@ export default function BlogEditPageClient({ idParam }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
 
+  const [thumbnailPreview, setThumbnailPreview] = useState('');
+  const [thumbnailFile, setThumbnailFile] = useState(null);
+
   const draftKey = useMemo(
     () => (isNew ? 'blog-draft:new' : `blog-draft:${idParam}`),
     [isNew, idParam],
@@ -159,22 +162,45 @@ export default function BlogEditPageClient({ idParam }) {
   const roles = session?.user?.roles || [];
   const canEdit = roles.some((r) => ['admin', 'manager', 'writer'].includes(r));
 
+
   // meta
-  useEffect(() => {
-    const loadMeta = async () => {
-      try {
-        const [catRes, tagRes] = await Promise.all([
-          fetch('/api/admin/blog-categories'),
-          fetch('/api/admin/blog-tags'),
-        ]);
-        if (catRes.ok) setCategories(await catRes.json());
-        if (tagRes.ok) setAllTags(await tagRes.json());
-      } catch (e) {
-        console.error('meta load error', e);
+useEffect(() => {
+  const loadMeta = async () => {
+    try {
+      const [catRes, tagRes] = await Promise.all([
+        fetch('/api/admin/blog-categories'),
+        fetch('/api/admin/blog-tags'),
+      ]);
+      
+      // ✅ FIXED: Handle both API shapes
+      if (catRes.ok) {
+        const catData = await catRes.json();
+        console.log('Categories API response:', catData); // Debug
+        // Handle {categories: []} OR direct []
+        setCategories(
+          Array.isArray(catData?.categories) 
+            ? catData.categories 
+            : Array.isArray(catData) 
+              ? catData 
+              : []
+        );
       }
-    };
-    loadMeta();
-  }, []);
+      
+      if (tagRes.ok) {
+        const tagData = await tagRes.json();
+        console.log('Tags API response:', tagData); // Debug
+        setAllTags(
+          Array.isArray(tagData) 
+            ? tagData 
+            : tagData?.tags || []
+        );
+      }
+    } catch (e) {
+      console.error('Meta load error:', e);
+    }
+  };
+  loadMeta();
+}, []);
 
   // keep primary placement
   useEffect(() => {
@@ -290,6 +316,36 @@ export default function BlogEditPageClient({ idParam }) {
       </main>
     );
   }
+ const handleThumbnailUpload = useCallback((e) => {
+    const file = e.target.files?.[0];
+    if (!file || !file.type.startsWith('image/')) {
+      setError('Please select valid image');
+      e.target.value = '';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Max 5MB');
+      e.target.value = '';
+      return;
+    }
+    setThumbnailFile(file);
+    setError('');
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (reader.result) {
+        setThumbnailPreview(reader.result);
+        const pureBase64 = reader.result.split(',')[1];
+        setForm(prev => ({ ...prev, thumbnail: pureBase64 }));
+      }
+    };
+    reader.readAsDataURL(file);
+  }, []);
+
+  const handleRemoveThumbnail = useCallback(() => {
+    setThumbnailFile(null);
+    setThumbnailPreview('');
+    setForm(prev => ({ ...prev, thumbnail: '' }));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -337,6 +393,7 @@ export default function BlogEditPageClient({ idParam }) {
     return `${SITE_BASE}${base}/${slug}`;
   }, [form.slug, form.type, form.placements]);
 
+
   async function fetchFolderFiles(folder) {
     setLoadingFiles(true);
     try {
@@ -376,7 +433,7 @@ export default function BlogEditPageClient({ idParam }) {
     setForm((prev) => ({ ...prev, [currentImageField]: path }));
     setShowImageBrowser(false);
   };
-
+ 
   const handleFileUpload = async (e, fieldName) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -610,7 +667,7 @@ export default function BlogEditPageClient({ idParam }) {
               />
             )}
 
-            {activeTab === 'media' && (
+            {/* {activeTab === 'media' && (
               <MediaTab
                 form={form}
                 onChange={handleChange}
@@ -619,7 +676,24 @@ export default function BlogEditPageClient({ idParam }) {
                 onBrowse={openImageBrowser}
                 onPreview={setImagePreview}
               />
+            )} */}
+
+            {activeTab === 'media' && (
+              <MediaTab
+                form={form}
+                onChange={handleChange}
+                onUpload={handleFileUpload}
+                uploadingField={uploadingField}
+                onBrowse={openImageBrowser}
+                onPreview={setImagePreview}
+                // ✅ NEW PROPS
+                thumbnailPreview={thumbnailPreview}
+                thumbnailFile={thumbnailFile}
+                onThumbnailUpload={handleThumbnailUpload}
+                onRemoveThumbnail={handleRemoveThumbnail}
+              />
             )}
+
 
             {error && (
               <p className="text-xs text-rose-600 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2">
@@ -801,7 +875,7 @@ export default function BlogEditPageClient({ idParam }) {
         </div>
       )}
 
-      <style global>{`
+      <style >{`
         .hide-scrollbar {
           -ms-overflow-style: none;
           scrollbar-width: none;
@@ -901,8 +975,8 @@ function BasicsTab({ form, onChange, categories, allPlacements }) {
               <label
                 key={p.value}
                 className={`flex items-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all ${form.placements.includes(p.value)
-                    ? 'border-sky-500 bg-sky-50'
-                    : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                  ? 'border-sky-500 bg-sky-50'
+                  : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   }`}
               >
                 <input
@@ -1011,6 +1085,155 @@ function SeoTab({ form, onChange, onUpload, uploadingField, onBrowse, onPreview 
     </div>
   );
 }
+// Add this BEFORE return statement (line 900 के पहले)
+// function MediaTab({
+//   form, onChange, onUpload, uploadingField, onBrowse, onPreview,
+//   thumbnailPreview, thumbnailFile, onThumbnailUpload, onRemoveThumbnail
+// }) {
+//   return (
+//     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+//       {/* ✅ Thumbnail Bytes Upload */}
+//       <div className="space-y-3 p-5 rounded-2xl bg-gradient-to-br from-blue-50/80 to-indigo-50/50 border border-blue-200/50">
+//         <label className="block text-sm font-semibold text-blue-900 flex items-center gap-2">
+//           <ImageIcon className="h-4 w-4" />
+//           Thumbnail (1200×675 recommended)
+//         </label>
+
+//         {thumbnailPreview ? (
+//           <div className="relative group">
+//             <div className="relative w-48 h-32 rounded-2xl overflow-hidden shadow-lg bg-slate-100">
+//               <Image
+//                 src={thumbnailPreview}
+//                 alt="Thumbnail preview"
+//                 width={384}
+//                 height={216}
+//                 className="w-full h-full object-cover hover:scale-105 transition-transform"
+//                 unoptimized
+//               />
+//             </div>
+//             <button
+//               onClick={onRemoveThumbnail}
+//               className="absolute -top-2 -right-2 bg-rose-500 hover:bg-rose-600 text-white p-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100"
+//               title="Remove"
+//             >
+//               <X className="h-3 w-3" />
+//             </button>
+//             <p className="text-xs text-slate-500">{thumbnailFile?.name || 'Uploaded'}</p>
+//             <p className="text-xs text-slate-400">{formatBytes(thumbnailFile?.size || 0)}</p>
+//           </div>
+//         ) : (
+//           <label className="w-48 h-32 rounded-2xl border-2 border-dashed border-blue-300 hover:border-blue-400 flex flex-col items-center justify-center bg-blue-50 cursor-pointer p-4 hover:bg-blue-50 group">
+//             <Upload className="h-8 w-8 text-blue-400 group-hover:text-blue-500 mb-2" />
+//             <div className="text-center text-xs">
+//               <p className="font-medium text-slate-700">Upload thumbnail</p>
+//               <p className="text-slate-500">JPG, PNG, WebP (max 5MB)</p>
+//             </div>
+//             <input
+//               type="file"
+//               accept="image/jpeg,image/png,image/webp"
+//               onChange={onThumbnailUpload}
+//               className="hidden"
+//             />
+//           </label>
+//         )}
+//       </div>
+
+//       {/* Hero Image (URL only) */}
+//       <ImageSmartField
+//         label={`Hero image (${IMAGE_SIZES.hero.medium})`}
+//         name="heroImage"
+//         value={form.heroImage}
+//         onChange={onChange}
+//         onUpload={onUpload}
+//         uploading={uploadingField === 'heroImage'}
+//         onBrowse={() => onBrowse('heroImage')}
+//         onPreview={onPreview}
+//         placeholder="https://... or /uploads/..."
+//         previewShape="videoLarge"
+//       />
+//     </div>
+//   );
+// }
+
+
+// // ✅ FIXED ImageSmartField (URL only)
+// function ImageSmartField({
+//   label, name, value, onChange, onUpload, uploading, onBrowse, onPreview,
+//   placeholder, previewShape = 'videoSmall'
+// }) {
+//   const safeSrc = normalizeImageSrc(value);
+//   const previewClass = previewShape === 'og' ? 'aspect-[1200/630] max-h-40' :
+//     previewShape === 'videoLarge' ? 'aspect-video max-h-72' : 'aspect-video max-h-40';
+
+//   return (
+//     <div className="space-y-2">
+//       <label className="block text-xs font-medium text-slate-700">{label}</label>
+
+//       <input
+//         name={name}
+//         value={value || ''}
+//         onChange={onChange}
+//         className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500"
+//         placeholder={placeholder}
+//       />
+
+//       <div className="flex flex-wrap items-center gap-2">
+//         <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-medium text-slate-700 cursor-pointer transition-colors">
+//           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+//           <span>{uploading ? 'Uploading…' : 'Upload'}</span>
+//           <input
+//             type="file"
+//             accept="image/*"
+//             className="hidden"
+//             onChange={(e) => onUpload(e, name)}
+//             disabled={uploading}
+//           />
+//         </label>
+
+//         <button
+//           type="button"
+//           onClick={onBrowse}
+//           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-medium text-slate-700 transition-colors"
+//         >
+//           <Folder className="h-4 w-4" />
+//           Browse
+//         </button>
+
+//         {safeSrc && (
+//           <button
+//             type="button"
+//             onClick={() => onPreview(safeSrc)}
+//             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-sky-300 bg-sky-50 hover:bg-sky-100 text-xs font-medium text-sky-700 transition-colors"
+//           >
+//             <ZoomIn className="h-4 w-4" />
+//             Preview
+//           </button>
+//         )}
+//       </div>
+
+//       {value && !safeSrc && (
+//         <p className="text-[11px] text-rose-600">
+//           Invalid URL. Use "https://..." or "/uploads/..."
+//         </p>
+//       )}
+
+//       {safeSrc && (
+//         <div className={`mt-3 space-y-2 ${previewClass}`}>
+//           <div className="relative w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+//             <Image
+//               src={safeSrc}
+//               alt="Preview"
+//               fill
+//               className="object-cover"
+//               sizes="(max-width: 768px) 100vw, 400px"
+//             />
+//           </div>
+//           <p className="text-[11px] text-slate-400 truncate">{safeSrc}</p>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
 
 function MediaTab({ form, onChange, onUpload, uploadingField, onBrowse, onPreview }) {
   return (

@@ -11,7 +11,7 @@ function canEdit(session) {
 
 async function getId(paramsPromise) {
   const params = await paramsPromise;
-  const id = Number(params.id);
+  const id = Number(params?.id);
   if (!id || Number.isNaN(id)) return null;
   return id;
 }
@@ -49,7 +49,7 @@ function parseOptionalDate(v) {
   return d;
 }
 
-// GET /api/admin/blog/[id]
+// GET /api/admin/blog/[id] - FIXED
 export async function GET(request, { params }) {
   const session = await getServerSession(authOptions);
   if (!session) {
@@ -77,12 +77,15 @@ export async function GET(request, { params }) {
   const postData = {
     ...post,
     placements: post.placements ? safeJsonParseArray(post.placements) : [],
+    // ✅ DIRECT STRING PATH (No Bytes conversion!)
+    thumbnail: post.thumbnail || null,
+    thumbnailType: post.thumbnailType || null,
   };
 
   return NextResponse.json(postData);
 }
 
-// PATCH /api/admin/blog/[id]
+// PATCH /api/admin/blog/[id] - FIXED (Line 148)
 export async function PATCH(request, { params }) {
   const session = await getServerSession(authOptions);
   if (!session || !canEdit(session)) {
@@ -97,54 +100,34 @@ export async function PATCH(request, { params }) {
   try {
     const body = await request.json();
     const {
-      type,
-      title,
-      slug,
-      excerpt,
-      contentJson,
-      status,
-      featured,
-      pinned,
-      placements,
-      thumbnail,
-      heroImage,
-      readTimeMinutes,
-      seoTitle,
-      seoDescription,
-      seoImage,
-      categoryId,
-      tagIds,
-      createdAt, // ✅ NEW (admin override)
+      type, title, slug, excerpt, contentJson, status, featured, pinned,
+      placements, thumbnail, heroImage, readTimeMinutes, seoTitle,
+      seoDescription, seoImage, categoryId, tagIds, createdAt, thumbnailType,
     } = body;
 
-    const placementsJson =
-      placements !== undefined
-        ? Array.isArray(placements)
-          ? JSON.stringify(placements)
-          : null
-        : undefined;
+    // ✅ BYTES LOGIC COMPLETELY DELETED!
+    // Direct string paths from frontend
+
+    const placementsJson = placements !== undefined
+      ? Array.isArray(placements) ? JSON.stringify(placements) : null
+      : undefined;
 
     const categoryIdInt = parseOptionalInt(categoryId);
     if (Number.isNaN(categoryIdInt)) {
-      return NextResponse.json(
-        { message: 'categoryId must be an integer or null.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: 'categoryId must be integer or null' }, { status: 400 });
     }
 
     const readTimeNum = parseOptionalNumber(readTimeMinutes);
     if (Number.isNaN(readTimeNum)) {
-      return NextResponse.json(
-        { message: 'readTimeMinutes must be a number or null.' },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: 'readTimeMinutes must be number or null' }, { status: 400 });
     }
 
     const createdAtDate = parseOptionalDate(createdAt);
     if (Number.isNaN(createdAtDate)) {
-      return NextResponse.json({ message: 'Invalid createdAt.' }, { status: 400 });
+      return NextResponse.json({ message: 'Invalid createdAt' }, { status: 400 });
     }
 
+    // ✅ STRING PATH STORAGE (SIMPLE!)
     const post = await prisma.blogPost.update({
       where: { id },
       data: {
@@ -153,38 +136,35 @@ export async function PATCH(request, { params }) {
         ...(slug !== undefined && { slug }),
         ...(placementsJson !== undefined && { placements: placementsJson }),
 
-        excerpt: excerpt === undefined ? undefined : excerpt || null,
-        contentJson: contentJson === undefined ? undefined : contentJson || null,
+        excerpt: excerpt === undefined ? undefined : (excerpt || null),
+        contentJson: contentJson === undefined ? undefined : (contentJson || null),
 
         ...(status !== undefined && { status }),
         ...(featured !== undefined && { featured }),
         ...(pinned !== undefined && { pinned }),
 
-        thumbnail: thumbnail === undefined ? undefined : thumbnail || null,
-        heroImage: heroImage === undefined ? undefined : heroImage || null,
+        // ✅ DIRECT STRING PATHS
+        thumbnail: thumbnail === undefined ? undefined : (thumbnail || null),
+        thumbnailType: thumbnailType === undefined ? undefined : (thumbnailType || null),
+        
+        heroImage: heroImage === undefined ? undefined : (heroImage || null),
 
         readTimeMinutes: readTimeNum === undefined ? undefined : readTimeNum,
-        seoTitle: seoTitle === undefined ? undefined : seoTitle || null,
-        seoDescription:
-          seoDescription === undefined ? undefined : seoDescription || null,
-        seoImage: seoImage === undefined ? undefined : seoImage || null,
+        seoTitle: seoTitle === undefined ? undefined : (seoTitle || null),
+        seoDescription: seoDescription === undefined ? undefined : (seoDescription || null),
+        seoImage: seoImage === undefined ? undefined : (seoImage || null),
         categoryId: categoryIdInt === undefined ? undefined : categoryIdInt,
 
         ...(createdAtDate ? { createdAt: createdAtDate } : {}),
 
-        ...(Array.isArray(tagIds)
-          ? {
-              tags: {
-                deleteMany: {},
-                create: tagIds
-                  .map((x) => Number(x))
-                  .filter((x) => Number.isInteger(x))
-                  .map((tagId) => ({
-                    tag: { connect: { id: tagId } },
-                  })),
-              },
-            }
-          : {}),
+        ...(Array.isArray(tagIds) ? {
+          tags: {
+            deleteMany: {},
+            create: tagIds.map(x => Number(x)).filter(Number.isInteger).map(tagId => ({
+              tag: { connect: { id: tagId } }
+            }))
+          }
+        } : {}),
       },
       include: {
         category: true,
@@ -192,25 +172,16 @@ export async function PATCH(request, { params }) {
       },
     });
 
-    const postData = {
+    return NextResponse.json({
       ...post,
       placements: post.placements ? safeJsonParseArray(post.placements) : [],
-    };
-
-    return NextResponse.json(postData);
+    });
   } catch (err) {
-    if (err?.code === 'P2002' && err?.meta?.target?.includes('slug')) {
-      return NextResponse.json(
-        { message: 'Slug already exists. Please choose a different slug.' },
-        { status: 400 },
-      );
-    }
-
     console.error('Blog update error', err);
-    return NextResponse.json(
-      { message: 'Failed to update post.' },
-      { status: 500 },
-    );
+    if (err.code === 'P2002' && err.meta?.target?.includes('slug')) {
+      return NextResponse.json({ message: 'Slug already exists' }, { status: 400 });
+    }
+    return NextResponse.json({ message: 'Failed to update post', error: err.message }, { status: 500 });
   }
 }
 

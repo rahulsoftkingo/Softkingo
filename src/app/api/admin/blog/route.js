@@ -177,6 +177,8 @@ export async function POST(request) {
           .map((x) => Number(x))
           .filter((x) => Number.isInteger(x))
       : [];
+const thumbnailData = thumbnail ? Buffer.from(thumbnail, 'base64') : null;
+const thumbnailTypeData = thumbnailType || 'image/jpeg';
 
     const post = await prisma.blogPost.create({
       data: {
@@ -189,7 +191,9 @@ export async function POST(request) {
         status,
         featured,
         pinned,
-        thumbnail: thumbnail || null,
+        // thumbnail: thumbnail || null,
+        thumbnail: thumbnailData,
+        thumbnailType: thumbnailTypeData,
         heroImage: heroImage || null,
         readTimeMinutes: readTimeNum ?? null,
         seoTitle: seoTitle || null,

@@ -1,3 +1,4 @@
+// src/app/api/admin/blog-tags/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
@@ -8,63 +9,57 @@ function canManage(session) {
   return roles.some((r) => ['admin', 'manager', 'writer'].includes(r));
 }
 
-// PATCH /api/admin/blog-tags/[id]
-export async function PATCH(req, { params }) {
+// GET /api/admin/blog-tags
+export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session || !canManage(session)) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = params;
-  const body = await req.json();
-  const { name, slug } = body;
-
-  if (!name || !slug) {
-    return NextResponse.json(
-      { message: 'Name and slug required.' },
-      { status: 400 },
-    );
-  }
-
   try {
-    const tag = await prisma.blogTag.update({
-      where: { id: parseInt(id) },
-      data: { name, slug },
+    const tags = await prisma.blogTag.findMany({
+      orderBy: { name: 'asc' },
     });
-    return NextResponse.json(tag);
+    return NextResponse.json(tags);
   } catch (err) {
-    if (err.code === 'P2002') {
-      return NextResponse.json(
-        { message: 'Slug already exists.' },
-        { status: 400 },
-      );
-    }
-    return NextResponse.json(
-      { message: 'Failed to update tag.' },
-      { status: 500 },
-    );
+    console.error('Get tags error:', err);
+    return NextResponse.json({ message: 'Failed to fetch tags' }, { status: 500 });
   }
 }
 
-// DELETE /api/admin/blog-tags/[id]
-export async function DELETE(req, { params }) {
+// POST /api/admin/blog-tags
+export async function POST(req) {
   const session = await getServerSession(authOptions);
   if (!session || !canManage(session)) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = params;
-
   try {
-    await prisma.blogTag.delete({
-      where: { id: parseInt(id) },
+    const { name, slug } = await req.json();
+
+    if (!name || !slug) {
+      return NextResponse.json(
+        { message: 'Name and slug required' },
+        { status: 400 }
+      );
+    }
+
+    const tag = await prisma.blogTag.create({
+      data: { name, slug },
     });
-    return NextResponse.json({ message: 'Tag deleted.' });
+
+    return NextResponse.json(tag, { status: 201 });
   } catch (err) {
-    console.error('Delete tag error:', err);
+    if (err.code === 'P2002') {
+      return NextResponse.json(
+        { message: 'Slug already exists' },
+        { status: 400 }
+      );
+    }
+    console.error('Create tag error:', err);
     return NextResponse.json(
-      { message: 'Failed to delete tag. It may be in use.' },
-      { status: 500 },
+      { message: 'Failed to create tag' },
+      { status: 500 }
     );
   }
 }

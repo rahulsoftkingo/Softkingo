@@ -102,14 +102,38 @@
 
 
 
-
 import { withAuth } from 'next-auth/middleware';
 
 const roleRoutes = {
-  admin: ['/admin'],
-  manager: ['/admin', '/admin/leads', '/admin/tickets', '/admin/users'],
-  writer: ['/admin', '/admin/blog', '/admin/insights', '/admin/e-guides'],
-  agent: ['/admin', '/admin/tickets', '/admin/leads'],
+  admin: [
+    '/admin', 
+    '/admin/hrms', '/admin/hrms/:path*',  // Full HRMS access
+    '/admin/leads', '/admin/tickets', '/admin/users',
+    '/admin/blog', '/admin/insights', '/admin/e-guides',
+  ],
+  manager: [
+    '/admin', 
+    '/admin/hrms/attendance', '/admin/hrms/leaves', '/admin/hrms/employees',  // Manager HRMS
+    '/admin/leads', '/admin/tickets', 
+    '/admin/users',  // Can view employees
+  ],
+  hr: [  // NEW HR role
+    '/admin', 
+    '/admin/hrms', '/admin/hrms/:path*',  // Full HRMS
+    '/admin/hrms/payroll', '/admin/hrms/reports',  // Salary + Reports
+    '/admin/employees',
+  ],
+  writer: [
+    '/admin', 
+    '/admin/blog', '/admin/insights', '/admin/e-guides',
+  ],
+  agent: [
+    '/admin', '/admin/tickets', '/admin/leads',
+  ],
+  employee: [  // NEW Employee role - Limited HRMS
+    '/admin', 
+    '/admin/hrms/attendance', '/admin/hrms/leaves',  // Only own attendance/leaves
+  ],
 };
 
 export default withAuth(
@@ -125,8 +149,10 @@ export default withAuth(
         const roles = token.roles || [];
         if (!roles.length) return false;
 
+        // Super admin - full access
         if (roles.includes('admin')) return true;
 
+        // Role-based access
         const allowed = roles.some((role) => {
           const prefixes = roleRoutes[role];
           if (!prefixes) return false;
