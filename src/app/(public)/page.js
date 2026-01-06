@@ -1,4 +1,4 @@
-// src/app/page.jsx (or wherever this Home component is)
+// src/app/(public)page.jsx
 import Home2 from "./home/page";
 
 export default function Home() {

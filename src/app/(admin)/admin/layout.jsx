@@ -23,7 +23,7 @@ export default async function AdminLayout({ children }) {
         </div>
       </div>
 
-      <style  global>{`
+      <style >{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
