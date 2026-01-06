@@ -130,6 +130,7 @@ export async function POST(request) {
       pinned = false,
       placements = [],
       thumbnail,
+      thumbnailType,
       heroImage,
       readTimeMinutes,
       seoTitle,
