@@ -168,28 +168,28 @@ export default function PortfolioSlider() {
       clients: '260+',
       countries: '50+',
     },
-    {
-      id: 2,
-      type: 'web',
-      title: 'Web Development & Design',
-      description:
-        'Create stunning, high-performance web applications that drive results. We specialize in Next.js, React, and modern frameworks to build lightning-fast websites with pixel-perfect design and seamless user experiences.',
-      color: 'from-sky-600 to-sky-400',
-      project: '280+',
-      clients: '200+',
-      countries: '50+',
-    },
-    {
-      id: 3,
-      type: 'digital',
-      title: 'Digital Marketing & Strategy',
-      description:
-        "Amplify your brand's online presence with data-driven marketing strategies. We deliver comprehensive SEO, social media campaigns, and conversion-optimized designs that accelerate your business growth.",
-      color: 'from-sky-600 to-sky-400',
-      project: '250+',
-      clients: '180',
-      countries: '50+',
-    },
+    // {
+    //   id: 2,
+    //   type: 'web',
+    //   title: 'Web Development & Design',
+    //   description:
+    //     'Create stunning, high-performance web applications that drive results. We specialize in Next.js, React, and modern frameworks to build lightning-fast websites with pixel-perfect design and seamless user experiences.',
+    //   color: 'from-sky-600 to-sky-400',
+    //   project: '280+',
+    //   clients: '200+',
+    //   countries: '50+',
+    // },
+    // {
+    //   id: 3,
+    //   type: 'digital',
+    //   title: 'Digital Marketing & Strategy',
+    //   description:
+    //     "Amplify your brand's online presence with data-driven marketing strategies. We deliver comprehensive SEO, social media campaigns, and conversion-optimized designs that accelerate your business growth.",
+    //   color: 'from-sky-600 to-sky-400',
+    //   project: '250+',
+    //   clients: '180',
+    //   countries: '50+',
+    // },
   ];
 
   useEffect(() => {
@@ -276,7 +276,7 @@ export default function PortfolioSlider() {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
+        {/* <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
           {slides.map((slide, index) => (
             <motion.button
               key={slide.id}
@@ -293,7 +293,7 @@ export default function PortfolioSlider() {
               <span className="hidden md:inline">{slide.title}</span>
             </motion.button>
           ))}
-        </div>
+        </div> */}
 
         {/* MAIN CARD */}
         <AnimatePresence mode="wait">
