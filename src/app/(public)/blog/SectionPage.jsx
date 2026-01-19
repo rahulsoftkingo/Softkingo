@@ -7,6 +7,9 @@ import BlogCard from "@/app/(public)/blog/BlogCard";
 import { BLOG_SECTIONS } from "@/app/(public)/blog/sectionConfig";
 import NewsletterStrip from "@/app/(public)/blog/NewsletterStrip";
 import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
+import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
+import ConsultationCTA from "@/components/common/Consultation-Cta";
+import InquirySection from "@/components/footer/InquirySection";
 
 export const dynamic = "force-dynamic";
 
@@ -103,32 +106,32 @@ export default async function SectionPage({ sectionKey, searchParams }) {
     const query = params.toString();
     return query ? `${config.slugBase}?${query}` : config.slugBase;
   };
-function getPageItems(current, total, maxButtons = 5) {
-  if (total <= maxButtons) return Array.from({ length: total }, (_, i) => i + 1);
+  function getPageItems(current, total, maxButtons = 5) {
+    if (total <= maxButtons) return Array.from({ length: total }, (_, i) => i + 1);
 
-  const items = [];
-  const half = Math.floor(maxButtons / 2);
+    const items = [];
+    const half = Math.floor(maxButtons / 2);
 
-  let start = Math.max(1, current - half);
-  let end = Math.min(total, start + maxButtons - 1);
+    let start = Math.max(1, current - half);
+    let end = Math.min(total, start + maxButtons - 1);
 
-  // adjust start if end hit total
-  start = Math.max(1, end - maxButtons + 1);
+    // adjust start if end hit total
+    start = Math.max(1, end - maxButtons + 1);
 
-  if (start > 1) {
-    items.push(1);
-    if (start > 2) items.push("…");
+    if (start > 1) {
+      items.push(1);
+      if (start > 2) items.push("…");
+    }
+
+    for (let p = start; p <= end; p++) items.push(p);
+
+    if (end < total) {
+      if (end < total - 1) items.push("…");
+      items.push(total);
+    }
+
+    return items;
   }
-
-  for (let p = start; p <= end; p++) items.push(p);
-
-  if (end < total) {
-    if (end < total - 1) items.push("…");
-    items.push(total);
-  }
-
-  return items;
-}
 
   const hasPrev = page > 1;
   const hasNext = page < totalPages;
@@ -190,11 +193,10 @@ function getPageItems(current, total, maxButtons = 5) {
 
                 <Link
                   href={buildUrl(q, "", 1)}
-                  className={`px-3 py-1 rounded-full border ${
-                    !category
+                  className={`px-3 py-1 rounded-full border ${!category
                       ? "bg-sky-500 text-slate-900 border-sky-300"
                       : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
-                  } text-[11px] font-medium transition-colors shrink-0`}
+                    } text-[11px] font-medium transition-colors shrink-0`}
                 >
                   All
                 </Link>
@@ -203,11 +205,10 @@ function getPageItems(current, total, maxButtons = 5) {
                   <Link
                     key={t}
                     href={buildUrl(q, t, 1)}
-                    className={`px-3 py-1 rounded-full border shrink-0 ${
-                      category === t
+                    className={`px-3 py-1 rounded-full border shrink-0 ${category === t
                         ? "bg-sky-500 text-slate-900 border-sky-300"
                         : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
-                    } text-[11px] font-medium transition-colors`}
+                      } text-[11px] font-medium transition-colors`}
                   >
                     {t}
                   </Link>
@@ -277,68 +278,65 @@ function getPageItems(current, total, maxButtons = 5) {
 
               {/* Pagination */}
               {totalPages > 1 && (
-  <nav className="mt-8 flex items-center justify-center gap-2" aria-label="Pagination">
-    {/* Prev */}
-    <Link
-      aria-disabled={!hasPrev}
-      href={hasPrev ? buildUrl(q, category, page - 1) : "#"}
-      className={`px-3 py-2 rounded-lg border text-sm ${
-        hasPrev
-          ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
-          : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
-      }`}
-    >
-      Prev
-    </Link>
+                <nav className="mt-8 flex items-center justify-center gap-2" aria-label="Pagination">
+                  {/* Prev */}
+                  <Link
+                    aria-disabled={!hasPrev}
+                    href={hasPrev ? buildUrl(q, category, page - 1) : "#"}
+                    className={`px-3 py-2 rounded-lg border text-sm ${hasPrev
+                        ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                        : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
+                      }`}
+                  >
+                    Prev
+                  </Link>
 
-    {/* Numbers (max 5 + ellipsis) */}
-    <div className="flex items-center gap-1">
-      {getPageItems(page, totalPages, 5).map((it, idx) => {
-        if (it === "…") {
-          return (
-            <span
-              key={`dots-${idx}`}
-              className="px-3 py-2 text-sm text-slate-400 select-none"
-            >
-              …
-            </span>
-          );
-        }
+                  {/* Numbers (max 5 + ellipsis) */}
+                  <div className="flex items-center gap-1">
+                    {getPageItems(page, totalPages, 5).map((it, idx) => {
+                      if (it === "…") {
+                        return (
+                          <span
+                            key={`dots-${idx}`}
+                            className="px-3 py-2 text-sm text-slate-400 select-none"
+                          >
+                            …
+                          </span>
+                        );
+                      }
 
-        const p = it;
-        const active = p === page;
+                      const p = it;
+                      const active = p === page;
 
-        return (
-          <Link
-            key={p}
-            href={buildUrl(q, category, p)}
-            aria-current={active ? "page" : undefined}
-            className={`min-w-9 text-center px-3 py-2 rounded-lg border text-sm ${
-              active
-                ? "bg-sky-600 border-sky-600 text-white"
-                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
-            }`}
-          >
-            {p}
-          </Link>
-        );
-      })}
-    </div>
+                      return (
+                        <Link
+                          key={p}
+                          href={buildUrl(q, category, p)}
+                          aria-current={active ? "page" : undefined}
+                          className={`min-w-9 text-center px-3 py-2 rounded-lg border text-sm ${active
+                              ? "bg-sky-600 border-sky-600 text-white"
+                              : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                            }`}
+                        >
+                          {p}
+                        </Link>
+                      );
+                    })}
+                  </div>
 
-    {/* Next */}
-    <Link
-      aria-disabled={!hasNext}
-      href={hasNext ? buildUrl(q, category, page + 1) : "#"}
-      className={`px-3 py-2 rounded-lg border text-sm ${
-        hasNext
-          ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
-          : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
-      }`}
-    >
-      Next
-    </Link>
-  </nav>
-)}
+                  {/* Next */}
+                  <Link
+                    aria-disabled={!hasNext}
+                    href={hasNext ? buildUrl(q, category, page + 1) : "#"}
+                    className={`px-3 py-2 rounded-lg border text-sm ${hasNext
+                        ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                        : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
+                      }`}
+                  >
+                    Next
+                  </Link>
+                </nav>
+              )}
 
             </section>
 
@@ -360,7 +358,10 @@ function getPageItems(current, total, maxButtons = 5) {
             </aside>
           </section>
 
-          <section className="mt-10 sm:mt-12">
+          
+               
+        </div>
+        <section className="my-10 sm:my-12 max-w-6xl mx-auto">
             <NewsletterStrip
               source={`${sectionKey}-listing`}
               listSlug={config.newsletterList?.slug || "blog-newsletter"}
@@ -368,7 +369,9 @@ function getPageItems(current, total, maxButtons = 5) {
               listDescription={config.newsletterList?.description || "Main blog newsletter list"}
             />
           </section>
-        </div>
+
+     
+                 <InquirySection />
       </main>
     </div>
   );

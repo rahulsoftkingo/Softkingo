@@ -1,39 +1,56 @@
 "use client";
-
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
-export default function PortfolioClient({ projects, categories }) {
+export default function PortfolioClient({ projects: initialProjects = [], categories = [] }) {
   const [activeTab, setActiveTab] = useState("app");
   const [activeCategory, setActiveCategory] = useState("All");
   const [page, setPage] = useState(1);
+  const [allProjects, setAllProjects] = useState(initialProjects);
 
   const perPage = 6;
 
   const tabs = [
-    { id: "app", label: "App Portfolio" },
-    { id: "web", label: "Website Portfolio" },
-    { id: "digital", label: "Digital Marketing" },
+    // { id: "app", label: "App Portfolio" },
+    // { id: "web", label: "Website Portfolio" },
+    // { id: "digital", label: "Digital Marketing" },
   ];
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const params = new URLSearchParams({ type: activeTab });
+        const res = await fetch(`/api/public/portfolio?${params}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        setAllProjects(Array.isArray(data.projects) ? data.projects : []);
+      } catch {
+        setAllProjects([]);
+      }
+    }
 
-  const filtered = useMemo(
-    () =>
-      projects.filter((p) => {
-        const matchesTab = p.type === activeTab;
-        const matchesCategory =
-          activeCategory === "All" || p.category === activeCategory;
-        return matchesTab && matchesCategory;
-      }),
-    [projects, activeTab, activeCategory]
-  );
+    if (!initialProjects.length || activeTab !== "app") {
+      fetchProjects();
+    } else {
+      setAllProjects(initialProjects);
+    }
+  }, [activeTab]);
+
+  const filtered = useMemo(() => {
+    return allProjects.filter((p) =>
+      p.type === activeTab &&
+      (activeCategory === "All" || p.category === activeCategory)
+    );
+  }, [allProjects, activeTab, activeCategory]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
 
-  if (page > totalPages && totalPages > 0) {
-    setPage(totalPages);
-  }
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      setPage(totalPages);
+    }
+  }, [totalPages, page]);
 
   const currentItems = useMemo(() => {
     const start = (page - 1) * perPage;
@@ -44,25 +61,27 @@ export default function PortfolioClient({ projects, categories }) {
     <>
       {/* Tabs strip */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-10 ">
-      <div className="pointer-events-none absolute inset-0">
-        {/* <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[520px] h-[520px] rounded-full bg-white/40 blur-3xl opacity-40" /> */}
-        {/* <div className="absolute -bottom-40 -left-20 w-[420px] h-[420px] rounded-full bg-[#00B7FF]/25 blur-3xl opacity-40" /> */}
-      </div>
-      
+        <div className="pointer-events-none absolute inset-0">
+          {/* <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[520px] h-[520px] rounded-full bg-white/40 blur-3xl opacity-40" /> */}
+          {/* <div className="absolute -bottom-40 -left-20 w-[420px] h-[420px] rounded-full bg-[#00B7FF]/25 blur-3xl opacity-40" /> */}
+        </div>
+
         <div className="px-1 sm:px-4 py-4 rounded-2xl ">
           <div className="flex md:justify-center gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent hide-scrollbar">
             {tabs.map((t) => (
               <button
                 key={t.id}
+
                 onClick={() => {
                   setActiveTab(t.id);
+                  setActiveCategory("All");
                   setPage(1);
                 }}
-                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition ${
-                  activeTab === t.id
-                    ? "bg-sky-600 text-white shadow-sm"
-                    : "bg-white text-sky-700 border border-slate-300 hover:border-sky-400"
-                }`}
+
+                className={`whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition ${activeTab === t.id
+                  ? "bg-sky-600 text-white shadow-sm"
+                  : "bg-white text-sky-700 border border-slate-300 hover:border-sky-400"
+                  }`}
                 aria-pressed={activeTab === t.id}
               >
                 {t.label}
@@ -78,9 +97,9 @@ export default function PortfolioClient({ projects, categories }) {
           {/* Left sidebar – desktop */}
           <aside className="hidden lg:block lg:col-span-3">
             <div className="rounded-3xl bg-white shadow-xl border border-sky-200 overflow-hidden sticky top-24">
-              {/* <div className="bg-sky-800 text-white text-sm font-semibold px-4 py-3">
+              <div className="bg-sky-800 text-white text-sm font-semibold px-4 py-3">
                 All Category
-              </div> */}
+              </div>
               <ul className="p-3 space-y-1 text-sm">
                 {categories.map((c) => (
                   <li key={c}>
@@ -89,11 +108,10 @@ export default function PortfolioClient({ projects, categories }) {
                         setActiveCategory(c);
                         setPage(1);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-xl transition ${
-                        activeCategory === c
-                          ? "bg-sky-100 text-sky-700 font-semibold"
-                          : "hover:bg-slate-50 text-slate-700"
-                      }`}
+                      className={`w-full text-left px-3 py-2 rounded-xl transition ${activeCategory === c
+                        ? "bg-sky-100 text-sky-700 font-semibold"
+                        : "hover:bg-slate-50 text-slate-700"
+                        }`}
                     >
                       {c}
                     </button>
@@ -126,7 +144,7 @@ export default function PortfolioClient({ projects, categories }) {
 
           {/* Cards */}
           <div className="col-span-12 lg:col-span-9 space-y-6">
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <h2 className="text-lg sm:text-xl font-semibold text-sky-900">
                 All Category
               </h2>
@@ -134,7 +152,7 @@ export default function PortfolioClient({ projects, categories }) {
                 Showing <strong>{filtered.length}</strong> result
                 {filtered.length !== 1 ? "s" : ""}
               </p>
-            </div>
+            </div> */}
 
             <div className="space-y-6">
               {currentItems.map((p) => (
@@ -219,11 +237,10 @@ function PageButton({ num, active, onClick }) {
     <button
       onClick={onClick}
       aria-current={active ? "page" : undefined}
-      className={`w-9 h-9 rounded-full border text-xs sm:text-sm font-medium transition ${
-        active
-          ? "bg-sky-700 text-white border-sky-700"
-          : "bg-white border-slate-200 hover:border-sky-400"
-      }`}
+      className={`w-9 h-9 rounded-full border text-xs sm:text-sm font-medium transition ${active
+        ? "bg-sky-700 text-white border-sky-700"
+        : "bg-white border-slate-200 hover:border-sky-400"
+        }`}
     >
       {num}
     </button>
@@ -239,14 +256,14 @@ function Ellipsis() {
 function ProjectCard({ p }) {
   const bgStyle = p.bgImage
     ? {
-        backgroundImage: `url(${p.bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }
+      backgroundImage: `url(${p.bgImage})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }
     : {
-        backgroundImage:
-          "radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 45%), radial-gradient(circle at bottom right, rgba(0,0,0,0.25), transparent 55%)",
-      };
+      backgroundImage:
+        "radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 45%), radial-gradient(circle at bottom right, rgba(0,0,0,0.25), transparent 55%)",
+    };
 
   return (
     <article
@@ -312,8 +329,9 @@ function ProjectCard({ p }) {
               </p>
             </div>
           </div>
-
+         
           <div className="mt-4 flex items-center gap-3 flex-wrap">
+ 
             {p.badges?.play && (
               <Link
                 href={p.badges.play.href || "#"}
@@ -359,22 +377,25 @@ function ProjectCard({ p }) {
                 />
               </Link>
             )}
-          </div>
 
-          {/* case study icon button */}
-          <div className="absolute right-4 top-4 cursor-pointer z-10">
+{/* case study icon button */}
+          <div className="absolute bottom-4 left4 md:top-4 md:right-4 cursor-pointer z-10 mt- ">
             <Link
               href={`/case-studies/${p.id}`}
-              className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/95 text-sky-500 shadow hover:bg-sky-50 transition"
-            >
-              <ArrowRight className="h-4 w-4" />
+              className="inline-flex items-center justify-center w-9h-9 rounded-full bg-white/95 text-sky-900 shadow hover:bg-sky-50 transition px-4 py-2 text-xs"
+
+            >Case Study
+              <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
+          </div>
+
+
         </div>
 
         {/* Right mockup */}
-        <div className="relative p-6 md:p-8 flex items-center justify-center">
-          <div className="relative w-40 sm:w-44 md:w-52 h-[11rem] sm:h-[12rem]">
+        <div className="relative p-6md:p-8 flex items-center justify-center">
+          <div className="relative w-40 sm:w-44 md:w-52 h-[18rem] sm:h-[20rem]">
             {p.phoneMockup ? (
               <Image
                 src={p.phoneMockup}

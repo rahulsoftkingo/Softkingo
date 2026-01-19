@@ -620,6 +620,47 @@ const servicesData = [
       },
     ],
   },
+   {
+    id: "digital",
+    icon: <FaCogs />,
+    heading: "Degital Marketing",
+    pageHref: "/services/degital-marketing",
+    title: "Top Digital Marketing Company",
+    description:
+      "Automate deployment pipelines, improve reliability and ship faster with our DevOps & cloud engineering team.",
+    links: [
+      {
+        href: "/services/seo-services",
+        title: "Seo Services",
+        icon: <FaMobileAlt />,
+      },
+      {
+        href: "/services/paid-marketing",
+        title: "Paid Marketing",
+        icon: <FaCogs />,
+      },
+      {
+        href: "/services/online-reputation-management",
+        title: "Online Reputation Management",
+        icon: <FaCogs />,
+      },
+      {
+        href: "/services/app-marketing",
+        title: "App Marketing",
+        icon: <FaCloud />,
+      },
+      {
+        href: "/services/content-marketing",
+        title: "Content-Marketing",
+        icon: <FaRegFileCode />,
+      },
+      {
+        href: "/services/social-media-marketing",
+        title: "Social Media Marketing",
+        icon: <FaServer />,
+      },
+    ],
+  },
 ];
 
 const ServicesMenu = () => {
@@ -638,7 +679,7 @@ const ServicesMenu = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 mt-16">
       <div className="absolute inset-0 max-w-7xl mx-auto px-4">
-        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[50rem] rounded-b-2xl shadow-md overflow-hidden z-10">
+        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[40rem] rounded-b-2xl shadow-md overflow-hidden z-10">
           <div className="w-full h-full flex">
             {/* Left Section */}
             <div className="flex-[1.5] bg-[#fcfcfc] text-left p-8 border-r border-sky-200">

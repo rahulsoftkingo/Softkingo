@@ -69,37 +69,37 @@ const tabs = [
     id: "hireapptab",
     icon: <FaMobileAlt className="inline-block text-sky-600" />,
     title: "Hire App Developers",
-    href: "/hire/app-developers",
+    href: "/hire/app-developer",
     description:
       "On the lookout for a coding wizard? Hire mobile app developers to build high‑performance Android, iOS and cross‑platform apps.",
     links: [
       {
-        href: "/hire/app-developers/android-developers",
+        href: "/hire/android-developer",
         title: "Hire Android Developers",
         icon: <FaAndroid />,
       },
       {
-        href: "/hire/app-developers/ios-developers",
+        href: "/hire/ios-developer",
         title: "Hire iOS Developers",
         icon: <FaApple />,
       },
       {
-        href: "/hire/app-developers/iphone-app-developers",
+        href: "/hire/iphone-app-developer",
         title: "Hire iPhone App Developers",
         icon: <FaApple />,
       },
       {
-        href: "/hire/app-developers/ipad-developers",
+        href: "/hire/ipad-developer",
         title: "Hire iPad Developers",
         icon: <FaApple />,
       },
       {
-        href: "/hire/app-developers/flutter-developers",
+        href: "/hire/flutter-developer",
         title: "Hire Flutter Developers",
         icon: <FaReact />,
       },
       {
-        href: "/hire/app-developers/react-native-developers",
+        href: "/hire/react-native-developer",
         title: "Hire React Native Developers",
         icon: <FaReact />,
       },
@@ -111,27 +111,27 @@ const tabs = [
     id: "hirefronttab",
     icon: <FaDesktop className="inline-block text-sky-600" />,
     title: "Hire Frontend Developers",
-    href: "/hire/frontend-developers",
+    href: "/hire/frontend-developer",
     description:
       "Curate pixel‑perfect experiences with frontend engineers who ship fast, responsive and accessible UIs.",
     links: [
       {
-        href: "/hire/frontend-developers/angular-developers",
+        href: "/hire/angular-developer",
         title: "Hire Angular Developers",
         icon: <FaAngular />,
       },
       {
-        href: "/hire/frontend-developers/reactjs-developers",
+        href: "/hire/reactjs-developer",
         title: "Hire ReactJS Developers",
         icon: <FaReact />,
       },
       {
-        href: "/hire/frontend-developers/vuejs-developers",
+        href: "/hire/vuejs-developer",
         title: "Hire Vue.js Developers",
         icon: <FaVuejs />,
       },
       {
-        href: "/hire/frontend-developers/web-app-developers",
+        href: "/hire/web-app-developer",
         title: "Hire Web App Developers",
         icon: <FaDesktop />,
       },
@@ -143,38 +143,38 @@ const tabs = [
     id: "hirebackendtab",
     icon: <FaServer className="inline-block text-sky-600" />,
     title: "Hire Backend Developers",
-    href: "/hire/backend-developers",
+    href: "/hire/backend-developer",
     description:
       "Hire backend developers who design reliable APIs, data models and cloud architectures for scale.",
     links: [
       {
-        href: "/hire/backend-developers/java-developers",
+        href: "/hire/java-developer",
         title: "Hire Java Developers",
         icon: <FaServer />,
       },
     
       {
-        href: "/hire/backend-developers/nodejs-developers",
+        href: "/hire/nodejs-developer",
         title: "Hire Node.js Developers",
         icon: <FaNodeJs />,
       },
       {
-        href: "/hire/backend-developers/python-developers",
+        href: "/hire/python-developer",
         title: "Hire Python Developers",
         icon: <FaPython />,
       },
       {
-        href: "/hire/backend-developers/php-developers",
+        href: "/hire/php-developer",
         title: "Hire PHP Developers",
         icon: <FaPhp />,
       },
         {
-        href: "/hire/backend-developers/laravel-developers",
+        href: "/hire/laravel-developer",
         title: "Hire Laravel Developers",
         icon: <FaLaravel />,
       },
         {
-        href: "/hire/backend-developers/Django-developers",
+        href: "/hire/Django-developer",
         title: "Hire Django Developers",
         icon: <FaPython />,
       },
@@ -186,27 +186,27 @@ const tabs = [
     id: "hirefullstacktab",
     icon: <FaReact className="inline-block text-sky-600" />,
     title: "Hire Full‑Stack Developers",
-    href: "/hire/full-stack-developers",
+    href: "/hire/full-stack-developer",
     description:
       "Ship end‑to‑end features faster with full‑stack developers who can own frontend, backend and integrations.",
     links: [
       {
-        href: "/hire/full-stack-developers/mern-developers",
+        href: "/hire/mern-developer",
         title: "Hire MERN Stack Developers",
         icon: <FaReact />,
       },
       {
-        href: "/hire/full-stack-developers/mean-developers",
+        href: "/hire/mean-developer",
         title: "Hire NextJs Developers",
         icon: <FaAngular />,
       },
       {
-        href: "/hire/full-stack-developers/laravel-vue-developers",
+        href: "/hire/laravel-vue-developer",
         title: "Hire Laravel + Vue Developers",
         icon: <FaLaravel />,
       },
       {
-        href: "/hire/full-stack-developers/react-node-developers",
+        href: "/hire/react-node-developer",
         title: "Hire React + Django Developers",
         icon: <FaPython />,
       },
@@ -218,27 +218,27 @@ const tabs = [
     id: "hireecommercetab",
     icon: <FaShoppingCart className="inline-block text-sky-600" />,
     title: "Hire eCommerce Developers",
-    href: "/hire/ecommerce-developers",
+    href: "/hire/ecommerce-developer",
     description:
       "Hire eCommerce experts to build conversion‑focused, secure and scalable online stores.",
     links: [
       {
-        href: "/hire/ecommerce-developers/magento-developers",
+        href: "/hire/magento-developer",
         title: "Hire Magento Developers",
         icon: <FaShoppingCart />,
       },
       {
-        href: "/hire/ecommerce-developers/wordpress-developers",
+        href: "/hire/wordpress-developer",
         title: "Hire WordPress Developers",
         icon: <FaWordpress />,
       },
       {
-        href: "/hire/ecommerce-developers/woocommerce-developers",
+        href: "/hire/woocommerce-developer",
         title: "Hire WooCommerce Developers",
         icon: <FaShoppingCart />,
       },
       {
-        href: "/hire/ecommerce-developers/shopify-developers",
+        href: "/hire/shopify-developer",
         title: "Hire Shopify Developers",
         icon: <FaShopify />,
       },
@@ -250,42 +250,42 @@ const tabs = [
     id: "hireothertab",
     icon: <FaUserTie className="inline-block text-sky-600" />,
     title: "Hire Dedicated Experts",
-    href: "/hire/dedicated-developers",
+    href: "/hire/dedicated-developer",
     description:
       "Build a long‑term pod of dedicated experts across architecture, cloud, data, QA and product.",
     links: [
       {
-        href: "/hire/dedicated-developers/solution-architects",
+        href: "/hire/solution-architects",
         title: "Hire Solution Architects",
         icon: <FaUserCog />,
       },
       {
-        href: "/hire/dedicated-developers/devops-engineers",
+        href: "/hire/devops-engineers",
         title: "Hire DevOps Engineers",
         icon: <FaCloud />,
       },
       // {
-      //   href: "/hire/dedicated-developers/database-engineers",
+      //   href: "/hire/dedicated-developer/database-engineers",
       //   title: "Hire Database Engineers",
       //   icon: <FaDb />,
       // },
       {
-        href: "/hire/dedicated-developers/qa-testers",
+        href: "/hire/qa-testers",
         title: "Hire QA & Testers",
         icon: <FaBullseye />,
       },
       {
-        href: "/hire/dedicated-developers/ml-engineers",
+        href: "/hire/ml-engineers",
         title: "Hire AI & ML Engineers",
         icon: <FaRobot />,
       },
       {
-        href: "/hire/dedicated-developers/software-developers",
+        href: "/hire/software-developer",
         title: "Hire Software Developers",
         icon: <FaRegIdCard />,
       },
       {
-        href: "/hire/dedicated-developers/ui-ux-designers",
+        href: "/hire/ui-ux-designers",
         title: "Hire UI/UX Designers",
         icon: <FaUserTie />,
       },
@@ -305,7 +305,7 @@ const HireResourcesDropdown = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 mt-16">
       <div className="absolute inset-0 max-w-7xl mx-auto px-4">
-        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[50rem] rounded-b-2xl shadow-md overflow-hidden z-10">
+        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[40rem] rounded-b-2xl shadow-md overflow-hidden z-10">
           <div className="w-full h-full flex">
             {/* Left Sidebar – same style as Services */}
             <div className="flex-[1.5] bg-[#fcfcfc] border-r border-sky-200 text-left p-6 space-y-2">
@@ -427,7 +427,7 @@ const HireResourcesDropdown = () => {
                   </div>
 
                   <Link
-                    href="/contact/hire-developers"
+                    href="/contact/hire-developer"
                     className="mt-4 px-4 md:px-6 py-2 rounded-full bg-sky-600 text-white text-[11px] font-semibold shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:bg-sky-500 transition-colors flex items-center justify-center gap-2 w-full"
                   >
                     Discuss Your Requirements

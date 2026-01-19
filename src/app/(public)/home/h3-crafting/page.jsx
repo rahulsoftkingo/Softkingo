@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import PopupQuoteModal from '@/components/PopupQuoteModal';
+import React, { useState } from 'react';
 import { FaArrowRight } from "react-icons/fa"
 const craftings = [
   {
@@ -32,8 +35,10 @@ const craftings = [
 ]
 
 function Crafting() {
+   const [showModal, setShowModal] = useState(false);
+  
   return (
-    <div className="bg-gradient-to-br from-white via-sky-100 to-sky-200 text-black  lg:h- flex justify-center  py-10 sm:py-12 px-4 sm:px-6">
+    <div className="bg-gradient-to-br from-white via-sky-50 to-sky-200 text-black  lg:h- flex justify-center  py-10 sm:py-12 px-4 sm:px-6">
       {/* <div className='m-[60px] pt-[60px]  w-[1315px] max-h-[749px] '> */}
       <div className='max-w-7xl mx-auto '>
         <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-[700px] mb-1 leading-normal pt-8 text-center lg:hidden text-sky-900">
@@ -85,77 +90,26 @@ function Crafting() {
           ))}
           </div>
           <section>
-            <div className='gap-4 flex  flex-col items-center text-center justify-evenly -sky-500 p-6 rounded-2xl shadow- bg-gradient-to-r from-sky-500 via-sky-300 to-sky-500 lg:max-w-[25rem] h-[9rem] lg:h-[10rem]'>
-              <h1 className=' text-xl 2xl:text-2xl text-white font-semibold'>
+            <div className='gap-4 flex  flex-col items-center text-center justify-evenly -sky-500 p-6 rounded-2xl shadow-md bg-gradient-to-br from-sky-50 via-sky-200 to-sky-100 lg:max-w-[25rem] h-[9rem] lg:h-[10rem]'>
+              <h1 className=' text-xl 2xl:text-2xl text-sky-700 font-semibold'>
                 Want To Start A Project?
               </h1>
-
-              <button className=" px-6 py-3 md:py-2  rounded-full bg-white -gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-primary font-medium hover:bg-gradient-to-l hover:from-sky-500  hover:to-sky-400 transform hover:-translate-y-1 hover:text-white shadowlg shadow-sky-900/30 transition-all duration-300 flex items-center justify-center w-[fit-content]"><div className="font-semibold text-sm lg:text-md mr-2">Get Estimation </div><FaArrowRight /></button>
+ <button
+                  onClick={() => setShowModal(true)}
+                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 cursor-pointer inline-flex items-center "
+                  // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300 cursor-pointer inline-flex items-center"
+                >
+                  Get Estimation <FaArrowRight className="ml-2" />
+                </button>
+         
             </div>
           </section>
 
         </div>
 
 
-
-
-
-
-
-
-        {/* <div className="flex justify-between text-center lg:mt-[128px] flex-col lg:flex-row">
-        <div className='flex justify-center flex-col text-center  col-span-1 w-[324px]'>
-          <p className="text-[#28AFDF] text-[60px] font-semibold underline underline-offset-[10px] decoration-[3px]  ">5+</p>
-          <p className="mt-4  w-[324px] p-0">
-            We have <span className="text-[#28AFDF] font-semibold ">5+ Years of Experience</span><br />
-            in Web & App Development
-          </p>
-        </div>
-
-        <div className='flex justify-center flex-col text-center col-span-1 w-[324px]'>
-          <p className="text-[#28AFDF] text-[60px] flex justify-center w-[324]px font-semibold underline underline-offset-[10px] decoration-[3px] col-span-1">450+</p>
-          <p className="mt-4 w-[324px]">
-            We have Already <span className="text-[#28AFDF] font-semibold inline-block  ">450+ Mobile Apps</span> Developed, and Design
-          </p>
-        </div>
-
-        <div className='flex justify-center flex-col text-center  col-span-1 w-[324px]' >
-          < p className="text-[#28AFDF] text-[60px] font-semibold underline underline-offset-[10px] decoration-[3px] col-span-1">50+</p>
-          <p className="mt-4">
-            Certified <span className="text-[#28AFDF] font-semibold">Designer, and Developers</span>, who believe in better results
-          </p>
-        </div>
-
-       
       </div>
-      <div className='flex justify-between text-center lg:mt-[128px] flex-col lg:flex-row'>
-         <div  className='flex justify-center flex-col text-center  col-span-1 w-[324px]'>
-          <p className="text-[#28AFDF] text-[60px] font-semibold underline underline-offset-[10px] decoration-[3px]">500+</p>
-          <p className="mt-4">
-            Web Development and Design<br />
-            <span className="text-[#28AFDF] font-semibold">Already Delivered</span>
-          </p>
-        </div>
-
-        <div  className='flex justify-center flex-col text-center  col-span-1 w-[324px]' >
-          <p className="text-[#28AFDF] text-[60px] font-semibold underline underline-offset-[10px] decoration-[3px]">10+</p>
-          <p className="mt-4">
-            <span className="text-[#28AFDF] font-semibold">Million App Downloads</span> on Play Store<br />
-            and App Store (iOS + Android)
-          </p>
-        </div>
-
-        <div  className='flex justify-center flex-col text-center  col-span-1 w-[324px]'>
-          <p className="text-[#28AFDF] text-[60px] font-semibold underline underline-offset-[10px] decoration-[3px] flex justify-center items-center gap-2">
-            5.0 <p className='text-yellow-600'>★</p>
-          </p>
-          <p className="mt-4">
-            Rating On <span className="text-[#28AFDF] font-semibold">Clutch</span> is 5.0,<br />
-            Out of Top 10 Companies in India
-          </p>
-        </div>
-      </div> */}
-      </div>
+       <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }

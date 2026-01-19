@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import HireSection from './HireSection';
 import LeadForm from '@/components/public/LeadForm';
+import InquirySection from '@/components/footer/InquirySection';
 
 export default function HirePage() {
   return (
@@ -113,6 +114,8 @@ export default function HirePage() {
       </section>
 
       <HireSection />
+            <InquirySection />
+
     </div>
   );
 }

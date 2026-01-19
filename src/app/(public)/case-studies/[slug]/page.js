@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Users, Clock } from 'lucide-react';
 import prisma from '@/lib/prisma';
 import { AppScreensCarousel } from './AppScreensCarousel';
+import InquirySection from '@/components/footer/InquirySection';
 
 // ---------- helpers ----------
 function parseJson(value, fallback) {
@@ -235,6 +236,8 @@ export default async function CaseStudyPage({ params }) {
         <AppScreensShowcase data={data} />
         <ResultsDelivered data={data} />
         <FindYourApp data={data} />
+              <InquirySection />
+
       </main>
     </>
   );
@@ -845,7 +848,7 @@ function FindYourApp({ data }) {
         </div>
 
         <div className="relative flex justify-center mt-6 lg:mt-0">
-          <div className="relative w-40 h-80 sm:w-52 sm:h-[380px] md:w-64 md:h-[440px] lg:w-72 lg:h-[520px] -rotate-3 hover:rotate-0 transition-transform duration-500">
+          <div className="relative w-20 h-40 sm:w-35 sm:h-52 md:w-35 md:h-52 lg:w-42 lg:h-75 -rotate-3 hover:rotate-0 transition-transform duration-500">
             <Image
               src={data.findYourApp.mockup}
               alt="Find your app"

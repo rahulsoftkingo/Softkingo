@@ -3,6 +3,7 @@
 'use client';
 
 import Image from 'next/image';
+import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function GalleryClient({ sections }) {
   return (
@@ -98,18 +99,13 @@ export default function GalleryClient({ sections }) {
                 id={section.id}
                 className="scroll-mt-20"
               >
-                <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium border border-cyan-200 mb-4">
-                    {section.pill}
-                  </div>
-                  <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-                    {section.label}
-                  </h2>
-                  <p className="text-lg lg:text-xl text-slate-600 leading-relaxed">
-                    {section.description}
-                  </p>
-                </div>
 
+                <CommonTitle
+                  pill={section.pill}
+                  title={section.label}
+                  gradientText="Gallery"
+                  subtitle={section.description}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-4 lg:gap-6">
                   {section.images.map((img, index) => {
                     let colSpan = 'md:col-span-3 lg:col-span-4';

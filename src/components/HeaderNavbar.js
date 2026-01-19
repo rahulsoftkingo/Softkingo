@@ -8,12 +8,15 @@ import Image from "next/image";
 import AboutUsDropdown from "../dropdown/AboutDropdown";
 import ServiceDropdown from "../dropdown/ServiceDropdown";
 import HireResourcesDropdown from "../dropdown/HireResourcesDropdown";
-import IndustriesMenu from "../dropdown/IndustriesMenu"; // yahi Solutions ke liye use kar rahe
+import IndustriesMenu from "../dropdown/IndustriesMenu";
+import SolutionsMenu from "@/dropdown/SolutionsMenu";
 import ResourcesMenu from "../dropdown/InsightsMenu";
 import SideBar from "./Sidebar";
 import Slogo from "../../public/images/softkingo-logo.png";
 import { FaArrowRight } from "react-icons/fa";
 import PopupQuoteModal from "./PopupQuoteModal";
+import { HiSparkles } from "react-icons/hi";
+
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -21,6 +24,7 @@ const Navbar = () => {
   const [showAboutUsDropdown, setShowAboutUsDropdown] = useState(false);
   const [showServiceDropdown, setShowServiceDropdown] = useState(false);
   const [showHireDropdown, setShowHireDropdown] = useState(false);
+  const [showIndustriesDropdown, setIndustriesDropdown] = useState(false);
   const [showSolutionsDropdown, setShowSolutionsDropdown] = useState(false);
   const [showResourceDropdown, setShowResourceDropdown] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,7 +62,7 @@ const Navbar = () => {
     const base = "a-main-title cursor-pointer text-sm border-b-2";
     const active = "border-sky-600 text-sky-600";
     const inactive =
-      "border-transparent text-slate-700 hover:border-sky-400 hover:text-sky-600";
+      "border-transparent text-sky-900 hover:border-sky-400 hover:text-sky-600";
     return `${base} ${isActive(path) ? active : inactive}`;
   };
 
@@ -72,47 +76,7 @@ const Navbar = () => {
         className={`p-0 sticky z-30 top-0 header slider-active-bg main-navbar ${isScrolled ? "shadow-md bg-white/90 backdrop-blur-md" : ""
           }`}
       >
-        {/* top contact strip (desktop only, not when scrolled) */}
-        {!isScrolled && (
-          <div className="py-2 bg-white border-b border-slate-100 hidden lgblock">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center flex-wrap gap-4">
-                  <TopNumber
-                    flag="https://www.hyperlinkinfosystem.com/assets/img/ind-flag.svg"
-                    label="+91-7428750870"
-                    href="tel:+917428750870"
-                  />
-                  <TopNumber
-                    flag="https://www.hyperlinkinfosystem.com/assets/img/us-flag.svg"
-                    label="+1 (309)791-4105"
-                    href="tel:+13097914105"
-                  />
-                  <TopNumber
-                    flag="https://www.hyperlinkinfosystem.com/assets/img/uk-flag.svg"
-                    label="+44 20 3287 9060"
-                    href="tel:+442032879060"
-                  />
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <Link
-                    href="/press-releases"
-                    className="bg-white border border-sky-400 py-2 px-4 rounded-full text-xs md:text-sm font-medium text-sky-500 hover:text-white hover:bg-sky-600 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-800/30 transition-all duration-300 flex items-center"
-                  >
-                    Press Release
-                  </Link>
-                  <Link
-                    href="/our-portfolio"
-                    className="bg-white border border-sky-400 py-2 px-4 rounded-full text-xs md:text-sm font-medium text-sky-500 hover:text-white hover:bg-sky-600 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-800/30 transition-all duration-300 flex items-center"
-                  >
-                    Our Fresh Work
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* main navbar */}
         <div className="bg-transparent">
@@ -134,8 +98,43 @@ const Navbar = () => {
               <div className="flex h-full items-center space-x-4 md:space-x-6">
                 {/* desktop nav */}
                 {!isMobile ? (
-                  <nav className="hidden md:block">
-                    <ul className="flex justify-between items-center space-x-5 mb-0">
+                  <nav className="hidden sm:block">
+                    <ul className="flex justify-between items-center space-x-5 mb-0 gap-3 text-sky-900">
+                      <li className="relative group">
+                        <Link
+                          href="/ai"
+                          className="relative flex items-center gap-2 px-4 py-2 rounded-full 
+    bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 
+    bg-[length:200%_200%] 
+    animate-gradient-x 
+    text-white text-sm font-medium 
+    shadow-[0_4px_20px_rgba(168,85,247,0.4)]
+    hover:shadow-[0_6px_30px_rgba(168,85,247,0.6)] 
+    hover:scale-105 
+    transition-all duration-300 ease-out
+    overflow-hidden border border-purple-500/50
+    group-hover:bg-gradient-to-l
+    before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer before:pointer-events-none"
+                        >
+                          {/* Sparkle icon with pulse */}
+                          <div className="relative">
+                            <HiSparkles className="text-lg animatepulse group-hover: animate-[spin_2s_linear_infinite]" />
+                          </div>
+
+                          {/* AI Text */}
+                          <span className="relative z-10 tracking-wide font-semibold">AI</span>
+
+                          {/* Arrow on hover */}
+                          <FaArrowRight className="ml-1 text-xs opacity-100 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                        </Link>
+
+                        {/* Floating particles */}
+                        <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                          <div className="absolute top-2 left-2 w-1 h-1 bg-white/50 rounded-full animate-ping" />
+                          <div className="absolute bottom-2 right-2 w-1 h-1 bg-white/50 rounded-full animate-ping delay-150" />
+                          <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 bg-white/30 rounded-full animate-ping delay-300" />
+                        </div>
+                      </li>
                       {/* About */}
                       <li
                         className="relative"
@@ -204,7 +203,28 @@ const Navbar = () => {
                         {showHireDropdown && <HireResourcesDropdown />}
                       </li>
 
-                      {/* Solutions (IndustriesMenu reuse) */}
+                      {/*  (IndustriesMenu reuse) */}
+                      <li
+                        className="relative"
+                        onMouseEnter={() => setIndustriesDropdown(true)}
+                        onMouseLeave={() => setIndustriesDropdown(false)}
+                      >
+                        <Link href='/industries'
+                          className={linkClass("/industries")}>
+                          Industries
+                        </Link>
+                        <span className="absolute text-2xl mt-1">&#129171;</span>
+                        <div
+                          className="right-1"
+                          style={{
+                            position: "absolute",
+                            height: "21px",
+                            width: "110%",
+                          }}
+                        />
+                        {showIndustriesDropdown && <IndustriesMenu />}
+                      </li>
+                      {/* Solutions  */}
                       <li
                         className="relative"
                         onMouseEnter={() => setShowSolutionsDropdown(true)}
@@ -223,7 +243,7 @@ const Navbar = () => {
                             width: "110%",
                           }}
                         />
-                        {showSolutionsDropdown && <IndustriesMenu />}
+                        {showSolutionsDropdown && <SolutionsMenu />}
                       </li>
 
                       {/* Resources */}
@@ -232,9 +252,12 @@ const Navbar = () => {
                         onMouseEnter={() => setShowResourceDropdown(true)}
                         onMouseLeave={() => setShowResourceDropdown(false)}
                       >
-                        <span className="a-main-title cursor-pointer text-sm border-b-2 border-transparent hover:border-sky-400 hover:text-sky-600">
+
+                        <Link href='/insights'
+                          className={linkClass("/insights")}>
                           Insights
-                        </span>
+
+                        </Link>
                         <span className="absolute text-2xl mt-1">&#129171;</span>
                         <div
                           className="right-1"
@@ -259,10 +282,17 @@ const Navbar = () => {
 
                       {/* Contact */}
                       <li>
-                        <Link href="/contact" className={linkClass("/contact")}>
+                        <Link href="/contact" className=' px-4 md:px-6 py-2 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 hidden lg:flex items-center'
+                        // {linkClass("/contact")}
+                        >
                           Contact Us
                         </Link>
                       </li>
+
+                      {/* Complete Animated AI Button - Self-contained */}
+
+
+
                     </ul>
                   </nav>
                 ) : (
@@ -274,16 +304,16 @@ const Navbar = () => {
                       } transition-transform duration-300`}
                     aria-label="Toggle navigation menu"
                   >
-                    {/* Top bar */}
+
                     <span
                       className={`block absolute left-0 w-full h-[2px] bg-gray-700 group-hover:bg-sky-500 transition-all duration-300 ${isMenuOpen ? "top-1/2 rotate-45" : "top-0"
                         }`}
                     />
-                    {/* Middle bar */}
+
                     <span
                       className={`block absolute left-0 w-full h-[2px] bg-gray-700 group-hover:bg-sky-500 transition-all duration-300 ${isMenuOpen
-                          ? "opacity-0"
-                          : "top-1/2 -translate-y-1/2"
+                        ? "opacity-0"
+                        : "top-1/2 -translate-y-1/2"
                         }`}
                     />
                     {/* Bottom bar */}
@@ -295,20 +325,96 @@ const Navbar = () => {
                 )}
 
                 {/* CTA buttons */}
-                <button
+                {/* <button
                   onClick={() => setShowModal(true)}
                   // className="px-4 md:px-6 py-2 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 hidden lg:flex items-center"
                   className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300 hidden lg:flex items-center"
                 >
                   Get A Quote <FaArrowRight className="ml-2" />
-                </button>
+                </button> */}
 
-                <button
+                {/* <button
                   onClick={() => setShowModal(true)}
                   className="px-4 md:px-6 py-2 rounded-full bg-white text-sky-600 text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 hover:text-white transform hover:-translate-y-1 border border-sky-500 transition-all duration-300 flex items-center lg:hidden"
                 >
                   Get A Quote <FaArrowRight className="ml-2" />
-                </button>
+                </button> */}
+                {/* Contact */}
+
+                {/* Complete Animated AI Button - Self-contained */}
+                <span className="relative group lg:hidden">
+                  <Link
+                    href="/ai"
+                    className="relative flex items-center gap-2 px-4 py-2 rounded-full 
+    bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 
+    bg-[length:200%_200%] 
+    animate-gradient-x 
+    text-white text-sm font-medium 
+    shadow-[0_4px_20px_rgba(168,85,247,0.4)]
+    hover:shadow-[0_6px_30px_rgba(168,85,247,0.6)] 
+    hover:scale-105 
+    transition-all duration-300 ease-out
+    overflow-hidden border border-purple-500/50
+    group-hover:bg-gradient-to-l
+    before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer before:pointer-events-none"
+                  >
+                    {/* Sparkle icon with pulse */}
+                    <div className="relative">
+                      <HiSparkles className="text-lg animatepulse group-hover: animate-[spin_2s_linear_infinite]" />
+                    </div>
+
+                    {/* AI Text */}
+                    <span className="relative z-10 tracking-wide font-semibold">AI</span>
+
+                    {/* Arrow on hover */}
+                    <FaArrowRight className="ml-1 text-xs opacity-100 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                  </Link>
+
+                  {/* Floating particles */}
+                  <div className="absolute -inset-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    <div className="absolute top-2 left-2 w-1 h-1 bg-white/50 rounded-full animate-ping" />
+                    <div className="absolute bottom-2 right-2 w-1 h-1 bg-white/50 rounded-full animate-ping delay-150" />
+                    <div className="absolute top-1/2 left-1/2 w-0.5 h-0.5 bg-white/30 rounded-full animate-ping delay-300" />
+                  </div>
+                </span>
+
+                <style>
+                  {
+                    `
+  @keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Particles ping delay */
+.delay-150 {
+  animation-delay: 0.15s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+
+  `
+                  }
+                </style>
 
                 <div className="hidden md:flex lg:hidden w-12 ml-2" />
               </div>

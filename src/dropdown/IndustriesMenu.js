@@ -70,74 +70,7 @@ heading: "Industry‑Specific Solutions",
     ],
   },
 
-  // ✅ ON DEMAND (main link: /solutions)
-  {
-    id: "ondemand",
-    title: "On‑Demand Solutions",
-    icon: <FaTruck className="inline-block text-sky-600" />,
-    heading: "On‑Demand & Real‑Time Solutions",
-    href: "/solutions",
-    description:
-      "Design on‑demand platforms for delivery, mobility and home services with real‑time tracking and optimized dispatch.",  
-    items: [
-      { title: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
-      { title: "Grocery Delivery", href: "/solutions/grocery-delivery-app-development", icon: <FaShoppingBag /> },
-      { title: "Pickup & Delivery", href: "/solutions/pickup-and-delivery-service-app-development", icon: <FaTruck /> },
-      { title: "Taxi Booking", href: "/solutions/taxi-app-development-services", icon: <FaTaxi /> },
-      { title: "Fitness Trainer App", href: "/solutions/fitness-trainer-app-development", icon: <FaDumbbell /> },
-      { title: "Home Services", href: "/solutions/on-demand-home-service-app-development", icon: <FaHome /> },
-      { title: "Beauty & Salon Booking", href: "/solutions/salon-app-development", icon: <FaSpa /> },
-      { title: "Doctor & Medical App", href: "/solutions/ice-cream-delivery-app-development", icon: <FaHeartbeat /> },
-      { title: "Laundry Service", href: "/solutions/laundry-app-development", icon: <FaShoppingBag /> },
-      { title: "Restaurant management", href: "/solutions/restaurant-app-development-company", icon: <FaUtensils /> },
-      { title: "Dating App", href: "/solutions/dating-app-development-company", icon: <FaUsers /> },
-      { title: "Carpooling Apps", href: "/solutions/ride-sharing-app-development", icon: <FaCarSide /> },
-      { title: "Tutor App", href: "/solutions/tutor-app-development", icon: <FaUserGraduate /> },
-      { title: "Mechanics & Repair App", href: "/solutions/mechanic-app-development", icon: <FaWrench /> },
-      { title: "Car Wash App", href: "/solutions/car-wash-app-development", icon: <FaCarSide /> },
-    ],
-  },
 
-  // ✅ BUSINESS MODEL (main link: /solutions)
-  {
-    id: "businessmodel",
-    title: "Business‑Model Solutions",
-    icon: <FaProjectDiagram className="inline-block text-sky-600" />,
-    heading: "Business‑Model Based Solutions",
-    href: "/solutions",
-        description:
-      "Launch subscription, freemium, on‑demand or marketplace products with billing, entitlements and reporting built‑in.",
-    items: [
-      { title: "Marketplace App", href: "/solutions/marketplace-app-development", icon: <FaStore /> },
-      { title: "Subscription Software", href: "/solutions/subscription-platform-development", icon: <FaCoins /> },
-      { title: "Multi-Vendor E-commerce", href: "/solutions/multivendor-ecommerce-development", icon: <FaStore /> },
-      { title: "SaaS Product Development", href: "/solutions/saas-product-development", icon: <FaCloud /> },
-      { title: "CRM Software", href: "/solutions/crm-software-development", icon: <FaProjectDiagram /> },
-      { title: "ERP Software", href: "/solutions/erp-software-development", icon: <FaProjectDiagram /> },
-      { title: "Booking System", href: "/solutions/online-booking-system-development", icon: <FaCalendarAlt /> },
-      { title: "Membership / Loyalty", href: "/solutions/loyalty-membership-platform", icon: <FaCoins /> },
-      { title: "HR Management", href: "/solutions/hr-software-development", icon: <FaUsers /> },
-      { title: "Inventory Management", href: "/solutions/inventory-management-software", icon: <FaStore /> },
-    ],
-  },
-
-  // ✅ TECHNOLOGY (main link: /solutions)
-  {
-    id: "technology",
-    title: "Technology‑Based Solutions",
-    icon: <FaMicrochip className="inline-block text-sky-600" />,
-    heading: "Technology‑Based Solutions",
-    href: "/solutions",
-    description: "Cutting-edge technology solutions including AI/ML, blockchain, IoT and AR/VR for innovative products.",  
-    items: [
-      { title: "AI/ML Solutions", href: "/solutions/ai-ml-development", icon: <FaRobot /> },
-      { title: "Chatbot Development", href: "/solutions/chatbot-development", icon: <FaComments /> },
-      { title: "IoT App Development", href: "/solutions/iot-app-development", icon: <FaMicrochip /> },
-      { title: "Blockchain Solutions", href: "/solutions/blockchain-development", icon: <FaCube /> },
-      { title: "Cloud & DevOps", href: "/solutions/cloud-devops-services", icon: <FaCloud /> },
-      { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
-    ],
-  },
 ];
 
 const IndustriesMenu = () => {
@@ -147,10 +80,10 @@ const IndustriesMenu = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 mt-16">
       <div className="absolute inset-0 max-w-7xl mx-auto px-4">
-        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[50rem] rounded-b-2xl shadow-md overflow-hidden z-10">
-          <div className="grid grid-cols-1 xl:grid-cols-[28%_72%] h-full">
+        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[40rem] rounded-b-2xl shadow-md overflow-hidden z-10">
+          <div className="grid grid-cols-1 xl:grid-cols-1 [28%_72%] h-full">
             {/* Left tabs */}
-            <div className="w-full bg-[#fcfcfc] space-y-2 p-6 flex-grow border-r border-sky-200 shadow-sm">
+            {/* <div className="w-full bg-[#fcfcfc] space-y-2 p-6 flex-grow border-r border-sky-200 shadow-sm">
               {tabs.map((tab) => (
                 <div key={tab.id} className="cursor-pointer">
                   <h3
@@ -172,7 +105,7 @@ const IndustriesMenu = () => {
                 </div>
               ))}
 
-              {/* mini stats / graph style card (unchanged UI) */}
+            
               <div className="mt-4 rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-sky-100 p-4 shadow-sm">
                 <p className="text-[11px] font-semibold tracking-[0.18em] text-sky-500 uppercase">
                   Solution Insights
@@ -202,7 +135,7 @@ const IndustriesMenu = () => {
                   <FaArrowRight className="text-[0.7rem]" />
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* Middle content */}
             <div className="flex flex-col justify-between h-full w-full">
@@ -228,7 +161,7 @@ const IndustriesMenu = () => {
                       <Link
                         key={idx}
                         href={item.href}
-                        className="group flex gap-3 p-1 rounded-2xlborderborder-sky-100 bg-whitehover:bg-sky-50 hover:border-sky-200shadow-lghover:shadow-md transition"
+                        className="group flex gap-3 p- rounded-2xlbg-white hover:bg-sky-50hover:border-sky-200 shadow-lghover:shadow-md transition   borderborder-sky-100"
                       >
                         <div className="flex h-8 w-10 items-center justify-center rounded-full bg-sky-600/90 text-white text-sm shadow-sm">
                           {item.icon}

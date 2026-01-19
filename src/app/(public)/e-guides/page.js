@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
+import InquirySection from "@/components/footer/InquirySection";
 
 export const dynamic = "force-dynamic";
 
@@ -33,10 +34,13 @@ export default async function EGuidesPage(props) {
   });
 
   return (
+    <>
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
       <HeroSection q={q} total={guides.length} />
       <GuidesSection guides={guides} />
     </main>
+     <InquirySection />
+    </>
   );
 }
 
@@ -117,7 +121,7 @@ function HeroSection({ q, total }) {
 
           {/* Hero image */}
           <div className="relative">
-            <div className="relative w-full max-w-md mx-auto">
+            <div className="relative w-full max-w-64 mx-auto">
               {/* Floating effect container */}
               <div className="relative transform hover:scale-105 transition-transform duration-500">
                 {/* Glow effect */}
@@ -129,14 +133,17 @@ function HeroSection({ q, total }) {
                   <div className="absolute -bottom-3 -right-3 w-full h-full bg-slate-700 rounded-3xl transform rotate-2" />
                   
                   {/* Main book */}
-                  <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden aspect-[3/4]">
+                  <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden aspect-[3/4] p-4">
+                  <div className="">
                     <Image
                       src="/images/black book.png"
                       alt="Softkingo E‑Guides Collection"
                       fill
-                      className="object-cover"
+                      className="object-cover p-4"
                       priority
                     />
+                    
+                  </div>
                     
                     {/* Overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
@@ -199,7 +206,9 @@ function GuidesSection({ guides }) {
           </div>
         )}
       </div>
+       
     </section>
+    
   );
 }
 
@@ -240,12 +249,12 @@ export function EGuidesCard({ guide, index }) {
         <div className="relative mb-6 transform group-hover:-translate-y-2 transition-transform duration-500">
           <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-sky-500/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           
-          <div className="relative w-32 h-40 mx-auto bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl border border-slate-600/50 shadow-2xl overflow-hidden">
+          <div className="relative w-full max-w-42 h-62 mx-auto overflow-hidden">
             <Image
               src={guide.coverImage || "/images/eguides/default.png"}
               alt={guide.title}
               fill
-              className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+              className="object-cover transform group-hover:scale-105 transition-transform duration-500 p-2"
             />
             
             {/* Overlay gradient */}
@@ -271,9 +280,9 @@ export function EGuidesCard({ guide, index }) {
           </h3>
 
           {/* Description */}
-          <p className="text-slate-400 leading-relaxed line-clamp-3">
+          {/* <p className="text-slate-400 leading-relaxed line-clamp-3">
             {guide.description || guide.summary}
-          </p>
+          </p> */}
 
           {/* Animated CTA button */}
           <div className="pt-4">

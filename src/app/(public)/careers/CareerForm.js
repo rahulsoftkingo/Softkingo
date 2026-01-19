@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function ApplicationForm() {
     const [formData, setFormData] = useState({
@@ -43,17 +44,18 @@ export default function ApplicationForm() {
 
                 {/* Header Section */}
                 <div className="text-center mb-8 lg:mb-12">
-                    <p className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3">
-                        SEND IN YOUR APPLICATION TODAY!
-                    </p>
-                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                        Ready to Start Your Journey with Softkingo?
-                    </h1>
-                    <p className="text-sm sm:text-base text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                        At Softkingo, milestones are more than just achievements, they're moments to celebrate.
+
+
+                    <CommonTitle
+                        align="center"
+                        pill=" SEND IN YOUR APPLICATION TODAY!
+"
+                        title={false}
+                        gradientText="  Ready to Start Your Journey with Softkingo?"
+                        subtitle=" At Softkingo, milestones are more than just achievements, they're moments to celebrate.
                         We value the unique magic you bring and foster an environment where memories, friendships,
-                        and laughter thrive, creating bonds that last a lifetime.
-                    </p>
+                        and laughter thrive, creating bonds that last a lifetime."
+                    />
                 </div>
 
                 {/* Main Content Grid */}

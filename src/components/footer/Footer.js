@@ -10,7 +10,7 @@ import { IoLogoInstagram } from "react-icons/io5";
 import { TbBeta } from "react-icons/tb";
 import Image from "next/image";
 import Link from "next/link";
-import Form from "./footer-form";
+import Form from "./InquirySection";
 import { FaArrowRight } from "react-icons/fa";
 
 const Footer = () => {
@@ -74,11 +74,11 @@ const Footer = () => {
     <div className="mt10 mb-12 md:mb-0">
       {/* <Form /> */}
 
-      <footer className="w-full bg-white text-slate-900 border-t border-slate-100 relative overflow-hidden">
+      <footer className="w-full bg-gradient-to-b from-sky-50 via-white to-white bgwhite text-slate-900 border-t border-slate-100 relative overflow-hidden">
         {/* subtle background shapes in white theme */}
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-40 -left-32 w-[420px] h-[420px] rounded-full bg-sky-50 blur-3xl opacity-70" />
-          <div className="absolute bottom-[-220px] right-[-80px] w-[520px] h-[520px] rounded-full bg-cyan-50 blur-3xl opacity-70" />
+          {/* <div className="absolute bottom-[-220px] right-[-80px] w-[520px] h-[520px] rounded-full bg-cyan-50 blur-3xl opacity-70" /> */}
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 lg:pt-24">
@@ -110,7 +110,7 @@ const Footer = () => {
               </Link>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                Incepted in 2020, Softkingo has grown at an exponential pace
+                Incepted in 2018, Softkingo has grown at an exponential pace
                 with clients across 107 countries. We offer a complete range of
                 IT services and industry‑focused solutions to more than 39+
                 domains worldwide.
@@ -262,7 +262,7 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-5">
               {/* Copyright */}
               <p className="text-slate-500 text-xs md:text-sm">
-                © 2020–{currentYear} Softkingo Technologies Pvt. Ltd. All rights reserved.
+                © 2018–{currentYear} Softkingo Technologies Pvt. Ltd. All rights reserved.
               </p>
 
 
@@ -285,7 +285,7 @@ const Footer = () => {
 
               {/* Legal Links */}
               <div className="flex flex-wrap justify-center gap-4 text-xs md:text-sm">
-                {["Privacy Policy", "Terms of Use", "FAQ", "Sitemap"].map(
+                {["Privacy Policy", "Terms Conditions", "FAQs", "Site-map"].map(
                   (item) => (
                     <Link
                       key={item}

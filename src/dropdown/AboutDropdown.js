@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import RecoAward from "./RecognitionSection";
+import ReactCountryFlag from "react-country-flag";
 
 import {
   FaUserFriends,
@@ -31,7 +32,7 @@ const AboutUsDropdown = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 mt-16">
       <div className="absolute inset-0 max-w-7xl mx-auto px-4">
-        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[50rem] rounded-b-2xl shadow-md overflow-hidden z-10">
+        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[40rem] rounded-b-2xl shadow-md overflow-hidden z-10">
           <div className="w-full h-full flex">
             {/* Left Section */}
             <div className="w-full bg-[#fcfcfc] md:w1/4 flex-[1.5] flexgrow text-left p-8 border-r border-sky-200">
@@ -42,19 +43,17 @@ const AboutUsDropdown = () => {
                       onMouseEnter={() => handleTabClick(item.title)}
                       className={`cursor-pointer m-2 flex justify-between items-center rounded px-3 py-2 transition
                         text-sm
-                        ${
-                          activeTab === item.title
-                            ? "text-sky-600 bg-sky-50 font-semibold"
-                            : "text-slate-800 hover:bg-[#eff6ff]"
+                        ${activeTab === item.title
+                          ? "text-sky-600 bg-sky-50 font-semibold"
+                          : "text-slate-800 hover:bg-[#eff6ff]"
                         }`}
                     >
                       <div className="flex flex-row items-center gap-2">
                         <span className="header_menu_tab_ic">{item.icon}</span>
                         <span>{item.title}</span>
                         <span
-                          className={`text-sm ml-[0.7rem] ${
-                            activeTab === item.title ? "text-sky-500" : "hidden"
-                          }`}
+                          className={`text-sm ml-[0.7rem] ${activeTab === item.title ? "text-sky-500" : "hidden"
+                            }`}
                         >
                           🡪
                         </span>
@@ -106,39 +105,108 @@ const AboutUsDropdown = () => {
                   </div>
                 </div>
               </div>
-
+              {/* {
+    img: "/images/flags/india.png",
+    title: "India Office (New Delhi)",
+    phone: "+91-7428750870",
+    code: "IN",
+  },
+ 
+  {
+    img: "/images/flags/usa.png",
+    title: "USA Office (Los Angeles)",
+    phone: "+1 323-908-3492",
+    code: "US",
+  },
+   {
+    img: "/images/flags/india.png", 
+    title: "India Office (Noida)",
+    phone: "+91-120-636-7890",
+    code: "IN",
+  },
+  {
+    img: "/images/flags/uk.png",
+    title: "UK Office (London)",
+    phone: "+44 (0)20-7993-2188",
+    code: "GB",
+  },
+  {
+    img: "/images/flags/uae.png",
+    title: "UAE Office (Dubai)",
+    phone: "+971 4 321 8520",
+    code: "AE",
+  },
+  {
+    img: "/images/flags/canada.png",
+    title: "Canada Office (Toronto)",
+    phone: "+1 647-793-9201",
+    code: "CA",
+  }, */}
               <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
+
+
                   {
                     img: "/images/flags/india.png",
-                    title: "India Office",
+                    title: "India Office ",
                     phone: "+91-7428750870",
+                    code: "IN",
                   },
+
                   {
                     img: "/images/flags/usa.png",
                     title: "USA Office",
-                    phone: "+1 (309) 791-4105",
+                    phone: "+1 323-908-3492",
+                    code: "US",
+                  },
+                  {
+                    img: "/images/flags/india.png",
+                    title: "India Office",
+                    phone: "+91-120-636-7890",
+                    code: "IN",
                   },
                   {
                     img: "/images/flags/uk.png",
-                    title: "UK Office",
-                    phone: "+44 20 3287 9060",
+                    title: "UK Office ",
+                    phone: "+44 (0)20-7993-2188",
+                    code: "GB",
                   },
+                  {
+                    img: "/images/flags/uae.png",
+                    title: "UAE Office",
+                    phone: "+971 4 321 8520",
+                    code: "AE",
+                  },
+                  {
+                    img: "/images/flags/canada.png",
+                    title: "Canada Office",
+                    phone: "+1 647-793-9201",
+                    code: "CA",
+                  },
+
+
                 ].map((office, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <img
+                    {/* <img
                       src={office.img}
                       alt={office.title}
                       className="w-6 h-6"
+                    /> */}
+                    <ReactCountryFlag
+                      countryCode={office.code}
+                      svg
+                      className="w-10 h-10 rounded-full"
                     />
-                    <div>
-                      <span className="text-sky-700 font-semibold text-sm block">
+                    <Link
+                      href={`tel:${office.phone}`}
+                    >
+                      <span className="text-sky-700 font-semibold text-xs block">
                         {office.title}
                       </span>
                       <p className="text-sky-900 font-semibold text-sm">
                         {office.phone}
                       </p>
-                    </div>
+                    </Link>
                   </div>
                 ))}
               </div>

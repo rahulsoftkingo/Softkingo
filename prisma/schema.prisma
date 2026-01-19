@@ -49,45 +49,37 @@ model ChatMessage {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  name         String?
-  email        String? @unique(map: "User_email_key")
-  username     String  @unique(map: "User_username_key")
-  passwordHash String
-  status       String  @default("active")
-
-  // profileImage     Bytes? // Direct image bytes in DB
+  id               Int                @id @default(autoincrement())
+  name             String?
+  email            String?            @unique(map: "User_email_key")
+  username         String             @unique(map: "User_username_key")
+  passwordHash     String
+  status           String             @default("active")
   profileImage     String?
-  profileImageType String? // mime type: "image/jpeg", "image/png"
-
-  phone      String?
-  whatsapp   String?
-  title      String?
-  department String?
-  bio        String?
-
-  lastLoginAt  DateTime?
-  lastClockIn  DateTime?
-  lastClockOut DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  employeeSalary EmployeeSalary? @relation("UserEmployeeSalary")
-  payslips       Payslip[]       @relation("UserPayslips")
-
-  attendances    Attendance[]   @relation("UserAttendances")
-  leaveRequests  LeaveRequest[] @relation("UserLeaveRequests")
-  leaveApprovals LeaveRequest[] @relation("LeaveApprovals")
-
+  phone            String?
+  whatsapp         String?
+  title            String?
+  department       String?
+  bio              String?
+  lastLoginAt      DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  lastClockIn      DateTime?
+  lastClockOut     DateTime?
+  profileImageType String?
   adminLogs        AdminLog[]
+  attendances      Attendance[]       @relation("UserAttendances")
   blogPosts        BlogPost[]
   chatsAssigned    ChatConversation[] @relation("ChatAssignedTo")
   contentItems     ContentItem[]
+  employeeSalary   EmployeeSalary?    @relation("UserEmployeeSalary")
   leadsOwned       Lead[]             @relation("LeadOwner")
   LeadActivity     LeadActivity[]
+  leaveApprovals   LeaveRequest[]     @relation("LeaveApprovals")
+  leaveRequests    LeaveRequest[]     @relation("UserLeaveRequests")
   MediaItem        MediaItem[]
   pages            Page[]
+  // payslips         Payslip[]          @relation("UserPayslips")
   ticketsOwned     Ticket[]           @relation("TicketOwner")
   ticketsRequested Ticket[]           @relation("TicketRequester")
   ticketComments   TicketComment[]
@@ -185,8 +177,6 @@ model BlogPost {
   featured        Boolean        @default(false)
   pinned          Boolean        @default(false)
   thumbnail       String?
-  // thumbnail       Bytes?
-  thumbnailType   String?
   heroImage       String?
   readTimeMinutes Int?
   seoTitle        String?
@@ -201,6 +191,7 @@ model BlogPost {
   likeCount       Int            @default(0)
   shareCount      Int            @default(0)
   viewCount       Int            @default(0)
+  thumbnailType   String?
   feedbacks       BlogFeedback[]
   author          User?          @relation(fields: [authorId], references: [id], map: "BlogPost_authorId_fkey")
   category        BlogCategory?  @relation(fields: [categoryId], references: [id], map: "BlogPost_categoryId_fkey")
@@ -658,22 +649,19 @@ model AdminLog {
   @@map("adminlog")
 }
 
-// ✅ NEW HRM TABLES (Production Ready)
 model Attendance {
-  id       Int       @id @default(autoincrement())
-  userId   Int
-  clockIn  DateTime  @default(now())
-  clockOut DateTime?
-  duration Int? // seconds
-  location String? // IP/location
-  notes    String?
-  status   String    @default("active") // active, approved, rejected
-
-  user   User              @relation("UserAttendances", fields: [userId], references: [id], onDelete: Cascade)
-  breaks AttendanceBreak[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int               @id @default(autoincrement())
+  userId    Int
+  clockIn   DateTime          @default(now())
+  clockOut  DateTime?
+  duration  Int?
+  location  String?
+  notes     String?
+  status    String            @default("active")
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  user      User              @relation("UserAttendances", fields: [userId], references: [id], onDelete: Cascade)
+  breaks    AttendanceBreak[]
 
   @@index([userId])
   @@index([clockIn])
@@ -681,14 +669,13 @@ model Attendance {
 }
 
 model AttendanceBreak {
-  id           Int       @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   attendanceId Int
-  startTime    DateTime  @default(now())
+  startTime    DateTime   @default(now())
   endTime      DateTime?
-  duration     Int? // seconds
+  duration     Int?
   notes        String?
-
-  attendance Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  attendance   Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
 
   @@index([attendanceId])
   @@map("attendance_break")
@@ -697,50 +684,47 @@ model AttendanceBreak {
 model LeaveRequest {
   id         Int      @id @default(autoincrement())
   userId     Int
-  type       String // casual, sick, annual, etc.
+  type       String
   startDate  DateTime
   endDate    DateTime
-  duration   Float // days
+  duration   Float
   reason     String?
-  status     String   @default("pending") // pending, approved, rejected
+  status     String   @default("pending")
   approvedBy Int?
-
-  user     User  @relation("UserLeaveRequests", fields: [userId], references: [id])
-  approver User? @relation("LeaveApprovals", fields: [approvedBy], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  approver   User?    @relation("LeaveApprovals", fields: [approvedBy], references: [id])
+  user       User     @relation("UserLeaveRequests", fields: [userId], references: [id])
 
   @@index([userId])
   @@index([status])
+  @@index([approvedBy], map: "leave_request_approvedBy_fkey")
   @@map("leave_request")
 }
 
 model EmployeeSalary {
-  id         Int    @id @default(autoincrement())
-  userId     Int    @unique
+  id         Int       @id @default(autoincrement())
+  userId     Int       @unique
   baseSalary Float
-  hra        Float? // House Rent Allowance
-  allowance  Float? // Other allowances
-  deductions Float? // PF, ESI, etc
-  tax        Float? // TDS
-  netSalary  Float // Calculated
-  payPeriod  String // "2025-12" format
-  status     String @default("paid")
-
-  user     User      @relation("UserEmployeeSalary", fields: [userId], references: [id])
-  payslips Payslip[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  hra        Float?
+  allowance  Float?
+  deductions Float?
+  tax        Float?
+  netSalary  Float
+  payPeriod  String
+  status     String    @default("paid")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation("UserEmployeeSalary", fields: [userId], references: [id])
+  payslips   Payslip[] @relation("UserPayslips")
 
   @@map("employee_salary")
 }
 
 model Payslip {
-  id               Int    @id @default(autoincrement())
+  id               Int            @id @default(autoincrement())
   employeeSalaryId Int
-  period           String // "2025-12"
+  period           String
   basicPay         Float
   hra              Float
   allowances       Float
@@ -750,12 +734,8 @@ model Payslip {
   workedDays       Int
   paidLeaveDays    Int
   unpaidLeaveDays  Int
-
-  employeeSalary EmployeeSalary @relation(fields: [employeeSalaryId], references: [id], map: "Payslip_employeeSalaryId_fkey")
-
-  user User? @relation("UserPayslips", fields: [employeeSalaryId], references: [id], map: "Payslip_userId_fkey")
-
-  createdAt DateTime @default(now())
+  createdAt        DateTime       @default(now())
+  employeeSalary   EmployeeSalary @relation("UserPayslips", fields: [employeeSalaryId], references: [id])
 
   @@unique([employeeSalaryId, period])
   @@map("payslip")

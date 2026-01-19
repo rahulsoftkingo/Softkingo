@@ -51,46 +51,91 @@ export async function PATCH(request, { params }) {
     return NextResponse.json({ message: 'Invalid id' }, { status: 400 });
   }
 
+  // const body = await request.json();
+  // const {
+  //   key,
+  //   type,
+  //   title,
+  //   category,
+  //   description,
+  //   techStack,
+  //   platforms,
+  //   country,
+  //   bgImage,
+  //   bgColor,
+  //   icon,
+  //   phoneMockup,
+  //   badges,
+  //   caseStudyId,
+  // } = body;
+
+  // const project = await prisma.portfolioProject.update({
+  //   where: { id },
+  //   data: {
+  //     key,
+  //     type,
+  //     title,
+  //     category,
+  //     description,
+  //     techStack,
+  //     platforms,
+  //     country,
+  //     bgImage,
+  //     bgColor,
+  //     icon,
+  //     phoneMockup,
+  //     badgesJson: badges === undefined ? undefined : badges ? JSON.stringify(badges) : null,
+  //     caseStudyId: caseStudyId === undefined ? undefined : caseStudyId || null,
+  //   },
+  // });
+
+    // SAFETY TRUNCATE - Prevent Prisma P2000 errors
   const body = await request.json();
-  const {
-    key,
-    type,
-    title,
-    category,
-    description,
-    techStack,
-    platforms,
-    country,
-    bgImage,
-    bgColor,
-    icon,
-    phoneMockup,
-    badges,
-    caseStudyId,
-  } = body;
+  const safeData = {
+    key: body.key || null,
+    type: body.type || null,
+    title: body.title ? String(body.title).slice(0, 500) : null,           // Max 500 chars
+    category: body.category || null,
+   description: body.description ? String(body.description).slice(0, 500) : null,  // ← 500 MAX
+    techStack: body.techStack ? String(body.techStack).slice(0, 1000) : null,       // Max 1K chars
+    platforms: body.platforms ? String(body.platforms).slice(0, 500) : null,        // Max 500 chars
+    country: body.country ? String(body.country).slice(0, 255) : null,             // Max 255 chars
+    bgImage: body.bgImage || null,
+    bgColor: body.bgColor ? String(body.bgColor).slice(0, 500) : null,             // Max 500 chars
+    icon: body.icon || null,
+    phoneMockup: body.phoneMockup || null,
+    badgesJson: body.badges === undefined ? undefined : body.badges ? JSON.stringify(body.badges) : null,
+    caseStudyId: body.caseStudyId === undefined ? undefined : body.caseStudyId || null,
+  };
 
-  const project = await prisma.portfolioProject.update({
-    where: { id },
-    data: {
-      key,
-      type,
-      title,
-      category,
-      description,
-      techStack,
-      platforms,
-      country,
-      bgImage,
-      bgColor,
-      icon,
-      phoneMockup,
-      badgesJson: badges === undefined ? undefined : badges ? JSON.stringify(badges) : null,
-      caseStudyId: caseStudyId === undefined ? undefined : caseStudyId || null,
-    },
-  });
 
-  return NextResponse.json(project);
+   try {
+    const project = await prisma.portfolioProject.update({
+      where: { id },
+      data: safeData,
+    });
+    return NextResponse.json({ 
+      success: true, 
+      project 
+    });
+  } catch (error) {
+    console.error('Portfolio update error:', error);
+    
+   
+    return NextResponse.json({ 
+      message: 'Failed to update project: ' + (error.message || 'Database error'),
+      error: error.code || 'UNKNOWN'
+    }, { status: 500 });
+  }
 }
+
+//   // Update with safe data
+//   const project = await prisma.portfolioProject.update({
+//     where: { id },
+//     data: safeData,
+//   });
+//   return NextResponse.json(project);
+// }
 
 export async function DELETE(request, { params }) {
   const session = await getServerSession(authOptions);

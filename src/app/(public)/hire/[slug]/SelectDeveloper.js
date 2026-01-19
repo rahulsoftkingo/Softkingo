@@ -44,9 +44,9 @@ export default function HireDevelopersPage() {
     return (
         <>
             {/* Hero Section - Industries */}
-            <section className="max-w-7xl mx-auto relative z-10 bg-[url(/images/hire/hire1.png)] bg-center bg-no-repeat bg-cover  py-8 md:py-20 px-4">
-                <div className="absolute inset-0 bg-sky-500/60 z-20"></div>
-                <div className=" relative z-30">
+            <section className="relative z-10 bg-[url(/images/hire/hire1.png)] bg-center bg-no-repeat bg-cover ">
+                <div className="absolute inset-0 bg-sky-300/90 opacity-30 z-20"></div>
+                <div className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-30">
                     
                     {/* Title */}
                     <div className='flex flex-col items-center mb-10 text-center'>

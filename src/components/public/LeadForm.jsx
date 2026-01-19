@@ -385,7 +385,7 @@ export default function LeadForm({
         <button
           type="submit"
           disabled={loading}
-          className={`w-full ${style.button} disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-4`}
+          className={`w-full ${style.button} disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 mt-2`}
         >
           {loading ? (
             <>
@@ -401,9 +401,9 @@ export default function LeadForm({
         </button>
 
         {/* Privacy Note */}
-        <p className={`text-[11px] text-center pt-1 ${style.privacy}`}>
-          🔒 Your information is secure. We respect your privacy.
-        </p>
+        {/* <p className={`text-[11px] text-center pt-1 ${style.privacy}`}>
+           Your information is secure. We respect your privacy.
+        </p> */}
       </form>
     </div>
   );

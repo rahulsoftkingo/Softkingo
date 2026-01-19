@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import GalleryClient from './GalleryClient';
+import InquirySection from '@/components/footer/InquirySection';
 
 export const dynamic = 'force-dynamic';
 
@@ -77,5 +78,10 @@ export default async function GalleryPage() {
     return { ...sec, images };
   });
 
-  return <GalleryClient sections={sections} />;
+  return (
+<>   
+  <GalleryClient sections={sections} />
+     <InquirySection />
+</>
+  );
 }

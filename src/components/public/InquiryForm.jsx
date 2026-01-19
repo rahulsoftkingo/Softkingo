@@ -293,7 +293,7 @@ const InquiryForm = ({
                 <span className="text-lg text-slate-700 font-semibold">=</span>
                 <input
                   type="number"
-                  className="w-[60px] h-10 border border-slate-300 rounded-md px-2 text-sm outline-none focus:ring-2 focus:ring-sky-300 bg-white"
+                  className="w-15 h-10 border border-slate-300 rounded-md px-2 text-sm outline-none focus:ring-2 focus:ring-sky-300 bg-white"
                   value={userAnswer}
                   onChange={handleCaptchaChange}
                   placeholder="?"

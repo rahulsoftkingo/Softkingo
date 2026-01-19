@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaArrowLeft } from "react-icons/fa";
 import PostSocialBar from "@/app/(public)/blog/PostSocialBar";
+import InquirySection from "@/components/footer/InquirySection";
 
 export const dynamic = "force-dynamic";
 
@@ -318,6 +319,7 @@ export default async function PostSlugPage({ sectionKey, slug }) {
         sectionKey={sectionKey}
         newsletterList={listMeta}
       />
+       <InquirySection />
     </div>
   );
 }

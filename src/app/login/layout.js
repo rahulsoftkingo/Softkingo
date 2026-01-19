@@ -2,7 +2,9 @@
 import "../globals.css";
 export const metadata = {
   title: "Login | Softkingo",
-  robots: { index: false, follow: false },
+  description: "Login Page",
+  robots: { index: false, follow: false, noarchive: true },
+  alternates: { canonical: "https://softkingo.com/login" }
 };
 
 export default function Layout({ children }) {

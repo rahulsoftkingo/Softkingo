@@ -120,7 +120,7 @@ const ResourcesMenu = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 mt-16">
       <div className="absolute inset-0 max-w-7xl mx-auto px-4">
-        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[50rem] rounded-b-2xl shadow-md overflow-hidden z-10">
+        <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[40rem] rounded-b-2xl shadow-md overflow-hidden z-10">
           <div className="grid grid-cols-1 xl:grid-cols-[76%_24%] h-full">
             {/* Center content */}
             <div className="flex flex-col justify-between h-full w-full">

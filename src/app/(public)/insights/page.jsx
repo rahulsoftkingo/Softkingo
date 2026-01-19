@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
 import prisma from "@/lib/prisma";
 import { BLOG_SECTIONS } from "@/app/(public)/blog/sectionConfig";
+import InquirySection from "@/components/footer/InquirySection";
 
 export const dynamic = "force-dynamic";
 
@@ -182,6 +183,8 @@ export default async function InsightsPage(props) {
           );
         })}
       </main>
+              <InquirySection />
+
     </div>
   );
 }

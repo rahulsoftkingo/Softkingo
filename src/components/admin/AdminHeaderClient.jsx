@@ -17,7 +17,14 @@ export default function AdminHeaderClient({ session }) {
     signOut({ callbackUrl: '/login' });
   };
 
-  const profileImage = session?.user?.profileImage;
+  const profileImage = session?.user?.profileImage ?? session?.user?.image ?? null;
+
+  const profileSrc =
+    typeof profileImage === 'string' && profileImage.trim().length
+      ? (profileImage.startsWith('/') || profileImage.startsWith('http') || profileImage.startsWith('data:'))
+        ? profileImage
+        : `/${profileImage}`
+      : null;
 
   return (
     <header className="h-16 bg-white border-b border-sky-200 flex items-center justify-between px-4 lg:px-6 sticky top-0 z-40 shadow-sm">
@@ -71,7 +78,20 @@ export default function AdminHeaderClient({ session }) {
               ) : (
                 <User className="h-5 w-5 text-white" />
               )}
+              {/* {profileSrc ? (
+                <Image
+                  src={profileSrc}
+                  alt="Profile"
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 rounded-full object-cover"
+                />
+              ) : (
+                <User className="h-5 w-5 text-white" />
+              )} */}
+
             </div>
+            
             <div className="hidden sm:flex flex-col items-start text-sm">
               <span className="font-semibold text-slate-900">
                 {session?.user?.name || session?.user?.username || 'User'}
@@ -81,9 +101,8 @@ export default function AdminHeaderClient({ session }) {
               </span>
             </div>
             <svg
-              className={`w-4 h-4 text-sky-600 hidden sm:block transition-transform duration-200 ${
-                showDropdown ? 'rotate-180' : ''
-              }`}
+              className={`w-4 h-4 text-sky-600 hidden sm:block transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''
+                }`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -98,16 +117,32 @@ export default function AdminHeaderClient({ session }) {
           </button>
 
           {showDropdown && (
-            <div className="absolute right-0 mt-2 w-64 origin-top-right bg-white rounded-xl shadow-lg border border-sky-200 py-2 z-50">
+            <div className="absolute right-0 mt-2 w-64 origin-top-right bg-white rounded-xl shadow-xl borderborder-sky-200 py-2 z-50">
+            <div className='flex justify-start pl-2 items-center'>
+              {profileImage ? (
+                <Image
+                  src={
+                    profileImage.startsWith('/')
+                      ? profileImage
+                      : `/${profileImage}`
+                  }
+                  alt="Profile"
+                  width={36}
+                  height={36}
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+              ) : (
+                <User className="h-5 w-5 text-white" />
+              )}
               <div className="px-4 py-3 border-b border-sky-100">
-                <p className="text-sm font-semibold text-slate-900">
+                <p className="text-sm font-semibold text-sky-950">
                   {session?.user?.name || session?.user?.username}
                 </p>
                 <p className="text-sm text-sky-600 capitalize font-medium">
                   {primaryRole}
                 </p>
               </div>
-
+ </div>
               <div className="py-2">
                 <a
                   href="/admin/account/profile"

@@ -1,8 +1,7 @@
-
 // src/app/(public)/e-guides/[slug]/DownloadModal.jsx
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function EGuideDownloadModal({
   guideId,
@@ -21,12 +20,13 @@ export default function EGuideDownloadModal({
     message: "",
   });
 
-  const onChange = (e) => {
+  // Fixed onChange with useCallback for better performance
+  const onChange = useCallback((e) => {
     setForm((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
-  };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +62,7 @@ export default function EGuideDownloadModal({
     <>
       <div className="flex flex-col text-center items-center gap-3 mb-6">
         <div className="w-12 h-12 bg-gradient-to-br from-cyan-100 to-sky-50 rounded-2xl flex items-center justify-center text-white font-bold transform hover:scale-110 transition-transform duration-300">
-          <img src='/images/logo.png' />
+          <img src='/images/logo.png' alt="Logo" className="w-8 h-8" />
         </div>
         <div>
           <h3 className="text-lg font-bold text-white mb-1">
@@ -95,7 +95,7 @@ export default function EGuideDownloadModal({
               placeholder="Full name *"
               value={form.name}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+              className="w-full rounded-2xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
               required
             />
             <input
@@ -104,7 +104,7 @@ export default function EGuideDownloadModal({
               placeholder="Work email *"
               value={form.email}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+              className="w-full rounded-2xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
               required
             />
             <input
@@ -113,7 +113,7 @@ export default function EGuideDownloadModal({
               placeholder="Phone (optional)"
               value={form.phone}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+              className="w-full rounded-2xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
             />
             <textarea
               name="message"
@@ -121,7 +121,7 @@ export default function EGuideDownloadModal({
               placeholder="Tell us briefly about your project or interest *"
               value={form.message}
               onChange={onChange}
-              className="w-full rounded-xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 resize-none"
+              className="w-full rounded-2xl border border-slate-700 bg-slate-900/50 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 resize-none"
               required
             />
           </div>
@@ -129,7 +129,7 @@ export default function EGuideDownloadModal({
           <button
             type="submit"
             disabled={status === "loading"}
-            className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-sky-600 hover:from-cyan-600 hover:to-sky-700 text-white font-semibold py-3.5 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full rounded-2xl bg-gradient-to-r from-cyan-500 to-sky-600 hover:from-cyan-600 hover:to-sky-700 text-white font-semibold py-3 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {status === "loading" ? (
               <>
@@ -150,27 +150,19 @@ export default function EGuideDownloadModal({
 
       {submitted && (
         <div className="space-y-4">
-          {canDownload ? (
-            <a
-              href={pdfUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center w-full rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-semibold py-3.5 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-200 gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download PDF Guide
-            </a>
-          ) : (
-            <div className="text-center p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl">
-              <p className="text-sm text-amber-300">
-                PDF download will be available soon.
-              </p>
-            </div>
-          )}
+          {/* Changed to simple thank you button instead of PDF download */}
+          <button
+            disabled={true}
+            className="inline-flex items-center justify-center w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-3 shadow-lg shadow-emerald-500/25 opacity-70 cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Thank you! Check your Gmail
+          </button>
+          
           <p className="text-xs text-slate-400 text-center">
-            You may receive relevant resources and updates via email.
+            E-Guide sent to your email address. Please check your Gmail inbox (and spam folder).
           </p>
         </div>
       )}
@@ -189,10 +181,10 @@ export default function EGuideDownloadModal({
     <button
       type="button"
       onClick={() => setOpen(true)}
-      className={`rounded-xl bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white font-semibold border border-slate-700 hover:border-slate-600 transition-all duration-200 flex items-center gap-2 ${
+      className={`rounded-2xl bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white font-semibold border border-slate-700 hover:border-slate-600 transition-all duration-200 flex items-center gap-2 py-3 ${
         smallButton
-          ? "px-4 py-2 text-sm"
-          : "px-6 py-3 text-base"
+          ? "px-4 text-sm"
+          : "px-6 text-base"
       }`}
     >
       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,7 +211,7 @@ export default function EGuideDownloadModal({
             {/* Close button */}
             <button
               onClick={() => setOpen(false)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-800 text-slate-200 flex items-center justify-center hover:bg-slate-700 transition-colors duration-200"
+              className="absolute top-4 right-4 w-8 h-8 rounded-2xl bg-slate-800 text-slate-200 flex items-center justify-center hover:bg-slate-700 transition-colors duration-200"
               aria-label="Close"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

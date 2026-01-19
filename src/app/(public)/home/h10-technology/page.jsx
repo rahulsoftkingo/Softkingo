@@ -232,7 +232,7 @@ export default function H10TechnologyAdvanced() {
   const [rowA, rowB] = useMemo(() => chunkIntoTwoRows(filtered), [filtered]);
 
   return (
-    <section className="bg-gradient-to-b from-white to-sky-50 py-10 sm:py-12 px-4 sm:px-6">
+    <section className="bg-gradient-to-br from-white via-50 to-sky-100 py-10 sm:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header: portfolio same feel */}
         <div className="text-center mb-8 sm:mb-10">

@@ -1,15 +1,17 @@
 // components/HeroSection.jsx
 'use client';
 import { motion, useAnimation } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaArrowRight, FaCode, FaMobileAlt, FaLaptopCode, FaChartLine } from 'react-icons/fa';
 
 import RightSec from './professionalcardstack';
 import Link from 'next/link';
+import PopupQuoteModal from '@/components/PopupQuoteModal';
 
 const HeroSection = () => {
   const controls = useAnimation();
   const sectionRef = useRef(null);
+ const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -121,7 +123,7 @@ const HeroSection = () => {
       ))}
 
       {/* Main content */}
-      <div className="container mx-auto px-4 sm:px-8 md:px-12 lg:px-16 2xl:px-24 pt-12 md:pt-12 pb-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6  pt-12 md:pt-12 pb-16 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left content */}
           <motion.div
@@ -136,7 +138,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="mr-2">🚀</span> Transforming Businesses Since 2020
+              <span className="mr-"><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /></span> Transforming Businesses Since 2018
             </motion.div>
 
             <motion.h1
@@ -170,30 +172,30 @@ const HeroSection = () => {
             >
               {/* Contact Us (internal) */}
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="/contact"
-                  className="px-4 md:px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white font-medium hover:bg-gradient-to-l hover:from-sky-600 hover:via-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 flex items-center justify-center group"
+                 <button
+                  onClick={() => setShowModal(true)}
+                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
+                  // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
                 >
-                  <span className="font-semibold text-bas text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
-                    Contact Us
-                  </span>
-                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                </Link>
+                  Get A Quote <FaArrowRight className="ml-2" />
+                </button>
               </motion.div>
 
+               
+                   
               {/* Meeting (Calendly external) */}
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <a
+                <Link
                   href="https://calendly.com/paramhans-softkingo/30min"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 md:px-8 py-3 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center"
+                  className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center"
                 >
                   <span className="font-semibold text-bas text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
                     Meeting
                   </span>
                   <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                </a>
+                </Link>
               </motion.div>
             </motion.div>
 
@@ -287,6 +289,7 @@ const HeroSection = () => {
           </motion.div>
         </div>
       </div>
+       <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };

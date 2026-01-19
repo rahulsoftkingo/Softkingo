@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import SolutionsSection from './SolutionsSection';
+import InquirySection from '@/components/footer/InquirySection';
 
 export default function SolutionsPage() {
   return (
@@ -66,6 +67,8 @@ export default function SolutionsPage() {
           box-shadow: 0 25px 45px -10px rgb(0 0 0 / 0.35);
         }
       `}</style>
+            <InquirySection />
+
     </div>
   );
 }

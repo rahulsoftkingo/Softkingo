@@ -48,6 +48,8 @@ export async function GET(req) {
     phoneMockup: p.phoneMockup || "",
     icon: p.icon || "",
     badges: safeBadges(p.badgesJson),
+   techstack: p.techStack || "",  // ✅ Prisma field → frontend field
+  bgColor: p.bgColor || "rgba(2, 132, 199, 0.92)",
     caseStudy: p.caseStudy
       ? {
           id: p.caseStudy.id,

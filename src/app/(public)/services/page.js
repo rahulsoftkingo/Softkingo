@@ -4,6 +4,7 @@ import { Star } from 'lucide-react';
 import ServicesSection from './ServicesSection';
 import Image from 'next/image';
 import LeadForm from '@/components/public/LeadForm';
+import InquirySection from '@/components/footer/InquirySection';
 
 export default function ServicesHero() {
     return (
@@ -163,6 +164,8 @@ export default function ServicesHero() {
                 
             </section>
             <ServicesSection />
+                  <InquirySection />
+
         </div>
     );
 }

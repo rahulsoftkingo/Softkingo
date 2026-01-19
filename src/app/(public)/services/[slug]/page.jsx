@@ -1,7 +1,4 @@
 // // src/app/(public)/services/[slug]/page.jsx
-
-
-
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
@@ -21,6 +18,33 @@ import {
   FaCogs,
   FaRegFileCode,
 } from "react-icons/fa";
+import {
+  Rocket,
+  Code,
+  Settings,
+  Palette,
+  Smartphone,
+  CreditCard,
+  ShoppingCart,
+  HeartPulse,
+  BarChart3,
+  Truck,
+  BookOpen,
+  Zap,
+  Star,
+  Users,
+  Search,
+  Ruler,
+  Shield
+} from "lucide-react";
+
+import Blogs from "../../home/blogs/BlogSliderClient";
+import InquirySection from "@/components/footer/InquirySection";
+import { FaArrowRight } from "react-icons/fa6";
+import CommonTitle from "@/components/ui/CommonTitle";
+import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
+import ConsultationCTA from "@/components/common/Consultation-Cta";
+import FAQAccordion from "@/components/common/Faqaccordion";
 
 // Force SSR (no build-time DB access)
 export const dynamic = "force-dynamic";
@@ -106,30 +130,29 @@ export default async function ServicePage({ params }) {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 w-full">
-          {/* Breadcrumb */}
-          <nav className="mb-6 md:mb-8 animate-fadeInUp">
-            <div className="flex flex-wrap items-center text-xs md:text-sm text-sky-100/80 gap-1 md:gap-2">
-              <Link href="/" className="hover:text-white transition-colors">
-                Home
-              </Link>
-              <span>/</span>
-              <Link
-                href="/services"
-                className="hover:text-white transition-colors"
-              >
-                Services
-              </Link>
-              <span>/</span>
-              <span className="font-semibold text-cyan-400">{service.title}</span>
-            </div>
-            <p className="mt-2 text-[11px] md:text-xs uppercase tracking-[0.22em] text-sky-200/80">
-              Softkingo • {service.title}
-            </p>
-          </nav>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Left Content */}
             <div className="text-white space-y-6 md:space-y-8">
+              {/* Breadcrumb */}
+              <nav className="mb-6 md:mb-8 animate-fadeInUp">
+                <div className="flex flex-wrap items-center text-xs md:text-sm text-sky-100/80 gap-1 md:gap-2">
+                  <Link href="/" className="hover:text-white transition-colors">
+                    Home
+                  </Link>
+                  <span>›</span>
+                  <Link
+                    href="/services"
+                    className="hover:text-white transition-colors"
+                  >
+                    Services
+                  </Link>
+                  <span>›</span>
+                  <span className="font-semibold text-cyan-400">{service.title}</span>
+                </div>
+
+              </nav>
               <div className="space-y-4">
                 <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight animate-fadeInUp animation-delay-200">
                   {content.heroTitle || service.title}
@@ -140,31 +163,35 @@ export default async function ServicePage({ params }) {
               </div>
 
               <div className="flex gap-4 animate-fadeInUp animation-delay-600">
-                <button className="bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-600 hover:to-sky-600 text-white font-semibold px-6 md:px-8 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-cyan-500/50 hover:shadow-xl hover:shadow-cyan-500/70 hover:-translate-y-0.5">
-                  Get Started
-                </button>
-                <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-semibold px-6 md:px-8 py-3 rounded-xl transition-all duration-300 border border-white/20">
-                  View Portfolio
+                <button
+
+                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
+                // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
+                >
+                  Let’s Work Together <FaArrowRight className="ml-2" />
                 </button>
               </div>
 
               {/* Trusted By Section */}
-              <div className="pt-6 md:pt-8 animate-fadeInUp animation-delay-800">
+              <div className="pt-6 md:pt-8 animate-fadeInUp animation-delay-800  ">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
                   <h3 className="text-sky-200 text-sm md:text-base font-semibold">
                     Trusted By Leading Brands
                   </h3>
                   <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
                 </div>
                 <div className="flex items-center gap-6 md:gap-8 flex-wrap justify-center lg:justify-start">
-                  <Image
-                    src="/images/about/clutch.png"
-                    alt="Clutch"
-                    width={100}
-                    height={50}
-                    className="opacity-70 hover:opacity-100 transition-opacity"
-                  />
+                  <div className="flex flex-col items-center">
+                    <p className="text-yellow-400 text-sm">★★★★★</p>
+                    <Image
+                      src="/images/about/clutch.png"
+                      alt="Clutch"
+                      width={100}
+                      height={50}
+                      className="opacity-70 hover:opacity-100 transition-opacity"
+                    />
+                  </div>
                   <div className="flex flex-col items-center">
                     <p className="text-yellow-400 text-sm">★★★★★</p>
                     <Image
@@ -228,36 +255,33 @@ export default async function ServicePage({ params }) {
 
       {/* Stats Section */}
       {content.stats && (
-        <section className="bg-gradient-to-br from-sky-50 via-white to-sky-50 py-12 md:py-16 px-4 md:px-6 lg:px-12">
+        <section className="bg-gradient-to-br from-white  to-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-8 md:mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                Empowering Digital Success
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-sky-600">
-                  with Softkingo
-                </span>
-              </h2>
-              <p className="text-gray-600 text-base md:text-lg lg:text-xl max-w-2xl mx-auto">
-                {content.statsSubtitle || content.heroSubtitle}
-              </p>
-            </div>
+
+            <CommonTitle
+              align="left"
+              pill={false}
+              title='Empowering'
+              gradientText="Digital Success with Softkingo"
+              subtitle={content.statsSubtitle || content.heroSubtitle}
+            />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               <StatBox
                 value={content.stats.years}
                 label={content.stats.yearsLabel}
-                color="from-emerald-400 to-emerald-600"
-                icon="⚡"
+                color="from-sky-300 to-sky-600"
+                icon=""
               />
               <StatBox
                 value={content.stats.projects}
                 label={content.stats.projectsLabel}
-                color="from-cyan-400 to-cyan-600"
-                icon="🚀"
+                color="from-sky-300 to-sky-600"
+                icon=""
               />
 
               {content.mainImage && (
-                <div className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-2xl row-span-1 sm:row-span-3 h-64 sm:h-96 lg:h-auto shadow-xl">
+                <div className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-sm row-span-1 sm:row-span-3 h-64 sm:h-96 lg:h-auto shadow">
                   <Image
                     src={content.mainImage}
                     alt="Team"
@@ -271,20 +295,20 @@ export default async function ServicePage({ params }) {
               <StatBox
                 value={content.stats.team}
                 label={content.stats.teamLabel}
-                color="from-purple-400 to-purple-600"
-                icon="👥"
+                color="from-sky-300 to-sky-600"
+                icon=""
               />
               <StatBox
                 value={content.stats.rating}
                 label={content.stats.ratingLabel}
-                color="from-amber-400 to-amber-600"
-                icon="⭐"
+                color="from-sky-300 to-sky-600"
+                icon=""
               />
 
               {content.extraImages?.map((img, idx) => (
                 <div
                   key={idx}
-                  className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-2xl hidden lg:block shadow-lg"
+                  className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-sm hidden lg:block shadow"
                 >
                   <Image
                     src={img}
@@ -302,16 +326,17 @@ export default async function ServicePage({ params }) {
 
       {/* Service Cards Section */}
       {content.cards && (
-        <section className="bg-gradient-to-br from-sky-600 via-sky-500 to-cyan-500 py-12 md:py-16 px-4 md:px-6 lg:px-12">
+        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-12 md:py-16 px-4 md:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="mb-8 md:mb-12 max-w-3xl">
-              <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                {content.servicesTitle}
-              </h2>
-              <p className="text-white/90 text-sm md:text-base lg:text-lg leading-relaxed">
-                {content.servicesSub}
-              </p>
-            </div>
+
+            <CommonTitle
+              align="center"
+              pill={false}
+              title={content.servicesTitle}
+              gradientText=""
+              subtitle={content.servicesSub}
+            />
+
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {content.cards.map((card, idx) => {
@@ -319,15 +344,15 @@ export default async function ServicePage({ params }) {
                 return (
                   <div
                     key={idx}
-                    className="bg-white rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
+                    className="bg-white rounded-sm p-6 md:p-8 shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
                   >
                     <div className="mb-6 relative">
                       <div
-                        className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br ${
-                          card.iconGradient || "from-cyan-400 to-sky-600"
-                        } flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}
+                        className={`w-8 h-8 md:w-10 md:h-10
+                         
+                          flex items-center justify-center group-hover:scale-110 transition-transform duration-300 `}
                       >
-                        <Icon className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                        <Icon className="w-8 h-8 md:w-10 md:h-10 text-sky-500" />
                       </div>
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-cyan-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -345,8 +370,24 @@ export default async function ServicePage({ params }) {
         </section>
       )}
 
+      <DynamicPortfolioCard
+        category="Fitnes app"
+        portfolioType="app"
+        title="Latest App Projects"
+        subtitle="Our newest mobile applications"
+      />
+      <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />
       <TechView />
       <MethodologySection />
+
+      <Blogs
+        category=""
+        featured={false}    // Latest uploaded
+        title="Our Latest Blogs"
+        subtitle="Explore our latest insights, product lessons, and engineering best practices."
+      />
+      <FAQAccordion />
+      <InquirySection />
     </main>
   );
 }
@@ -355,15 +396,15 @@ export default async function ServicePage({ params }) {
 function StatBox({ value, label, color, icon }) {
   return (
     <div
-      className={`bg-gradient-to-br ${color} p-6 md:p-8 text-center rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}
+      className={`bg-gradient-to-br ${color} p-6 md:p-8 text-center rounded-sm shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}
     >
       <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">
         {icon}
       </div>
-      <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 group-hover:scale-105 transition-transform">
+      <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 group-hover:scale-105 transition-transform">
         {value}
       </h3>
-      <p className="text-white/90 font-medium text-sm md:text-base">{label}</p>
+      <p className="text-white/90 font-medium text-xs md:text-sm">{label}</p>
     </div>
   );
 }

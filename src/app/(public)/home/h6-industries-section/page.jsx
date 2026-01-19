@@ -234,11 +234,12 @@ export default function Industries() {
 
   const [current, setCurrent] = useState("Healthcare");
   const activeIndustry = industries.find((i) => i.title === current) || industries[0];
-
+const leftSidebarWidth = "w-full md:w-[300px]"; 
+// const rightContentWidth = "flex-1 md:min-w-[calc(100%-300px)]";
   return (
-    <div className="bg-gradient-to-br from-white via-sky-100 to-sky-200 w-full h-auto py-16 px-4 sm:px-6">
+    <div className="bg-gradient-to-br from-white to-white w-full h-auto py-16 px-4 sm:px-6">
       <div className="flex justify-center items-center max-w-7xl mx-auto">
-        <div className="h-full ">
+        <div className="h-full w-full max-w-7xl">
           {/* ✅ Header same like Portfolio */}
           <div className="text-center mb-8 sm:mb-12">
             <motion.h1
@@ -343,7 +344,7 @@ export default function Industries() {
                     </div>
                   </div>
 
-                  <div className="col-span-2 h-full max-h-[24rem] p-[10px]">
+                  <div className="col-span-2 h-full max-h-96 p-2.5">
                     <img
                       src={activeIndustry.image}
                       alt={activeIndustry.title}

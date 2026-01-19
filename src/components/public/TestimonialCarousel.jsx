@@ -59,27 +59,31 @@ export default function TestimonialCarousel({
     }
   ];
 
-  useEffect(() => {
-    if (columns !== 'auto') {
-      setCalculatedColumns(columns);
-      return;
-    }
-
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const width = entry.contentRect.width;
-        if (width < 400) setCalculatedColumns(1);
-        else if (width < 700) setCalculatedColumns(2);
-        else setCalculatedColumns(3);
-      }
-    });
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [columns]);
+// TestimonialCarousel.jsx mein ye replace karo useEffect:
+useEffect(() => {
+  if (typeof columns === 'object') {
+    // Responsive breakpoints set karo
+    setCalculatedColumns(columns.lg || columns.md || 1);
+    return;
+  }
+  
+  if (columns !== 'auto') {
+    setCalculatedColumns(columns);
+    return;
+  }
+  
+  // Auto responsive logic (tumhara existing code)
+  const observer = new ResizeObserver((entries) => {
+    const width = entries[0].contentRect.width;
+    if (width < 400) setCalculatedColumns(1);
+    else if (width < 900) setCalculatedColumns(2);  // Tablet
+    else if (width < 1200) setCalculatedColumns(3); // Laptop
+    else setCalculatedColumns(3); // Large desktop
+  });
+  
+  if (containerRef.current) observer.observe(containerRef.current);
+  return () => observer.disconnect();
+}, [columns]);
 
   useEffect(() => {
     if (!autoPlay || isHovered) return;

@@ -1,9 +1,13 @@
-"use server";
+import prisma from '@/lib/prisma';
+
 import Image from 'next/image';
 import { FaStar, FaBrain, FaEye, FaTasks, FaTools, FaLightbulb, FaFlag } from "react-icons/fa";
 import { FiArrowRight, FiTarget } from "react-icons/fi";
 import StoryTimeline from './CustomScrool';
 import Link from 'next/link';
+import CommonTitle from '@/components/ui/CommonTitle';
+import InquirySection from '@/components/footer/InquirySection';
+import FAQAccordion from '@/components/common/Faqaccordion';
 
 const stats = [
   { number: '5+', label: 'Years Of Experience' },
@@ -129,15 +133,6 @@ const featuredLogos = [
   { name: 'TechCrunch', logo: '/images/about/f3.png' },
 ];
 
-const galleryImages = [
-  { id: 1, src: '/images/gallery/team-1.jpg', alt: 'Softkingo team celebration' },
-  { id: 2, src: '/images/gallery/team-2.jpg', alt: 'Team gathering' },
-  { id: 3, src: '/images/gallery/team-3.jpg', alt: 'Company event' },
-  { id: 4, src: '/images/gallery/team-4.jpg', alt: 'Team photo' },
-  { id: 5, src: '/images/gallery/team-5.jpg', alt: 'Team celebration' },
-  { id: 6, src: '/images/gallery/team-6.jpg', alt: 'Office party' },
-];
-
 export default async function AboutUs() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
@@ -153,73 +148,96 @@ export default async function AboutUs() {
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-black/50 opacity-70"></div>
 
         <div className="relative z-10 w-full h-full grid grid-cols-1 lg:grid-cols-2  max-w-7xl mx-auto ">
-          <div className="flex flex-col justify-center px-6 md:px-12lg:px-16 py-12 md:py-16">
-          {/* Breadcrumb */}
-                            <nav className="flex items-center space-x-2 text-sm">
-                                <Link href="/" className="hover:text-cyan-400 transition-colors text-white">
-                                    Home
-                                </Link>
-                                <span className="text-gray-400">›</span>
-                                <span className="text-cyan-400">About us</span>
-                            </nav>
-         
-   {/* Heading */}
-                            <div className="space-y-4">
-                                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight animate-fadeInUp text-white">
-                                   We Transform Brands Through{' '}
-                                    <span className="text-cyan-400">Elevated Digital Experiences</span>
-                                </h1>
+          <div className="flex flex-col justify-center px-6  py-12 md:py-16">
+            {/* Left Content */}
+            <div className="text-white space-y-8 animate-fadeInLeft">
+              {/* Breadcrumb */}
 
-                                <p className="text-gray-300 text-md leading-relaxed animate-fadeInUp animation-delay-200">
-                                  {/* Softkingo is an IT service and solutions company that collaborates with companies worldwide to shape the next generation of businesses. We focus our efforts on a comprehensive intelligence system that spans multiple industries and domains. */}
-              Softkingo is an ISO-certified web, mobile app, and digital marketing (SEO, SEM, SMO) development company with offices in the United States, Canada, and Australia, along with a headquarters in New Delhi, India. Our team consists of over 40+ highly skilled, experienced, and enthusiastic professionals.
-                                </p>
-                            </div>
-            <>
-              <div>
-                <h4 className='text-white text-3xl'>Recognized By</h4>
-                <h5 className='text-white'>Reviewed on</h5>
+              <nav className="flex items-center space-x-2 text-sm">
+                <Link href="/" className="hover:text-cyan-400 transition-colors text-white">
+                  Home
+                </Link>
+                <span className="text-gray-400">›</span>
+                <span className="text-cyan-400">About us</span>
+              </nav>
+
+
+              {/* Heading */}
+              <div className="space-y-4">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight animate-fadeInUp text-white">
+                  We Transform Brands Through{' '}
+                  <span className="text-cyan-400">Elevated Digital Experiences</span>
+                </h1>
+
+                <p className="text-gray-300 text-md leading-relaxed animate-fadeInUp animation-delay-200">
+                  {/* Softkingo is an IT service and solutions company that collaborates with companies worldwide to shape the next generation of businesses. We focus our efforts on a comprehensive intelligence system that spans multiple industries and domains. */}
+                  Softkingo is an ISO-certified web, mobile app, and digital marketing (SEO, SEM, SMO) development company with offices in the United States, Canada, and Australia, along with a headquarters in New Delhi, India. Our team consists of over 40+ highly skilled, experienced, and enthusiastic professionals.
+                </p>
               </div>
-              <div className="flex gap-4 md:gap-8 items-center">
-                <div className="flex flex-col items-baseline ">
-                  <Image src={"/images/about/clutch.png"} width={100} height={50} alt="Upwork" />
-
+              {/* Trusted By Section */}
+              <div className="pt-6 md:pt-8 animate-fadeInUp animation-delay-800  ">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
+                  <h3 className="text-sky-200 text-sm md:text-base font-semibold">
+                    Trusted By Leading Brands
+                  </h3>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
                 </div>
-
-                <div className="flex flex-col items-baseline  ">
-                  <p className="text-yellow-400 text-base md:text-lg">★★★★★</p>
-                  <Image src={"/images/about/goodfirm.png"} width={150} height={50} alt="GoodFirms" />
-                </div>
-
-                <div className="flex flex-col items-baseline">
-                  <p className="text-yellow-400 text-base md:text-lg">★★★★★</p>
-                  <Image src={"/images/about/upwork.png"} width={100} height={50} alt="Upwork" />
+                <div className="flex items-center gap-6 md:gap-8 flex-wrap justify-center lg:justify-start">
+                  <div className="flex flex-col items-center">
+                    <p className="text-yellow-400 text-sm">★★★★★</p>
+                    <Image
+                      src="/images/about/clutch.png"
+                      alt="Clutch"
+                      width={100}
+                      height={50}
+                      className="opacity-70 hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <p className="text-yellow-400 text-sm">★★★★★</p>
+                    <Image
+                      src="/images/about/goodfirm.png"
+                      alt="GoodFirms"
+                      width={120}
+                      height={40}
+                      className="opacity-70 hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <p className="text-yellow-400 text-sm">★★★★★</p>
+                    <Image
+                      src="/images/about/upwork.png"
+                      alt="Upwork"
+                      width={90}
+                      height={40}
+                      className="opacity-70 hover:opacity-100 transition-opacity"
+                    />
+                  </div>
                 </div>
               </div>
-            </>
 
-
+            </div>
           </div>
-
           <div className="hidden lg:flex flex-col justify-center px-8 md:px-16 py-16">
             <div className="border-t border-white/30"></div>
 
             <div className='flex justify-between text-white items-center'>
-              <a href="#" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
+              <a href="our-team" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
                 Meet The Team
               </a>
               <FiArrowRight size={20} className="ml-4" />
             </div>
 
             <div className='flex justify-between text-white items-center'>
-              <a href="#" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
-                Client Testimonials
+              <a href="gallery" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
+               Inside  Gallery
               </a>
               <FiArrowRight size={20} className="ml-4" />
             </div>
 
             <div className='flex justify-between text-white items-center'>
-              <a href="#" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
+              <a href="careers" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
                 Careers
               </a>
               <FiArrowRight size={20} className="ml-4" />
@@ -263,8 +281,12 @@ export default async function AboutUs() {
           </div>
 
           <div className="flex-1">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
-              Who we are
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 mb-4 md:mb-6">
+              Who
+              {' '}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
+                we are
+              </span>
             </h2>
             <p className="text-gray-600 text-sm md:text-base leading-relaxed">
               Softkingo is an IT service and solutions company that collaborates with companies worldwide to shape the next generation of businesses. We focus our efforts on a comprehensive intelligence system that spans multiple industries and domains. Softkingo is an ISO-certified web, mobile app, and digital marketing (SEO, SEM, SMO) development company with offices in the United States, Canada, and Australia, along with a headquarters in New Delhi, India. Our team consists of over 40+ highly skilled, experienced, and enthusiastic professionals.
@@ -298,33 +320,38 @@ export default async function AboutUs() {
           ))}
         </div>
 
-        <div className='bg-black px-4 md:px-8 lg:px-12 pt-8 md:pt-10 gap-4 md:gap-8 grid grid-cols-1 md:grid-cols-2 max-w-7xl mx-auto '>
-          <p className='text-white text-xl md:text-2xl lg:text-3xl mb-4 md:mb-0'>
-            At Softkingo, we value our team, respecting their roles beyond coding, understanding their needs, and standing by them throughout our journey.
-          </p>
-          <div className="bg-cyan-500 text-white p-6 md:p-8 relative bottom-5 md:bottom-20 lg:bottom-30 max-w-4xl">
-            <h4 className="text-xl md:text-2xl font-bold mb-3">How We Bring Your Ideas to Life</h4>
-            <p className="text-sm text-cyan-50 leading-relaxed">
-              We follow a specific strategy focused more on conversation, comprehension, and ideation. Our Journey begins by listening closely to our clients' goals, understanding the results they aim to achieve, and identifying the obstacles they encounter. We then deep dive into the latest trends and analyze the strategies, collecting actionable insights that when combined with our technical expertise, empower us to craft innovative, high-quality solutions- with the cost optimization for maximum value.
+        <div className='bg-black px-4 md:px-8 lg:px-12 pt-8 md:pt-10  '>
+          <div className='gap-4 md:gap-8 grid grid-cols-1 md:grid-cols-2  max-w-7xl mx-auto'>
+
+
+            <p className='text-white text-xl md:text-2xl lg:text-3xl mb-4 md:mb-0'>
+              At Softkingo, we value our team, respecting their roles beyond coding, understanding their needs, and standing by them throughout our journey.
             </p>
+            <div className="bg-cyan-500 text-white p-6 md:p-8 relative bottom-5 md:bottom-20 lg:bottom-30 max-w-4xl">
+              <h4 className="text-xl md:text-2xl font-bold mb-3">How We Bring Your Ideas to Life</h4>
+              <p className="text-sm text-cyan-50 leading-relaxed">
+                We follow a specific strategy focused more on conversation, comprehension, and ideation. Our Journey begins by listening closely to our clients' goals, understanding the results they aim to achieve, and identifying the obstacles they encounter. We then deep dive into the latest trends and analyze the strategies, collecting actionable insights that when combined with our technical expertise, empower us to craft innovative, high-quality solutions- with the cost optimization for maximum value.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Core Values Section */}
-      <section className="w-full  bg-gradient-to-r from-white to-sky-200 bg- px-6 md:px-12 lg:px-20 py-12 md:py-16 lg:py-20 bg-white">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 md:mb-4 text-center">
-          Our Core Values At SoftKingo
-        </h2>
-        <p className="text-gray-500 mb-10 md:mb-16 text-center max-w-2xl mx-auto text-sm md:text-base">
-          Our focus is not just on delivering innovative solutions to our clients. We emphasize quality and our core values help in its propulsion.
-        </p>
+      <section className="w-full  bg- px-6 md:px-12 lg:px-20 py-12 md:py-16 lg:py-20 bg-white">
 
+        <CommonTitle
+          align="center"
+          pill={false}
+          title='Our'
+          gradientText='Core Values At SoftKingo'
+          subtitle='Our focus is not just on delivering innovative solutions to our clients. We emphasize quality and our core values help in its propulsion.'
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto ">
           {coreValues.map((value, index) => {
             const IconComponent = value.icon;
             return (
-              <div key={index} className=" flex flex-col items-center text-center p-6 md:p-8 rounded-xl bg-gray-50 hover:shadow-lg transition">
+              <div key={index} className=" flex flex-col items-center text-center p-6 md:p-8 rounded-xl bg-gray-50 shadow-lg hover:shadow-xl transition">
                 <div className="p-3 md:p-4 bg-cyan-100 rounded-full mb-3 md:mb-4">
                   <IconComponent className="text-2xl md:text-3xl text-cyan-500" />
                 </div>
@@ -337,7 +364,7 @@ export default async function AboutUs() {
 
         <section className="w-full  py-6 md:px-12lg:px-20 md:py-16 lg:py-20 max-w-7xl mx-auto ">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-            <div className="bg-white border-l-sky-500 border-t-sky-500 border-2 rounded-xl p-6 md:p-8 shadow-sm  border-white">
+            <div className="bg-white border-l-sky-500 border-t-sky-500 border-2 rounded-2xl p-6 md:p-8 shadow-xl  border-white">
               <div className="flex items-center gap-3 mb-4">
                 <FiTarget className="text-2xl md:text-3xl text-cyan-500 flex-shrink-0" />
                 <h3 className="text-xl md:text-2xl font-bold text-gray-900">Our Vision</h3>
@@ -347,7 +374,7 @@ export default async function AboutUs() {
               </p>
             </div>
 
-            <div className="bg-white border-l-sky-500 border-t-sky-500 border-2 rounded-xl p-6 md:p-8 shadow-sm border border-gray-200">
+            <div className="bg-white border-l-sky-500 border-t-sky-500 border-2 rounded-2xl p-6 md:p-8 shadow-xl border border-gray-200">
               <div className="flex items-center gap-3 mb-4">
                 <FaFlag className="text-2xl md:text-3xl text-cyan-500 flex-shrink-0" />
                 <h3 className="text-xl md:text-2xl font-bold text-gray-900">Our Mission</h3>
@@ -364,23 +391,25 @@ export default async function AboutUs() {
 
 
       {/* Your Success Section */}
-      <section className="relative bg-gradient-to-r from-sky-500 to-sky-300 overflow-hidden">
-        <div className="relative z-10 container mx-auto px-6 lg:px-12 py-12 md:py-16 lg:py-20">
+      <section className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200 overflow-hidden">
+        <div className="relative z-10 container max-w-7xl mx-auto px-6 lg:px-12 py-12 md:py-16 lg:py-20">
           {/* Changed to flex flex-col on small screens, grid on large */}
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
             {/* Text Content */}
             <div className="space-y-4 md:space-y-6 w-full">
-              <div className="inline-block">
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
-                  Your <span className="text-gray-900">Success</span> Our <span className="text-gray-900">Mission</span>
-                </h3>
-              </div>
 
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight">
+              <CommonTitle
+                align="left"
+                pill={false}
+                title='Your'
+                gradientText='Success Our Mission'
+                subtitle={false}
+              />
+              <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-sky-950 leading-tight">
                 We Are Committed to Your Business Success Through Our Expert IT Services
-              </h1>
+              </h3>
 
-              <p className="text-gray-100 text-sm md:text-base lg:text-lg leading-relaxed">
+              <p className="text-gray-700 text-sm md:text-base lg:text-lg leading-relaxed">
                 At <span className="font-semibold">Softkingo</span>, we deliver tailored IT solutions curated to empower your business, drive efficiency, and ensure long-term success. Our team of experts leverages innovative technology and industry insight to provide seamless, flexible, and impactful IT services that align with your business objectives.
               </p>
             </div>
@@ -430,21 +459,20 @@ export default async function AboutUs() {
 
       {/* Industries Section */}
       <section className="py-12 md:py-16 lg:py-24">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
-              Industries
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base lg:text-lg">
-              Explore how our web, app, and software solutions cater to the unique needs of various industries.
-            </p>
-          </div>
+        <div className="container max-w-7xl mx-auto px-6 lg:px-12">
 
+          <CommonTitle
+            align='center'
+            pill={false}
+            title='Industries'
+            gradientText={false}
+            subtitle='Explore how our web, app, and software solutions cater to the unique needs of various industries.'
+          />
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-6">
             {industries.map((industry, index) => (
               <div
                 key={index}
-                className="group bg-white rounded-xl p-4 md:p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-cyan-500 cursor-pointer"
+                className="group bg-white rounded-2xl p-4 md:p-6 shadow-lg hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-cyan-500 cursor-pointer"
               >
                 <div className="flex flex-col items-center text-center space-y-2 md:space-y-3">
                   <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-cyan-50 rounded-lg group-hover:bg-cyan-100 transition-colors">
@@ -465,16 +493,17 @@ export default async function AboutUs() {
       </section>
 
       {/* Featured In Section */}
-      <section className="bg-slate-100 py-12 md:py-16 lg:py-20">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 md:mb-3">
-              Featured In
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base lg:text-lg">
-              From industry publications to renowned platforms, explore where we've been featured in the media.
-            </p>
-          </div>
+      <section className="bg-white py-12 md:py-16 lg:py-24">
+        <div className="container max-w-7xl mx-auto px-6 lg:px-12">
+
+          <CommonTitle
+            align='center'
+            pill={false}
+            title='Featured'
+            gradientText='In'
+            subtitle="From industry publications to renowned platforms, explore where we've been featured in the media."
+          />
+
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-6 lg:gap-12 lg:p-10">
             {featuredLogos.map((item, index) => (
@@ -494,37 +523,40 @@ export default async function AboutUs() {
       </section>
 
       {/* Meet Our Visionary Leader Section */}
-      <section className="bg-white py-12 md:py-16 lg:py-20">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="mb-8 md:mb-12">
+      <section className="bg-gradient-to-br from-white via-sky-50 to-sky-200 py-12 md:py-16 lg:py-20">
+        <div className="container  max-w-7xl mx-auto px-6 lg:px-12">
+          {/* <div className="mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
               Meet Our Visionary Leader
             </h2>
-          </div>
+          </div> */}
 
           <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
             <div className="space-y-4 md:space-y-6">
+              <CommonTitle
+                align="left"
+                pill={false}
+                title='Meet'
+                gradientText='Our Visionary Leader'
+                subtitle={false}
+              />
               <p className="text-gray-700 text-sm md:text-base lg:text-lg leading-relaxed">
                 At Softkingo, we empower businesses through complete digital transformation,
                 engineering innovative and scalable solutions. Our mission is to tackle every
                 tech challenge, paving the way for new opportunities and delivering positive ROI.
               </p>
 
-              <p className="text-gray-700 text-sm md:text-base lg:text-lg leading-relaxed">
-                At Softkingo, we empower businesses through complete digital transformation,
-                engineering innovative and scalable solutions. Our mission is to tackle every
-                tech challenge, paving the way for new opportunities and delivering positive ROI.
-              </p>
 
-              <div className="inline-flex items-center gap-2 md:gap-3 bg-gray-50 rounded-full px-4 md:px-6 py-2 md:py-3 border border-gray-200">
-                <div className="w-2 h-2 bg-cyan-500 rounded-full"></div>
-                <span className="font-bold text-base md:text-lg text-gray-900">Paramhans Singh, CEO</span>
+
+              <div className="inline-flex items-center gap-2 md:gap-3 bg-white rounded-full px-4 md:px-6 py-2 md:py-3 borderborder-sky-200 shadow-lg">
+                <div className="w-2 h-2 bg-sky-500 rounded-full"></div>
+                <span className="font-bold text-base md:text-lg text-sky-950">Paramhans Singh, CEO</span>
               </div>
             </div>
 
             <div className="relative">
-              <div className="relative rounded-3xl overflow-hidden p-4 md:p-6 lg:p-8">
-                <div className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1),0_12px_35px_rgba(0,0,0,0.15)] flex justify-center rounded-3xl overflow-hidden">
+              <div className="relative rounded-3xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.1),0_12px_35px_rgba(0,0,0,0.15)]">
+                <div className="bg-white  flex justify-center rounded-3xl overflow-hidden">
                   <img
                     src="/images/about/ceo.png"
                     alt="Paramhans Singh, CEO"
@@ -540,37 +572,77 @@ export default async function AboutUs() {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="relative bg-gradient-to-br from-sky-500 via-sky-500 to-cyan-300 py-12 md:py-16 lg:py-24">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4">
-              Softkingo Gallery
-            </h2>
-            <p className="text-white/90 text-sm md:text-base lg:text-lg max-w-3xl mx-auto">
-              We believe in cultivating a work culture that goes beyond projects. Where creativity flourishes,
-              and ideas thrive with a shared commitment to excellence.
-            </p>
-          </div>
 
-          <div className="flex flex-wrap gap-4 md:gap-6 lg:gap-8 justify-center">
-            {galleryImages.map((image) => (
-              <div
-                key={image.id}
-                className="group relative w-full sm:w-[calc(50%-8px)] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-21.33px)] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden bg-white">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <GallerySectionSafe />
+        {/* <FAQAccordion /> */}
+      <InquirySection />
     </div>
+  );
+}
+
+async function GallerySectionSafe() {
+  let galleryImages = [];
+
+  try {
+    // Fast query + timeout
+    galleryImages = await prisma.mediaItem.findMany({
+      where: {
+        type: 'image',
+      },
+      orderBy: { createdAt: 'desc' },
+      take: 6, // Smaller = faster
+      select: {  // Only needed fields
+        id: true,
+        filePath: true,
+        title: true,
+      }
+    }).then(images =>
+      images.filter(img => img.filePath).map(img => ({
+        id: img.id,
+        src: img.filePath?.startsWith('/') || img.filePath?.startsWith('http')
+          ? img.filePath
+          : `/uploads/${img.filePath}`,
+        alt: img.title || 'Softkingo Gallery'
+      }))
+    );
+  } catch (error) {
+    console.log('Gallery DB timeout, using fallback');
+    galleryImages = []; // Empty graceful fallback
+  }
+
+  return (
+    <section className="relative bg-white py-12 md:py-16 lg:py-24">
+      <div className="container max-w-7xl mx-auto px-6 lg:px-12">
+        <CommonTitle
+          align="center"
+          pill={false}
+          title="Softkingo"
+          gradientText="Gallery"
+          subtitle="We believe in cultivating a work culture that goes beyond projects. Where creativity flourishes, and ideas thrive with a shared commitment to excellence."
+        />
+
+        <div className="flex flex-wrap gap-4 md:gap-6 lg:gap-8 justify-center">
+          {galleryImages.length > 0 ? (
+            galleryImages.map((image) => (
+              <div key={image.id} className="group relative w-full sm:w-[calc(50%-8px)] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-21.33px)] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  width={400}
+                  height={300}
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                />
+              </div>
+            ))
+          ) : (
+            <div className="w-full text-center py-16">
+              <div className="text-gray-400 text-6xl mb-4">📸</div>
+              <p className="text-gray-500 text-lg">Gallery coming soon...</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }

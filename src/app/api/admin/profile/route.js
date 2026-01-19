@@ -1,28 +1,25 @@
+// src/app/api/admin/profile/route.js
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
-// GET current user profile
 export async function GET(req) {
   try {
-    // TODO: Get user ID from session/auth
-    const userId = 1; // Replace with actual auth
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const userId = Number(session.user.id);
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
-        id: true,
-        name: true,
-        email: true,
-        username: true,
-        phone: true,
-        whatsapp: true,
-        title: true,
-        department: true,
-        bio: true,
-        profileImage: true,
-        status: true,
-        lastLoginAt: true,
-        createdAt: true,
+        id: true, name: true, email: true, username: true, phone: true,
+        whatsapp: true, title: true, department: true, bio: true,
+        profileImage: true, profileImageType: true, // ✅ Bytes + Type
+        status: true, lastLoginAt: true, createdAt: true,
       },
     });
 
@@ -37,38 +34,44 @@ export async function GET(req) {
   }
 }
 
-// PUT update profile
 export async function PUT(req) {
   try {
-    // TODO: Get user ID from session/auth
-    const userId = 1; // Replace with actual auth
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
+    const userId = Number(session.user.id);
     const body = await req.json();
+
+    // ✅ Bytes handling - Base64 to Buffer
+    let profileImageData = null;
+    let profileImageType = null;
+
+    if (body.profileImageBase64) {
+      const base64Data = body.profileImageBase64.replace(/^data:image\/[a-z]+;base64,/, '');
+      profileImageData = Buffer.from(base64Data, 'base64');
+      profileImageType = body.profileImageType || 'image/jpeg';
+    }
 
     const user = await prisma.user.update({
       where: { id: userId },
       data: {
-        name: body.name,
-        email: body.email,
-        username: body.username,
+        name: body.name || null,
+        email: body.email || null,
+        username: body.username || null,
         phone: body.phone || null,
         whatsapp: body.whatsapp || null,
         title: body.title || null,
         department: body.department || null,
         bio: body.bio || null,
-        profileImage: body.profileImage || null,
+        profileImage: profileImageData,     // ✅ Prisma Bytes
+        profileImageType: profileImageType, // ✅ MIME type
       },
       select: {
-        id: true,
-        name: true,
-        email: true,
-        username: true,
-        phone: true,
-        whatsapp: true,
-        title: true,
-        department: true,
-        bio: true,
-        profileImage: true,
+        id: true, name: true, email: true, username: true, phone: true,
+        whatsapp: true, title: true, department: true, bio: true,
+        profileImage: true, profileImageType: true,
       },
     });
 

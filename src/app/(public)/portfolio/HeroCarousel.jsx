@@ -36,7 +36,7 @@ export default function HeroCarousel({ projects }) {
         </p> */}
 
         {/* small dots + project type */}
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <p className="text-xs font-medium text-slate-100">
             {current.type === "app"
               ? "Mobile App"
@@ -54,12 +54,12 @@ export default function HeroCarousel({ projects }) {
               />
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* phone mockup + gradient circle */}
         <div className="relative mt-1 flex items-center justify-center">
           <div className="absolute inset-x-4 bottom-0 h-24 rounded-full bg-sky-500/30 blur-3xl" />
-          <div className="relative w-32 h-48 md:w-40 md:h-46">
+          <div className="relative w-32 h-48 md:w-40 md:h-56">
             <Image
               src={current.phoneMockup}
               alt={current.title}

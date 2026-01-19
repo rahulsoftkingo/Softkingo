@@ -3,9 +3,15 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import ApplicationForm from './CareerForm';
+import PopupQuoteModal from '@/components/PopupQuoteModal';
+import ConsultationCTA from '@/components/common/Consultation-Cta';
+import CommonTitle from '@/components/ui/CommonTitle';
+import Blogs from '../home/blogs/BlogSliderClient';
+import FAQAccordion from '@/components/common/Faqaccordion';
+import InquirySection from '@/components/footer/InquirySection';
 
 const WhyJoinUs = () => {
-
+    const [showModal, setShowModal] = useState(false);
 
     const [filters, setFilters] = useState({
         search: '',
@@ -61,7 +67,7 @@ const WhyJoinUs = () => {
     return (
         <>
             {/* build ur career */}
-            <section className="relative w-full  bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100">
+            <section className="relative w-full  bg-white gradient-to-br from-white via-sky-50 to-sky-50">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-10 py-12 lg:py-16">
                     <div className="relative min-h-[calc(100vh-6rem)]">
 
@@ -121,18 +127,20 @@ const WhyJoinUs = () => {
                         {/* Center Content with Backdrop */}
                         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4 sm:px-6">
                             <div className="max-w-3xl text-center bg-white/40 backdrop-blur-sm rounded-3xl p-6 sm:p-8 lg:p-12 shadow-xl">
-                                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-gray-800 mb-2 sm:mb-3">
+                                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-sky-800 mb-2 sm:mb-3">
                                     Build Your Career At
                                 </h1>
-                                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 lg:mb-8">
+                                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-sky-900 mb-4 sm:mb-6 lg:mb-8">
                                     Softkingo
                                 </h2>
-                                <p className="text-sm sm:text-base lg:text-lg text-gray-700 leading-relaxed mb-6 sm:mb-8 lg:mb-10 max-w-2xl mx-auto">
+                                <p className="text-sm sm:text-base lg:text-lg text-sky-700 leading-relaxed mb-6 sm:mb-8 lg:mb-10 max-w-2xl mx-auto">
                                     Join Softkingo to not only become a subject matter expert but also
                                     make a lasting impact through knowledge. We are always seeking
                                     talented, passionate, and tech enthusiasts to join our team.
                                 </p>
-                                <button className="bg-sky-400 hover:bg-sky-500 active:bg-sky-600 text-white px-6 sm:px-8 lg:px-12 py-3 sm:py-4 rounded-full font-semibold text-sm sm:text-base lg:text-lg shadow-lg hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 transition-all duration-300">
+                                <button
+                                    onClick={() => setShowModal(true)}
+                                    className="bg-sky-400 hover:bg-sky-500 active:bg-sky-600 text-white px-6 sm:px-8 lg:px-12 py-3 sm:py-4 rounded-full font-semibold text-sm sm:text-base lg:text-lg shadow-lg hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 transition-all duration-300 cursor-pointer">
                                     Let&apos;s Work Together
                                 </button>
                             </div>
@@ -165,6 +173,7 @@ const WhyJoinUs = () => {
                     </div>
                 </div>
             </div> */}
+
             {/* find jobs  */}
             <div className="bg-gradient-to-br from-slate-800 via-slate-900 to-teal-900 py-12 md:py-16 px-4">
                 <div className="max-w-7xl mx-auto">
@@ -290,16 +299,23 @@ const WhyJoinUs = () => {
                     </div>
                 </div>
             </div>
+            <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />
+
             {/* be part of softkingo */}
-            <section className="relative w-full bg-gradient-to-r from-sky-200 to-sky-50 py-20 px-4 overflow-hidden">
+            <section className="relative w-full bg-gradient-to-br from-white via-sky-50 to-sky-100 py-20 px-4 overflow-hidden">
 
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                         {/* Left Content */}
                         <div className="space-y-6 z-10">
-                            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
-                                Be A Part Of Softkingo
-                            </h2>
+
+                            <CommonTitle
+                                align="left"
+                                pill={false}
+                                title={false}
+                                gradientText="Be A Part Of Softkingo"
+                                subtitle={false}
+                            />
 
                             <div className="space-y-4">
                                 <h3 className="text-xl font-semibold text-gray-700">
@@ -339,7 +355,7 @@ const WhyJoinUs = () => {
             <ApplicationForm />
 
             {/*  */}
-            <section className="relative w-full min-h-[500px] bg-gradient-to-r from-sky-200 to-sky-50 py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-10 overflow-hidden">
+            <section className="relative w-full min-h-[500px] bg-gradient-to-br from-white via-sky-50 to-sky-100  py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-10 overflow-hidden">
 
 
                 <div className="max-w-7xl mx-auto relative z-10">
@@ -347,17 +363,18 @@ const WhyJoinUs = () => {
 
                         {/* Left Side - Text Content */}
                         <div className="text-black space-y-6 lg:space-y-8">
-                            <h1 className="font-bold text-xl sm:text-3xl  lg:text-4xl leading-tight">
-                                Start your career at{' '}
-                                <span className="text-sky-900">Softkingo</span>, Let's create a better digital future together.
-                            </h1>
-
-                            <p className="text-black text-sm sm:text-base lg:text-lg leading-relaxed max-w-xl">
-                                At Softkingo, we offer an environment that fosters innovation, collaboration, and
+                          
+                            <CommonTitle
+                                align="left"
+                                pill={false}
+                                title={false}
+                                gradientText="  Start your career at Softkingo, Let's create a better digital future together."
+                                subtitle="At Softkingo, we offer an environment that fosters innovation, collaboration, and
                                 continuous growth. You'll have the chance to work with cutting-edge technologies,
                                 solve real-world challenges, and make a meaningful impact. Join us and shape
-                                the future!
-                            </p>
+                                the future!"
+                            />
+                           
 
 
                         </div>
@@ -402,7 +419,17 @@ const WhyJoinUs = () => {
                         </div>
                     </div>
                 </div>
+                
             </section>
+            <Blogs
+        category=""
+        featured={false}    // Latest uploaded
+        title="Our Latest Blogs"
+        subtitle="Explore our latest insights, product lessons, and engineering best practices."
+      />
+      <FAQAccordion />
+      <InquirySection />
+      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
         </>
     );
 };

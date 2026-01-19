@@ -23,7 +23,7 @@ import {
 
 const TEAM = [
   { name: "Ansh Rajput", role: "Lead Developer", color: "from-sky-500 to-sky-700" },
-  { name: "Paramhansh", role: "Product", color: "from-indigo-500 to-indigo-700" },
+  { name: "Paramhansh", role: "Product", color: "from-sky-500 to-sky-700" },
   { name: "Prashant", role: "Full-Stack", color: "from-emerald-500 to-emerald-700" },
   { name: "Nitin", role: "DevOps", color: "from-amber-500 to-amber-700" },
 ];
@@ -35,7 +35,7 @@ export default function ProfessionalCardStack() {
         {/* soft background glow */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute -top-16 -left-10 w-72 h-72 bg-sky-200/40 blur-3xl rounded-full" />
-          <div className="absolute -bottom-20 -right-10 w-80 h-80 bg-indigo-200/40 blur-3xl rounded-full" />
+          <div className="absolute -bottom-20 -right-10 w-80 h-80 bg-sky-200/40 blur-3xl rounded-full" />
         </div>
 
         <div
@@ -50,7 +50,7 @@ export default function ProfessionalCardStack() {
             style={{ transformStyle: "preserve-3d" }}
           >
             {/* top accent line */}
-            <div className="h-[3px] bg-gradient-to-r from-sky-500 via-sky-400 to-indigo-400" />
+            <div className="h-[3px] bg-gradient-to-r from-sky-500 via-sky-400 to-sky-400" />
 
             {/* Header */}
             <div className="flex items-center px-5 py-4 bg-gradient-to-l from-sky-500 to-sky-300">
@@ -157,7 +157,7 @@ export default function ProfessionalCardStack() {
                   </div>
 
                   {/* Performance strip */}
-                  {/* <div className="rounded-2xl bg-gradient-to-br from-sky-600 to-indigo-500 p-4 text-white border border-white/10 shadow-sm">
+                  {/* <div className="rounded-2xl bg-gradient-to-br from-sky-600 to-sky-500 p-4 text-white border border-white/10 shadow-sm">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-[11px] text-white/80">Performance</p>
@@ -200,7 +200,7 @@ export default function ProfessionalCardStack() {
                         
                         { txt: "Paramhansh Singh updated roadmap", time: "5h ago" },
                         { txt: "Prashant kumar fixed payment flow edge case", time: "1d ago" },
-                        { txt: "Ansh Raj singh deployed new build", time: "2h ago" },
+                        { txt: "Ansh Raj Singh deployed new build", time: "2h ago" },
                       ].map((item, i) => (
                         <div
                           key={i}
@@ -219,7 +219,7 @@ export default function ProfessionalCardStack() {
               </div>
 
               {/* Floating action button */}
-              <div className="absolute bottom-4 right-4 w-11 h-11 bg-gradient-to-br from-sky-600 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+              <div className="absolute bottom-4 right-4 w-11 h-11 bg-gradient-to-br from-sky-600 to-sky-500 rounded-full flex items-center justify-center shadow-lg">
                 <FaPlus className="text-white text-sm" />
               </div>
             </div>
@@ -233,7 +233,7 @@ export default function ProfessionalCardStack() {
             style={{ transformStyle: "preserve-3d" }}
           >
             <div className="flex items-center mb-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-sky-500 to-indigo-500 rounded-2xl flex items-center justify-center mr-3 shadow-md">
+              <div className="w-9 h-9 bg-gradient-to-br from-sky-500 to-sky-500 rounded-2xl flex items-center justify-center mr-3 shadow-md">
                 <FaMobileAlt className="text-white text-base" />
               </div>
               <div className="leading-tight">
@@ -245,7 +245,7 @@ export default function ProfessionalCardStack() {
             <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 h-44">
               <div className="absolute inset-2 bg-white rounded-xl overflow-hidden shadow-sm">
                 {/* Status bar */}
-                <div className="flex justify-between items-center h-6 bg-gradient-to-r from-sky-500 to-indigo-500 px-3">
+                <div className="flex justify-between items-center h-6 bg-gradient-to-r from-sky-500 to-sky-500 px-3">
                   <span className="text-white text-[10px] font-semibold">9:41</span>
                   <div className="flex items-center space-x-1">
                     <FaSignal className="text-white text-[10px]" />
@@ -279,7 +279,7 @@ export default function ProfessionalCardStack() {
                 <div className="absolute bottom-0 left-0 right-0 h-10 bg-white border-t border-slate-200 flex items-center justify-around">
                   <FaHome className="text-sky-600 text-base" />
                   <FaClipboardList className="text-slate-400 text-base" />
-                  <div className="w-10 h-10 bg-gradient-to-br from-sky-600 to-indigo-500 rounded-full flex items-center justify-center -mt-5 shadow-lg">
+                  <div className="w-10 h-10 bg-gradient-to-br from-sky-600 to-sky-500 rounded-full flex items-center justify-center -mt-5 shadow-lg">
                     <FaPlus className="text-white text-sm" />
                   </div>
                   <FaUser className="text-slate-400 text-base" />
@@ -298,7 +298,7 @@ export default function ProfessionalCardStack() {
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-gradient-to-br from-sky-600 to-indigo-500 rounded-lg flex items-center justify-center">
+                <div className="w-7 h-7 bg-gradient-to-br from-sky-600 to-sky-500 rounded-lg flex items-center justify-center">
                   <FaCode className="text-white text-xs" />
                 </div>
                 <div>

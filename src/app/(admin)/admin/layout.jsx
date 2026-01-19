@@ -6,6 +6,14 @@ import AdminHeaderClient from "@/components/admin/AdminHeaderClient";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminSessionProvider from "./AdminSessionProvider";
 
+export const metadata = {
+  title: "Admin Dashboard | Softkingo",
+  description: "Internal admin panel",
+  robots: { index: false, follow: false, noarchive: true },
+  alternates: { canonical: "https://softkingo.com/admin" }
+};
+
+
 export default async function AdminLayout({ children }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login?callbackUrl=/admin");

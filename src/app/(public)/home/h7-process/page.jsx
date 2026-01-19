@@ -39,7 +39,7 @@ function Process() {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-white via-sky-100 to-sky-200 py-10 sm:py-12 px-4 sm:px-6">
+    <div className="h-full bg-gradient-to-br from-white  to-white py-10 sm:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* <div className="pt-[35px] text-3xl md:text-4xl lg:text-[50px] flex justify-center gap-1">
           <p>Our</p>

@@ -1,329 +1,236 @@
 // src/app/(public)/home/blogs/BlogSliderClient.jsx
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { FaArrowRight, FaArrowLeft, FaCalendarAlt, FaClock } from "react-icons/fa";
-import Slider from "react-slick";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function BlogSliderClient({ blogs = [] }) {
-  const sliderRef = useRef(null);
-  const [activeSlide, setActiveSlide] = useState(0);
+export default function Blogs({
+  category = null,
+  type = "blog", 
+  title = "Our Top Blogs",
+  subtitle = "Explore our latest insights, product lessons, and engineering best practices.",
+  featured = false,
+  limit = 6,
+  className = ""
+}) {
+  const [blogs, setBlogs] = useState([]);
+  const scrollRef = useRef(null);
 
-  const settings = {
-    dots: true,
-    infinite: blogs.length > 3,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: false,
-    autoplay: blogs.length > 1,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    beforeChange: (current, next) => setActiveSlide(next),
-    appendDots: (dots) => (
-      <div className="pt-8 flex flex-col items-center justify-center">
-        <div className="flex justify-center items-center gap-6 mt-6">
-          <button
-            onClick={() => sliderRef.current?.slickPrev()}
-            disabled={blogs.length <= 1}
-            className="text-slate-600 hover:text-white transition-all duration-300 border border-sky-200 p-3 rounded-full hover:bg-sky-600 hover:border-sky-600 disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label="Previous blog"
-          >
-            <FaArrowLeft />
-          </button>
+  // ✅ Fetch blogs (same logic)
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const params = new URLSearchParams({
+          category: category || '',
+          type: type || 'blog',
+          featured: featured ? 'true' : 'false',
+          limit: limit.toString()
+        });
 
-          <ul className="flex space-x-2">{dots}</ul>
+        const res = await fetch(`/api/blogs?${params}`, { cache: 'no-store' });
+        let data = await res.json();
+        
+        data = data.map(blog => ({
+          ...blog,
+          category: blog.category?.name || blog.category || 'General',
+          image: blog.thumbnail || '/images/insights/hero-default.png',
+          date: blog.publishedAt 
+            ? new Date(blog.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+            : 'Recently Published',
+          readTime: blog.readTimeMinutes ? `${blog.readTimeMinutes} min read` : '5 min read',
+          description: blog.excerpt || blog.description || 'Discover amazing insights...'
+        }));
+        
+        setBlogs(data);
+      } catch (error) {
+        console.error('Failed to fetch blogs:', error);
+        setBlogs([]);
+      }
+    }
+    fetchBlogs();
+  }, [category, type, featured, limit]);
 
-          <button
-            onClick={() => sliderRef.current?.slickNext()}
-            disabled={blogs.length <= 1}
-            className="text-slate-600 hover:text-white transition-all duration-300 border border-sky-200 p-3 rounded-full hover:bg-sky-600 hover:border-sky-600 disabled:opacity-40 disabled:cursor-not-allowed"
-            aria-label="Next blog"
-          >
-            <FaArrowRight />
-          </button>
-        </div>
-      </div>
-    ),
-    customPaging: (i) => (
-      <div
-        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === activeSlide ? "bg-sky-600 w-6 rounded-lg" : "bg-slate-300"
-          }`}
-      />
-    ),
-    responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: Math.min(2, blogs.length) } },
-      { breakpoint: 768, settings: { slidesToShow: 1 } },
-    ],
+  // ✅ Scroll functions
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -320, behavior: 'smooth' });
   };
 
-  if (!blogs || blogs.length === 0) {
-    return (
-      <section className="w-full py-10 sm:py-12 px-4 sm:px-6 bg-gradient-to-b from-white to-sky-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900">
-              Our{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
-                Top Blogs
-              </span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg mb-8">
-              Coming soon! Check back later for fresh insights and updates.
-            </p>
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 320, behavior: 'smooth' });
+  };
 
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 to-sky-500 text-white font-medium hover:from-sky-700 hover:to-sky-600 transition-colors duration-300 shadow-sm hover:shadow-md"
-            >
-              Explore All Content <FaArrowRight />
-            </Link>
-          </div>
+  const getSafeImage = (image) => {
+    if (!image) return '/images/insights/hero-default.png';
+    if (image.startsWith('http') || image.startsWith('/')) return image;
+    return '/images/insights/hero-default.png';
+  };
+
+  // ✅ Responsive slide width calculation
+  const getSlideWidth = () => {
+    if (typeof window === 'undefined') return 400;
+    if (window.innerWidth >= 1024) return 380; // 3 slides
+    if (window.innerWidth >= 768) return 500;  // 2 slides
+    return '100%'; // 1 slide
+  };
+
+  if (!blogs?.length) {
+    return (
+      <section className={`w-full py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-sky-50/50 ${className}`}>
+        <div className="max-w-7xl mx-auto text-center py-20">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-sky-900 via-sky-700 to-blue-700 bg-clip-text text-transparent">
+            {title}
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">{subtitle}</p>
+          <Link href="/blog" className="group px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex">
+            <span>Explore All Content</span>
+            <FaArrowRight className="text-sm group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="w-full py-10 sm:py-12 px-4 sm:px-6 bg-gradient-to-b from-white to-sky-50 relative overflow-hidden">
+    <section className={`w-full py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-sky-50/50 relative overflow-hidden ${className}`}>
       <div className="max-w-7xl mx-auto">
-        {/* Portfolio-style header */}
-        <div className="text-center mb-10 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900">
-            Our{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
-              Top Blogs
-            </span>
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4  bg-gradient-to-r from-sky-900 via-sky-700 to-blue-700 bg-clip-text text-transparent">
+            {title}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
-            Explore our latest insights, product lessons, and engineering best practices.
-          </p>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">{subtitle}</p>
         </div>
 
-        <div className="relative">
-          <Slider ref={sliderRef} {...settings}>
-            {blogs.map((item) => (
-              <div key={item.id} className="px-4 py-4 mb-8">
-                <article className="group bg-white/85 backdrop-blur-md rounded-2xl shadow-sm border border-sky-100 overflow-hidden hover:shadow-md transition-all duration-300 h-full flex flex-col">
-                  <div className="relative h-52 overflow-hidden">
-                    <div className="absolute top-4 right-4 z-10 bg-sky-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm">
-                      {item.category}
-                    </div>
+        {/* Custom Scrollable Carousel */}
+        <div className="relative mb-20">
+          {/* Navigation Buttons */}
+          <button
+            onClick={scrollLeft}
+            className="absolute -left-16 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full border-2 border-sky-200 text-slate-600 hover:bg-sky-600 hover:text-white hover:border-sky-600 transition-all duration-300 shadow-sm hover:shadow-md lg:opacity-100 opacity-0 group-hover:opacity-100"
+            aria-label="Previous"
+          >
+            <FaArrowLeft className="text-xl" />
+          </button>
+          
+          <button
+            onClick={scrollRight}
+            className="absolute -right-16 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full border-2 border-sky-200 text-slate-600 hover:bg-sky-600 hover:text-white hover:border-sky-600 transition-all duration-300 shadow-sm hover:shadow-md lg:opacity-100 opacity-0 group-hover:opacity-100"
+            aria-label="Next"
+          >
+            <FaArrowRight className="text-xl" />
+          </button>
 
+          {/* Scroll Container */}
+          <div 
+            ref={scrollRef}
+            className="scrollbar-hide flex gap-6 overflow-x-auto pb-12 scroll-smooth snap-x snap-mandatory"
+            style={{ scrollSnapType: 'x mandatory' }}
+          >
+            {blogs.map((item, index) => (
+              <div 
+                key={item.id || index} 
+                className="flex-shrink-0 w-[90%] sm:w-[80%] md:w-[48%] lg:w-[32%] xl:w-[30%] snap-start"
+                style={{ scrollSnapAlign: 'start' }}
+              >
+                <article className="group bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl border border-sky-100/60 overflow-hidden hover:shadow-2xl hover:border-sky-200/80 transition-all duration-500 hover:-translate-y-3 h-full flex flex-col cursor-grab active:cursor-grabbing">
+                  
+                  {/* Image + Category */}
+                  <div className="relative h-64 sm:h-72 overflow-hidden bg-gradient-to-br from-slate-50 to-sky-50/30">
                     <Image
-                      src={item.image}
+                      src={getSafeImage(item.image)}
                       alt={item.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      priority={index < 3}
                     />
-
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute top-6 right-6 z-20 bg-gradient-to-r from-sky-600/95 to-blue-600/95 backdrop-blur-md text-white px-5 py-2 rounded-full text-sm font-semibold shadow-2xl hover:scale-105 transition-all duration-300">
+                      {item.category}
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
                   </div>
 
-                  <div className="p-6 flex flex-col flex-grow">
-                    <div className="flex items-center text-slate-500 text-xs sm:text-sm mb-3 flex-wrap gap-3">
-                      <div className="flex items-center">
-                        <FaCalendarAlt className="mr-1 text-sky-600" />
+                  {/* Content */}
+                  <div className="p-8 sm:p-10 flex flex-col flex-1">
+                    <div className="flex flex-wrap gap-6 text-sm sm:text-base text-slate-500 mb-8">
+                      <div className="flex items-center gap-2">
+                        <FaCalendarAlt className="text-sky-500 text-lg" />
                         <span>{item.date}</span>
+                     
+
                       </div>
-                      <div className="flex items-center">
-                        <FaClock className="mr-1 text-sky-600" />
+                      {/* <div className="flex items-center gap-2">
+                        <FaClock className="text-sky-500 text-lg" />
                         <span>{item.readTime}</span>
-                      </div>
+                      </div> */}
                     </div>
 
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-3 group-hover:text-sky-700 transition-colors duration-300 line-clamp-2">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-6 leading-tight group-hover:text-sky-800 transition-all duration-300 line-clamp-2">
                       {item.title}
                     </h3>
 
-                    <p className="text-slate-600 mb-5 flex-grow text-sm line-clamp-3">
+                    {/* <p className="text-slate-600 mb-10 flex-1 text-base sm:text-lg leading-relaxed line-clamp-4">
                       {item.description}
-                    </p>
+                    </p> */}
 
                     <Link
                       href={`/blog/${item.slug}`}
-                      className="mt-auto inline-flex items-center text-sky-700 font-semibold hover:text-sky-800 transition-colors duration-300"
+                      className="inline-flex items-center gap-3 text-sky-600 font-semibold text-lg hover:text-sky-700 hover:gap-4 transition-all duration-300 group/link border-b-2 border-transparent hover:border-sky-300 pb-1"
                     >
                       <span>Read Full Article</span>
-                      <FaArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                      <FaArrowRight className="text-base group-hover:translate-x-2 transition-transform duration-300" />
                     </Link>
                   </div>
                 </article>
               </div>
             ))}
-          </Slider>
+          </div>
+
+          {/* Dots Indicators */}
+          <div className="flex justify-center gap-2 mt-8">
+            {blogs.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollRef.current?.scrollTo({ left: index * 320, behavior: 'smooth' })}
+                className={`w-3 h-3 rounded-full transition-all duration-300 cursor-pointer ${
+                  index * 320 <= scrollRef.current?.scrollLeft + 100
+                    ? 'bg-sky-600 w-8 scale-110 shadow-md'
+                    : 'bg-slate-300 hover:bg-slate-400 hover:scale-105'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Bottom CTA (theme aligned) */}
-        <div className="text-center mt-8">
+        {/* CTA */}
+        <div className="text-center">
           <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 to-sky-500 text-white font-medium hover:from-sky-700 hover:to-sky-600 transition-colors duration-300 shadow-sm hover:shadow-md"
+            href={`/blog?category=${category || ''}&type=${type}`}
+            className="group px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
           >
-            View All Blogs <FaArrowRight />
+            <span>View All {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}s</span>
+            <FaArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" />
           </Link>
         </div>
       </div>
 
-      {/* Decorative elements (lighter) */}
-      <div className="absolute top-0 right-0 w-80 h-80 bg-sky-500/10 rounded-full blur-[110px] animate-pulse pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 bg-sky-500/15 rounded-full blur-[110px] animate-pulse pointer-events-none" />
-      <style >{`
-      
-/* Minimal react-slick fix (Hostinger compatible) */
-.slick-slider {
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -khtml-user-select: none;
-  -ms-touch-action: pan-y;
-  touch-action: pan-y;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.slick-list {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-.slick-list:focus {
-  outline: none;
-}
-.slick-list.dragging {
-  cursor: pointer;
-}
-
-.slick-slider .slick-track,
-.slick-slider .slick-list {
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-}
-
-.slick-track {
-  position: relative;
-  top: 0;
-  left: 0;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.slick-track:before,
-.slick-track:after {
-  display: table;
-  content: '';
-}
-.slick-track:after {
-  clear: both;
-}
-.slick-loading .slick-track {
-  visibility: hidden;
-}
-
-.slick-slide {
-  display: none;
-  float: left;
-  height: 100%;
-  min-height: 1px;
-}
-[dir='rtl'] .slick-slide {
-  float: right;
-}
-.slick-slide img {
-  display: block;
-}
-.slick-slide.slick-loading img {
-  display: none;
-}
-.slick-slide.dragging img {
-  pointer-events: none;
-}
-.slick-initialized .slick-slide {
-  display: block;
-}
-.slick-loading .slick-slide {
-  visibility: hidden;
-}
-.slick-vertical .slick-slide {
-  display: block;
-  height: auto;
-  border: 1px solid transparent;
-}
-.slick-arrow.slick-hidden {
-  display: none;
-}
-
-.slick-dots {
-  position: absolute;
-  bottom: -45px;
-  display: block;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  text-align: center;
-}
-.slick-dots li {
-  position: relative;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  margin: 0 5px;
-  padding: 0;
-  cursor: pointer;
-}
-.slick-dots li button {
-  font-size: 0;
-  line-height: 0;
-  display: block;
-  width: 10px;
-  height: 10px;
-  padding: 5px;
-  cursor: pointer;
-  color: transparent;
-  border: 0;
-  outline: none;
-  background: transparent;
-}
-.slick-dots li button:hover,
-.slick-dots li button:focus {
-  outline: none;
-}
-.slick-dots li button:hover:before,
-.slick-dots li button:focus:before {
-  opacity: 1;
-}
-.slick-dots li button:before {
-  font-size: 6px;
-  line-height: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  content: '•';
-  text-align: center;
-  opacity: .25;
-  color: #000;
-}
-.slick-dots li.slick-active button:before {
-  opacity: .75;
-  color: #28AFDF;
-}
-      `}
-      </style>
+      <style jsx global>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        @media (hover: hover) {
+          article:hover .group-hover\\:opacity-100 {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </section>
   );
 }

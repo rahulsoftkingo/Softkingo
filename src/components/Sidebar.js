@@ -1,7 +1,87 @@
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import Slogo from "../../public/images/softkingo-logo.png";
 import { MdArrowBackIos } from "react-icons/md";
-import { FaChevronRight } from "react-icons/fa";
+import { FaChevronRight, FaIndustry } from "react-icons/fa";
+import { FaFacebook, FaLinkedin, FaXTwitter, FaYoutube } from "react-icons/fa6";
+import { IoLogoInstagram } from "react-icons/io5";
+import { TbBeta } from "react-icons/tb";
+
+// Single Fa Icons import - ALL unique icons
+import {
+  FaMobileAlt,
+  FaDesktop,
+  FaShoppingCart,
+  FaBitcoin,
+  FaSalesforce,
+  FaRobot,
+  FaMicrochip,
+  FaCogs,
+  FaRegFileCode,
+  FaAndroid,
+  FaApple,
+  FaReact,
+  FaLaravel,
+  FaWordpress,
+  FaShopify,
+  FaCloud,
+  FaServer,
+  FaEye,
+  FaSearch,
+  FaBullseye,
+  FaMailBulk,
+  FaBrain,
+  FaComments,
+  FaProjectDiagram,
+  FaCamera,
+  FaMicrochip as FaChip,
+  FaChartLine,
+  FaTools,
+  FaUserTie,
+  FaArrowRight,
+  FaRegIdCard,
+  FaNodeJs,
+  FaPython,
+  FaPhp,
+  FaAngular,
+  FaVuejs,
+  FaUserCog,
+  FaDb,
+
+} from "react-icons/fa";
+import {
+  FaDumbbell,
+  FaFilm,
+
+  FaUsers,
+  FaHammer,
+  FaCalendarAlt,
+  FaVrCardboard,
+  FaShoppingBag,
+  FaTaxi,
+  FaHome,
+  FaSpa,
+  FaUserGraduate,
+  FaWrench,
+  FaCarSide,
+  FaIndustry as FaFactory,
+  FaCoins,
+
+  FaCube,
+} from "react-icons/fa";
+import {
+  FaHeartbeat,
+  FaGraduationCap,
+  FaDollarSign,
+  FaStore,
+  FaBuilding,
+  FaPlane,
+  FaUtensils,
+  FaTruck,
+  FaCar,
+
+} from "react-icons/fa";
 
 const SideBar = () => {
   const [openMenu, setOpenMenu] = useState(null);
@@ -16,179 +96,830 @@ const SideBar = () => {
     setSubMenuOpen((prev) => (prev === subMenu ? null : subMenu));
     setOpenMenu(menu);
   };
-
-  const BlockchainMenuItems = [
-    { title: "Wallet", link: "#" },
-    { title: "Exchange", link: "#" },
-    { title: "Ethereum", link: "#" },
-    { title: "Hyperledger", link: "#" },
-    { title: "Smart Contracts", link: "#" },
-    { title: "Private Blockchain", link: "#" },
-    { title: "Blockchain Technology", link: "#" },
-    { title: "NFT Marketplace", link: "#" },
-  ];
-
-  const GameDevelopmentMenuItems = [
-    { title: "Unity 3D", link: "#" },
-    { title: "Metaverse", link: "#" },
-    { title: "Unreal Engine", link: "#" },
-    { title: "Augmented Reality", link: "#" },
-    { title: "Virtual Reality", link: "#" },
-    { title: "Casual Games", link: "#" },
-  ];
-
-  const SalesforceSolutionsMenuItems = [
-    { title: "Salesforce Development", link: "#" },
-    { title: "Salesforce Consulting", link: "#" },
+  // ...................
+  const servicesData = [
     {
-      title: "Salesforce Implementation",
-      link: "/salesforce-implementation.htm",
+      id: "Mobileapptab",
+      icon: <FaMobileAlt />,
+      heading: "Mobile App Development",
+      pageHref: "/services/mobile-app-development",
+      title: "Top Mobile App Development Company",
+      description:
+        "Turning your app ideas into immersive mobile experiences. Our future‑ready mobile apps move and react along with your users.",
+      links: [
+        {
+          href: "/services/android-app-development",
+          title: "Android App Development",
+          icon: <FaAndroid />,
+        },
+        {
+          href: "/services/ios-app-development",
+          title: "iOS App Development",
+          icon: <FaApple />,
+        },
+        {
+          href: "/services/hybrid-app-development",
+          title: "Hybrid App Development",
+          icon: <FaMobileAlt />,
+        },
+        {
+          href: "/services/react-native-app-development",
+          title: "React Native App Development",
+          icon: <FaReact />,
+        },
+        {
+          href: "/services/flutter-native-app-development",
+          title: "Flutter App Development",
+          icon: <FaReact />,
+        },
+        {
+          href: "/services/app-ui-ux-design",
+          title: "App UI/UX Design",
+          icon: <FaRegFileCode />,
+        },
+      ],
     },
     {
-      title: "Salesforce Lightning",
-      link: "/salesforce-lightning-development",
-    },
-    { title: "AppExchange", link: "/salesforce-appexchange-development" },
-    { title: "Sales Cloud", link: "/salesforce-sales-cloud-development" },
-    { title: "Marketing Cloud", link: "/salesforce-marketing-cloud" },
-    { title: "Commerce Cloud", link: "/salesforce-commerce-cloud" },
-    { title: "Financial Cloud", link: "/salesforce-financial-cloud" },
-    { title: "Pardot", link: "/salesforce-pardot" },
-  ];
-
-  const AIMLMenuItems = [
-    { title: "Object Recognition", link: "/object-recognition" },
-    { title: "Text To Speech", link: "/text-to-speech" },
-    { title: "Business Intelligence", link: "/business-intelligence" },
-    { title: "Data Forecasting", link: "/data-forecasting" },
-    {
-      title: "Natural Language Processing",
-      link: "/natural-language-processing",
-    },
-    {
-      title: "Machine Learning",
-      link: "/artificial-intelligence-and-machine-learning",
-    },
-    { title: "Data Analytics", link: "/data-analytics" },
-    { title: "Recommendation Engine", link: "/recommendation-engine" },
-    { title: "Sentimental Analysis", link: "/sentimental-analysis" },
-    { title: "Conversational Ai", link: "/conversational-ai" },
-    {
-      title: "Alexa Skills Development",
-      link: "/alexa-skills-development.htm",
-    },
-  ];
-
-  const IoTEmbedded = [
-    { title: "IoT App", link: "/iot-app-development" },
-    { title: "Embedded Software", link: "/embedded-software" },
-    { title: "IoT Hardware Prototyping", link: "/iot-hardware-prototyping" },
-    {
-      title: "IoT Dashboard and Analytics",
-      link: "/iot-dashboard-and-analytics",
+      id: "Webdevtab",
+      icon: <FaDesktop />,
+      heading: "Web & CMS Development",
+      pageHref: "/services/web-development",
+      title: "Top Web & CMS Development Company",
+      description:
+        "Empowering businesses with fast, secure websites and CMS solutions that are easy to manage and scale.",
+      links: [
+        {
+          href: "/services/custom-website-development",
+          title: "Custom Website Development",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/cms-development",
+          title: "CMS Development",
+          icon: <FaWordpress />,
+        },
+        {
+          href: "/services/web-app-development",
+          title: "Web Application Development",
+          icon: <FaReact />,
+        },
+        {
+          href: "/services/enterprise-web-development",
+          title: "Enterprise Web Development",
+          icon: <FaReact />,
+        },
+        {
+          href: "/services/website-redesign",
+          title: "Website Redesign",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/website-maintenance",
+          title: "Website Maintenance",
+          icon: <FaServer />,
+        },
+      ],
     },
     {
-      title: "Smart Home - Home Automation",
-      link: "/smart-home-home-automation",
+      id: "Ecommercetab",
+      icon: <FaShoppingCart />,
+      heading: "eCommerce Development",
+      pageHref: "/services/ecommerce-development",
+      title: "Top eCommerce Development Company",
+      description:
+        "Building robust eCommerce platforms that convert visitors into loyal customers and drive recurring revenue.",
+      links: [
+        {
+          href: "/services/shopify-development",
+          title: "Shopify Development",
+          icon: <FaShopify />,
+        },
+        {
+          href: "/services/woocommerce-development",
+          title: "WooCommerce Development",
+          icon: <FaShoppingCart />,
+        },
+        {
+          href: "/services/magento-development",
+          title: "Magento Development",
+          icon: <FaShoppingCart />,
+        },
+        {
+          href: "/services/custom-ecommerce-development",
+          title: "Custom eCommerce Development",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/multivendor-ecommerce-development",
+          title: "Multi-Vendor Marketplace",
+          icon: <FaShoppingCart />,
+        },
+        {
+          href: "/services/ecommerce-app-development",
+          title: "eCommerce App Development",
+          icon: <FaMobileAlt />,
+        },
+      ],
     },
-  ];
-
-  const HireResourcesMenuItems = [
-    { link: "/hire-android-app-developer", title: "Hire Android Developers" },
-    { link: "/hire-ios-developers", title: "Hire iOS Developers" },
-    { link: "/hire-iphone-app-developer", title: "Hire iPhone App Developers" },
-    { link: "/hire-ipad-app-developer", title: "Hire iPad Developers" },
-    { link: "/hire-flutter-developers", title: "Hire Flutter Developers" },
     {
-      link: "/hire-react-native-app-developers",
-      title: "Hire React Native Developers",
+      id: "Blockchaintab",
+      icon: <FaBitcoin />,
+      heading: "Blockchain Development",
+      pageHref: "/services/blockchain-development",
+      title: "Top Blockchain Development Company",
+      description:
+        "From smart contracts to NFT platforms, we build secure, transparent blockchain solutions for modern businesses.",
+      links: [
+        {
+          href: "/services/crypto-wallet-development",
+          title: "Crypto Wallet Development",
+          icon: <FaBitcoin />,
+        },
+        {
+          href: "/services/smart-contract-development",
+          title: "Smart Contract Development",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/nft-marketplace-development",
+          title: "NFT Marketplace Development",
+          icon: <FaEye />,
+        },
+        {
+          href: "/services/dapp-development",
+          title: "DApp Development",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/defi-development",
+          title: "DeFi Development",
+          icon: <FaBitcoin />,
+        },
+        {
+          href: "/services/token-development",
+          title: "Token Development",
+          icon: <FaBitcoin />,
+        },
+      ],
     },
-    { link: "/hire-swift-developer", title: "Hire Swift Developers" },
-    { link: "/hire-ionic-developer", title: "Hire Ionic Developers" },
-    { link: "/hire-kotlin-developers", title: "Hire Kotlin Developers" },
     {
-      link: "/hire-cross-platform-developer",
-      title: "Hire Cross-platform Developers",
+      id: "Aimltab",
+      icon: <FaRobot />,
+      heading: "AI & ML Services",
+      pageHref: "/services/ai-ml",
+      title: "Top AI & ML Development Company",
+      description:
+        "Use Artificial Intelligence and Machine Learning to automate decisions, personalize experiences and unlock insights from your data.",
+      links: [
+        {
+          href: "/services/ai-development",
+          title: "AI Development",
+          icon: <FaRobot />,
+        },
+        {
+          href: "/services/machine-learning-development",
+          title: "Machine Learning Development",
+          icon: <FaBrain />,
+        },
+        {
+          href: "/services/chatbot-development",
+          title: "Chatbot Development",
+          icon: <FaComments />,
+        },
+        {
+          href: "/services/predictive-analytics",
+          title: "Predictive Analytics",
+          icon: <FaChartLine />,
+        },
+        {
+          href: "/services/computer-vision",
+          title: "Computer Vision",
+          icon: <FaCamera />,
+        },
+        {
+          href: "/services/recommendation-engine-development",
+          title: "Recommendation Engine Development",
+          icon: <FaBrain />,
+        },
+      ],
     },
-    { link: "/hire-dart-developer", title: "Hire Dart Developers" },
-    { link: "/app-designers", title: "Hire App Designers" },
+    {
+      id: "iottab",
+      icon: <FaMicrochip />,
+      heading: "IoT & Embedded",
+      pageHref: "/services/iot-embedded",
+      title: "Top IoT & Embedded Development Company",
+      description:
+        "Connecting physical devices with secure cloud platforms to create smart, data‑driven products and experiences.",
+      links: [
+        {
+          href: "/services/iot-app-development",
+          title: "IoT App Development",
+          icon: <FaMobileAlt />,
+        },
+        {
+          href: "/services/embedded-software-development",
+          title: "Embedded Software Development",
+          icon: <FaChip />,
+        },
+        {
+          href: "/services/iiot",
+          title: "Industrial IoT (IIoT)",
+          icon: <FaMicrochip />,
+        },
+        {
+          href: "/services/device-integration",
+          title: "Device Integration",
+          icon: <FaTools />,
+        },
+        {
+          href: "/services/home-automation",
+          title: "Home Automation",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/aiot-app-development",
+          title: "AIoT App Development",
+          icon: <FaRobot />,
+        },
+      ],
+    },
+    {
+      id: "DevOpstab",
+      icon: <FaCogs />,
+      heading: "DevOps & Cloud",
+      pageHref: "/services/devops-cloud",
+      title: "Top DevOps & Cloud Engineering Company",
+      description:
+        "Automate deployment pipelines, improve reliability and ship faster with our DevOps & cloud engineering team.",
+      links: [
+        {
+          href: "/services/cloud-migration",
+          title: "Cloud Migration",
+          icon: <FaCloud />,
+        },
+        {
+          href: "/services/devops-automation",
+          title: "DevOps Automation",
+          icon: <FaCogs />,
+        },
+        {
+          href: "/services/ci-cd-pipeline",
+          title: "CI/CD Pipeline",
+          icon: <FaCogs />,
+        },
+        {
+          href: "/services/cloud-management",
+          title: "Cloud Management",
+          icon: <FaCloud />,
+        },
+        {
+          href: "/services/containerization",
+          title: "Containerization",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/server-security-optimization",
+          title: "Server Security Optimization",
+          icon: <FaServer />,
+        },
+      ],
+    },
+    {
+      id: "digital",
+      icon: <FaCogs />,
+      heading: "Degital Marketing",
+      pageHref: "/services/degital-marketing",
+      title: "Top Digital Marketing Company",
+      description:
+        "Automate deployment pipelines, improve reliability and ship faster with our DevOps & cloud engineering team.",
+      links: [
+        {
+          href: "/services/seo-services",
+          title: "Seo Services",
+          icon: <FaMobileAlt />,
+        },
+        {
+          href: "/services/paid-marketing",
+          title: "Paid Marketing",
+          icon: <FaCogs />,
+        },
+        {
+          href: "/services/online-reputation-management",
+          title: "Online Reputation Management",
+          icon: <FaCogs />,
+        },
+        {
+          href: "/services/app-marketing",
+          title: "App Marketing",
+          icon: <FaCloud />,
+        },
+        {
+          href: "/services/content-marketing",
+          title: "Content-Marketing",
+          icon: <FaRegFileCode />,
+        },
+        {
+          href: "/services/social-media-marketing",
+          title: "Social Media Marketing",
+          icon: <FaServer />,
+        },
+      ],
+    },
+  ];
+  const ServicesMenuItems = [
+    { heading: "Mobile App Development", id: "mobileApp", pageHref: "/services/mobile-app-development", links: servicesData[0].links },
+    { heading: "Web & CMS Development", id: "webCMS", pageHref: "/services/web-development", links: servicesData[1].links },
+    { heading: "eCommerce Development", id: "ecommerce", pageHref: "/services/ecommerce-development", links: servicesData[2].links },
+    { heading: "Blockchain Development", id: "blockchain", pageHref: "/services/blockchain-development", links: servicesData[3].links },
+    { heading: "AI & ML Services", id: "aiML", pageHref: "/services/ai-ml", links: servicesData[4].links },
+    { heading: "IoT & Embedded", id: "iot", pageHref: "/services/iot-embedded", links: servicesData[5].links },
+    { heading: "DevOps & Cloud", id: "devops", pageHref: "/services/devops-cloud", links: servicesData[6].links },
+    { heading: "Digital Marketing", id: "digital", pageHref: "/services/degital-marketing", links: servicesData[7].links }
   ];
 
-  const FrontendMenuItems = [
-  
-    { title: "Hire Frontend Developers", link: "/hire-front-end-developers" },
-    { title: "Hire AngularJS Developers", link: "/hire-angularjs-developers" },
-    { title: "Hire ReactJS Developers", link: "/hire-reactjs-developers" },
-    { title: "Hire Vue JS Developers", link: "/hire-vuejs-developers" },
-    { title: "Hire .NET Developers", link: "/hire-dot-net-developers" },
-    { title: "Hire Web App Developers", link: "/hire-web-app-developers" },
-    { title: "Hire Web Developers", link: "/hire-web-developers" },
-    { title: "Hire CakePHP Developers", link: "/hire-cakephp-developer" },
-    { title: "Hire Yii Developers", link: "/hire-yii-developers" },
-    { title: "Hire Scala Developers", link: "/hire-scala-developers.htm" },
-    { title: "Hire Zend Developers", link: "/hire-zend-developers.htm" },
-    { title: "Hire Drupal Developers", link: "/hire-drupal-developer.htm" }
+
+
+
+
+
+
+  const tabs = [
+    // 1) App developers
+    {
+      id: "hireapptab",
+      icon: <FaMobileAlt className="inline-block text-sky-600" />,
+      title: "Hire App Developers",
+      href: "/hire/app-developer",
+      description:
+        "On the lookout for a coding wizard? Hire mobile app developers to build high‑performance Android, iOS and cross‑platform apps.",
+      links: [
+        {
+          href: "/hire/android-developer",
+          title: "Hire Android Developers",
+          icon: <FaAndroid />,
+        },
+        {
+          href: "/hire/ios-developer",
+          title: "Hire iOS Developers",
+          icon: <FaApple />,
+        },
+        {
+          href: "/hire/iphone-app-developer",
+          title: "Hire iPhone App Developers",
+          icon: <FaApple />,
+        },
+        {
+          href: "/hire/ipad-developer",
+          title: "Hire iPad Developers",
+          icon: <FaApple />,
+        },
+        {
+          href: "/hire/flutter-developer",
+          title: "Hire Flutter Developers",
+          icon: <FaReact />,
+        },
+        {
+          href: "/hire/react-native-developer",
+          title: "Hire React Native Developers",
+          icon: <FaReact />,
+        },
+      ],
+    },
+
+    // 2) Frontend
+    {
+      id: "hirefronttab",
+      icon: <FaDesktop className="inline-block text-sky-600" />,
+      title: "Hire Frontend Developers",
+      href: "/hire/frontend-developer",
+      description:
+        "Curate pixel‑perfect experiences with frontend engineers who ship fast, responsive and accessible UIs.",
+      links: [
+        {
+          href: "/hire/angular-developer",
+          title: "Hire Angular Developers",
+          icon: <FaAngular />,
+        },
+        {
+          href: "/hire/reactjs-developer",
+          title: "Hire ReactJS Developers",
+          icon: <FaReact />,
+        },
+        {
+          href: "/hire/vuejs-developer",
+          title: "Hire Vue.js Developers",
+          icon: <FaVuejs />,
+        },
+        {
+          href: "/hire/web-app-developer",
+          title: "Hire Web App Developers",
+          icon: <FaDesktop />,
+        },
+      ],
+    },
+
+    // 3) Backend
+    {
+      id: "hirebackendtab",
+      icon: <FaServer className="inline-block text-sky-600" />,
+      title: "Hire Backend Developers",
+      href: "/hire/backend-developer",
+      description:
+        "Hire backend developers who design reliable APIs, data models and cloud architectures for scale.",
+      links: [
+        {
+          href: "/hire/java-developer",
+          title: "Hire Java Developers",
+          icon: <FaServer />,
+        },
+
+        {
+          href: "/hire/nodejs-developer",
+          title: "Hire Node.js Developers",
+          icon: <FaNodeJs />,
+        },
+        {
+          href: "/hire/python-developer",
+          title: "Hire Python Developers",
+          icon: <FaPython />,
+        },
+        {
+          href: "/hire/php-developer",
+          title: "Hire PHP Developers",
+          icon: <FaPhp />,
+        },
+        {
+          href: "/hire/laravel-developer",
+          title: "Hire Laravel Developers",
+          icon: <FaLaravel />,
+        },
+        {
+          href: "/hire/Django-developer",
+          title: "Hire Django Developers",
+          icon: <FaPython />,
+        },
+      ],
+    },
+
+    // 4) Full‑Stack
+    {
+      id: "hirefullstacktab",
+      icon: <FaReact className="inline-block text-sky-600" />,
+      title: "Hire Full‑Stack Developers",
+      href: "/hire/full-stack-developer",
+      description:
+        "Ship end‑to‑end features faster with full‑stack developers who can own frontend, backend and integrations.",
+      links: [
+        {
+          href: "/hire/mern-developer",
+          title: "Hire MERN Stack Developers",
+          icon: <FaReact />,
+        },
+        {
+          href: "/hire/mean-developer",
+          title: "Hire NextJs Developers",
+          icon: <FaAngular />,
+        },
+        {
+          href: "/hire/laravel-vue-developer",
+          title: "Hire Laravel + Vue Developers",
+          icon: <FaLaravel />,
+        },
+        {
+          href: "/hire/react-node-developer",
+          title: "Hire React + Django Developers",
+          icon: <FaPython />,
+        },
+      ],
+    },
+
+    // 5) eCommerce
+    {
+      id: "hireecommercetab",
+      icon: <FaShoppingCart className="inline-block text-sky-600" />,
+      title: "Hire eCommerce Developers",
+      href: "/hire/ecommerce-developer",
+      description:
+        "Hire eCommerce experts to build conversion‑focused, secure and scalable online stores.",
+      links: [
+        {
+          href: "/hire/magento-developer",
+          title: "Hire Magento Developers",
+          icon: <FaShoppingCart />,
+        },
+        {
+          href: "/hire/wordpress-developer",
+          title: "Hire WordPress Developers",
+          icon: <FaWordpress />,
+        },
+        {
+          href: "/hire/woocommerce-developer",
+          title: "Hire WooCommerce Developers",
+          icon: <FaShoppingCart />,
+        },
+        {
+          href: "/hire/shopify-developer",
+          title: "Hire Shopify Developers",
+          icon: <FaShopify />,
+        },
+      ],
+    },
+
+    // 6) Dedicated / Specialist pod
+    {
+      id: "hireothertab",
+      icon: <FaUserTie className="inline-block text-sky-600" />,
+      title: "Hire Dedicated Experts",
+      href: "/hire/dedicated-developer",
+      description:
+        "Build a long‑term pod of dedicated experts across architecture, cloud, data, QA and product.",
+      links: [
+        {
+          href: "/hire/solution-architects",
+          title: "Hire Solution Architects",
+          icon: <FaUserCog />,
+        },
+        {
+          href: "/hire/devops-engineers",
+          title: "Hire DevOps Engineers",
+          icon: <FaCloud />,
+        },
+        // {
+        //   href: "/hire/dedicated-developer/database-engineers",
+        //   title: "Hire Database Engineers",
+        //   icon: <FaDb />,
+        // },
+        {
+          href: "/hire/qa-testers",
+          title: "Hire QA & Testers",
+          icon: <FaBullseye />,
+        },
+        {
+          href: "/hire/ml-engineers",
+          title: "Hire AI & ML Engineers",
+          icon: <FaRobot />,
+        },
+        {
+          href: "/hire/software-developer",
+          title: "Hire Software Developers",
+          icon: <FaRegIdCard />,
+        },
+        {
+          href: "/hire/ui-ux-designers",
+          title: "Hire UI/UX Designers",
+          icon: <FaUserTie />,
+        },
+      ],
+    },
   ];
 
-  const developersList = [
-   
-    { title: "Hire Java Developers", link: "#" },
-    { title: "Hire Laravel Developers", link: "#" },
-    { title: "Hire Node.js Developers", link: "#" },
-    { title: "Hire Django Developers", link: "#" },
-    { title: "Hire Python Developers", link: "#" },
-    { title: "Hire Spring Boot Developers", link: "#" },
-    { title: "Hire PHP Developers", link: "#" },
-    { title: "Hire Golang Developers", link: "#" },
-    { title: "Hire Joomla Developers", link: "#" },
-    { title: "Hire Full-stack Developers", link: "#" },
-    { title: "Hire CodeIgniter Developers", link: "#" },
-    { title: "Hire ASP.NET Developers", link: "#" }
+  // Hire Menu Items Array (from your tabs data)
+  const HireMenuItems = [
+    { id: "hireApp", title: "Hire App Developers", href: "/hire/app-developer", links: tabs[0].links },
+    { id: "hireFrontend", title: "Hire Frontend Developers", href: "/hire/frontend-developer", links: tabs[1].links },
+    { id: "hireBackend", title: "Hire Backend Developers", href: "/hire/backend-developer", links: tabs[2].links },
+    { id: "hireFullstack", title: "Hire Full-Stack Developers", href: "/hire/full-stack-developer", links: tabs[3].links },
+    { id: "hireEcommerce", title: "Hire eCommerce Developers", href: "/hire/ecommerce-developer", links: tabs[4].links },
+    { id: "hireDedicated", title: "Hire Dedicated Experts", href: "/hire/dedicated-developer", links: tabs[5].links }
   ];
 
-  const gameList = [
-    { title: "Hire Metaverse Developers", link: "#" },
-    { title: "Hire Unity 3D Developers", link: "#" },
-    { title: "Hire Virtual Reality Developers", link: "#" },
-    { title: "Hire Augmented Reality Developers", link: "#" }
+  const industriestabs = [
+    // ✅ INDUSTRIES (main link: /industries)
+    {
+      id: "industry",
+      title: "Industry‑Specific Solutions",
+      heading: "Industry‑Specific Solutions",
+      icon: <FaIndustry className="inline-block text-sky-600" />,
+
+      href: "/industries",
+      description:
+        "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+      items: [
+        { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
+        { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
+        { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
+        { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
+        { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
+        { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
+        { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
+
+        { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
+
+        // URL missing in your list -> fallback
+        { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
+
+        { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
+        { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
+        { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
+        { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
+        { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
+        { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
+        // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
+      ],
+    },
+
+
+  ];
+  const solutionsArray = [
+    // ✅ ON DEMAND (main link: /solutions)
+    {
+      id: "ondemand",
+      title: "On‑Demand Solutions",
+      icon: <FaTruck className="inline-block text-sky-600" />,
+      heading: "On‑Demand & Real‑Time Solutions",
+      href: "/solutions",
+      description:
+        "Design on‑demand platforms for delivery, mobility and home services with real‑time tracking and optimized dispatch.",
+      items: [
+        { title: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
+        { title: "Grocery Delivery", href: "/solutions/grocery-delivery-app-development", icon: <FaShoppingBag /> },
+        { title: "Pickup & Delivery", href: "/solutions/pickup-and-delivery-service-app-development", icon: <FaTruck /> },
+        { title: "Taxi Booking", href: "/solutions/taxi-app-development-services", icon: <FaTaxi /> },
+        { title: "Fitness Trainer App", href: "/solutions/fitness-trainer-app-development", icon: <FaDumbbell /> },
+        { title: "Home Services", href: "/solutions/on-demand-home-service-app-development", icon: <FaHome /> },
+        { title: "Beauty & Salon Booking", href: "/solutions/salon-app-development", icon: <FaSpa /> },
+        { title: "Doctor & Medical App", href: "/solutions/ice-cream-delivery-app-development", icon: <FaHeartbeat /> },
+        { title: "Laundry Service", href: "/solutions/laundry-app-development", icon: <FaShoppingBag /> },
+        { title: "Restaurant management", href: "/solutions/restaurant-app-development-company", icon: <FaUtensils /> },
+        { title: "Dating App", href: "/solutions/dating-app-development-company", icon: <FaUsers /> },
+        { title: "Carpooling Apps", href: "/solutions/ride-sharing-app-development", icon: <FaCarSide /> },
+        { title: "Tutor App", href: "/solutions/tutor-app-development", icon: <FaUserGraduate /> },
+        { title: "Mechanics & Repair App", href: "/solutions/mechanic-app-development", icon: <FaWrench /> },
+        { title: "Car Wash App", href: "/solutions/car-wash-app-development", icon: <FaCarSide /> },
+      ],
+    },
+
+    // ✅ BUSINESS MODEL (main link: /solutions)
+    {
+      id: "businessmodel",
+      title: "Business‑Model Solutions",
+      icon: <FaProjectDiagram className="inline-block text-sky-600" />,
+      heading: "Business‑Model Based Solutions",
+      href: "/solutions",
+      description:
+        "Launch subscription, freemium, on‑demand or marketplace products with billing, entitlements and reporting built‑in.",
+      items: [
+        { title: "Marketplace App", href: "/solutions/marketplace-app-development", icon: <FaStore /> },
+        { title: "Subscription Software", href: "/solutions/subscription-platform-development", icon: <FaCoins /> },
+        { title: "Multi-Vendor E-commerce", href: "/solutions/multivendor-ecommerce-development", icon: <FaStore /> },
+        { title: "SaaS Product Development", href: "/solutions/saas-product-development", icon: <FaCloud /> },
+        { title: "CRM Software", href: "/solutions/crm-software-development", icon: <FaProjectDiagram /> },
+        { title: "ERP Software", href: "/solutions/erp-software-development", icon: <FaProjectDiagram /> },
+        { title: "Booking System", href: "/solutions/online-booking-system-development", icon: <FaCalendarAlt /> },
+        { title: "Membership / Loyalty", href: "/solutions/loyalty-membership-platform", icon: <FaCoins /> },
+        { title: "HR Management", href: "/solutions/hr-software-development", icon: <FaUsers /> },
+        { title: "Inventory Management", href: "/solutions/inventory-management-software", icon: <FaStore /> },
+      ],
+    },
+
+    // ✅ TECHNOLOGY (main link: /solutions)
+    {
+      id: "technology",
+      title: "Technology‑Based Solutions",
+      icon: <FaMicrochip className="inline-block text-sky-600" />,
+      heading: "Technology‑Based Solutions",
+      href: "/solutions",
+      description: "Cutting-edge technology solutions including AI/ML, blockchain, IoT and AR/VR for innovative products.",
+      items: [
+        { title: "AI/ML Solutions", href: "/solutions/ai-ml-development", icon: <FaRobot /> },
+        { title: "Chatbot Development", href: "/solutions/chatbot-development", icon: <FaComments /> },
+        { title: "IoT App Development", href: "/solutions/iot-app-development", icon: <FaMicrochip /> },
+        { title: "Blockchain Solutions", href: "/solutions/blockchain-development", icon: <FaCube /> },
+        { title: "Cloud & DevOps", href: "/solutions/cloud-devops-services", icon: <FaCloud /> },
+        { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
+      ],
+    },
   ];
 
-  const ecommerceList = [
-  
-    { title: "Hire Magento Developers", link: "#" },
-    { title: "Hire WordPress Developers", link: "#" },
-    { title: "Hire WooCommerce Developers", link: "#" },
-    { title: "Hire Shopify Developers", link: "#" }
+  const SolutionsMenuItems = [
+    {
+      id: "ondemand",
+      title: "On-Demand Solutions",
+      href: "/solutions",
+      items: solutionsArray[0].items
+    },
+    {
+      id: "businessmodel",
+      title: "Business-Model Solutions",
+      href: "/solutions",
+      items: solutionsArray[1].items
+    },
+    {
+      id: "technology",
+      title: "Technology-Based Solutions",
+      href: "/solutions",
+      items: solutionsArray[2].items
+    }
   ];
 
-  const dedicatedDeveloperList = [
-    { title: "Hire IoT Solution Architect", link: "#" },
-    { title: "Hire Data Scientists", link: "#" },
-    { title: "Hire NFT Developers", link: "#" },
-    { title: "Hire Salesforce Developers", link: "#" },
-    { title: "Hire Blockchain Developers", link: "#" },
-    { title: "Hire Solidity Developers", link: "#" },
-    { title: "Hire Software Developers", link: "#" },
-    { title: "Hire UI/UX Designers", link: "#" },
-    { title: "Hire VisionOS Developers", link: "#" }
+  const insightItems = [
+    {
+      key: "blogs",
+      href: "/blog",
+      title: "Latest Blogs",
+      description:
+        "Unpack the latest tech trends, opinions best practices from our experts.",
+      meta: "Weekly updates · Product, design & engineering",
+    },
+    {
+      key: "featured",
+      href: "/featured",
+      title: "Featured Blog",
+      description:
+        "Handpicked stories that go deep into product strategy, UX and complex builds.",
+      meta: "Curated picks · Long reads",
+    },
+    {
+      key: "eguides",
+      href: "/e-guides",
+      title: "E‑Guides",
+      description:
+        "Step‑by‑step playbooks to plan, build and scale web and mobile products.",
+      meta: "Downloadable PDFs · Frameworks & checklists",
+    },
+    {
+      key: "pressrelease",
+      href: "/press-releases",
+      title: "Press Releases",
+      description:
+        "Stay updated with our latest launches, partnerships and milestones.",
+      meta: "Company news · Launches",
+    },
+    {
+      key: "guides",
+      href: "/guides",
+      title: "Product Guides",
+      description:
+        "Feature breakdowns and how‑to guides for stakeholders across product and tech.",
+      meta: "Visual walkthroughs · 5–8 min reads",
+    },
+    {
+      key: "media",
+      href: "/media-coverage",
+      title: "Media Coverage",
+      description:
+        "Read what global media and industry platforms are saying about our work.",
+      meta: "Interviews · Feature stories",
+    },
+    {
+      key: "articles",
+      href: "/articles",
+      title: "Articles",
+      description:
+        "In‑depth articles on cloud, AI, app architecture, performance and more.",
+      meta: "Technical & business · 6–10 min reads",
+    },
+    {
+      key: "whitepapers",
+      href: "/whitepapers",
+      title: "Whitepapers",
+      description:
+        "Research‑backed documents on emerging tech and enterprise adoption.",
+      meta: "Downloadable · Data‑driven insights",
+    },
+    {
+      key: "podcast",
+      href: "/podcasts",
+      title: "Podcasts",
+      description:
+        "Conversations with founders, CTOs and leaders on building and scaling products.",
+      meta: "Audio · On‑the‑go learning",
+    },
   ];
-  
+
+  // ..............
+
+
 
   return (
     <nav className="sidebar z-40">
       <ul className="sidebar-menu">
         {/* About Us Section */}
         <li
-          className={`left ${
-            openMenu === "about" ||
-            openMenu === "services" ||
-            openMenu === "hireResources" ||
-            openMenu === "industries" ||
-            openMenu === "resources"
+          className={`left ${openMenu === "about" ||
+              openMenu === "services" ||
+              openMenu === "hireResources" ||
+              openMenu === "industries" ||
+              openMenu === "solutions" ||
+              openMenu === "resources"
               ? "active"
               : ""
-          }`}
+            }`}
         >
+ {/* logo */}
+              <li className="menu-item flex items-center space-x-4">
+                <Link href="/" className="menu-link ">
+                  <Image
+                    alt="Softkingo"
+                    src={Slogo.src}
+                    height={58}
+                    width={161}
+                    className="w-[8rem] md:w-[9rem] lg:w-[14rem]"
+                  />
+                </Link>
+              </li>
+          {/* Updated About Us Section - Sidebar */}
           <li className="menu-item">
             <div
               style={{ display: "flex" }}
@@ -200,807 +931,243 @@ const SideBar = () => {
             </div>
             <ul className={`submenu ${openMenu === "about" ? "active" : ""}`}>
               <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
-                <span
-                  className="flex items-center "
-                  
-                >
-                  <MdArrowBackIos />
-                  <span className="ml-2">
-                    Back
-                  </span>
-                </span>
-              </li>
-              <li className="submenu-item">
-                <Link href="/who-we-are">Who We Are</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/services">Services</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/industries">Industries We Serve</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/career">Career</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/events">Events</Link>
-              </li>
-            </ul>
-          </li>
-
-          {/* Services Section */}
-          <li className="menu-item">
-            <div
-              style={{ display: "flex" }}
-              className="menu-link w-full menu-link items-center justify-between cursor-pointer"
-              onClick={() => toggleMenu("services")}
-            >
-              <p>Services</p>
-              <FaChevronRight className="" />
-            </div>
-            <ul
-              className={`submenu ${openMenu === "services" ? "active" : ""}`}
-            >
-              {/* Mobile App Development Submenu */}
-              <li className="submenu-item cursor-pointer"    onClick={() => toggleMenu("")}>
-                <span
-                  className="flex items-center "
-               
-                >
+                <span className="flex items-center">
                   <MdArrowBackIos />
                   <span className="ml-2">Back</span>
                 </span>
               </li>
               <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("mobileApp", null)}
-                >
-                  <p>Mobile App Developmentp</p>
-                  <FaChevronRight />
+                <Link href="/about">About Who We Are</Link>
+              </li>
+              <li className="submenu-item">
+                <Link href="/services">Services We Offer</Link>
+              </li>
+              <li className="submenu-item">
+                <Link href="/solutions">Solutions We Serve</Link>
+              </li>
+              <li className="submenu-item">
+                <Link href="/careers">Career</Link>
+              </li>
+              <li className="submenu-item">
+                <Link href="/insights">Insights</Link>
+              </li>
+              <li className="submenu-item">
+                <Link href="/portfolio">Portfolio</Link>
+              </li>
+              <li className="submenu-item">
+                <Link href="/gallery">Gallery</Link>
+              </li>
+            </ul>
+          </li>
+
+
+          {/* Services Section */}
+          {/*  */}
+
+          {/* Services Section */}
+
+          <li className="menu-item">
+            <div
+              className="menu-link items-center justify-between w-full cursor-pointer flex"
+              style={{ display: "flex" }}
+              onClick={() => toggleMenu("services")}
+            >
+              <p className="flex-1">Services</p>
+              <FaChevronRight className="ml-2 flex-shrink-0" />
+            </div>
+            <ul className={`submenu ${openMenu === "services" ? "active" : ""}`}>
+              <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
+                <span className="flex items-center">
+                  <MdArrowBackIos className="mr-2" />
+                  <span>Back</span>
                 </span>
-                <ul
-                  className={`nested-submenu  ${
-                    subMenuOpen === "mobileApp" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item cursor-pointer"   onClick={() => toggleSubMenu("mobileApp", "services")}>
-                    <span
-                      className="flex items-center cursor-pointer"
-                    
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/mobile-app-development">
-                      <b>Mobile App Development</b>
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/android-app-development">Android App</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/iphone-application-development">iOS App</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/hybrid-app-development">Hybrid App</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/flutter-app-development">Flutter</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/react-native-app-development">
-                      React Native
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/kotlin-app-development">Kotlin</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/ionic-app-development">Ionic</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/swift-development">Swift</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/xamarin-app-development">Xamarin</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/apple-vision-pro-app-development">
-                      VisionOS
-                    </Link>
-                  </li>
-                </ul>
               </li>
 
-              {/* Web and CMS Development Submenu */}
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("webCMS", null)}
-                >
-                  <p> Web and CMS Development</p>
-                  <FaChevronRight />
-                </span>
-                <ul
-                  className={`nested-submenu  ${
-                    subMenuOpen === "webCMS" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item cursor-pointer"   onClick={() => toggleSubMenu("webCMS", "services")}>
-                    <span
-                      className="flex items-center "
-                    
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/web-development">
-                      <b>Web and CMS Development</b>
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/php-web-application-development">PHP</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/wordpress-development">WordPress</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/drupal-development">Drupal</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/laravel-development">Laravel</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/codeigniter-development">CodeIgniter</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/reactjs-development">ReactJs</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/angularjs-development">AngularJs</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/nodejs-development">NodeJs</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/cakephp-development">CakePHP</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/python-web-development">Python</Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="/typescript">TypeScript</Link>
-                  </li>
-                </ul>
-              </li>
-              {/* Ecommerce Development Submenu */}
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("ecommerce", null)}
-                >
-                  <p>Ecommerce Development</p>
-                  <FaChevronRight />
-                </span>
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "ecommerce" ? "active" : ""
-                  }`}
-                >
-                  {/* Back Button */}
-                  <li className="submenu-item  cursor-pointer"  onClick={() => toggleSubMenu("ecommerce", "services")}>
-                    <span
-                      className="flex items-center"
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-
-                  {/* Ecommerce Development Links */}
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/ecommerce-development">
-                      <b>Ecommerce Development</b>
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/magento-development-india.htm">
-                      Magento
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/bigcommerce.htm">
-                      Bigcommerce
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/ubercart-development-india.htm">
-                      Ubercart
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/cs-cart-development.htm">
-                      CSCart
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/prestashop.htm">
-                      Prestashop
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/virtuemart-development-india.htm">
-                      Virtuemart
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/shopify-development">
-                      Shopify
-                    </Link>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <Link href="https://www.hyperlinkinfosystem.com/woocommerce-development">
-                      WooCommerce
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("Blockchain Development", null)}
-                >
-                  <p>Blockchain Development</p>
-                  <FaChevronRight />
-                </span>
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "Blockchain Development" ? "active" : ""
-                  }`}
-                >
-                  {/* Back Button */}
-                  <li className="submenu-item cursor-pointer"   onClick={() =>
-                        toggleSubMenu("Blockchain Development", "services")
-                      }>
-                    <span
-                      className="flex items-center "
-                    
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Blockchain Development</b>
-                  </li>
-                  {BlockchainMenuItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
+              {ServicesMenuItems.map((service, serviceIndex) => (
+                <li key={serviceIndex} className="submenu-item">
+                  <span
+                    className="menu-link items-center justify-between w-full cursor-pointer flex"
+                    style={{ display: "flex" }}
+                    onClick={() => toggleSubMenu(service.id, null)}
+                  >
+                    <p className="flex-1">{service.heading}</p>
+                    <FaChevronRight className="ml-2 flex-shrink-0" />
+                  </span>
+                  <ul className={`nested-submenu ${subMenuOpen === service.id ? "active" : ""}`}>
+                    <li className="submenu-item cursor-pointer" onClick={() => toggleSubMenu(service.id, "services")}>
+                      <span className="flex items-center">
+                        <MdArrowBackIos className="mr-2" />
+                        <span>Back</span>
+                      </span>
                     </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("Game Development", null)}
-                >
-                  <p>Game Development</p>
-                  <FaChevronRight />
-                </span>
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "Game Development" ? "active" : ""
-                  }`}
-                >
-                  {/* Back Button */}
-                  <li className="submenu-item cursor-pointer"  onClick={() =>
-                        toggleSubMenu("Game Development", "services")
-                      }>
-                    <span
-                      className="flex items-center "
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Game Development</b>
-                  </li>
-                  {GameDevelopmentMenuItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
+                    <li className="submenu-item">
+                      <Link href={service.pageHref}>
+                        <b>{service.heading}</b>
+                      </Link>
                     </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("Salesforce Solutions", null)}
-                >
-                  <p>Salesforce Solutions</p>
-                  <FaChevronRight />
-                </span>
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "Salesforce Solutions" ? "active" : ""
-                  }`}
-                >
-                  {/* Back Button */}
-                  <li className="submenu-item cursor-pointer"  onClick={() =>
-                        toggleSubMenu("Salesforce Solutions", "services")
-                      }>
-                    <span
-                      className="flex items-center "
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Salesforce Solutions</b>
-                  </li>
-                  {SalesforceSolutionsMenuItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("AI & ML", null)}
-                >
-                  <p>AI & ML</p>
-                  <FaChevronRight />
-                </span>
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "AI & ML" ? "active" : ""
-                  }`}
-                >
-                  {/* Back Button */}
-                  <li className="submenu-item cursor-pointer" onClick={() => toggleSubMenu("AI & ML", "services")}>
-                    <span
-                      className="flex items-center "
-                      
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>AI & ML</b>
-                  </li>
-                  {AIMLMenuItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("IoT & Embedded", null)}
-                >
-                  <p>IoT & Embedded</p>
-                  <FaChevronRight />
-                </span>
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "IoT & Embedded" ? "active" : ""
-                  }`}
-                >
-                  {/* Back Button */}
-                  <li className="submenu-item cursor-pointer"  onClick={() =>
-                        toggleSubMenu("IoT & Embedded", "services")
-                      }>
-                    <span
-                      className="flex items-center "
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>IoT & Embedded</b>
-                  </li>
-                  {IoTEmbedded.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                >
-                  <p>DevOps</p>
-                </span>
-              </li>
+                    {service.links.map((link, linkIndex) => (
+                      <li key={linkIndex} className="submenu-item cursor-pointer">
+                        <Link href={link.href}>{link.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
             </ul>
           </li>
 
           {/* Hire Resources Section */}
-
+          {/* Fixed Hire Resources Section - Perfect Arrow Alignment */}
           <li className="menu-item">
             <div
+              className="menu-link items-center justify-between w-full cursor-pointer flex"
               style={{ display: "flex" }}
-              className="menu-link items-center justify-between w-full cursor-pointer"
-              onClick={() => toggleMenu("hireResources", null)}
+              onClick={() => toggleMenu("hireResources")}
             >
-              <p> Hire Resources</p>
-              <FaChevronRight className="" />
+              <p className="flex-1">Hire Resources</p>
+              <FaChevronRight className="ml-2 flex-shrink-0" />
             </div>
-            <ul
-              className={`submenu ${
-                openMenu === "hireResources" ? "active" : ""
-              }`}
-            >
-              {/* Hire App Developers Submenu */}
+            <ul className={`submenu ${openMenu === "hireResources" ? "active" : ""}`}>
               <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
-                <span
-                  className="flex items-center "
-                >
-                  <MdArrowBackIos />
-                  <span className="ml-2" >
-                    Back
+                <span className="flex items-center">
+                  <MdArrowBackIos className="mr-2" />
+                  <span>Back</span>
+                </span>
+              </li>
+
+              {HireMenuItems.map((hireSection, index) => (
+                <li key={index} className="submenu-item">
+                  <span
+                    className="menu-link items-center justify-between w-full cursor-pointer flex"
+                    style={{ display: "flex" }}
+                    onClick={() => toggleSubMenu(hireSection.id, null)}
+                  >
+                    <p className="flex-1">{hireSection.title}</p>
+                    <FaChevronRight className="ml-2 flex-shrink-0" />
                   </span>
-                </span>
-              </li>
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("hireApp", null)}
-                >
-                  <p>Hire App Developers</p>
-                  <FaChevronRight />
-                </span>
-
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "hireApp" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item cursor-pointer"  onClick={() => toggleSubMenu("hireApp", "hireResources")}>
-                    <span
-                      className="flex items-center "
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Hire App Developers</b>
-                  </li>
-                  {HireResourcesMenuItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
+                  <ul className={`nested-submenu ${subMenuOpen === hireSection.id ? "active" : ""}`}>
+                    <li className="submenu-item cursor-pointer" onClick={() => toggleSubMenu(hireSection.id, "hireResources")}>
+                      <span className="flex items-center">
+                        <MdArrowBackIos className="mr-2" />
+                        <span>Back</span>
+                      </span>
                     </li>
-                  ))}
-                </ul>
-              </li>
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("hireFrontend", null)}
-                >
-                  <p>Hire Frontend Developers</p>
-                  <FaChevronRight />
-                </span>
-
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "hireFrontend" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item cursor-pointer"  onClick={() => toggleSubMenu("hireFrontend", "hireResources")}>
-                    <span
-                      className="flex items-center "
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Hire Frontend Developers</b>
-                  </li>
-                  { FrontendMenuItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
+                    <li className="submenu-item">
+                      <Link href={hireSection.href}>
+                        <b>{hireSection.title}</b>
+                      </Link>
                     </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("hireBackend", null)}
-                >
-                  <p>Hire Backend Developers</p>
-                  <FaChevronRight />
-                </span>
-
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "hireBackend" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item  cursor-pointer"   onClick={() => toggleSubMenu("hireBackend", "hireResources")}>
-                    <span
-                      className="flex items-center"
-                    
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Hire Backend Developers</b>
-                  </li>
-                  { developersList.map((item, index) => (
-                    <li
-                      key={index}
-                      className="submenu-item flex items-center justify-between cursor-pointer"
-                    >
-                      <Link href={item.link}>{item.title}</Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("hireGame", null)}
-                >
-                  <p>Hire Game Developers</p>
-                  <FaChevronRight />
-                </span>
-
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "hireGame" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item cursor-pointer"  onClick={() => toggleSubMenu("hireGame", "hireResources")}>
-                    <span
-                      className="flex items-center "
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Hire Game Developers</b>
-                  </li>
-                  { gameList.map((item, index) => (
-                    <li
-                    key={index}
-                    className="submenu-item flex items-center justify-between cursor-pointer"
-                  >
-                    <Link href={item.link}>
-                      {item.title.length > 31 ? `${item.title.slice(0, 31)}...` : item.title}
-                    </Link>
-                  </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("hireeCommerce", null)}
-                >
-                  <p>Hire eCommerce Developers</p>
-                  <FaChevronRight />
-                </span>
-
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "hireeCommerce" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item cursor-pointer"  onClick={() => toggleSubMenu("hireeCommerce", "hireResources")}>
-                    <span
-                      className="flex items-center "
-                     
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Hire eCommerce Developers</b>
-                  </li>
-                  { ecommerceList.map((item, index) => (
-                    <li
-                    key={index}
-                    className="submenu-item flex items-center justify-between cursor-pointer"
-                  >
-                    <Link href={item.link}>
-                      {item.title.length > 31 ? `${item.title.slice(0, 31)}...` : item.title}
-                    </Link>
-                  </li>
-                  ))}
-                </ul>
-              </li>
-
-              <li className="submenu-item">
-                <span
-                  style={{ display: "flex" }}
-                  className="menu-link items-center justify-between w-full cursor-pointer"
-                  onClick={() => toggleSubMenu("hireDedicated", null)}
-                >
-                  <p>Hire Dedicated Developers</p>
-                  <FaChevronRight />
-                </span>
-
-                <ul
-                  className={`nested-submenu ${
-                    subMenuOpen === "hireDedicated" ? "active" : ""
-                  }`}
-                >
-                  <li className="submenu-item cursor-pointer" onClick={() => toggleSubMenu("hireDedicated", "hireResources")}>
-                    <span
-                      className="flex items-center"
-                      
-                    >
-                      <MdArrowBackIos />
-                      <span className="ml-2">Back</span>
-                    </span>
-                  </li>
-                  <li className="submenu-item flex items-center justify-between cursor-pointer">
-                    <b>Hire dedicated Developers</b>
-                  </li>
-                  { dedicatedDeveloperList.map((item, index) => (
-                    <li
-                    key={index}
-                    className="submenu-item flex items-center justify-between cursor-pointer"
-                  >
-                    <Link href={item.link}>
-                      {item.title.length > 31 ? `${item.title.slice(0, 31)}...` : item.title}
-                    </Link>
-                  </li>
-                  ))}
-                </ul>
-              </li>
+                    {hireSection.links.map((link, linkIndex) => (
+                      <li key={linkIndex} className="submenu-item cursor-pointer">
+                        <Link href={link.href}>{link.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
             </ul>
-            
-
           </li>
 
-          
 
-          
 
           {/* Industries Section */}
+
           <li className="menu-item">
             <div
+              className="menu-link items-center justify-between w-full cursor-pointer flex"
               style={{ display: "flex" }}
-              className="menu-link items-center justify-between w-full cursor-pointer"
               onClick={() => toggleMenu("industries")}
             >
-              <p>Industries</p>
-              <FaChevronRight className="" />
+              <p className="flex-1">Industries</p>
+              <FaChevronRight className="ml-2 flex-shrink-0" />
             </div>
-            <ul
-              className={`submenu ${openMenu === "industries" ? "active" : ""}`}
-            >
-               <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
-                <span
-                  className="flex items-center "
-                 
-                >
-                  <MdArrowBackIos />
-                  <span className="ml-2" onClick={() => toggleMenu("about")}>
-                    Back
-                  </span>
+            <ul className={`submenu ${openMenu === "industries" ? "active" : ""}`}>
+              <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
+                <span className="flex items-center">
+                  <MdArrowBackIos className="mr-2" />
+                  <span>Back</span>
                 </span>
               </li>
-              <li className="submenu-item">
-                <Link href="/education-app-development">Education</Link>
+
+              {industriestabs[0].items.map((industry, index) => (
+                <li key={index} className="submenu-item cursor-pointer">
+                  <Link href={industry.href}>{industry.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+
+          {/* Solutions Section - Perfect 3-Level Structure */}
+          <li className="menu-item">
+            <div
+              className="menu-link items-center justify-between w-full cursor-pointer flex"
+              style={{ display: "flex" }}
+              onClick={() => toggleMenu("solutions")}
+            >
+              <p className="flex-1">Solutions</p>
+              <FaChevronRight className="ml-2 flex-shrink-0" />
+            </div>
+            <ul className={`submenu ${openMenu === "solutions" ? "active" : ""}`}>
+              <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
+                <span className="flex items-center">
+                  <MdArrowBackIos className="mr-2" />
+                  <span>Back</span>
+                </span>
               </li>
-              <li className="submenu-item">
-                <Link href="/real-estate">Real-Estate</Link>
+
+              {SolutionsMenuItems.map((solutionCategory, catIndex) => (
+                <li key={catIndex} className="submenu-item">
+                  <span
+                    className="menu-link items-center justify-between w-full cursor-pointer flex"
+                    style={{ display: "flex" }}
+                    onClick={() => toggleSubMenu(solutionCategory.id, null)}
+                  >
+                    <p className="flex-1">{solutionCategory.title}</p>
+                    <FaChevronRight className="ml-2 flex-shrink-0" />
+                  </span>
+                  <ul className={`nested-submenu ${subMenuOpen === solutionCategory.id ? "active" : ""}`}>
+                    <li className="submenu-item cursor-pointer" onClick={() => toggleSubMenu(solutionCategory.id, "solutions")}>
+                      <span className="flex items-center">
+                        <MdArrowBackIos className="mr-2" />
+                        <span>Back</span>
+                      </span>
+                    </li>
+                    {solutionCategory.items.map((solution, solIndex) => (
+                      <li key={solIndex} className="submenu-item cursor-pointer">
+                        <Link href={solution.href}>{solution.title}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </li>
+
+
+          {/* FIXED Insights Section - Proper toggleMenu("resources") */}
+          <li className="menu-item">
+            <div
+              className="menu-link items-center justify-between w-full cursor-pointer flex"
+              style={{ display: "flex" }}
+              onClick={() => toggleMenu("resources")}
+            >
+              <p className="flex-1">Insights</p>
+              <FaChevronRight className="ml-2 flex-shrink-0" />
+            </div>
+            {/* ✅ FIXED: Changed "insights" → "resources" */}
+            <ul className={`submenu ${openMenu === "resources" ? "active" : ""}`}>
+              <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
+                <span className="flex items-center">
+                  <MdArrowBackIos className="mr-2" />
+                  <span>Back</span>
+                </span>
               </li>
-              <li className="submenu-item">
-                <Link href="/logistic-app-development">Logistics</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/entertainment">Entertainment</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/healthcare-app-development">Healthcare</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/retail-app-development">Retail</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/app-development-for-restaurant-and-food-services">
-                  Food & Restaurant
-                </Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/ondemand-app-development">On-Demand</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/app-development-for-finance-and-banking">
-                  Fintech
-                </Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/travel-app-development">Travel & Hospitality</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/gaming-app-development">Game</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/sports-app-development">Sports</Link>
-              </li>
+
+              {insightItems.map((insight, index) => (
+                <li key={insight.key} className="submenu-item cursor-pointer">
+                  <Link href={insight.href}>{insight.title}</Link>
+                </li>
+              ))}
             </ul>
           </li>
 
@@ -1008,66 +1175,10 @@ const SideBar = () => {
           <li className="menu-item">
             <span
               className="menu-link"
-              onClick={() => (window.location.href = "/case-study")}
+              onClick={() => (window.location.href = "/portfolio")}
             >
-              Case Study
+              Portfolio
             </span>
-          </li>
-
-          {/* Our Resources Section */}
-          <li className="menu-item">
-            <div
-              style={{ display: "flex" }}
-              className="menu-link items-center justify-between w-full cursor-pointer"
-              onClick={() => toggleMenu("resources")}
-            >
-              <p>Our Resources</p>
-              <FaChevronRight className="" />
-            </div>
-            <ul
-              className={`submenu ${openMenu === "resources" ? "active" : ""}`}
-            >
-               <li className="submenu-item w-full cursor-pointer" onClick={() => toggleMenu("")}>
-                <span
-                  className="flex items-center "
-                 >
-                  <MdArrowBackIos />
-                  <span className="ml-2" onClick={() => toggleMenu("about")}>
-                    Back
-                  </span>
-                </span>
-              </li>
-              <li className="submenu-item">
-                <Link href="/blog">Latest Blogs</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/research">Research</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/media-coverage">Media Coverage</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/press-releases">Press Release</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/technews">Tech News</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/articles">Articles</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/whitepaper">Whitepaper</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/podcast">Podcast</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/our-portfolio">Portfolio</Link>
-              </li>
-              <li className="submenu-item">
-                <Link href="/download-brochure">Download Brochure</Link>
-              </li>
-            </ul>
           </li>
 
           {/* Contact Us Section */}
@@ -1083,115 +1194,59 @@ const SideBar = () => {
 
         {/* Contact Numbers */}
 
-        <li className="contact-list w-full">
-          <a
-            href="tel:+918000161161"
-            className="py-0 px-[20px] w-full flex items-center border-b-[1px] [black]"
-          >
-            <img
-              alt="india"
-              src="https://www.hyperlinkinfosystem.com/assets/img/ind-flag.svg"
-              className="mr-1"
-            />{" "}
-            <span> +91 8000 161161</span>
-          </a>
-          <a
-            href="tel:+13097914105"
-            className="py-0 px-[20px] flex items-center border-b-[1px] [black]"
-          >
-            <img
-              alt="usa"
-              src="https://www.hyperlinkinfosystem.com/assets/img/us-flag.svg"
-              className="mr-1"
-            />{" "}
-            <span> +1 309 791 4105</span>
-          </a>
-          <a
-            href="tel:+442032879060"
-            className="py-0 px-[20px] flex items-center  border-b-[1px] [black]"
-          >
-            <img
-              alt="uk"
-              src="https://www.hyperlinkinfosystem.com/assets/img/uk-flag.svg"
-              className="mr-1"
-            />{" "}
-            <span> +44 20 3287 9060</span>
-          </a>
-          <div className="flex items-center justify-around ">
-            <a
-              href="https://www.facebook.com/Hyperlink-infosystem-140449209446270/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 mx-2 ml-3"
-            >
-              <img
-                src="https://www.hyperlinkinfosystem.com/assets/img/fb-icon.svg"
-                alt="Facebook"
-                className="w-[30px] h-[30px]"
-              />
+
+        <li className="contact-list pt-0 w-full">
+         {/* Compact Social Icons */}
+          <div className="flex items-center justify-center py-2 px-0 gap-2 border-t border-gray-200">
+            <a href="https://www.facebook.com/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
+              <FaFacebook className="w-4 h-4 text-gray-700 hover:text-blue-600" />
             </a>
-            <a
-              href="https://twitter.com/hyperlinkinfo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 mx-2 ml-3"
-            >
-              <img
-                src="https://www.hyperlinkinfosystem.com/assets/img/tw-icon.svg"
-                alt="Twitter"
-                className="w-[30px] h-[30px]"
-              />
+            <a href="https://www.linkedin.com/company/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
+              <FaLinkedin className="w-4 h-4 text-gray-700 hover:text-blue-700" />
             </a>
-            <a
-              href="https://www.instagram.com/hyperlink_infosystem/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 mx-2 ml-3"
-            >
-              <img
-                src="https://www.hyperlinkinfosystem.com/assets/img/insta-icon.svg"
-                alt="Instagram"
-                className="w-[30px] h-[30px]"
-              />
+            <a href="https://x.com/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
+              <FaXTwitter className="w-4 h-4 text-gray-700 hover:text-black" />
             </a>
-            <a
-              href="https://www.linkedin.com/company/hyperlinkinfosystem"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 mx-2 ml-3"
-            >
-              <img
-                src="https://www.hyperlinkinfosystem.com/assets/img/in-icon.svg"
-                alt="LinkedIn"
-                className="w-[30px] h-[30px]"
-              />
+            <a href="https://www.youtube.com/@softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
+              <FaYoutube className="w-4 h-4 text-gray-700 hover:text-red-600" />
             </a>
-            <a
-              href="https://www.youtube.com/channel/UC1-3xlMsMK-47ew6WfbLqsQ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 mx-2 ml-3"
-            >
-              <img
-                src="https://www.hyperlinkinfosystem.com/assets/img/yt-icon.svg"
-                alt="YouTube"
-                className="w-[30px] h-[30px]"
-              />
+            <a href="https://www.instagram.com/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
+              <IoLogoInstagram className="w-4 h-4 text-gray-700 hover:text-pink-600" />
             </a>
-            <a
-              href="https://topappdevelopmentcompanies.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 mx-2 ml-3"
-            >
-              <img
-                src="https://www.hyperlinkinfosystem.com/assets/img/tp-icon.svg"
-                alt="Top App Companies"
-                className="w-[30px] h-[30px]"
-              />
+            <a href="https://clutch.co/profile/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
+              <TbBeta className="w-4 h-4 text-gray-700 hover:text-orange-600" />
             </a>
           </div>
+          {/* Compact 6 Offices */}
+          {/* { flag: "/images/flags/uae.png", country: "UAE - Dubai", phone: "+971 4 321 8520" }, */}
+          {/* { flag: "/images/flags/canada.png", country: "Canada - Toronto", phone: "+1 647-793-9201" } */},
+          {[
+            { flag: "/images/flags/india.png", country: "India - New Delhi", phone: "+91-7428750870" },
+           
+            { flag: "/images/flags/usa.png", country: "USA - Los Angeles", phone: "+1 323-908-3492" },
+             { flag: "/images/flags/india.png", country: "India - Noida", phone: "+91-120-636-7890" },
+            { flag: "/images/flags/uk.png", country: "UK - London", phone: "+44 (0)20-7993-2188" },
+          
+
+          ].map((office, index) => (
+            <a
+              key={index}
+              href={`tel:${office.phone.replace(/[\s\-\(\)]/g, '')}`}
+              className="hidden py-2 px-4 w-full flex items-center gap-2 border-b border-gray-200 hover:bg-gray-50 text-sm"
+            >
+              <img alt={office.country} src={office.flag} className="w-4 h-3 flex-shrink-0" />
+              <div className="min-w-0 flex-1">
+                <div className="font-medium text-gray-900 truncate">{office.country}</div>
+                <div className="text-gray-600 text-xs mt-0">{office.phone}</div>
+              </div>
+            </a>
+          ))}
+
+         
         </li>
+
+
+
       </ul>
     </nav>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import CommonTitle from "@/components/ui/CommonTitle";
 import { useState } from "react";
 
 
@@ -9,37 +10,37 @@ const timelineData = [
     year: 2020,
     title: 'The Beginning',
     description: 'At Softkingo, we empower businesses through complete digital transformation, engineering innovative and scalable solutions. Our mission is to tackle every tech challenge, paving the way for new opportunities and delivering positive ROI.',
-    image: '/images/about/2020.jpg',
+    image: '/images/about/r1.png',
   },
   {
     year: 2021,
     title: 'Expansion Phase',
     description: 'We expanded our team and services, delivering cutting-edge solutions to clients across multiple industries, establishing ourselves as a trusted IT partner.',
-    image: '/images/about/2021.jpg',
+    image: '/images/about/r2.png',
   },
   {
     year: 2022,
     title: 'Innovation & Growth',
     description: 'Launched innovative products and scaled our operations globally, helping businesses transform digitally with AI and cloud solutions.',
-    image: '/images/about/2022.jpg',
+    image: '/images/about/r3.png',
   },
   {
     year: 2023,
     title: 'Market Leadership',
     description: 'Achieved significant milestones in customer satisfaction and project delivery, becoming a market leader in custom software development.',
-    image: '/images/about/2023.jpg',
+    image: '/images/about/r4.png',
   },
   {
     year: 2024,
     title: 'Global Recognition',
     description: 'Recognized internationally for excellence in IT services, expanding partnerships and delivering transformative solutions worldwide.',
-    image: '/images/about/2024.jpg',
+    image: '/images/about/r1.png',
   },
   {
     year: 2025,
     title: 'Future Forward',
     description: 'Continuing to innovate and lead the industry with next-generation technologies, AI-driven solutions, and sustainable digital transformation.',
-    image: '/images/about/2025.jpg',
+    image: '/images/about/r2.png',
   },
 ];
 
@@ -49,15 +50,17 @@ export default function StoryTimeline() {
   const currentData = timelineData.find((item) => item.year === activeYear);
 
   return (
-    <section className="relative bg-gradient-to-br from-cyan-400 via-sky-400 to-blue-400 py-12 md:py-16 lg:py-24 overflow-hidden">
+    <section className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200 py-12 md:py-16 lg:py-24 overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
-            The <span className="text-gray-900">Softkingo</span> Story
-          </h2>
-        </div>
-
+      
+<CommonTitle
+    align = "center"
+    pill= {false}
+    title='The'
+    gradientText='SoftKingo Story'
+    subtitle= {false}
+/> 
         {/* Content Area */}
         <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center mb-12 md:mb-16">
           {/* Left - Image */}
@@ -81,10 +84,10 @@ export default function StoryTimeline() {
 
           {/* Right - Content */}
           <div key={`content-${activeYear}`} className="space-y-4 md:space-y-6">
-            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white">
+            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-sky-950">
               {currentData.title}
             </h3>
-            <p className="text-white/90 text-sm md:text-base lg:text-lg leading-relaxed">
+            <p className="text-gray-700 text-sm md:text-base lg:text-lg leading-relaxed">
               {currentData.description}
             </p>
           </div>
@@ -131,8 +134,8 @@ export default function StoryTimeline() {
                 <span
                   className={`text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 ${
                     activeYear === item.year
-                      ? 'text-white scale-110'
-                      : 'text-white/70 group-hover:text-white'
+                      ? 'text-sky-950 scale-110'
+                      : 'text-sky-700 group-hover:text-black'
                   }`}
                 >
                   {item.year}

@@ -1,11 +1,33 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
     FiEye, FiLayout, FiCode, FiCpu, FiCheckCircle, FiSettings
 } from "react-icons/fi";
+import CommonTitle from "../ui/CommonTitle";
 
 export default function MethodologySection() {
     const [hoveredStep, setHoveredStep] = useState(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef(null);
+
+    // Scroll animation trigger (same original layout)
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (sectionRef.current) {
+            observer.observe(sectionRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
 
     const methodologySteps = [
         {
@@ -53,34 +75,38 @@ export default function MethodologySection() {
     ];
 
     return (
-        <section className="bg-gradient-to-br from-[#1a1b2e] via-[#252641] to-[#1a1b2e] py-12 md:py-16 lg:py-20 px-4 md:px-6">
+        <section
+            ref={sectionRef}
+            className="bg-white py-12 md:py-16 lg:py-20 px-4 md:px-6"
+        >
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="text-center mb-12 md:mb-16 lg:mb-20">
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6">
-                        Our Methodology For Developing Mobile Apps
-                    </h2>
-                    <p className="text-gray-300 max-w-4xl mx-auto leading-relaxed text-sm md:text-base lg:text-lg px-4">
-                        We understand that ensuring a seamless user experience is the key to success for any mobile app.
+                <div className={`text-center mb-12 md:mb-16 lg:mb-20 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                    <CommonTitle
+                        align="center"
+                        pill={false}
+                        title="Our"
+                        gradientText='Methodology For Developing Mobile Apps'
+                        subtitle="  We understand that ensuring a seamless user experience is the key to success for any mobile app.
                         This is the reason our mobile app development company has deployed a human-centric approach
-                        combined with a sharp technological push for developing mobile apps.
-                    </p>
+                        combined with a sharp technological push for developing mobile apps."
+                    />
                 </div>
 
-                {/* Methodology Flow */}
+                {/* Methodology Flow - SAME ORIGINAL LAYOUT */}
                 <div className="relative px-0 lg:px-12">
                     {/* Dashed Line Path - Desktop Only */}
                     <svg
-                        className="hidden lg:block absolute top-0 left-0 w-full h-full pointer-events-none"
+                        className={`hidden lg:block absolute top-0 left-0 w-full h-full pointer-events-none transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
                         style={{ zIndex: 0 }}
                         viewBox="0 0 1200 1000"
                         preserveAspectRatio="xMidYMid meet"
                     >
                         <defs>
                             <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style={{ stopColor: "#3B82F6", stopOpacity: 0.7 }} />
-                                <stop offset="50%" style={{ stopColor: "#06B6D4", stopOpacity: 0.7 }} />
-                                <stop offset="100%" style={{ stopColor: "#8B5CF6", stopOpacity: 0.7 }} />
+                                <stop offset="0%" style={{ stopColor: "#3B82F6", stopOpacity: 0.3 }} />
+                                <stop offset="50%" style={{ stopColor: "#06B6D4", stopOpacity: 0.3 }} />
+                                <stop offset="100%" style={{ stopColor: "#8B5CF6", stopOpacity: 0.3 }} />
                             </linearGradient>
                         </defs>
                         <path
@@ -93,30 +119,29 @@ export default function MethodologySection() {
                         />
                     </svg>
 
-                    {/* Steps Grid */}
+                    {/* Steps Grid - SAME ORIGINAL STRUCTURE */}
                     <div className="space-y-16 md:space-y-24 lg:space-y-40">
                         {/* Row 1 */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-10">
-                            {methodologySteps.slice(0, 2).map((step) => (
+                            {methodologySteps.slice(0, 2).map((step, index) => (
                                 <div
                                     key={step.id}
-                                    className="flex flex-col items-center text-center transition-all duration-300"
+                                    className={`flex flex-col items-center text-center transition-all duration-1000 ${isVisible ? `translate-y-0 opacity-100 delay-${index * 150}ms` : 'translate-y-20 opacity-0'}`}
                                     onMouseEnter={() => setHoveredStep(step.id)}
                                     onMouseLeave={() => setHoveredStep(null)}
                                 >
                                     <div
-                                        className={`w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6 md:mb-8 transition-all duration-300 ${
-                                            hoveredStep === step.id ? 'scale-110 shadow-2xl' : 'shadow-lg'
-                                        }`}
+                                        className={`w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6 md:mb-8 transition-all duration-300 ${hoveredStep === step.id ? 'scale-110 shadow-2xl' : 'shadow-lg'
+                                            }`}
                                         style={{
-                                            backgroundColor: hoveredStep === step.id ? step.color : '#374151',
+                                            backgroundColor: hoveredStep === step.id ? step.color : '#F3F4F6',
                                             boxShadow: hoveredStep === step.id
                                                 ? `0 0 40px ${step.color}`
-                                                : '0 10px 25px rgba(0,0,0,0.3)'
+                                                : '0 10px 25px rgba(0,0,0,0.1)'
                                         }}
                                     >
                                         <step.icon
-                                            className="w-10 h-10 md:w-12 md:h-12 text-white transition-transform duration-300"
+                                            className="w-10 h-10 md:w-12 md:h-12 text-gray-800 transition-transform duration-300"
                                             style={{
                                                 transform: hoveredStep === step.id ? 'scale(1.2)' : 'scale(1)'
                                             }}
@@ -125,13 +150,12 @@ export default function MethodologySection() {
 
                                     <div className="max-w-md px-4">
                                         <h3
-                                            className={`text-xl md:text-2xl font-bold mb-3 md:mb-4 transition-colors duration-300 ${
-                                                hoveredStep === step.id ? 'text-cyan-400' : 'text-white'
-                                            }`}
+                                            className={`text-xl md:text-2xl font-bold mb-3 md:mb-4 transition-colors duration-300 ${hoveredStep === step.id ? 'text-white drop-shadow-lg' : 'text-gray-900'
+                                                }`}
                                         >
                                             {step.title}
                                         </h3>
-                                        <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+                                        <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                                             {step.description}
                                         </p>
                                     </div>
@@ -141,26 +165,25 @@ export default function MethodologySection() {
 
                         {/* Row 2 */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-10">
-                            {methodologySteps.slice(2, 4).map((step) => (
+                            {methodologySteps.slice(2, 4).map((step, index) => (
                                 <div
                                     key={step.id}
-                                    className="flex flex-col items-center text-center transition-all duration-300"
+                                    className={`flex flex-col items-center text-center transition-all duration-1000 ${isVisible ? `translate-y-0 opacity-100 delay-${(2 + index) * 150}ms` : 'translate-y-20 opacity-0'}`}
                                     onMouseEnter={() => setHoveredStep(step.id)}
                                     onMouseLeave={() => setHoveredStep(null)}
                                 >
                                     <div
-                                        className={`w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6 md:mb-8 transition-all duration-300 ${
-                                            hoveredStep === step.id ? 'scale-110 shadow-2xl' : 'shadow-lg'
-                                        }`}
+                                        className={`w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6 md:mb-8 transition-all duration-300 ${hoveredStep === step.id ? 'scale-110 shadow-2xl' : 'shadow-lg'
+                                            }`}
                                         style={{
-                                            backgroundColor: hoveredStep === step.id ? step.color : '#374151',
+                                            backgroundColor: hoveredStep === step.id ? step.color : '#F3F4F6',
                                             boxShadow: hoveredStep === step.id
                                                 ? `0 0 40px ${step.color}`
-                                                : '0 10px 25px rgba(0,0,0,0.3)'
+                                                : '0 10px 25px rgba(0,0,0,0.1)'
                                         }}
                                     >
                                         <step.icon
-                                            className="w-10 h-10 md:w-12 md:h-12 text-white transition-transform duration-300"
+                                            className="w-10 h-10 md:w-12 md:h-12 text-gray-800 transition-transform duration-300"
                                             style={{
                                                 transform: hoveredStep === step.id ? 'scale(1.2)' : 'scale(1)'
                                             }}
@@ -169,13 +192,12 @@ export default function MethodologySection() {
 
                                     <div className="max-w-md px-4">
                                         <h3
-                                            className={`text-xl md:text-2xl font-bold mb-3 md:mb-4 transition-colors duration-300 ${
-                                                hoveredStep === step.id ? 'text-cyan-400' : 'text-white'
-                                            }`}
+                                            className={`text-xl md:text-2xl font-bold mb-3 md:mb-4 transition-colors duration-300 ${hoveredStep === step.id ? 'text-white drop-shadow-lg' : 'text-gray-900'
+                                                }`}
                                         >
                                             {step.title}
                                         </h3>
-                                        <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+                                        <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                                             {step.description}
                                         </p>
                                     </div>
@@ -185,26 +207,25 @@ export default function MethodologySection() {
 
                         {/* Row 3 */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-10">
-                            {methodologySteps.slice(4, 6).map((step) => (
+                            {methodologySteps.slice(4, 6).map((step, index) => (
                                 <div
                                     key={step.id}
-                                    className="flex flex-col items-center text-center transition-all duration-300"
+                                    className={`flex flex-col items-center text-center transition-all duration-1000 ${isVisible ? `translate-y-0 opacity-100 delay-${(4 + index) * 150}ms` : 'translate-y-20 opacity-0'}`}
                                     onMouseEnter={() => setHoveredStep(step.id)}
                                     onMouseLeave={() => setHoveredStep(null)}
                                 >
                                     <div
-                                        className={`w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6 md:mb-8 transition-all duration-300 ${
-                                            hoveredStep === step.id ? 'scale-110 shadow-2xl' : 'shadow-lg'
-                                        }`}
+                                        className={`w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6 md:mb-8 transition-all duration-300 ${hoveredStep === step.id ? 'scale-110 shadow-2xl' : 'shadow-lg'
+                                            }`}
                                         style={{
-                                            backgroundColor: hoveredStep === step.id ? step.color : '#374151',
+                                            backgroundColor: hoveredStep === step.id ? step.color : '#F3F4F6',
                                             boxShadow: hoveredStep === step.id
                                                 ? `0 0 40px ${step.color}`
-                                                : '0 10px 25px rgba(0,0,0,0.3)'
+                                                : '0 10px 25px rgba(0,0,0,0.1)'
                                         }}
                                     >
                                         <step.icon
-                                            className="w-10 h-10 md:w-12 md:h-12 text-white transition-transform duration-300"
+                                            className="w-10 h-10 md:w-12 md:h-12 text-gray-800 transition-transform duration-300"
                                             style={{
                                                 transform: hoveredStep === step.id ? 'scale(1.2)' : 'scale(1)'
                                             }}
@@ -213,13 +234,12 @@ export default function MethodologySection() {
 
                                     <div className="max-w-md px-4">
                                         <h3
-                                            className={`text-xl md:text-2xl font-bold mb-3 md:mb-4 transition-colors duration-300 ${
-                                                hoveredStep === step.id ? 'text-cyan-400' : 'text-white'
-                                            }`}
+                                            className={`text-xl md:text-2xl font-bold mb-3 md:mb-4 transition-colors duration-300 ${hoveredStep === step.id ? 'text-white drop-shadow-lg' : 'text-gray-900'
+                                                }`}
                                         >
                                             {step.title}
                                         </h3>
-                                        <p className="text-gray-300 leading-relaxed text-sm md:text-base">
+                                        <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                                             {step.description}
                                         </p>
                                     </div>
@@ -229,7 +249,6 @@ export default function MethodologySection() {
                     </div>
                 </div>
             </div>
-
         </section>
     );
 }

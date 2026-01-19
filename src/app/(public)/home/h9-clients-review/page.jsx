@@ -162,8 +162,9 @@ const ReviewsSection = () => {
           >
             Real feedback from teams we&apos;ve worked with—focused on delivery quality, communication, and outcomes.
           </motion.p>
-        </div>
-         <TestimonialCarousel columns={2} />
+        </div>        
+  <TestimonialCarousel />
+
         <div
           className="relative hidden"
           onMouseEnter={() => setIsHovered(true)}
@@ -274,7 +275,7 @@ const ReviewsSection = () => {
         </div>
 
         {/* Stats section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 max-w-4xl mx-auto hidden">
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
             <div className="text-3xl font-bold text-[#28AFDF]">98%</div>
             <div className="text-gray-600 mt-2">Client Satisfaction</div>
@@ -298,7 +299,7 @@ const ReviewsSection = () => {
           <h3 className="text-center text-gray-500 font-medium mb-8">Trusted by innovative companies worldwide</h3>
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
             {[
-              "TechNova", "InnoVate", "CloudNine",
+              "Clutch", "Google", "CloudNine",
               "DigiCore", "FutureLabs", "QuantumLeap"
             ].map((company, index) => (
               <motion.div

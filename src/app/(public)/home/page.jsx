@@ -8,10 +8,9 @@ import Industries from "./h6-industries-section/page";
 import Process from "./h7-process/page";
 import Strengths_Scroll from "./h8-strengths-scroll/page";
 import ReviewSection from "./h9-clients-review/page";
-import Blogs from "./blogs/page";
 import Tech from "@/app/(public)/home/h10-technology/page";
-import FooterForm from "@/components/footer/footer-form";
-
+import FooterForm from "@/components/footer/InquirySection";
+import Blogs from "@/app/(public)/home/blogs/BlogSliderClient"
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -27,8 +26,15 @@ export default function Home() {
       <Tech />
       <Process />
       <Strengths_Scroll />
+
+      <Blogs
+        category=""
+        featured={false}    // Latest uploaded
+        title="Our Latest Blogs"
+        subtitle="Explore our latest insights, product lessons, and engineering best practices."
+      />
       <ReviewSection />
-      <Blogs />
+
       <FooterForm />
     </div>
   );

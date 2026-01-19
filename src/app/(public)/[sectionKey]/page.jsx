@@ -9,7 +9,8 @@ export async function generateStaticParams() {
   return Object.keys(BLOG_SECTIONS).map((sectionKey) => ({ sectionKey }));
 }
 
-export default async function Page({ params, searchParams }) {
+export default async function Page({ params: paramsPromise, searchParams }) {
+  const params = await paramsPromise;
   const { sectionKey } = params;
 
   if (!BLOG_SECTIONS[sectionKey]) {

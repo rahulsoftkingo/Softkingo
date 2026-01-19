@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import HeroCarousel from './HeroCarousel';
 import prisma from '@/lib/prisma';
+import { FaArrowRight } from 'react-icons/fa6';
+import InquirySection from '@/components/footer/InquirySection';
 export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Our Portfolio | Mobile Apps, Websites & Digital Campaigns',
@@ -50,17 +52,20 @@ export default async function PortfolioPage() {
     badges: mapBadges(p.badgesJson),
   }));
 
-  const categories = [
-    'All',
-    'Astrology',
-    'Automotive',
-    'Dating',
-    'E-Commerce',
-    'Education',
-    'Fitness',
-    'Gaming',
-    'Healthcare',
-  ];
+  // const categories = [
+  //   'All',
+  //   'Astrology',
+  //   'Automotive',
+  //   'Dating',
+  //   'E-Commerce',
+  //   'Education',
+  //   'Fitness',
+  //   'Gaming',
+  //   'Healthcare',
+  // ];
+   const categories = ['All', ...Array.from(
+    new Set(records.map(p => p.category).filter(Boolean))
+  ).sort()];
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-50 to-white text-slate-900">
@@ -95,15 +100,20 @@ export default async function PortfolioPage() {
               <div className="flex flex-wrap gap-3 pt-4">
                 <Link
                   href="/contact"
-                  className="px-4 py-2 rounded-full bg-[#00B7FF] text-xs sm:text-sm font-semibold shadow-[0_10px_24px_rgba(0,183,255,0.45)] hover:bg-[#0096d4] transition text-white flex gap-2 items-center cursor-pointer"
+                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
                 >
                   Get A Quote <ArrowRight className="h-4" />
                 </Link>
                 <Link
-                  href="/contact"
-                  className="px-4 py-2 rounded-full border border-white/30 text-xs sm:text-sm font-semibold hover:bg-white/10 transition text-white flex gap-2 items-center cursor-pointer"
+                  href="https://calendly.com/paramhans-softkingo/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center"
                 >
-                  Schedule A Meeting <ArrowRight className="h-4" />
+                  <span className="font-semibold text-bas text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
+                    Meeting
+                  </span>
+                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
@@ -121,6 +131,8 @@ export default async function PortfolioPage() {
 
       <ConsultationCTA />
       <FAQAccordion />
+            <InquirySection />
+      
     </main>
   );
 }

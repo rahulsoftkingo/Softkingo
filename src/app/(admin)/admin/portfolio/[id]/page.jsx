@@ -86,6 +86,20 @@ export default function PortfolioProjectEditPage() {
         setLoading(false);
         return;
       }
+      if (!res.ok) {
+  let errorData;
+  try {
+    errorData = await res.json();
+  } catch {
+    errorData = { message: "Network error - please try again" };
+  }
+  
+  // Show exact error from API
+  console.error('API Error:', errorData);
+  setError(errorData.message || errorData.error || "Failed to save project");
+  setSaving(false);
+  return;
+}
 
       const data = await res.json();
 
@@ -155,6 +169,17 @@ export default function PortfolioProjectEditPage() {
       setActiveTab("basic");
       return;
     }
+      // CLIENT-SIDE TRUNCATE 
+  const truncatedForm = {
+    ...form,
+    title: form.title.slice(0, 190),
+    description: form.description.slice(0, 190),  // Safe limit
+    techStack: form.techStack.slice(0, 1000),
+    platforms: form.platforms.slice(0, 190),
+    country: form.country.slice(0, 255),
+    bgColor: form.bgColor.slice(0, 500),
+  };
+
 
     // Validate badges JSON if provided
     if (form.badgesText.trim() && !badgesObj) {
@@ -172,22 +197,24 @@ export default function PortfolioProjectEditPage() {
     const method = isNew ? "POST" : "PATCH";
 
     // API expects `badges` object (it serializes to badgesJson) [file:618]
-    const payload = {
-      key: form.key,
-      type: form.type,
-      title: form.title,
-      category: form.category || null,
-      description: form.description || null,
-      techStack: form.techStack || null,
-      platforms: form.platforms || null,
-      country: form.country || null,
-      bgImage: form.bgImage || null,
-      bgColor: form.bgColor || null,
-      icon: form.icon || null,
-      phoneMockup: form.phoneMockup || null,
-      badges: badgesObj,
-      caseStudyId: form.caseStudyId ? Number(form.caseStudyId) : null,
-    };
+
+      // Use truncated data
+  const payload = {
+    key: truncatedForm.key,
+    type: truncatedForm.type,
+    title: truncatedForm.title,
+    category: truncatedForm.category || null,
+    description: truncatedForm.description || null,  // ← Truncated!
+    techStack: truncatedForm.techStack || null,
+    platforms: truncatedForm.platforms || null,
+    country: truncatedForm.country || null,
+    bgImage: truncatedForm.bgImage || null,
+    bgColor: truncatedForm.bgColor || null,
+    icon: truncatedForm.icon || null,
+    phoneMockup: truncatedForm.phoneMockup || null,
+    badges: badgesObj,
+    caseStudyId: truncatedForm.caseStudyId ? Number(truncatedForm.caseStudyId) : null,
+  };
 
     const res = await fetch(url, {
       method,
@@ -433,14 +460,52 @@ export default function PortfolioProjectEditPage() {
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-2">
                       Description
                     </label>
-                    <textarea
+                    {/* <textarea
                       name="description"
                       value={form.description}
                       onChange={handleChange}
                       rows={3}
                       placeholder="Experience the convenience and freshness..."
                       className="w-full rounded-lg border border-slate-200 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none"
-                    />
+                    /> */}
+                      <textarea
+    name="description"
+    value={form.description}
+    onChange={(e) => {
+      const newValue = e.target.value.slice(0, 190); // Hard limit 500 chars
+      handleChange({ target: { name: 'description', value: newValue } });
+      
+      // Show warning if approaching limit
+      if (newValue.length > 185) {
+        setError(`Description limit: ${newValue.length}/190 chars`);
+        setTimeout(() => setError(''), 2000);
+      }
+    }}
+    maxLength={190}
+    rows={3}
+    placeholder="Experience the convenience and freshness... (190 chars max)"
+    className={`w-full rounded-lg border px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all resize-none ${
+      form.description.length > 185 
+        ? 'border-rose-300 ring-2 ring-rose-200 bg-rose-50/50' 
+        : 'border-slate-200'
+    }`}
+  />
+    <div className="flex justify-between text-xs mt-1.5">
+    <span className={`font-mono ${
+      form.description.length > 185 
+        ? 'text-rose-600 font-semibold' 
+        : form.description.length > 400 
+        ? 'text-amber-600' 
+        : 'text-slate-500'
+    }`}>
+      {form.description.length}/190
+    </span>
+    {form.description.length > 185 && (
+      <span className="text-rose-600 font-medium px-2 py-0.5 bg-rose-100 rounded-md">
+         Near limit
+      </span>
+    )}
+  </div>
                   </div>
 
                   <div className="sm:col-span-2">

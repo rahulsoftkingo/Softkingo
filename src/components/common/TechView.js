@@ -11,6 +11,7 @@ import {
     SiArduino, SiRaspberrypi,
     SiJest, SiCypress, SiSelenium
 } from "react-icons/si";
+import CommonTitle from "../ui/CommonTitle";
 
 const technologiesData = {
     Frontend: [
@@ -89,21 +90,23 @@ export default function TechView() {
     const [selectedTech, setSelectedTech] = useState('Frontend');
 
     return (
-        <section className="bg-gradient-to-br from-blue-50 to-cyan-50 py-12 md:py-16 px-4 md:px-6">
+        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-12 md:py-16 px-4 md:px-6">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8 md:mb-12 text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                        Building Tomorrow's Apps with Today's Best Technologies
-                    </h2>
-                    <p className="text-gray-600 text-sm md:text-base max-w-4xl mx-auto leading-relaxed">
-                        At Softkingo, we consolidate only those technologies that are best in the market and are equipped to deliver best-performing & well-designed web & mobile app products for any industry & business vertical across the globe.
-                    </p>
+                   
+                     <CommonTitle
+            align="center"
+            pill={false}
+            title="Building "
+            gradientText="Tomorrow's Apps with Today's Best Technologies"
+            subtitle="At Softkingo, we consolidate only those technologies that are best in the market and are equipped to deliver best-performing & well-designed web & mobile app products for any industry & business vertical across the globe."
+          />
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
                     {/* Sidebar */}
-                    <aside className="w-full lg:w-64 bg-sky-200 rounded-xl p-4 lg:p-6 lg:sticky lg:top-4 h-fit">
+                    <aside className="w-full lg:w-64 bg-gradient-to-tl from-sky-300 via-sky-600 to-sky-400 rounded-xl p-4 lg:p-6 lg:sticky lg:top-4 h-fit">
                         <ul className="space-y-1">
                             {sidebarItems.map((item) => (
                                 <li
@@ -111,8 +114,8 @@ export default function TechView() {
                                     onClick={() => setSelectedTech(item)}
                                     className={`px-4 py-3 rounded-lg cursor-pointer transition-all text-sm md:text-base ${
                                         selectedTech === item
-                                            ? 'bg-white shadow-md font-semibold text-gray-800'
-                                            : 'text-gray-700 hover:bg-white/50'
+                                            ? 'bg-white shadow-md font-semibold text-sky-800'
+                                            : 'text-sky-50 hover:bg-white/20'
                                     }`}
                                 >
                                     {item}
