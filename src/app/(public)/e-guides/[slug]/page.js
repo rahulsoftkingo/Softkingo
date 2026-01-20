@@ -158,12 +158,12 @@ function HeroDetail({ guide }) {
               <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full text-sm font-medium border border-cyan-500/30">
                 {guide.category || "E‑Guide"}
               </span>
-              <span className="text-sky-200/70 text-sm flex items-center gap-1">
+              {/* <span className="text-sky-200/70 text-sm flex items-center gap-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {guide.readTimeText || "20–30 min read"}
-              </span>
+              </span> */}
             </div>
 
             {/* Title */}
@@ -265,7 +265,7 @@ function MainTwoColumn({ guide }) {
             <div className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 rounded-3xl border border-slate-700/50 p-8 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300">
               <div className="flex items-start gap-6">
                 <div className="flex-shrink-0">
-                  <div className="w-20 h-28 bg-gradient-to-br from-cyan-500 to-sky-600 rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                  <div className="w-20 h-28  overflow-hidden transform hover:scale-105 transition-transform duration-300 p-1">
                     <Image
                       src={guide.coverImage || "/images/eguides/default.png"}
                       alt={guide.title}
@@ -284,17 +284,7 @@ function MainTwoColumn({ guide }) {
                       {guide.summary}
                     </p>
                   )}
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full text-sm border border-cyan-500/30">
-                      {guide.category || "General"}
-                    </span>
-                    <span className="px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full text-sm border border-sky-500/30">
-                      {guide.readTimeText || "20-30 min"}
-                    </span>
-                    <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-sm border border-emerald-500/30">
-                      {guide.status === "published" ? "Published" : "Draft"}
-                    </span>
-                  </div>
+                
                 </div>
               </div>
             </div>

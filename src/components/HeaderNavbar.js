@@ -16,6 +16,7 @@ import Slogo from "../../public/images/softkingo-logo.png";
 import { FaArrowRight } from "react-icons/fa";
 import PopupQuoteModal from "./PopupQuoteModal";
 import { HiSparkles } from "react-icons/hi";
+import { FaChevronDown } from 'react-icons/fa';
 
 
 const Navbar = () => {
@@ -144,8 +145,7 @@ const Navbar = () => {
                         <Link href="/about" className={linkClass("/about")}>
                           About Us
                         </Link>
-                        <span className="absolute text-2xl mt-1">&#129171;</span>
-                        <div
+                        <FaChevronDown className="absolute -right-5 top-1/2 -translate-y-1/2 text-sm text-sky-900 group-hover:text-sky-600 transition-all" />                        <div
                           style={{
                             position: "absolute",
                             height: "21px",
@@ -167,8 +167,7 @@ const Navbar = () => {
                         >
                           Services
                         </Link>
-                        <span className="absolute text-2xl mt-1">&#129171;</span>
-                        <div
+                        <FaChevronDown className="absolute -right-5 top-1/2 -translate-y-1/2 text-sm text-sky-900 group-hover:text-sky-600 transition-all" />                        <div
                           className="right-1"
                           style={{
                             position: "absolute",
@@ -191,8 +190,7 @@ const Navbar = () => {
                         >
                           Hire Resources
                         </Link>
-                        <span className="absolute text-2xl mt-1">&#129171;</span>
-                        <div
+                        <FaChevronDown className="absolute -right-5 top-1/2 -translate-y-1/2 text-sm text-sky-900 group-hover:text-sky-600 transition-all" />                        <div
                           className="right-1"
                           style={{
                             position: "absolute",
@@ -202,7 +200,7 @@ const Navbar = () => {
                         />
                         {showHireDropdown && <HireResourcesDropdown />}
                       </li>
- {/* Solutions  */}
+                      {/* Solutions  */}
                       <li
                         className="relative"
                         onMouseEnter={() => setShowSolutionsDropdown(true)}
@@ -212,8 +210,7 @@ const Navbar = () => {
                           className={linkClass("/solutions")}>
                           Solutions
                         </Link>
-                        <span className="absolute text-2xl mt-1">&#129171;</span>
-                        <div
+                        <FaChevronDown className="absolute -right-5 top-1/2 -translate-y-1/2 text-sm text-sky-900 group-hover:text-sky-600 transition-all" />                        <div
                           className="right-1"
                           style={{
                             position: "absolute",
@@ -234,8 +231,7 @@ const Navbar = () => {
                           className={linkClass("/industries")}>
                           Industries
                         </Link>
-                        <span className="absolute text-2xl mt-1">&#129171;</span>
-                        <div
+                        <FaChevronDown className="absolute -right-5 top-1/2 -translate-y-1/2 text-sm text-sky-900 group-hover:text-sky-600 transition-all" />                        <div
                           className="right-1"
                           style={{
                             position: "absolute",
@@ -245,7 +241,7 @@ const Navbar = () => {
                         />
                         {showIndustriesDropdown && <IndustriesMenu />}
                       </li>
-                     
+
                       {/* Resources */}
                       <li
                         className="relative"
@@ -258,8 +254,7 @@ const Navbar = () => {
                           Insights
 
                         </Link>
-                        <span className="absolute text-2xl mt-1">&#129171;</span>
-                        <div
+                        <FaChevronDown className="absolute -right-5 top-1/2 -translate-y-1/2 text-sm text-sky-900 group-hover:text-sky-600 transition-all" />                        <div
                           className="right-1"
                           style={{
                             position: "absolute",
