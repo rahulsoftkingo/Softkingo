@@ -202,6 +202,27 @@ const Navbar = () => {
                         />
                         {showHireDropdown && <HireResourcesDropdown />}
                       </li>
+ {/* Solutions  */}
+                      <li
+                        className="relative"
+                        onMouseEnter={() => setShowSolutionsDropdown(true)}
+                        onMouseLeave={() => setShowSolutionsDropdown(false)}
+                      >
+                        <Link href='/solutions'
+                          className={linkClass("/solutions")}>
+                          Solutions
+                        </Link>
+                        <span className="absolute text-2xl mt-1">&#129171;</span>
+                        <div
+                          className="right-1"
+                          style={{
+                            position: "absolute",
+                            height: "21px",
+                            width: "110%",
+                          }}
+                        />
+                        {showSolutionsDropdown && <SolutionsMenu />}
+                      </li>
 
                       {/*  (IndustriesMenu reuse) */}
                       <li
@@ -224,28 +245,7 @@ const Navbar = () => {
                         />
                         {showIndustriesDropdown && <IndustriesMenu />}
                       </li>
-                      {/* Solutions  */}
-                      <li
-                        className="relative"
-                        onMouseEnter={() => setShowSolutionsDropdown(true)}
-                        onMouseLeave={() => setShowSolutionsDropdown(false)}
-                      >
-                        <Link href='/solutions'
-                          className={linkClass("/solutions")}>
-                          Solutions
-                        </Link>
-                        <span className="absolute text-2xl mt-1">&#129171;</span>
-                        <div
-                          className="right-1"
-                          style={{
-                            position: "absolute",
-                            height: "21px",
-                            width: "110%",
-                          }}
-                        />
-                        {showSolutionsDropdown && <SolutionsMenu />}
-                      </li>
-
+                     
                       {/* Resources */}
                       <li
                         className="relative"

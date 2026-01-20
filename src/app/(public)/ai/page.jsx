@@ -1,4 +1,3 @@
-
 'use client'
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -7,6 +6,11 @@ import { FaArrowRight } from 'react-icons/fa';
 import CommonTitle from '@/components/ui/CommonTitle';
 import InquirySection from '@/components/footer/InquirySection';
 import Blogs from '../home/blogs/BlogSliderClient';
+import LeadForm from '@/components/public/LeadForm';
+import HireDevelopersPage from '../hire/[slug]/SelectDeveloper';
+import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
+import ConsultationCTA from '@/components/common/Consultation-Cta';
+
 
 export default function AIPage() {
   const [inView, setInView] = useState({});
@@ -65,30 +69,21 @@ export default function AIPage() {
         }
       `}</style>
 
-      {/* 01. Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-sky-700 via-sky-900 to-sky-600 py-20">
+      {/* 01. Hero Section - EXACT CONTENT */}
+      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-sky-700 via-sky-900 to-sky-600 py-20">
         <div className="absolute inset-0">
-          <div className="absolute top-16 left-8 w-[300px] h-[300px] bg-sky-500/8 rounded-full blur-xl animate-[float-subtle_6s_ease-in-out_infinite]" style={{animationDelay: '0s'}} />
-          <div className="absolute bottom-24 right-12 w-[250px] h-[250px] bg-sky-400/6 rounded-full blur-xl animate-[float-subtle_6s_ease-in-out_infinite]" style={{animationDelay: '2s'}} />
+          <div className="absolute top-16 left-8 w-[300px] h-[300px] bg-sky-500/8 rounded-full blur-xl animate-[float-subtle_6s_ease-in-out_infinite]" style={{ animationDelay: '0s' }} />
+          <div className="absolute bottom-24 right-12 w-[250px] h-[250px] bg-sky-400/6 rounded-full blur-xl animate-[float-subtle_6s_ease-in-out_infinite]" style={{ animationDelay: '2s' }} />
         </div>
-{/* 1. Main gradient */}
-<div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-slate-900 to-slate-950" />
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-slate-900 to-slate-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
+        <div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
 
-{/* 2. Radial gradients */}
-<div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
-
-{/* 3. Left glow orb */}
-<div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
-
-{/* 4. Right glow orb */}
-<div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
-
-{/* 5. Grid pattern */}
-<div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6  flex items-center relative z-10 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center relative z-10 w-full">
           <div className="w-full lg:flex lg:items-center lg:justify-between lg:gap-16">
-            <motion.div 
+            <motion.div
               className="lg:w-1/2 text-left lg:pr-12"
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
@@ -96,176 +91,166 @@ export default function AIPage() {
             >
               <div className="inline-flex items-center px-4 py-2 bg-sky-500/10 backdrop-blur-md rounded-xl border border-sky-400/30 shadow-lg mb-8 w-fit">
                 <div className="w-3 h-3 bg-gradient-to-r from-sky-400 to-sky-500 rounded-full mr-2 flex-shrink-0" />
-                <span className="font-semibold text-sky-200 text-sm ">Enterprise AI Engineering</span>
+                <span className="font-semibold text-sky-200 text-sm">Intelligent AI Solutions</span>
               </div>
-              
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black leading-tight mb-6 text-white tracking-tight bg-gradient-to-r from-white/90 via-slate-100/80 to-sky-100/70 bg-clip-text">
-                AI & Machine <br className="hidden md:block" />
-                <span className="block bg-gradient-to-r from-sky-400 via-sky-300 to-cyan-400 text-transparent bg-clip-text drop-shadow-xl shrink-0">
-                  Learning Engineering
+
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black leading-tight mb-6 text-white tracking-tight">
+                Intelligent AI Solutions for <br className="hidden md:block" />
+                <span className="block bg-gradient-to-r from-sky-400 via-sky-300 to-cyan-400 text-transparent bg-clip-text drop-shadow-xl">
+                  Smarter Businesses
                 </span>
               </h1>
-              
-              <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed max-w-xl">
-                Production-grade AI systems engineered for <span className="font-semibold text-white">enterprise scale</span>.
-                <span className="block mt-2 text-sky-300 font-medium text-sm">500+ deployments • 99.9% uptime • SOC2 Type II</span>
+
+              <p className="text-lg md:text-xl text-slate-300 mb-4 leading-relaxed max-w-xl">
+                Transforming Data Into Decisions. Automation Into Growth.
               </p>
-              
+              <p className="text-sm md:text-lg text-slate-300 mb-10 leading-relaxed max-w-xl">
+                Artificial Intelligence is no longer a future concept—<span className="font-semibold text-white">it is a business necessity</span>. We help organizations unlock AI power with intelligent, scalable, ethical solutions.
+              </p>
+
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
-                  href="/contact" 
-                  className="group px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex shrink-0"
+                <Link
+                  href="/contact"
+                  className="group px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex shrink-0 w-fit"
                 >
-                  Launch AI Project
+                  Get Started
                   <FaArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link 
-                  href="#capabilities"
-                  className="group flex items-center justify-center px-6 py-2.5 border-2 border-sky-400/50 bg-sky-500/5 backdrop-blur-sm font-semibold text-xs md:text-sm rounded-xl hover:border-sky-400 hover:bg-sky-500/15 hover:shadow-lg transition-all duration-300 text-sky-200 w-full sm:w-auto shrink-0"
-                >
-                  Technical Capabilities
-                  <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
                 </Link>
               </div>
             </motion.div>
-            
-            
-            {/* Hero Right Side - Replace the mock div with this VIDEO SECTION */}
 
-<motion.div 
-  className="hidden lg:block lg:w-1/2 relative mt-12 lg:mt-0"
-  initial={{ opacity: 0, scale: 0.9 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.8, delay: 0.3 }}
->
-  {/* Video Background Container */}
-  <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-sky-400/5 to-transparent rounded-2xl backdrop-blur-lg border border-sky-500/20 shadow-2xl overflow-hidden">
-    {/* AIO Video - Replace src with your video */}
-    <video 
-      className="absolute inset-0 w-full h-full object-cover rounded-2xl"
-      autoPlay 
-      loop 
-      muted 
-      playsInline
-      poster="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80"
-    >
-      <source 
-        src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" 
-        type="video/mp4" 
-      />
-      {/* AI Engineering Stock Videos - FREE */}
-      <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-neural-network-12166-large.mp4" type="video/mp4" />
-      <source src="https://player.vimeo.com/proxy?src=https%3A//player.vimeo.com/hls/play/76979871/master.m3u8&color=ff0179&background=000000" type="video/mp4" />
-    </video>
-    
-    {/* Overlay Gradient */}
-    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-  </div>
+            <motion.div
+              className="hidden lg:block lg:w-1/2 relative mt-12 lg:mt-0"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              {/* Video Background Container */}
+              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-sky-400/5 to-transparent rounded-xl backdrop-blur-lg  shadow-2xl overflow-hidden">
 
-  {/* Content Overlay */}
-  <div className="relative z-10 h-80 lg:h-[450px] w-full flex items-center justify-center ">
-   
-    
-  </div>
-</motion.div>
+                <video
+                  className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80"
+                >
+                  <source
+                    src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                    type="video/mp4"
+                  />
+                  {/* AI Engineering Stock Videos - FREE */}
+                  <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-neural-network-12166-large.mp4" type="video/mp4" />
+                  <source src="https://player.vimeo.com/proxy?src=https%3A//player.vimeo.com/hls/play/76979871/master.m3u8&color=ff0179&background=000000" type="video/mp4" />
+                </video>
 
+                {/* Overlay Gradient */}
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
+              </div>
+              {/* Content Overlay */}
+              <div className="relative z-10 h-80 lg:h-[420px] w-full flex items-center justify-center ">
+
+
+                {/* </div> */}
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       <div className="section-divider" />
 
-      {/* 02. Capabilities */}
-      <section id="capabilities" className="py-20 lg:py-28 bg-gray-100 backdrop-blur-sm">
+      {/* 02. About Us */}
+      <section id="about" className="py-16 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <CommonTitle
-            align="center"
-            pill={false}
-            title="Enterprise AI"
-            gradientText="Capabilities"
-            subtitle="Complete AI engineering lifecycle from research to production deployment at enterprise scale"
-          />
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-16 lg:mt-24">
-            {[
-              {
-                title: 'Machine Learning Engineering',
-                subtitle: 'Production ML Pipelines',
-                desc: 'Custom ML models optimized for production with complete MLOps lifecycle management.',
-                specs: ['PyTorch 2.4', 'TensorFlow 2.16', 'Kubernetes orchestration']
-              },
-              {
-                title: 'Computer Vision Systems',
-                subtitle: 'Real-time Visual Intelligence',
-                desc: 'Advanced vision systems including object detection, instance segmentation.',
-                specs: ['YOLOv10', 'Detectron2', '4K@60fps processing']
-              },
-              {
-                title: 'Generative AI & NLP',
-                subtitle: 'Enterprise Language Systems',
-                desc: 'Custom LLM fine-tuning, RAG, agentic workflows with enterprise security.',
-                specs: ['Llama 3.1 405B', '128k+ context RAG', '50+ languages']
-              }
-            ].map((cap, idx) => (
-              <motion.div 
-                key={idx}
-                className="group bg-white backdrop-blur-sm rounded-2xl p-8 lg:p-10 border border-gray-100/40 hover:border-sky-300/60 hover:shadow-xl hover:shadow-sky-200/20 hover:-translate-y-2 transition-all duration-500"
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_minmax(320px,380px)] gap-10 items-center ">
+            <div>
+              <CommonTitle
+                align="left"
+                pill={false}
+                title="About Us"
+                gradientText="Your Trusted AI Partner"
+                subtitle="Helping businesses innovate, optimize, and scale with cutting-edge AI technologies"
+              />
+
+              <motion.div
+                className="max-w-3xl mx-auto text-start mt-16 "
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                <div className="rect-icon text-white mb-6 group-hover:scale-110 transition-all duration-300">ML</div>
-                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3 leading-tight">{cap.title}</h3>
-                <div className="text-lg font-semibold text-sky-600 mb-5 px-3 py-1.5 bg-sky-50 rounded-lg w-fit">{cap.subtitle}</div>
-                <p className="text-gray-700 mb-6 leading-relaxed text-sm lg:text-base">{cap.desc}</p>
-                <div className="space-y-2">
-                  {cap.specs.map((spec, sIdx) => (
-                    <div key={sIdx} className="flex items-center gap-3 p-2.5 bg-sky-50/60 rounded-lg group-hover:bg-sky-100/80 hover:scale-[1.02] transition-all duration-200">
-                      <div className="w-2 h-2 bg-sky-500 rounded-full flex-shrink-0 shadow-sm" />
-                      <span className="text-sm lg:text-base font-medium text-gray-800">{spec}</span>
-                    </div>
-                  ))}
+                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                  We are an AI solutions company combining deep technical expertise, industry knowledge, and strong focus on business outcomes. AI should be transparent, responsible, and human-centered—designed to support people, improve decision-making, and drive sustainable growth.
+                </p>
+                <div className="flex flex-wrap gap-4 justify-center">
+                  <div className="rect-icon text-sky-900 mx-auto">AI</div>
                 </div>
               </motion.div>
-            ))}
+
+            </div>
+            <div className="w-full">
+              <LeadForm
+                formType="ai"
+                formKey="ai"
+                serviceName="Ai Page"
+                title="Get In Touch"
+                subtitle="Get matched with top talent in 24 Hours! "
+                variant="solid"
+                showLogo={true}
+                showCompany={false}
+                showBudget={false}
+                showAttachment={false}
+                showNDA={false}
+              />
+            </div>
           </div>
         </div>
       </section>
 
       <div className="section-divider" />
 
-      {/* 03. Use Cases */}
-      <section id="usecases" className="py-20 lg:py-28 bg-gradient-to-br from-white via-sky-50 to-sky-100">
+      {/* 03. What We Do */}
+      <section id="services" className="py-20 lg:py-28 bg-gradient-to-br from-white via-sky-50 to-sky-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <CommonTitle
             align="center"
-            title="Real World"
-            gradientText="Applications"
-            subtitle="Proven AI solutions across diverse enterprise verticals"
+            title="What We Do"
+            gradientText="AI Solutions"
+            subtitle="Custom development, automation, and consulting services"
           />
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-16 lg:mt-24">
             {[
-              { title: 'Predictive Analytics', desc: 'Demand forecasting, churn prediction, risk assessment', iconText: 'PA' },
-              { title: 'Autonomous Operations', desc: 'Robotic process automation, self-healing systems', iconText: 'AO' },
-              { title: 'Customer Intelligence', desc: 'Personalization engines, sentiment analysis', iconText: 'CI' },
-              { title: 'Supply Chain AI', desc: 'Inventory optimization, route planning', iconText: 'SC' },
-              { title: 'Fraud Detection', desc: 'Real-time transaction monitoring', iconText: 'FD' },
-              { title: 'Content Generation', desc: 'Automated reports, marketing copy', iconText: 'CG' }
-            ].map((usecase, idx) => (
+              {
+                title: 'Custom AI Development',
+                desc: 'Tailored solutions: ML/DL Models, Predictive Analytics, Recommendation Systems, NLP, Computer Vision',
+                iconText: 'AI'
+              },
+              {
+                title: 'AI Automation',
+                desc: 'Intelligent Process Automation, Chatbots & Virtual Assistants, Document Processing, Workflow Optimization',
+                iconText: 'AUTO'
+              },
+              {
+                title: 'AI Consulting',
+                desc: 'AI Readiness Assessment, Use Case Identification, Data Strategy, Ethical AI & Compliance Guidance',
+                iconText: 'CONSULT'
+              }
+            ].map((service, idx) => (
               <motion.div
                 key={idx}
                 className="group p-8 lg:p-10 bg-white rounded-2xl border border-gray-100 hover:border-sky-300/50 hover:shadow-lg hover:shadow-sky-100/50 hover:-translate-y-2 transition-all duration-500 text-center cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                viewport={{ once: true }}
               >
-                <div className="rect-icon text-white mb-6 group-hover:scale-110 transition-all duration-300 mx-auto">{usecase.iconText}</div>
-                <h4 className="text-lg lg:text-xl font-bold text-gray-900 mb-3">{usecase.title}</h4>
-                <p className="text-gray-600 text-sm">{usecase.desc}</p>
+                <div className="rect-icon text-white mb-6 group-hover:scale-110 transition-all duration-300 mx-auto">{service.iconText}</div>
+                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4 leading-tight">{service.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{service.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -274,75 +259,152 @@ export default function AIPage() {
 
       <div className="section-divider" />
 
-      {/* 04. Deployment Section - NEW */}
-      <section id="deployment" className="py-20 lg:py-28 bg-gradient-to-r from-white to-white">
+
+      <div className="section-divider" />
+
+      {/* 05. Our Process */}
+      <section id="process" className="py-20 lg:py-28 bg-gradient-to-r from-white to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <CommonTitle
             align="center"
-            title="Zero-Downtime"
-            gradientText="Deployment"
-            subtitle="Production-grade CI/CD pipelines with blue-green deployments and automated rollback"
+            title="Our Process"
+            gradientText="Proven Approach"
+            subtitle="6-step transparent methodology from discovery to optimization"
           />
-          
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 mt-16 lg:mt-24">
-            <motion.div 
-              className="space-y-6"
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="rect-icon text-white mb-6 mx-auto w-20 h-20">CD</div>
-              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">Enterprise Deployment</h3>
-              <div className="space-y-4 text-gray-700">
-                <div className="flex items-start gap-3 p-4 bg-white/60 rounded-xl hover:bg-white hover:shadow-md transition-all">
-                  <div className="w-2 h-2 bg-sky-500 rounded-full mt-2 flex-shrink-0" />
-                  <span className="text-sm lg:text-base">Blue-green deployments</span>
-                </div>
-                <div className="flex items-start gap-3 p-4 bg-white/60 rounded-xl hover:bg-white hover:shadow-md transition-all">
-                  <div className="w-2 h-2 bg-sky-500 rounded-full mt-2 flex-shrink-0" />
-                  <span className="text-sm lg:text-base">Canary releases with feature flags</span>
-                </div>
-                <div className="flex items-start gap-3 p-4 bg-white/60 rounded-xl hover:bg-white hover:shadow-md transition-all">
-                  <div className="w-2 h-2 bg-sky-500 rounded-full mt-2 flex-shrink-0" />
-                  <span className="text-sm lg:text-base">99.99% deployment success rate</span>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="lg:text-right"
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="rect-icon text-white mb-6 mx-auto w-20 h-20">99.9%</div>
-              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">Uptime SLA</h3>
-              <div className="bg-gradient-to-br from-sky-500/10 to-sky-400/10 backdrop-blur-sm rounded-2xl p-8 lg:p-10 border border-sky-200/30 text-center">
-                <div className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-sky-600 to-sky-400 bg-clip-text text-transparent mb-4">24/7</div>
-                <p className="text-gray-700 text-lg font-semibold">Production monitoring with auto-scaling</p>
-              </div>
-            </motion.div>
+
+          <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8 mt-16 lg:mt-24">
+            {[
+              { num: '01', title: 'Discovery & Analysis', desc: 'Understand your business, challenges, data, and objectives' },
+              { num: '02', title: 'Strategy & Design', desc: 'Define best AI approach, architecture, success metrics' },
+              { num: '03', title: 'Development & Training', desc: 'Build and train AI models using best practices' },
+              { num: '04', title: 'Testing & Validation', desc: 'Rigorous testing for accuracy, reliability, security' },
+              { num: '05', title: 'Deployment & Integration', desc: 'Seamless deployment into your existing workflow' },
+              { num: '06', title: 'Support & Optimization', desc: 'Continuous monitoring and performance improvement' }
+            ].map((step, idx) => (
+              <motion.div
+                key={idx}
+                className="group text-center p-8 lg:p-10"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="w-20 h-20 bg-gradient-to-r from-sky-500 to-sky-600 text-white text-2xl font-bold rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl group-hover:scale-110 transition-all">{step.num}</div>
+                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{step.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       <div className="section-divider" />
 
-      {/* 05. Stack */}
+      {/* 06. Why Choose Us */}
+      <section id="why-us" className="py-20 lg:py-28 bg-gradient-to-br from-sky-50 to-sky-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CommonTitle
+            align="center"
+            title="Why"
+            gradientText="Choose Us"
+            subtitle="Business-focused AI delivery with experienced professionals"
+          />
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-16 lg:mt-24">
+            {[
+              { title: 'Business-Focused AI', desc: 'Prioritize real business outcomes, not just technology', iconText: 'BF' },
+              { title: 'Experienced Professionals', desc: 'Data scientists, AI engineers, industry experts', iconText: 'EP' },
+              { title: 'Ethical & Responsible AI', desc: 'Fairness, transparency, data privacy ensured', iconText: 'ETHICS' },
+              { title: 'Scalable Architecture', desc: 'AI systems grow as your business grows', iconText: 'SCALE' },
+              { title: 'Clear Communication', desc: 'Complex AI concepts in simple terms', iconText: 'TALK' }
+            ].map((reason, idx) => (
+              <motion.div
+                key={idx}
+                className="group p-8 lg:p-10 bg-white rounded-2xl border border-gray-100 hover:border-sky-300/60 hover:shadow-xl hover:shadow-sky-200/20 hover:-translate-y-2 transition-all duration-500 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="rect-icon text-white mb-6 group-hover:scale-110 transition-all duration-300 mx-auto">{reason.iconText}</div>
+                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4 leading-tight">{reason.title}</h3>
+                <p className="text-gray-700 mb-6 leading-relaxed text-sm lg:text-base">{reason.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+            <div className="section-divider" />
+
+<DynamicPortfolioCard
+        category="Fitnes app"
+        portfolioType="app"
+        title="Latest App Projects"
+        subtitle="Our newest mobile applications"
+      />
+      <div className="section-divider" />
+
+      {/* 04. Industries */}
+      <section id="industries" className="py-20 lg:py-28 bg-white hidden ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CommonTitle
+            align="center"
+            title="Industries"
+            gradientText="We Serve"
+            subtitle="Healthcare, Banking, Insurance, E-Commerce, Manufacturing, and 5+ more"
+          />
+
+          <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-16 lg:mt-24">
+            {[
+              { title: 'Healthcare', desc: 'Faster diagnosis, predictive analytics, intelligent automation, data privacy compliance', iconText: 'HC' },
+              { title: 'Banking & Finance', desc: 'Risk reduction, fraud detection, smarter decisions with AI analytics', iconText: 'BF' },
+              { title: 'Insurance', desc: 'Claims processing, risk assessment, improved customer support efficiency', iconText: 'INS' },
+              { title: 'E-Commerce & Retail', desc: 'Personalized recommendations, demand forecasting, inventory management', iconText: 'EC' },
+              { title: 'Manufacturing', desc: 'Production optimization, predictive maintenance, quality control', iconText: 'MF' },
+              { title: 'Logistics & Supply Chain', desc: 'Route optimization, demand prediction, real-time tracking', iconText: 'LS' },
+              { title: 'Education', desc: 'Personalized learning, automated administration, data insights', iconText: 'EDU' },
+              { title: 'Real Estate', desc: 'Property valuation, market analysis, lead management', iconText: 'RE' },
+              { title: 'Marketing & Advertising', desc: 'Targeted campaigns, customer segmentation, performance optimization', iconText: 'MKT' },
+              { title: 'Telecommunications', desc: 'Network optimization, customer support automation, predictive maintenance', iconText: 'TEL' }
+            ].map((industry, idx) => (
+              <motion.div
+                key={idx}
+                className="group p-8 lg:p-10 bg-slate-50 rounded-2xl border border-gray-100 hover:border-sky-300 hover:shadow-lg hover:shadow-sky-100/50 hover:-translate-y-2 transition-all duration-500 text-center cursor-default"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                viewport={{ once: true }}
+              >
+                <div className="rect-icon text-white mb-6 group-hover:scale-110 transition-all duration-300 mx-auto">{industry.iconText}</div>
+                <h4 className="text-lg lg:text-xl font-bold text-gray-900 mb-3">{industry.title}</h4>
+                <p className="text-gray-600 text-sm">{industry.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+       
+      </section>
+       <HireDevelopersPage />
+      <div className="section-divider" />
+
+        <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />
+      <div className="section-divider" />
+
+      {/* 07. Technology Stack */}
       <section id="stack" className="py-20 lg:py-28 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <CommonTitle
             align="center"
-            title="Production"
-            gradientText="Tech Stack"
-            subtitle="Enterprise-grade infrastructure powering mission-critical AI systems"
+            title="Our"
+            gradientText="Technology Stack"
+            subtitle="Modern, proven AI technologies powering intelligent solutions"
           />
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4 lg:gap-6 mt-16 lg:mt-24">
             {[
-              'PyTorch 2.4', 'TensorFlow 2.16', 'JAX 0.4.30', 'Kubernetes 1.30',
-              'Ray 2.10', 'Docker CE', 'Redis 7.2', 'PostgreSQL 16', 'Kafka 3.7',
-              'SageMaker', 'Vertex AI', 'Azure ML'
+              'Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'OpenCV',
+              'LLMs', 'AWS', 'Azure', 'Google Cloud', 'Kafka', 'PostgreSQL'
             ].map((tech, idx) => (
               <motion.div
                 key={idx}
@@ -362,57 +424,98 @@ export default function AIPage() {
         </div>
       </section>
 
-
-
-      {/* 06. Metrics */}
-      <section id="metrics" className="py-20 lg:py-28 bg-gradient-to-b from-white to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="section-divider" />
+      {/* 08. FAQ */}
+      <section id="faq" className="py-20 lg:py-28 bg-gradient-to-b from-white to-slate-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <CommonTitle
             align="center"
-            title="Proven"
-            gradientText="Results"
-            subtitle="Metrics that demonstrate our enterprise AI engineering expertise"
+            title="Frequently"
+            gradientText="Asked Questions"
+            subtitle="Everything you need to know about implementing AI solutions"
           />
-          
-          <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-6 lg:gap-10 mt-16 lg:mt-24">
+
+          <div className="space-y-4 mt-16 lg:mt-24">
             {[
-              { num: '500+', label: 'Production Deployments', desc: 'Live AI systems worldwide' },
-              { num: '98.7%', label: 'Model Precision', desc: 'Across 200+ enterprise projects' },
-              { num: '12×', label: 'Performance Gains', desc: 'Average inference optimization' },
-              { num: '99.9%', label: 'Uptime Guarantee', desc: 'Enterprise-grade reliability' }
-            ].map((metric, idx) => (
+              { q: "What types of businesses can use AI?", a: "AI benefits businesses of all sizes—from startups to enterprises. Solutions based on your goals, industry, and data." },
+              { q: "Do I need large data for AI?", a: "Not always. We work with limited datasets and recommend best approaches based on available data." },
+              { q: "How long for AI implementation?", a: "Few weeks to months based on complexity with clear milestones provided from start." },
+              { q: "Is AI expensive?", a: "Cost-effective solutions delivering measurable ROI and long-term value." },
+              { q: "Will AI integrate with existing systems?", a: "Yes. Seamless integration with current software, platforms, and workflows." },
+              { q: "Is my data secure?", a: "Strict security standards ensure data privacy, confidentiality, and compliance." },
+              { q: "Ongoing support after deployment?", a: "Continuous monitoring, optimization, and support for peak performance." },
+              { q: "Will AI replace employees?", a: "AI enhances human work, helping teams focus on higher-value tasks." },
+              { q: "How do we get started?", a: "Free consultation to assess needs, discuss opportunities, recommend best approach." }
+            ].map((faq, idx) => (
               <motion.div
                 key={idx}
-                className={`group p-8 lg:p-12 rounded-2xl bg-white border border-sky-100/40 shadow-lg hover:shadow-xl hover:shadow-sky-200/30 hover:-translate-y-2 transition-all duration-500 text-center cursor-default ${inView.metrics ? 'metric-container animate' : ''}`}
-                style={{animationDelay: `${idx * 150}ms`}}
+                className="group bg-white p-8 rounded-2xl border border-gray-200 hover:shadow-xl hover:shadow-indigo-100/50 hover:border-sky-300 transition-all duration-300 cursor-pointer"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <h4 className="font-semibold text-gray-900 flex-1 pr-4">{faq.q}</h4>
+                  <span className="text-2xl group-hover:rotate-45 transition-transform">+</span>
+                </div>
+                <p className="text-gray-600 mt-4 opacity-0 group-hover:opacity-100 transition-all duration-300">{faq.a}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* 08. FAQ */}
+      <section id="faq" className="hidden py-20 lg:py-28 bg-gradient-to-b from-white to-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CommonTitle
+            align="center"
+            title="Frequently"
+            gradientText="Asked Questions"
+            subtitle="Everything you need to know about AI implementation"
+          />
+
+          <div className="space-y-4 mt-16 lg:mt-24">
+            {[
+              { q: 'What types of businesses can use AI?', a: 'All sizes—from startups to enterprises. Solutions based on your goals, industry, and data.' },
+              { q: 'Do I need large data for AI?', a: 'Not always. We work with limited datasets and recommend best approaches.' },
+              { q: 'How long for AI implementation?', a: 'Few weeks to months based on complexity with clear milestones.' },
+              { q: 'Is AI expensive?', a: 'Cost-effective solutions with measurable ROI and long-term value.' },
+              { q: 'Will AI integrate with existing systems?', a: 'Seamless integration with current software and workflows.' },
+              { q: 'Is my data secure?', a: 'Strict security standards ensure privacy, confidentiality, compliance.' },
+              { q: 'Ongoing support after deployment?', a: 'Continuous monitoring, optimization, and support included.' },
+              { q: 'Will AI replace employees?', a: 'AI enhances human work, focuses teams on higher-value tasks.' },
+              { q: 'How do we get started?', a: 'Free consultation to assess needs and recommend best approach.' }
+            ].map((faq, idx) => (
+              <motion.div
+                key={idx}
+                className="group bg-white backdrop-blur-sm rounded-2xl p-8 border border-gray-100/40 hover:border-sky-300/60 hover:shadow-xl hover:shadow-sky-200/20 hover:-translate-y-2 transition-all duration-500 cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
                 viewport={{ once: true }}
               >
-                <div className="text-3xl lg:text-4xl xl:text-5xl font-black bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 bg-clip-text text-transparent mb-4">
-                  {metric.num}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="rect-icon text-white flex-shrink-0" style={{ fontSize: '20px' }}>Q</div>
+                  <h4 className="font-semibold text-gray-900 flex-1 ml-4">{faq.q}</h4>
                 </div>
-                <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2">{metric.label}</h3>
-                <p className="text-gray-600 text-sm lg:text-base font-medium">{metric.desc}</p>
+                <p className="text-gray-600 ml-4 opacity-0 group-hover:opacity-100 transition-all duration-300">{faq.a}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <div className="section-divider" />
-
-      {/* 07. CTA */}
-      <section id="cta" className="py-20 lg:py-28 bg-gradient-to-br from-sky-50 via-sky-200 to-sky-100 text-white">
+      {/* 09. Final CTA */}
+      <section id="cta" className="py-20 lg:py-28 bg-gradient-to-br from-sky-100 via-sky-200 to-sky-200 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <CommonTitle
             align="center"
-            title="Enterprise AI"
-            gradientText="Engineered For Scale"
-            subtitle="Deploying mission-critical AI systems trusted by Fortune 500 enterprises worldwide"
+            title="Let's Build"
+            gradientText="the Future Together"
+            subtitle="AI should be practical, impactful, and aligned with your vision"
           />
-          
-          <motion.div 
+
+          <motion.div
             className="max-w-lg mx-auto mt-12 lg:mt-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -421,9 +524,9 @@ export default function AIPage() {
           >
             <Link
               href="/contact"
-              className="group inline-flex items-center px-6 lg:px-10 py-2.5 lg:py-3 bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white font-semibold text-xs lg:text-sm rounded-full shadow-xl hover:shadow-sky-500/40 hover:shadow-2xl hover:-translate-y-1.5 hover:scale-[1.02] transition-all duration-400 border border-sky-400/30 backdrop-blur-sm tracking-wide"
+              className="group inline-flex items-center px-6 lg:px-10 py-2.5 lg:py-3 bg-white text-sky-600 font-semibold text-xs lg:text-sm rounded-full shadow-xl hover:shadow-sky-500/40 hover:shadow-2xl hover:-translate-y-1.5 hover:scale-[1.02] transition-all duration-400 border border-sky-400/30 backdrop-blur-sm tracking-wide"
             >
-              <span>Transform With AI</span>
+              <span>Get In Touch Today</span>
               <FaArrowRight className="ml-2 lg:ml-3 group-hover:translate-x-1.5 transition-transform duration-400" />
             </Link>
           </motion.div>
@@ -436,7 +539,7 @@ export default function AIPage() {
         title="Latest AI Insights"
         subtitle="Fresh perspectives from our AI engineering team"
       />
-            <InquirySection />
+      <InquirySection />
     </>
   );
 }

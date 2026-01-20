@@ -238,6 +238,11 @@ import {
 } from "./_utils";
 
 export const runtime = "nodejs";
+export const dynamic = "force-static"; 
+
+let cachedData = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 30 * 1000; // 30 seconds
 
 async function exists(p) {
   try {
@@ -260,39 +265,30 @@ async function listRoutes(section) {
   const baseAbs = getBaseAbs(section);
   if (!baseAbs) return [];
 
-  const entries = await safeReaddir(baseAbs);
+  // Skip scanning if cache fresh
+  if (cachedData?.[section] && Date.now() - cacheTimestamp < CACHE_DURATION) {
+    return cachedData[section].items;
+  }
 
+  const entries = await safeReaddir(baseAbs);
   const dirs = entries
     .filter((e) => e.isDirectory() && !e.name.startsWith("."))
     .map((e) => e.name)
     .sort((a, b) => a.localeCompare(b));
 
+  // LIMIT to first 50 dirs only (prevent slowdown)
   const items = await Promise.all(
-    dirs.map(async (slug) => {
+    dirs.slice(0, 50).map(async (slug) => {
       const folderAbs = path.join(baseAbs, slug);
       const pageJsx = path.join(folderAbs, "page.jsx");
-      const pageJs = path.join(folderAbs, "page.js");
-
-      const hasPageJsx = await exists(pageJsx);
-      const hasPageJs = await exists(pageJs);
-      const hasPage = hasPageJsx || hasPageJs;
-
-      let updatedAt = null;
-      try {
-        const stat = await fs.stat(hasPageJsx ? pageJsx : pageJs);
-        updatedAt = stat?.mtime ? stat.mtime.toISOString() : null;
-      } catch {}
-
+      
+      const hasPage = await exists(pageJsx);
       return {
-        slug,
-        url: toUrl(section, slug),
-        hasPage,
-        pageFile: hasPageJsx ? "page.jsx" : hasPageJs ? "page.js" : null,
-        updatedAt,
+        slug, url: toUrl(section, slug), 
+        hasPage, pageFile: hasPage ? "page.jsx" : null
       };
     })
   );
-
   return items;
 }
 function pageTemplate({ section, slug }) {
@@ -445,33 +441,43 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const section = (searchParams.get("section") || "all").toLowerCase();
 
-    const sections =
-      section === "all" ? Object.keys(BASES) : [section].filter((s) => BASES[s]);
+    // RETURN CACHED DATA IMMEDIATELY
+    if (cachedData && Date.now() - cacheTimestamp < CACHE_DURATION) {
+      const sections = section === "all" ? Object.keys(BASES) : [section];
+      const data = {};
+      for (const s of sections.filter(s => BASES[s])) {
+        data[s] = cachedData[s];
+      }
+      return NextResponse.json({ ok: true, data });
+    }
 
+    const sections = section === "all" ? Object.keys(BASES) : [section].filter((s) => BASES[s]);
     if (sections.length === 0) {
       return NextResponse.json({ ok: false, error: "Invalid section" }, { status: 400 });
     }
 
     const data = {};
     for (const s of sections) {
-      const baseAbs = getBaseAbs(s);
-
-      // ensure base exists (create if missing)
-      if (!(await exists(baseAbs))) {
-        await fs.mkdir(baseAbs, { recursive: true });
+      if (!(await exists(getBaseAbs(s)))) {
+        await fs.mkdir(getBaseAbs(s), { recursive: true });
       }
-
       data[s] = {
         basePath: BASES[s],
         items: await listRoutes(s),
       };
     }
 
+    // CACHE RESULTS
+    cachedData = data;
+    cacheTimestamp = Date.now();
+
     return NextResponse.json({ ok: true, data });
   } catch (e) {
     return NextResponse.json({ ok: false, error: e?.message || "list failed" }, { status: 500 });
   }
 }
+
+
 
 // POST /api/admin/solutions { section, slug, createPage=true }
 export async function POST(req) {

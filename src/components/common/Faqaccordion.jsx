@@ -10,14 +10,21 @@ export default function FAQAccordion({ faqs }) {
     [
       {
         id: 1,
-        q: "Question number 1",
+        q: "Where is Softkingo Technologies located?",
         a:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+          "New Ashok Nagar, New Delhi - 110096 & H61, Block H, Sector 63, Noida - 201301, India.",
       },
-      { id: 2, q: "Question Number 2", a: "Answer for question number 2." },
-      { id: 3, q: "Question Number 3", a: "Answer for question number 3." },
-      { id: 4, q: "Question Number 4", a: "Answer for question number 4." },
-      { id: 5, q: "Question Number 5", a: "Answer for question number 5." },
+      { id: 2, q: "What services does Softkingo Technologies provide?", a: "Full-stack web & mobile app development, UI/UX design, cloud infrastructure (AWS/GCP), DevOps, and dedicated development teams." },
+      { id: 3,  q: "How strong is the company team?",
+        a: "200+ developers with 4-10+ years experience across React, Node.js, Flutter, Next.js, AWS, and full-stack expertise." },
+      { id: 4,  q: "What is the best way to communicate with your expert advisor or sales team?",
+        a: "Email: info@softkingo.com or call +91-7428750870. Average response: under 2 hours."},
+      { id: 5,q: "Who owns the legal rights to the technology developed by Softkingo?",
+        a: "You own 100% IP rights. Full source code ownership transfers upon final payment."},
+      { id: 6,  q: "How do you make sure your IP address is secure?",
+        a: "Enterprise-grade encryption (AES-256), GDPR compliant, SOC2 certified servers, NDAs signed with all developers."},
+      { id: 7,  q: "Why choose Softkingo Technologies for other mobile application development companies?",
+        a: "98% client retention, 4.9/5 Clutch rating, 2-week risk-free trial, dedicated account manager, post-launch support included."},
     ];
 
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));

@@ -80,7 +80,17 @@ import {
   FaUtensils,
   FaTruck,
   FaCar,
-
+  // NEW Clone App Icons
+  FaCopy,
+ 
+  FaBriefcase,
+  FaBed,
+  FaHeart,
+  
+  FaQuestionCircle,
+  FaMusic,
+  FaSpotify,
+  FaCameraRetro,
 } from "react-icons/fa";
 
 const SideBar = () => {
@@ -790,6 +800,34 @@ const SideBar = () => {
         { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
       ],
     },
+     // CLONE APPS (NEW)
+      {
+        id: "cloneapps",
+        title: "Clone App Solutions",
+        icon: <FaCopy className="inline-block text-sky-600" />,
+        heading: "Ready-made Clone App Solutions",
+        href: "/solutions",
+        description: "Proven clone app solutions for rapid market entry - Zomato, Uber, Airbnb clones with full source code, admin panels and multi-platform deployment.",
+        items: [
+          { title: "Amazon Clone", href: "/solutions/amazon-clone-app-development", icon: <FaShoppingCart /> },
+          { title: "Zomato Clone", href: "/solutions/zomato-clone-app-development", icon: <FaUtensils /> },
+          { title: "Uber Clone", href: "/solutions/uber-clone-app-development", icon: <FaCar /> },
+          { title: "Naukri Clone", href: "/solutions/naukri-clone-app-development", icon: <FaBriefcase /> },
+          { title: "Udemy Clone", href: "/solutions/udemy-clone-app-development", icon: <FaGraduationCap /> },
+          { title: "Oyo Clone", href: "/solutions/oyo-clone-app-development", icon: <FaBed /> },
+          { title: "Bigbasket Clone", href: "/solutions/bigbasket-clone-app-development", icon: <FaShoppingBag /> },
+          { title: "Urban Company", href: "/solutions/urban-company-clone-app-development", icon: <FaHome /> },
+          { title: "Tinder Clone", href: "/solutions/tinder-clone-app-development", icon: <FaHeart /> },
+          { title: "Instagram Clone", href: "/solutions/instagram-clone-app-development", icon: <FaCamera /> },
+          { title: "Quora Clone", href: "/solutions/quora-clone-app-development", icon: <FaQuestionCircle /> },
+          { title: "Soundcloud Clone", href: "/solutions/soundcloud-clone-app-development", icon: <FaMusic /> },
+          { title: "Spotify Clone", href: "/solutions/spotify-clone-app-development", icon: <FaSpotify /> },
+          { title: "Ghost Lens Clone", href: "/solutions/ghost-lens-clone-app-development", icon: <FaCameraRetro /> },
+          { title: "Olx/Airbnb Clone", href: "/solutions/olx-clone-app-development", icon: <FaHome /> },
+        ],
+      },
+    
+    
   ];
 
   const SolutionsMenuItems = [
@@ -810,6 +848,12 @@ const SideBar = () => {
       title: "Technology-Based Solutions",
       href: "/solutions",
       items: solutionsArray[2].items
+    },
+     {
+      id: "cloneapps",
+      title: "Clone App Solutions",
+      href: "/solutions",
+      items: solutionsArray[3].items
     }
   ];
 
@@ -893,15 +937,15 @@ const SideBar = () => {
 
 
   return (
-    <nav className="sidebar z-40">
+    <nav className="sidebar z-50 ">
       <ul className="sidebar-menu">
         {/* About Us Section */}
         <li
           className={`left ${openMenu === "about" ||
               openMenu === "services" ||
               openMenu === "hireResources" ||
-              openMenu === "industries" ||
               openMenu === "solutions" ||
+              openMenu === "industries" ||
               openMenu === "resources"
               ? "active"
               : ""
@@ -1069,35 +1113,7 @@ const SideBar = () => {
           </li>
 
 
-
-          {/* Industries Section */}
-
-          <li className="menu-item">
-            <div
-              className="menu-link items-center justify-between w-full cursor-pointer flex"
-              style={{ display: "flex" }}
-              onClick={() => toggleMenu("industries")}
-            >
-              <p className="flex-1">Industries</p>
-              <FaChevronRight className="ml-2 flex-shrink-0" />
-            </div>
-            <ul className={`submenu ${openMenu === "industries" ? "active" : ""}`}>
-              <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
-                <span className="flex items-center">
-                  <MdArrowBackIos className="mr-2" />
-                  <span>Back</span>
-                </span>
-              </li>
-
-              {industriestabs[0].items.map((industry, index) => (
-                <li key={index} className="submenu-item cursor-pointer">
-                  <Link href={industry.href}>{industry.title}</Link>
-                </li>
-              ))}
-            </ul>
-          </li>
-
-          {/* Solutions Section - Perfect 3-Level Structure */}
+{/* Solutions Section - Perfect 3-Level Structure */}
           <li className="menu-item">
             <div
               className="menu-link items-center justify-between w-full cursor-pointer flex"
@@ -1143,6 +1159,34 @@ const SideBar = () => {
             </ul>
           </li>
 
+          {/* Industries Section */}
+
+          <li className="menu-item">
+            <div
+              className="menu-link items-center justify-between w-full cursor-pointer flex"
+              style={{ display: "flex" }}
+              onClick={() => toggleMenu("industries")}
+            >
+              <p className="flex-1">Industries</p>
+              <FaChevronRight className="ml-2 flex-shrink-0" />
+            </div>
+            <ul className={`submenu ${openMenu === "industries" ? "active" : ""}`}>
+              <li className="submenu-item cursor-pointer" onClick={() => toggleMenu("")}>
+                <span className="flex items-center">
+                  <MdArrowBackIos className="mr-2" />
+                  <span>Back</span>
+                </span>
+              </li>
+
+              {industriestabs[0].items.map((industry, index) => (
+                <li key={index} className="submenu-item cursor-pointer">
+                  <Link href={industry.href}>{industry.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+
+          
 
           {/* FIXED Insights Section - Proper toggleMenu("resources") */}
           <li className="menu-item">
