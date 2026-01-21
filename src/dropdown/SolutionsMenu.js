@@ -33,8 +33,8 @@ import {
   FaMicrochip,
   FaCloud,
   FaCube,
-  
-  // 🔥 NEW Clone App Icons
+
+  // NEW Clone App Icons
   FaCopy,
   FaShoppingCart,
   FaBriefcase,
@@ -57,7 +57,7 @@ const tabs = [
     heading: "On‑Demand & Real‑Time Solutions",
     href: "/solutions",
     description:
-      "Design on‑demand platforms for delivery, mobility and home services with real‑time tracking and optimized dispatch.",  
+      "Design on‑demand platforms for delivery, mobility and home services with real‑time tracking and optimized dispatch.",
     items: [
       { title: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
       { title: "Grocery Delivery", href: "/solutions/grocery-delivery-app-development", icon: <FaShoppingBag /> },
@@ -84,8 +84,8 @@ const tabs = [
     icon: <FaProjectDiagram className="inline-block text-sky-600" />,
     heading: "Business‑Model Based Solutions",
     href: "/solutions",
-        description:
-      "Launch subscription, freemium, on‑demand or marketplace products with billing, entitlements and reporting built‑in.",
+    description:
+      "Launch subscription, freemium, on‑demand or marketplace products with billing, entitlements and reporting built‑in.",
     items: [
       { title: "Marketplace App", href: "/solutions/marketplace-app-development", icon: <FaStore /> },
       { title: "Subscription Software", href: "/solutions/subscription-platform-development", icon: <FaCoins /> },
@@ -107,7 +107,7 @@ const tabs = [
     icon: <FaMicrochip className="inline-block text-sky-600" />,
     heading: "Technology‑Based Solutions",
     href: "/solutions",
-    description: "Cutting-edge technology solutions including AI/ML, blockchain, IoT and AR/VR for innovative products.",  
+    description: "Cutting-edge technology solutions including AI/ML, blockchain, IoT and AR/VR for innovative products.",
     items: [
       { title: "AI/ML Solutions", href: "/solutions/ai-ml-development", icon: <FaRobot /> },
       { title: "Chatbot Development", href: "/solutions/chatbot-development", icon: <FaComments /> },
@@ -145,39 +145,39 @@ const tabs = [
   },
 
 
-    // ✅ INDUSTRIES (main link: /industries)
-//   {
-//     id: "industry",
-//     title: "Industry‑Specific Solutions",
-// heading: "Industry‑Specific Solutions",
-//     icon: <FaIndustry className="inline-block text-sky-600" />,
-    
-//     href: "/industries",
-//      description:
-//       "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
-//     items: [
-//       { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
-//       { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
-//       { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
-//       { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
-//       { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
-//       { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
-//       { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
-      
-//       { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
+  // ✅ INDUSTRIES (main link: /industries)
+    {
+      id: "industry",
+      title: "Industry‑Specific Solutions",
+  heading: "Industry‑Specific Solutions",
+      icon: <FaIndustry className="inline-block text-sky-600" />,
 
-//       // URL missing in your list -> fallback
-//       { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
+      href: "/industries",
+       description:
+        "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+      items: [
+        { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
+        { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
+        { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
+        { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
+        { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
+        { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
+        { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
 
-//       { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
-//       { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
-//       { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
-//       { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
-//       { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
-//       { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
-//       // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
-//     ],
-//   },
+        { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
+
+        // URL missing in your list -> fallback
+        { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
+
+        { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
+        { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
+        { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
+        { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
+        { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
+        { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
+        // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
+      ],
+    },
 
 ];
 
@@ -230,7 +230,7 @@ const SolutionsMenu = () => {
                   <div className="w-3 rounded-full bg-sky-300 h-8" />
                 </div>
 
-                <p className="mt-2 text-[11px] text-slate-600 leading-relaxed">
+                {/* <p className="mt-2 text-[11px] text-slate-600 leading-relaxed">
                   Explore how industry‑specific, on‑demand and technology solutions
                   helped clients grow retention, revenue and efficiency.
                 </p>
@@ -241,7 +241,7 @@ const SolutionsMenu = () => {
                 >
                   View case studies
                   <FaArrowRight className="text-[0.7rem]" />
-                </Link>
+                </Link> */}
               </div>
             </div>
 
@@ -333,7 +333,7 @@ const SolutionsMenu = () => {
           </div>
         </div>
       </div>
-            <style>{`.header_menu_tab_ic {
+      <style>{`.header_menu_tab_ic {
     border-radius: 8px;
     background: linear-gradient(180deg, #cedbdf 0%, #f0f4f4 100%), #d9d9d9;
     flex: 0 0 45px;

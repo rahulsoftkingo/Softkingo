@@ -163,7 +163,7 @@ export default function ContactPage() {
       {/* <OneStopPartnerSection /> */}
 
       {/* JOIN OUR TEAM + CONTACT CARDS */}
-      <JoinTeamSection />
+      {/* <JoinTeamSection /> */}
 
       {/* AWARDS */}
       <AwardsSection />

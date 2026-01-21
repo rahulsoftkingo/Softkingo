@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import RecoAward from "./RecognitionSection";
+import RecoAward from "@/components/public/RecognitionSection";
 import ReactCountryFlag from "react-country-flag";
 
 import {

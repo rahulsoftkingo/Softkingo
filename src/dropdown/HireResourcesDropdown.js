@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import RecoAward from "./RecognitionSection";
+import RecoAward from "../components/public/RecognitionSection";
 
 import {
   FaMobileAlt,

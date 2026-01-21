@@ -328,10 +328,10 @@ export default function ChatWidget() {
   };
 
   const quickReplies = [
-    { text: '📋 View Services', value: 'I want to know about your services' },
-    { text: '💰 Get Quote', value: 'I need a quote for my project' },
-    { text: '📞 Contact Info', value: 'How can I contact you?' },
-    { text: '💼 Portfolio', value: 'Show me your previous work' },
+    { text: 'View Services', value: 'I want to know about your services' },
+    { text: 'Get Quote', value: 'I need a quote for my project' },
+    { text: 'Contact Info', value: 'How can I contact you?' },
+    { text: 'Portfolio', value: 'Show me your previous work' },
   ];
 
   const emojis = ['😊', '👍', '❤️', '🎉', '🔥', '💯', '✅', '❌', '🤔', '👋'];
@@ -603,7 +603,7 @@ export default function ChatWidget() {
                         <button
                           type="button"
                           onClick={() => fileInputRef.current?.click()}
-                          className="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
+                          className="w-9 h-9  items-center justify-center text-slate-500 hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors hidden flex"
                           title="Attach file"
                         >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -649,9 +649,9 @@ export default function ChatWidget() {
                       </button>
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                      <p className="text-xs text-slate-400">
+                      {/* <p className="text-xs text-slate-400">
                         Powered by AI Assistant
-                      </p>
+                      </p> */}
                       <button
                         type="button"
                         onClick={endChat}

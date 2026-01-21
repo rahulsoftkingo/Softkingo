@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 export default function RecognitionSection() {
   const recognitions = [
     {
-      image: "/images/award/mobile-award.png",
+      image: "/images/award/itfirms-awards.png",
       year: "2025",
       country: "UNITED ARAB EMIRATES",
       category: "MOBILE APP DEVELOPMENT",
@@ -22,19 +22,19 @@ export default function RecognitionSection() {
       description: "America's Leading Web Development Agencies 2023"
     },
     {
-      image: "/images/logo 9.png",
+      image: "/images/award/award3.png",
       year: "2020",
       country: "UNITED KINGDOM",
       category: "UI/UX DESIGN",
       title: "INNOVATION LEADERS",
       subtitle: "DesignReview",
-      description: "European Design Innovation Awards 2021"
+      description: "European Design Innovation Awards 2019"
     },
     {
-      image: "/images/award/award.png",
+      image: "/images/award/iso.png",
       year: "2023",
       country: "CANADA",
-      category: "AI DEVELOPMENT",
+      category: "APP DEVELOPMENT",
       title: "TECH PIONEERS",
       subtitle: "FutureTech",
       description: "North American AI Development Leaders 2024"
