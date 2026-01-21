@@ -698,7 +698,7 @@ const SideBar = () => {
     // ✅ INDUSTRIES (main link: /industries)
     {
       id: "industry",
-      title: "Industry‑Specific Solutions",
+      title: "Industry",
       heading: "Industry‑Specific Solutions",
       icon: <FaIndustry className="inline-block text-sky-600" />,
 
@@ -706,25 +706,25 @@ const SideBar = () => {
       description:
         "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
       items: [
-        { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
-        { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
-        { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
-        { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
-        { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
-        { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
-        { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
+        { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat /> },
+        { title: "Education / E-Learning", href: "/industries/elearning", icon: <FaGraduationCap /> },
+        { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding /> },
+        { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane /> },
+        { title: "Food & Restaurant", href: "/industries/food-delivery", icon: <FaUtensils /> },
+        { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell /> },
+        { title: "Retail & E-Commerce", href: "/industries/ecommerce", icon: <FaStore /> },
 
-        { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
+        { title: "Logistics/Transportation", href: "/industries/logistics", icon: <FaTruck /> },
 
         // URL missing in your list -> fallback
         { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
 
-        { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
-        { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
-        { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
+        { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers /> },
+        { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign /> },
+        { title: "Automotive", href: "/industries/automotive", icon: <FaCar /> },
         { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
-        { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
-        { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
+        { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory /> },
+        { title: "Event Management", href: "/industries/event-management", icon: <FaCalendarAlt /> },
         // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
       ],
     },
@@ -732,6 +732,39 @@ const SideBar = () => {
 
   ];
   const solutionsArray = [
+     // ✅ INDUSTRIES (main link: /industries)
+        {
+          id: "industry",
+          title: "Industry‑Specific Solutions",
+      heading: "Industry‑Specific Solutions",
+          icon: <FaIndustry className="inline-block text-sky-600" />,
+    
+          href: "/industries",
+           description:
+            "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+          items: [
+            { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
+            { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
+            { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
+            { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
+            { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
+            { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
+            { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
+    
+            { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
+    
+            // URL missing in your list -> fallback
+            { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
+    
+            { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
+            { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
+            { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
+            { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
+            { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
+            { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
+            // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
+          ],
+        },
     // ✅ ON DEMAND (main link: /solutions)
     {
       id: "ondemand",
@@ -760,6 +793,32 @@ const SideBar = () => {
       ],
     },
 
+      // CLONE APPS (NEW)
+      {
+        id: "cloneapps",
+        title: "Clone App Solutions",
+        icon: <FaCopy className="inline-block text-sky-600" />,
+        heading: "Ready-made Clone App Solutions",
+        href: "/solutions",
+        description: "Proven clone app solutions for rapid market entry - Zomato, Uber, Airbnb clones with full source code, admin panels and multi-platform deployment.",
+        items: [
+          { title: "Amazon Clone", href: "/solutions/amazon-clone-app-development", icon: <FaShoppingCart /> },
+          { title: "Zomato Clone", href: "/solutions/zomato-clone-app-development", icon: <FaUtensils /> },
+          { title: "Uber Clone", href: "/solutions/uber-clone-app-development", icon: <FaCar /> },
+          { title: "Naukri Clone", href: "/solutions/naukri-clone-app-development", icon: <FaBriefcase /> },
+          { title: "Udemy Clone", href: "/solutions/udemy-clone-app-development", icon: <FaGraduationCap /> },
+          { title: "Oyo Clone", href: "/solutions/oyo-clone-app-development", icon: <FaBed /> },
+          { title: "Bigbasket Clone", href: "/solutions/bigbasket-clone-app-development", icon: <FaShoppingBag /> },
+          { title: "Urban Company", href: "/solutions/urban-company-clone-app-development", icon: <FaHome /> },
+          { title: "Tinder Clone", href: "/solutions/tinder-clone-app-development", icon: <FaHeart /> },
+          { title: "Instagram Clone", href: "/solutions/instagram-clone-app-development", icon: <FaCamera /> },
+          { title: "Quora Clone", href: "/solutions/quora-clone-app-development", icon: <FaQuestionCircle /> },
+          { title: "Soundcloud Clone", href: "/solutions/soundcloud-clone-app-development", icon: <FaMusic /> },
+          { title: "Spotify Clone", href: "/solutions/spotify-clone-app-development", icon: <FaSpotify /> },
+          { title: "Ghost Lens Clone", href: "/solutions/ghost-lens-clone-app-development", icon: <FaCameraRetro /> },
+          { title: "Olx/Airbnb Clone", href: "/solutions/olx-clone-app-development", icon: <FaHome /> },
+        ],
+      },
     // ✅ BUSINESS MODEL (main link: /solutions)
     {
       id: "businessmodel",
@@ -800,99 +859,45 @@ const SideBar = () => {
         { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
       ],
     },
-     // CLONE APPS (NEW)
-      {
-        id: "cloneapps",
-        title: "Clone App Solutions",
-        icon: <FaCopy className="inline-block text-sky-600" />,
-        heading: "Ready-made Clone App Solutions",
-        href: "/solutions",
-        description: "Proven clone app solutions for rapid market entry - Zomato, Uber, Airbnb clones with full source code, admin panels and multi-platform deployment.",
-        items: [
-          { title: "Amazon Clone", href: "/solutions/amazon-clone-app-development", icon: <FaShoppingCart /> },
-          { title: "Zomato Clone", href: "/solutions/zomato-clone-app-development", icon: <FaUtensils /> },
-          { title: "Uber Clone", href: "/solutions/uber-clone-app-development", icon: <FaCar /> },
-          { title: "Naukri Clone", href: "/solutions/naukri-clone-app-development", icon: <FaBriefcase /> },
-          { title: "Udemy Clone", href: "/solutions/udemy-clone-app-development", icon: <FaGraduationCap /> },
-          { title: "Oyo Clone", href: "/solutions/oyo-clone-app-development", icon: <FaBed /> },
-          { title: "Bigbasket Clone", href: "/solutions/bigbasket-clone-app-development", icon: <FaShoppingBag /> },
-          { title: "Urban Company", href: "/solutions/urban-company-clone-app-development", icon: <FaHome /> },
-          { title: "Tinder Clone", href: "/solutions/tinder-clone-app-development", icon: <FaHeart /> },
-          { title: "Instagram Clone", href: "/solutions/instagram-clone-app-development", icon: <FaCamera /> },
-          { title: "Quora Clone", href: "/solutions/quora-clone-app-development", icon: <FaQuestionCircle /> },
-          { title: "Soundcloud Clone", href: "/solutions/soundcloud-clone-app-development", icon: <FaMusic /> },
-          { title: "Spotify Clone", href: "/solutions/spotify-clone-app-development", icon: <FaSpotify /> },
-          { title: "Ghost Lens Clone", href: "/solutions/ghost-lens-clone-app-development", icon: <FaCameraRetro /> },
-          { title: "Olx/Airbnb Clone", href: "/solutions/olx-clone-app-development", icon: <FaHome /> },
-        ],
-      },
+   
     
-     // ✅ INDUSTRIES (main link: /industries)
-        {
-          id: "industry",
-          title: "Industry‑Specific Solutions",
-      heading: "Industry‑Specific Solutions",
-          icon: <FaIndustry className="inline-block text-sky-600" />,
     
-          href: "/industries",
-           description:
-            "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
-          items: [
-            { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
-            { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
-            { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
-            { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
-            { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
-            { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
-            { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
-    
-            { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
-    
-            // URL missing in your list -> fallback
-            { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
-    
-            { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
-            { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
-            { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
-            { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
-            { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
-            { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
-            // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
-          ],
-        },
   ];
 
   const SolutionsMenuItems = [
     {
+      id: "industry",
+      title: "Industry‑Specific Solutions",
+      href: "/solutions",
+      items: solutionsArray[0].items
+    },
+    
+    {
       id: "ondemand",
       title: "On-Demand Solutions",
       href: "/solutions",
-      items: solutionsArray[0].items
+      items: solutionsArray[1].items
+    },
+    {
+      id: "cloneapps",
+      title: "Clone App Solutions",
+      href: "/solutions",
+      items: solutionsArray[2].items
     },
     {
       id: "businessmodel",
       title: "Business-Model Solutions",
       href: "/solutions",
-      items: solutionsArray[1].items
+      items: solutionsArray[3].items
     },
     {
       id: "technology",
       title: "Technology-Based Solutions",
       href: "/solutions",
-      items: solutionsArray[2].items
-    },
-     {
-      id: "cloneapps",
-      title: "Clone App Solutions",
-      href: "/solutions",
-      items: solutionsArray[3].items
-    },
-     {
-      id: "industry",
-      title: "Industry‑Specific Solutions",
-      href: "/solutions",
       items: solutionsArray[4].items
-    }
+    },
+     
+     
   ];
 
   const insightItems = [
@@ -1019,13 +1024,13 @@ const SideBar = () => {
                 </span>
               </li>
               <li className="submenu-item">
-                <Link href="/about">About Who We Are</Link>
+                <Link href="/about">About Us</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/services">Services We Offer</Link>
+                <Link href="/our-team">Our Team</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/solutions">Solutions We Serve</Link>
+                <Link href="/testimonials">Testimonials</Link>
               </li>
               <li className="submenu-item">
                 <Link href="/careers">Career</Link>

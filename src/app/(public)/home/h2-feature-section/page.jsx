@@ -19,7 +19,7 @@ export default function Feature() {
       <div className="max-w-7xl mx-auto flex items-center">
         {/* Heading on top */}
         <div className="relative z-10 flex-shrink-0 pr-6 bg-whit h-full py-4 hidden md:flex">
-          <h1 className="text-md md:text-lg  lg:text-xl 2xl:text-2xl font-semibold text-sky-900">As <span className='bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500'>Features</span> On</h1>
+          <h2 className="text-md md:text-lg  lg:text-xl 2xl:text-2xl font-semibold text-sky-900">As <span className='bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500'>Features</span> On</h2>
         </div>
 
         {/* Scrolling strip behind */}

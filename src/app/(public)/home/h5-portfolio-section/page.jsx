@@ -253,7 +253,7 @@ export default function PortfolioSlider() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <motion.h1
+          <motion.h2
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -263,7 +263,7 @@ export default function PortfolioSlider() {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
               Portfolio
             </span>
-          </motion.h1>
+          </motion.h2>
 
           <motion.p
             initial={{ opacity: 0 }}

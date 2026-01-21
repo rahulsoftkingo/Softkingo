@@ -113,7 +113,7 @@ const InquirySection = () => {
   },
   {
     country: "India", 
-    phone: "+91-120-636-7890",
+    phone: "+91 74280 78761",
     code: "IN",
     timezone: "IST",
     city: "Noida",
@@ -121,36 +121,36 @@ const InquirySection = () => {
     description: "Tech Operations Center",
     map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14004.000000000001!2d77.39102615!3d28.5355161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cefd5b347eb62d%3A0x37205b715389640!2sNoida%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1735400000000!5m2!1sen!2sin"
   },
-  {
-    country: "United Kingdom",
-    phone: "+44 (0)20-7993-2188",
-    code: "GB",
-    timezone: "GMT",
-    city: "London",
-    gradient: "from-sky-500 via-sky-500 to-indigo-600",
-    description: "European Innovation Center",
-    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317718.69319292053!2d-0.43123973723120426!3d51.52860701962855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2sin!4v1735400000000!5m2!1sen!2sin"
-  },
-  {
-    country: "United Arab Emirates",
-    phone: "+971 4 321 8520",
-    code: "AE",
-    timezone: "GST",
-    city: "Dubai",
-    gradient: "from-yellow-500 via-orange-500 to-sky-600",
-    description: "Middle East Business Hub",
-    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14452!2d55.2707828!3d25.2048493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43364ba2b41b%3A0x400c795c3e3e1f1f!2sDubai%2C%20United%20Arab%20Emirates!5e0!3m2!1sen!2sin!4v1735400000000!5m2!1sen!2sin"
-  },
-  {
-    country: "Canada",
-    phone: "+1 647-793-9201",
-    code: "CA",
-    timezone: "EST",
-    city: "Toronto",
-    gradient: "from-red-500 via-sky-500 to-blue-600",
-    description: "North America Innovation Lab",
-    map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2328178!2d-82.1253225!3d45.5016909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d1299e3f%3A0x3fc16dd8e473aa2e!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sin!4v1735400000000!5m2!1sen!2sin"
-  }
+  // {
+  //   country: "United Kingdom",
+  //   phone: "+44 (0)20-7993-2188",
+  //   code: "GB",
+  //   timezone: "GMT",
+  //   city: "London",
+  //   gradient: "from-sky-500 via-sky-500 to-indigo-600",
+  //   description: "European Innovation Center",
+  //   map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317718.69319292053!2d-0.43123973723120426!3d51.52860701962855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2sin!4v1735400000000!5m2!1sen!2sin"
+  // },
+  // {
+  //   country: "United Arab Emirates",
+  //   phone: "+971 4 321 8520",
+  //   code: "AE",
+  //   timezone: "GST",
+  //   city: "Dubai",
+  //   gradient: "from-yellow-500 via-orange-500 to-sky-600",
+  //   description: "Middle East Business Hub",
+  //   map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14452!2d55.2707828!3d25.2048493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43364ba2b41b%3A0x400c795c3e3e1f1f!2sDubai%2C%20United%20Arab%20Emirates!5e0!3m2!1sen!2sin!4v1735400000000!5m2!1sen!2sin"
+  // },
+  // {
+  //   country: "Canada",
+  //   phone: "+1 647-793-9201",
+  //   code: "CA",
+  //   timezone: "EST",
+  //   city: "Toronto",
+  //   gradient: "from-red-500 via-sky-500 to-blue-600",
+  //   description: "North America Innovation Lab",
+  //   map: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2328178!2d-82.1253225!3d45.5016909!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d1299e3f%3A0x3fc16dd8e473aa2e!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sin!4v1735400000000!5m2!1sen!2sin"
+  // }
 ];
 
 

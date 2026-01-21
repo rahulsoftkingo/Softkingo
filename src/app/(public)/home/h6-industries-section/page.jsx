@@ -8,7 +8,7 @@ export default function Industries() {
   const [industries] = useState([
     {
       title: "Healthcare",
-      href: "/industries/healthcare-app-development",
+      href: "/industries/healthcare",
       points: {
         1: "Real‑time patient monitoring",
         2: "Appointment scheduling & reminders",
@@ -22,7 +22,7 @@ export default function Industries() {
     },
     {
       title: "Education / E-Learning",
-      href: "/industries/elearning-app-development",
+      href: "/industries/elearning",
       points: {
         1: "Course creation & management",
         2: "Student enrollment & profiles",
@@ -36,7 +36,7 @@ export default function Industries() {
     },
     {
       title: "Real Estate",
-      href: "/industries/real-estate-app-development",
+      href: "/industries/real-estate",
       points: {
         1: "Property listings & search filters",
         2: "Virtual tours & 3D walkthroughs",
@@ -50,7 +50,7 @@ export default function Industries() {
     },
     {
       title: "Travel & Tourism",
-      href: "/industries/travel-app-development",
+      href: "/industries/travel",
       points: {
         1: "Flight & hotel booking",
         2: "Itinerary planning tools",
@@ -64,7 +64,7 @@ export default function Industries() {
     },
     {
       title: "Food & Restaurant",
-      href: "/industries/food-delivery-app-development",
+      href: "/industries/food-delivery",
       points: {
         1: "Menu & catalog management",
         2: "Order scheduling and tracking",
@@ -78,7 +78,7 @@ export default function Industries() {
     },
     {
       title: "Fitness & Wellness",
-      href: "/industries/fitness-app-development",
+      href: "/industries/fitness",
       points: {
         1: "Workout plans & schedules",
         2: "Nutrition tracking",
@@ -92,7 +92,7 @@ export default function Industries() {
     },
     {
       title: "Retail & E-Commerce",
-      href: "/industries/ecommerce-app-development",
+      href: "/industries/ecommerce",
       points: {
         1: "Product catalog management",
         2: "Shopping cart & checkout",
@@ -106,7 +106,7 @@ export default function Industries() {
     },
     {
       title: "Logistics & Transportation",
-      href: "/industries/logistics-app-development",
+      href: "/industries/logistics",
       points: {
         1: "Fleet tracking & telematics",
         2: "Route optimization",
@@ -134,7 +134,7 @@ export default function Industries() {
     },
     {
       title: "Social Networking",
-      href: "/industries/social-media-app-development",
+      href: "/industries/social-media",
       points: {
         1: "User profiles & feeds",
         2: "Messaging & chat",
@@ -162,7 +162,7 @@ export default function Industries() {
     },
     {
       title: "Automotive",
-      href: "/industries/automotive-app-development",
+      href: "/industries/automotive",
       points: {
         1: "Vehicle tracking",
         2: "Service scheduling",
@@ -190,7 +190,7 @@ export default function Industries() {
     },
     {
       title: "Manufacturing",
-      href: "/industries/manufacturing-app-development",
+      href: "/industries/manufacturing",
       points: {
         1: "Production monitoring",
         2: "Inventory tracking",
@@ -216,20 +216,20 @@ export default function Industries() {
       logo: "images/industries/logo/retail.png",
       image: "images/industries/retail.jpg",
     },
-    {
-      title: "AR/VR",
-      href: "/industries/ar-vr-app-development",
-      points: {
-        1: "Immersive product demos",
-        2: "Training simulations",
-        3: "3D experiences",
-        4: "AR overlays",
-        5: "VR walkthroughs",
-        6: "Device integrations",
-      },
-      logo: "images/industries/logo/education.png",
-      image: "images/industries/education.webp",
-    },
+    // {
+    //   title: "AR/VR",
+    //   href: "/industries/ar-vr",
+    //   points: {
+    //     1: "Immersive product demos",
+    //     2: "Training simulations",
+    //     3: "3D experiences",
+    //     4: "AR overlays",
+    //     5: "VR walkthroughs",
+    //     6: "Device integrations",
+    //   },
+    //   logo: "images/industries/logo/education.png",
+    //   image: "images/industries/education.webp",
+    // },
   ]);
 
   const [current, setCurrent] = useState("Healthcare");
@@ -242,7 +242,7 @@ const leftSidebarWidth = "w-full md:w-[300px]";
         <div className="h-full w-full max-w-7xl">
           {/* ✅ Header same like Portfolio */}
           <div className="text-center mb-8 sm:mb-12">
-            <motion.h1
+            <motion.h2
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -252,7 +252,7 @@ const leftSidebarWidth = "w-full md:w-[300px]";
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
                 We Serve
               </span>
-            </motion.h1>
+            </motion.h2>
 
             <motion.p
               initial={{ opacity: 0 }}

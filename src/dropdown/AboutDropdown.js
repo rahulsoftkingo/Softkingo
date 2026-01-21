@@ -11,11 +11,13 @@ import {
   FaCalendarAlt
 } from "react-icons/fa";
 import { FaEnvelope, FaSkype } from "react-icons/fa";
+import { FaUsers } from "react-icons/fa6";
 
 const NAV_ITEMS = [
-  { title: "About Who We Are", href: "/about", icon: <FaUserFriends className="text-lg inline-block text-sky-600" /> },
-  { title: "Services We Offer", href: "/services", icon: <FaConciergeBell className="text-lg inline-block text-sky-600" /> },
-  { title: "Solutions We Serve", href: "/solutions", icon: <FaIndustry className="text-lg inline-block text-sky-600" /> },
+  { title: "About Us", href: "/about", icon: <FaUserFriends className="text-lg inline-block text-sky-600" /> },
+  
+  { title: "Our Team", href: "/our-team", icon: <FaUsers className="text-lg inline-block text-sky-600" /> },
+  { title: "Testimonials", href: "/testimonials", icon: <FaConciergeBell className="text-lg inline-block text-sky-600" /> },
   { title: "Career", href: "/careers", icon: <FaBriefcase className="text-lg inline-block text-sky-600" /> },
   { title: "Insights", href: "/insights", icon: <FaCalendarAlt className="text-lg inline-block text-sky-600" /> },
   { title: "Portfolio", href: "/portfolio", icon: <FaCalendarAlt className="text-lg inline-block text-sky-600" /> },
@@ -162,10 +164,10 @@ const AboutUsDropdown = () => {
                   {
                     img: "/images/flags/india.png",
                     title: "India Office",
-                    phone: "+91-120-636-7890",
+                    phone: "+91 74280 78761",
                     code: "IN",
                   },
-                  {
+                  {/* {
                     img: "/images/flags/uk.png",
                     title: "UK Office ",
                     phone: "+44 (0)20-7993-2188",
@@ -182,7 +184,7 @@ const AboutUsDropdown = () => {
                     title: "Canada Office",
                     phone: "+1 647-793-9201",
                     code: "CA",
-                  },
+                  }, */}
 
 
                 ].map((office, index) => (

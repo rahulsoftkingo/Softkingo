@@ -36,49 +36,49 @@ export default function Strengths_Scroll({ scrollRef }) {
         icon: <FaUserCheck />,
         title: "Client‑Centric Development",
         points:
-          "Requirements ko clearly understand karke solution build karte hain—better UX, better performance, aur long‑term maintainability ke saath.",
+          "We focus on understanding your business objectives and user requirements to deliver tailored solutions that create real value.",
       },
       {
         icon: <FaProjectDiagram />,
         title: "Agile Delivery Process",
         points:
-          "Sprint planning, regular demos, and clear milestones—so progress visible rahe aur changes handle ho jayein without delays.",
+          "Our agile approach enables faster development, continuous feedback, and flexibility to adapt to changing business needs.",
       },
       {
         icon: <FaUsersCog />,
         title: "Dedicated Expert Team",
         points:
-          "Project ke size ke hisaab se focused team allocate hoti hai (frontend, backend, QA, DevOps) so ownership clear aur output consistent rahe.",
+          "Our experienced developers, designers, and strategists bring strong technical and industry knowledge to ensure project success.",
       },
       {
         icon: <FaHeadset />,
         title: "Smart Support & Communication",
         points:
-          "Fast response, clear updates, and structured handover—project ke har stage pe smooth collaboration ensure hota hai.",
+          "We maintain transparent communication and provide proactive support throughout the entire project lifecycle.",
       },
       {
         icon: <FaDatabase />,
         title: "Reliable Backups & Recovery",
         points:
-          "Regular backups + rollback strategy—data loss risk minimize hota hai aur urgent situations me recovery quick hoti hai.",
+          "We implement secure backup systems and recovery plans to safeguard data and ensure uninterrupted business operations.",
       },
       {
         icon: <FaShieldAlt />,
         title: "Security & Data Protection",
         points:
-          "Access control, secure deployments, and NDA-ready workflows—client data aur IP ko safe rakhna top priority hota hai.",
+          "Industry-standard security practices are used to protect sensitive data, applications, and digital infrastructure.",
       },
       {
         icon: <FaCheckCircle />,
         title: "Quality Control",
         points:
-          "Code reviews, testing practices, aur checklist-based delivery—so output stable, scalable, aur production-ready rahe.",
+          "Every solution undergoes thorough testing and quality checks to ensure performance, stability, and reliability.",
       },
       {
         icon: <FaChartLine />,
         title: "Continuous Improvement",
         points:
-          "Performance monitoring + iteration mindset—features ship karne ke baad bhi improvements, optimization, aur upgrades planned rehte hain.",
+          "We continuously enhance our processes, technologies, and solutions to keep your business future-ready.",
       },
     ],
     []
@@ -102,34 +102,32 @@ export default function Strengths_Scroll({ scrollRef }) {
                 </span>
               </h2>
 
-             <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-xl mx-auto md:mx-0">
-  Strong process, reliable engineering, and clear communication—so delivery fast bhi ho aur quality bhi compromise na ho.
-</p>
+              <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-xl mx-auto md:mx-0">
+                Our strengths define how we deliver reliable, innovative, and result-oriented software solutions. By combining technical expertise, strategic thinking, and a client-first mindset, we help businesses grow in the digital world.
+              </p>
 
-{/* Desktop-only extended content */}
-<div className="hidden lg:block mt-5 max-w-xl">
-  <p className="text-sm text-slate-600 leading-relaxed">
-    Har project me clarity + accountability maintain karte hain—requirements discovery se leke final
-    deployment tak. Isse scope creep kam hota hai, timelines predictable rehti hain, aur output production-ready
-    quality ke saath ship hota hai.
-  </p>
+              {/* Desktop-only extended content */}
+              <div className="hidden lg:block mt-5 max-w-xl">
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  From planning to deployment and ongoing support, we follow proven processes that ensure quality, security, and continuous improvement in every project we deliver.
+                </p>
 
 
 
-  {/* Quick highlights chips */}
-  <div className="mt-5 flex flex-wrap gap-2">
-    {["Agile Delivery", "Dedicated Team", "Quality Control", "Secure by Design", "Smart Support"].map(
-      (t) => (
-        <span
-          key={t}
-          className="px-3 py-1 rounded-full text-xs font-medium bg-sky-50 text-sky-700 border border-sky-100"
-        >
-          {t}
-        </span>
-      )
-    )}
-  </div>
-</div>
+                {/* Quick highlights chips */}
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {["Agile Delivery", "Dedicated Team", "Quality Control", "Secure by Design", "Smart Support"].map(
+                    (t) => (
+                      <span
+                        key={t}
+                        className="px-3 py-1 rounded-full text-xs font-medium bg-sky-50 text-sky-700 border border-sky-100"
+                      >
+                        {t}
+                      </span>
+                    )
+                  )}
+                </div>
+              </div>
 
             </div>
 

@@ -18,16 +18,16 @@ export default function HireDevelopersPage() {
     const [selectedIndustry, setSelectedIndustry] = useState('Healthcare');
 
     const industries = [
-        { name: 'Healthcare', icon: <FaStethoscope />, href: "/industries/healthcare-app-development" },
+        { name: 'Healthcare', icon: <FaStethoscope />, href: "/industries/healthcare" },
         { name: 'Banking & Finance', icon: <FaDollarSign />, href: "/industries/fintech-software-development" },
-        { name: 'Insurance', icon: <FaShieldAlt />, href: "/industries/insurance-app-development" },
-        { name: 'E-Commerce & Retail', icon: <FaStore />, href: "/industries/ecommerce-app-development" },
-        { name: 'Manufacturing', icon: <FaIndustry />, href: "/industries/manufacturing-app-development" },
-        { name: 'Logistics & Supply Chain', icon: <FaTruck />, href: "/industries/logistics-app-development" },
-        { name: 'Education', icon: <FaGraduationCap />, href: "/industries/elearning-app-development" },
-        { name: 'Real Estate', icon: <FaBuilding />, href: "/industries/real-estate-app-development" },
-        { name: 'Marketing & Advertising', icon: <FaChartLine />, href: "/industries/marketing-app-development" },
-        { name: 'Telecommunications', icon: <FaGlobe />, href: "/industries/telecom-app-development" },
+        { name: 'Insurance', icon: <FaShieldAlt />, href: "/industries/insurance" },
+        { name: 'E-Commerce & Retail', icon: <FaStore />, href: "/industries/ecommerce" },
+        { name: 'Manufacturing', icon: <FaIndustry />, href: "/industries/manufacturing" },
+        { name: 'Logistics & Supply Chain', icon: <FaTruck />, href: "/industries/logistics" },
+        { name: 'Education', icon: <FaGraduationCap />, href: "/industries/elearning" },
+        { name: 'Real Estate', icon: <FaBuilding />, href: "/industries/real-estate" },
+        { name: 'Marketing & Advertising', icon: <FaChartLine />, href: "/industries/marketing" },
+        { name: 'Telecommunications', icon: <FaGlobe />, href: "/industries/telecom" },
     ];
     const industryContent = {
 

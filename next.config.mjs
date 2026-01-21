@@ -125,27 +125,27 @@ const nextConfig = {
       // ========== HIRE DEVELOPERS ==========
       {
         source: '/hire-iphone-developer',
-        destination: '/services/hire-iphone-developer',
+        destination: '/hire/hire-iphone-developer',
         permanent: true,
       },
       {
         source: '/hire-android-developer',
-        destination: '/services/hire-android-developer',
+        destination: '/hire/hire-android-developer',
         permanent: true,
       },
       {
         source: '/hire-swift-developer',
-        destination: '/services/hire-swift-developer',
+        destination: '/hire/hire-swift-developer',
         permanent: true,
       },
       {
         source: '/hire-ai-developer',
-        destination: '/services/hire-ai-developer',
+        destination: '/hire/hire-ai-developer',
         permanent: true,
       },
       {
         source: '/hire-ui-ux-developer-designer',
-        destination: '/services/hire-ui-ux-designer',
+        destination: '/hire/hire-ui-ux-designer',
         permanent: true,
       },
 

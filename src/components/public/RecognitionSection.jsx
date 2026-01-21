@@ -19,25 +19,25 @@ export default function RecognitionSection() {
       category: "WEB DEVELOPMENT",
       title: "TOP AGENCIES",
       subtitle: "TechAwards",
-      description: "America's Leading Web Development Agencies 2023"
+      description: "Quality You Can Trust – ISO Certified"
     },
     {
-      image: "/images/award/award3.png",
+      image: "/images/award/award2.png",
       year: "2020",
       country: "UNITED KINGDOM",
       category: "UI/UX DESIGN",
       title: "INNOVATION LEADERS",
       subtitle: "DesignReview",
-      description: "European Design Innovation Awards 2019"
+      description: "Recognized as a Top Developer in India"
     },
     {
-      image: "/images/award/iso.png",
+      image: "/images/award/techbeheb.png",
       year: "2023",
       country: "CANADA",
       category: "APP DEVELOPMENT",
       title: "TECH PIONEERS",
       subtitle: "FutureTech",
-      description: "North American AI Development Leaders 2024"
+      description: "Top Developers Out 100 Companies in India"
     }
   ];
 

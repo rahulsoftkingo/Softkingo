@@ -11,7 +11,7 @@ import PopupQuoteModal from '@/components/PopupQuoteModal';
 const HeroSection = () => {
   const controls = useAnimation();
   const sectionRef = useRef(null);
- const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -138,7 +138,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <span className="mr-"><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /></span> Transforming Businesses Since 2018
+              <span className="mr-"><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /></span> Transforming Businesses Since 2020
             </motion.div>
 
             <motion.h1
@@ -147,11 +147,11 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <span className="block mb-3">Innovative</span>
+              <span className="block mb-3 text-sky-950">AI-Driven</span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
                 Digital Solutions
               </span>
-              <span className="block mt-3">for Modern Enterprises</span>
+              <span className="block mt-3 text-sky-950">for Web, Apps & Digital Marketing</span>
             </motion.h1>
 
             <motion.p
@@ -160,8 +160,8 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Softkingo crafts cutting-edge software solutions that drive growth, enhance efficiency,
-              and foster innovation for forward-thinking businesses worldwide.
+              Softkingo delivers AI-driven web, app & digital marketing solutions with 6+ years of experience, serving 500+ clients worldwide. We turn ideas into successful digital products.
+
             </motion.p>
 
             <motion.div
@@ -172,17 +172,17 @@ const HeroSection = () => {
             >
               {/* Contact Us (internal) */}
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                 <button
+                <button
                   onClick={() => setShowModal(true)}
                   className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
-                  // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
+                // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
                 >
                   Get A Quote <FaArrowRight className="ml-2" />
                 </button>
               </motion.div>
 
-               
-                   
+
+
               {/* Meeting (Calendly external) */}
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
@@ -220,10 +220,10 @@ const HeroSection = () => {
                 </div> */}
                 <div className="flex -space-x-3">
                   {[
-                    "/images/client/client4.jpg",
                     "/images/client/client1.png",
                     "/images/client/client5.png",
-                    "/images/client/client6.png"
+                    "/images/client/client2.png",
+                    "/images/client/client3.png"
                   ].map((src, i) => (
                     <motion.div
                       key={i}
@@ -249,7 +249,7 @@ const HeroSection = () => {
 
               <div className="md:flex items-center hidden">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-300 to-sky-800 flex items-center justify-center">
-                  <span className="text-white font-bold">5+</span>
+                  <span className="text-white font-bold">6+</span>
                 </div>
                 <div className="ml-4">
                   <p className="font-bold text-gray-800">Years</p>
@@ -289,7 +289,7 @@ const HeroSection = () => {
           </motion.div>
         </div>
       </div>
-       <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
+      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };

@@ -37,39 +37,38 @@ import {
 
 const tabs = [
   // ✅ INDUSTRIES (main link: /industries)
-  {
-    id: "industry",
-    title: "Industry‑Specific Solutions",
-heading: "Industry‑Specific Solutions",
-    icon: <FaIndustry className="inline-block text-sky-600" />,
-    
-    href: "/industries",
-     description:
-      "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
-    items: [
-      { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
-      { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
-      { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
-      { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
-      { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
-      { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
-      { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
-      
-      { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
-
-      // URL missing in your list -> fallback
-      { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
-
-      { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
-      { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
-      { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
-      { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
-      { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
-      { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
-      // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
-    ],
-  },
-
+ {
+       id: "industry",
+       title: "Industry",
+       heading: "Industry‑Specific Solutions",
+       icon: <FaIndustry className="inline-block text-sky-600" />,
+ 
+       href: "/industries",
+       description:
+         "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+       items: [
+         { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat /> },
+         { title: "Education / E-Learning", href: "/industries/elearning", icon: <FaGraduationCap /> },
+         { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding /> },
+         { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane /> },
+         { title: "Food & Restaurant", href: "/industries/food-delivery", icon: <FaUtensils /> },
+         { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell /> },
+         { title: "Retail & E-Commerce", href: "/industries/ecommerce", icon: <FaStore /> },
+ 
+         { title: "Logistics/Transportation", href: "/industries/logistics", icon: <FaTruck /> },
+ 
+         // URL missing in your list -> fallback
+         { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
+ 
+         { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers /> },
+         { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign /> },
+         { title: "Automotive", href: "/industries/automotive", icon: <FaCar /> },
+         { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
+         { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory /> },
+         { title: "Event Management", href: "/industries/event-management", icon: <FaCalendarAlt /> },
+         // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
+       ],
+     },
 
 ];
 

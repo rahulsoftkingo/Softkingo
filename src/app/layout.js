@@ -36,7 +36,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://softkingo.com" />
+        {/* <link rel="canonical" href="https://softkingo.com" /> */}
         <meta name="theme-color" content="#0ea5e9" />
       </head>
       <body className="antialiased">{children}</body>

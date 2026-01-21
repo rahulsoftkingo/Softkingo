@@ -1,0 +1,110 @@
+export const teamMembers = [
+      {
+    name: "Paramhansh Singh",
+    role: "Founder & CEO",
+    image: "/images/team/ceo.png",
+    avatar: "RS",
+    bio: "15+ years building scalable SaaS & mobile apps. Next.js, React Native, AWS expert.",
+    skills: ["Next.js", "React Native", "AWS", "Prisma"],
+    social: { linkedin: "https://linkedin.com/in/rahul-sharma-softkingo" },
+    isLeader: true,
+  },
+  {
+    name: "Priya Malhotra",
+    role: "CTO",
+    image: "/images/team/priya.jpg",
+    avatar: "PM",
+    bio: "Full-stack expert with 10+ years. Specializes in real-time features & performance optimization.",
+    skills: ["Node.js", "TypeScript", "GraphQL", "Redis"],
+    social: { linkedin: "https://linkedin.com/in/priya-malhotra-softkingo" },
+    isLeader: true,
+  },
+  {
+    name: "Amit Verma",
+    role: "Mobile Lead",
+    image: "/images/team/amit.jpg",
+    avatar: "AV",
+    bio: "React Native specialist. Delivered 50+ cross-platform apps for iOS/Android.",
+    skills: ["React Native", "Swift", "Kotlin", "Firebase"],
+    social: { linkedin: "https://linkedin.com/in/amit-verma-softkingo" },
+    isLeader: true,
+  },
+
+  {
+    name: "Ansh Raj Singh",
+    role: "Full Stack Developer",
+    image: "/images/team/ansh.jpeg",
+    avatar: "RS",
+    bio: "15+ years building scalable SaaS & mobile apps. Next.js, React Native, AWS expert. Scaled multiple startups to 1M+ users.",
+    skills: ["Next.js", "React Native", "AWS", "Prisma", "Docker"],
+    social: {
+      linkedin: "https://linkedin.com/in/rahul-sharma-softkingo",
+      twitter: "https://twitter.com/rahul_softkingo",
+    },
+  },
+  {
+    name: "Ritik Saini",
+    role: "Backend Developer",
+    image: "/images/team/priya.jpg",
+    avatar: "PM",
+    bio: "Full-stack expert with 10+ years in enterprise solutions. Specializes in real-time features, microservices, and performance optimization.",
+    skills: ["Node.js", "TypeScript", "GraphQL", "Redis", "Kubernetes"],
+    social: {
+      linkedin: "https://linkedin.com/in/priya-malhotra-softkingo",
+    },
+  },
+  {
+    name: "Sachin Kumar",
+    role: "App Developer",
+    image: "/images/team/amit.jpg",
+    avatar: "AV",
+    bio: "React Native specialist. Delivered 50+ cross-platform apps for iOS/Android. Focus on smooth animations and native performance.",
+    skills: ["React Native", "Swift", "Kotlin", "Firebase", "Push Notifications"],
+    social: {
+      linkedin: "https://linkedin.com/in/amit-verma-softkingo",
+      github: "https://github.com/amit-softkingo",
+    },
+  },
+  {
+    name: "Nitin Negi",
+    role: "UI/UX Design",
+    image: "/images/team/anjali.jpg",
+    avatar: "AG",
+    bio: "Figma & Framer expert. Designs pixel-perfect interfaces that convert. 8+ years creating user experiences for global brands.",
+    skills: ["Figma", "Framer", "Tailwind CSS", "Prototyping", "User Research"],
+    social: {
+      dribbble: "https://dribbble.com/anjali-softkingo",
+      linkedin: "https://linkedin.com/in/anjali-gupta-softkingo",
+    },
+  },
+  {
+    name: "Sagar Parihar",
+    role: "DevOps & Cloud Lead",
+    image: "/images/team/vikram.jpg",
+    avatar: "VS",
+    bio: "Infrastructure automation specialist. Manages AWS, GCP, Vercel deployments for 99.99% uptime. CI/CD pipelines expert.",
+    skills: ["AWS", "Docker", "Kubernetes", "GitHub Actions", "Terraform"],
+    social: {
+      linkedin: "https://linkedin.com/in/vikram-singh-softkingo",
+    },
+  },
+//   {
+//     name: "Neha Kapoor",
+//     role: "Senior Full-Stack Developer",
+//     image: "/images/team/neha.jpg",
+//     avatar: "NK",
+//     bio: "Next.js & Prisma specialist. Built HRMS, dating apps, and e-commerce platforms. Focus on clean, scalable code.",
+//     skills: ["Next.js 16", "Prisma", "Stripe", "NextAuth", "Tiptap"],
+//     social: {
+//       linkedin: "https://linkedin.com/in/neha-kapoor-softkingo",
+//       github: "https://github.com/neha-softkingo",
+//     },
+//   },
+];
+
+export const teamStats = {
+  totalMembers: 25,
+  projectsDelivered: "500+",
+  yearsExperience: "10+",
+  clientSatisfaction: "98%",
+};
