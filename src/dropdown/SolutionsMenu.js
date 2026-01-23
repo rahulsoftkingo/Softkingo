@@ -70,7 +70,7 @@ const tabs = [
         { title: "Logistics/Transportation", href: "/solutions/logistics-app-development", icon: <FaTruck /> },
 
         // URL missing in your list -> fallback
-        { title: "Media & Entertainment", href: "/solutions/media", icon: <FaFilm /> },
+        { title: "Media & Entertainment", href: "/solutions/media-app-development", icon: <FaFilm /> },
 
         { title: "Social Networking", href: "/solutions/social-media-app-development", icon: <FaUsers /> },
         { title: "Finance / FinTech", href: "/solutions/fintech-app-development", icon: <FaDollarSign /> },
@@ -98,7 +98,7 @@ const tabs = [
       { title: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
       { title: "Grocery Delivery", href: "/solutions/grocery-delivery-app-development", icon: <FaShoppingBag /> },
       { title: "Pickup & Delivery", href: "/solutions/pickup-and-delivery-service-app-development", icon: <FaTruck /> },
-      { title: "Taxi Booking", href: "/solutions/taxi-app-development-services", icon: <FaTaxi /> },
+      { title: "Taxi Booking", href: "/solutions/taxi-app-development", icon: <FaTaxi /> },
       { title: "Fitness Trainer App", href: "/solutions/fitness-trainer-app-development", icon: <FaDumbbell /> },
       { title: "Home Services", href: "/solutions/on-demand-home-service-app-development", icon: <FaHome /> },
       { title: "Beauty & Salon Booking", href: "/solutions/salon-app-development", icon: <FaSpa /> },
@@ -155,9 +155,9 @@ const tabs = [
       { title: "CRM Software", href: "/solutions/crm-software-development", icon: <FaProjectDiagram /> },
       { title: "ERP Software", href: "/solutions/erp-software-development", icon: <FaProjectDiagram /> },
       { title: "Booking System", href: "/solutions/online-booking-system-development", icon: <FaCalendarAlt /> },
-      { title: "Membership / Loyalty", href: "/solutions/loyalty-membership-platform", icon: <FaCoins /> },
+      { title: "Membership / Loyalty", href: "/solutions/loyalty-membership-platform-development", icon: <FaCoins /> },
       { title: "HR Management", href: "/solutions/hr-software-development", icon: <FaUsers /> },
-      { title: "Inventory Management", href: "/solutions/inventory-management-software", icon: <FaStore /> },
+      { title: "Inventory Management", href: "/solutions/inventory-management-software-development", icon: <FaStore /> },
     ],
   },
 

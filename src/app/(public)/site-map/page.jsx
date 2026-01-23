@@ -32,34 +32,94 @@ export default async function SiteMapPage() {
   });
 
   // Static pages
+
   const staticPages = [
-    '', '/about', '/services', '/portfolio', '/case-studies', '/blog', '/blog/category',
-    '/careers', '/contact', '/hire', '/insights', '/gallery', '/e-guides', '/featured',
-    '/industries',
-    '/industries/healthcare-app-development', '/industries/elearning-app-development',
-    '/industries/real-estate-app-development', '/industries/travel-app-development',
-    '/industries/food-delivery-app-development', '/industries/fitness-app-development',
-    '/industries/logistics-app-development', '/industries/social-media-app-development',
-    '/industries/fintech-software-development', '/industries/automotive-app-development',
-    '/industries/construction-management-software-development', '/industries/manufacturing-app-development',
-    '/industries/event-management-software-development',
-    '/solutions/grocery-delivery-app-development', '/solutions/pickup-and-delivery-service-app-development',
-    '/solutions/taxi-app-development-services', '/solutions/fitness-trainer-app-development',
-    '/solutions/on-demand-home-service-app-development', '/solutions/salon-app-development',
-    '/solutions/ice-cream-delivery-app-development', '/solutions/laundry-app-development',
-    '/solutions/restaurant-app-development-company', '/solutions/dating-app-development-company',
-    '/solutions/ride-sharing-app-development', '/solutions/tutor-app-development',
-    '/solutions/mechanic-app-development', '/solutions/car-wash-app-development',
-    '/solutions/marketplace-app-development', '/solutions/subscription-platform-development',
-    '/solutions/multivendor-ecommerce-development', '/solutions/saas-product-development',
-    '/solutions/crm-software-development', '/solutions/erp-software-development',
-    '/solutions/online-booking-system-development', '/solutions/loyalty-membership-platform',
-    '/solutions/hr-software-development', '/solutions/inventory-management-software',
-    '/solutions/ai-ml-development', '/solutions/chatbot-development',
-    '/solutions/iot-app-development', '/solutions/blockchain-development',
+    // Main pages
+    "", "/about", "/services", "/case-studies", "/blog", "/blog/category",
+    "/careers", "/contact", "/e-guides", "/featured", "/gallery", "/hire",
+    "/insights", "/portfolio",
+
+    // Hire pages (from HireMenuItems)
+    "/hire/app-developers", "/hire/android-developers", "/hire/ios-developers",
+    "/hire/iphone-app-developers", "/hire/ipad-developers", "/hire/flutter-developers",
+    "/hire/react-native-developers", "/hire/frontend-developers", "/hire/angular-developers",
+    "/hire/reactjs-developers", "/hire/vuejs-developers", "/hire/web-app-developers",
+    "/hire/backend-developers", "/hire/java-developers", "/hire/nodejs-developers",
+    "/hire/python-developers", "/hire/php-developers", "/hire/laravel-developers",
+    "/hire/Django-developers", "/hire/full-stack-developers", "/hire/mern-developers",
+    "/hire/mean-developers", "/hire/laravel-vue-developers", "/hire/react-node-developers",
+    "/hire/ecommerce-developers", "/hire/magento-developers", "/hire/wordpress-developers",
+    "/hire/woocommerce-developers", "/hire/shopify-developers", "/hire/dedicated-developers",
+    "/hire/solution-architects", "/hire/devops-engineers", "/hire/qa-testers",
+    "/hire/ml-engineers", "/hire/software-developers", "/hire/ui-ux-designers",
+
+    // Services pages (from servicesData)
+    "/services/mobile-app-development", "/services/android-app-development", "/services/ios-app-development",
+    "/services/hybrid-app-development", "/services/react-native-app-development",
+    "/services/flutter-native-app-development", "/services/app-ui-ux-design",
+    "/services/web-development", "/services/custom-website-development", "/services/cms-development",
+    "/services/web-application-development", "/services/enterprise-web-development",
+    "/services/website-redesign", "/services/website-maintenance", "/services/ecommerce-development",
+    "/services/shopify-development", "/services/woocommerce-development", "/services/magento-development",
+    "/services/custom-ecommerce-development", "/services/multivendor-ecommerce-development",
+    "/services/ecommerce-app-development", "/services/blockchain-development",
+    "/services/crypto-wallet-development", "/services/smart-contract-development",
+    "/services/nft-marketplace-development", "/services/dapp-development", "/services/defi-development",
+    "/services/token-development", "/services/ai-ml", "/services/ai-development",
+    "/services/machine-learning-development", "/services/chatbot-development", "/services/predictive-analytics",
+    "/services/computer-vision", "/services/recommendation-engine-development",
+    "/services/iot-embedded", "/services/iot-app-development", "/services/embedded-software-development",
+    "/services/iiot", "/services/device-integration", "/services/home-automation",
+    "/services/aiot-app-development", "/services/devops-cloud", "/services/cloud-migration",
+    "/services/devops-automation", "/services/ci-cd-pipeline", "/services/cloud-management",
+    "/services/containerization", "/services/server-security-optimization",
+    "/services/degital-marketing", "/services/seo-services", "/services/paid-marketing",
+    "/services/online-reputation-management", "/services/app-marketing", "/services/content-marketing",
+    "/services/social-media-marketing",
+
+    // Industries (from industriestabs - corrected URLs)
+    '/industries', '/industries/healthcare', '/industries/education',
+    '/industries/real-estate', '/industries/travel', '/industries/restaurant',
+    '/industries/fitness', '/industries/retail', '/industries/logistics',
+    '/industries/entertainment', '/industries/social-media', '/industries/fintech',
+    '/industries/automotive', '/industries/construction', '/industries/manufacturing',
+    '/industries/sports',
+
+    // Solutions (from solutionsArray - using staticRoutes URLs)
+    '/solutions', '/solutions/grocery-delivery-app-development',
+    '/solutions/pickup-and-delivery-service-app-development', '/solutions/taxi-app-development-services',
+    '/solutions/fitness-trainer-app-development', '/solutions/on-demand-home-service-app-development',
+    '/solutions/salon-app-development', '/solutions/ice-cream-delivery-app-development',
+    '/solutions/laundry-app-development', '/solutions/restaurant-app-development-company',
+    '/solutions/pet-care-app-development', '/solutions/ride-sharing-app-development',
+    '/solutions/tutor-app-development', '/solutions/mechanic-app-development',
+    '/solutions/car-wash-app-development', '/solutions/marketplace-app-development',
+    '/solutions/subscription-platform-development', '/solutions/b2b-ecommerce-development',
+    '/solutions/saas-product-development', '/solutions/crm-software-development',
+    '/solutions/erp-software-development', '/solutions/online-booking-system-development',
+    '/solutions/loyalty-membership-platform-development', '/solutions/hr-software-development',
+    '/solutions/inventory-management-software-development', '/solutions/ai-ml-development',
+    '/solutions/chatbot-development', '/solutions/iot-app-development', '/solutions/blockchain-development',
     '/solutions/cloud-devops-services', '/solutions/ar-vr-app-development',
-    '/privacy-policy', '/terms-conditions', '/faq', '/site-map',
-    '/articles', '/guides', '/media-coverage', '/podcasts', '/press-releases', '/whitepapers'
+    '/solutions/food-delivery-app-development', '/solutions/dating-app-development-company',
+    '/solutions/astrology-app-development', '/solutions/legal-app-development',
+
+    // Clone apps (from solutionsArray)
+    '/solutions/amazon-clone-app-development', '/solutions/zomato-clone-app-development',
+    '/solutions/uber-clone-app-development', '/solutions/naukri-clone-app-development',
+    '/solutions/udemy-clone-app-development', '/solutions/oyo-clone-app-development',
+    '/solutions/bigbasket-clone-app-development', '/solutions/urban-company-clone-app-development',
+    '/solutions/tinder-clone-app-development', '/solutions/instagram-clone-app-development',
+    '/solutions/quora-clone-app-development', '/solutions/soundcloud-clone-app-development',
+    '/solutions/spotify-clone-app-development', '/solutions/ghost-lens-clone-app-development',
+    '/solutions/olx-clone-app-development',
+
+    // Insights (from insightItems)
+    "/blog", "/featured", "/e-guides", "/press-releases", "/guides",
+    "/media-coverage", "/articles", "/whitepapers", "/podcasts",
+
+    // Legal & Misc
+    "/privacy-policy", "/terms-conditions", "/faq", "/site-map", "/ai", "/login"
   ];
 
   const BLOG_TYPE_TO_BASE = {
@@ -129,12 +189,12 @@ export default async function SiteMapPage() {
         style={{ backgroundImage: "url('/images/sitemap-hero.jpg')" }}
       >
 
-       {/* Enhanced background effects */}
+        {/* Enhanced background effects */}
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-slate-900 to-slate-950/90" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
         <div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
-        
+
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
 
@@ -167,10 +227,10 @@ export default async function SiteMapPage() {
 
       {/* COLORFUL CARDS - NO HIDDEN PAGES */}
       <div className="max-w-7xl mx-auto px-6 py-20">
-        
+
         {/* ROW 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
-          
+
           {/* STATIC PAGES - SKY BLUE - ALL 68 PAGES */}
           <div className="bg-gradient-to-br from-sky-50 to-sky-100/50 rounded-2xl p-6 border border-sky-200 hover:border-sky-300 transition-all shadow-sm hover:shadow-md">
             <h2 className="text-xl font-bold text-sky-900 mb-4 border-b-2 border-sky-200 pb-3">
@@ -206,7 +266,7 @@ export default async function SiteMapPage() {
 
         {/* ROW 2 - ALL BLOG TYPES - ALL PAGES SHOWN */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          
+
           {/* REGULAR BLOGS - EMERALD - ALL PAGES */}
           <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-6 border border-emerald-200 hover:border-emerald-300 transition-all shadow-sm hover:shadow-md col-span-2">
             <h2 className="text-xl font-bold text-emerald-900 mb-4 border-b-2 border-emerald-200 pb-3">
@@ -223,7 +283,7 @@ export default async function SiteMapPage() {
             </div>
           </div>
 
-         
+
 
           {/* CATEGORIES - TEAL - ALL PAGES */}
           <div className="bg-gradient-to-br from-teal-50 to-teal-100/50 rounded-2xl p-6 border border-teal-200 hover:border-teal-300 transition-all shadow-sm hover:shadow-md lg:col-span-2  hidden">
@@ -241,7 +301,7 @@ export default async function SiteMapPage() {
             </div>
           </div>
 
-           {/* E-GUIDES - AMBER - ALL PAGES */}
+          {/* E-GUIDES - AMBER - ALL PAGES */}
           <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl p-6 border border-amber-200 hover:border-amber-300 transition-all shadow-sm hover:shadow-md ">
             <h2 className="text-xl font-bold text-amber-900 mb-4 border-b-2 border-amber-200 pb-3">
               E-Guides ({eGuideRoutes.length})
@@ -262,7 +322,7 @@ export default async function SiteMapPage() {
 
         {/* ROW 3 - ALL PAGES */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 hidden">
-         {/* ARTICLES - BLUE - ALL PAGES */}
+          {/* ARTICLES - BLUE - ALL PAGES */}
           <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-6 border border-blue-200 hover:border-blue-300 transition-all shadow-sm hover:shadow-md">
             <h2 className="text-xl font-bold text-blue-900 mb-4 border-b-2 border-blue-200 pb-3">
               Articles ({groupedBlogs.article?.length || 0})
@@ -277,7 +337,7 @@ export default async function SiteMapPage() {
               ))}
             </div>
           </div>
-           {/* GUIDES - ORANGE - ALL PAGES */}
+          {/* GUIDES - ORANGE - ALL PAGES */}
           <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-2xl p-6 border border-orange-200 hover:border-orange-300 transition-all shadow-sm hover:shadow-md">
             <h2 className="text-xl font-bold text-orange-900 mb-4 border-b-2 border-orange-200 pb-3">
               Guides ({groupedBlogs.guide?.length || 0})
@@ -340,7 +400,7 @@ export default async function SiteMapPage() {
               ))}
             </div>
           </div>
-            
+
           {/* WHITEPAPERS - VIOLET - ALL PAGES */}
           <div className="bg-gradient-to-br from-violet-50 to-violet-100/50 rounded-2xl p-6 border border-violet-200 hover:border-violet-300 transition-all shadow-sm hover:shadow-md">
             <h2 className="text-xl font-bold text-violet-900 mb-4 border-b-2 border-violet-200 pb-3">
@@ -361,7 +421,7 @@ export default async function SiteMapPage() {
 
         {/* ROW 5 - INDUSTRIES + SOLUTIONS - ALL PAGES */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          
+
           {/* INDUSTRIES - LIME */}
           <div className="bg-gradient-to-br from-lime-50 to-lime-100/50 rounded-2xl p-6 border border-lime-200 hover:border-lime-300 transition-all shadow-sm hover:shadow-md">
             <h2 className="text-xl font-bold text-lime-900 mb-4 border-b-2 border-lime-200 pb-3">
@@ -409,7 +469,7 @@ export default async function SiteMapPage() {
               </div>
             </div>
             <a href="/sitemap.xml" className="w-full bg-white/30 hover:bg-white/40 backdrop-blur-sm text-white font-bold py-4 px-6 rounded-xl transition-all border-2 border-white/30 hover:border-white/50 hover-lift block">
-               Download XML
+              Download XML
             </a>
           </div>
         </div>
