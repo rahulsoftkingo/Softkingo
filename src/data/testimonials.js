@@ -22,7 +22,7 @@ export const testimonials = [
     title: "Senior Business Development Associate at Haddad Brand",
     review:
       "I highly recommend Softkingo, a top-notch web developer who exceeded my expectations with exceptional expertise. They re-developed our app and website. Recently our efficiency as increase by 80%.",
-    source: "DesignRush review",
+    source: "DesignRush",
     image: "/images/client/client3.png",
     avatar: "LC",
   },
@@ -40,7 +40,7 @@ export const testimonials = [
     title: "Personal Growth Advocate at The Agency RE",
     review:
       "Softkingo developed a fantastic, user-friendly mobile app for our real estate agency. It’s visually appealing, feature-rich, and boosted engagement, sales, and operations with a tailored solution.",
-    source: "DesignRush review",
+    source: "DesignRush",
     image: "/images/client/client5.png",
     avatar: "JW",
   },
@@ -49,7 +49,7 @@ export const testimonials = [
     title: "Senior Electrical Engineer at GIMS M&E Consultant, Singapore",
     review:
       "This is an exceptional work process all through, that we could get an app to track each building project to finishing is amazing. We recommend Softkingo.",
-    source: "DesignRush review",
+    source: "DesignRush",
     image: "/images/client/client6.png",
     avatar: "JS",
   },
@@ -67,7 +67,7 @@ export const testimonials = [
     title: "Corporate Strategy Director at Finastra, London, UK",
     review:
       "We needed an app for easy transaction and tracking customers for financial services and they delivered. Their team was responsive, professional, knowledgeable and they delivered a top notch service",
-    source: "DesignRush review",
+    source: "DesignRush",
     image: "/images/client/client8.jfif",
     avatar: "PD",
   },
@@ -76,7 +76,7 @@ export const testimonials = [
     title: "Co-Founder & CEO, London, UK",
     review:
       "This guys are so exceptional, they completed a ui/ux website design that excels in combining clean aesthetics with easy navigation. Thank you so much Would definitely use their services everytime.",
-    source: "Trustpilot review",
+    source: "Trustpilot",
     image: "/images/client/client9.png",
     avatar: "J",
   },
@@ -85,7 +85,7 @@ export const testimonials = [
     title: "Managing Director, UK",
     review:
       "Thanks for the timeless innovations you make use of when building apps, I have experienced about 6% increase in app downloads since i decided to get my app redesigned. you dii well for me, thanks",
-    source: "DesignRush review",
+    source: "DesignRush",
     image: "/images/client/client10.png",
     avatar: "MR",
   },

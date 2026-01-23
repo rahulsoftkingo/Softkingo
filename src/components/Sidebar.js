@@ -169,7 +169,7 @@ const SideBar = () => {
           icon: <FaWordpress />,
         },
         {
-          href: "/services/web-app-development",
+          href: "/services/web-application-development",
           title: "Web Application Development",
           icon: <FaReact />,
         },
@@ -460,37 +460,37 @@ const SideBar = () => {
       id: "hireapptab",
       icon: <FaMobileAlt className="inline-block text-sky-600" />,
       title: "Hire App Developers",
-      href: "/hire/app-developer",
+      href: "/hire/app-developers",
       description:
         "On the lookout for a coding wizard? Hire mobile app developers to build high‑performance Android, iOS and cross‑platform apps.",
       links: [
         {
-          href: "/hire/android-developer",
+          href: "/hire/android-developers",
           title: "Hire Android Developers",
           icon: <FaAndroid />,
         },
         {
-          href: "/hire/ios-developer",
+          href: "/hire/ios-developers",
           title: "Hire iOS Developers",
           icon: <FaApple />,
         },
         {
-          href: "/hire/iphone-app-developer",
+          href: "/hire/iphone-app-developers",
           title: "Hire iPhone App Developers",
           icon: <FaApple />,
         },
         {
-          href: "/hire/ipad-developer",
+          href: "/hire/ipad-developers",
           title: "Hire iPad Developers",
           icon: <FaApple />,
         },
         {
-          href: "/hire/flutter-developer",
+          href: "/hire/flutter-developers",
           title: "Hire Flutter Developers",
           icon: <FaReact />,
         },
         {
-          href: "/hire/react-native-developer",
+          href: "/hire/react-native-developers",
           title: "Hire React Native Developers",
           icon: <FaReact />,
         },
@@ -502,27 +502,27 @@ const SideBar = () => {
       id: "hirefronttab",
       icon: <FaDesktop className="inline-block text-sky-600" />,
       title: "Hire Frontend Developers",
-      href: "/hire/frontend-developer",
+      href: "/hire/frontend-developers",
       description:
         "Curate pixel‑perfect experiences with frontend engineers who ship fast, responsive and accessible UIs.",
       links: [
         {
-          href: "/hire/angular-developer",
+          href: "/hire/angular-developers",
           title: "Hire Angular Developers",
           icon: <FaAngular />,
         },
         {
-          href: "/hire/reactjs-developer",
+          href: "/hire/reactjs-developers",
           title: "Hire ReactJS Developers",
           icon: <FaReact />,
         },
         {
-          href: "/hire/vuejs-developer",
+          href: "/hire/vuejs-developers",
           title: "Hire Vue.js Developers",
           icon: <FaVuejs />,
         },
         {
-          href: "/hire/web-app-developer",
+          href: "/hire/web-app-developers",
           title: "Hire Web App Developers",
           icon: <FaDesktop />,
         },
@@ -534,38 +534,38 @@ const SideBar = () => {
       id: "hirebackendtab",
       icon: <FaServer className="inline-block text-sky-600" />,
       title: "Hire Backend Developers",
-      href: "/hire/backend-developer",
+      href: "/hire/backend-developers",
       description:
         "Hire backend developers who design reliable APIs, data models and cloud architectures for scale.",
       links: [
         {
-          href: "/hire/java-developer",
+          href: "/hire/java-developers",
           title: "Hire Java Developers",
           icon: <FaServer />,
         },
 
         {
-          href: "/hire/nodejs-developer",
+          href: "/hire/nodejs-developers",
           title: "Hire Node.js Developers",
           icon: <FaNodeJs />,
         },
         {
-          href: "/hire/python-developer",
+          href: "/hire/python-developers",
           title: "Hire Python Developers",
           icon: <FaPython />,
         },
         {
-          href: "/hire/php-developer",
+          href: "/hire/php-developers",
           title: "Hire PHP Developers",
           icon: <FaPhp />,
         },
         {
-          href: "/hire/laravel-developer",
+          href: "/hire/laravel-developers",
           title: "Hire Laravel Developers",
           icon: <FaLaravel />,
         },
         {
-          href: "/hire/Django-developer",
+          href: "/hire/Django-developers",
           title: "Hire Django Developers",
           icon: <FaPython />,
         },
@@ -577,27 +577,27 @@ const SideBar = () => {
       id: "hirefullstacktab",
       icon: <FaReact className="inline-block text-sky-600" />,
       title: "Hire Full‑Stack Developers",
-      href: "/hire/full-stack-developer",
+      href: "/hire/full-stack-developers",
       description:
         "Ship end‑to‑end features faster with full‑stack developers who can own frontend, backend and integrations.",
       links: [
         {
-          href: "/hire/mern-developer",
+          href: "/hire/mern-developers",
           title: "Hire MERN Stack Developers",
           icon: <FaReact />,
         },
         {
-          href: "/hire/mean-developer",
+          href: "/hire/mean-developers",
           title: "Hire NextJs Developers",
           icon: <FaAngular />,
         },
         {
-          href: "/hire/laravel-vue-developer",
+          href: "/hire/laravel-vue-developers",
           title: "Hire Laravel + Vue Developers",
           icon: <FaLaravel />,
         },
         {
-          href: "/hire/react-node-developer",
+          href: "/hire/react-node-developers",
           title: "Hire React + Django Developers",
           icon: <FaPython />,
         },
@@ -609,27 +609,27 @@ const SideBar = () => {
       id: "hireecommercetab",
       icon: <FaShoppingCart className="inline-block text-sky-600" />,
       title: "Hire eCommerce Developers",
-      href: "/hire/ecommerce-developer",
+      href: "/hire/ecommerce-developers",
       description:
         "Hire eCommerce experts to build conversion‑focused, secure and scalable online stores.",
       links: [
         {
-          href: "/hire/magento-developer",
+          href: "/hire/magento-developers",
           title: "Hire Magento Developers",
           icon: <FaShoppingCart />,
         },
         {
-          href: "/hire/wordpress-developer",
+          href: "/hire/wordpress-developers",
           title: "Hire WordPress Developers",
           icon: <FaWordpress />,
         },
         {
-          href: "/hire/woocommerce-developer",
+          href: "/hire/woocommerce-developers",
           title: "Hire WooCommerce Developers",
           icon: <FaShoppingCart />,
         },
         {
-          href: "/hire/shopify-developer",
+          href: "/hire/shopify-developers",
           title: "Hire Shopify Developers",
           icon: <FaShopify />,
         },
@@ -641,7 +641,7 @@ const SideBar = () => {
       id: "hireothertab",
       icon: <FaUserTie className="inline-block text-sky-600" />,
       title: "Hire Dedicated Experts",
-      href: "/hire/dedicated-developer",
+      href: "/hire/dedicated-developers",
       description:
         "Build a long‑term pod of dedicated experts across architecture, cloud, data, QA and product.",
       links: [
@@ -656,7 +656,7 @@ const SideBar = () => {
           icon: <FaCloud />,
         },
         // {
-        //   href: "/hire/dedicated-developer/database-engineers",
+        //   href: "/hire/dedicated-developers/database-engineers",
         //   title: "Hire Database Engineers",
         //   icon: <FaDb />,
         // },
@@ -671,7 +671,7 @@ const SideBar = () => {
           icon: <FaRobot />,
         },
         {
-          href: "/hire/software-developer",
+          href: "/hire/software-developers",
           title: "Hire Software Developers",
           icon: <FaRegIdCard />,
         },
@@ -686,85 +686,89 @@ const SideBar = () => {
 
   // Hire Menu Items Array (from your tabs data)
   const HireMenuItems = [
-    { id: "hireApp", title: "Hire App Developers", href: "/hire/app-developer", links: tabs[0].links },
-    { id: "hireFrontend", title: "Hire Frontend Developers", href: "/hire/frontend-developer", links: tabs[1].links },
-    { id: "hireBackend", title: "Hire Backend Developers", href: "/hire/backend-developer", links: tabs[2].links },
-    { id: "hireFullstack", title: "Hire Full-Stack Developers", href: "/hire/full-stack-developer", links: tabs[3].links },
-    { id: "hireEcommerce", title: "Hire eCommerce Developers", href: "/hire/ecommerce-developer", links: tabs[4].links },
-    { id: "hireDedicated", title: "Hire Dedicated Experts", href: "/hire/dedicated-developer", links: tabs[5].links }
+    { id: "hireApp", title: "Hire App Developers", href: "/hire/app-developers", links: tabs[0].links },
+    { id: "hireFrontend", title: "Hire Frontend Developers", href: "/hire/frontend-developers", links: tabs[1].links },
+    { id: "hireBackend", title: "Hire Backend Developers", href: "/hire/backend-developers", links: tabs[2].links },
+    { id: "hireFullstack", title: "Hire Full-Stack Developers", href: "/hire/full-stack-developers", links: tabs[3].links },
+    { id: "hireEcommerce", title: "Hire eCommerce Developers", href: "/hire/ecommerce-developers", links: tabs[4].links },
+    { id: "hireDedicated", title: "Hire Dedicated Experts", href: "/hire/dedicated-developers", links: tabs[5].links }
   ];
 
   const industriestabs = [
     // ✅ INDUSTRIES (main link: /industries)
-    {
-      id: "industry",
-      title: "Industry",
-      heading: "Industry‑Specific Solutions",
-      icon: <FaIndustry className="inline-block text-sky-600" />,
-
-      href: "/industries",
-      description:
-        "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
-      items: [
-        { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat /> },
-        { title: "Education / E-Learning", href: "/industries/elearning", icon: <FaGraduationCap /> },
-        { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding /> },
-        { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane /> },
-        { title: "Food & Restaurant", href: "/industries/food-delivery", icon: <FaUtensils /> },
-        { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell /> },
-        { title: "Retail & E-Commerce", href: "/industries/ecommerce", icon: <FaStore /> },
-
-        { title: "Logistics/Transportation", href: "/industries/logistics", icon: <FaTruck /> },
-
-        // URL missing in your list -> fallback
-        { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
-
-        { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers /> },
-        { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign /> },
-        { title: "Automotive", href: "/industries/automotive", icon: <FaCar /> },
-        { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
-        { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory /> },
-        { title: "Event Management", href: "/industries/event-management", icon: <FaCalendarAlt /> },
-        // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
-      ],
-    },
-
+     {
+           id: "industry",
+           title: "Industry",
+           heading: "Industry‑Specific Solutions",
+           icon: <FaIndustry className="inline-block text-sky-600" />,
+     
+           href: "/industries",
+           description:
+             "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+           items: [
+             { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat /> },
+             { title: "Education / E-Learning", href: "/industries/education", icon: <FaGraduationCap /> },
+             { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding /> },
+             { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane /> },
+             { title: "Food & Restaurant", href: "/industries/restaurant", icon: <FaUtensils /> },
+             { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell /> },
+             { title: "Retail & E-Commerce", href: "/industries/retail", icon: <FaStore /> },
+     
+             { title: "Logistics/Transportation", href: "/industries/logistics", icon: <FaTruck /> },
+     
+             // URL missing in your list -> fallback
+             { title: "Media & Entertainment", href: "/industries/entertainment", icon: <FaFilm /> },
+     
+             { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers /> },
+             { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign /> },
+             { title: "Automotive", href: "/industries/automotive", icon: <FaCar /> },
+             { title: "Construction", href: "/industries/construction", icon: <FaHammer /> },
+             { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory /> },
+             { title: "Sports", href: "/industries/sports", icon: <FaCalendarAlt /> },
+            
+           ],
+         },
+    
 
   ];
   const solutionsArray = [
      // ✅ INDUSTRIES (main link: /industries)
-        {
-          id: "industry",
-          title: "Industry‑Specific Solutions",
-      heading: "Industry‑Specific Solutions",
-          icon: <FaIndustry className="inline-block text-sky-600" />,
-    
-          href: "/industries",
-           description:
-            "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
-          items: [
-            { title: "Healthcare", href: "/industries/healthcare-app-development", icon: <FaHeartbeat /> },
-            { title: "Education / E-Learning", href: "/industries/elearning-app-development", icon: <FaGraduationCap /> },
-            { title: "Real Estate", href: "/industries/real-estate-app-development", icon: <FaBuilding /> },
-            { title: "Travel & Tourism", href: "/industries/travel-app-development", icon: <FaPlane /> },
-            { title: "Food & Restaurant", href: "/industries/food-delivery-app-development", icon: <FaUtensils /> },
-            { title: "Fitness & Wellness", href: "/industries/fitness-app-development", icon: <FaDumbbell /> },
-            { title: "Retail & E-Commerce", href: "/industries/ecommerce-app-development", icon: <FaStore /> },
-    
-            { title: "Logistics/Transportation", href: "/industries/logistics-app-development", icon: <FaTruck /> },
-    
-            // URL missing in your list -> fallback
-            { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
-    
-            { title: "Social Networking", href: "/industries/social-media-app-development", icon: <FaUsers /> },
-            { title: "Finance / FinTech", href: "/industries/fintech-software-development", icon: <FaDollarSign /> },
-            { title: "Automotive", href: "/industries/automotive-app-development", icon: <FaCar /> },
-            { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
-            { title: "Manufacturing", href: "/industries/manufacturing-app-development", icon: <FaFactory /> },
-            { title: "Event Management", href: "/industries/event-management-software-development", icon: <FaCalendarAlt /> },
-            // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
-          ],
-        },
+         {
+              id: "industry",
+              title: "Industry‑Specific Solutions",
+          heading: "Industry‑Specific Solutions",
+              icon: <FaIndustry className="inline-block text-sky-600" />,
+        
+              href: "/industries",
+               description:
+                "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+              items: [
+                { title: "Healthcare", href: "/solutions/healthcare-app-development", icon: <FaHeartbeat /> },
+                { title: "Education / E-Learning", href: "/solutions/elearning-app-development", icon: <FaGraduationCap /> },
+                { title: "Real Estate", href: "/solutions/real-estate-app-development", icon: <FaBuilding /> },
+                { title: "Travel & Tourism", href: "/solutions/travel-app-development", icon: <FaPlane /> },
+                { title: "Food & Restaurant", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
+                { title: "Fitness & Wellness", href: "/solutions/fitness-app-development", icon: <FaDumbbell /> },
+                { title: "Retail & E-Commerce", href: "/solutions/ecommerce-app-development", icon: <FaStore /> },
+        
+                { title: "Logistics/Transportation", href: "/solutions/logistics-app-development", icon: <FaTruck /> },
+        
+                // URL missing in your list -> fallback
+                { title: "Media & Entertainment", href: "/solutions/media", icon: <FaFilm /> },
+        
+                { title: "Social Networking", href: "/solutions/social-media-app-development", icon: <FaUsers /> },
+                { title: "Finance / FinTech", href: "/solutions/fintech-app-development", icon: <FaDollarSign /> },
+                { title: "Automotive", href: "/solutions/automotive-app-development", icon: <FaCar /> },
+                { title: "Construction", href: "/solutions/construction-management-app-development", icon: <FaHammer /> },
+                { title: "Manufacturing", href: "/solutions/manufacturing-app-development", icon: <FaFactory /> },
+                { title: "Event Management", href: "/solutions/event-management-app-development", icon: <FaCalendarAlt /> },
+                // { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
+                { title: "Dating App", href: "/solutions/dating-app-development", icon: <FaUsers /> },
+                { title: "Astrology App", href: "/solutions/astrology-app-development", icon: <FaUsers /> },
+                { title: "Legal App", href: "/solutions/legal-app-development", icon: <FaUsers /> },
+              ],
+            },
+        
     // ✅ ON DEMAND (main link: /solutions)
     {
       id: "ondemand",
@@ -784,8 +788,8 @@ const SideBar = () => {
         { title: "Beauty & Salon Booking", href: "/solutions/salon-app-development", icon: <FaSpa /> },
         { title: "Doctor & Medical App", href: "/solutions/ice-cream-delivery-app-development", icon: <FaHeartbeat /> },
         { title: "Laundry Service", href: "/solutions/laundry-app-development", icon: <FaShoppingBag /> },
-        { title: "Restaurant management", href: "/solutions/restaurant-app-development-company", icon: <FaUtensils /> },
-        { title: "Dating App", href: "/solutions/dating-app-development-company", icon: <FaUsers /> },
+        { title: "Restaurant management", href: "/solutions/restaurant-app-development", icon: <FaUtensils /> },
+         { title: "Pet Care App", href: "/solutions/pet-care-app-development", icon: <FaUsers /> },
         { title: "Carpooling Apps", href: "/solutions/ride-sharing-app-development", icon: <FaCarSide /> },
         { title: "Tutor App", href: "/solutions/tutor-app-development", icon: <FaUserGraduate /> },
         { title: "Mechanics & Repair App", href: "/solutions/mechanic-app-development", icon: <FaWrench /> },
@@ -831,7 +835,7 @@ const SideBar = () => {
       items: [
         { title: "Marketplace App", href: "/solutions/marketplace-app-development", icon: <FaStore /> },
         { title: "Subscription Software", href: "/solutions/subscription-platform-development", icon: <FaCoins /> },
-        { title: "Multi-Vendor E-commerce", href: "/solutions/multivendor-ecommerce-development", icon: <FaStore /> },
+        { title: "B2B Commerce", href: "/solutions/b2b-ecommerce-development", icon: <FaStore /> },
         { title: "SaaS Product Development", href: "/solutions/saas-product-development", icon: <FaCloud /> },
         { title: "CRM Software", href: "/solutions/crm-software-development", icon: <FaProjectDiagram /> },
         { title: "ERP Software", href: "/solutions/erp-software-development", icon: <FaProjectDiagram /> },
@@ -843,22 +847,22 @@ const SideBar = () => {
     },
 
     // ✅ TECHNOLOGY (main link: /solutions)
-    {
-      id: "technology",
-      title: "Technology‑Based Solutions",
-      icon: <FaMicrochip className="inline-block text-sky-600" />,
-      heading: "Technology‑Based Solutions",
-      href: "/solutions",
-      description: "Cutting-edge technology solutions including AI/ML, blockchain, IoT and AR/VR for innovative products.",
-      items: [
-        { title: "AI/ML Solutions", href: "/solutions/ai-ml-development", icon: <FaRobot /> },
-        { title: "Chatbot Development", href: "/solutions/chatbot-development", icon: <FaComments /> },
-        { title: "IoT App Development", href: "/solutions/iot-app-development", icon: <FaMicrochip /> },
-        { title: "Blockchain Solutions", href: "/solutions/blockchain-development", icon: <FaCube /> },
-        { title: "Cloud & DevOps", href: "/solutions/cloud-devops-services", icon: <FaCloud /> },
-        { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
-      ],
-    },
+    // {
+    //   id: "technology",
+    //   title: "Technology‑Based Solutions",
+    //   icon: <FaMicrochip className="inline-block text-sky-600" />,
+    //   heading: "Technology‑Based Solutions",
+    //   href: "/solutions",
+    //   description: "Cutting-edge technology solutions including AI/ML, blockchain, IoT and AR/VR for innovative products.",
+    //   items: [
+    //     { title: "AI/ML Solutions", href: "/solutions/ai-ml-development", icon: <FaRobot /> },
+    //     { title: "Chatbot Development", href: "/solutions/chatbot-development", icon: <FaComments /> },
+    //     { title: "IoT App Development", href: "/solutions/iot-app-development", icon: <FaMicrochip /> },
+    //     { title: "Blockchain Solutions", href: "/solutions/blockchain-development", icon: <FaCube /> },
+    //     { title: "Cloud & DevOps", href: "/solutions/cloud-devops-services", icon: <FaCloud /> },
+    //     { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
+    //   ],
+    // },
    
     
     

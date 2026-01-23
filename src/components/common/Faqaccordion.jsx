@@ -2,30 +2,62 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-export default function FAQAccordion({ faqs }) {
+export default function FAQAccordion({ faq }) {
   const [openIndex, setOpenIndex] = useState(0);
 
-  const items =
-    faqs ||
-    [
-      {
-        id: 1,
-        q: "Where is Softkingo Technologies located?",
-        a:
-          "New Ashok Nagar, New Delhi - 110096 & H61, Block H, Sector 63, Noida - 201301, India.",
-      },
-      { id: 2, q: "What services does Softkingo Technologies provide?", a: "Full-stack web & mobile app development, UI/UX design, cloud infrastructure (AWS/GCP), DevOps, and dedicated development teams." },
-      { id: 3,  q: "How strong is the company team?",
-        a: "200+ developers with 4-10+ years experience across React, Node.js, Flutter, Next.js, AWS, and full-stack expertise." },
-      { id: 4,  q: "What is the best way to communicate with your expert advisor or sales team?",
-        a: "Email: info@softkingo.com or call +91-7428750870. Average response: under 2 hours."},
-      { id: 5,q: "Who owns the legal rights to the technology developed by Softkingo?",
-        a: "You own 100% IP rights. Full source code ownership transfers upon final payment."},
-      { id: 6,  q: "How do you make sure your IP address is secure?",
-        a: "Enterprise-grade encryption (AES-256), GDPR compliant, SOC2 certified servers, NDAs signed with all developers."},
-      { id: 7,  q: "Why choose Softkingo Technologies for other mobile application development companies?",
-        a: "98% client retention, 4.9/5 Clutch rating, 2-week risk-free trial, dedicated account manager, post-launch support included."},
-    ];
+  const items = faq || [
+  {
+    id: 1,
+    q: "How do you ensure the security and quality of the app or software you develop?",
+    a: "At Softkingo, security and quality aren’t afterthoughts—they’re part of our foundation. From day one, we take deliberate steps to make sure your software is secure, stable, and built to last. We begin every project by signing a Non-Disclosure Agreement (NDA), ensuring that your ideas, data, and business details stay completely confidential. On the security front, our developers follow secure coding standards and implement strong data protection practices from the initial development phase. Depending on your industry, we align your solution with global compliance standards such as GDPR, HIPAA, and PCI DSS. We also use advanced security measures like data encryption, multi-factor authentication, role-based access control, and frequent code reviews to reduce risks and prevent vulnerabilities. To maintain high quality, we embed a comprehensive QA process into our Agile workflow. Every app or software solution goes through extensive testing, including manual and automated testing, functionality checks, usability testing, performance optimization, and security testing. Even after launch, we don’t step away. We conduct regular vulnerability assessments, third-party security audits, and continuous monitoring to keep your product safe and efficient. Our QA and development teams work closely together to quickly resolve bugs, performance issues, or user concerns—both during development and post-deployment. "
+  },
+  {
+    id: 2,
+    q: "How do you ensure a seamless user experience in your designs?",
+    a: "Delivering a smooth and intuitive user experience is a top priority for us. Our design process starts with detailed user research and competitor analysis so we can truly understand your audience, their expectations, and their challenges. Our UI/UX designers focus on simplicity, consistency, and ease of use. We follow the latest design trends and strictly adhere to platform-specific guidelines to ensure your app feels familiar and intuitive to users from the first interaction. Before finalizing any design, we create wireframes and interactive prototypes. These allow us to test usability early and gather feedback from stakeholders, helping us refine the experience before development begins. At Softkingo, our goal is to create designs that are not only visually appealing but also practical and user-friendly—experiences that users enjoy and businesses can rely on. "
+  },
+  {
+    id: 3,
+    q: "What makes Softkingo the best software and mobile app development company?",
+    a: "Softkingo stands out because of our proven experience, strong technical expertise, and passion for innovation. Our team of 50+ skilled professionals—including developers, designers, and industry experts—works collaboratively to deliver solutions that truly make an impact. We’ve successfully completed 400+ projects for over 350+ clients across the globe. Our expertise covers mobile app development (iOS, Android, and hybrid), IoT solutions, AI-powered platforms, marketplaces, and custom software development. Our portfolio includes high-profile projects like LocalLove’s, Guidly, Moglix, and Fitify all of which have achieved excellent user engagement and commercial success. We’ve also helped startups turn ideas into thriving products. Platforms such as Ezydash, Fitify, and Lovelocal were built with scalability in mind, helping founders secure funding and compete effectively in their markets. Our work has earned industry recognition as well. Softkingo has been listed among the Top 100 Mobile App Development Companies by Clutch, received the Best App Development Company award in 2022, and was recently awarded Top Mobile App Development Company in India in 2025 by Tech Behemoths. In addition, we provide staff augmentation services, allowing businesses to quickly scale their teams with vetted experts and round-the-clock support—ensuring smooth collaboration across time zones. "
+  },
+  {
+    id: 4,
+    q: "What software development services do you offer?",
+    a: "With over 6+ years of experience, Softkingo delivers robust and scalable digital solutions to businesses worldwide. We’ve successfully completed 400+ projects across 25+ countries, offering end-to-end custom software development services, including: Software Consulting   Custom Software Development Enterprise Software Development   Software Product Development  Software Integration Custom CRM Development  API Development  ERP Software Development We follow Agile development methodologies to ensure faster delivery and better adaptability. By dividing projects into smaller sprints, we enable continuous feedback and greater transparency throughout the development lifecycle. To meet diverse business needs, we also offer flexible engagement models—dedicated development teams, hourly hiring, and fixed-cost projects—so you can scale resources as your project evolves. "
+  },
+  {
+    id: 5,
+    q: "Do you offer post-launch support and maintenance?",
+    a: "Yes, absolutely. Post-launch support and maintenance are an essential part of our services. We ensure your app continues to perform smoothly, stays secure, and evolves with changing technologies. Our app maintenance services include:  Technology-based software upgrades Automated backups Issue tracking and resolution Ongoing bug fixes and support Performance optimization Security updates Version upgrades User support Continuous performance monitoring Our experts proactively monitor your application, address technical challenges, and implement improvements to ensure a seamless user experience long after launch. "
+  },
+  {
+    id: 6,
+    q: "Do you offer a free consultation or project estimate?",
+    a: "Yes, we do. We offer a completely free initial consultation and project estimate to help you move forward with confidence.  During the consultation, we take time to understand your business objectives, target audience, technical needs, and long-term goals. Based on this discussion, we provide a customized project roadmap along with a transparent cost and timeline estimate—at no cost to you. If you’re ready to bring your idea to life, get in touch with us today and let’s start building something great together. "
+  },
+  {
+    id: 7,
+    q: "Can you integrate AI or other emerging technologies into my app?",
+    a: "Yes, we specialize in integrating AI and emerging technologies into mobile and web applications to help businesses stay competitive and future-ready. Our team can integrate AI-driven features such as chatbots, predictive analytics, natural language processing (NLP), facial recognition, and recommendation systems. We stay updated with the latest advancements and use reliable frameworks and APIs to ensure seamless integration with your existing infrastructure. Whether you have a clear idea or are exploring possibilities, our AI experts are here to help you build smarter, next-generation applications. "
+  },
+  {
+    id: 8,
+    q: "What is the average cost and timeline for developing a mobile app?",
+    a: "The cost and timeline of mobile app development depend on multiple factors, including app complexity, features, platform selection, design requirements, and integrations. A simple app with basic functionality typically costs between $10,000 and $30,000. More complex apps with advanced features generally range from $30,000 to $50,000 or higher. In terms of timelines, simple apps can be completed within 2 to 3 months, while complex applications may take 6 to 9 months, depending on scope and requirements. Since every project is unique, we recommend connecting with our experts for a personalized consultation. We’ll provide a detailed cost and timeline estimate tailored specifically to your vision. "
+  },
+  {
+    id: 9,
+    q: "What mobile app development services do you offer?",
+    a: "As a globally recognized development company, we offer complete mobile app development services, including: Custom App Development , iOS App Development , Android App Development , Flutter App Development , React Native App Development , Web App Development , Progressive Web App (PWA) Development , Healthcare App Development , AI/ML App Development , AR/VR App Development , dApp Development , IoT App Development , Wearable App Development , Dating App Development At Softkingo, we believe in building long-term partnerships. From ideation to launch and ongoing support, we stay involved at every stage. By combining strategic planning, agile execution, and continuous improvement, we deliver products that drive real business value. "
+  },
+  {
+    id: 10,
+    q: "How do you handle project management and communication?",
+    a: "We follow a transparent and client-centric approach to ensure smooth project execution and clear communication at every stage. Our teams work using Agile project management methodologies, breaking projects into manageable sprints. This allows us to remain flexible and quickly adapt to changing requirements or priorities. For communication, we use dedicated channels such as Slack, Zoom, Microsoft Teams, and email. Each project is assigned a dedicated project manager who serves as your single point of contact. We also provide real-time project tracking through tools like Jira, Trello, and Asana, giving you full visibility into progress and keeping you involved throughout the development journey. "
+  }
+];
+
 
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 

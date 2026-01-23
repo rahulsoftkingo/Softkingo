@@ -15,7 +15,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 const Footer = () => {
   const offerings = [
-    { label: "Software Development", href: "/services" },
+    { label: "Software Development", href: "/" },
     { label: "Mobile App Development", href: "/services/mobile-app-development" },
     { label: "Web & CMS Development", href: "/services/web-development" },
     { label: "E-Commerce Development", href: "/services/ecommerce-development" },
@@ -110,7 +110,7 @@ const Footer = () => {
               </Link>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                Incepted in 2018, Softkingo has grown at an exponential pace
+                Incepted in 2020, Softkingo has grown at an exponential pace
                 with clients across 107 countries. We offer a complete range of
                 IT services and industry‑focused solutions to more than 39+
                 domains worldwide.
@@ -262,7 +262,7 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-5">
               {/* Copyright */}
               <p className="text-slate-500 text-xs md:text-sm">
-                © 2018–{currentYear} Softkingo Technologies Pvt. Ltd. All rights reserved.
+                © 2020–{currentYear} Softkingo Technologies Pvt. Ltd. All rights reserved.
               </p>
 
 
@@ -285,7 +285,7 @@ const Footer = () => {
 
               {/* Legal Links */}
               <div className="flex flex-wrap justify-center gap-4 text-xs md:text-sm">
-                {["Privacy Policy", "Terms Conditions", "FAQs", "Site-map"].map(
+                {["Privacy Policy", "Terms Conditions", "faq", "Site-map"].map(
                   (item) => (
                     <Link
                       key={item}

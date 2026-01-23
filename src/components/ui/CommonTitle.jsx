@@ -1,7 +1,7 @@
 // components/ui/CommonTitle.jsx
 const CommonTitle = ({
     pill = null,
-    title = "Our Portfolio",
+    title = null,
     subtitle = null,
     gradientText = null,
     align = "center"  // "left" | "center" | "right"
@@ -27,14 +27,14 @@ const CommonTitle = ({
     return (
         <div className={`${textAlignClass} ${containerClass} mb-8 sm:mb-12`}>
             {/* Pill with alignment */}
-            {pill && typeof pill === 'string' && (
+            {pill && typeof pill === '' && (
                 <div className={`inline-flex items-center gap-2 px-4 py-2 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium border border-cyan-200 mb-4 ${pillAlignClass} max-w-max`}>
                     {pill}
                 </div>
             )}
             
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900">
-                {title ? title.split(' ')[0] : 'Title'}{' '}
+                {title ? title.split(' ')[0] : ''}{' '}
                 {gradientText && typeof gradientText === 'string' ? (
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
                         {gradientText}
@@ -42,7 +42,7 @@ const CommonTitle = ({
                 ) : title ? (
                     title.split(' ').slice(1).join(' ')
                 ) : (
-                    'Subtitle'
+                    ''
                 )}
             </h2>
 

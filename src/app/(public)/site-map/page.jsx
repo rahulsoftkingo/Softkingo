@@ -58,7 +58,7 @@ export default async function SiteMapPage() {
     '/solutions/ai-ml-development', '/solutions/chatbot-development',
     '/solutions/iot-app-development', '/solutions/blockchain-development',
     '/solutions/cloud-devops-services', '/solutions/ar-vr-app-development',
-    '/privacy-policy', '/terms-conditions', '/faqs', '/site-map',
+    '/privacy-policy', '/terms-conditions', '/faq', '/site-map',
     '/articles', '/guides', '/media-coverage', '/podcasts', '/press-releases', '/whitepapers'
   ];
 

@@ -25,9 +25,9 @@ export default function NewServicePage() {
     
     // Stats
     stats: {
-      years: '5+',
+      years: '6+',
       yearsLabel: 'Years of Experience',
-      projects: '450+',
+      projects: '400+',
       projectsLabel: 'Projects Completed',
       team: '50+',
       teamLabel: 'Expert Team Members',
@@ -377,7 +377,7 @@ export default function NewServicePage() {
                     type="text"
                     value={formData.stats.years}
                     onChange={(e) => handleStatsChange('years', e.target.value)}
-                    placeholder="5+"
+                    placeholder="6+"
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                 </div>
@@ -398,7 +398,7 @@ export default function NewServicePage() {
                     type="text"
                     value={formData.stats.projects}
                     onChange={(e) => handleStatsChange('projects', e.target.value)}
-                    placeholder="450+"
+                    placeholder="400+"
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
                 </div>

@@ -10,19 +10,21 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata = {
-  title: "Softkingo - Digital Transformation & Software Solutions",
-  description: "Custom software development services - Mobile apps, Web platforms, AI/ML, Blockchain, Cloud solutions for global businesses.",
+  title: "Softkingo – Mobile App & Web Development Company in India, New Delhi, Noida",
+  description: "Softkingo helps businesses grow with custom mobile apps, modern websites, and effective digital marketing. We make tech easy and results-focused.",
   keywords: [
-    "software company India", "app development", "web development", 
-    "hire developers", "digital transformation"
+    "software development company In India", "Mobile App development", "Web development Company", 
+    "hire developers", "Mobile App development Company In New Delhi"
+    , "Mobile App development Company In New Noida"
+    , "Mobile App development Company In India"
   ],
   openGraph: {
     title: "Softkingo - Digital Transformation Partner",
     description: "Transform business with custom software solutions across mobile, web, AI/ML & blockchain.",
-    url: "https://softkingo.com",
+    url: "https://www.softkingo.com",
     images: ["/images/og/public-home.jpg"]
   },
-  alternates: { canonical: "https://softkingo.com" }
+  alternates: { canonical: "https://www.softkingo.com" }
 };
 
 export default function PublicLayout({ children }) {

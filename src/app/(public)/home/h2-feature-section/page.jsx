@@ -4,7 +4,7 @@ import React from 'react';
 const features = [
   { name: "5+", image: "/images/feature/image 183.png" },
   { name: "5.0+", image: "/images/feature/image 182.png" },
-  { name: "450+", image: "/images/feature/image 185.png" },
+  { name: "400+", image: "/images/feature/image 185.png" },
   { name: "50+", image: "/images/feature/image 184.png" },
   { name: "50+", image: "/images/feature/BBC.png" },
 ];

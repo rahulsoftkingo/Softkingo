@@ -180,7 +180,7 @@ export default function ServicesSection() {
                 title: "Web Application Development",
                 description: "Dynamic web applications with full-stack capabilities.",
                 icon: <FaCode />,
-                link: "/services/web-app-development",
+                link: "/services/web-application-development",
                 technologies: [
                   { name: "Next.js", image: "/images/tech/nextjs.png" },
                   { name: "Node.js", image: "/images/tech/nodejs.png" },

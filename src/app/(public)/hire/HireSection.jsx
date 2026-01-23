@@ -63,7 +63,7 @@ export default async function HireSection() {
         buttonText: "View Profiles",
         image: "/images/services/s1.png",
         developerCount: "50+ Developers",
-        experience: "5+ Years Avg Experience",
+        experience: "6+ Years Avg Experience",
         badge: "Available Now",
         href: "/hire/frontend-developers"
       },
@@ -115,7 +115,7 @@ export default async function HireSection() {
         buttonText: "View Profiles",
         image: "/images/hire/fullstack.jpg",
         developerCount: "45+ Developers",
-        experience: "5+ Years Avg Experience",
+        experience: "6+ Years Avg Experience",
         badge: "Highly Skilled",
         href: "/hire/full-stack-developers"
       },
@@ -140,7 +140,7 @@ export default async function HireSection() {
         buttonText: "View Profiles",
         image: "/images/hire/ecommerce.jpg",
         developerCount: "35+ Developers",
-        experience: "5+ Years Avg Experience",
+        experience: "6+ Years Avg Experience",
         badge: "Store Certified",
         href: "/hire/ecommerce-developers"
       },

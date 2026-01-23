@@ -10,8 +10,8 @@ import InquirySection from '@/components/footer/InquirySection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 
 const stats = [
-  { number: '5+', label: 'Years Of Experience' },
-  { number: '450+', label: 'Apps Developed' },
+  { number: '6+', label: 'Years Of Experience' },
+  { number: '400+', label: 'Apps Developed' },
   { number: '50+', label: 'Mobile App Developer' },
   { number: '400+', label: 'Clients Worldwide' },
 ];

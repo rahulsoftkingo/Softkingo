@@ -352,7 +352,7 @@ export default function AIPage() {
             align="center"
             title="Industries"
             gradientText="We Serve"
-            subtitle="Healthcare, Banking, Insurance, E-Commerce, Manufacturing, and 5+ more"
+            subtitle="Healthcare, Banking, Insurance, E-Commerce, Manufacturing, and 6+ more"
           />
 
           <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-16 lg:mt-24">

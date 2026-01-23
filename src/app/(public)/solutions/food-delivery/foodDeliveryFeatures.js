@@ -91,7 +91,7 @@ export default function FoodDeliveryFeatures() {
                             Delivery App Development?
                         </h2>
                         <p className="text-gray-600 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
-                            Being the best on-demand food delivery app development company Apptunix provides
+                            Being the best on-demand food delivery app development company Softkingo provides
                             comprehensive solutions that cover the entire development lifecycle and post-launch
                             support, ensuring your app's success in the long run.
                         </p>

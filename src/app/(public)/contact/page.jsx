@@ -6,6 +6,7 @@ import Faqaccordion from "@/components/common/Faqaccordion";
 import CTA from "@/components/common/Consultation-Cta";
 import InquiryForm from "@/components/public/InquiryForm";
 import TechAheadSection from "@/components/public/TechAheadSection";
+import CommonTitle from "@/components/ui/CommonTitle";
 
 export default function ContactPage() {
   return (
@@ -143,7 +144,7 @@ export default function ContactPage() {
                 />
               </div>
             </div> */}
-               <TechAheadSection/>
+            <TechAheadSection />
           </div>
 
           {/* RIGHT COLUMN: REUSABLE FORM */}
@@ -247,16 +248,16 @@ function JoinTeamSection() {
               digital experiences. Share your profile with us or explore our
               current openings.
             </p>
-            
+
           </div>
-<div className="flex flex-wrap gap-3 pt-2 hidden">
-              <button className="px-5 py-2 rounded-full border border-[#0B3250] text-sm text-[#0B3250] bg-white/90 hover:bg-white transition-colors shadow-[0_8px_18px_rgba(0,0,0,0.04)]">
-                Drop an Email
-              </button>
-              <button className="px-5 py-2 rounded-full bg-[#00B7FF] text-white text-sm font-semibold hover:bg-[#0096d4] transition-colors shadow-[0_10px_22px_rgba(0,0,0,0.15)]">
-                See All Careers
-              </button>
-            </div>
+          <div className="flex flex-wrap gap-3 pt-2 hidden">
+            <button className="px-5 py-2 rounded-full border border-[#0B3250] text-sm text-[#0B3250] bg-white/90 hover:bg-white transition-colors shadow-[0_8px_18px_rgba(0,0,0,0.04)]">
+              Drop an Email
+            </button>
+            <button className="px-5 py-2 rounded-full bg-[#00B7FF] text-white text-sm font-semibold hover:bg-[#0096d4] transition-colors shadow-[0_10px_22px_rgba(0,0,0,0.15)]">
+              See All Careers
+            </button>
+          </div>
           <div className="rounded-[22px] bg-white/80 border border-white shadow-[0_18px_45px_rgba(0,0,0,0.08)] px-6 py-5 ">
             <p className="text-xs font-semibold tracking-wide text-sky-600 uppercase">
               Why work with us
@@ -306,35 +307,43 @@ function AwardsSection() {
     <section className="bg-white py-12 lg:py-16">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <div className="flex flex-col items-center gap-2">
-          <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900">
-            Our Awards &amp; Recognitions
-          </h3>
-          <p className="mt-2 text-sm md:text-base text-slate-600 max-w-3xl">
-            These recognitions reflect our commitment to quality, innovation,
-            and long‑term partnerships with our clients.
-          </p>
+
+          <CommonTitle
+            align="center"
+            pill={false}
+            title='Our'
+            gradientText='Awards & Recognitions'
+            subtitle='These recognitions reflect our commitment to quality, innovation,
+            and long‑term partnerships with our clients.'
+          />
         </div>
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center">
+        <div className="mt-8 grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center">
           <Image
-            src="/images/award/award1.png"
+            src="/images/award/Black And Gold Modern Award Ceremony Instagram Post (1).png"
             alt="award1"
             width={150}
             height={80}
           />
           <Image
-            src="/images/award/award2.png"
+            src="/images/award/Black And Gold Modern Award Ceremony Instagram Post (2).png"
             alt="award2"
             width={150}
             height={80}
           />
           <Image
-            src="/images/award/award3.png"
+            src="/images/award/Black And Gold Modern Award Ceremony Instagram Post (4).png"
             alt="award3"
             width={150}
             height={80}
           />
           <Image
-            src="/images/award/award4.png"
+            src="/images/award/Goodfirms award-softkingo.png"
+            alt="award4"
+            width={150}
+            height={80}
+          />
+          <Image
+            src="/images/award/techbeheb.png"
             alt="award4"
             width={150}
             height={80}
@@ -448,9 +457,8 @@ function ContactChip({ label, value, href }) {
   return (
     <Wrapper
       href={href}
-      className={`block rounded-[18px] bg-white/90 border border-[#C7EAF7] px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.06)] text-xs md:text-sm ${
-        href ? "hover:bg-white cursor-pointer" : ""
-      }`}
+      className={`block rounded-[18px] bg-white/90 border border-[#C7EAF7] px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.06)] text-xs md:text-sm ${href ? "hover:bg-white cursor-pointer" : ""
+        }`}
     >
       <p className="text-[11px] uppercase tracking-wide text-slate-500">
         {label}

@@ -34,6 +34,7 @@ import {
   FaCloud,
   FaCube,
 } from "react-icons/fa";
+import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 
 const tabs = [
   // ✅ INDUSTRIES (main link: /industries)
@@ -48,25 +49,25 @@ const tabs = [
          "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
        items: [
          { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat /> },
-         { title: "Education / E-Learning", href: "/industries/elearning", icon: <FaGraduationCap /> },
+         { title: "Education / E-Learning", href: "/industries/education", icon: <FaGraduationCap /> },
          { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding /> },
          { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane /> },
-         { title: "Food & Restaurant", href: "/industries/food-delivery", icon: <FaUtensils /> },
+         { title: "Food & Restaurant", href: "/industries/restaurant", icon: <FaUtensils /> },
          { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell /> },
-         { title: "Retail & E-Commerce", href: "/industries/ecommerce", icon: <FaStore /> },
+         { title: "Retail & E-Commerce", href: "/industries/retail", icon: <FaStore /> },
  
          { title: "Logistics/Transportation", href: "/industries/logistics", icon: <FaTruck /> },
  
          // URL missing in your list -> fallback
-         { title: "Media & Entertainment", href: "/industries", icon: <FaFilm /> },
+         { title: "Media & Entertainment", href: "/industries/entertainment", icon: <FaFilm /> },
  
          { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers /> },
          { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign /> },
          { title: "Automotive", href: "/industries/automotive", icon: <FaCar /> },
-         { title: "Construction", href: "/industries/construction-management-software-development", icon: <FaHammer /> },
+         { title: "Construction", href: "/industries/construction", icon: <FaHammer /> },
          { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory /> },
-         { title: "Event Management", href: "/industries/event-management", icon: <FaCalendarAlt /> },
-         // { title: "AR/VR", href: "/industries/ar-vr-app-development", icon: <FaVrCardboard /> },
+         { title: "Sports", href: "/industries/sports", icon: <FaCalendarAlt /> },
+        
        ],
      },
 
@@ -80,7 +81,7 @@ const IndustriesMenu = () => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 mt-16">
       <div className="absolute inset-0 max-w-7xl mx-auto px-4">
         <div className="relative bg-white max-w-[90rem] w-full h-[80vh] max-h-[40rem] rounded-b-2xl shadow-md overflow-hidden z-10">
-          <div className="grid grid-cols-1 xl:grid-cols-1 [28%_72%] h-full">
+          <div className="grid grid-cols-1 xl:grid-cols-[72%_28%] h-full">
             {/* Left tabs */}
             {/* <div className="w-full bg-[#fcfcfc] space-y-2 p-6 flex-grow border-r border-sky-200 shadow-sm">
               {tabs.map((tab) => (
@@ -221,6 +222,15 @@ const IndustriesMenu = () => {
               </div>
               {/* Bottom CTA */}
             </div>
+{/* Right  card */}
+            <div className="hidden xl:block w-full h-full bg-white">
+              <div className="h-full w-full border-l border-sky-100 bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 px-6 py-8 flex items-start">
+               {/* < /> */}
+               <TestimonialCarousel/>
+              </div>
+            </div>
+            {/* Right end */}
+
           </div>
         </div>
       </div>

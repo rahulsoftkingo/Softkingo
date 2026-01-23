@@ -10,10 +10,10 @@ export const metadata = {
     (process.env.NODE_ENV === 'production' ? 'https://softkingo.com' : 'http://localhost:3000')
   ),
   title: {
-    default: "Softkingo - Top Software Development Company",
+    default: "Softkingo – Mobile App & Web Development Company in India, New Delhi, Noida",
     template: "%s | Softkingo"
   },
-  description: "Leading software development company in India delivering mobile apps, web development, AI/ML, blockchain & enterprise solutions.",
+  description: "Softkingo helps businesses grow with custom mobile apps, modern websites, and effective digital marketing. We make tech easy and results-focused.",
   keywords: [
     "software development", "mobile app development", "web development", 
     "hire developers", "AI ML", "blockchain", "Softkingo India"

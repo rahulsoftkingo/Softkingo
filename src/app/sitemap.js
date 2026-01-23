@@ -74,7 +74,7 @@ export default async function sitemap() {
     '/solutions/ar-vr-app-development',
 
     // Legal & Misc
-    "/privacy-policy", "/terms-conditions", "/faqs", "/site-map",
+    "/privacy-policy", "/terms-conditions", "/faq", "/site-map",
     "/articles", "/guides", "/media-coverage", "/podcasts", "/press-releases", 
     "/whitepapers", "/ai", "/login"
   ].map(path => ({

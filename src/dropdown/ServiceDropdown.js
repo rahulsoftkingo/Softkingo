@@ -394,7 +394,7 @@ const servicesData = [
         icon: <FaWordpress />,
       },
       {
-        href: "/services/web-app-development",
+        href: "/services/web-application-development",
         title: "Web Application Development",
         icon: <FaReact />,
       },

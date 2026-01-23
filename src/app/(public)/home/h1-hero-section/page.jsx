@@ -123,7 +123,7 @@ const HeroSection = () => {
       ))}
 
       {/* Main content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6  pt-12 md:pt-12 pb-16 relative z-10">
+      <div className="container  max-w-7xl mx-auto px-4 sm:px-6 lg:px-28 pt-12 md:pt-12 pb-16 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left content */}
           <motion.div
@@ -151,7 +151,7 @@ const HeroSection = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
                 Digital Solutions
               </span>
-              <span className="block mt-3 text-sky-950">for Web, Apps & Digital Marketing</span>
+              <span className="text-2xl md:text-3xl lg:text-4xl block mt-3 text-sky-950">for Web, Apps & Digital Marketing</span>
             </motion.h1>
 
             <motion.p
@@ -160,7 +160,7 @@ const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              Softkingo delivers AI-driven web, app & digital marketing solutions with 6+ years of experience, serving 500+ clients worldwide. We turn ideas into successful digital products.
+              Softkingo delivers AI-driven web, app & digital marketing solutions with 6+ years of experience, serving 350+ clients worldwide. We turn ideas into successful digital products.
 
             </motion.p>
 

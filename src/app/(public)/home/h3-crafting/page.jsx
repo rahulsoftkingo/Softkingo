@@ -19,9 +19,9 @@ const craftings = [
     postion: "CEO, Tech Innovations",
   },
   {
-    name: "450+",
+    name: "400+",
     featurs:
-      "450+ Mobile Apps",
+      "400+ Projects",
     image: "/images/crafting/Rectangle 94 (2).png",
     postion: "CEO, Tech Innovations",
   },
@@ -60,7 +60,7 @@ function Crafting() {
           , At Scale 
         </h2>
           <p className="text-gray-600 md:text-sky-800 mt- text-xs md:text-xl lg:text-[12px] max-w-3xl leading-normal text-center md:text-start ">
-            From <b>450+ projects,</b>our certified experts bring innovation, precision, and impact trusted by millions. Softkingo is rated 5.0 on Clutch, GoodFirms, DesignRush, and Trustpilot, and was recently awarded Top Mobile App Development Company in India 2025 by TechBehemoths.
+            From <b>400+ projects,</b>our certified experts bring innovation, precision, and impact trusted by millions. Softkingo is rated 5.0 on Clutch, GoodFirms, DesignRush, and Trustpilot, and was recently awarded Top Mobile App Development Company in India 2025 by TechBehemoths.
           </p>
         </div>
 

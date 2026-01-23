@@ -15,7 +15,7 @@ export default function FoodDeliveryHero() {
     ];
 
     const stats = [
-        { value: '5+', label: 'Years Of Excellence' },
+        { value: '6+', label: 'Years Of Excellence' },
         { value: '100+', label: 'Tech Enthusiast' },
         { value: '500+', label: 'Product Delivered' },
         { value: '20+', label: 'Countries Served' },

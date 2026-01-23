@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 export default function RecognitionSection() {
   const recognitions = [
     {
-      image: "/images/award/itfirms-awards.png",
+      image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (2).png",
       year: "2025",
       country: "UNITED ARAB EMIRATES",
       category: "MOBILE APP DEVELOPMENT",
@@ -13,7 +13,7 @@ export default function RecognitionSection() {
       description: "World's Top Mobile App Development Companies 2025"
     },
     {
-      image: "/images/award/award.png",
+      image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (4).png",
       year: "2025",
       country: "UNITED STATES",
       category: "WEB DEVELOPMENT",
@@ -22,7 +22,7 @@ export default function RecognitionSection() {
       description: "Quality You Can Trust – ISO Certified"
     },
     {
-      image: "/images/award/award2.png",
+      image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (1).png",
       year: "2020",
       country: "UNITED KINGDOM",
       category: "UI/UX DESIGN",
