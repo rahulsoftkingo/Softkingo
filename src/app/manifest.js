@@ -1,0 +1,23 @@
+export default function manifest() {
+  return {
+    name: 'Softkingo – Mobile App & Web Development Company',
+    short_name: 'Softkingo',
+    description: 'Custom mobile apps, modern websites, and digital marketing solutions.',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#ffffff',
+    theme_color: '#0ea5e9',
+    icons: [
+      {
+        src: '/android-chrome-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        src: '/android-chrome-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+    ],
+  }
+}

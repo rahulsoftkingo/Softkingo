@@ -6,6 +6,7 @@ export const metadata = {
   title: "Client Testimonials | Softkingo",
   description:
     "What our clients say about Softkingo across Clutch, DesignRush, and more.",
+    alternates: { canonical: "https://www.softkingo.com/testimonials" }
 };
 
 export default function TestimonialsPage() {

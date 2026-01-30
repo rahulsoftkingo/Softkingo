@@ -15,7 +15,7 @@ export default function OfficesMap({ offices }) {
       country: "INDIA",
       flag: "/images/flags/india.png",
       hours: "MON–FRI 10 AM – 7 PM",
-      address: "H61, Block H, Sector 63, Noida, Uttar Pradesh 201301",
+      address: "B148, Block B, Sector 63, Noida, Uttar Pradesh 201301",
       email: "sales@softkingo.com",
       marker: { left: "66%", top: "52%" },
     },

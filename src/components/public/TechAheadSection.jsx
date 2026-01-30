@@ -30,23 +30,23 @@ export default function TechAheadSection({
   ];
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-fit flex flex-col items-start">
       {/* Hero Content */}
       <div className="mb-6">
         {showTitle && (
           <>
           
-             <span className="inline-flex items-center gap-2 rounded-full bg-sky-50/50 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#0B3250] shadow-[0_8px_20px_rgba(0,0,0,0.05)] mb-2">
+             <span className="inline-flex items-center gap-2 rounded-full bg-sky-50/50 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#0B3250] shadow-[0_8px_20px_rgba(0,0,0,0.05)] mb-3">
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               {tagline}
           </span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-sky-900 mb-3 leading-tight bg-gradient-to-r from-sky-900 via-sky-800 to-sky-700 bg-clip-text">
+            <h2 className="text-2xl lg:text-3xl font-bold text-sky-900  leading-tight bg-gradient-to-r from-sky-900 via-sky-800 to-sky-700 bg-clip-text">
               {title}
             </h2>
             
-            <p className="text-sm text-gray-600 mb-1 leading-relaxed">
+            {/* <p className="text-sm text-gray-600 mb-1 leading-relaxed">
               {subtitle}
-            </p>
+            </p> */}
           </>
         )}
       </div>

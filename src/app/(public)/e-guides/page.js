@@ -7,9 +7,10 @@ import InquirySection from "@/components/footer/InquirySection";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "E‑Guides | Softkingo",
+  title: "E-Book | Softkingo",
   description:
-    "Download expert-crafted E‑Guides by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
+    "Download expert-crafted E-Book by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
+    alternates: { canonical: "/e-guides" }
 };
 
 export default async function EGuidesPage(props) {

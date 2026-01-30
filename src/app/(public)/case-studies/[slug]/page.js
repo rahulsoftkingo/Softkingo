@@ -5,6 +5,8 @@ import prisma from '@/lib/prisma';
 import { AppScreensCarousel } from './AppScreensCarousel';
 import InquirySection from '@/components/footer/InquirySection';
 
+
+
 // ---------- helpers ----------
 function parseJson(value, fallback) {
   if (!value) return fallback;
@@ -313,7 +315,7 @@ function HeroSection({ data }) {
           {/* Left */}
           <div className="text-white space-y-6 md:space-y-8">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-white rounded-2xl shadow-2xl flex items-center justify-center overflow-hidden">
+              <div className="w-14 h-auto sm:w-18  md:w-28 md:h-auto  rounded-2xl shadow-2xl flex items-center justify-center overflow-hidden bg-white">
                 <Image
                   src={data.logo}
                   alt={data.title}
@@ -322,21 +324,18 @@ function HeroSection({ data }) {
                   className="h-auto w-auto object-contain"
                 />
               </div>
-              <h1 className="text-lg sm:text-xl md:text-3xl font-bold">
+              <h1 className="text-lg sm:text-2xl md:text-4xl font-bold">
                 {data.title}
               </h1>
             </div>
 
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+            <p className="text-md sm:text-lg md:text-2xl leading-tight">
               {data.subtitle}
-            </h2>
-
-            <p className="text-xs sm:text-sm md:text-base text-sky-100/90 max-w-xl">
-              Mobile app, backend and admin panel built as a complete
-              hyperlocal grocery ecosystem.
             </p>
 
-            <div className="flex flex-wrap gap-3 pt-3">
+           
+
+            <div className="hidden flex-wrap gap-3 pt-3">
               <a href={data.downloads.googlePlay.url} className="hover-scale">
                 <Image
                   src={data.downloads.googlePlay.image}
@@ -368,8 +367,8 @@ function HeroSection({ data }) {
           </div>
 
           {/* Right mockups */}
-          <div className="relative  justify-center gap-6 md:gap-8 mt-6 lg:mt-0 hidden md:flex">
-            <div className="relative w-32 h-64 sm:w-40 sm:h-80 md:w-48 md:h-[420px] lg:w-[25rem] lg:h-[30rem] animate-float">
+          <div className="relative  justify-center gap-6 md:gap-8 mt-2 lg:mt-0 hidden md:flex">
+            <div className="relative w-32 h-64 sm:w-40 sm:h-80 md:w-48 md:h-[420px] lg:w-[25rem] lg:h-[26rem] animate-float">
               <Image
                 src={data.hero.mockups[0]}
                 alt="Screen 1"

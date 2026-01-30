@@ -151,7 +151,7 @@ const HeroSection = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
                 Digital Solutions
               </span>
-              <span className="text-2xl md:text-3xl lg:text-4xl block mt-3 text-sky-950">for Web, Apps & Digital Marketing</span>
+              <span className="text-2xl md:text-3xl lg:text-4xl block mt-3 text-sky-950">for Apps , Web & Digital Marketing</span>
             </motion.h1>
 
             <motion.p

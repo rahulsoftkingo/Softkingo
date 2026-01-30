@@ -45,6 +45,7 @@ import CommonTitle from "@/components/ui/CommonTitle";
 import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import FAQAccordion from "@/components/common/Faqaccordion";
+import Industries from "../../home/h6-industries-section/page";
 
 // Force SSR (no build-time DB access)
 export const dynamic = "force-dynamic";
@@ -88,6 +89,9 @@ export async function generateMetadata({ params }) {
       title: service.seoTitle || service.title,
       description: service.seoDescription,
       images: service.seoImage ? [service.seoImage] : [],
+    },
+    alternates: {
+      canonical: `/services/${slug}`,
     },
   };
 }
@@ -379,6 +383,10 @@ export default async function ServicePage({ params }) {
       <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />
       <TechView />
       <MethodologySection />
+      <ConsultationCTA imageSrc="/images/cta/cta.png" href="/contact" title="Let’s Build Your Next Big Mobile App" subtitle="Collaborate with a leading mobile app development agency to turn your innovative idea into a feature-rich mobile application." />
+      <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100">
+        <Industries />
+      </section>
 
       <Blogs
         category=""

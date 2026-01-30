@@ -6,8 +6,7 @@ export const revalidate = 0;
 
 export const metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || 
-    (process.env.NODE_ENV === 'production' ? 'https://softkingo.com' : 'http://localhost:3000')
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://www.softkingo.com'
   ),
   title: {
     default: "Softkingo – Mobile App & Web Development Company in India, New Delhi, Noida",
@@ -15,30 +14,39 @@ export const metadata = {
   },
   description: "Softkingo helps businesses grow with custom mobile apps, modern websites, and effective digital marketing. We make tech easy and results-focused.",
   keywords: [
-    "software development", "mobile app development", "web development", 
+    "software development", "mobile app development", "web development",
     "hire developers", "AI ML", "blockchain", "Softkingo India"
   ],
-  authors: [{ name: "Softkingo" }],
-  creator: "Softkingo",
+authors: [{ name: "Softkingo", url: "https://www.softkingo.com" }],
+  creator: "Softkingo Team",
   publisher: "Softkingo",
-  robots: { index: true, follow: true },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    siteName: "Softkingo",
-    images: [{ url: "/images/og/default.jpg", width: 1200, height: 630 }]
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
   },
-  twitter: { card: "summary_large_image", images: ["/images/og/default.jpg"] },
-  alternates: { canonical: "https://softkingo.com" }
-};
-
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/manifest.json',
+  
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* <link rel="canonical" href="https://softkingo.com" /> */}
-        <meta name="theme-color" content="#0ea5e9" />
-      </head>
       <body className="antialiased">{children}</body>
     </html>
   );

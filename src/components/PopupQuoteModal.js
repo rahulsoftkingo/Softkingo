@@ -65,23 +65,24 @@ const PopupQuoteModal = ({ open, onClose }) => {
 
 
   return (
-  <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm">
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm h-screen   overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400/80 scrollbar-track-gray-100/50">
     {/* Single scroll container - PURE CARD SCROLL */}
-    <div className="relative w-full max-w-7xl max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400/80 scrollbar-track-gray-100/50 rounded-2xl  bg-gradient-to-b from-sky-100 to-white shadow-2xl">
-      <div className="min-h-[90vh]">
+    <div className="relative w-full max-w-7xl max-h-full h-fit  ">
+      <div className="min-h-fit rounded-2xl  bg-gradient-to-b from-sky-100 to-white shadow-2xl ">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 z-20 p-2.5 rounded-full bg-white/95 backdrop-blur-sm hover:bg-red-50 transition-all duration-200 shadow-xl "
+          className="absolute -top-4 -right-4 z-20 p-2.5 rounded-full bg-white/95 backdrop-blur-sm hover:bg-red-50 transition-all duration-200 shadow-xl "
           aria-label="Close quote form"
         >
           <FaTimes className="text-slate-700 hover:text-red-500 text-xl" />
         </button>
 
-        <div className="flex flex-col lg:flex-row h-[80vh]">
+        <div className="flex flex-col lg:flex-row h-fit">
           {/* Left column - NO SCROLL */}
           <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-brfrom-sky-50 via-white to-white p-8">
             <TechAheadSection
+              title="Partner for Digital Innovation"
               email="custom@email.com"
               phone="+1234567890"
             />
@@ -98,7 +99,7 @@ const PopupQuoteModal = ({ open, onClose }) => {
               formType="get In touch"
               formKey="popup-inquiry"
             />
-              <div className=" h-8"></div>
+              {/* <div className=" h-8"></div> */}
           </div>
         </div>
       </div>

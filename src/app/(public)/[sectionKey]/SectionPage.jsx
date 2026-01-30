@@ -4,7 +4,7 @@ import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
 import prisma from "@/lib/prisma";
 import BlogCard from "@/app/(public)/blog/BlogCard";
-import { BLOG_SECTIONS } from "@/app/(public)/blog/sectionConfig";
+import { BLOG_SECTIONS } from "@/app/(public)/[sectionKey]/sectionConfig";
 import NewsletterStrip from "@/app/(public)/blog/NewsletterStrip";
 import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
 import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
@@ -23,7 +23,7 @@ function safeImg(src, fallback = "/images/insights/hero-default.png") {
 
 export default async function SectionPage({ sectionKey, searchParams }) {
   const config = BLOG_SECTIONS[sectionKey];
-
+  const resolvedSearchParams  = await searchParams;
   if (!config) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -32,12 +32,12 @@ export default async function SectionPage({ sectionKey, searchParams }) {
     );
   }
 
-  const q = (searchParams?.q || "").toString().trim();
-  const category = (searchParams?.category || "").toString().trim();
+  const q = (resolvedSearchParams?.q || "").toString().trim();
+  const category = (resolvedSearchParams?.category || "").toString().trim();
 
   // Pagination
   const pageSize = 12;
-  const page = Math.max(1, parseInt(searchParams?.page || "1", 10) || 1);
+  const page = Math.max(1, parseInt(resolvedSearchParams?.page || "1", 10) || 1);
   const skip = (page - 1) * pageSize;
 
   const placementNeedle = `"${sectionKey}"`;

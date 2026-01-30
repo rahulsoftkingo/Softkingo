@@ -17,8 +17,8 @@ export default function Industries() {
         5: "Prescription management",
         6: "Emergency alerts & notifications",
       },
-      logo: "images/industries/logo/hospitality.png",
-      image: "images/industries/healthcare.jpg",
+      logo: "/images/industries/logo/hospitality.png",
+      image: "/images/industries/healthcare.jpg",
     },
     {
       title: "Education / E-Learning",
@@ -31,8 +31,8 @@ export default function Industries() {
         5: "Resource library & sharing",
         6: "Progress tracking & analytics",
       },
-      logo: "images/industries/logo/education.png",
-      image: "images/industries/education.webp",
+      logo: "/images/industries/logo/education.png",
+      image: "/images/industries/education.webp",
     },
     {
       title: "Real Estate",
@@ -45,8 +45,8 @@ export default function Industries() {
         5: "Document management & e‑sign",
         6: "Market insights & trends",
       },
-      logo: "images/industries/logo/realestate.png",
-      image: "images/industries/realestate.avif",
+      logo: "/images/industries/logo/realestate.png",
+      image: "/images/industries/realestate.avif",
     },
     {
       title: "Travel & Tourism",
@@ -59,8 +59,8 @@ export default function Industries() {
         5: "Travel insurance integration",
         6: "Local experiences & tours",
       },
-      logo: "images/industries/logo/travel.png",
-      image: "images/industries/travel.webp",
+      logo: "/images/industries/logo/travel.png",
+      image: "/images/industries/travel.webp",
     },
     {
       title: "Food & Restaurant",
@@ -73,8 +73,8 @@ export default function Industries() {
         5: "Ratings & reviews",
         6: "Payment gateway integrations",
       },
-      logo: "images/industries/logo/entertainment.png",
-      image: "images/industries/entertainment.avif",
+      logo: "/images/industries/logo/entertainment.png",
+      image: "/images/industries/entertainment.avif",
     },
     {
       title: "Fitness & Wellness",
@@ -87,8 +87,8 @@ export default function Industries() {
         5: "Push notifications",
         6: "Subscriptions & memberships",
       },
-      logo: "images/industries/logo/finance.png",
-      image: "images/industries/finance.avif",
+      logo: "/images/industries/logo/finance.png",
+      image: "/images/industries/finance.avif",
     },
     {
       title: "Retail & E-Commerce",
@@ -101,8 +101,8 @@ export default function Industries() {
         5: "Promotions & discount engine",
         6: "Loyalty programs & rewards",
       },
-      logo: "images/industries/logo/retail.png",
-      image: "images/industries/retail.jpg",
+      logo: "/images/industries/logo/retail.png",
+      image: "/images/industries/retail.jpg",
     },
     {
       title: "Logistics & Transportation",
@@ -115,8 +115,8 @@ export default function Industries() {
         5: "Proof of delivery capture",
         6: "Performance analytics",
       },
-      logo: "images/industries/logo/manufacturing.png",
-      image: "images/industries/manufacturing.jpg",
+      logo: "/images/industries/logo/manufacturing.png",
+      image: "/images/industries/manufacturing.jpg",
     },
     {
       title: "Media & Entertainment",
@@ -129,8 +129,8 @@ export default function Industries() {
         5: "Event scheduling & reminders",
         6: "Community features",
       },
-      logo: "images/industries/logo/entertainment.png",
-      image: "images/industries/entertainment.avif",
+      logo: "/images/industries/logo/entertainment.png",
+      image: "/images/industries/entertainment.avif",
     },
     {
       title: "Social Networking",
@@ -143,8 +143,8 @@ export default function Industries() {
         5: "Content moderation tools",
         6: "Analytics & engagement tracking",
       },
-      logo: "images/industries/logo/education.png",
-      image: "images/industries/education.webp",
+      logo: "/images/industries/logo/education.png",
+      image: "/images/industries/education.webp",
     },
     {
       title: "Finance / FinTech",
@@ -157,8 +157,8 @@ export default function Industries() {
         5: "Fraud prevention",
         6: "Support & ticketing",
       },
-      logo: "images/industries/logo/finance.png",
-      image: "images/industries/finance.avif",
+      logo: "/images/industries/logo/finance.png",
+      image: "/images/industries/finance.avif",
     },
     {
       title: "Automotive",
@@ -171,8 +171,8 @@ export default function Industries() {
         5: "Customer apps",
         6: "Reports & analytics",
       },
-      logo: "images/industries/logo/travel.png",
-      image: "images/industries/travel.webp",
+      logo: "/images/industries/logo/travel.png",
+      image: "/images/industries/travel.webp",
     },
     {
       title: "Construction",
@@ -185,8 +185,8 @@ export default function Industries() {
         5: "Task management",
         6: "Compliance tracking",
       },
-      logo: "images/industries/logo/realestate.png",
-      image: "images/industries/realestate.avif",
+      logo: "/images/industries/logo/realestate.png",
+      image: "/images/industries/realestate.avif",
     },
     {
       title: "Manufacturing",
@@ -199,8 +199,8 @@ export default function Industries() {
         5: "Order dashboards",
         6: "Utilization analytics",
       },
-      logo: "images/industries/logo/manufacturing.png",
-      image: "images/industries/manufacturing.jpg",
+      logo: "/images/industries/logo/manufacturing.png",
+      image: "/images/industries/manufacturing.jpg",
     },
     {
       title: "Event Management",
@@ -213,8 +213,8 @@ export default function Industries() {
         5: "Notifications",
         6: "Analytics & reports",
       },
-      logo: "images/industries/logo/retail.png",
-      image: "images/industries/retail.jpg",
+      logo: "/images/industries/logo/retail.png",
+      image: "/images/industries/retail.jpg",
     },
     // {
     //   title: "AR/VR",
@@ -227,8 +227,8 @@ export default function Industries() {
     //     5: "VR walkthroughs",
     //     6: "Device integrations",
     //   },
-    //   logo: "images/industries/logo/education.png",
-    //   image: "images/industries/education.webp",
+    //   logo: "/images/industries/logo/education.png",
+    //   image: "/images/industries/education.webp",
     // },
   ]);
 
@@ -322,7 +322,7 @@ const leftSidebarWidth = "w-full md:w-[300px]";
                             <img
                               width="16"
                               height="16"
-                              src="images/dot.png"
+                              src="/images/dot.png"
                               alt="dot"
                               className="text-sm"
                             />

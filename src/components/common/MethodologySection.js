@@ -86,7 +86,7 @@ export default function MethodologySection() {
                         align="center"
                         pill={false}
                         title="Our"
-                        gradientText='Methodology For Developing Mobile Apps'
+                        gradientText='Methodology'
                         subtitle="  We understand that ensuring a seamless user experience is the key to success for any mobile app.
                         This is the reason our mobile app development company has deployed a human-centric approach
                         combined with a sharp technological push for developing mobile apps."

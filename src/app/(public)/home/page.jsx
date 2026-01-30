@@ -11,6 +11,8 @@ import ReviewSection from "./h9-clients-review/page";
 import Tech from "@/app/(public)/home/h10-technology/page";
 import FooterForm from "@/components/footer/InquirySection";
 import Blogs from "@/app/(public)/home/blogs/BlogSliderClient"
+import TechView from "@/components/common/TechView";
+import IndustryTabsSection from "./IndustryTabsSection";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -22,8 +24,10 @@ export default function Home() {
       <Crafting />
       <Service />
       <Portfolio />
-      <Industries />
+      <IndustryTabsSection/>
+      {/* <Industries /> */}
       <Tech />
+      {/* <TechView/> */}
       <Process />
       <Strengths_Scroll />
 

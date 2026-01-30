@@ -1,8 +1,14 @@
-// app/solutions/page.jsx
+// src/app/solutions/page.jsx
 import Link from 'next/link';
 import Image from 'next/image';
 import SolutionsSection from './SolutionsSection';
 import InquirySection from '@/components/footer/InquirySection';
+
+export const metadata = {
+  title: "Industry-Specific Software Solutions",
+  description: "Custom-built solutions for Food Delivery, Healthcare, E-commerce, and Fintech industries. Ready-to-deploy and scalable.",
+  alternates: { canonical: "/solutions" }
+};
 
 export default function SolutionsPage() {
   return (
@@ -18,20 +24,19 @@ export default function SolutionsPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black to-black/50 opacity-70"></div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 md:py-32">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8  py-24 md:py-32">
           <nav className="flex items-center space-x-3 text-sm text-gray-400 mb-4">
             <Link href="/" className="hover:text-sky-500 transition-colors">Home</Link>
             <span>›</span>
-            <span className="text-sky-300 font-semibold">Industry Solutions</span>
+            <span className="text-sky-300 font-semibold">Solutions</span>
           </nav>
 
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-extrabold leading-tight max-w-3xl text-white">
-            Tailored Solutions for Every <span className="text-sky-500">Industry</span>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight max-w-3xl text-white">
+            End-to-End Software <span className="text-sky-500">Solutions</span>  for Global Growth 
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-gray-300 leading-relaxed">
-            Delivering industry-specific software and technology solutions designed to meet your unique business challenges. 
-            Explore our expert services crafted for manufacturing, retail, healthcare, finance, and more.
+           From disruptive startups to enterprise leaders, we provide the tech foundation your business needs. Explore our ready-to-deploy clones, custom SaaS architectures, and specialized domain solutions designed for speed and scale.
           </p>
         </div>
       </section>

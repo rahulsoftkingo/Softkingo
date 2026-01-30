@@ -9,25 +9,26 @@ import WhatsAppButton from "@/components/public/WhatsAppButton";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export const metadata = {
-  title: "Softkingo – Mobile App & Web Development Company in India, New Delhi, Noida",
-  description: "Softkingo helps businesses grow with custom mobile apps, modern websites, and effective digital marketing. We make tech easy and results-focused.",
-  keywords: [
-    "software development company In India", "Mobile App development", "Web development Company", 
-    "hire developers", "Mobile App development Company In New Delhi"
-    , "Mobile App development Company In New Noida"
-    , "Mobile App development Company In India"
-  ],
-  openGraph: {
-    title: "Softkingo - Digital Transformation Partner",
-    description: "Transform business with custom software solutions across mobile, web, AI/ML & blockchain.",
-    url: "https://www.softkingo.com",
-    images: ["/images/og/public-home.jpg"]
-  },
-  alternates: { canonical: "https://www.softkingo.com" }
-};
-
 export default function PublicLayout({ children }) {
+  // JSON-LD for Search Engines
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Softkingo",
+    "url": "https://www.softkingo.com",
+    "logo": "https://www.softkingo.com/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91 74287 50870",
+      "contactType": "customer service"
+    },
+    "sameAs": [
+      "https://www.facebook.com/softkingo",
+      "https://twitter.com/softkingo",
+      "https://www.linkedin.com/company/softkingo"
+    ]
+  };
+
   return (
     <>
       <Navbar />

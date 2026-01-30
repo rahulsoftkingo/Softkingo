@@ -28,7 +28,7 @@ export default function ConsultationCTA({
             <div className=" md:col-span-1 flex items-center justify-start -ml-4 md:-ml-0">
               <div className="hidden md:block md:mr-4" />
               <div className=" h-full w-full max-h-18 md:max-h-2">
-                <Image src={imageSrc} alt="consultant" width={500} height={500} className=" relative -top-20 left-1/3  w-36 h-42   md:-top-68 md:left-4   md:w-64 md:h-98  -translate-x-6 md:translate-x-0"/>
+                <Image src={imageSrc} alt="consultant" width={500} height={500} className=" relative -top-20 left-1/3  w-36 h-42   md:-top-54 md:left-0   md:w-72 md:h-88  -translate-x-6 md:translate-x-0"/>
               </div>
             </div>
 

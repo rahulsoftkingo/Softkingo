@@ -319,6 +319,9 @@ export async function generateMetadata({ params }) {
       description: page.seoDescription || page.excerpt || undefined,
       images: page.seoImage ? [page.seoImage] : [],
     },
+     alternates: {
+      canonical: `/hire/${slug}`,
+    },
   };
 }
 

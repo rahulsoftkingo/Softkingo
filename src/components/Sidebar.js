@@ -398,8 +398,8 @@ const SideBar = () => {
     {
       id: "digital",
       icon: <FaCogs />,
-      heading: "Degital Marketing",
-      pageHref: "/services/degital-marketing",
+      heading: "Digital Marketing",
+      pageHref: "/services/digital-marketing",
       title: "Top Digital Marketing Company",
       description:
         "Automate deployment pipelines, improve reliability and ship faster with our DevOps & cloud engineering team.",

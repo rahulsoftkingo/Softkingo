@@ -3,11 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
 import prisma from "@/lib/prisma";
-import { BLOG_SECTIONS } from "@/app/(public)/blog/sectionConfig";
+import { BLOG_SECTIONS } from "@/app/(public)/[sectionKey]/sectionConfig";
 import InquirySection from "@/components/footer/InquirySection";
 
 export const dynamic = "force-dynamic";
-
+export const metadata = {
+  title: "Insights | Tech Trends & Strategy",
+  description: "Deep dives into software engineering, product design, and business growth strategies from Softkingo experts.",
+  alternates: { canonical: "/insights" }
+};
 const HERO_BG = "/images/insights/hero-insights.jpg";
 const FALLBACK_THUMB = "/images/insights/hero-default.png";
 

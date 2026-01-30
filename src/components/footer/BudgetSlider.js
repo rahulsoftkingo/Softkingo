@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
 const BudgetSlider = () => {
-  const [budget, setBudget] = useState(0);
+  const [budget, setBudget] = useState(5000);
 
   return (
     <div className="flex flex-col items-start w-full">
-      <div className=" z-0 bg-white relative bottom-3 mb-2">
+      <div className=" z-0 bg-white relative bottom-3">
         <span className=" w-auto px-1 flex items-center justify-center">
-          <label className="font-lato text-base text-gray-600 ">Project Budget : </label>
-          <span style={{ color: "#28AFDF" }} className=" ">
+          <label className="font-lato text-[11px] text-gray-600 ">Project Budget : </label>
+          <span style={{ color: "#28AFDF" }} className=" text-[11px]">
             ${budget}
           </span>
         </span>
@@ -16,7 +16,7 @@ const BudgetSlider = () => {
       <div className="relative w-full bottom-4 px-3 ">
         <input
           type="range"
-          min="0"
+          min="5000"
           max="100000"
           value={budget}
           onChange={(e) => setBudget(e.target.value)}

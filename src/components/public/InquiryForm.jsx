@@ -24,7 +24,7 @@ const colorMap = {
 
 const InquiryForm = ({
   showHeader = true,
-  title = "Hey! there 🙂",
+  title = "Hey! there ",
   subtitle = "Share a bit about your project and we’ll get back quickly.",
   tagline = "Quick inquiry",
   submitLabel = "Submit Form",
@@ -206,25 +206,26 @@ const InquiryForm = ({
               placeholder="Enter your email"
             />
             <PhoneField phone={phone} setPhone={setPhone} />
-            <FloatingInput
+            {/* <FloatingInput
               id="company"
               name="company"
               label="Company"
               required
               placeholder="Company Name"
-            />
-          </div>
-
-          {/* Budget slider */}
-          <div className="mt-1 h-14 rounded-lg border border-slate-300 bg-white px-3 flex items-center">
+            /> */}
+             {/* Budget slider */}
+          <div className=" h-12 rounded-lg border border-slate-300 bg-white px-3 flex items-center">
             {/* make sure BudgetSlider internally sets a hidden input name="budgetLabel" */}
             <BudgetSlider />
           </div>
+          </div>
+
+         
 
           {/* Message */}
-          <div className="rounded-lg border border-slate-300 bg-white px-3 pt-1 pb-2">
+          <div className="rounded-lg border border-slate-300 bg-white px-3  pb-2">
             <label
-              className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-2 left-1"
+              className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1"
               htmlFor="message"
             >
               Message<span className="text-red-500">*</span>
@@ -233,7 +234,7 @@ const InquiryForm = ({
               id="message"
               name="message"
               placeholder="Brief about the project"
-              rows={4}
+              rows={3}
               className="w-full border-none outline-none resize-none text-sm text-slate-700 bg-transparent pb-1"
             />
           </div>
@@ -241,10 +242,10 @@ const InquiryForm = ({
           {/* Attachment */}
           <div className="h-14 rounded-lg border border-slate-300 bg-white px-3 flex flex-col justify-center">
             <label
-              className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-3 left-1"
+              className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1 w-fit"
               htmlFor="fileInput"
             >
-              Attachment
+              Attachment (optional)
             </label>
             <div className="relative -top-1 flex items-center gap-2 text-sm text-slate-600">
               <input
@@ -343,10 +344,10 @@ function FloatingInput({
   required,
 }) {
   return (
-    <div className="h-14 border border-slate-300 rounded-lg bg-white px-3 relative">
+    <div className="h-12 border border-slate-300 rounded-lg bg-white px-3 relative">
       <label
         htmlFor={id}
-        className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-2 left-1"
+        className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1"
       >
         {label}
         {required && <span className="text-red-500">*</span>}
@@ -358,7 +359,7 @@ function FloatingInput({
         placeholder={placeholder}
         maxLength={70}
         required={required}
-        className="w-full border-none outline-none bg-transparent text-sm text-slate-700 relative -top-1"
+        className="w-full border-none outline-none bg-transparent text-sm text-slate-700 relative -top-4"
       />
     </div>
   );
@@ -366,11 +367,11 @@ function FloatingInput({
 
 function PhoneField({ phone, setPhone }) {
   return (
-    <div className="relative h-14 border border-slate-300 rounded-lg bg-white px-2">
-      <label className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-2 left-1">
+    <div className="relative h-12 border border-slate-300 rounded-lg bg-white px-2">
+      <label className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1">
         Phone Number<span className="text-red-500">*</span>
       </label>
-      <div className="relative -top-1 flex items-center gap-2">
+      <div className="relative -top-2 flex items-center gap-2">
         {/* Country flag + Phone input */}
         <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md">
           <FaGlobe className="text-sky-900 text-sm" />
@@ -382,7 +383,7 @@ function PhoneField({ phone, setPhone }) {
           placeholder="Enter phone number"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="flex-1 border-none outline-none bg-transparent text-sm text-slate-700 pl-2 focus:ring-2 focus:ring-sky-300 rounded-md"
+          className="flex-1 border-none outline-none bg-transparent text-sm text-slate-700 pl-2 focus:ring-2 focus:ring-sky-300 rounded-md w-fit"
           maxLength={15}
           required
         />

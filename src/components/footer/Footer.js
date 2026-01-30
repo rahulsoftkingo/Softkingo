@@ -15,7 +15,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 const Footer = () => {
   const offerings = [
-    { label: "Software Development", href: "/" },
+    { label: "Software Development", href: "/services/software-development" },
     { label: "Mobile App Development", href: "/services/mobile-app-development" },
     { label: "Web & CMS Development", href: "/services/web-development" },
     { label: "E-Commerce Development", href: "/services/ecommerce-development" },
@@ -23,11 +23,13 @@ const Footer = () => {
     { label: "AI & ML Services", href: "/services/ai-ml" },
     { label: "IoT & Embedded", href: "/services/iot-embedded" },
     { label: "DevOps & Cloud", href: "/services/devops-cloud" },
+    { label: "Digital Marketing", href: "/services/digital-marketing" },
   ];
 
   const companyLinks = [
     { label: "About Us", href: "/about" },
     { label: "Our Team", href: "/our-team" },
+     { label: "Testimonials", href: "/testimonials" },
     { label: "Contact Us", href: "/contact" },
     { label: "Solutions", href: "/solutions" },
     { label: "Industries", href: "/industries" },
@@ -137,7 +139,12 @@ const Footer = () => {
                 />
                 <FooterContactRow
                   title="Address"
-                  value="MON–FRI 10 AM–7 PM · B-148, Block B, Sector 63, Noida, UP - 201301, India"
+                  value="B-148, Block B, Sector 63, Noida, UP - 201301, India"
+                  type="location"
+                />
+                <FooterContactRow
+                  title="Address"
+                  value="A179, Block ED, New Ashok Nagar, New Delhi, Delhi, 110096, India"
                   type="location"
                 />
               </div>

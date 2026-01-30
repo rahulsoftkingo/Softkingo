@@ -14,6 +14,7 @@ export const metadata = {
   title: 'Our Portfolio | Mobile Apps, Websites & Digital Campaigns',
   description:
     'Explore our portfolio of successful apps, web platforms and digital marketing campaigns built for startups and enterprises.',
+    alternates: { canonical: "https://www.softkingo.com/portfolio" }
 };
 
 // Convert badgesJson (stored as JSON string) into the badges object
@@ -72,7 +73,7 @@ export default async function PortfolioPage() {
       {/* Hero with breadcrumb, CTA buttons and right-side carousel */}
       <section
         className="relative h-[20rem] md:h-[25rem] bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/portfolio/bg.png')" }}
+        style={{ backgroundImage: "url('/images/portfolio/web.jpg')" }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/80 via-[#001322]/75 to-[#001322]/30" />
         <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center px-4 sm:px-6">

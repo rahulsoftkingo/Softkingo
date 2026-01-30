@@ -99,7 +99,7 @@ export default function TechView() {
             align="center"
             pill={false}
             title="Building "
-            gradientText="Tomorrow's Apps with Today's Best Technologies"
+            gradientText="Best Technologies"
             subtitle="At Softkingo, we consolidate only those technologies that are best in the market and are equipped to deliver best-performing & well-designed web & mobile app products for any industry & business vertical across the globe."
           />
                 </div>

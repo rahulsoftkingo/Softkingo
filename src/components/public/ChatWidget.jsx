@@ -327,12 +327,19 @@ export default function ChatWidget() {
     }
   };
 
+  // const quickReplies = [
+  //   { text: 'View Services', value: 'I want to know about your services' },
+  //   { text: 'Get Quote', value: 'I need a quote for my project' },
+  //   { text: 'Contact Info', value: 'How can I contact you?' },
+  //   { text: 'Portfolio', value: 'Show me your previous work' },
+  // ];
   const quickReplies = [
-    { text: 'View Services', value: 'I want to know about your services' },
-    { text: 'Get Quote', value: 'I need a quote for my project' },
-    { text: 'Contact Info', value: 'How can I contact you?' },
-    { text: 'Portfolio', value: 'Show me your previous work' },
-  ];
+  { text: 'View Services', value: 'VIEW_SERVICES' },
+  { text: 'Get Quote', value: 'GET_QUOTE' },
+  { text: 'Contact Info', value: 'CONTACT_INFO' },
+  { text: 'Portfolio', value: 'VIEW_PORTFOLIO' },
+];
+
 
   const emojis = ['😊', '👍', '❤️', '🎉', '🔥', '💯', '✅', '❌', '🤔', '👋'];
 

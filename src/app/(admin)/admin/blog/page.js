@@ -21,7 +21,7 @@ import {
   ChevronRight,
   AlertCircle,
 } from 'lucide-react';
- import { BLOG_SECTIONS } from "@/app/(public)/blog/sectionConfig";
+ import { BLOG_SECTIONS } from "@/app/(public)/[sectionKey]/sectionConfig";
 
 export default function BlogListPage() {
   const router = useRouter();

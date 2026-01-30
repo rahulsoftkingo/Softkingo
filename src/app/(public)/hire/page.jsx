@@ -5,6 +5,12 @@ import HireSection from './HireSection';
 import LeadForm from '@/components/public/LeadForm';
 import InquirySection from '@/components/footer/InquirySection';
 
+export const metadata = {
+  title: "Hire Dedicated Developers | Top 1% Tech Talent",
+  description: "Hire expert React Native, Next.js, and Full-stack developers on an hourly or monthly basis. Scale your team with Softkingo.",
+  alternates: { canonical: "/hire" }
+};
+
 export default function HirePage() {
   return (
     <div className="min-h-screen bg-white text-gray-800">

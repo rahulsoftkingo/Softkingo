@@ -1,7 +1,7 @@
 // src/app/(public)/blog/PostSlugPage.jsx
 import prisma from "@/lib/prisma";
-import { BLOG_SECTIONS } from "@/app/(public)/blog/sectionConfig";
-import TocAndContentClient from "@/app/(public)/blog/[slug]/TocAndContentClient";
+import { BLOG_SECTIONS } from "@/app/(public)/[sectionKey]/sectionConfig";
+import TocAndContentClient from "@/app/(public)/[sectionKey]/[slug]/TocAndContentClient";
 import Link from "next/link";
 import Image from "next/image";
 import { FaArrowLeft } from "react-icons/fa";
@@ -9,7 +9,58 @@ import PostSocialBar from "@/app/(public)/blog/PostSocialBar";
 import InquirySection from "@/components/footer/InquirySection";
 
 export const dynamic = "force-dynamic";
+export async function generateMetadata({ params }) {
+  const { sectionKey, slug } = await params;
+  const config = BLOG_SECTIONS[sectionKey];
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.softkingo.com';
+  // Post fetch karo metadata ke liye
+  const post = await prisma.blogPost.findFirst({
+    where: {
+      slug,
+      status: "published",
+    },
+    select: {
+      title: true,
+      seoTitle: true,
+      seoDescription: true,
+      excerpt: true,
+      thumbnail: true,
+      publishedAt: true,
+      author: { select: { name: true } }
+    }
+  });
 
+  if (!post) return { title: "Post Not Found" };
+
+  const finalTitle = post.seoTitle || post.title;
+  const finalDesc = post.seoDescription || post.excerpt || "";
+  const finalImage = post.thumbnail || config?.heroBg || "/og-default.jpg";
+
+  return {
+    title: finalTitle,
+    description: finalDesc,
+    alternates: {
+      canonical: `${baseUrl}/${sectionKey}/${slug}`,
+    },
+    openGraph: {
+      title: finalTitle,
+      description: finalDesc,
+      url: `${baseUrl}/${sectionKey}/${slug}`,
+      siteName: 'Softkingo',
+      images: [{ url: finalImage, width: 1200, height: 630 }],
+      locale: 'en_US',
+      type: 'article',
+      publishedTime: post.publishedAt?.toISOString(),
+      authors: [post.author?.name || 'Softkingo'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: finalTitle,
+      description: finalDesc,
+      images: [finalImage],
+    },
+  };
+}
 function safeImg(src, fallback = "/images/insights/hero-default.png") {
   const s = (src || "").toString().trim();
   if (!s) return fallback;

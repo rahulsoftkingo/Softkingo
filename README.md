@@ -1,6 +1,7 @@
 # Softkingo Website (Next.js + Prisma + Admin CMS)
 
 A full-stack Next.js (App Router) website for Softkingo with:
+
 - Public site (marketing pages, blog/insights)
 - Admin panel for content management
 - Prisma + MySQL database
@@ -10,6 +11,7 @@ A full-stack Next.js (App Router) website for Softkingo with:
 ---
 
 ## Tech Stack
+
 - **Next.js** (App Router)
 - Prisma ORM + MySQL
 - NextAuth (Credentials Provider)
@@ -18,6 +20,7 @@ A full-stack Next.js (App Router) website for Softkingo with:
 ---
 
 ## Requirements
+
 - Node.js 18+ (recommended)
 - MySQL database (local or hosted)
 
@@ -37,6 +40,7 @@ NEXTAUTH_SECRET="YOUR_LONG_RANDOM_SECRET"
 text
 
 ### Generate a secret
+
 Example:
 openssl rand -base64 32
 
@@ -54,6 +58,7 @@ npm run dev
 text
 
 Open:
+
 - http://localhost:3000
 
 ---
@@ -61,16 +66,19 @@ Open:
 ## Prisma (DB Setup)
 
 ### 1) Generate Prisma Client
+
 npx prisma generate
 
 text
 
 ### 2) Run migrations (recommended for local/dev)
+
 npx prisma migrate dev
 
 text
 
 ### 3) Prisma Studio (optional)
+
 npx prisma studio
 
 text
@@ -83,6 +91,7 @@ text
 - Admin panel: `/admin`
 
 This project uses **NextAuth Credentials**:
+
 - Username + password
 - Passwords stored as `passwordHash` (bcrypt)
 - Roles stored via `UserRole` → `Role`
@@ -94,18 +103,24 @@ If a user is not logged in, `/admin/*` routes should redirect to `/login?callbac
 ## Content System Overview
 
 ### Blog / Insights
+
 Stored in `BlogPost` model:
+
 - `type`: blog | featured | press-release | media | article | whitepaper | podcast (etc.)
 - `status`: draft | scheduled | published | archived
 - `publishedAt`: used for public visibility + sitemap
 
 ### E‑Guides
+
 Stored in `EGuide` model:
+
 - Separate public pages: `/e-guides` and `/e-guides/[slug]`
 - Separate admin management (if enabled)
 
 ### Pages (Services/Hire/Solutions)
+
 Stored in `Page` model:
+
 - `type`: service | hire | solution | etc.
 - `status`: draft | published
 
@@ -114,6 +129,7 @@ Stored in `Page` model:
 ## SEO
 
 ### Sitemap
+
 - URL: `/sitemap.xml`
 - Generated from:
   - Public static routes
@@ -124,6 +140,7 @@ Stored in `Page` model:
   - Published pages (service/hire/solution etc.)
 
 ### Robots.txt
+
 - URL: `/robots.txt`
 - Blocks private routes like `/admin`, `/login`, `/api`
 
@@ -151,7 +168,9 @@ text
 
 - Set production env variables on the server:
   - `DATABASE_URL`
-  - `NEXTAUTH_URL` (https://your-domain.com)
+  - `NEXTAUTH_URL` (https://www.softkingo.com)
+  - `NEXTAUTH_URL` (http://localhost:3000)
+  - `NEXT_PUBLIC_SITE_URL` (http://localhost:3000)/(https://www.softkingo.com)
   - `NEXTAUTH_SECRET`
 - Ensure database is reachable from the deployment environment.
 - Run migrations in CI/CD or manually on production.
@@ -161,15 +180,20 @@ text
 ## Troubleshooting
 
 ### 401 on `/api/admin/*`
+
 Usually happens when:
+
 - User is not logged in (no session cookie)
 - Admin routes are not protected with a server-side redirect
 
 Fix:
+
 - Add `getServerSession(authOptions)` guard in admin layout and redirect to `/login`.
 
 ### Hydration errors (head/body/html nesting)
+
 In App Router:
+
 - Only root `app/layout.js` should render `<html>` and `<body>`
 - Nested layouts must NOT render `<head>`, `<html>`, or `<body>`
 
@@ -178,4 +202,5 @@ Use Next.js Metadata API instead.
 ---
 
 ## License
+
 Private / Internal project for Softkingo.

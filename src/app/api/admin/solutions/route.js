@@ -1,574 +1,315 @@
-// import { NextResponse } from "next/server";
-// import path from "node:path";
-// import fs from "node:fs/promises";
-// import {
-//   BASES,
-//   slugify,
-//   getBaseAbs,
-//   isInside,
-//   toUrl,
-//   titleFromSlug,
-// } from "./_utils";
-
-// export const runtime = "nodejs";
-
-// async function exists(p) {
-//   try {
-//     await fs.access(p);
-//     return true;
-//   } catch {
-//     return false;
-//   }
-// }
-
-// async function safeReaddir(absDir) {
-//   try {
-//     return await fs.readdir(absDir, { withFileTypes: true });
-//   } catch {
-//     return [];
-//   }
-// }
-
-// async function listRoutes(section) {
-//   const baseAbs = getBaseAbs(section);
-//   if (!baseAbs) return [];
-
-//   const entries = await safeReaddir(baseAbs);
-
-//   const dirs = entries
-//     .filter((e) => e.isDirectory() && !e.name.startsWith("."))
-//     .map((e) => e.name)
-//     .sort((a, b) => a.localeCompare(b));
-
-//   const items = await Promise.all(
-//     dirs.map(async (slug) => {
-//       const folderAbs = path.join(baseAbs, slug);
-//       const pageJsx = path.join(folderAbs, "page.jsx");
-//       const pageJs = path.join(folderAbs, "page.js");
-
-//       const hasPageJsx = await exists(pageJsx);
-//       const hasPageJs = await exists(pageJs);
-//       const hasPage = hasPageJsx || hasPageJs;
-
-//       let updatedAt = null;
-//       try {
-//         const stat = await fs.stat(hasPageJsx ? pageJsx : pageJs);
-//         updatedAt = stat?.mtime ? stat.mtime.toISOString() : null;
-//       } catch {}
-
-//       return {
-//         slug,
-//         url: toUrl(section, slug),
-//         hasPage,
-//         pageFile: hasPageJsx ? "page.jsx" : hasPageJs ? "page.js" : null,
-//         updatedAt,
-//       };
-//     })
-//   );
-
-//   return items;
-// }
-
-// function pageTemplate({ section, slug }) {
-//   const title = titleFromSlug(slug);
-
-//   // Placeholder static page + dynamic metadata (basic)
-//   return `export const dynamic = "force-static";
-
-// export async function generateMetadata() {
-//   return {
-//     title: "${title}",
-//     description: "${title} - ${section} page",
-//   };
-// }
-
-// export default function Page() {
-//   return (
-//     <div style={{ padding: 24 }}>
-//       <h1>${title}</h1>
-//       <p>Auto-created placeholder for <b>/${section}/${slug}</b></p>
-//       <p>Edit this file: <code>src/app/(public)/${section}/${slug}/page.jsx</code></p>
-//     </div>
-//   );
-// }
-// `;
-// }
-
-// // GET /api/admin/solutions?section=solutions|industries|all
-// export async function GET(req) {
-//   try {
-//     const { searchParams } = new URL(req.url);
-//     const section = (searchParams.get("section") || "all").toLowerCase();
-
-//     const sections =
-//       section === "all" ? Object.keys(BASES) : [section].filter((s) => BASES[s]);
-
-//     if (sections.length === 0) {
-//       return NextResponse.json({ ok: false, error: "Invalid section" }, { status: 400 });
-//     }
-
-//     const data = {};
-//     for (const s of sections) {
-//       const baseAbs = getBaseAbs(s);
-
-//       // ensure base exists (create if missing)
-//       if (!(await exists(baseAbs))) {
-//         await fs.mkdir(baseAbs, { recursive: true });
-//       }
-
-//       data[s] = {
-//         basePath: BASES[s],
-//         items: await listRoutes(s),
-//       };
-//     }
-
-//     return NextResponse.json({ ok: true, data });
-//   } catch (e) {
-//     return NextResponse.json({ ok: false, error: e?.message || "list failed" }, { status: 500 });
-//   }
-// }
-
-// // POST /api/admin/solutions  { section, slug, createPage=true }
-// export async function POST(req) {
-//   try {
-//     const body = await req.json();
-//     const section = String(body?.section || "").toLowerCase();
-//     const rawSlug = body?.slug;
-
-//     const createPage = body?.createPage !== false; // default true
-
-//     if (!BASES[section]) {
-//       return NextResponse.json({ ok: false, error: "Invalid section" }, { status: 400 });
-//     }
-
-//     const slug = slugify(rawSlug);
-//     if (!slug) {
-//       return NextResponse.json({ ok: false, error: "slug required" }, { status: 400 });
-//     }
-
-//     const baseAbs = getBaseAbs(section);
-//     if (!(await exists(baseAbs))) await fs.mkdir(baseAbs, { recursive: true });
-
-//     const folderAbs = path.join(baseAbs, slug);
-
-//     // safety
-//     if (!isInside(baseAbs, folderAbs)) {
-//       return NextResponse.json({ ok: false, error: "Invalid path" }, { status: 400 });
-//     }
-
-//     if (await exists(folderAbs)) {
-//       return NextResponse.json({ ok: false, error: "Slug already exists" }, { status: 409 });
-//     }
-
-//     await fs.mkdir(folderAbs, { recursive: true }); // recursive mkdir [web:121]
-
-//     let pagePath = null;
-//     if (createPage) {
-//       pagePath = path.join(folderAbs, "page.jsx");
-//       await fs.writeFile(pagePath, pageTemplate({ section, slug }), "utf8");
-//     }
-
-//     return NextResponse.json({
-//       ok: true,
-//       created: {
-//         section,
-//         slug,
-//         url: toUrl(section, slug),
-//         folder: path.relative(process.cwd(), folderAbs),
-//         page: pagePath ? path.relative(process.cwd(), pagePath) : null,
-//       },
-//     });
-//   } catch (e) {
-//     return NextResponse.json({ ok: false, error: e?.message || "create failed" }, { status: 500 });
-//   }
-// }
-
-// // DELETE /api/admin/solutions  { section, slug }
-// export async function DELETE(req) {
-//   try {
-//     const body = await req.json();
-//     const section = String(body?.section || "").toLowerCase();
-//     const slug = slugify(body?.slug);
-
-//     if (!BASES[section]) {
-//       return NextResponse.json({ ok: false, error: "Invalid section" }, { status: 400 });
-//     }
-//     if (!slug) {
-//       return NextResponse.json({ ok: false, error: "slug required" }, { status: 400 });
-//     }
-
-//     const baseAbs = getBaseAbs(section);
-//     const folderAbs = path.join(baseAbs, slug);
-
-//     if (!isInside(baseAbs, folderAbs)) {
-//       return NextResponse.json({ ok: false, error: "Invalid path" }, { status: 400 });
-//     }
-
-//     if (!(await exists(folderAbs))) {
-//       return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
-//     }
-
-//     // delete recursively
-//     await fs.rm(folderAbs, { recursive: true, force: true }); // rm recursive [web:121]
-
-//     return NextResponse.json({ ok: true, deleted: { section, slug } });
-//   } catch (e) {
-//     return NextResponse.json({ ok: false, error: e?.message || "delete failed" }, { status: 500 });
-//   }
-// }
-
-
-
-
-
-
-
 import { NextResponse } from "next/server";
 import path from "node:path";
 import fs from "node:fs/promises";
-import {
-  BASES,
-  slugify,
-  getBaseAbs,
-  isInside,
-  toUrl,
-  titleFromSlug,
-  trackPageInDB,
-  untrackPageFromDB,
-} from "./_utils";
-
-export const runtime = "nodejs";
-export const dynamic = "force-static"; 
-
-let cachedData = null;
-let cacheTimestamp = 0;
-const CACHE_DURATION = 30 * 1000; // 30 seconds
+import { getBaseAbs, toUrl, trackPageInDB, untrackPageFromDB } from "./_utils";
 
 async function exists(p) {
-  try {
-    await fs.access(p);
-    return true;
-  } catch {
-    return false;
-  }
+    try { await fs.access(p); return true; } catch { return false; }
 }
 
-async function safeReaddir(absDir) {
-  try {
-    return await fs.readdir(absDir, { withFileTypes: true });
-  } catch {
-    return [];
-  }
-}
-
-async function listRoutes(section) {
-  const baseAbs = getBaseAbs(section);
-  if (!baseAbs) return [];
-
-  // Skip scanning if cache fresh
-  if (cachedData?.[section] && Date.now() - cacheTimestamp < CACHE_DURATION) {
-    return cachedData[section].items;
-  }
-
-  const entries = await safeReaddir(baseAbs);
-  const dirs = entries
-    .filter((e) => e.isDirectory() && !e.name.startsWith("."))
-    .map((e) => e.name)
-    .sort((a, b) => a.localeCompare(b));
-
-  // LIMIT to first 50 dirs only (prevent slowdown)
-  const items = await Promise.all(
-    dirs.slice(0, 50).map(async (slug) => {
-      const folderAbs = path.join(baseAbs, slug);
-      const pageJsx = path.join(folderAbs, "page.jsx");
-      
-      const hasPage = await exists(pageJsx);
-      return {
-        slug, url: toUrl(section, slug), 
-        hasPage, pageFile: hasPage ? "page.jsx" : null
-      };
-    })
-  );
-  return items;
-}
-function pageTemplate({ section, slug }) {
-  const title = titleFromSlug(slug);
-  const industry = section === "industries" ? "Industry" : "Solution";
-  
-  return `import Link from "next/link";
-import { FaThumbsUp } from "react-icons/fa";
-
-export const dynamic = "force-static";
-
-export async function generateMetadata() {
-  return {
-    title: "${title} - ${industry} | SoftKingo",
-    description: "Custom ${industry.toLowerCase()} development services - tailored digital solutions for ${title.toLowerCase()} with modern tech stack.",
-  };
-}
-
-export default function Page() {
-  return (
-    <>
-      {/* HERO */}
-      <section
-        className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-gradient-to-br from-slate-900 via-blue-900/20 to-indigo-900/40 border-b border-white/5"
-        style={{
-          backgroundImage: "radial-gradient(circle at 20% 80%, #3b82f6 0%, transparent 50%), radial-gradient(circle at 80% 20%, #10b981 0%, transparent 50%)"
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-slate-900/60 to-black/70" />
-        <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center px-6">
-          <div className="max-w-3xl">
-            <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-300/70 mb-4">
-              <Link href="/" className="hover:text-cyan-400 transition-all duration-200">
-                Home
-              </Link>
-              <span className="text-slate-400">›</span>
-              <Link href="/${section}" className="hover:text-cyan-400 transition-all duration-200">
-                ${industry}s
-              </Link>
-              <span className="text-cyan-400 font-medium text-sm ml-1">${title}</span>
-            </nav>
-
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight mb-4">
-              ${title}
-            </h1>
-
-            <p className="mt-3 max-w-xl text-lg md:text-xl text-slate-200/90 leading-relaxed mb-6">
-              Tailored ${industry.toLowerCase()} solution with real-time features, scalable architecture and modern UI/UX design.
-            </p>
-
-            <div className="flex flex-wrap gap-3 md:gap-4 text-sm md:text-base">
-              <div className="inline-flex items-center gap-2 text-sm font-semibold bg-white/10 backdrop-blur-sm px-5 py-2 rounded-full border border-cyan-400/50 hover:border-cyan-300/80 transition-all duration-200">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-lg shadow-emerald-500/25" />
-                Ready to Deploy
-              </div>
-
-              <div className="inline-flex items-center gap-2 bg-white/8 backdrop-blur-sm px-5 py-2 rounded-full border border-white/20 hover:border-white/30 transition-all duration-200">
-                <span className="text-cyan-300 font-semibold">Avg: 4-6 weeks</span>
-              </div>
-
-              <div className="inline-flex items-center gap-2 bg-white/8 backdrop-blur-sm px-5 py-2 rounded-full border border-white/20 hover:border-white/30 transition-all duration-200">
-                <span className="text-cyan-300 font-semibold">4.9⭐</span>
-                <FaThumbsUp className="text-emerald-400 text-sm" />
-              </div>
-
-              <div className="inline-flex items-center gap-2 bg-white/8 backdrop-blur-sm px-5 py-2 rounded-full border border-white/20 hover:border-white/30 transition-all duration-200">
-                Network: <span className="text-white font-semibold">500+</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES SECTION */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-slate-50/50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent mb-6">
-              Key Features
-            </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-              Production-ready ${industry.toLowerCase()} with battle-tested architecture and enterprise-grade features.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="group p-8 rounded-3xl border border-slate-100/50 hover:border-blue-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white/70 backdrop-blur-sm">
-              <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl">⚡</span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">
-                Real-time Updates
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Live tracking, notifications & instant sync across all devices.
-              </p>
-            </div>
-
-            <div className="group p-8 rounded-3xl border border-slate-100/50 hover:border-blue-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white/70 backdrop-blur-sm">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl">📱</span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">
-                Cross-platform
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Native iOS, Android & Web apps with unified codebase & design.
-              </p>
-            </div>
-
-            <div className="group p-8 rounded-3xl border border-slate-100/50 hover:border-blue-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white/70 backdrop-blur-sm">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl">🔒</span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">
-                Enterprise Security
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                JWT auth, end-to-end encryption & GDPR/CCPA compliant.
-              </p>
-            </div>
-
-            <div className="group p-8 rounded-3xl border border-slate-100/50 hover:border-blue-200/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white/70 backdrop-blur-sm md:col-span-2 lg:col-span-1">
-              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl">⚙️</span>
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition-colors">
-                🚧 Ready for Customization
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                <strong>Admin panel auto-created this page.</strong><br/>
-                Edit this file to add your custom content:<br/>
-                <code className="bg-slate-100 px-2 py-1 rounded text-xs font-mono mt-3 block">
-                  src/app/(public)/${section}/${slug}/page.jsx
-                </code>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-`;
-}
-
-// GET /api/admin/solutions?section=solutions|industries|all
-export async function GET(req) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const section = (searchParams.get("section") || "all").toLowerCase();
-
-    // RETURN CACHED DATA IMMEDIATELY
-    if (cachedData && Date.now() - cacheTimestamp < CACHE_DURATION) {
-      const sections = section === "all" ? Object.keys(BASES) : [section];
-      const data = {};
-      for (const s of sections.filter(s => BASES[s])) {
-        data[s] = cachedData[s];
-      }
-      return NextResponse.json({ ok: true, data });
-    }
-
-    const sections = section === "all" ? Object.keys(BASES) : [section].filter((s) => BASES[s]);
-    if (sections.length === 0) {
-      return NextResponse.json({ ok: false, error: "Invalid section" }, { status: 400 });
-    }
-
-    const data = {};
-    for (const s of sections) {
-      if (!(await exists(getBaseAbs(s)))) {
-        await fs.mkdir(getBaseAbs(s), { recursive: true });
-      }
-      data[s] = {
-        basePath: BASES[s],
-        items: await listRoutes(s),
-      };
-    }
-
-    // CACHE RESULTS
-    cachedData = data;
-    cacheTimestamp = Date.now();
-
-    return NextResponse.json({ ok: true, data });
-  } catch (e) {
-    return NextResponse.json({ ok: false, error: e?.message || "list failed" }, { status: 500 });
-  }
-}
-
-
-
-// POST /api/admin/solutions { section, slug, createPage=true }
-export async function POST(req) {
-  try {
-    const body = await req.json();
-    const section = String(body?.section || "").toLowerCase();
-    const rawSlug = body?.slug;
-    const createPage = body?.createPage !== false; // default true
-
-    if (!BASES[section]) {
-      return NextResponse.json({ ok: false, error: "Invalid section" }, { status: 400 });
-    }
-
-    const slug = slugify(rawSlug);
-    if (!slug) {
-      return NextResponse.json({ ok: false, error: "slug required" }, { status: 400 });
-    }
-
-    const baseAbs = getBaseAbs(section);
-    if (!(await exists(baseAbs))) await fs.mkdir(baseAbs, { recursive: true });
-
-    const folderAbs = path.join(baseAbs, slug);
-
-    // safety
-    if (!isInside(baseAbs, folderAbs)) {
-      return NextResponse.json({ ok: false, error: "Invalid path" }, { status: 400 });
-    }
-
-    if (await exists(folderAbs)) {
-      return NextResponse.json({ ok: false, error: "Slug already exists" }, { status: 409 });
-    }
-
-    await fs.mkdir(folderAbs, { recursive: true });
-
-    let pagePath = null;
-    if (createPage) {
-      pagePath = path.join(folderAbs, "page.jsx");
-      await fs.writeFile(pagePath, pageTemplate({ section, slug }), "utf8");
-    }
-
-    // Track in DB
-    await trackPageInDB(section, slug);
-
-    return NextResponse.json({
-      ok: true,
-      created: {
-        section,
-        slug,
-        url: toUrl(section, slug),
-        folder: path.relative(process.cwd(), folderAbs),
-        page: pagePath ? path.relative(process.cwd(), pagePath) : null,
-      },
-    });
-  } catch (e) {
-    return NextResponse.json({ ok: false, error: e?.message || "create failed" }, { status: 500 });
-  }
-}
-
-// DELETE /api/admin/solutions { section, slug }
-export async function DELETE(req) {
-  try {
-    const body = await req.json();
-    const section = String(body?.section || "").toLowerCase();
-    const slug = slugify(body?.slug);
-
-    if (!BASES[section]) {
-      return NextResponse.json({ ok: false, error: "Invalid section" }, { status: 400 });
-    }
-    if (!slug) {
-      return NextResponse.json({ ok: false, error: "slug required" }, { status: 400 });
-    }
-
-    const baseAbs = getBaseAbs(section);
-    const folderAbs = path.join(baseAbs, slug);
-
-    if (!isInside(baseAbs, folderAbs)) {
-      return NextResponse.json({ ok: false, error: "Invalid path" }, { status: 400 });
-    }
-
-    if (!(await exists(folderAbs))) {
-      return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
-    }
-
-    // delete recursively
-    await fs.rm(folderAbs, { recursive: true, force: true });
+/**
+ * ENGINE: 10-SECTION PROFESSIONAL GENERATOR
+ * Generates high-fidelity code based on Softkingo's premium portfolio standards.
+ */
+function generatePageCode(data) {
+    const { content, type, slug, section } = data;
+    const jsonContent = JSON.stringify(content);
     
-    // Untrack from DB
-    await untrackPageFromDB(slug);
+    return `
+"use client";
+import React, { useState, useEffect, useMemo } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
+import { 
+  FaCheckCircle, FaRocket, FaShieldAlt, FaUsers, FaArrowRight, 
+  FaQuoteLeft, FaChartLine, FaCog, FaMobileAlt, FaChevronDown,
+  FaGlobe, FaLock, FaSync, FaLightbulb, FaBriefcase, FaArrowUp,
+  FaGooglePlay, FaApple, FaLaptop
+} from 'react-icons/fa';
+import InquirySection from '@/components/footer/InquirySection';
 
-    return NextResponse.json({ ok: true, deleted: { section, slug } });
-  } catch (e) {
-    return NextResponse.json({ ok: false, error: e?.message || "delete failed" }, { status: 500 });
-  }
+export default function GeneratedPage() {
+    const [activeFaq, setActiveFaq] = useState(0);
+    const { scrollYProgress } = useScroll();
+    const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+    
+    const content = ${jsonContent};
+    const type = "${type}";
+
+    // Theme Engine: Sharp & Professional (Non-childish)
+    const theme = useMemo(() => {
+        const styles = {
+            clone: { 
+                gradient: "from-orange-600 via-red-600 to-amber-600", 
+                accent: "text-orange-600", 
+                bg: "bg-[#fffaf5]", 
+                radius: "rounded-xl",
+                btn: "bg-orange-600 hover:bg-orange-700" 
+            },
+            industry: { 
+                gradient: "from-blue-800 via-indigo-700 to-blue-600", 
+                accent: "text-indigo-600", 
+                bg: "bg-[#f8faff]", 
+                radius: "rounded-lg",
+                btn: "bg-indigo-700 hover:bg-indigo-800" 
+            },
+            solution: { 
+                gradient: "from-sky-600 via-blue-600 to-cyan-500", 
+                accent: "text-sky-600", 
+                bg: "bg-[#fcfdfe]", 
+                radius: "rounded-2xl",
+                btn: "bg-slate-900 hover:bg-sky-600" 
+            }
+        };
+        return styles[type] || styles.solution;
+    }, [type]);
+
+    return (
+        <main className="bg-white text-slate-900 selection:bg-sky-100 overflow-x-hidden font-sans">
+            <motion.div className="fixed top-0 left-0 right-0 h-1 bg-sky-500 z-[100] origin-left" style={{ scaleX }} />
+
+            {/* SECTION 1: PROFESSIONAL HERO (PORTFOLIO STYLE) */}
+            <section className={\`relative min-h-[90vh] flex items-center pt-20 overflow-hidden \${theme.bg}\`}>
+                <div className="absolute inset-0 bg-[url('/images/grid-pattern.svg')] opacity-[0.03] -z-10" />
+                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-center">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                        <div className="inline-flex items-center gap-2 bg-white border border-slate-200 px-4 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-[0.2em] mb-8 shadow-sm">
+                           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                           {content.hero.tag || "Enterprise Grade"}
+                        </div>
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1] tracking-tight text-slate-900">
+                            {content.hero.title} <br/>
+                            <span className={\`text-transparent bg-clip-text bg-gradient-to-r \${theme.gradient}\`}>
+                                Digital Innovation.
+                            </span>
+                        </h1>
+                        <p className="text-lg text-slate-500 mb-10 leading-relaxed max-w-xl font-normal">
+                            {content.hero.subtitle}
+                        </p>
+                        <div className="flex flex-wrap gap-4">
+                            <Link href="/contact" className={\`group \${theme.btn} text-white px-8 py-4 \${theme.radius} font-bold transition-all flex items-center gap-3 shadow-xl shadow-slate-200\`}>
+                                GET A FREE QUOTE <FaArrowRight className="group-hover:translate-x-1 transition-transform"/>
+                            </Link>
+                            {type === 'clone' && (
+                                <div className="flex gap-4 items-center ml-2">
+                                    <FaGooglePlay className="text-slate-300 text-xl" />
+                                    <FaApple className="text-slate-300 text-xl" />
+                                    <FaLaptop className="text-slate-300 text-xl" />
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+
+                    {/* HERO MOCKUP: SHARP DESIGN */}
+                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="relative">
+                        <div className={\`relative z-10 p-2 bg-white rounded-2xl border border-slate-200 shadow-2xl\`}>
+                             <div className={\`relative h-[550px] w-full \${theme.radius} overflow-hidden bg-slate-100\`}>
+                                <Image src={content.hero.image || "/images/hero-placeholder.png"} alt="Preview" fill className="object-cover" priority />
+                             </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* SECTION 2: STATS (MINIMALIST) */}
+            <div className="bg-white py-16 border-b border-slate-100">
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+                    {content.stats?.map((s, i) => (
+                        <div key={i} className="text-left border-l-2 border-slate-100 pl-8">
+                            <div className={\`text-4xl font-bold \${theme.accent} mb-1\`}>{s.value}</div>
+                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{s.label}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* SECTION 3: SERVICES GRID (SHARP CARDS) */}
+            <section className="py-24 max-w-7xl mx-auto px-6">
+                <div className="max-w-3xl mb-20">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">Comprehensive <span className={\`italic \${theme.accent}\`}>Modules.</span></h2>
+                    <p className="text-slate-500 text-lg">We deliver a full-stack ecosystem tailored to your operational needs.</p>
+                </div>
+                <div className="grid md:grid-cols-3 gap-8">
+                    {content.services?.map((s, i) => (
+                        <div key={i} className={\`p-8 \${theme.radius} border border-slate-200 bg-white hover:border-sky-500 hover:shadow-2xl transition-all group\`}>
+                            <div className="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mb-6 text-slate-900 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                                <FaCog size={24} />
+                            </div>
+                            <h3 className="text-xl font-bold mb-3 tracking-tight">{s.title}</h3>
+                            <p className="text-slate-500 text-sm leading-relaxed mb-6">Advanced {s.title} integration with secure API layers and real-time data sync.</p>
+                            <Link href="/contact" className="text-xs font-bold flex items-center gap-2 text-sky-600">LEARN MORE <FaArrowRight size={10}/></Link>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* SECTION 4: CASE STUDY (POTAFO DARK STYLE) */}
+            <section className="py-24 px-6 bg-slate-950 rounded-[2rem] mx-4 mb-24">
+                <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+                    <div className="space-y-8">
+                        <div className="text-sky-500 font-bold uppercase tracking-[0.3em] text-[10px]">Real-World Success</div>
+                        <h3 className="text-4xl md:text-6xl font-bold text-white leading-tight">{content.caseStudy.title}</h3>
+                        <p className="text-slate-400 text-lg leading-relaxed">{content.caseStudy.description}</p>
+                        <div className="flex gap-4">
+                            <div className="px-6 py-3 bg-white/5 border border-white/10 rounded-lg text-white text-xs font-bold">
+                                TECH: {content.caseStudy.tech}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="relative h-[450px] rounded-2xl overflow-hidden border-8 border-white/5 shadow-2xl">
+                        <Image src={content.caseStudy.image || "/images/case-placeholder.png"} alt="Case" fill className="object-cover" />
+                    </div>
+                </div>
+            </section>
+
+            {/* SECTION 5: METHODOLOGY (BLUEPRINT) */}
+            <section className="py-24 bg-white border-t border-slate-100">
+                <div className="max-w-7xl mx-auto px-6">
+                    <h2 className="text-center text-4xl font-bold mb-20 tracking-tight">Our <span className="text-sky-600 italic">Execution</span> Strategy</h2>
+                    <div className="grid md:grid-cols-4 gap-8">
+                        {content.methodology?.map((m, i) => (
+                            <div key={i} className="space-y-4 border-t-4 border-slate-50 pt-8 hover:border-sky-500 transition-colors">
+                                <div className="text-4xl font-black text-slate-100 group-hover:text-sky-100 transition-colors">0{i+1}</div>
+                                <h4 className="text-lg font-bold text-slate-900">{m.title}</h4>
+                                <p className="text-slate-500 text-xs leading-relaxed">{m.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* SECTION 6: TECH TRUST BAR */}
+            <section className="py-12 bg-slate-50 overflow-hidden border-y border-slate-100">
+                <div className="flex gap-20 items-center whitespace-nowrap animate-scroll opacity-20 hover:opacity-50 transition-opacity">
+                    {[1,2,3,4,5,6].map(i => (
+                        <span key={i} className="text-2xl font-black text-slate-900 tracking-tighter">SOFTKINGO TECH SYSTEM</span>
+                    ))}
+                </div>
+            </section>
+
+            {/* SECTION 7: INTERACTIVE FAQ (ACCORDION) */}
+            <section className="py-32 max-w-4xl mx-auto px-6">
+                <h2 className="text-3xl font-bold mb-12 text-center">Frequently Asked Questions</h2>
+                <div className="space-y-3">
+                    {content.benefits?.map((b, i) => (
+                        <div key={i} className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                            <button 
+                                onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                                className="w-full flex items-center justify-between p-6 text-left font-bold text-slate-800 hover:bg-slate-50"
+                            >
+                                <span>{b.title}</span>
+                                <FaChevronDown className={\`transition-transform \${activeFaq === i ? 'rotate-180' : ''}\`} />
+                            </button>
+                            {activeFaq === i && (
+                                <motion.div initial={{height:0}} animate={{height:'auto'}} className="px-6 pb-6 text-slate-500 text-sm leading-relaxed">{b.desc}</motion.div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* SECTION 8: WHY SOFTKINGO (BENEFITS) */}
+            <section className="py-24 bg-slate-900 rounded-[2rem] mx-4 text-white">
+                <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12">
+                   {[
+                       {t:"ISO Certified", d:"Industry standard security protocols.", i:<FaShieldAlt/>},
+                       {t:"99% Uptime", d:"Reliable infrastructure on AWS/Azure.", i:<FaSync/>},
+                       {t:"Global Reach", d:"Deploy across multiple regions.", i:<FaGlobe/>}
+                   ].map((f, i) => (
+                       <div key={i} className="text-center space-y-4">
+                           <div className="text-4xl text-sky-500 flex justify-center">{f.i}</div>
+                           <h4 className="text-xl font-bold">{f.t}</h4>
+                           <p className="text-slate-400 text-sm">{f.d}</p>
+                       </div>
+                   ))}
+                </div>
+            </section>
+
+            {/* SECTION 9: CTA (CONVERSION) */}
+            <section className="py-32 text-center px-6">
+                <div className={\`max-w-5xl mx-auto py-24 px-8 rounded-3xl bg-gradient-to-br \${theme.gradient} text-white shadow-2xl relative overflow-hidden\`}>
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full" />
+                    <h2 className="text-4xl md:text-6xl font-black mb-8 leading-tight">Scale Your Digital <br/> Footprint Today.</h2>
+                    <Link href="/contact" className="bg-white text-slate-900 px-12 py-5 rounded-lg font-black text-lg hover:scale-110 transition-transform inline-block">LET'S START</Link>
+                </div>
+            </section>
+
+            {/* SECTION 10: INQUIRY */}
+            <InquirySection />
+
+            <style jsx>{\`
+                @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+                .animate-scroll { animation: scroll 20s linear infinite; }
+            \`}</style>
+        </main>
+    );
+}
+`.trim();
+}
+
+// ========== API ROUTES (GET, POST, DELETE) ==========
+export async function POST(req) {
+    try {
+        const body = await req.json();
+        const { section, slug } = body;
+        const baseAbs = getBaseAbs(section);
+        const folderPath = path.join(baseAbs, slug);
+
+        await fs.mkdir(folderPath, { recursive: true });
+        await fs.writeFile(path.join(folderPath, "data.json"), JSON.stringify(body, null, 2));
+
+        const code = generatePageCode(body);
+        await fs.writeFile(path.join(folderPath, "page.jsx"), code);
+
+        await trackPageInDB(section, slug);
+        return NextResponse.json({ ok: true, url: toUrl(section, slug) });
+    } catch (e) {
+        return NextResponse.json({ ok: false, error: e.message });
+    }
+}
+
+export async function GET(req) {
+    try {
+        const { searchParams } = new URL(req.url);
+        const section = searchParams.get("section") || "all";
+        const slug = searchParams.get("slug");
+
+        if (slug && section !== "all") {
+            const dataPath = path.join(getBaseAbs(section), slug, "data.json");
+            if (await exists(dataPath)) {
+                const raw = await fs.readFile(dataPath, "utf8");
+                return NextResponse.json({ ok: true, data: JSON.parse(raw) });
+            }
+        }
+
+        const sections = section === "all" ? ["solutions", "industries"] : [section];
+        const results = {};
+        for (const s of sections) {
+            const baseAbs = getBaseAbs(s);
+            if (!(await exists(baseAbs))) { results[s] = []; continue; }
+            const entries = await fs.readdir(baseAbs, { withFileTypes: true });
+            results[s] = await Promise.all(entries.filter(e => e.isDirectory()).map(async e => {
+                const dataPath = path.join(baseAbs, e.name, "data.json");
+                let meta = { slug: e.name, url: toUrl(s, e.name) };
+                if (await exists(dataPath)) {
+                    const raw = await fs.readFile(dataPath, "utf8");
+                    const parsed = JSON.parse(raw);
+                    meta = { ...meta, title: parsed.content?.hero?.title, type: parsed.type };
+                }
+                return meta;
+            }));
+        }
+        return NextResponse.json({ ok: true, data: results });
+    } catch (e) { return NextResponse.json({ ok: false, error: e.message }); }
+}
+
+export async function DELETE(req) {
+    try {
+        const { section, slug } = await req.json();
+        const folderAbs = path.join(getBaseAbs(section), slug);
+        await fs.rm(folderAbs, { recursive: true, force: true });
+        await untrackPageFromDB(slug);
+        return NextResponse.json({ ok: true });
+    } catch (e) { return NextResponse.json({ ok: false, error: e.message }); }
 }

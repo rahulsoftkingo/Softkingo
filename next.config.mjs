@@ -113,15 +113,6 @@ async redirects() {
     { source: '/diet-planner-app-development', destination: '/solutions/diet-planner-app-development', permanent: true },
     { source: '/social-networking-app-development', destination: '/solutions/social-networking-app-development', permanent: true },
 
-    // ========== ADDITIONAL SOLUTIONS ==========
-    { source: '/ecommerce-solutions', destination: '/solutions/digital-marketing-for-ecommerce', permanent: true },
-    { source: '/conversion-rate-optimization', destination: '/solutions/conversion-rate-optimization', permanent: true },
-    { source: '/internet-of-things-development-company', destination: '/solutions/iot-app-development', permanent: true },
-    { source: '/custom-database-development-services', destination: '/solutions/custom-database-development', permanent: true },
-    { source: '/convert-your-website-into-mobile-apps', destination: '/solutions/convert-your-website-into-mobile-apps', permanent: true },
-    { source: '/converting-php-web-app-to-mobile-app', destination: '/solutions/converting-php-web-app-to-mobile-app', permanent: true },
-    { source: '/turn-your-excel-spreadsheet-into-iphone-ipad-application', destination: '/solutions/turn-your-excel-spreadsheet-into-ios-app', permanent: true },
-    { source: '/convert-vb-application-to-mobile-app', destination: '/solutions/convert-vb-application-to-mobile-app', permanent: true },
 
     // ========== AI/ML + CLOUD + SALESFORCE ==========
     { source: '/ai-machine-learning-development-services', destination: '/services/machine-learning-development', permanent: true },
@@ -142,6 +133,59 @@ async redirects() {
     { source: '/ghost-lens-clone-app-development', destination: '/solutions/ghost-lens-clone-app-development', permanent: true },
     { source: '/olx-clone-app-development', destination: '/solutions/olx-clone-app-development', permanent: true },
     { source: '/naukri-clone-app-development', destination: '/solutions/naukri-clone-app-development', permanent: true }, // Added
+
+// ========== PROJECT TO CASE STUDIES REDIRECTS ==========
+      { source: '/project/fitify-workout-routines-fitness-app', destination: '/case-studies/fitify-workout-routines-fitness-app', permanent: true },
+      { source: '/project/careclinic-healthcare-app', destination: '/case-studies/careclinic-healthcare-app', permanent: true },
+      { source: '/project/tripit-travel-planner-app', destination: '/case-studies/tripit-travel-planner-app', permanent: true },
+      { source: '/project/oda-class-live-learning-app', destination: '/case-studies/oda-class-live-learning-app', permanent: true },
+      { source: '/project/bumpy-dating-app', destination: '/case-studies/bumpy-dating-app', permanent: true },
+      { source: '/project/moglix-shopping-app', destination: '/case-studies/moglix-shopping-app', permanent: true },
+      { source: '/project/lovelocal-grocery-app', destination: '/case-studies/lovelocal-grocery-app', permanent: true },
+
+      // ========== BLOG TO GUIDES REDIRECTS ==========
+      { source: '/blog/a-complete-guide-to-developing-a-dating-app-explained-step-by-step', destination: '/guides/a-complete-guide-to-developing-a-dating-app-explained-step-by-step', permanent: true },
+      { source: '/blog/salon-app-development-guide-features-costs-and-success-strategies', destination: '/guides/salon-app-development-guide-features-costs-and-success-strategies', permanent: true },
+      { source: '/blog/how-to-build-an-on-demand-beauty-services-app-a-complete-guide', destination: '/guides/how-to-build-an-on-demand-beauty-services-app-a-complete-guide', permanent: true },
+      { source: '/blog/a-thorough-guide-to-developing-your-wedding-planner-app', destination: '/guides/a-thorough-guide-to-developing-your-wedding-planner-app', permanent: true },
+      { source: '/blog/custom-healthcare-software-development-a-complete-step-by-step-guide', destination: '/guides/custom-healthcare-software-development-a-complete-step-by-step-guide', permanent: true },
+      { source: '/blog/build-your-own-food-delivery-app-like-kfc-a-comprehensive-guide', destination: '/guides/build-your-own-food-delivery-app-like-kfc-a-comprehensive-guide', permanent: true },
+      { source: '/blog/how-to-build-a-rideshare-app-like-hitch-a-step-by-step-guide', destination: '/guides/how-to-build-a-rideshare-app-like-hitch-a-step-by-step-guide', permanent: true },
+      { source: '/blog/fitness-app-development-key-features-costs', destination: '/guides/fitness-app-development-key-features-costs', permanent: true },
+      { source: '/blog/build-property-management-software', destination: '/guides/build-property-management-software', permanent: true },
+      { source: '/blog/a-complete-guide-to-the-food-delivery-app-business-model', destination: '/guides/a-complete-guide-to-the-food-delivery-app-business-model', permanent: true },
+      { source: '/blog/a-complete-guide-to-enterprise-web-and-mobile-app-development', destination: '/guides/a-complete-guide-to-enterprise-web-and-mobile-app-development', permanent: true },
+      { source: '/blog/a-comprehensive-guide-to-super-app-development', destination: '/guides/a-comprehensive-guide-to-super-app-development', permanent: true },
+      { source: '/blog/pharmacy-app-development-guide', destination: '/guides/pharmacy-app-development-guide', permanent: true },
+      { source: '/blog/grocery-delivery-app-development-types-features-tech-stack-cost', destination: '/guides/grocery-delivery-app-development-types-features-tech-stack-cost', permanent: true },
+      { source: '/blog/how-to-build-a-pet-care-app-a-comprehensive-guide-to-development', destination: '/guides/how-to-build-a-pet-care-app-a-comprehensive-guide-to-development', permanent: true },
+      { source: '/blog/step-by-step-guide-to-building-a-successful-fitness-app', destination: '/guides/step-by-step-guide-to-building-a-successful-fitness-app', permanent: true },
+      { source: '/blog/how-dating-apps-make-money', destination: '/guides/how-dating-apps-make-money', permanent: true },
+      { source: '/blog/how-to-build-a-booking-system', destination: '/guides/how-to-build-a-booking-system', permanent: true },
+      { source: '/blog/real-estate-app-development-guide', destination: '/guides/real-estate-app-development-guide', permanent: true },
+      { source: '/blog/vision-pro-app-development-for-business-innovators', destination: '/guides/vision-pro-app-development-for-business-innovators', permanent: true },
+      { source: '/blog/ideo-podcast-app-development', destination: '/guides/ideo-podcast-app-development', permanent: true },
+      { source: '/blog/community-based-dating-app-development', destination: '/guides/community-based-dating-app-development', permanent: true },
+
+      // ========== ARTICLE & PERMALINK REDIRECTS ==========
+      { source: '/blog/why-the-discovery-phase-is-crucial-for-successful-software-development', destination: '/articles/why-the-discovery-phase-is-crucial-for-successful-software-development', permanent: true },
+      { source: '/blog/mobile-app-development-latest-trends-you-shouldn-t-miss-in-2022', destination: '/blog/latest-mobile-app-development-trends', permanent: true },
+      { source: '/articles/how-a-mobile-app-can-help-your-business-grow-and-stay-competitive', destination: '/articles/how-a-mobile-app-can-help-your-business-grow-and-stay-competitive', permanent: false },
+
+      // ========== SERVICE REDIRECTS ==========
+      { source: '/software-development', destination: '/services/software-development', permanent: true },
+      { source: '/mobile-app-prototyping-service', destination: '/services/mobile-app-prototyping', permanent: true },
+      { source: '/hire-iphone-developer', destination: '/hire/iphone-app-developers', permanent: true },
+      { source: '/celebrity-reputation-management-service', destination: '/services/celebrity-reputation-management', permanent: true },
+      { source: '/ecommerce-solutions', destination: '/services/digital-marketing-for-ecommerce', permanent: true },
+      { source: '/conversion-rate-optimization', destination: '/services/conversion-rate-optimization', permanent: true },
+      { source: '/convert-vb-application-to-mobile-app', destination: '/services/convert-vb-application-to-mobile-app', permanent: true },
+      { source: '/internet-of-things-development-company', destination: '/services/iot-app-development', permanent: true },
+      { source: '/custom-database-development-services', destination: '/services/custom-database-development', permanent: true },
+      { source: '/convert-your-website-into-mobile-apps', destination: '/services/convert-your-website-into-mobile-apps', permanent: true },
+      { source: '/converting-php-web-app-to-mobile-app', destination: '/services/converting-php-web-app-to-mobile-app', permanent: true },
+      { source: '/turn-your-excel-spreadsheet-into-iphone-ipad-application', destination: '/services/turn-your-excel-spreadsheet-into-ios-app', permanent: true },
+    
   ];
 }
 

@@ -27,7 +27,7 @@ import {
   Loader2,
 } from 'lucide-react';
 
-import { BLOG_SECTIONS } from '@/app/(public)/blog/sectionConfig';
+import { BLOG_SECTIONS } from '@/app/(public)/[sectionKey]/sectionConfig';
 
 const AdvancedTipTapEditor = dynamic(() => import('../../AdvancedTipTapEditor'), {
   ssr: false,

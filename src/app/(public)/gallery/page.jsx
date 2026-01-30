@@ -5,6 +5,11 @@ import GalleryClient from './GalleryClient';
 import InquirySection from '@/components/footer/InquirySection';
 
 export const dynamic = 'force-dynamic';
+export const metadata = {
+  title: "Gallery & Portfolio | Softkingo",
+  description: "Explore our visual journey. From office culture to successful project launches, see how Softkingo builds excellence.",
+  alternates: { canonical: "/gallery" }
+};
 
 // Section definitions + tag mapping
 const SECTION_DEFS = [
