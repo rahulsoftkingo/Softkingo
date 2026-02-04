@@ -445,7 +445,7 @@ const SideBar = () => {
     { heading: "AI & ML Services", id: "aiML", pageHref: "/services/ai-ml", links: servicesData[4].links },
     { heading: "IoT & Embedded", id: "iot", pageHref: "/services/iot-embedded", links: servicesData[5].links },
     { heading: "DevOps & Cloud", id: "devops", pageHref: "/services/devops-cloud", links: servicesData[6].links },
-    { heading: "Digital Marketing", id: "digital", pageHref: "/services/degital-marketing", links: servicesData[7].links }
+    { heading: "Digital Marketing", id: "digital", pageHref: "/services/digital-marketing", links: servicesData[7].links }
   ];
 
 
