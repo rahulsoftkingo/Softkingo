@@ -144,7 +144,7 @@ const Footer = () => {
                 />
                 <FooterContactRow
                   title="Address"
-                  value="A179, Block ED, New Ashok Nagar, New Delhi, Delhi, 110096, India"
+                  value="A179, Block ED,  New Delhi, Delhi, 110096, India"
                   type="location"
                 />
               </div>

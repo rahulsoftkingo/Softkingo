@@ -185,6 +185,14 @@ async redirects() {
       { source: '/convert-your-website-into-mobile-apps', destination: '/services/convert-your-website-into-mobile-apps', permanent: true },
       { source: '/converting-php-web-app-to-mobile-app', destination: '/services/converting-php-web-app-to-mobile-app', permanent: true },
       { source: '/turn-your-excel-spreadsheet-into-iphone-ipad-application', destination: '/services/turn-your-excel-spreadsheet-into-ios-app', permanent: true },
+
+
+
+
+      { source: '/contact-us', destination: '/contact', permanent: true },
+    
+      { source: '/our-portfolio', destination: '/portfolio', permanent: true },
+    
     
   ];
 }

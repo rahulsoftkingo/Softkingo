@@ -110,7 +110,7 @@ export default async function sitemap() {
     url: `${baseUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: path === "" ? "daily" : "weekly",
-    priority: path === "" ? 1.0 : path.includes('/industries/') || path.includes('/solutions/') ? 0.8 : 0.7
+    priority: path === "" ? 1.0 : path.includes('/industries/') || path.includes('/solutions/') ? 0.8 : 0.8
   }));
 
   try {
@@ -160,7 +160,7 @@ export default async function sitemap() {
       .map(post => ({
         url: `${baseUrl}${BLOG_TYPE_MAPPING[post.type]}/${post.slug}`,
         lastModified: post.updatedAt ?? new Date(),
-        changeFrequency: "weekly",
+        // changeFrequency: "weekly",
         priority: 0.8
       }));
     dynamicRoutes.push(...blogRoutes);
@@ -171,8 +171,8 @@ export default async function sitemap() {
       .map(category => ({
         url: `${baseUrl}/blog/category/${category.slug}`,
         lastModified: category.updatedAt ?? new Date(),
-        changeFrequency: "monthly",
-        priority: 0.6
+        // changeFrequency: "monthly",
+        priority: 0.8
       }));
     dynamicRoutes.push(...categoryRoutes);
 
@@ -182,8 +182,8 @@ export default async function sitemap() {
       .map(cs => ({
         url: `${baseUrl}/case-studies/${cs.slug}`,
         lastModified: cs.updatedAt ?? new Date(),
-        changeFrequency: "monthly",
-        priority: 0.75
+        // changeFrequency: "monthly",
+        priority: 0.8
       }));
     dynamicRoutes.push(...caseStudyRoutes);
 
@@ -193,8 +193,8 @@ export default async function sitemap() {
       .map(guide => ({
         url: `${baseUrl}/e-guides/${guide.slug}`,
         lastModified: guide.updatedAt ?? new Date(),
-        changeFrequency: "monthly",
-        priority: 0.7
+        // changeFrequency: "monthly",
+        priority: 8
       }));
     dynamicRoutes.push(...eGuideRoutes);
 
@@ -211,8 +211,8 @@ export default async function sitemap() {
         return {
           url: `${baseUrl}${basePath}/${page.slug}`,
           lastModified: page.updatedAt ?? new Date(),
-          changeFrequency: "monthly",
-          priority: 0.65
+          // changeFrequency: "monthly",
+          priority: 0.8
         };
       });
     dynamicRoutes.push(...pageRoutes);

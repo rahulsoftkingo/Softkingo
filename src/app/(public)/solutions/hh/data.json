@@ -1,0 +1,48 @@
+{
+  "section": "solutions",
+  "type": "ondemand",
+  "slug": "hh",
+  "activeSections": [
+    "hero",
+    "about",
+    "features",
+    "banner",
+    "whyInvest",
+    "tech",
+    "portfolio",
+    "awards",
+    "cta",
+    "blogs",
+    "faq"
+  ],
+  "content": {
+    "hero": {
+      "title": "hh",
+      "subtitle": "",
+      "image": ""
+    },
+    "aboutTitle": "About Our Solution",
+    "aboutSubtitle": "We provide comprehensive solutions.",
+    "benefits": [
+      "Scalable Architecture",
+      "24/7 Support"
+    ],
+    "services": [
+      {
+        "title": "User App",
+        "image": ""
+      },
+      {
+        "title": "Admin Panel",
+        "image": ""
+      }
+    ],
+    "caseStudy": {
+      "image": ""
+    },
+    "portfolioCategory": "app",
+    "cta": {
+      "title": "Ready to Scale?"
+    }
+  }
+}

@@ -24,7 +24,7 @@ export default function OfficesMap({ offices }) {
       country: "INDIA",
       flag: "/images/flags/india.png",
       hours: "MON–FRI 10 AM – 7 PM",
-      address: "New Delhi, India - 110096",
+      address: "A179, Block ED,  New Delhi, Delhi, 110096, India",
       email: "sales@softkingo.com",
       marker: { left: "62%", top: "48%" },
     },

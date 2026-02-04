@@ -6,6 +6,12 @@ import FoodDeliveryFeatures from './foodDeliveryFeatures';
 import { FaDesktop, FaTasks, FaUikit } from 'react-icons/fa';
 import { SiFsecure, SiSymfony, SiSystem76 } from 'react-icons/si';
 import { Caesar_Dressing } from 'next/font/google';
+import CommonTitle from '@/components/ui/CommonTitle';
+import ConsultationCTA from '@/components/common/Consultation-Cta';
+import Blogs from '../../home/blogs/BlogSliderClient';
+import FAQAccordion from '@/components/common/Faqaccordion';
+import InquirySection from '@/components/footer/InquirySection';
+import IndustriesPage from '../../industries/page';
 
 export default function FoodDeliveryHero() {
     const logos = [
@@ -171,25 +177,25 @@ export default function FoodDeliveryHero() {
             </section>
 
             <section className="max-w-7xl mx-auto p-6 lg:px-20">
-                <div className="mx-auto max-w-4xl text-center">
-                    <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-                        <span className="text-cyan-500">Fresh, Hot, and Fast</span>
-                        <span className="text-gray-900"> - Build the Next Big Food Delivery App</span>
-                    </h1>
-                    <p className="text-gray-600  py-2 px-10 text-lg tex-center leading-relaxed">
-                        Using our Uber eats clone can help you turn your food delivery app dream into reality.
+                
+                <div className="text-center mb-12 max-w-3xl mx-auto">
+
+                    <CommonTitle pill={false}
+                        title="Fresh"
+                        subtitle="Using our Uber eats clone can help you turn your food delivery app dream into reality.
                         Our clone is designed for success. It is feature-rich, scalable, and easily connects
-                        customers, restaurants, and drivers.
-                    </p>
+                        customers, restaurants, and drivers."
+                        gradientText=", Hot, and Fast - Build the Next Big Food Delivery App"
+                        align="center" />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                     {services.map((service) => (
                         <div
                             key={service.id}
-                            className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                            className="group  gap-4   transition-all duration-300 cursor-pointer "
                         >
                             {/* Image Container */}
-                            <div className="relative h-58 w-full bg-gray-200 overflow-hidden">
+                            <div className="relative h-58 w-full bg-gray-200 overflow-hidden rounded-xl shadow-lg hover:shadow-2xl mb-2">
                                 <Image
                                     src={service.image}
                                     alt={service.title}
@@ -200,8 +206,8 @@ export default function FoodDeliveryHero() {
                             </div>
 
                             {/* Card Content */}
-                            <div className="p-6">
-                                <h3 className="text-center text-sm font-semibold text-gray-800 leading-snug min-h-[3rem] flex items-center justify-center">
+                            <div className="p-6 bg-gray-50 rounded-xl shadow-lg hover:shadow-2xl">
+                                <h3 className="text-center text-sm font-semibold  text-gray-800 leading-snug min-h-[3rem] flex items-center justify-center">
                                     {service.title}
                                 </h3>
                             </div>
@@ -424,14 +430,14 @@ export default function FoodDeliveryHero() {
                     </div>
                     <div className="bg-blue-200 flex-col rounded-2xl flex p-6 shadow-lg">
                         <div className='flex gap-5 items-center'>
-                              <FaDesktop size={30} />
+                            <FaDesktop size={30} />
                             <h4 className='font-bold mb-2 text-2xl'>Integrating Internal System </h4>
                         </div>
                         <p className='text-xl'>We build healthcare apps with complete gateway infrastructure, including EHR and practice management, to increase organizational value.</p>
                     </div>
                     <div className="bg-pink-100 flex-col rounded-2xl flex p-6 shadow-lg">
                         <div className='flex gap-5 items-center'>
-                            <SiFsecure  size={30} />
+                            <SiFsecure size={30} />
                             <h4 className='font-bold mb-2 text-2xl'>Security Assurance</h4>
                         </div>
                         <p className='text-xl'>We prioritize data protection in healthcare app development services to provide users with the highest security.</p>
@@ -443,8 +449,19 @@ export default function FoodDeliveryHero() {
 
 
             {/*  Our Awards & Recognitions */}
-
+{/* <AwardsSection /> */}
             {/*  what our client say */}
+
+             <ConsultationCTA imageSrc="/images/cta/cta.png" href="/contact" title="Let’s Build Your Next Big Mobile App" subtitle="Collaborate with a leading mobile app development agency to turn your innovative idea into a feature-rich mobile application." />
+                  
+                  <Blogs
+                    category=""
+                    featured={false}    // Latest uploaded
+                    title="Our Latest Blogs"
+                    subtitle="Explore our latest insights, product lessons, and engineering best practices."
+                  />
+                  <FAQAccordion />
+                  <InquirySection />
         </main>
     );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import CommonTitle from '@/components/ui/CommonTitle';
 import Image from 'next/image';
 import {
     FaCheckCircle,
@@ -78,23 +79,20 @@ export default function FoodDeliveryFeatures() {
     ];
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="pt-16">
             {/* CTA Banner */}
 
             {/* Why Choose Section */}
             <section className="lg:mb-40 py-16 px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Header */}
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                            Why Choose Softkingo For Food<br className="hidden sm:block" />
-                            Delivery App Development?
-                        </h2>
-                        <p className="text-gray-600 text-sm sm:text-base max-w-3xl mx-auto leading-relaxed">
-                            Being the best on-demand food delivery app development company Softkingo provides
-                            comprehensive solutions that cover the entire development lifecycle and post-launch
-                            support, ensuring your app's success in the long run.
-                        </p>
+                    <div className="text-center mb-12 max-w-4xl mx-auto">
+
+                        <CommonTitle pill={false}
+                            title="Why"
+                            subtitle="Being the best on-demand food delivery app development company Softkingo provides comprehensive solutions that cover the entire development lifecycle and post-launch support, ensuring your app's success in the long run."
+                            gradientText="Choose Softkingo Food Delivery App Development?"
+                            align="center" />
                     </div>
 
                     {/* Top Features Grid */}
@@ -146,7 +144,7 @@ export default function FoodDeliveryFeatures() {
             </section>
 
             {/* Hungry For More Banner */}
-            <section className="relative w-full mb-5">
+            <section className="relative w-full mb-5 max-w-7xl mx-auto px-6">
                 <div className="lg:absolute  -top-50 h-auto w-full">
                     <div className="bg-transparent  rounded-3xl w-full  overflow-hidden">
                         <div className="flex sm:px-5 gap-5 lg:px-20 flex-col md:flex-row  justify-between items-center">
@@ -193,11 +191,16 @@ export default function FoodDeliveryFeatures() {
                 </div>
             </section>
 
-            <section className='bg-sky-400 lg:pt-32 lg:pb-16'>
+            <section className=' lg:pt-32 lg:pb-16  bg-linear-to-br from-white to-sky-100'>
                 <div className='p-6 max-w-7xl mx-auto'>
-                    <h2 className='text-3xl sm:text-4xl md:text-5xl max-w-3xl mx-auto text-center py-10 font-bold text-white'>
-                        Why Invest In Food Delivery App Development?
-                    </h2>
+                    <div className="text-center mb-12 max-w-3xl mx-auto">
+
+                        <CommonTitle pill={false}
+                            title="Why"
+                            subtitle={false}
+                            gradientText="Invest In Food Delivery App Development?"
+                            align="center" />
+                    </div>
                     <div className='flex flex-col md:grid md:grid-cols-2 gap-10 md:gap-16 px-4 md:px-10 lg:px-20'>
 
                         <div className="relative w-full h-72 sm:h-96 md:h-96 rounded-lg overflow-hidden">
@@ -237,7 +240,7 @@ export default function FoodDeliveryFeatures() {
                                         <Image src={src} alt={alt} fill className="object-contain" />
                                     </div>
                                     <div>
-                                        <h4 className='text-xl text-white md:text-2xl font-bold'>{title}</h4>
+                                        <h4 className='text-xl text-sky-900 md:text-2xl font-bold'>{title}</h4>
                                     </div>
                                 </div>
                             ))}
