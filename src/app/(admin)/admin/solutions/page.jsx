@@ -2030,30 +2030,34 @@
 
 "use client";
 import React, { useState, useEffect } from "react";
-import { 
-  Plus, Search, Globe, Edit3, Trash2, Layers, Zap, Briefcase, Copy 
-} from "lucide-react";
-
-// Import Separate Editors
-import SolutionEditor from "./_components/SolutionEditor";
-import IndustryEditor from "./_components/IndustryEditor";
-import CloneEditor from "./_components/CloneEditor";
+import { Plus, Trash2, Edit3, Globe, Search, Layers, Zap, Briefcase, Code } from "lucide-react";
+import PageEditor from "./_components/PageEditor"; // Ensure this import is correct
 
 export default function SolutionsAdmin() {
-    const [view, setView] = useState("list"); // 'list', 'solution', 'industry', 'clone'
-    const [items, setItems] = useState({ solutions: [], industries: [], clones: [] }); // Assuming clones added to API later, or reusing solutions
+    const [view, setView] = useState("list"); // 'list', 'editor'
+    const [editorType, setEditorType] = useState("solution"); // 'solution', 'industry', 'clone'
+    const [items, setItems] = useState({ solutions: [], industries: [] });
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [currentData, setCurrentData] = useState(null);
+    const [editorData, setEditorData] = useState(null);
 
-    // Initial Defaults
-    const defaultData = {
+    const initialForm = {
+        section: "solutions",
         slug: "",
-        activeSections: ['hero', 'about', 'features', 'cta'], // Default sections
-        content: { hero: { title: "", subtitle: "" } } 
+        activeSections: ['hero', 'about', 'features', 'banner', 'whyInvest', 'tech', 'portfolio', 'awards', 'cta', 'blogs', 'faq'], 
+        content: {
+            hero: { title: "", subtitle: "", image: "" },
+            aboutTitle: "About Our Solution",
+            aboutSubtitle: "We provide comprehensive solutions.",
+            benefits: ["Scalable Architecture", "24/7 Support"],
+            services: [{ title: "User App", image: "" }, { title: "Admin Panel", image: "" }],
+            caseStudy: { image: "" },
+            portfolioCategory: "app",
+            banner: { title: "Hungry For More?", subtitle: "Explore potential.", btnText: "Get Started" },
+            cta: { title: "Ready to Scale?" }
+        }
     };
 
-    // Fetch All Data
     const fetchItems = async () => {
         setLoading(true);
         try {
@@ -2066,36 +2070,25 @@ export default function SolutionsAdmin() {
 
     useEffect(() => { fetchItems(); }, []);
 
-    // Handle Edit Click
-    const handleEdit = async (section, slug) => {
-        setLoading(true);
-        const res = await fetch(`/api/admin/solutions?section=${section}&slug=${slug}`);
-        const json = await res.json();
-        if (json.ok) {
-            setCurrentData({ ...json.data, section }); // Store section to know which API to hit on save
-            
-            // Logic to open correct editor based on section/type
-            if (section === 'industries') setView('industry');
-            else if (json.data.type === 'clone') setView('clone');
-            else setView('solution');
-        }
-        setLoading(false);
+    const handleCreate = (type) => {
+        setEditorType(type);
+        setEditorData({ ...initialForm, type, section: type === 'industry' ? 'industries' : 'solutions' });
+        setView("editor");
     };
 
-    // Handle Create Click
-    const handleCreate = (type) => {
-        const sectionMap = {
-            'solution': 'solutions',
-            'industry': 'industries',
-            'clone': 'solutions' // Clones usually stored in solutions folder with type='clone'
-        };
-        
-        setCurrentData({ 
-            ...defaultData, 
-            section: sectionMap[type], 
-            type: type === 'clone' ? 'clone' : 'ondemand' 
-        });
-        setView(type);
+    const handleEdit = async (section, slug) => {
+        setLoading(true);
+        try {
+            const res = await fetch(`/api/admin/solutions?section=${section}&slug=${slug}`);
+            const json = await res.json();
+            if (json.ok) {
+                const type = section === 'industries' ? 'industry' : (json.data.type || 'solution');
+                setEditorType(type);
+                setEditorData({ ...initialForm, ...json.data, content: { ...initialForm.content, ...json.data.content } });
+                setView("editor");
+            }
+        } catch (e) { alert("Error loading data"); }
+        setLoading(false);
     };
 
     const handleDelete = async (section, slug) => {
@@ -2104,97 +2097,66 @@ export default function SolutionsAdmin() {
         fetchItems();
     };
 
-    const handleBack = () => {
-        setView("list");
-        setCurrentData(null);
-        fetchItems(); // Refresh data on back
-    };
-
-    // ---------------- RENDER ----------------
-    if (view === "solution") return <SolutionEditor data={currentData} onBack={handleBack} />;
-    if (view === "industry") return <IndustryEditor data={currentData} onBack={handleBack} />;
-    if (view === "clone") return <CloneEditor data={currentData} onBack={handleBack} />;
+    if (view === "editor") {
+        return <PageEditor data={editorData} type={editorType} onBack={() => { setView("list"); fetchItems(); }} />;
+    }
 
     return (
         <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans p-6 md:p-10">
             <div className="max-w-7xl mx-auto space-y-12">
                 
-                {/* Header & Actions */}
+                {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-end md:items-center gap-6 pb-8 border-b border-slate-200">
                     <div>
                         <h1 className="text-4xl font-black tracking-tight text-slate-900 mb-2">Page Architect</h1>
-                        <p className="text-slate-500 font-medium">Manage all your dynamic pages from one place.</p>
+                        <p className="text-slate-500 font-medium">Manage all dynamic landing pages.</p>
                     </div>
                     <div className="flex gap-3">
-                        <button onClick={() => handleCreate('solution')} className="bg-sky-600 text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-sky-700 shadow-lg transition-all text-xs">
-                            <Zap size={16}/> New Solution
-                        </button>
-                        <button onClick={() => handleCreate('industry')} className="bg-emerald-600 text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-emerald-700 shadow-lg transition-all text-xs">
-                            <Briefcase size={16}/> New Industry
-                        </button>
-                        <button onClick={() => handleCreate('clone')} className="bg-orange-600 text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-700 shadow-lg transition-all text-xs">
-                            <Copy size={16}/> New Clone
-                        </button>
+                         <button onClick={() => handleCreate('solution')} className="bg-sky-600 text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-sky-700 shadow-lg text-xs transition-all"><Zap size={16}/> New Solution</button>
+                         <button onClick={() => handleCreate('clone')} className="bg-orange-600 text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-orange-700 shadow-lg text-xs transition-all"><Code size={16}/> New Clone</button>
+                         <button onClick={() => handleCreate('industry')} className="bg-emerald-600 text-white px-5 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-emerald-700 shadow-lg text-xs transition-all"><Briefcase size={16}/> New Industry</button>
                     </div>
                 </div>
 
                 {/* Search */}
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-                    <Search className="text-slate-400 ml-2" size={20}/>
+                    <div className="p-3 bg-slate-50 rounded-xl text-slate-400"><Search size={20}/></div>
                     <input 
                         placeholder="Search pages..." 
-                        className="flex-1 bg-transparent border-none text-sm font-medium focus:ring-0"
+                        className="flex-1 bg-transparent border-none text-sm font-medium focus:ring-0 placeholder:text-slate-300"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
 
-                {/* Lists */}
+                {/* List Grid */}
                 <div className="grid lg:grid-cols-2 gap-10">
-                    
-                    {/* SOLUTIONS LIST */}
-                    <div className="bg-white p-6 rounded-3xl border shadow-sm space-y-4">
-                        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest border-b pb-2 flex items-center gap-2">
-                            <Zap size={16}/> Solutions & Clones
-                        </h3>
-                        {items.solutions?.filter(i => i.slug.includes(searchTerm)).map(it => (
-                            <div key={it.slug} className="flex justify-between items-center p-3 bg-slate-50 rounded-xl hover:bg-sky-50 transition-colors group">
-                                <div>
-                                    <div className="font-bold text-slate-700 text-sm flex items-center gap-2">
-                                        {it.title || it.slug}
-                                        {it.type === 'clone' && <span className="text-[9px] bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded font-black uppercase">Clone</span>}
+                    {["solutions", "industries"].map(sec => (
+                        <div key={sec} className="bg-white p-6 rounded-3xl border shadow-sm space-y-4">
+                            <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest border-b pb-2 flex items-center gap-2">
+                                <Layers size={14}/> {sec}
+                            </h3>
+                            <div className="grid gap-3">
+                                {items[sec]?.filter(i => i.slug.includes(searchTerm)).map(it => (
+                                    <div key={it.slug} className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-sky-300 hover:shadow-md transition-all flex justify-between items-center">
+                                        <div>
+                                            <div className="font-bold text-slate-700 text-sm">{it.title || it.slug}</div>
+                                            <div className="text-[10px] text-slate-400 font-mono flex gap-2">
+                                                <span>/{it.slug}</span>
+                                                {it.type === 'clone' && <span className="text-orange-500 font-bold bg-orange-50 px-1 rounded">CLONE</span>}
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button onClick={() => window.open(it.url, '_blank')} className="p-2 hover:bg-emerald-50 text-slate-400 hover:text-emerald-600 rounded-lg"><Globe size={16}/></button>
+                                            <button onClick={() => handleEdit(sec, it.slug)} className="p-2 hover:bg-sky-50 text-slate-400 hover:text-sky-600 rounded-lg"><Edit3 size={16}/></button>
+                                            <button onClick={() => handleDelete(sec, it.slug)} className="p-2 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg"><Trash2 size={16}/></button>
+                                        </div>
                                     </div>
-                                    <div className="text-[10px] text-slate-400 font-mono">/solutions/{it.slug}</div>
-                                </div>
-                                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button onClick={() => window.open(it.url, '_blank')} className="p-1.5 bg-white rounded border hover:text-emerald-600"><Globe size={14}/></button>
-                                    <button onClick={() => handleEdit('solutions', it.slug)} className="p-1.5 bg-white rounded border hover:text-sky-600"><Edit3 size={14}/></button>
-                                    <button onClick={() => handleDelete('solutions', it.slug)} className="p-1.5 bg-white rounded border hover:text-rose-600"><Trash2 size={14}/></button>
-                                </div>
+                                ))}
+                                {items[sec]?.length === 0 && <div className="p-6 text-center text-slate-400 text-xs italic">No pages found.</div>}
                             </div>
-                        ))}
-                    </div>
-
-                    {/* INDUSTRIES LIST */}
-                    <div className="bg-white p-6 rounded-3xl border shadow-sm space-y-4">
-                        <h3 className="text-sm font-black uppercase text-slate-400 tracking-widest border-b pb-2 flex items-center gap-2">
-                            <Briefcase size={16}/> Industries
-                        </h3>
-                        {items.industries?.filter(i => i.slug.includes(searchTerm)).map(it => (
-                            <div key={it.slug} className="flex justify-between items-center p-3 bg-slate-50 rounded-xl hover:bg-emerald-50 transition-colors group">
-                                <div>
-                                    <div className="font-bold text-slate-700 text-sm">{it.title || it.slug}</div>
-                                    <div className="text-[10px] text-slate-400 font-mono">/industries/{it.slug}</div>
-                                </div>
-                                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button onClick={() => window.open(it.url, '_blank')} className="p-1.5 bg-white rounded border hover:text-emerald-600"><Globe size={14}/></button>
-                                    <button onClick={() => handleEdit('industries', it.slug)} className="p-1.5 bg-white rounded border hover:text-sky-600"><Edit3 size={14}/></button>
-                                    <button onClick={() => handleDelete('industries', it.slug)} className="p-1.5 bg-white rounded border hover:text-rose-600"><Trash2 size={14}/></button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
