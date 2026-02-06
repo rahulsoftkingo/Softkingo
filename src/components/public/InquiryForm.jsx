@@ -423,7 +423,14 @@ const InquiryForm = ({
                     {touched && isCorrect && <p className="text-xs text-emerald-600">Great! Captcha verified.</p>}
                 </div>
             )}
-            <button type="submit" disabled={submitDisabled} className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold transition-all w-full md:w-auto ${submitDisabled ? "bg-sky-200 text-sky-800 cursor-not-allowed" : `${colors.btn} text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5`}`}>
+            {/* <button type="submit" disabled={submitDisabled} className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold transition-all w-full md:w-auto ${submitDisabled ? "bg-sky-200 text-sky-800 cursor-not-allowed" : `${colors.btn} text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5`}`}>
+              {submitting ? "Submitting…" : submitLabel}
+            </button> */}
+            <button 
+                type="submit" 
+                disabled={submitting} // Only disable when actually submitting
+                className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold transition-all w-full md:w-auto text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer ${colors.btn} ${submitting ? 'opacity-70 cursor-wait' : ''}`}
+            >
               {submitting ? "Submitting…" : submitLabel}
             </button>
           </div>

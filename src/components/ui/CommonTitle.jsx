@@ -23,6 +23,14 @@ const CommonTitle = ({
         center: "mx-auto",
         right: "ml-auto"
     }[align] || "mx-auto";
+// Logic to separate first word and the rest
+    const titleWords = title ? title.split(' ') : [];
+    const firstWord = titleWords[0] || '';
+    const remainingTitle = titleWords.slice(1).join(' ');
+
+    // Determine what goes into the gradient span
+    // Priority: Explicit gradientText > Remaining words of title > Nothing
+    const contentForGradient = gradientText || remainingTitle;
 
     return (
         <div className={`${textAlignClass} ${containerClass} mb-8 sm:mb-12`}>
@@ -32,19 +40,15 @@ const CommonTitle = ({
                     {pill}
                 </div>
             )}
-            
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900">
-                {title ? title.split(' ')[0] : ''}{' '}
-                {gradientText && typeof gradientText === 'string' ? (
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-tight">
+                {firstWord}{' '}
+                {contentForGradient && (
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
-                        {gradientText}
+                        {contentForGradient}
                     </span>
-                ) : title ? (
-                    title.split(' ').slice(1).join(' ')
-                ) : (
-                    ''
                 )}
             </h2>
+            
 
             {subtitle && (
                 <p className="text-sm sm:text-base md:text-lg text-gray-600">

@@ -167,13 +167,13 @@ export default async function ServicePage({ params }) {
               </div>
 
               <div className="flex gap-4 animate-fadeInUp animation-delay-600">
-                <button
-
+                <Link
+                    href="/contact"
                   className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
                 // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
                 >
                   Let’s Work Together <FaArrowRight className="ml-2" />
-                </button>
+                </Link>
               </div>
 
               {/* Trusted By Section */}

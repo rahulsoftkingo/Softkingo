@@ -326,6 +326,7 @@ model Page {
   type           String
   excerpt        String?          @db.LongText
   contentJson    String?          @db.LongText
+  heroImage      String?
   status         String           @default("draft")
   featured       Boolean          @default(false)
   seoTitle       String?

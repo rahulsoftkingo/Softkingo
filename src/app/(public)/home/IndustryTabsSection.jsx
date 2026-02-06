@@ -940,7 +940,7 @@ export default function IndustryTabsSection() {
                 </div>
 
                 {/* Right Side: Media & Glass Grid */}
-                <div className="flex-1 relative min-h-[300px] lg:min-h-full">
+                <div className="flex-1 relative min-h-[150px] lg:min-h-full">
                   <div className="relative w-full h-full lg:rounded-tl-none lg:rounded-bl-none overflow-hidden">
                     <Image 
                       src={active.image} 

@@ -1,11 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
+import CommonTitle from '@/components/ui/CommonTitle';
+import PopupQuoteModal from '@/components/PopupQuoteModal'; // Ensure path is correct
+import { Plus, Minus, MessageCircle, ArrowRight } from 'lucide-react';
 
-export default function FAQAccordion({ faq }) {
+export default function FAQAccordion({ data }) {
   const [openIndex, setOpenIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
-  const items = faq || [
+  // Fallback data if no props provided
+  const defaultItems = [
+ 
   {
     id: 1,
     q: "How do you ensure the security and quality of the app or software you develop?",
@@ -58,103 +63,103 @@ export default function FAQAccordion({ faq }) {
   }
 ];
 
+  // Use props data if available, otherwise default
+  const items = data?.items || defaultItems;
+  const title = data?.title || "Questions? Look Here";
+  const subtitle = data?.subtitle || "Find answers to frequently asked questions about our services and process.";
 
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-extrabold text-center mb-8">Questions? Look Here</h2>
+        
+        {/* Common Title */}
+        <CommonTitle 
+            align="center"
+            title={title}
+            subtitle={subtitle}
+        />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mt-12">
+          
           {/* Left: Accordion (span 2 columns on lg) */}
           <div className="lg:col-span-2 space-y-4">
             {items.map((it, i) => {
               const isOpen = i === openIndex;
               return (
                 <div
-                  key={it.id}
-                  className={`border rounded-xl overflow-hidden shadow-sm transition-transform duration-150 ${
-                    isOpen ? "scale-[1.0]" : ""
+                  key={it.id || i}
+                  className={`border border-slate-200 rounded-xl overflow-hidden shadow-sm transition-all duration-300 ${
+                    isOpen ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100" : "bg-white"
                   }`}
                 >
                   <button
                     aria-expanded={isOpen}
-                    aria-controls={`faq-panel-${it.id}`}
+                    aria-controls={`faq-panel-${it.id || i}`}
                     onClick={() => toggle(i)}
-                    className="w-full flex items-center justify-between px-6 py-5 text-left bg-white hover:bg-slate-50"
+                    className="w-full flex items-start gap-4 px-6 py-5 text-left bg-transparent hover:bg-slate-50/50 transition-colors"
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-8 h-8 rounded-full border flex items-center justify-center">
-                        {/* icon: + or - */}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4 text-slate-700"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          {isOpen ? (
-                            <path
-                              fillRule="evenodd"
-                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-9a1 1 0 112 0v3a1 1 0 11-2 0V9z"
-                              clipRule="evenodd"
-                            />
-                          ) : (
-                            <path
-                              fillRule="evenodd"
-                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-7a1 1 0 012 0v3a1 1 0 11-2 0V11z"
-                              clipRule="evenodd"
-                            />
-                          )}
-                        </svg>
-                      </div>
-
-                      <h3 className="text-lg font-semibold text-slate-900">{it.q}</h3>
+                    {/* Toggle Icon Box */}
+                    <div className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors mt-0.5 ${
+                        isOpen ? "bg-sky-500 border-sky-500 text-white" : "bg-white border-slate-200 text-slate-500"
+                    }`}>
+                      {isOpen ? <Minus size={16} /> : <Plus size={16} />}
                     </div>
 
-                    <div className="text-slate-400">{isOpen ? null : <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 5a1 1 0 011 1v8a1 1 0 11-2 0V6a1 1 0 011-1z"/></svg>}</div>
+                    <h3 className={`text-lg font-semibold flex-1 ${isOpen ? "text-sky-900" : "text-slate-900"}`}>
+                        {it.q}
+                    </h3>
                   </button>
 
                   <div
-                    id={`faq-panel-${it.id}`}
-                    className={`px-6 pb-6 text-sm text-slate-700 bg-white transition-all duration-300 ${
-                      isOpen ? "block" : "hidden"
+                    id={`faq-panel-${it.id || i}`}
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                     }`}
                   >
-                    <p>{it.a}</p>
+                    <div className="overflow-hidden">
+                        <p className="px-6 pb-6 pl-[4.5rem] text-sm md:text-base text-slate-600 leading-relaxed">
+                            {it.a}
+                        </p>
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Right: Contact card */}
-          <aside className="w-full">
-            <div className="rounded-2xl bg-gradient-to-br from-[#28AFDF] to-[#06465D] p-8 shadow-lg">
+          {/* Right: Sticky Contact Card */}
+          <aside className="w-full lg:col-span-1">
+            <div className="sticky top-24 rounded-2xl bg-gradient-to-br from-[#28AFDF] to-[#06465D] p-8 shadow-xl text-center">
+              
               <div className="flex justify-center">
-                <div className="p-4 rounded-full bg-white/30">
-                  {/* chat bubble icon */}
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.865 9.865 0 01-4-.9L3 20l1.1-3.9A9.865 9.865 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
+                <div className="p-4 rounded-full bg-white/20 backdrop-blur-sm shadow-inner">
+                  <MessageCircle className="w-10 h-10 text-white" />
                 </div>
               </div>
 
-              <h4 className="text-white font-semibold text-center mt-6">You’ve Different Question?</h4>
-              <p className="mt-3 text-sm text-white/90 text-center">Our team will answer all your questions — we ensure a quick response.</p>
+              <h4 className="text-white font-bold text-xl mt-6">Have Different Questions?</h4>
+              <p className="mt-3 text-sm text-sky-100 leading-relaxed">
+                Our team is ready to answer all your questions. We ensure a quick response within 24 hours.
+              </p>
 
-              <div className="mt-6 flex justify-center">
-                <a href="/contact" className="inline-flex items-center gap-3 bg-white text-slate-900 px-5 py-2 rounded-full font-medium shadow-sm">
-                  Contact Us
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
+              <div className="mt-8 flex justify-center">
+                <button 
+                    onClick={() => setShowModal(true)}
+                    className="inline-flex items-center gap-2 bg-white text-sky-700 hover:bg-sky-50 hover:text-sky-800 px-6 py-3 rounded-full font-bold shadow-md transition-all transform hover:-translate-y-0.5"
+                >
+                  Contact Us <ArrowRight size={18} />
+                </button>
               </div>
             </div>
           </aside>
+
         </div>
       </div>
+
+      {/* Popup Modal */}
+      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </section>
   );
 }
