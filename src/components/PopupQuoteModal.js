@@ -99,7 +99,7 @@ const PopupQuoteModal = ({ open, onClose }) => {
               formType="get In touch"
               formKey="popup-inquiry"
             />
-              {/* <div className=" h-8"></div> */}
+              <div className=" h-16 lg:hidden"></div>
           </div>
         </div>
       </div>
