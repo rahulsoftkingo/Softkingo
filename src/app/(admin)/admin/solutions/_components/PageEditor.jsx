@@ -5,9 +5,10 @@ import {
     Target, Settings, Zap, CheckCircle2, X, Image as ImageIcon, Folder, 
     Briefcase, Code, DollarSign, BarChart3, ShieldCheck, HelpCircle,
     UploadCloud, FolderPlus, ChevronRight, Home, Search, Loader2, FolderOpen,
-    Award, MessageSquare, MousePointerClick
+    Award, MessageSquare, MousePointerClick, Layers, Save,  
 } from "lucide-react";
 import SolutionsEditor from "./SolutionEditor";
+import IndustryEditor from "./IndustryEditor";
 
 // --- 1. MEDIA INPUT (MOVED OUTSIDE TO FIX FOCUS ISSUE) ---
 const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
@@ -74,11 +75,21 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'cta', label: '17. Bottom CTA', icon: MousePointerClick }
             ]
         },
-        industry: { theme: "emerald", label: "Industry Page", uploadDir: "uploads/industries", sections: [
-            { id: 'hero', label: 'Hero', icon: Smartphone }, { id: 'marketStats', label: 'Stats', icon: BarChart3 },
-            { id: 'challenges', label: 'Challenges', icon: Target }, { id: 'compliance', label: 'Compliance', icon: ShieldCheck },
-            { id: 'solutions', label: 'Solutions', icon: Briefcase }, { id: 'cta', label: 'CTA', icon: Zap }
-        ]},
+        industry: { 
+            theme: "emerald", label: "Industry Page", uploadDir: "uploads/industries", 
+            sections: [
+                { id: 'hero', label: '1. Hero Section', icon: Smartphone },
+                { id: 'challenges', label: '2. Challenges We Solve', icon: Target },
+                { id: 'covers', label: '3. What We Cover', icon: Layout },
+                { id: 'technologies', label: '4. Advanced Tech', icon: Code },
+                { id: 'portfolio', label: '5. Industry Portfolio', icon: Briefcase },
+                { id: 'otherIndustries', label: '6. Other Industries', icon: Layers },
+                { id: 'whyChoose', label: '7. Why Choose Us', icon: ShieldCheck },
+                { id: 'process', label: '8. Development Process', icon: Settings },
+                { id: 'faq', label: '9. FAQ', icon: HelpCircle },
+                { id: 'testimonials', label: '10. Client Testimonials', icon: MessageSquare },
+            ]
+        },
         clone: { theme: "orange", label: "Clone Script", uploadDir: "uploads/clone", sections: [
             { id: 'hero', label: 'Hero', icon: Smartphone }, { id: 'revenue', label: 'Revenue', icon: DollarSign },
             { id: 'appFlow', label: 'App Flow', icon: Layout }, { id: 'features', label: 'Features', icon: Database },
@@ -259,6 +270,15 @@ export default function PageEditor({ data, type, onBack }) {
                 <div className="max-w-4xl mx-auto">
                     {type === 'solution' && (
                         <SolutionsEditor 
+                            formData={formData} 
+                            updateField={updateField} 
+                            MediaInput={BoundMediaInput} 
+                            activeSections={formData.activeSections}
+                        />
+                    )}
+                    {/* ✅ Render Industry Editor */}
+                    {type === 'industry' && (
+                        <IndustryEditor 
                             formData={formData} 
                             updateField={updateField} 
                             MediaInput={BoundMediaInput} 

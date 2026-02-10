@@ -52,107 +52,15 @@ export default function ContactPage() {
 
       {/* MAIN CONTACT AREA */}
       <section className="max-w-7xl mx-auto px-6 py-12 lg:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-10 lg:gap-14 items-start">
+        <div className="grid grid-cols-revers lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-10 lg:gap-14 items-start">
           {/* LEFT COLUMN */}
-          <div className="space-y-8">
-            {/* <div>
-              <h2 className="text-2xl lg:text-3xl font-extrabold text-[#0B3250]">
-                Talk to our team
-              </h2>
-              <p className="mt-3 text-sm md:text-base text-slate-600 max-w-lg">
-                Tell us more about your project, product, or idea. Our experts
-                will review it and reach out with questions, suggestions, and a
-                clear engagement plan tailored to you.
-              </p>
-            </div> */}
-
-            {/* WHAT HAPPENS NEXT */}
-            {/* <div className="rounded-2xl border border-white/80 bg-white/80 backdrop-blur-sm p-5 md:p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
-              <h3 className="text-sm font-semibold text-[#0B3250]">
-                What happens after you submit the form?
-              </h3>
-              <ul className="mt-4 space-y-3 text-sm text-slate-700">
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block w-4 h-4 rounded-md bg-[#00B7FF]" />
-                  <span>
-                    A project specialist will contact you to understand your
-                    needs, timelines, and budget.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block w-4 h-4 rounded-md bg-[#00B7FF]" />
-                  <span>
-                    If required, we sign an NDA so your idea and data remain
-                    fully confidential.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 inline-block w-4 h-4 rounded-md bg-[#00B7FF]" />
-                  <span>
-                    You receive a free consultation with a recommended solution
-                    and next steps.
-                  </span>
-                </li>
-              </ul>
-              <p className="mt-4 text-[11px] md:text-xs text-slate-500">
-                Prefer email? Write to us at{" "}
-                <a
-                  href="mailto:info@softkingo.com"
-                  className="text-[#00A3E0] hover:underline font-semibold"
-                >
-                  info@softkingo.com
-                </a>
-                .
-              </p>
-            </div> */}
-
-            {/* DIRECT CONTACT STRIP */}
-            {/* <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <ContactChip
-                label="Call us"
-                value="+91-7428750870"
-                href="tel:+917428750870"
-              />
-              <ContactChip
-                label="Drop a mail"
-                value="info@softkingo.com"
-                href="mailto:info@softkingo.com"
-              />
-              <ContactChip
-                label="Visit our office"
-                value="B-148, Block B, Sector 63, Noida"
-              />
-            </div> */}
-
-            {/* TRUSTED BY */}
-            {/* <div>
-              <p className="text-sm font-medium text-slate-700">Trusted by</p>
-              <div className="mt-3 flex flex-wrap items-center gap-5">
-                <Image
-                  src="/images/logo 5.png"
-                  alt="Client Logo 1"
-                  width={90}
-                  height={28}
-                />
-                <Image
-                  src="/images/logo-2.png"
-                  alt="Client Logo 2"
-                  width={90}
-                  height={28}
-                />
-                <Image
-                  src="/images/logo-3.png"
-                  alt="Client Logo 3"
-                  width={90}
-                  height={28}
-                />
-              </div>
-            </div> */}
+          <div className="space-y-8 order-2 lg:order-1">
+         
             <TechAheadSection />
           </div>
 
           {/* RIGHT COLUMN: REUSABLE FORM */}
-          <div className="flex justify-end">
+          <div className="flex justify-end order-1 lg:order-2">
             <InquiryForm
               title="Share your project details"
               subtitle="Share your idea and we’ll get back within one business day."
