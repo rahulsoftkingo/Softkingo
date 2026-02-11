@@ -32,11 +32,23 @@ const STATIC_DATA = {
         { name: "Dev 4", role: "Full Stack", image: "/images/team/e6.jpg", category: "employee" },
     ],
     values: [
-        { title: "Integrity", description: "Always transparent and honest with clients." },
-        { title: "Define Clear Goals", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-        { title: "Differentiate Your Brand", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
-        { title: "Focus on Value", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
-    ]
+    { 
+        title: "Integrity", 
+        description: "No hidden costs, no fake promises. We believe in being 100% open and honest, treating your business exactly like we treat our own." 
+    },
+    { 
+        title: "Define Clear Goals", 
+        description: "We hate confusion. Before writing a single line of code, we define exactly what needs to be done so you always know where your project is heading." 
+    },
+    { 
+        title: "Differentiate Your Brand", 
+        description: "Why blend in when you can stand out? We craft unique digital experiences that make sure your customers remember you, not your competitors." 
+    },
+    { 
+        title: "Focus on Value", 
+        description: "We don't just build features; we build solutions that work. If it doesn't add real value to your business growth, we don't do it." 
+    }
+]
 };
 
 // --- DATA FETCHER ---
