@@ -29,8 +29,8 @@ export default function SolutionsHero({ data }) {
                 Home
               </Link>
               <span>›</span>
-              <Link href="/hire" className="hover:text-sky-400 transition-colors">
-                Hire
+              <Link href="/solutions" className="hover:text-sky-400 transition-colors">
+                Solutions
               </Link>
               <span>›</span>
               <span className="text-sky-400 font-medium">{data.title}</span>
