@@ -13,8 +13,10 @@ const ArrayField = ({ label, path, items, renderItem, updateField, defaultItem =
     <div className="space-y-2">
         {label && <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{label}</label>}
         <div className="space-y-2">
-            {Array.isArray(items) && items.map((item, idx) => {
-                if (!item) return null;
+           
+                {(Array.isArray(items) ? items : []).map((item, idx) => {
+               
+                if (item === undefined || item === null) return null;
                 return (
                     <div key={idx} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100 group relative">
                         <div className="flex-1 grid gap-2">
@@ -33,8 +35,19 @@ const ArrayField = ({ label, path, items, renderItem, updateField, defaultItem =
                 );
             })}
         </div>
+        
         <button 
-            onClick={() => updateField(path, [...(items || []), defaultItem])}
+            onClick={() => {
+                let newItem;
+                if (typeof defaultItem === 'object' && defaultItem !== null) {
+                    newItem = JSON.parse(JSON.stringify(defaultItem));
+                } else {
+                    newItem = defaultItem;
+                }
+                
+                const currentItems = Array.isArray(items) ? items : [];
+                updateField(path, [...currentItems, newItem]);
+            }}
             className="flex items-center gap-1 text-xs font-bold text-emerald-600 hover:bg-emerald-50 px-3 py-2 rounded-lg transition-colors border border-emerald-100"
         >
             <Plus size={14} /> Add Item
@@ -241,9 +254,38 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                 </div>
             </SectionWrapper>
             {/* 6. OTHER INDUSTRIES */}
-            <SectionWrapper id="otherIndustries" icon={Briefcase} title="6. Other Industries We Serve" activeSections={activeSections}>
-                <p className="text-sm text-slate-500">Automatically displays other industry links.</p>
+            {/* 6. OTHER INDUSTRIES (Updated Structure) */}
+            <SectionWrapper id="otherIndustries" icon={Briefcase} title="6. Other Industries / Sectors" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Section Title" value={content.otherIndustries?.title || ''} onChange={e => updateField('content.otherIndustries.title', e.target.value)} />
+                <input className={inputStyle} placeholder="Subtitle" value={content.otherIndustries?.subtitle || ''} onChange={e => updateField('content.otherIndustries.subtitle', e.target.value)} />
+                
+                <div className="my-4 border-t border-slate-100 pt-4">
+                    <label className="text-xs font-bold text-slate-400 mb-2 block">CENTRAL IMAGE</label>
+                    <MediaInput label="Center Image" value={content.otherIndustries?.image} path="content.otherIndustries.image" />
+                </div>
+
+                <ArrayField 
+                    label="Industry Sectors (Add 6 items for best layout)" 
+                    path="content.otherIndustries.items" 
+                    items={content.otherIndustries?.items} 
+                    updateField={updateField}
+                    defaultItem={{ title: "", icon: "" }} // Icon can be image URL or emoji
+                    renderItem={(item, i) => (
+                        <div className="flex gap-2 items-center">
+                            <span className="text-xs font-bold text-slate-400 w-6">{i < 3 ? "L" : "R"}{i%3 + 1}</span>
+                            <input className="flex-1 p-2 bg-white border rounded text-sm font-bold" placeholder="Industry Name" value={item.title || ''} onChange={e => {
+                                const arr = [...(content.otherIndustries?.items || [])]; arr[i].title = e.target.value; updateField('content.otherIndustries.items', arr);
+                            }} />
+                            <input className="w-1/3 p-2 bg-white border rounded text-sm" placeholder="Icon/Img URL" value={item.icon || ''} onChange={e => {
+                                const arr = [...(content.otherIndustries?.items || [])]; arr[i].icon = e.target.value; updateField('content.otherIndustries.items', arr);
+                            }} />
+                        </div>
+                    )}
+                />
             </SectionWrapper>
+            {/* <SectionWrapper id="otherIndustries" icon={Briefcase} title="6. Other Industries We Serve" activeSections={activeSections}>
+                <p className="text-sm text-slate-500">Automatically displays other industry links.</p>
+            </SectionWrapper> */}
 
             {/* 7. WHY CHOOSE */}
             <SectionWrapper id="whyChoose" icon={ShieldCheck} title="7. Why Choose Softkingo" activeSections={activeSections}>

@@ -1,174 +1,195 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import React from 'react';
 import { 
-  Save, ArrowLeft, RefreshCw, Smartphone, Layout, Database, 
-  Target, Settings, Zap, CheckCircle2, X, Image as ImageIcon, Folder, Briefcase, FileText, HelpCircle 
+    Smartphone, Layout, Database, Code, Settings, Zap, 
+    BarChart3, ShieldCheck, DollarSign, Plus, X, 
+    HelpCircle, Briefcase, MousePointerClick, Award, MessageSquare, Users, Layers, Target, Grid
 } from "lucide-react";
 
-export default function SolutionEditor({ data, onBack }) {
-    const [formData, setFormData] = useState(data || {});
-    const [loading, setLoading] = useState(false);
-    
-    // Image Browser State (Local to this component)
-    const [showImageBrowser, setShowImageBrowser] = useState(false);
-    const [currentImageField, setCurrentImageField] = useState('');
-    const [folderFiles, setFolderFiles] = useState([]);
+// --- GLOBAL STYLES ---
+const inputStyle = "w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder:text-slate-400";
 
-    const fetchFolderFiles = async () => {
-        const res = await fetch(`/api/media/list`);
-        if (res.ok) {
-            const json = await res.json();
-            setFolderFiles(json.files || []);
-        }
-    };
+// --- ARRAY FIELD HELPER ---
+const ArrayField = ({ label, path, items = [], renderItem, updateField, defaultItem = {} }) => (
+    <div className="space-y-2">
+        {label && <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{label}</label>}
+        <div className="space-y-2">
+            {(Array.isArray(items) ? items : []).map((item, idx) => {
+                if (item === undefined || item === null) return null;
+                return (
+                    <div key={idx} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100 group relative">
+                        <div className="flex-1 grid gap-2">{renderItem(item, idx)}</div>
+                        <button onClick={() => {
+                            const newItems = items.filter((_, i) => i !== idx);
+                            updateField(path, newItems);
+                        }} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
+                    </div>
+                );
+            })}
+        </div>
+        <button onClick={() => {
+            let newItem = typeof defaultItem === 'object' && defaultItem !== null ? JSON.parse(JSON.stringify(defaultItem)) : defaultItem;
+            updateField(path, [...(Array.isArray(items) ? items : []), newItem]);
+        }} className="flex items-center gap-1 text-xs font-bold text-orange-600 hover:bg-orange-50 px-3 py-2 rounded-lg transition-colors border border-orange-100">
+            <Plus size={14} /> Add Item
+        </button>
+    </div>
+);
 
-    const handleSave = async () => {
-        if (!formData.slug) return alert("Slug is required!");
-        setLoading(true);
-        const res = await fetch("/api/admin/solutions", {
-            method: "POST",
-            body: JSON.stringify(formData)
-        });
-        if (res.ok) {
-            alert("Solution Page Saved! 🚀");
-            onBack();
-        }
-        setLoading(false);
-    };
-
-    const openBrowser = (fieldName) => {
-        setCurrentImageField(fieldName);
-        setShowImageBrowser(true);
-        fetchFolderFiles();
-    };
-
-    const updateField = (path, value) => {
-        setFormData(prev => {
-            const copy = JSON.parse(JSON.stringify(prev));
-            const keys = path.split('.');
-            let current = copy;
-            for (let i = 0; i < keys.length - 1; i++) {
-                if (!current[keys[i]]) current[keys[i]] = {};
-                current = current[keys[i]];
-            }
-            current[keys[keys.length - 1]] = value;
-            return copy;
-        });
-    };
-
-    const toggleSection = (id) => {
-        setFormData(prev => {
-            const sections = new Set(prev.activeSections || []);
-            sections.has(id) ? sections.delete(id) : sections.add(id);
-            return { ...prev, activeSections: Array.from(sections) };
-        });
-    };
-
-    // Helper Component
-    const MediaInput = ({ label, value, path }) => (
-        <div className="group">
-            <label className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1.5 block">{label}</label>
-            <div className="flex items-center gap-0 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
-                <div className="pl-3 text-slate-400"><ImageIcon size={14}/></div>
-                <input className="flex-1 p-2.5 bg-transparent border-none text-xs font-medium text-slate-700" value={value} readOnly placeholder="Select image..." />
-                <button onClick={() => openBrowser(path)} className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 border-l border-slate-200"><Folder size={14}/></button>
+// --- SECTION WRAPPER ---
+const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => {
+    if (!activeSections?.includes(id)) return null;
+    return (
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6 border-l-4 border-l-orange-500 mb-6">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><Icon size={18} /></div>
+                <h3 className="font-bold text-slate-700">{title}</h3>
             </div>
-            {value && <img src={value} className="h-16 w-full object-cover mt-2 rounded-lg border border-slate-200" alt="preview"/>}
+            {children}
         </div>
     );
+};
 
-    const SectionToggle = ({ id, label, icon: Icon }) => {
-        const isActive = formData.activeSections?.includes(id);
-        return (
-            <button onClick={() => toggleSection(id)} className={`flex items-center gap-3 w-full p-3 rounded-xl border transition-all ${isActive ? 'bg-sky-50 border-sky-200 text-sky-700' : 'bg-white border-slate-100 text-slate-400'}`}>
-                <div className={`p-2 rounded-lg ${isActive ? 'bg-sky-100 text-sky-600' : 'bg-slate-50 text-slate-400'}`}><Icon size={16} /></div>
-                <span className="text-xs font-bold uppercase tracking-wider">{label}</span>
-                {isActive && <CheckCircle2 size={14} className="ml-auto text-sky-500" />}
-            </button>
-        );
+export default function CloneEditor({ formData, updateField, MediaInput, activeSections }) {
+    const content = formData?.content || {};
+
+    const updateItemField = (basePath, index, field, value) => {
+        const currentItems = [...(content[basePath.split('.')[1]]?.items || [])];
+        if (!currentItems[index]) currentItems[index] = {};
+        if (typeof currentItems[index] === 'object') currentItems[index] = { ...currentItems[index], [field]: value };
+        else currentItems[index] = value;
+        updateField(`${basePath}.items`, currentItems);
     };
 
     return (
-        <div className="flex h-screen overflow-hidden bg-white fixed inset-0 z-50">
-            {/* LEFT SIDEBAR: Config */}
-            <div className="w-80 border-r border-slate-200 bg-slate-50 flex flex-col">
-                <div className="p-5 border-b bg-white">
-                    <button onClick={onBack} className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-slate-800 mb-4"><ArrowLeft size={14}/> BACK</button>
-                    <h2 className="text-lg font-black text-sky-600 flex items-center gap-2"><Zap size={18}/> Solution Editor</h2>
-                </div>
-                <div className="flex-1 overflow-y-auto p-5 space-y-6">
-                    <div className="space-y-3">
-                        <label className="text-[10px] font-bold text-slate-400 block">URL SETTINGS</label>
-                        <input className="w-full p-2 bg-white rounded-lg border border-slate-200 text-sm font-bold disabled:opacity-50" value="solutions" disabled />
-                        <input className="w-full p-2 bg-white rounded-lg border border-slate-200 text-sm font-bold" value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} placeholder="Slug" />
-                    </div>
-                    
-                    <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-400 block">SECTIONS</label>
-                        <SectionToggle id="hero" label="Hero" icon={Smartphone} />
-                        <SectionToggle id="about" label="About + Form" icon={Layout} />
-                        <SectionToggle id="features" label="Features Grid" icon={Database} />
-                        <SectionToggle id="banner" label="Hungry Banner" icon={Zap} />
-                        <SectionToggle id="whyInvest" label="Why Invest" icon={Target} />
-                        <SectionToggle id="tech" label="Tech Stack" icon={Settings} />
-                        <SectionToggle id="portfolio" label="Portfolio" icon={Briefcase} />
-                        <SectionToggle id="cta" label="Bottom CTA" icon={Zap} />
-                         <SectionToggle id="blogs" label="Blogs" icon={FileText} />
-                        <SectionToggle id="faq" label="FAQ" icon={HelpCircle} />
-                    </div>
-                </div>
-                <div className="p-5 border-t bg-white">
-                    <button onClick={handleSave} className="w-full bg-sky-600 text-white py-3 rounded-xl font-bold text-sm flex justify-center gap-2 hover:bg-sky-700 transition-colors">
-                        {loading ? <RefreshCw className="animate-spin" size={16}/> : <Save size={16}/>} Save Solution
-                    </button>
-                </div>
-            </div>
+        <div className="max-w-4xl mx-auto pb-20">
+            
+            {/* 1. HERO */}
+            <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Page Title (e.g. Build Your Own Uber Clone)" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
+                <textarea className={inputStyle} rows={2} placeholder="Subtitle" value={content.hero?.subtitle || ''} onChange={e => updateField('content.hero.subtitle', e.target.value)} />
+                <MediaInput label="Hero Image" value={content.hero?.image} path="content.hero.image" />
+            </SectionWrapper>
 
-            {/* RIGHT EDITOR */}
-            <div className="flex-1 bg-slate-100 overflow-y-auto p-8 lg:p-12">
-                <div className="max-w-3xl mx-auto space-y-8">
-                    {/* Reuse the logic from previous Editor View here... */}
-                    {/* HERO */}
-                    {formData.activeSections?.includes('hero') && (
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                            <h3 className="font-bold text-slate-700">Hero Section</h3>
-                            <input className="w-full p-2 bg-slate-50 border rounded-lg font-bold" placeholder="Title" value={formData.content?.hero?.title} onChange={e => updateField('content.hero.title', e.target.value)} />
-                            <textarea className="w-full p-2 bg-slate-50 border rounded-lg text-sm" placeholder="Subtitle" rows={2} value={formData.content?.hero?.subtitle} onChange={e => updateField('content.hero.subtitle', e.target.value)} />
-                            <MediaInput label="Background" value={formData.content?.hero?.image} path="content.hero.image" />
-                        </div>
-                    )}
-                    {/* Add other sections similarly... for brevity relying on previous logic */}
-                    {/* Copy paste rest of the form fields here from previous response */}
-                     <div className="text-center text-slate-400 text-xs mt-10">Editing: {formData.slug}</div>
-                </div>
-            </div>
+            {/* 2. ABOUT CLONE */}
+            <SectionWrapper id="about" icon={Layout} title="2. About Our Clone App" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Title" value={content.about?.title || ''} onChange={e => updateField('content.about.title', e.target.value)} />
+                <textarea className={inputStyle} rows={4} placeholder="Description" value={content.about?.description || ''} onChange={e => updateField('content.about.description', e.target.value)} />
+                <MediaInput label="About Image" value={content.about?.image} path="content.about.image" />
+            </SectionWrapper>
 
-             {/* IMAGE BROWSER MODAL */}
-             {showImageBrowser && (
-                <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-10 backdrop-blur-sm">
-                    <div className="bg-white w-full max-w-4xl h-[80vh] rounded-3xl flex flex-col overflow-hidden">
-                        <div className="p-4 border-b flex justify-between items-center"><h3 className="font-bold">Select Media</h3><button onClick={() => setShowImageBrowser(false)}><X/></button></div>
-                        <div className="flex-1 overflow-y-auto p-4 grid grid-cols-5 gap-4">
-                            {folderFiles.map((f, i) => (
-                                <div key={i} onClick={() => {
-                                    const pathArr = currentImageField.split(/[\[\].]+/).filter(Boolean);
-                                    setFormData(prev => {
-                                        const copy = JSON.parse(JSON.stringify(prev));
-                                        let cur = copy;
-                                        for(let k=0; k<pathArr.length-1; k++) cur = cur[pathArr[k]];
-                                        cur[pathArr[pathArr.length-1]] = f.path;
-                                        return copy;
-                                    });
-                                    setShowImageBrowser(false);
-                                }} className="cursor-pointer group">
-                                    <div className="aspect-square bg-slate-100 rounded-lg overflow-hidden mb-2 relative"><img src={f.path} className="w-full h-full object-cover"/></div>
-                                    <p className="text-[10px] truncate mt-1">{f.name}</p>
-                                </div>
-                            ))}
+            {/* 3. WHY BUILD */}
+            <SectionWrapper id="whyBuild" icon={Target} title="3. Why Build a Clone App?" activeSections={activeSections}>
+                <ArrayField label="Reasons" path="content.whyBuild" items={content.whyBuild?.items} updateField={updateField} defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="space-y-2">
+                            <input className="w-full p-2 border rounded text-sm font-bold" placeholder="Reason Title" value={item.title || ''} onChange={e => updateItemField('content.whyBuild', i, 'title', e.target.value)} />
+                            <textarea className="w-full p-2 border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateItemField('content.whyBuild', i, 'description', e.target.value)} />
                         </div>
+                    )} />
+            </SectionWrapper>
+
+            {/* 4. SERVICES */}
+            <SectionWrapper id="services" icon={Briefcase} title="4. Development Services" activeSections={activeSections}>
+                <ArrayField label="Services List" path="content.services" items={content.services?.items} updateField={updateField} defaultItem={{ title: "", icon: "" }}
+                    renderItem={(item, i) => (
+                        <div className="flex gap-2">
+                            <input className="flex-1 p-2 border rounded text-sm font-bold" placeholder="Service Name" value={item.title || ''} onChange={e => updateItemField('content.services', i, 'title', e.target.value)} />
+                            <input className="w-1/3 p-2 border rounded text-sm" placeholder="Icon URL" value={item.icon || ''} onChange={e => updateItemField('content.services', i, 'icon', e.target.value)} />
+                        </div>
+                    )} />
+            </SectionWrapper>
+
+            {/* 5. APP FEATURES (User, Vendor, Admin) */}
+            <SectionWrapper id="appFeatures" icon={Grid} title="5. App Modules & Features" activeSections={activeSections}>
+                <p className="text-xs text-slate-500 mb-4">Define features for Job Seeker (User), Recruiter (Vendor), and Admin.</p>
+                
+                {['user', 'vendor', 'admin'].map((role) => (
+                    <div key={role} className="mb-6 border p-4 rounded-xl bg-slate-50">
+                        <h4 className="font-bold text-slate-700 capitalize mb-2">{role} Features</h4>
+                        <ArrayField path={`content.appFeatures.${role}`} items={content.appFeatures?.[role]?.items} updateField={updateField} defaultItem={{ title: "" }}
+                            renderItem={(item, i) => (
+                                <input className="w-full p-2 border rounded text-sm" placeholder="Feature Name" value={item.title || ''} 
+                                    onChange={e => {
+                                        const items = [...(content.appFeatures?.[role]?.items || [])];
+                                        if(!items[i]) items[i] = {};
+                                        items[i].title = e.target.value;
+                                        updateField(`content.appFeatures.${role}.items`, items);
+                                    }} />
+                            )} />
                     </div>
+                ))}
+            </SectionWrapper>
+
+            {/* 6. AI FEATURES */}
+            <SectionWrapper id="aiFeatures" icon={Zap} title="6. AI & Advanced Features" activeSections={activeSections}>
+                <ArrayField label="Advanced Features" path="content.aiFeatures" items={content.aiFeatures?.items} updateField={updateField} defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="space-y-2">
+                            <input className="w-full p-2 border rounded text-sm font-bold" placeholder="Feature Title" value={item.title || ''} onChange={e => updateItemField('content.aiFeatures', i, 'title', e.target.value)} />
+                            <textarea className="w-full p-2 border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateItemField('content.aiFeatures', i, 'description', e.target.value)} />
+                        </div>
+                    )} />
+            </SectionWrapper>
+
+            {/* 7. TECH STACK */}
+            <SectionWrapper id="techStack" icon={Code} title="7. Technology Stack" activeSections={activeSections}>
+                <ArrayField label="Technologies" path="content.techStack" items={content.techStack?.items} updateField={updateField} defaultItem={{ name: "", image: "" }}
+                    renderItem={(item, i) => (
+                        <div className="flex gap-2 items-center">
+                            <input className="flex-1 p-2 border rounded text-sm" placeholder="Name" value={item.name || ''} onChange={e => updateItemField('content.techStack', i, 'name', e.target.value)} />
+                            <div className="w-1/2">
+                                <MediaInput label="Icon" value={item.image} path={`content.techStack.items.${i}.image`} />
+                            </div>
+                        </div>
+                    )} />
+            </SectionWrapper>
+
+            {/* 8. REVENUE MODELS */}
+            <SectionWrapper id="revenue" icon={DollarSign} title="8. Revenue & Monetization" activeSections={activeSections}>
+                <ArrayField label="Models" path="content.revenue" items={content.revenue?.items} updateField={updateField} defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="space-y-2">
+                            <input className="w-full p-2 border rounded text-sm font-bold" placeholder="Model Name" value={item.title || ''} onChange={e => updateItemField('content.revenue', i, 'title', e.target.value)} />
+                            <textarea className="w-full p-2 border rounded text-sm" placeholder="How it earns money" value={item.description || ''} onChange={e => updateItemField('content.revenue', i, 'description', e.target.value)} />
+                        </div>
+                    )} />
+            </SectionWrapper>
+
+            {/* 9. PORTFOLIO & INDUSTRIES (Reuse) */}
+            <SectionWrapper id="portfolio" icon={Layout} title="9. Portfolio & Industries" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Portfolio Category Tag" value={content.portfolio?.category || ''} onChange={e => updateField('content.portfolio.category', e.target.value)} />
+                <div className="mt-4"><p className="text-xs text-slate-500">Industry list is global.</p></div>
+            </SectionWrapper>
+
+            {/* 10. PROCESS */}
+            <SectionWrapper id="process" icon={Settings} title="10. Development Process" activeSections={activeSections}>
+                <ArrayField label="Steps" path="content.process" items={content.process?.items} updateField={updateField} defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="space-y-2">
+                            <input className="w-full p-2 border rounded text-sm font-bold" placeholder="Step Name" value={item.title || ''} onChange={e => updateItemField('content.process', i, 'title', e.target.value)} />
+                            <textarea className="w-full p-2 border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateItemField('content.process', i, 'description', e.target.value)} />
+                        </div>
+                    )} />
+            </SectionWrapper>
+
+            {/* 11. FAQ & CTA */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="11. FAQ & CTA" activeSections={activeSections}>
+                <div className="mb-6">
+                    <label className="text-xs font-bold text-slate-400">FAQ ITEMS</label>
+                    <ArrayField path="content.faq" items={content.faq?.items} updateField={updateField} defaultItem={{ q: "", a: "" }}
+                        renderItem={(item, i) => (
+                            <div className="space-y-2">
+                                <input className="w-full p-2 border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateItemField('content.faq', i, 'q', e.target.value)} />
+                                <textarea className="w-full p-2 border rounded text-sm" placeholder="Answer" value={item.a || ''} onChange={e => updateItemField('content.faq', i, 'a', e.target.value)} />
+                            </div>
+                        )} />
                 </div>
-            )}
+                <div className="border-t pt-4">
+                    <label className="text-xs font-bold text-slate-400 block mb-2">BOTTOM CTA</label>
+                    <input className={inputStyle} placeholder="CTA Title (e.g. Launch Your Job Portal)" value={content.cta?.title || ''} onChange={e => updateField('content.cta.title', e.target.value)} />
+                </div>
+            </SectionWrapper>
+
         </div>
     );
 }

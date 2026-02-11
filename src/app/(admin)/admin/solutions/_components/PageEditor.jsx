@@ -1,23 +1,24 @@
+
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { 
     ArrowLeft, RefreshCw, Smartphone, Layout, Database, 
     Target, Settings, Zap, CheckCircle2, X, Image as ImageIcon, Folder, 
     Briefcase, Code, DollarSign, BarChart3, ShieldCheck, HelpCircle,
     UploadCloud, FolderPlus, ChevronRight, Home, Search, Loader2, FolderOpen,
-    Award, MessageSquare, MousePointerClick, Layers, Save,  
+    Award, MessageSquare, MousePointerClick, Layers, Save, Grid
 } from "lucide-react";
 import SolutionsEditor from "./SolutionEditor";
 import IndustryEditor from "./IndustryEditor";
+import CloneEditor from "./CloneEditor";
 
-// --- 1. MEDIA INPUT (MOVED OUTSIDE TO FIX FOCUS ISSUE) ---
+// --- 1. MEDIA INPUT COMPONENT (MOVED OUTSIDE) ---
 const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
     <div className="group">
         <label className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1.5 block">{label}</label>
         <div className="flex items-center gap-0 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden hover:border-slate-300 transition-colors focus-within:ring-2 focus-within:ring-sky-500/20 focus-within:border-sky-500">
             <div className="pl-3 text-slate-400"><ImageIcon size={14}/></div>
             
-            {/* ✅ FIXED: Input is editable for Copy/Paste */}
             <input 
                 className="flex-1 p-2.5 bg-transparent border-none text-xs font-medium text-slate-700 outline-none placeholder:text-slate-400" 
                 value={value || ''} 
@@ -39,7 +40,6 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
             </button>
         </div>
         
-        {/* Preview */}
         {value && (
             <div className="mt-2 h-32 w-full bg-slate-50 rounded-lg border border-slate-100 overflow-hidden relative group/preview">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -90,21 +90,33 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'testimonials', label: '10. Client Testimonials', icon: MessageSquare },
             ]
         },
-        clone: { theme: "orange", label: "Clone Script", uploadDir: "uploads/clone", sections: [
-            { id: 'hero', label: 'Hero', icon: Smartphone }, { id: 'revenue', label: 'Revenue', icon: DollarSign },
-            { id: 'appFlow', label: 'App Flow', icon: Layout }, { id: 'features', label: 'Features', icon: Database },
-            { id: 'comparison', label: 'Comparison', icon: CheckCircle2 }, { id: 'cta', label: 'CTA', icon: Zap }
-        ]}
+        clone: { 
+            theme: "orange", 
+            label: "Clone Script Page", 
+            uploadDir: "uploads/clones", 
+            sections: [
+                { id: 'hero', label: '1. Hero', icon: Smartphone },
+                { id: 'about', label: '2. About Clone', icon: Layout },
+                { id: 'whyBuild', label: '3. Why Build', icon: Target },
+                { id: 'services', label: '4. Services', icon: Briefcase },
+                { id: 'appFeatures', label: '5. App Features', icon: Grid }, // Split into User/Vendor/Admin inside editor
+                { id: 'aiFeatures', label: '6. AI Features', icon: Zap },
+                { id: 'techStack', label: '7. Tech Stack', icon: Code },
+                { id: 'revenue', label: '8. Revenue', icon: DollarSign },
+                { id: 'portfolio', label: '9. Portfolio', icon: Layout },
+                { id: 'process', label: '10. Process', icon: Settings },
+                { id: 'faq', label: '11. FAQ & CTA', icon: HelpCircle },
+            ]
+        }
     }[type] || config.solution;
 
     const themeColor = config.theme;
 
     // --- STATE ---
-    // Deep merge to ensure content object exists
     const [formData, setFormData] = useState({
         ...data,
         activeSections: data?.activeSections || config.sections.map(s => s.id),
-        content: data?.content || { hero: {} } // Ensure hero object exists
+        content: data?.content || { hero: {} }
     });
     
     const [loading, setLoading] = useState(false);
@@ -135,7 +147,9 @@ export default function PageEditor({ data, type, onBack }) {
     const openBrowser = (path) => {
         setCurrentImageField(path);
         setShowImageBrowser(true);
-        fetchMedia(config.uploadDir); 
+        // Initial fetch if empty
+        if(!mediaPath) fetchMedia(config.uploadDir); 
+        else fetchMedia(mediaPath);
     };
 
     const handleFileUpload = async (e) => {
@@ -199,28 +213,38 @@ export default function PageEditor({ data, type, onBack }) {
         setLoading(false);
     };
 
-    // ✅ FIXED: useCallback ensures the function reference remains stable
+    // ROBUST UPDATE FUNCTION (Handles Nested Paths)
     const updateField = useCallback((path, value) => {
         setFormData(prev => {
+            // Deep clone state
             const copy = JSON.parse(JSON.stringify(prev));
             if (!copy.content) copy.content = {};
             
             const keys = path.split('.');
             let current = copy;
+            
+            // Traverse path
             for (let i = 0; i < keys.length - 1; i++) {
-                if (!current[keys[i]]) current[keys[i]] = {};
+                if (!current[keys[i]]) current[keys[i]] = {}; // Auto-create nested objects/arrays if missing
                 current = current[keys[i]];
             }
+            
+            // Assign value
             current[keys[keys.length - 1]] = value;
             return copy;
         });
     }, []);
 
-    // Memoize the Bound Media Input
+    // Create a bound version of MediaInput to pass props easily
     const BoundMediaInput = useCallback((props) => (
-        <MediaInput {...props} onUpdate={updateField} onBrowse={openBrowser} />
+        <MediaInput 
+            {...props} 
+            onUpdate={updateField} 
+            onBrowse={openBrowser} 
+        />
     ), [updateField]);
 
+    // Filtering
     const folders = mediaFiles.filter(f => f.isDir && f.name.toLowerCase().includes(searchQuery.toLowerCase()));
     const images = mediaFiles.filter(f => !f.isDir && f.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -268,6 +292,7 @@ export default function PageEditor({ data, type, onBack }) {
             {/* Editor Area */}
             <div className="flex-1 bg-slate-100 overflow-y-auto p-8 lg:p-12">
                 <div className="max-w-4xl mx-auto">
+                    {/* Render Solutions Editor */}
                     {type === 'solution' && (
                         <SolutionsEditor 
                             formData={formData} 
@@ -276,7 +301,8 @@ export default function PageEditor({ data, type, onBack }) {
                             activeSections={formData.activeSections}
                         />
                     )}
-                    {/* ✅ Render Industry Editor */}
+
+                    {/* Render Industry Editor */}
                     {type === 'industry' && (
                         <IndustryEditor 
                             formData={formData} 
@@ -285,34 +311,104 @@ export default function PageEditor({ data, type, onBack }) {
                             activeSections={formData.activeSections}
                         />
                     )}
-                    {/* ... other types ... */}
+
+                    {type === 'clone' && (
+                        <CloneEditor
+                            formData={formData} 
+                            updateField={updateField} 
+                            MediaInput={BoundMediaInput} 
+                            activeSections={formData.activeSections}
+                        />
+                    )}
                 </div>
             </div>
 
-            {/* Media Modal */}
+            {/* Media Modal - FULLY IMPLEMENTED */}
             {showImageBrowser && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-6">
                      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+                        
+                        {/* Header */}
                         <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
-                            <h3 className="text-lg font-bold text-slate-900">Media Library</h3>
+                            <div>
+                                <h3 className="text-lg font-bold text-slate-900">Media Library</h3>
+                                <p className="text-xs text-slate-500">Manage images and folders</p>
+                            </div>
                             <button onClick={() => setShowImageBrowser(false)} className="p-1.5 bg-slate-200 hover:bg-slate-300 rounded-lg"><X size={16}/></button>
                         </div>
-                        {/* ... (Media Browser Body logic same as before) ... */}
-                        <div className="flex-1 overflow-y-auto p-5 bg-slate-50/50">
-                            {/* Copy-paste the inner body of modal from previous code or let me know if you need full again */}
-                            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                                {folders.map((f, i) => (
-                                    <button key={i} onClick={() => fetchMedia(f.path.replace(/^\//, ''))} className="flex flex-col items-center p-3 bg-white border border-slate-200 rounded-xl hover:border-blue-400 group">
-                                        <Folder className="h-10 w-10 text-yellow-400 fill-yellow-50" />
-                                        <span className="text-[10px] font-medium text-slate-600 mt-2 truncate w-full text-center">{f.name}</span>
-                                    </button>
-                                ))}
-                                {images.map((f, i) => (
-                                    <button key={i} onClick={() => { updateField(currentImageField, f.path); setShowImageBrowser(false); }} className="relative group aspect-square bg-white border border-slate-200 rounded-xl overflow-hidden">
-                                        <img src={f.path} className="w-full h-full object-cover" />
-                                    </button>
+
+                        {/* Toolbar (Breadcrumbs + Upload) */}
+                        <div className="px-4 py-2 border-b border-slate-200 bg-white flex justify-between items-center gap-4">
+                            <div className="flex items-center gap-1 text-xs text-slate-600 overflow-x-auto flex-1">
+                                <button onClick={() => fetchMedia("")} className="flex items-center gap-1 hover:text-blue-600 font-bold whitespace-nowrap"><Home size={12}/> Root</button>
+                                {mediaPath.split('/').filter(Boolean).map((part, i, arr) => (
+                                    <React.Fragment key={i}>
+                                        <ChevronRight size={10} className="text-slate-400"/>
+                                        <button onClick={() => fetchMedia(arr.slice(0, i+1).join('/'))} className="hover:text-blue-600 font-medium whitespace-nowrap">{part}</button>
+                                    </React.Fragment>
                                 ))}
                             </div>
+                            
+                            <div className="flex gap-2">
+                                {/* Search */}
+                                <div className="relative hidden sm:block">
+                                    <Search size={14} className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-400"/>
+                                    <input className="pl-7 pr-3 py-1.5 bg-slate-100 rounded-lg text-xs outline-none focus:ring-1 focus:ring-blue-500 w-32" placeholder="Filter..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)}/>
+                                </div>
+
+                                <label className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg cursor-pointer text-xs font-bold transition-all">
+                                    {uploading ? <Loader2 className="animate-spin" size={14}/> : <UploadCloud size={14}/>}
+                                    <span className="hidden sm:inline">Upload</span>
+                                    <input type="file" className="hidden" onChange={handleFileUpload} disabled={uploading}/>
+                                </label>
+                                <button onClick={handleCreateFolder} className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-bold">
+                                    <FolderPlus size={14}/> <span className="hidden sm:inline">New Folder</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* File Grid */}
+                        <div className="flex-1 overflow-y-auto p-5 bg-slate-50/50 min-h-[300px]">
+                            {mediaLoading ? (
+                                <div className="flex justify-center items-center h-full"><Loader2 className="animate-spin text-slate-400" size={32}/></div>
+                            ) : (
+                                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
+                                    
+                                    {/* Folders */}
+                                    {folders.map((f, i) => (
+                                        <button key={i} onClick={() => fetchMedia(f.path.replace(/^\//, ''))} className="flex flex-col items-center p-4 bg-white border border-slate-200 rounded-xl hover:border-blue-400 hover:shadow-md transition-all group text-center">
+                                            <Folder className="h-10 w-10 text-yellow-400 fill-yellow-50 group-hover:scale-110 transition-transform" />
+                                            <span className="text-[10px] font-bold text-slate-600 mt-2 truncate w-full">{f.name}</span>
+                                        </button>
+                                    ))}
+                                    
+                                    {/* Files */}
+                                    {images.map((f, i) => (
+                                        <button key={i} onClick={() => { updateField(currentImageField, f.path); setShowImageBrowser(false); }} className="relative group aspect-square bg-white border border-slate-200 rounded-xl overflow-hidden hover:border-green-500 hover:shadow-lg transition-all">
+                                            <img src={f.path} className="w-full h-full object-cover" alt={f.name} />
+                                            
+                                            {/* Hover Overlay */}
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">
+                                                <p className="text-[10px] text-white font-medium truncate w-full">{f.name}</p>
+                                                <p className="text-[8px] text-white/80">{(f.size/1024).toFixed(1)} KB</p>
+                                            </div>
+                                            
+                                            {/* Selection Indicator */}
+                                            <div className="absolute top-2 right-2 bg-green-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                                                <CheckCircle2 size={12}/>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                            
+                            {!mediaLoading && folders.length === 0 && images.length === 0 && (
+                                <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                                    <FolderOpen size={48} className="mb-3 opacity-30"/>
+                                    <p className="text-sm font-medium">This folder is empty</p>
+                                    <p className="text-xs opacity-70">Upload images or create a folder to get started</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

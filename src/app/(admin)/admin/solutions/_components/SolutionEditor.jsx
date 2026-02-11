@@ -14,8 +14,9 @@ const ArrayField = ({ label, path, items, renderItem, updateField, defaultItem =
     <div className="space-y-2">
         {label && <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">{label}</label>}
         <div className="space-y-2">
-            {Array.isArray(items) && items.map((item, idx) => {
-                if (!item && typeof item !== 'string') return null; // Simple null check
+               {(Array.isArray(items) ? items : []).map((item, idx) => {
+               
+                if (item === undefined || item === null) return null;
                 return (
                     <div key={idx} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100 group relative">
                         <div className="flex-1 grid gap-2">
@@ -35,10 +36,18 @@ const ArrayField = ({ label, path, items, renderItem, updateField, defaultItem =
             })}
         </div>
         <button 
+           
             onClick={() => {
-                // Ensure items is an array before spreading
+                
+                let newItem;
+                if (typeof defaultItem === 'object' && defaultItem !== null) {
+                    newItem = JSON.parse(JSON.stringify(defaultItem));
+                } else {
+                    newItem = defaultItem;
+                }
+                
                 const currentItems = Array.isArray(items) ? items : [];
-                updateField(path, [...currentItems, defaultItem]);
+                updateField(path, [...currentItems, newItem]);
             }}
             className="flex items-center gap-1 text-xs font-bold text-sky-600 hover:bg-sky-50 px-3 py-2 rounded-lg transition-colors border border-sky-100"
         >

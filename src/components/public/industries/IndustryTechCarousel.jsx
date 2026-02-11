@@ -2,6 +2,7 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function IndustryTechCarousel({ title, description, items }) {
     const scrollRef = useRef(null);
@@ -15,14 +16,20 @@ export default function IndustryTechCarousel({ title, description, items }) {
     };
 
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section className="py-24 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
                 
                 {/* Header: Title Left, Buttons Right */}
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                     <div className="max-w-2xl">
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{title}</h2>
-                        <p className="text-slate-600 text-lg">{description}</p>
+                       
+                        <CommonTitle 
+                            title={title}
+                            subtitle={description}
+                            pill={true}
+                            align="left"
+                            
+                        />
                     </div>
                     
                     {/* Navigation Buttons */}
@@ -48,7 +55,7 @@ export default function IndustryTechCarousel({ title, description, items }) {
                             key={i} 
                             className="relative flex-shrink-0 w-[85%] md:w-[40%] lg:w-[28%] snap-start group cursor-pointer"
                         >
-                            <div className="relative aspect-[3/4] w-full rounded-3xl overflow-hidden shadow-lg border border-slate-100">
+                            <div className="relative aspect-[3/3] w-full rounded-3xl overflow-hidden shadow-lg border border-slate-100">
                                 {/* Background Image */}
                                 <Image 
                                     src={item.image || "/images/placeholder-tech.jpg"} 
