@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react'; // ✅ useEffect add kiya
 import Image from 'next/image';
 import { ArrowRight, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import PopupQuoteModal from '@/components/PopupQuoteModal';
 
 export default function SolutionsHero({ data }) {
   // 1. Initialize State
   const [imgSrc, setImgSrc] = useState(data?.image);
-
+  const [showModal, setShowModal] = useState(false);
+  
   // ✅ 2. FIX: Sync state when prop updates (Navigation/Refresh ke time)
   useEffect(() => {
     setImgSrc(data?.image);
@@ -45,10 +47,12 @@ export default function SolutionsHero({ data }) {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
-              <Link  href="/contact"
+              <buttom 
+              onClick={() => setShowModal(true)}
+                // href="/contact"
                   className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2">
                 Let's Work Together <ArrowRight size={18}/>
-              </Link>
+              </buttom>
               <Link href="https://calendly.com/paramhans-softkingo/30min"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -87,6 +91,7 @@ export default function SolutionsHero({ data }) {
 
         </div>
       </div>
+      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </section>
   );
 }

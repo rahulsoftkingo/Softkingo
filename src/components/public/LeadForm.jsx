@@ -77,7 +77,7 @@ export default function LeadForm({
         tags: serviceName ? `service:${serviceName}` : null,
       };
 
-      const res = await fetch('/api/contact', {
+      const res = await fetch('/api/public/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

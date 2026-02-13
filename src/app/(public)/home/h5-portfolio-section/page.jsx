@@ -164,8 +164,8 @@ export default function PortfolioSlider() {
       description:
         'We transform your vision into powerful mobile experiences. From concept to deployment, our expert team builds native iOS, Android, and cross-platform apps using React Native, Flutter, and Swift that users love.',
       color: 'from-sky-600 to-sky-400',
-      project: '320+',
-      clients: '260+',
+      project: '400+',
+      clients: '350+',
       countries: '50+',
     },
     // {
