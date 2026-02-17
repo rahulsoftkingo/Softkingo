@@ -2,7 +2,8 @@
 const nextConfig = {
   reactCompiler: true,
   
-  output: 'standalone',
+  // Remove standalone output for Next.js 16
+  // output: 'standalone',
   
   // Move these outside experimental in Next.js 16+
   serverExternalPackages: ['@prisma/client', 'prisma'],
