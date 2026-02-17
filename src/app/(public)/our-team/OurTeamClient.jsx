@@ -268,7 +268,7 @@ const OurTeamClient = ({
                                     
                                     {/* Icon */}
                                     <div className="w-16 h-16 bg-gradient-to-br from-sky-500 to-cyan-600 rounded-2xl flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300">
-                                        {iconMap[item.iconName] && React.createElement(iconMap[item.iconName], { size: 32 })}
+                                        {iconMap[item.iconName] && React.createElement(iconMap[item.iconName], { size: 32, className: "text-white" })}
                                     </div>
                                     
                                     {/* Content */}
