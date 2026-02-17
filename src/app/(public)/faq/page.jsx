@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-export const metadata = {
-  title: "FAQ | Softkingo - Common Questions Answered",
-  description: "Find answers to frequently asked questions about Softkingo's services, pricing, development process, and technology stack.",
-  alternates: { canonical: "/faq" }
-};
+// export const metadata = {
+//   title: "FAQ | Softkingo - Common Questions Answered",
+//   description: "Find answers to frequently asked questions about Softkingo's services, pricing, development process, and technology stack.",
+//   alternates: { canonical: "/faq" }
+// };
 
 export default function FAQPage() {
   const [activeTab, setActiveTab] = useState('about');
