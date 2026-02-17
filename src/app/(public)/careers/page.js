@@ -12,6 +12,7 @@ import InquirySection from '@/components/footer/InquirySection';
 
 const WhyJoinUs = () => {
     const [showModal, setShowModal] = useState(false);
+    const [selectedJob, setSelectedJob] = useState(null);
 
     const [filters, setFilters] = useState({
         search: '',
@@ -52,6 +53,15 @@ const WhyJoinUs = () => {
 
     const handleFilterChange = (field, value) => {
         setFilters(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleApplyNow = (job) => {
+        setSelectedJob(job);
+        // Scroll to form
+        const formElement = document.getElementById('career-form');
+        if (formElement) {
+            formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     };
     const benefits = [
         { icon: '📅', title: '5 Days Working Per Week', bgColor: 'bg-orange-50' },
@@ -288,7 +298,10 @@ const WhyJoinUs = () => {
                                             <span className="text-white italic text-sm">
                                                 {job.type}
                                             </span>
-                                            <button className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-5 md:px-6 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/50 text-sm whitespace-nowrap">
+                                            <button 
+                                                onClick={() => handleApplyNow(job)}
+                                                className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-5 md:px-6 py-2.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/50 text-sm whitespace-nowrap"
+                                            >
                                                 Apply Now
                                             </button>
                                         </div>
@@ -352,7 +365,9 @@ const WhyJoinUs = () => {
 
 
             {/* career form */}
-            <ApplicationForm />
+            <div id="career-form">
+                <ApplicationForm selectedJob={selectedJob} />
+            </div>
 
             {/*  */}
             <section className="relative w-full min-h-[500px] bg-gradient-to-br from-white via-sky-50 to-sky-100  py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-10 overflow-hidden">

@@ -245,7 +245,57 @@ const tabs = [
     ],
   },
 
-  // 6) Dedicated / Specialist pod
+  // 6) AI Developers
+  {
+    id: "hireaitab",
+    icon: <FaRobot className="inline-block text-sky-600" />,
+    title: "Hire AI Developers",
+    href: "/hire/ai-developers",
+    description:
+      "Build intelligent solutions with expert AI developers specializing in machine learning, NLP, computer vision and generative AI.",
+    links: [
+      // Main Menu
+      {
+        href: "/hire/ai-developers",
+        title: "Hire AI Developers",
+        icon: <FaRobot />,
+      },
+      
+      // Top 6 Important Categories
+      {
+        href: "/hire/machine-learning-developers",
+        title: "Hire Machine Learning Developers",
+        icon: <FaRobot />,
+      },
+      {
+        href: "/hire/generative-ai-developers",
+        title: "Hire Generative AI Developers",
+        icon: <FaRobot />,
+      },
+      {
+        href: "/hire/python-ai-developers",
+        title: "Hire Python AI Developers",
+        icon: <FaRobot />,
+      },
+      {
+        href: "/hire/ai-chatbot-developers",
+        title: "Hire AI Chatbot Developers",
+        icon: <FaRobot />,
+      },
+      {
+        href: "/hire/openai-developers",
+        title: "Hire OpenAI Developers",
+        icon: <FaRobot />,
+      },
+      // {
+      //   href: "/hire/ai-app-developers",
+      //   title: "Hire AI App Developers",
+      //   icon: <FaRobot />,
+      // }
+    ],
+  },
+
+  // 7) Dedicated / Specialist pod
   {
     id: "hireothertab",
     icon: <FaUserTie className="inline-block text-sky-600" />,

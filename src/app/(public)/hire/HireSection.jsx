@@ -1,6 +1,6 @@
 // app/hire/HireSection.jsx
 import { prisma } from '@/lib/prisma';  
-import { ArrowRight, Code2, Smartphone, Database, Layers, Cloud, TestTube } from 'lucide-react';
+import { ArrowRight, Code2, Smartphone, Database, Layers, Cloud, TestTube, Brain, Cpu, Bot } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -35,18 +35,18 @@ export default async function HireSection() {
         title: "Mobile Experts",
         description: "iOS, Android & Cross-Platform Development",
         buttonText: "View Profiles",
-        image: "/images/hire/mobile.jpg",
+        image: "/images/hire/Hire-app-developers.webp",
         developerCount: "40+ Developers",
         experience: "4+ Years Avg Experience",
         badge: "Top Rated",
         href: "/hire/app-developers"
       },
       technologies: [
-        { name: "Android Developers", icon: Smartphone, href: "/hire/app-developers/android-developers" },
-        { name: "iOS Developers", icon: Smartphone, href: "/hire/app-developers/ios-developers" },
-        { name: "iPhone App Developers", icon: Smartphone, href: "/hire/app-developers/iphone-app-developers" },
-        { name: "iPad Developers", icon: Smartphone, href: "/hire/app-developers/ipad-developers" },
-        { name: "Flutter Developers", icon: Smartphone, href: "/hire/app-developers/flutter-developers" }
+        { name: "Android Developers", icon: Smartphone, href: "/hire/android-developers" },
+        { name: "iOS Developers", icon: Smartphone, href: "/hire/ios-developers" },
+        { name: "iPhone App Developers", icon: Smartphone, href: "/hire/iphone-app-developers" },
+        { name: "iPad Developers", icon: Smartphone, href: "/hire/ipad-developers" },
+        { name: "Flutter Developers", icon: Smartphone, href: "/hire/flutter-developers" }
       ]
     },
 
@@ -61,17 +61,17 @@ export default async function HireSection() {
         title: "Frontend Specialists",
         description: "React, Angular, Vue.js & Modern UIs",
         buttonText: "View Profiles",
-        image: "/images/services/s1.png",
+        image: "/images/hire/Hire-front-end-developers.webp",
         developerCount: "50+ Developers",
         experience: "6+ Years Avg Experience",
         badge: "Available Now",
         href: "/hire/frontend-developers"
       },
       technologies: [
-        { name: "Angular Developers", icon: Code2, href: "/hire/frontend-developers/angular-developers" },
-        { name: "ReactJS Developers", icon: Code2, href: "/hire/frontend-developers/reactjs-developers" },
-        { name: "Vue.js Developers", icon: Code2, href: "/hire/frontend-developers/vuejs-developers" },
-        { name: "Web App Developers", icon: Code2, href: "/hire/frontend-developers/web-app-developers" }
+        { name: "Angular Developers", icon: Code2, href: "/hire/angular-developers" },
+        { name: "ReactJS Developers", icon: Code2, href: "/hire/reactjs-developers" },
+        { name: "Vue.js Developers", icon: Code2, href: "/hire/vuejs-developers" },
+        { name: "Web App Developers", icon: Code2, href: "/hire/web-app-developers" }
       ]
     },
 
@@ -86,19 +86,19 @@ export default async function HireSection() {
         title: "Backend Architects",
         description: "Node.js, Python, Java & PHP APIs",
         buttonText: "View Profiles",
-        image: "/images/hire/backend.jpg",
+        image: "/images/hire/Hire-backend-developers.webp",
         developerCount: "60+ Developers",
         experience: "6+ Years Avg Experience",
         badge: "Expert Level",
         href: "/hire/backend-developers"
       },
       technologies: [
-        { name: "Java Developers", icon: Database, href: "/hire/backend-developers/java-developers" },
-        { name: "Node.js Developers", icon: Database, href: "/hire/backend-developers/nodejs-developers" },
-        { name: "Python Developers", icon: Database, href: "/hire/backend-developers/python-developers" },
-        { name: "PHP Developers", icon: Database, href: "/hire/backend-developers/php-developers" },
-        { name: "Laravel Developers", icon: Database, href: "/hire/backend-developers/laravel-developers" },
-        { name: "Django Developers", icon: Database, href: "/hire/backend-developers/Django-developers" }
+        { name: "Java Developers", icon: Database, href: "/hire/java-developers" },
+        { name: "Node.js Developers", icon: Database, href: "/hire/nodejs-developers" },
+        { name: "Python Developers", icon: Database, href: "/hire/python-developers" },
+        { name: "PHP Developers", icon: Database, href: "/hire/php-developers" },
+        { name: "Laravel Developers", icon: Database, href: "/hire/laravel-developers" },
+        { name: "Django Developers", icon: Database, href: "/hire/django-developers" }
       ]
     },
 
@@ -113,17 +113,17 @@ export default async function HireSection() {
         title: "Full-Stack Masters",
         description: "MERN, MEAN & Full-Stack Solutions",
         buttonText: "View Profiles",
-        image: "/images/hire/fullstack.jpg",
+        image: "/images/hire/Hire-full-stack-developers.webp",
         developerCount: "45+ Developers",
         experience: "6+ Years Avg Experience",
         badge: "Highly Skilled",
         href: "/hire/full-stack-developers"
       },
       technologies: [
-        { name: "MERN Stack Developers", icon: Layers, href: "/hire/full-stack-developers/mern-developers" },
-        { name: "NextJs Developers", icon: Layers, href: "/hire/full-stack-developers/nextjs-developers" },
-        { name: "Laravel + Vue Developers", icon: Layers, href: "/hire/full-stack-developers/laravel-vue-developers" },
-        { name: "React + Django Developers", icon: Layers, href: "/hire/full-stack-developers/react-django-developers" }
+        { name: "MERN Stack Developers", icon: Layers, href: "/hire/mern-developers" },
+        { name: "NextJs Developers", icon: Layers, href: "/hire/nextjs-developers" },
+        { name: "Laravel + Vue Developers", icon: Layers, href: "/hire/laravel-vue-developers" },
+        { name: "React + Django Developers", icon: Layers, href: "/hire/react-django-developers" }
       ]
     },
 
@@ -138,17 +138,17 @@ export default async function HireSection() {
         title: "Store Specialists",
         description: "Magento, Shopify & WooCommerce",
         buttonText: "View Profiles",
-        image: "/images/hire/ecommerce.jpg",
+        image: "/images/hire/Hire-ecomerce-developers.webp",
         developerCount: "35+ Developers",
         experience: "6+ Years Avg Experience",
         badge: "Store Certified",
         href: "/hire/ecommerce-developers"
       },
       technologies: [
-        { name: "Magento Developers", icon: Cloud, href: "/hire/ecommerce-developers/magento-developers" },
-        { name: "WordPress Developers", icon: Cloud, href: "/hire/ecommerce-developers/wordpress-developers" },
-        { name: "WooCommerce Developers", icon: Cloud, href: "/hire/ecommerce-developers/woocommerce-developers" },
-        { name: "Shopify Developers", icon: Cloud, href: "/hire/ecommerce-developers/shopify-developers" }
+        { name: "Magento Developers", icon: Cloud, href: "/hire/magento-developers" },
+        { name: "WordPress Developers", icon: Cloud, href: "/hire/wordpress-developers" },
+        { name: "WooCommerce Developers", icon: Cloud, href: "/hire/woocommerce-developers" },
+        { name: "Shopify Developers", icon: Cloud, href: "/hire/shopify-developers" }
       ]
     },
 
@@ -163,7 +163,7 @@ export default async function HireSection() {
         title: "Specialist Pod",
         description: "DevOps, QA, Architects & Designers",
         buttonText: "View Profiles",
-        image: "/images/hire/devops.jpg",
+        image: "/images/hire/Hire-dedicated-developers.webp",
         developerCount: "25+ Engineers",
         experience: "7+ Years Avg Experience",
         badge: "Certified Experts",
@@ -177,6 +177,35 @@ export default async function HireSection() {
         { name: "Software Developers", icon: TestTube, href: "/hire/software-developers" },
         { name: "UI/UX Designers", icon: TestTube, href: "/hire/ui-ux-designers" }
       ]
+    },
+
+    // 7) AI Developers
+    {
+      id: 7,
+      title: "Hire AI Developers",
+      subtitle: "Build intelligent solutions with expert AI developers specializing in machine learning, NLP, computer vision and more.",
+      imagePosition: "right",
+      bgColor: "bg-gradient-to-br from-purple-50 to-indigo-50",
+      caseStudy: {
+        title: "AI Specialists",
+        description: "Machine Learning, NLP & Computer Vision",
+        buttonText: "View Profiles",
+        image: "/images/hire/Hire-ai-developers.webp",
+        developerCount: "50+ AI Experts",
+        experience: "6+ Years Avg Experience",
+        badge: "Cutting-Edge",
+        href: "/hire/ai-developers"
+      },
+      technologies: [
+        // Top 6 Important Categories
+        { name: "Hire AI Developers", icon: Brain, href: "/hire/ai-developers" },
+        { name: "Machine Learning Developers", icon: Cpu, href: "/hire/machine-learning-developers" },
+        { name: "Generative AI Developers", icon: Bot, href: "/hire/generative-ai-developers" },
+        { name: "Python AI Developers", icon: Brain, href: "/hire/python-ai-developers" },
+        { name: "AI Chatbot Developers", icon: Bot, href: "/hire/ai-chatbot-developers" },
+        { name: "OpenAI Developers", icon: Bot, href: "/hire/openai-developers" },
+        { name: "AI App Developers", icon: Brain, href: "/hire/ai-app-developers" }
+      ]
     }
   ];
 
@@ -184,6 +213,7 @@ export default async function HireSection() {
     // Lucide
     'Code2': Code2, 'Smartphone': Smartphone, 'Database': Database,
     'Layers': Layers, 'Cloud': Cloud, 'TestTube': TestTube,
+    'Brain': Brain, 'Cpu': Cpu, 'Bot': Bot,
     
     // React Icons (strings from DB)
     'FaAndroid': Smartphone, 'FaApple': Smartphone, 'FaReact': Code2,
@@ -289,7 +319,7 @@ export default async function HireSection() {
 
   return (
     <div className="w-full overflow-hidden">
-      {sections.slice(0, 6).map((section, index) => (
+      {sections.slice(0, 7).map((section, index) => (
         <section 
           key={section.id} 
           className={`${section.bgColor} py-16 md:py-24 px-4 md:px-8 lg:px-20 animate-section`}

@@ -97,14 +97,32 @@ export default function ChatWidget() {
       }
     };
 
-    // Poll every 3 seconds
+    // Poll every 10 seconds instead of 3 seconds to reduce server load
     pollMessages();
-    pollingIntervalRef.current = setInterval(pollMessages, 3000);
+    pollingIntervalRef.current = setInterval(pollMessages, 10000);
+
+    // Handle visibility change to reduce polling when tab is not visible
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Tab is hidden, stop polling
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+        }
+      } else {
+        // Tab is visible, resume polling
+        if (conversationId && !showInfoForm) {
+          pollingIntervalRef.current = setInterval(pollMessages, 10000);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       if (pollingIntervalRef.current) {
         clearInterval(pollingIntervalRef.current);
       }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [conversationId, showInfoForm, isOpen]);
 

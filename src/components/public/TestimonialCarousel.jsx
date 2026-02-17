@@ -1,4 +1,4 @@
-// components/TestimonialCarousel.jsx
+// components/TestimonialCarousel2.jsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';

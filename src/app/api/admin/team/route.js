@@ -11,22 +11,52 @@ export async function GET(request) {
 
   const { searchParams } = new URL(request.url);
   const q = searchParams.get('q') || '';
+  const category = searchParams.get('category') || 'all';
+  const status = searchParams.get('status') || 'all';
+
+  const whereClause = {};
+  
+  // Search filter
+  if (q) {
+    whereClause.OR = [
+      { name: { contains: q } },
+      { title: { contains: q } },
+      { department: { contains: q } },
+    ];
+  }
+  
+  // Category filter
+  if (category !== 'all') {
+    whereClause.category = category;
+  }
+  
+  // Status filter
+  if (status !== 'all') {
+    whereClause.status = status;
+  }
 
   const members = await prisma.teamMember.findMany({
-    where: q
-      ? {
-          OR: [
-            { name: { contains: q } },
-            { title: { contains: q } },
-            { department: { contains: q } },
-          ],
-        }
-      : undefined,
+    where: Object.keys(whereClause).length > 0 ? whereClause : undefined,
     orderBy: [
       { featured: 'desc' },
       { order: 'asc' },
       { createdAt: 'desc' },
     ],
+    select: {
+      id: true,
+      name: true,
+      title: true,
+      department: true,
+      category: true,
+      photo: true,
+      bio: true,
+      linkedinUrl: true,
+      status: true,
+      order: true,
+      featured: true,
+      createdAt: true,
+      updatedAt: true,
+    }
   });
 
   return NextResponse.json(members);
@@ -39,7 +69,7 @@ export async function POST(request) {
   }
 
   const body = await request.json();
-  const { name, title, department, photo, bio, linkedinUrl, order, featured } =
+  const { name, title, department, category, photo, bio, linkedinUrl, status, order, featured } =
     body;
 
   if (!name) {
@@ -54,9 +84,11 @@ export async function POST(request) {
       name,
       title,
       department,
+      category: category || 'employee',
       photo,
       bio,
       linkedinUrl,
+      status: status || 'active',
       order: order ?? 0,
       featured: !!featured,
     },

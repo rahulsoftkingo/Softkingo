@@ -7,10 +7,10 @@ import InquirySection from "@/components/footer/InquirySection";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "E-Book | Softkingo",
+  title: "E-Books | Softkingo",
   description:
-    "Download expert-crafted E-Book by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
-    alternates: { canonical: "/e-guides" }
+    "Download expert-crafted E-Books by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
+    alternates: { canonical: "/e-books" }
 };
 
 export default async function EGuidesPage(props) {
@@ -90,7 +90,7 @@ function HeroSection({ q, total }) {
             </div>
 
             {/* Search form */}
-            <form action="/e-guides" className="space-y-3">
+            <form action="/e-books" className="space-y-3">
               <div className="relative max-w-xl">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-sky-500/20 rounded-2xl blur-sm" />
                 <div className="relative">

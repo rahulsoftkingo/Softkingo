@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+// Cache for storing conversation data to reduce database hits
+const conversationCache = new Map();
+const CACHE_TTL = 30000; // 30 seconds
+
 // Create new conversation
 export async function POST(req) {
   try {
@@ -53,6 +57,10 @@ export async function PUT(req) {
       data: updateData,
     });
 
+    // Clear cache
+    const cacheKey = `conversation_${conversationId}`;
+    conversationCache.delete(cacheKey);
+
     return NextResponse.json({ conversation });
   } catch (error) {
     console.error('Update conversation error:', error);
@@ -68,6 +76,21 @@ export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const conversationId = parseInt(searchParams.get('id'));
+
+    if (!conversationId) {
+      return NextResponse.json(
+        { error: 'Conversation ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Check cache first
+    const cacheKey = `conversation_${conversationId}`;
+    const cached = conversationCache.get(cacheKey);
+    
+    if (cached && (Date.now() - cached.timestamp) < CACHE_TTL) {
+      return NextResponse.json(cached.data);
+    }
 
     const conversation = await prisma.chatConversation.findUnique({
       where: { id: conversationId },
@@ -92,7 +115,15 @@ export async function GET(req) {
       );
     }
 
-    return NextResponse.json({ conversation });
+    const response = { conversation };
+
+    // Cache the response
+    conversationCache.set(cacheKey, {
+      data: response,
+      timestamp: Date.now()
+    });
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Get conversation error:', error);
     return NextResponse.json(

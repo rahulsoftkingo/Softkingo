@@ -10,7 +10,7 @@ import CommonTitle from "@/components/ui/CommonTitle";
 export const metadata = {
   title: "Contact Softkingo | Get a Free Quote Today",
   description: "Have a project in mind? Contact Softkingo for expert consultation on mobile apps, web development, and AI solutions. We are here to help you grow.",
-  alternates: { canonical: "https://www.softkingo.com/contact" }
+  alternates: { canonical: "/contact" }
 }
 export default function ContactPage() {
   return (

@@ -371,6 +371,10 @@ model TeamMember {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // New optional fields - won't affect existing data
+  category    String?  // employee, management, tech-lead, intern
+  status      String?  // active, inactive, alumni
+
   @@map("teammember")
 }
 
@@ -740,4 +744,27 @@ model Payslip {
 
   @@unique([employeeSalaryId, period])
   @@map("payslip")
+}
+
+model CareerApplication {
+  id           Int      @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  email        String
+  phone        String?
+  position     String
+  experience   String?
+  currentJob   String?
+  education    String?
+  linkedinUrl  String?
+  portfolioUrl String?
+  coverLetter  String?  @db.Text
+  resumeUrl    String?
+  resumeName   String?
+  status       String   @default("pending")
+  source       String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("careerapplication")
 }

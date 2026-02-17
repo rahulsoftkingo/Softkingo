@@ -7,7 +7,7 @@ import {
   FolderKanban, Briefcase, Rocket, Inbox, MessageCircle, Image as ImageIcon,
   CalendarDays, Users, UserCog, Users2, Settings, ChevronDown, LogOut,
   MessageSquare, Send, Megaphone, MailOpen, Clock, FileCheck, DollarSign,
-  TrendingUp, FileBarChart, ShieldCheck
+  TrendingUp, FileBarChart, ShieldCheck, UserCheck
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -49,6 +49,7 @@ const sections = [
     title: 'Operations', key: 'operations', items: [
       { label: 'Leads', href: '/admin/leads', icon: Inbox },
       { label: 'Support Tickets', href: '/admin/tickets', icon: MessageCircle },
+      { label: 'Career Applications', href: '/admin/career', icon: UserCheck, badge: 'new' },
     ]
   },
   {

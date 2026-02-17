@@ -17,7 +17,7 @@ export default function HirePage() {
       {/* Hero Section */}
       <section className="relative w-full min-h-[500px] md:min-h-[600px]">
         <Image
-          src="/images/hire/h-bg.png"
+          src="/images/hire/Hero-Section.webp"
           alt="Hiring talented developers"
           fill
           className="object-cover"

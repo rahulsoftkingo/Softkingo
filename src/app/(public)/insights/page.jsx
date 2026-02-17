@@ -101,7 +101,7 @@ export default async function InsightsPage(props) {
           <nav className="flex items-center gap-2 text-[11px] sm:text-xs text-white/70 mb-4">
             <Link href="/" className="hover:text-sky-300">Home</Link>
             <span>/</span>
-            <span className="text-sky-200 font-medium">Insights</span>
+            <span className="text-sm">Go to blog</span>
           </nav>
 
           <div className="max-w-2xl space-y-4">
@@ -115,7 +115,7 @@ export default async function InsightsPage(props) {
               Blog, featured stories, press releases, articles, whitepapers and more—browse by track or search in one place.
             </p>
 
-            <form action="/insights" className="mt-2 flex flex-col sm:flex-row gap-2 sm:items-center">
+            <form action="/insights" className="mt-2 flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1">
                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                   <FaSearch className="h-3.5 w-3.5 text-white/60" />

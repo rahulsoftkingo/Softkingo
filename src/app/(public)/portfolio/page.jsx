@@ -14,7 +14,7 @@ export const metadata = {
   title: 'Our Portfolio | Mobile Apps, Websites & Digital Campaigns',
   description:
     'Explore our portfolio of successful apps, web platforms and digital marketing campaigns built for startups and enterprises.',
-    alternates: { canonical: "https://www.softkingo.com/portfolio" }
+    alternates: { canonical: "/portfolio" }
 };
 
 // Convert badgesJson (stored as JSON string) into the badges object

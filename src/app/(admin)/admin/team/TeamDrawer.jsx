@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import ImageUploadComponent from '@/components/admin/ImageUploadComponent';
 
 export default function TeamDrawer({ open, onClose, onSaved, editing }) {
   const isEdit = !!editing;
@@ -8,13 +9,14 @@ export default function TeamDrawer({ open, onClose, onSaved, editing }) {
     name: '',
     title: '',
     department: '',
+    category: 'employee', // Add category field
     photo: '',
     bio: '',
     linkedinUrl: '',
     order: 0,
     featured: false,
+    status: 'active', // Add status field
   });
-  const [previewUrl, setPreviewUrl] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -24,25 +26,27 @@ export default function TeamDrawer({ open, onClose, onSaved, editing }) {
         name: editing.name || '',
         title: editing.title || '',
         department: editing.department || '',
+        category: editing.category || 'employee',
         photo: editing.photo || '',
         bio: editing.bio || '',
         linkedinUrl: editing.linkedinUrl || '',
         order: editing.order || 0,
         featured: editing.featured || false,
+        status: editing.status || 'active',
       });
-      setPreviewUrl(editing.photo || '');
     } else {
       setForm({
         name: '',
         title: '',
         department: '',
+        category: 'employee',
         photo: '',
         bio: '',
         linkedinUrl: '',
         order: 0,
         featured: false,
+        status: 'active',
       });
-      setPreviewUrl('');
     }
   }, [editing]);
 
@@ -108,38 +112,14 @@ export default function TeamDrawer({ open, onClose, onSaved, editing }) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Photo */}
-          <div className="space-y-2">
-            <label className="block text-xs font-medium text-slate-700">
-              Photo URL
-            </label>
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-xl bg-slate-200 flex items-center justify-center overflow-hidden">
-                {previewUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={previewUrl}
-                    alt="Preview"
-                    className="h-12 w-12 object-cover"
-                  />
-                ) : (
-                  <span className="text-xs font-semibold text-slate-700">
-                    {form.name?.[0]?.toUpperCase() || '?'}
-                  </span>
-                )}
-              </div>
-              <input
-                name="photo"
-                value={form.photo}
-                onChange={(e) => {
-                  handleChange(e);
-                  setPreviewUrl(e.target.value || '');
-                }}
-                className="flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
-                placeholder="/images/team/member.png or https://..."
-              />
-            </div>
-          </div>
+          {/* Photo - Using New Component */}
+          <ImageUploadComponent
+            value={form.photo}
+            onChange={(value) => setForm(prev => ({ ...prev, photo: value }))}
+            placeholder="Team member photo"
+            title="Select Team Photo"
+            showRecent={true}
+          />
 
           {/* Basics */}
           <div className="space-y-2">
@@ -169,6 +149,42 @@ export default function TeamDrawer({ open, onClose, onSaved, editing }) {
             />
           </div>
 
+          {/* Category & Status */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <label className="block text-xs font-medium text-slate-700">
+                Category
+              </label>
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              >
+                <option value="employee">Employee</option>
+                <option value="management">Management</option>
+                <option value="tech-lead">Tech Lead</option>
+                <option value="intern">Intern</option>
+              </select>
+            </div>
+            <div className="space-y-2">
+              <label className="block text-xs font-medium text-slate-700">
+                Status
+              </label>
+              <select
+                name="status"
+                value={form.status}
+                onChange={handleChange}
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="alumni">Alumni</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Department */}
           <div className="space-y-2">
             <label className="block text-xs font-medium text-slate-700">
               Department

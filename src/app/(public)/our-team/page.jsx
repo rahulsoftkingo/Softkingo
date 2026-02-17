@@ -1,392 +1,298 @@
 import React from 'react';
 import Image from 'next/image';
-import { Linkedin, Quote, CheckCircle2 } from 'lucide-react';
-import ConsultationCTA from '@/components/common/Consultation-Cta'; // Ensure path is correct
-import prisma from '@/lib/db'; 
+import { Linkedin, Quote } from 'lucide-react';
+import ConsultationCTA from '@/components/common/Consultation-Cta';
+// import CoreValues from '@/components/public/CoreValues'; 
+import CoreValues from './CoreValues'; 
+import TestimonialCarousel from '@/components/public/TestimonialCarousel2';
+import { testimonials as testimonialsData } from '@/data/testimonials';
+import CommonTitle from '@/components/ui/CommonTitle';
+import JoinTeamPopup from '@/components/admin/JoinTeamPopup';
+import OurTeamClient from './OurTeamClient';
+import InquirySection from "@/components/footer/InquirySection";
 
-// --- STATIC FALLBACK DATA (Agar DB me data nahi mila to ye dikhega) ---
+// --- STATIC DATA ---
 const STATIC_DATA = {
     hero: {
-        title: "Meet the minds behind Softkingo",
+        title: "Meet minds behind Softkingo",
         subtitle: "A team of passionate developers, designers, and strategists building smart solutions.",
-        image: "/images/contact-hero.png"
+        image: "/images/team/Our-Team-Softkingo.webp"
     },
     ceo: {
         name: "Paramhans Singh",
         role: "CEO & Founder",
         message: "We were very impressed with the service provided by this business. From start to finish, every step of the process was smooth, professional and effective.",
-        image: "/images/team/ceo.png",
+        image: "/images/team/Softkingo-Founder.webp",
         linkedin: "#"
     },
-   teamList: [
+    // Keep teamList empty here, will try to fetch or fallback
+    teamList: [
         { name: "John Doe", role: "CTO", image: "/images/team/m1.jpg", category: "management" },
         { name: "Jane Smith", role: "COO", image: "/images/team/m2.jpg", category: "management" },
-        { name: "Alice Brown", role: "Tech Lead", image: "/images/team/m3.jpg", category: "tech-lead" },
-        { name: "Bob White", role: "Marketing Head", image: "/images/team/m4.jpg", category: "marketing-lead" },
-        // Employees for Slider
         { name: "Dev 1", role: "Senior Dev", image: "/images/team/e1.jpg", category: "employee" },
-        { name: "Dev 2", role: "Frontend Dev", image: "/images/team/e2.jpg", category: "employee" },
-        { name: "Marketer 1", role: "SEO Expert", image: "/images/team/e3.jpg", category: "employee" },
-        { name: "Designer 1", role: "UI Designer", image: "/images/team/e4.jpg", category: "employee" },
-        { name: "Dev 3", role: "Backend Dev", image: "/images/team/e5.jpg", category: "employee" },
-        { name: "Dev 4", role: "Full Stack", image: "/images/team/e6.jpg", category: "employee" },
     ],
     values: [
-    { 
-        title: "Integrity", 
-        description: "No hidden costs, no fake promises. We believe in being 100% open and honest, treating your business exactly like we treat our own." 
-    },
-    { 
-        title: "Define Clear Goals", 
-        description: "We hate confusion. Before writing a single line of code, we define exactly what needs to be done so you always know where your project is heading." 
-    },
-    { 
-        title: "Differentiate Your Brand", 
-        description: "Why blend in when you can stand out? We craft unique digital experiences that make sure your customers remember you, not your competitors." 
-    },
-    { 
-        title: "Focus on Value", 
-        description: "We don't just build features; we build solutions that work. If it doesn't add real value to your business growth, we don't do it." 
-    }
-]
+        { title: "Integrity", description: "No hidden costs, no fake promises. We believe in being 100% open and honest." },
+        { title: "Define Clear Goals", description: "We hate confusion. We define exactly what needs to be done." },
+        { title: "Differentiate Your Brand", description: "Why blend in when you can stand out? We craft unique digital experiences." },
+        { title: "Focus on Value", description: "We don't just build features; we build solutions that work." }
+    ],
+    expertise: [
+        { 
+            title: "Web Development", 
+            iconName: "Layout", 
+            description: "Building modern, scalable web applications with cutting-edge technologies",
+            skills: [
+                { name: "React / Next.js", level: 95 },
+                { name: "Vue.js / Nuxt", level: 85 },
+                { name: "TypeScript", level: 90 },
+                { name: "Tailwind CSS", level: 95 },
+                { name: "Node.js", level: 88 }
+            ]
+        },
+        { 
+            title: "Mobile Apps", 
+            iconName: "Smartphone", 
+            description: "Creating native and cross-platform mobile experiences",
+            skills: [
+                { name: "React Native", level: 90 },
+                { name: "Flutter", level: 85 },
+                { name: "iOS / Swift", level: 80 },
+                { name: "Android / Kotlin", level: 82 },
+                { name: "Expo", level: 88 }
+            ]
+        },
+        { 
+            title: "Backend & Cloud", 
+            iconName: "Database", 
+            description: "Robust server-side architecture and cloud solutions",
+            skills: [
+                { name: "AWS / Azure", level: 92 },
+                { name: "Python / Django", level: 87 },
+                { name: "Node.js / Express", level: 90 },
+                { name: "PostgreSQL / MongoDB", level: 85 },
+                { name: "Microservices", level: 83 }
+            ]
+        },
+        { 
+            title: "UI/UX Design", 
+            iconName: "Heart", 
+            description: "Designing intuitive and beautiful user interfaces",
+            skills: [
+                { name: "Figma", level: 95 },
+                { name: "Adobe Creative Suite", level: 85 },
+                { name: "User Research", level: 88 },
+                { name: "Prototyping", level: 92 },
+                { name: "Brand Identity", level: 80 }
+            ]
+        }
+    ],
+    process: [
+        { step: "01", title: "Discovery", desc: "We dive deep into your vision, goals, and requirements." },
+        { step: "02", title: "Strategy", desc: "Planning the roadmap, architecture, and design system." },
+        { step: "03", title: "Development", desc: "Agile coding with regular updates and quality checks." },
+        { step: "04", title: "Launch", desc: "Deployment, testing, and post-launch support." }
+    ],
+    testimonials: [
+        { name: "Sarah J.", role: "Product Manager", quote: "The Softkingo team felt like an extension of our own. Their dedication is unmatched.", rating: 5 },
+        { name: "Michael R.", role: "Startup Founder", quote: "Technically brilliant and super easy to work with. They delivered ahead of schedule.", rating: 5 },
+        { name: "Emily W.", role: "CTO", quote: "Clean code, transparent communication, and great vibes. Highly recommended.", rating: 5 }
+    ]
 };
 
-// --- DATA FETCHER ---
+// --- DATA FETCHER (Hero, Text, Team) ---
 async function getTeamData() {
     try {
+        // Import prisma dynamically to avoid SSR issues
+        const { default: prisma } = await import('@/lib/db');
+        
         const page = await prisma.page.findUnique({ where: { slug: 'our-team' } });
+        
+        // Fetch Team Members from TeamMember table (not User table)
+        const dbTeamMembers = await prisma.teamMember.findMany({
+            where: { },
+            orderBy: [
+                { featured: 'desc' },
+                { order: 'asc' },
+                { createdAt: 'desc' }
+            ]
+        });
+
+        // Map Team Data with proper categorization
+        let teamFromDB = [];
+        if (dbTeamMembers.length > 0) {
+            teamFromDB = dbTeamMembers.map(member => ({
+                id: member.id,
+                name: member.name,
+                role: member.title || "Team Member",
+                image: member.photo ? (member.photo.startsWith('http') || member.photo.startsWith('/') ? member.photo : `/uploads/${member.photo}`) : "/images/placeholder-user.jpg",
+                category: member.category || 
+                         (member.department?.toLowerCase() === 'management' || member.title?.toLowerCase().includes('ceo') || member.title?.toLowerCase().includes('cto') || member.title?.toLowerCase().includes('coo') || member.title?.toLowerCase().includes('founder') ? 'management' : 
+                          member.title?.toLowerCase().includes('lead') || member.title?.toLowerCase().includes('head') ? 'tech-lead' : 'employee'),
+                department: member.department,
+                bio: member.bio,
+                linkedinUrl: member.linkedinUrl,
+                featured: member.featured,
+                order: member.order,
+                status: member.status || 'active'
+            }));
+        }
+
         if (page && page.contentJson) {
             const dbContent = JSON.parse(page.contentJson);
-            // Merge DB content with static structure if needed
-            return { 
-                hero: dbContent.content?.hero || STATIC_DATA.hero,
-                ceo: dbContent.content?.ceo || STATIC_DATA.ceo,
-                teamList: dbContent.content?.teamList?.items || STATIC_DATA.teamList,
-                values: dbContent.content?.values?.items || STATIC_DATA.values
+            return {
+                ...STATIC_DATA,
+                ...dbContent.content,
+                teamList: teamFromDB.length > 0 ? teamFromDB : (dbContent.content?.teamList || STATIC_DATA.teamList)
             };
         }
-    } catch (e) {
-        console.error("DB Fetch Error, using static data");
+        
+        // Return with team data even if no page content
+        return {
+            ...STATIC_DATA,
+            teamList: teamFromDB.length > 0 ? teamFromDB : STATIC_DATA.teamList
+        };
+    } catch (e) { 
+        console.error('Error fetching team data:', e); 
+        return STATIC_DATA;
     }
-    return STATIC_DATA;
 }
-// --- SUB-COMPONENT: MEMBER CARD ---
-const MemberCard = ({ member }) => (
-    <div className="flex flex-col items-center group">
-        <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-xl overflow-hidden mb-4 relative group-hover:-translate-y-2 transition-all duration-300 ring-4 ring-sky-50 group-hover:ring-sky-200">
-            <Image 
-                src={member.image && member.image.startsWith('/') ? member.image : "/images/placeholder-user.jpg"} 
-                alt={member.name} 
-                fill 
-                className="object-cover" 
-            />
+
+// --- ISOLATED GALLERY COMPONENT (Direct DB Access) ---
+async function GallerySectionSafe() {
+    let galleryImages = [];
+  
+    try {
+      // 1. Fetch images from MediaItem
+      galleryImages = await prisma.mediaItem.findMany({
+        where: {
+          type: 'image',
+          // Optional: Add specific tag filter if you only want 'culture' images here
+          // tags: { contains: 'gallery-culture' } 
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 5, // Take 5 for our masonry layout
+        select: {
+          id: true,
+          filePath: true,
+          title: true,
+        }
+      }).then(images =>
+        images.filter(img => img.filePath).map((img, i) => {
+            // Apply Layout Logic inside Map (Masonry Spans)
+            const spans = [
+                { span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
+                { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+                { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+                { span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
+                { span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
+            ];
+            
+            return {
+                id: img.id,
+                src: img.filePath?.startsWith('/') || img.filePath?.startsWith('http') ? img.filePath : `/uploads/${img.filePath}`,
+                alt: img.title || 'Life at Softkingo',
+                // Loop through span patterns based on index
+                span: spans[i % 5].span, 
+                height: spans[i % 5].height
+            };
+        })
+      );
+    } catch (error) {
+      console.log('Gallery DB timeout, using fallback');
+      // Static Fallback if DB fails
+      galleryImages = [
+        { id: 'g1', src: "/images/team/gallery/g1.jpg", alt: "Team building", span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
+        { id: 'g2', src: "/images/team/gallery/g2.jpg", alt: "Workspace", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+        { id: 'g3', src: "/images/team/gallery/g3.jpg", alt: "Lunch", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+        { id: 'g4', src: "/images/team/gallery/g4.jpg", alt: "Meeting", span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
+        { id: 'g5', src: "/images/team/gallery/g5.jpg", alt: "Trip", span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
+      ];
+    }
+  
+    return (
+      <section className="py-24 bg-white px-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Header Text */}
+          <div className="text-center mb-16">
+            <h3 className="text-sky-600 font-bold uppercase tracking-wider mb-2">Life at Softkingo</h3>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6">More Than Just Code</h2>
+            <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
+              We believe that happy teams build better products. Get a glimpse of our culture.
+            </p>
+          </div>
+  
+          {/* Masonry Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[190px]">
+            {galleryImages.map((img) => (
+              <div key={img.id} className={`relative rounded-[2rem] overflow-hidden group ${img.span} ${img.height}`}>
+                <Image 
+                    src={img.src} 
+                    alt={img.alt} 
+                    fill 
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                />
+                <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
+                <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    {img.alt}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+             <p className="text-xl font-bold text-slate-800">Building memories, <span className="text-sky-500">not just software.</span></p>
+          </div>
         </div>
-        <div className="bg-sky-500 text-white px-5 py-1.5 rounded-full text-sm font-bold mb-2 shadow-md transform group-hover:scale-110 transition-transform">
-            {member.name}
-        </div>
-        <span className="text-slate-500 text-xs font-semibold uppercase tracking-wider text-center">{member.role}</span>
-    </div>
-);
+      </section>
+    );
+}
+
+
 export const metadata = {
     title: 'Our Team | Softkingo',
     description: 'Meet the experts driving Softkingo success.',
-    
+    alternates: { canonical: "/our-team" }
 };
 
 export default async function OurTeamPage() {
+    // 1. Fetch Main Page Data (Hero, Text, Team List from User Table)
     const data = await getTeamData();
-    const { hero, ceo, teamList, values } = data;
-// For now, assuming you will add 'category' in admin or use role logic
-    const management = teamList.filter(m => m.category === 'management' || ['CTO', 'COO', 'Director', 'Manager'].some(r => m.role.includes(r)));
-    const techLeaders = teamList.filter(m => m.category === 'tech-lead' || ['Tech Lead', 'Architect', 'Head'].some(r => m.role.includes(r)) && !management.includes(m));
-    const employees = teamList.filter(m => !management.includes(m) && !techLeaders.includes(m));
+    const { hero, ceo, teamList, values, expertise, process, testimonials } = data;
+    
+    // --- TEAM SPLIT LOGIC ---
+    // Leaders (Exclude CEO)
+    const leaders = Array.isArray(teamList) ? teamList.filter(m => 
+        (m.category === 'management' || m.category === 'tech-lead' || m.role?.includes('Head')) 
+        && !m.role?.includes('CEO') 
+        && !(m.name === ceo.name)
+    ).slice(0, 4) : [];
+
+    // Marquee (Everyone Else - Exclude Leaders & CEO)
+    const marqueeTeam = Array.isArray(teamList) ? teamList.filter(m => 
+        !leaders.includes(m) 
+        && !m.role?.includes('CEO') 
+        && !(m.name === ceo.name)
+    ) : [];
+
+
     return (
-        <main className="min-h-screen bg-white font-sans">
-            
-            {/* 1. HERO SECTION */}
-            <section className="relative h-[450px] md:h-[550px] flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                    <Image 
-                        src={hero.image} 
-                        alt="Team Hero" 
-                        fill 
-                        className="object-cover"
-                        priority
-                    />
-                    {/* Sky Overlay */}
-                    <div className="absolute inset-0 bg-sky-100/70 mix-blend-multiply"></div> 
-                </div>
-                
-                <div className="relative z-10 text-center text-white max-w-4xl px-6">
-                    <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight drop-shadow-lg">
-                        {hero.title}
-                    </h1>
-                    <p className="text-lg md:text-xl text-sky-100 font-light max-w-2xl mx-auto">
-                        {hero.subtitle}
-                    </p>
-                </div>
-            </section>
-
-            {/* 2. TEAM HEADER BANNER (Between Hero and CEO) */}
-            <div className="relative -mt-8 z-20 container mx-auto px-6 mb-20">
-                <div className="bg-sky-500 text-white py-6 px-8 rounded-lg shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 max-w-5xl mx-auto transform -skew-x-6">
-                    <div className="transform skew-x-6 text-center md:text-left">
-                        <h2 className="text-3xl font-black uppercase tracking-wider">TEAM</h2>
-                    </div>
-                    <div className="transform skew-x-6 text-center md:text-right">
-                        <p className="font-bold text-sky-100 text-sm md:text-base uppercase">Are you the one we need to become a successful team?</p>
-                    </div>
-                </div>
-            </div>
-            <div className="relative z-10 text-center max-w-2xl mx-auto">
-<p className="mt-12 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Check back soon
-                </p>
-                </div>
-            {/* 3. CEO DESK SECTION */}
-            <section className="py-10 px-6 max-w-7xl mx-auto hidden">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    
-                    {/* Left: Text & Quote */}
-                    <div className="space-y-8 relative">
-                        <div>
-                            <h2 className="text-4xl md:text-5xl font-bold text-sky-500 mb-2">From CEO's <br/>
-                            <span className="text-sky-300">Desk</span></h2>
-                        </div>
-                        
-                        <div className="relative bg-white p-8 rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-slate-50 mt-12">
-                            {/* Floating Name Tag */}
-                            <div className="absolute -top-6 left-0 bg-sky-600 text-white px-8 py-3 rounded-r-full shadow-lg font-bold text-lg">
-                                {ceo.name}
-                            </div>
-                            
-                            {/* LinkedIn Icon */}
-                            {ceo.linkedin && (
-                                <a href={ceo.linkedin} className="absolute -top-5 right-8 bg-white p-2 rounded-lg shadow-sm border border-slate-100 text-sky-600 hover:text-sky-700">
-                                    <Linkedin size={24} />
-                                </a>
-                            )}
-
-                            <div className="mt-6">
-                                <Quote className="text-sky-200 mb-4 fill-sky-50" size={40} />
-                                <p className="text-slate-600 italic leading-relaxed text-lg">
-                                    "{ceo.message}"
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right: CEO Image */}
-                    <div className="relative flex justify-center lg:justify-end">
-                        <div className="relative w-full max-w-[450px] aspect-[3/4] rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white bg-slate-100">
-                            {/* Ensure image path is valid or use placeholder */}
-                            <Image 
-                                src={ceo.image && ceo.image.startsWith('/') ? ceo.image : "/images/team/ceo.png"} 
-                                alt={ceo.name} 
-                                fill 
-                                className="object-cover object-top hover:scale-105 transition-transform duration-700" 
-                            />
-                        </div>
-                        {/* Decorative Blob */}
-                        <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-sky-100 rounded-full blur-3xl -z-10 opacity-60"></div>
-                    </div>
-                </div>
-            </section>
-{/* 3. CORE MANAGEMENT (Static Grid) */}
-            <section className="py-24 bg-gradient-to-br from-slate-50 to-white relative overflow-hidden hidden">
-                <div className="max-w-7xl mx-auto px-6">
-                    {/* Badge Title */}
-                    <div className="flex justify-center mb-16">
-                        <div className="relative bg-sky-500 text-white py-4 px-12 rounded-full shadow-lg">
-                            <h2 className="text-3xl font-black uppercase tracking-wider">Our Leaders</h2>
-                            <div className="absolute top-1/2 -left-4 w-8 h-8 bg-sky-700 rounded-full -translate-y-1/2 border-4 border-white"></div>
-                            <div className="absolute top-1/2 -right-4 w-8 h-8 bg-sky-700 rounded-full -translate-y-1/2 border-4 border-white"></div>
-                        </div>
-                    </div>
-
-                    {/* Management Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 justify-center">
-                        {management.map((member, i) => <MemberCard key={i} member={member} />)}
-                    </div>
-
-                    {/* Tech & Marketing Leads (Sub-section) */}
-                    {techLeaders.length > 0 && (
-                        <div className="mt-24">
-                            <h3 className="text-center text-2xl font-bold text-slate-700 mb-12 flex items-center justify-center gap-4">
-                                <span className="h-px w-16 bg-slate-300"></span>
-                                Tech & Marketing Heads
-                                <span className="h-px w-16 bg-slate-300"></span>
-                            </h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 justify-center">
-                                {techLeaders.map((member, i) => <MemberCard key={i} member={member} />)}
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </section>
-
-            {/* 4. THE TEAM (Infinite Slider) */}
-            <section className="py-24 bg-sky-900 overflow-hidden hidden">
-                <div className="text-center mb-12 px-6">
-                    <h2 className="text-3xl md:text-4xl font-black text-white mb-2">The Powerhouse</h2>
-                    <p className="text-sky-200">Meet the developers and creators making it happen.</p>
-                </div>
-
-                {/* Marquee Container */}
-                <div className="relative w-full">
-                    <div className="flex w-max animate-marquee gap-12 hover:[animation-play-state:paused]">
-                        {/* Duplicate list to create infinite loop effect */}
-                        {[...employees, ...employees].map((member, i) => (
-                            <div key={i} className="flex flex-col items-center w-48 flex-shrink-0 group cursor-pointer">
-                                <div className="w-24 h-24 rounded-full border-2 border-sky-400 p-1 mb-3 group-hover:bg-sky-800 transition-colors">
-                                    <div className="w-full h-full rounded-full overflow-hidden relative">
-                                        <Image src={member.image || "/images/placeholder-user.jpg"} alt={member.name} fill className="object-cover grayscale group-hover:grayscale-0 transition-all" />
-                                    </div>
-                                </div>
-                                <h4 className="text-white font-bold text-sm">{member.name}</h4>
-                                <p className="text-sky-300 text-xs uppercase tracking-wide">{member.role}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-            {/* 4. MEET OUR TEAM (Ribbon Layout) */}
-            <section className="py-24 bg-gradient-to-br from-slate-50 to-white relative overflow-hidden hidden">
-                <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-16 items-center">
-                    
-                    {/* Left: Ribbon Title */}
-                    <div className="md:w-1/3 w-full">
-                        <div className="relative bg-sky-500 text-white p-10 rounded-r-[3rem] rounded-bl-[3rem] shadow-2xl shadow-sky-200 overflow-hidden group">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700"></div>
-                            
-                            <h2 className="text-4xl md:text-5xl font-black leading-none mb-6">
-                                Meet Our <br/> Team
-                            </h2>
-                            <p className="text-sky-100 font-medium text-lg border-l-4 border-sky-300 pl-4">
-                                Meet Our Specialists, <br/> Driving Your Success.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Right: Team Grid */}
-                    <div className="md:w-2/3 w-full">
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12">
-                            {teamList?.map((member, i) => (
-                                <div key={i} className="flex flex-col items-center group">
-                                    <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-white shadow-xl overflow-hidden mb-4 relative group-hover:-translate-y-2 transition-all duration-300 ring-4 ring-sky-50 group-hover:ring-sky-200">
-                                        <Image 
-                                            src={member.image && member.image.startsWith('/') ? member.image : "/images/placeholder-user.jpg"} 
-                                            alt={member.name} 
-                                            fill 
-                                            className="object-cover" 
-                                        />
-                                    </div>
-                                    <div className="bg-sky-500 text-white px-4 py-1.5 rounded-full text-xs font-bold mb-2 shadow-md transform group-hover:scale-110 transition-transform">
-                                        {member.name}
-                                    </div>
-                                    <span className="text-slate-500 text-xs font-semibold uppercase tracking-wider text-center">{member.role}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* 5. OUR VALUES (Sky Steps) */}
-            <section className="py-24 px-6 max-w-4xl mx-auto hidden">
-                <div className="text-center mb-16">
-                    <h3 className="text-sm font-bold text-slate-400 uppercase tracking-[0.3em]">Our Culture</h3>
-                    <h2 className="text-3xl font-bold text-slate-900 mt-2">Core Values</h2>
-                </div>
-                
-                <div className="space-y-8 relative">
-                    {/* Center Line */}
-                    <div className="absolute left-1/2 top-4 bottom-4 w-0.5 bg-sky-100 -translate-x-1/2 -z-10 hidden md:block"></div>
-
-                    {values?.map((val, i) => {
-                        const isEven = i % 2 === 0;
-                        return (
-                            <div key={i} className={`flex flex-col md:flex-row items-center gap-8 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                                
-                                {/* Card */}
-                                <div className={`flex-1 w-full p-8 rounded-3xl shadow-sm border transition-all duration-300 hover:shadow-lg
-                                    ${isEven ? 'bg-sky-500 text-white border-sky-500' : 'bg-white text-slate-800 border-sky-100'}
-                                `}>
-                                    <h4 className="text-xl font-bold mb-3">{val.title}</h4>
-                                    <p className={`text-sm leading-relaxed ${isEven ? 'text-sky-50' : 'text-slate-500'}`}>
-                                        {val.description}
-                                    </p>
-                                </div>
-
-                                {/* Number Bubble */}
-                                <div className={`w-14 h-14 rounded-full flex items-center justify-center font-black text-xl shadow-lg z-10 border-4 border-white
-                                    ${isEven ? 'bg-white text-sky-500' : 'bg-sky-500 text-white'}
-                                `}>
-                                    {String(i + 1).padStart(2, '0')}
-                                </div>
-
-                                {/* Empty Space for Balance */}
-                                <div className="flex-1 hidden md:block"></div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </section>
-{/* 5. OUR VALUES (Animated Swing Layout) */}
-            <section className="py-32 px-6 overflow-hidden">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-24">
-                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-[0.3em]">Our Culture</h3>
-                        <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">Core Values</h2>
-                    </div>
-                    
-                    <div className="relative space-y-[-40px]"> {/* Negative space for overlap */}
-                        
-                        {/* Central Thread Line */}
-                        <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-sky-200 -translate-x-1/2 rounded-full z-0 hidden md:block"></div>
-
-                        {values?.map((val, i) => {
-                            const isEven = i % 2 === 0;
-                            return (
-                                <div key={i} className={`relative z-10 flex md:items-center ${isEven ? 'md:justify-start' : 'md:justify-end'} group perspective-1000`}>
-                                    
-                                    {/* Connection Dot on Line */}
-                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-sky-500 rounded-full border-4 border-white shadow-md z-20 hidden md:block"></div>
-
-                                    {/* Swinging Card */}
-                                    <div 
-                                        className={`w-full md:w-[55%] p-10 rounded-[2.5rem] shadow-2xl border transition-all duration-700 ease-in-out transform-gpu
-                                            ${isEven 
-                                                ? 'bg-sky-500 text-white border-sky-400 md:origin-right md:-rotate-3 md:hover:rotate-0 md:hover:scale-105' 
-                                                : 'bg-white text-slate-800 border-sky-100 md:origin-left md:rotate-3 md:hover:rotate-0 md:hover:scale-105'
-                                            }
-                                            hover:z-30 hover:shadow-[0_20px_60px_-15px_rgba(14,165,233,0.3)]
-                                        `}
-                                    >
-                                        <div className="flex items-start justify-between mb-4">
-                                            <h4 className={`text-2xl font-bold ${isEven ? 'text-white' : 'text-slate-900'}`}>
-                                                {val.title}
-                                            </h4>
-                                            <div className={`text-4xl font-black opacity-20 ${isEven ? 'text-white' : 'text-sky-200'}`}>
-                                                {String(i + 1).padStart(2, '0')}
-                                            </div>
-                                        </div>
-                                        <p className={`text-lg leading-relaxed ${isEven ? 'text-sky-50' : 'text-slate-500'}`}>
-                                            {val.description}
-                                        </p>
-                                    </div>
-
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </section>
-            <ConsultationCTA 
-                title="Ready to Build Your Dream Team?" 
-                subtitle="Join us or hire us. Let's create something amazing together."
-                href="/contact" 
+        <>
+            <OurTeamClient 
+                hero={hero}
+                ceo={ceo}
+                leaders={leaders}
+                marqueeTeam={marqueeTeam}
+                values={values}
+                expertise={expertise}
+                process={process}
+                testimonials={testimonials}
+                testimonialsData={testimonialsData}
             />
-        </main>
+     <InquirySection />
+        </>
     );
 }

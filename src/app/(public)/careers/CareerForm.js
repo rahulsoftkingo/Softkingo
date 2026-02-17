@@ -1,21 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import CommonTitle from '@/components/ui/CommonTitle';
 
-export default function ApplicationForm() {
+export default function ApplicationForm({ selectedJob }) {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
         phone: '',
-        jobTitle: '',
-        currentCTC: '',
-        noticePeriod: '',
-        message: '',
+        position: '',
+        experience: '',
+        currentJob: '',
+        education: '',
+        linkedinUrl: '',
+        portfolioUrl: '',
+        coverLetter: '',
         resume: null
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitMessage, setSubmitMessage] = useState('');
+
+    // Auto-fill form when selectedJob changes
+    useEffect(() => {
+        if (selectedJob) {
+            setFormData(prev => ({
+                ...prev,
+                position: selectedJob.title,
+                experience: selectedJob.experience,
+            }));
+        }
+    }, [selectedJob]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -32,10 +48,62 @@ export default function ApplicationForm() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        // Add your form submission logic here
+        setIsSubmitting(true);
+        setSubmitMessage('');
+
+        try {
+            const formDataToSend = new FormData();
+            
+            // Add all form fields
+            Object.keys(formData).forEach(key => {
+                if (key !== 'resume' && formData[key]) {
+                    formDataToSend.append(key, formData[key]);
+                }
+            });
+
+            // Add resume file if exists
+            if (formData.resume) {
+                formDataToSend.append('resume', formData.resume);
+            }
+
+            // Add source
+            formDataToSend.append('source', 'career_page');
+
+            const response = await fetch('/api/career', {
+                method: 'POST',
+                body: formDataToSend,
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSubmitMessage('Application submitted successfully! We will get back to you soon.');
+                // Reset form
+                setFormData({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone: '',
+                    position: '',
+                    experience: '',
+                    currentJob: '',
+                    education: '',
+                    linkedinUrl: '',
+                    portfolioUrl: '',
+                    coverLetter: '',
+                    resume: null
+                });
+            } else {
+                setSubmitMessage(data.error || 'Failed to submit application. Please try again.');
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            setSubmitMessage('An error occurred. Please try again later.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -174,6 +242,13 @@ export default function ApplicationForm() {
 
                     {/* Right Side - Application Form */}
                     <div className="bg-white rounded-3xl  p-6 sm:p-8 shadow-xl border border-gray-100">
+                        {selectedJob && (
+                            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <p className="text-green-800 text-sm font-medium">
+                                    ✅ Applying for: <strong>{selectedJob.title}</strong> ({selectedJob.experience})
+                                </p>
+                            </div>
+                        )}
                         <h2 className='text-sky-700 text-2xl sm:text-3xl sm:text-nowrap l font-bold lg:text-5xl text-center py-8'>Find Your Career</h2>
                         <form onSubmit={handleSubmit} className="space-y-5">
 
@@ -252,90 +327,109 @@ export default function ApplicationForm() {
 
                             </div>
 
-                            {/* Job Title and CTC */}
+                            {/* Job Title and Experience */}
                             <div className="grid sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Job Title
+                                        Position Applied For*
                                     </label>
                                     <input
                                         type="text"
-                                        name="jobTitle"
-                                        value={formData.jobTitle}
+                                        name="position"
+                                        value={formData.position}
                                         onChange={handleInputChange}
-                                        placeholder="Enter Your Job Title Applying For..."
+                                        placeholder="Enter Position You're Applying For..."
+                                        className="w-full px-4 py-3 text-black rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Years of Experience
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="experience"
+                                        value={formData.experience}
+                                        onChange={handleInputChange}
+                                        placeholder="e.g., 2+ years, 5-7 years"
+                                        className="w-full px-4 py-3 text-black rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Current Job and Education */}
+                            <div className="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Current Job Title
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="currentJob"
+                                        value={formData.currentJob}
+                                        onChange={handleInputChange}
+                                        placeholder="Your Current Job Title..."
                                         className="w-full px-4 py-3 text-black rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Current CTC
+                                        Education
                                     </label>
                                     <input
                                         type="text"
-                                        name="currentCTC"
-                                        value={formData.currentCTC}
+                                        name="education"
+                                        value={formData.education}
                                         onChange={handleInputChange}
-                                        placeholder="Enter Your Current CTC..."
+                                        placeholder="e.g., B.Tech, MBA, etc."
                                         className="w-full px-4 py-3 text-black rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30"
                                     />
                                 </div>
                             </div>
 
-                            {/* Notice Period */}
-                            <div>
-                                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                                    Notice Period
-                                </label>
-                                <div className="grid grid-cols-3 gap-3">
-                                    <label className="flex items-center space-x-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="noticePeriod"
-                                            value="immediate"
-                                            checked={formData.noticePeriod === 'immediate'}
-                                            onChange={handleInputChange}
-                                            className="w-4 h-4 text-cyan-600 focus:ring-cyan-500"
-                                        />
-                                        <span className="text-sm text-gray-700">Immediate to 15 Days</span>
+                            {/* LinkedIn and Portfolio */}
+                            <div className="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        LinkedIn Profile
                                     </label>
-                                    <label className="flex items-center space-x-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="noticePeriod"
-                                            value="2months"
-                                            checked={formData.noticePeriod === '2months'}
-                                            onChange={handleInputChange}
-                                            className="w-4 h-4 text-cyan-600 focus:ring-cyan-500"
-                                        />
-                                        <span className="text-sm text-gray-700">2 Months</span>
+                                    <input
+                                        type="url"
+                                        name="linkedinUrl"
+                                        value={formData.linkedinUrl}
+                                        onChange={handleInputChange}
+                                        placeholder="https://linkedin.com/in/yourprofile"
+                                        className="w-full px-4 py-3 text-black rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Portfolio Website
                                     </label>
-                                    <label className="flex items-center space-x-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="noticePeriod"
-                                            value="3months"
-                                            checked={formData.noticePeriod === '3months'}
-                                            onChange={handleInputChange}
-                                            className="w-4 h-4 text-cyan-600 focus:ring-cyan-500"
-                                        />
-                                        <span className="text-sm text-gray-700">3 Months</span>
-                                    </label>
+                                    <input
+                                        type="url"
+                                        name="portfolioUrl"
+                                        value={formData.portfolioUrl}
+                                        onChange={handleInputChange}
+                                        placeholder="https://yourportfolio.com"
+                                        className="w-full px-4 py-3 text-black rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30"
+                                    />
                                 </div>
                             </div>
 
-                            {/* Message */}
+                            {/* Cover Letter */}
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                    Enter Your Message
+                                    Cover Letter
                                 </label>
                                 <textarea
-                                    name="message"
-                                    value={formData.message}
+                                    name="coverLetter"
+                                    value={formData.coverLetter}
                                     onChange={handleInputChange}
-                                    placeholder="Enter Your Message..."
+                                    placeholder="Tell us why you're interested in this position and why you'd be a great fit..."
                                     rows="4"
-                                    className="w-full px-4  text-black py-3 rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30 resize-none"
+                                    className="w-full px-4 text-black py-3 rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all bg-blue-50/30 resize-none"
                                 ></textarea>
                             </div>
 
@@ -357,12 +451,20 @@ export default function ApplicationForm() {
                                 </label>
                             </div>
 
+                            {/* Submit Message */}
+                            {submitMessage && (
+                                <div className={`p-4 rounded-lg ${submitMessage.includes('success') ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
+                                    {submitMessage}
+                                </div>
+                            )}
+
                             {/* Submit Button */}
                             <button
                                 type="submit"
-                                className="w-full cursor-pointer bg-sky-800 hover:bg-sky-900 text-white font-semibold py-4 rounded-full transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+                                disabled={isSubmitting}
+                                className="w-full cursor-pointer bg-sky-800 hover:bg-sky-900 disabled:bg-gray-400 text-white font-semibold py-4 rounded-full transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:cursor-not-allowed disabled:transform-none"
                             >
-                                Submit Form
+                                {isSubmitting ? 'Submitting...' : 'Submit Application'}
                             </button>
                         </form>
                     </div>

@@ -4,6 +4,12 @@
 
 // export const dynamic = 'force-dynamic';
 
+// export const metadata = {
+//   title: "Site Map | Softkingo - Complete Website Navigation",
+//   description: "Complete site map of Softkingo website. Find all pages, services, portfolio, blog posts, and resources in one place.",
+//   alternates: { canonical: "/site-map" }
+// };
+
 // export default async function SiteMapPage() {
 //   const baseUrl = process.env.NEXTAUTH_URL || 'https://www.softkingo.com';
 

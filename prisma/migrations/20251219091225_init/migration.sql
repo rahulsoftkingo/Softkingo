@@ -698,6 +698,30 @@ ALTER TABLE `ticket` ADD CONSTRAINT `Ticket_requesterId_fkey` FOREIGN KEY (`requ
 -- AddForeignKey
 ALTER TABLE `ticketcomment` ADD CONSTRAINT `TicketComment_createdById_fkey` FOREIGN KEY (`createdById`) REFERENCES `user`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
+-- CreateTable
+CREATE TABLE `careerapplication` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `firstName` VARCHAR(191) NOT NULL,
+    `lastName` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NULL,
+    `position` VARCHAR(191) NOT NULL,
+    `experience` VARCHAR(191) NULL,
+    `currentJob` VARCHAR(191) NULL,
+    `education` VARCHAR(191) NULL,
+    `linkedinUrl` VARCHAR(191) NULL,
+    `portfolioUrl` VARCHAR(191) NULL,
+    `coverLetter` TEXT NULL,
+    `resumeUrl` VARCHAR(191) NULL,
+    `resumeName` VARCHAR(191) NULL,
+    `status` VARCHAR(191) NOT NULL DEFAULT 'pending',
+    `source` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `ticketcomment` ADD CONSTRAINT `TicketComment_ticketId_fkey` FOREIGN KEY (`ticketId`) REFERENCES `ticket`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 

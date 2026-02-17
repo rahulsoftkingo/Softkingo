@@ -12,14 +12,14 @@ import FAQAccordion from '@/components/common/Faqaccordion';
 export const metadata = {
   title: "About Us | Leading Software Experts in India",
   description: "Learn about Softkingo's journey, our mission to drive digital transformation, and the team behind our world-class software solutions.",
-  alternates: { canonical: "https://www.softkingo.com/about" }
+  alternates: { canonical: "/about" }
 };
 
 const stats = [
   { number: '6+', label: 'Years Of Experience' },
   { number: '400+', label: 'Apps Developed' },
   { number: '50+', label: 'Mobile App Developer' },
-  { number: '400+', label: 'Clients Worldwide' },
+  { number: '350+', label: 'Clients Worldwide' },
 ];
 
 const imageMap = [

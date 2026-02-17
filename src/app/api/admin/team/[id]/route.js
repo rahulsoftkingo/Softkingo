@@ -9,13 +9,14 @@ export async function GET(request, { params }) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const id = Number(params.id);
-  if (!id || Number.isNaN(id)) {
+  const { id } = await params;
+  const memberId = Number(id);
+  if (!memberId || Number.isNaN(memberId)) {
     return NextResponse.json({ message: 'Invalid id' }, { status: 400 });
   }
 
   const member = await prisma.teamMember.findUnique({
-    where: { id },
+    where: { id: memberId },
   });
 
   if (!member) {
@@ -31,24 +32,27 @@ export async function PATCH(request, { params }) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const id = Number(params.id);
-  if (!id || Number.isNaN(id)) {
+  const { id } = await params;
+  const memberId = Number(id);
+  if (!memberId || Number.isNaN(memberId)) {
     return NextResponse.json({ message: 'Invalid id' }, { status: 400 });
   }
 
   const body = await request.json();
-  const { name, title, department, photo, bio, linkedinUrl, order, featured } =
+  const { name, title, department, category, photo, bio, linkedinUrl, status, order, featured } =
     body;
 
   const member = await prisma.teamMember.update({
-    where: { id },
+    where: { id: memberId },
     data: {
       name,
       title,
       department,
+      category,
       photo,
       bio,
       linkedinUrl,
+      status,
       order,
       featured,
     },
@@ -63,12 +67,13 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
-  const id = Number(params.id);
-  if (!id || Number.isNaN(id)) {
+  const { id } = await params;
+  const memberId = Number(id);
+  if (!memberId || Number.isNaN(memberId)) {
     return NextResponse.json({ message: 'Invalid id' }, { status: 400 });
   }
 
-  await prisma.teamMember.delete({ where: { id } });
+  await prisma.teamMember.delete({ where: { id: memberId } });
 
   return NextResponse.json({ ok: true });
 }

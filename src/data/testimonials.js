@@ -7,6 +7,7 @@ export const testimonials = [
     source: "Clutch review",
     image: "/images/client/client1.png",
     avatar: "SC",
+    rating: 5,
   },
   {
     name: "Andrew Schultz",
@@ -16,6 +17,7 @@ export const testimonials = [
     source: "Clutch review",
     image: "/images/client/client2.png",
     avatar: "AS",
+    rating: 5,
   },
   {
     name: "Leah Carney",
@@ -25,6 +27,7 @@ export const testimonials = [
     source: "DesignRush",
     image: "/images/client/client3.png",
     avatar: "LC",
+    rating: 5,
   },
   {
     name: "Ersin Asutay",
@@ -34,6 +37,7 @@ export const testimonials = [
     source: "Review",
     image: "/images/client/client4.jfif",
     avatar: "EA",
+    rating: 5,
   },
   {
     name: "Jessica Wychico",
@@ -43,6 +47,7 @@ export const testimonials = [
     source: "DesignRush",
     image: "/images/client/client5.png",
     avatar: "JW",
+    rating: 5,
   },
   {
     name: "Joseph So",
@@ -52,6 +57,7 @@ export const testimonials = [
     source: "DesignRush",
     image: "/images/client/client6.png",
     avatar: "JS",
+    rating: 5,
   },
   {
     name: "Anurag Agrawal",
@@ -61,6 +67,7 @@ export const testimonials = [
     source: "Clutch review",
     image: "/images/client/client7.jfif",
     avatar: "AA",
+    rating: 5,
   },
   {
     name: "Patrick Davis",
@@ -70,6 +77,7 @@ export const testimonials = [
     source: "DesignRush",
     image: "/images/client/client8.jfif",
     avatar: "PD",
+    rating: 5,
   },
   {
     name: "James",
@@ -79,6 +87,7 @@ export const testimonials = [
     source: "Trustpilot",
     image: "/images/client/client9.png",
     avatar: "J",
+    rating: 5,
   },
   {
     name: "Markwell Robert John",
@@ -88,5 +97,6 @@ export const testimonials = [
     source: "DesignRush",
     image: "/images/client/client10.png",
     avatar: "MR",
+    rating: 5,
   },
 ];
