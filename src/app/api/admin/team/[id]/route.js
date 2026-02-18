@@ -53,7 +53,7 @@ export async function PATCH(request, { params }) {
       bio,
       linkedinUrl,
       status,
-      order,
+      order: order ? parseInt(order) : 0,
       featured,
     },
   });

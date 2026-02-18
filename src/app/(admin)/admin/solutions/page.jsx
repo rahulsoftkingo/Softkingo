@@ -236,31 +236,30 @@ export default function SolutionsAdmin() {
                 <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-50">
                     
                     {/* 1. View */}
-                    <button onClick={() => window.open(viewUrl, '_blank')} className="btn-icon bg-slate-50 text-slate-600 hover:text-sky-600" title="View Live">
+                    <button onClick={() => window.open(viewUrl, '_blank')} className="btn-icon bg-slate-50 text-slate-600 hover:text-sky-600 transition-colors duration-200 shadow-sm hover:shadow-md px-6 py-2" title="View Live">
                         <ExternalLink size={14} />
                     </button>
 
                     {/* 2. Edit (Only for DB items) */}
                     {isDb && (
-                        <button onClick={() => handleEdit(item)} className="btn-icon bg-slate-50 text-slate-600 hover:text-emerald-600" title="Edit Content">
+                        <button onClick={() => handleEdit(item)} className="btn-icon bg-slate-50 text-slate-600 hover:text-emerald-600 transition-colors duration-200 shadow-sm hover:shadow-md px-6 py-2" title="Edit Content">
                             <Edit3 size={14} />
                         </button>
                     )}
 
                     {/* 3. Delete DB (Only if in DB) */}
                     {isDb && (
-                        <button onClick={() => handleDelete(item, catKey, 'delete_db')} className="btn-icon bg-slate-50 text-rose-400 hover:text-rose-600 hover:bg-rose-50" title="Delete from Database">
+                        <button onClick={() => handleDelete(item, catKey, 'delete_db')} className="btn-icon bg-slate-50 text-rose-400 hover:text-rose-600 hover:bg-rose-50 transition-colors duration-200 shadow-sm hover:shadow-md shrink-1 flex gap-2 px-2 py-2" title="Delete from Database">
                             <Database size={14} /> <span className="text-[10px] ml-1">Del</span>
                         </button>
                     )}
 
                     {/* 4. Delete File (Only if in File) */}
                     {isFile && (
-                        <button onClick={() => handleDelete(item, catKey, 'delete_file')} className="btn-icon bg-slate-50 text-orange-400 hover:text-orange-600 hover:bg-orange-50" title="Delete Folder">
+                        <button onClick={() => handleDelete(item, catKey, 'delete_file')} className="btn-icon bg-slate-50 text-orange-400 hover:text-orange-600 hover:bg-orange-50 transition-colors duration-200 shadow-sm hover:shadow-md shrink-1 flex gap-2 px-2 py-2" title="Delete Folder">
                             <Folder size={14} /> <span className="text-[10px] ml-1">Del</span>
                         </button>
                     )}
-
                 </div>
             </div>
         );

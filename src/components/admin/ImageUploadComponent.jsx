@@ -21,7 +21,7 @@ export default function ImageUploadComponent({
   const fetchRecentImages = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/media?type=image');
+      const res = await fetch('/api/admin/media?type=image&category=team');
       if (res.ok) {
         const data = await res.json();
         setRecentImages(data.items || []);
@@ -188,16 +188,40 @@ export default function ImageUploadComponent({
                   <div>
                     <h3 className="text-sm font-semibold text-slate-900 mb-3">Categories</h3>
                     <div className="space-y-2">
-                      <button className="w-full text-left rounded-lg px-3 py-2 text-sm bg-sky-50 text-sky-700 font-medium border border-sky-200">
+                      <button 
+                        onClick={() => {
+                          setSearchTerm('');
+                          fetchRecentImages();
+                        }}
+                        className="w-full text-left rounded-lg px-3 py-2 text-sm bg-sky-50 text-sky-700 font-medium border border-sky-200"
+                      >
                         All Images
                       </button>
-                      <button className="w-full text-left rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                      <button 
+                        onClick={() => {
+                          setSearchTerm('');
+                          fetchRecentImages();
+                        }}
+                        className="w-full text-left rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-50"
+                      >
                         Team Photos
                       </button>
-                      <button className="w-full text-left rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                      <button 
+                        onClick={() => {
+                          setSearchTerm('');
+                          fetchRecentImages();
+                        }}
+                        className="w-full text-left rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-50"
+                      >
                         Blog Images
                       </button>
-                      <button className="w-full text-left rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-50">
+                      <button 
+                        onClick={() => {
+                          setSearchTerm('');
+                          fetchRecentImages();
+                        }}
+                        className="w-full text-left rounded-lg px-3 py-2 text-sm bg-slate-600 hover:bg-slate-50"
+                      >
                         Case Studies
                       </button>
                     </div>

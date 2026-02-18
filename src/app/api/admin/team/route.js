@@ -89,7 +89,7 @@ export async function POST(request) {
       bio,
       linkedinUrl,
       status: status || 'active',
-      order: order ?? 0,
+      order: parseInt(order) || 0,
       featured: !!featured,
     },
   });

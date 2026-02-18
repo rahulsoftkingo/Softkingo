@@ -216,7 +216,7 @@ const OurTeamClient = ({
 
                 {/* Part A: 4 LEADERS GRID */}
                 <div className="max-w-7xl mx-auto px-6 mb-20">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16 justify-center">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-8 gap-y-16 justify-center">
                         {leaders.map((member, i) => (
                             <div key={i} className="flex flex-col items-center group">
                                 <div className="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 bg-gradient-to-tr from-sky-400 to-cyan-300 mb-5 group-hover:scale-105 transition-transform duration-300 shadow-lg">
@@ -224,8 +224,8 @@ const OurTeamClient = ({
                                         <Image src={member.image || "/images/placeholder-user.jpg"} alt={member.name} fill className="object-cover" />
                                     </div>
                                 </div>
-                                <div className="text-center bg-sky-400 text-amber-50 px-10 py-2 relative -top-10 rounded-tr-full rounded-bl-full w-full max-w-[180px]">
-                                    <h4 className="font-bold text-lg leading-tight">{member.name}</h4>
+                                <div className="text-center bg-sky-400 text-amber-50 px-6 py-2 relative -top-10 rounded-tr-full rounded-bl-full w-full max-w-[220px]">
+                                    <h4 className="font-bold text-md leading-tight whitespace-nowrap">{member.name}</h4>
                                     <span className="inline-block text-[10px] font-bold uppercase">{member.role}</span>
                                 </div>
                             </div>

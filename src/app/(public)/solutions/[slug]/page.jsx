@@ -202,10 +202,16 @@ import SolutionsTechStack from '@/components/public/solutions/SolutionsTechStack
 import SolutionsMonetization from '@/components/public/solutions/SolutionsMonetization';
 import SolutionsSecurity from '@/components/public/solutions/SolutionsSecurity';
 
-// --- CLONE COMPONENTS (Placeholders / New) ---
-// You will create these one by one. For now, using generic ones or reusing Solution ones where possible.
-import IndustriesHero from '@/components/public/industries/IndustriesHero'; // Can reuse or make CloneHero
-import IndustryWhyChooseCarousel from '@/components/public/industries/IndustryWhyChooseCarousel'; // Can reuse for Clone Why Choose
+// --- CLONE COMPONENTS (NEW) ---
+import CloneHero from '@/components/public/clone/CloneHero';
+import CloneAbout from '@/components/public/clone/CloneAbout';
+import CloneWhyBuild from '@/components/public/clone/CloneWhyBuild';
+import CloneFeatures from '@/components/public/clone/CloneFeatures';
+import CloneAI from '@/components/public/clone/CloneAI';
+import CloneTechStack from '@/components/public/clone/CloneTechStack';
+import CloneRevenue from '@/components/public/clone/CloneRevenue';
+import CloneProcess from '@/components/public/clone/CloneProcess';
+import CloneFAQ from '@/components/public/clone/CloneFAQ';
 
 // --- SHARED COMPONENTS ---
 import FAQAccordion from '@/components/common/Faqaccordion';
@@ -237,7 +243,8 @@ export async function generateMetadata(props) {
     if (!page) return { title: 'Page Not Found' };
     return { 
         title: page.seoTitle || `${page.title} | Softkingo`, 
-        description: page.sections.hero?.description || page.title 
+        description: page.sections.hero?.description || page.title,
+        alternates: { canonical: `/solutions/${params.slug}` }
     };
 }
 
@@ -265,101 +272,42 @@ export default async function DynamicSolutionPage(props) {
                 
                 {/* 1. Hero – Build Your Own clone app */}
                 {show('hero') && (
-                    <IndustriesHero data={hero} /> // Reusing Industry Hero or create CloneHero
+                    <CloneHero data={hero} />
                 )}
 
                 {/* 2. About Our Clone app Development */}
                 {show('about') && (
-                    <section className="py-20 px-6 max-w-7xl mx-auto">
-                        <SolutionsContentSplit data={about} reverse={false} />
-                    </section>
+                    <CloneAbout data={about} />
                 )}
 
-                {/* 3. Why Build a clone app (Using Carousel Style) */}
+                {/* 3. Why Build a clone app */}
                 {show('whyBuild') && (
-                    <section className="py-20 bg-slate-50 relative overflow-hidden">
-                        <div className="max-w-7xl mx-auto px-6 relative z-10">
-                            <CommonTitle 
-                                title={whyBuild?.title || "Why Build This Clone?"} 
-                                subtitle="Capitalize on the proven business model."
-                                pill={true}
-                                gradientText="Opportunity"
-                            />
-                            <div className="mt-12">
-                                <IndustryWhyChooseCarousel items={whyBuild?.items} />
-                            </div>
-                        </div>
-                    </section>
+                    <CloneWhyBuild items={whyBuild?.items} />
                 )}
 
                 {/* 4. Our Clone App Development Services */}
                 {show('services') && (
-                    <SolutionsServicesList data={services} /> // Reusing Services List
+                    <SolutionsServicesList data={services} />
                 )}
 
-                {/* 5. Features (Job Seeker / Recruiter / Admin) */}
+                {/* 5. Features (User, Vendor, Admin) */}
                 {show('appFeatures') && (
-                    <>
-                        {/* We can create a dedicated CloneFeaturesTabs component later. 
-                            For now, reusing App Module layout for distinct sections. */}
-                        
-                        {/* User Features */}
-                        {appFeatures?.user && (
-                            <SolutionsAppModule 
-                                data={{ 
-                                    title: "User Features", 
-                                    description: "Features for your end-users.", 
-                                    image: "/images/clone/user-app.png", 
-                                    features: appFeatures.user.items // Ensure items match expected format
-                                }} 
-                                reverse={true} 
-                                bg="white" 
-                            />
-                        )}
-
-                        {/* Vendor/Partner Features */}
-                        {appFeatures?.vendor && (
-                            <SolutionsAppModule 
-                                data={{ 
-                                    title: "Vendor/Partner Features", 
-                                    description: "Tools for service providers.", 
-                                    image: "/images/clone/vendor-app.png", 
-                                    features: appFeatures.vendor.items 
-                                }} 
-                                reverse={false} 
-                                bg="slate-50" 
-                            />
-                        )}
-
-                        {/* Admin Panel Features */}
-                        {appFeatures?.admin && (
-                            <SolutionsAppModule 
-                                data={{ 
-                                    title: "Admin Dashboard", 
-                                    description: "Complete control over your platform.", 
-                                    image: "/images/clone/admin-panel.png", 
-                                    features: appFeatures.admin.items 
-                                }} 
-                                reverse={true} 
-                                bg="white" 
-                            />
-                        )}
-                    </>
+                    <CloneFeatures data={appFeatures} />
                 )}
 
                 {/* 6. AI-Powered & Advanced Features */}
                 {show('aiFeatures') && (
-                    <SolutionsAICapabilities data={aiFeatures} />
+                    <CloneAI data={aiFeatures} />
                 )}
 
                 {/* 7. Technology Stack We Use */}
                 {show('techStack') && (
-                    <SolutionsTechStack data={techStack} />
+                    <CloneTechStack data={techStack} />
                 )}
 
                 {/* 8. Revenue & Monetization Models */}
                 {show('revenue') && (
-                    <SolutionsMonetization data={revenue} />
+                    <CloneRevenue data={revenue} />
                 )}
 
                 {/* 9. Our Portfolio & Experience */}
@@ -374,11 +322,11 @@ export default async function DynamicSolutionPage(props) {
 
                 {/* 10. How We Build (Process) */}
                 {show('process') && (
-                    <SolutionsProcess data={process} />
+                    <CloneProcess data={process} />
                 )}
 
                 {/* 11. FAQ */}
-                {show('faq') && <FAQAccordion data={faq} />}
+                {show('faq') && <CloneFAQ data={faq} />}
 
                 {/* 12. Contact & Free Consultation */}
                 <ConsultationCTA 

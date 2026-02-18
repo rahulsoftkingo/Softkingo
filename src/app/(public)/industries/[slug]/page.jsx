@@ -43,7 +43,8 @@ export async function generateMetadata(props) {
     if (!page) return { title: 'Page Not Found' };
     return {
         title: page.seoTitle || `${page.title} | Softkingo`,
-        description: page.sections.hero?.description || page.title
+        description: page.sections.hero?.description || page.title,
+        alternates: { canonical: `/industries/${params.slug}` }
     };
 }
 

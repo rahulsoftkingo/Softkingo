@@ -14,6 +14,11 @@ export async function GET(req) {
   if (tag && tag !== 'all') {
     where.tags = { contains: tag };
   }
+  
+  // Add folder filter for team photos
+  if (tag === 'team') {
+    where.category = 'team';
+  }
 
   const items = await prisma.mediaItem.findMany({
     where,

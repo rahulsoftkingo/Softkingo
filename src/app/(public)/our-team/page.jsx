@@ -269,7 +269,7 @@ export default async function OurTeamPage() {
         (m.category === 'management' || m.category === 'tech-lead' || m.role?.includes('Head')) 
         && !m.role?.includes('CEO') 
         && !(m.name === ceo.name)
-    ).slice(0, 4) : [];
+    ).slice(0, 6) : [];
 
     // Marquee (Everyone Else - Exclude Leaders & CEO)
     const marqueeTeam = Array.isArray(teamList) ? teamList.filter(m => 
