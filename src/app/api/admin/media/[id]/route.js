@@ -45,3 +45,17 @@ export async function PUT(req, ctx) {
 
   return NextResponse.json(item);
 }
+
+// DELETE /api/admin/media/:id
+export async function DELETE(req, ctx) {
+  const { params } = ctx;
+  const unwrapped = await params;
+  const id = Number(unwrapped.id);
+
+  if (Number.isNaN(id)) {
+    return NextResponse.json({ error: 'Invalid id' }, { status: 400 });
+  }
+
+  await prisma.mediaItem.delete({ where: { id } });
+  return NextResponse.json({ success: true });
+}

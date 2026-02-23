@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import ImageGallery from '@/components/admin/ImageGallery';
+import ImageUploadComponent from '@/components/admin/ImageUploadComponent';
 import { X, Save, User as UserIcon, Briefcase, Tag, Link2, Info, Star, Loader2 } from 'lucide-react';
 
 export default function TeamModal({ open, onClose, onSaved, editing }) {
@@ -124,9 +124,13 @@ export default function TeamModal({ open, onClose, onSaved, editing }) {
 
                         {/* Photo Section */}
                         <div className="bg-slate-50/50 p-6 rounded-[1.5rem] border border-slate-100">
-                            <ImageGallery
+                            <ImageUploadComponent
+                                value={form.photo}
+                                onChange={(value) => setForm(prev => ({ ...prev, photo: value }))}
+                                placeholder="/images/team/john-doe.png"
+                                title="Profile Photo"
+                                showRecent={true}
                                 folder="team"
-                                onSelect={(path) => setForm(prev => ({ ...prev, photo: path }))}
                             />
                         </div>
 

@@ -222,7 +222,7 @@ const OurTeamClient = ({
                                     <p className="text-sky-100 text-xs font-bold uppercase mt-1 tracking-widest">Driving Your Success</p>
                                 </div>
                             </div>
-                            <div className="absolute top-full left-0 w-6 h-4 bg-sky-800 -z-10 skew-x-[45deg] origin-top-left">
+                            <div className="absolute top-full left-0 w-6 h-4 bg-sky-800 z-10 skew-x-[45deg] origin-top-left">
                             </div>
                         </div>
 
