@@ -22,7 +22,7 @@ export default function ChatWidget() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [agentTyping, setAgentTyping] = useState(false);
-  
+
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
   const typingTimeoutRef = useRef(null);
@@ -65,10 +65,10 @@ export default function ChatWidget() {
       try {
         const res = await fetch(`/api/chat/conversation?id=${conversationId}`);
         if (!res.ok) return;
-        
+
         const data = await res.json();
         const serverMessages = data.conversation.messages || [];
-        
+
         // Convert server messages to widget format
         const formattedMessages = serverMessages.map(msg => ({
           id: msg.id,
@@ -86,7 +86,7 @@ export default function ChatWidget() {
         if (JSON.stringify(formattedMessages) !== JSON.stringify(messages)) {
           setMessages(formattedMessages);
           saveConversation(conversationId, formattedMessages, visitorInfo);
-          
+
           // Mark new messages as read if chat is open
           if (isOpen) {
             markMessagesAsRead();
@@ -128,7 +128,7 @@ export default function ChatWidget() {
 
   const markMessagesAsRead = async () => {
     if (!conversationId) return;
-    
+
     try {
       await fetch('/api/chat/message', {
         method: 'PUT',
@@ -150,7 +150,7 @@ export default function ChatWidget() {
 
   const startConversation = async (e) => {
     e.preventDefault();
-    
+
     try {
       const res = await fetch('/api/chat/conversation', {
         method: 'POST',
@@ -162,7 +162,7 @@ export default function ChatWidget() {
 
       const data = await res.json();
       setConversationId(data.conversationId);
-      
+
       const welcomeMsg = {
         id: Date.now(),
         content: `Hi ${visitorInfo.name}! 👋 How can I help you today?`,
@@ -171,7 +171,7 @@ export default function ChatWidget() {
         timestamp: new Date(),
         isRead: false,
       };
-      
+
       setMessages([welcomeMsg]);
       setShowInfoForm(false);
       saveConversation(data.conversationId, [welcomeMsg], visitorInfo);
@@ -281,7 +281,7 @@ export default function ChatWidget() {
         });
 
         const data = await res.json();
-        
+
         const botResponse = {
           id: Date.now() + 1,
           content: data.response,
@@ -352,11 +352,11 @@ export default function ChatWidget() {
   //   { text: 'Portfolio', value: 'Show me your previous work' },
   // ];
   const quickReplies = [
-  { text: 'View Services', value: 'VIEW_SERVICES' },
-  { text: 'Get Quote', value: 'GET_QUOTE' },
-  { text: 'Contact Info', value: 'CONTACT_INFO' },
-  { text: 'Portfolio', value: 'VIEW_PORTFOLIO' },
-];
+    { text: 'View Services', value: 'VIEW_SERVICES' },
+    { text: 'Get Quote', value: 'GET_QUOTE' },
+    { text: 'Contact Info', value: 'CONTACT_INFO' },
+    { text: 'Portfolio', value: 'VIEW_PORTFOLIO' },
+  ];
 
 
   const emojis = ['😊', '👍', '❤️', '🎉', '🔥', '💯', '✅', '❌', '🤔', '👋'];
@@ -367,7 +367,7 @@ export default function ChatWidget() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-22 lg:bottom-18 right-6 z-50 group"
+          className="fixed bottom-[100px] lg:bottom-18 right-6 z-50 group"
           aria-label="Open chat"
         >
           <div className="relative">
@@ -388,7 +388,7 @@ export default function ChatWidget() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className={`fixed bottom-12 md:bottom-6 right-6 z-50 w-[320px] md:w-[400px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ${isMinimized ? 'h-16' : 'h-[600px]'}`}>
+        <div className={`fixed bottom-[100px] md:bottom-6 right-6 z-50 w-[320px] md:w-[400px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 ${isMinimized ? 'h-16' : 'h-[600px]'}`}>
           {/* Header */}
           <div className="bg-gradient-to-r from-sky-600 to-sky-700 text-white p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -504,13 +504,12 @@ export default function ChatWidget() {
                         className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
                         <div
-                          className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${
-                            msg.sender === 'user'
-                              ? 'bg-sky-600 text-white rounded-br-sm'
-                              : msg.sender === 'agent'
+                          className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${msg.sender === 'user'
+                            ? 'bg-sky-600 text-white rounded-br-sm'
+                            : msg.sender === 'agent'
                               ? 'bg-emerald-600 text-white rounded-bl-sm'
                               : 'bg-white text-slate-800 shadow-sm rounded-bl-sm'
-                          }`}
+                            }`}
                         >
                           {msg.senderName && msg.sender === 'agent' && (
                             <p className="text-xs opacity-90 mb-1 font-semibold">
@@ -537,9 +536,8 @@ export default function ChatWidget() {
                             </div>
                           )}
                           <p className="text-sm whitespace-pre-line">{msg.content}</p>
-                          <span className={`text-xs mt-1 block ${
-                            msg.sender === 'user' || msg.sender === 'agent' ? 'opacity-75' : 'text-slate-400'
-                          }`}>
+                          <span className={`text-xs mt-1 block ${msg.sender === 'user' || msg.sender === 'agent' ? 'opacity-75' : 'text-slate-400'
+                            }`}>
                             {new Date(msg.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>

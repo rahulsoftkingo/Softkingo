@@ -100,11 +100,10 @@ function ProjectCard({ p }) {
     >
       {/* Color overlay */}
       <div
-        className="absolute inset-0 group-hover:opacity-90 transition-opacity duration-500"
+        className="absolute inset-0 group-hover:opacity-60 transition-opacity duration-500"
         style={{
-          background: p.bgColor || "linear-gradient(135deg, #0284c7, #3b82f6)",
-          mixBlendMode: "multiply",
-          opacity: 0.96
+          background: p.bgColor ? `linear-gradient(135deg, ${p.bgColor}, transparent)` : "linear-gradient(135deg, #0284c7, transparent)",
+          opacity: 0.8
         }}
       />
 
@@ -155,15 +154,15 @@ function ProjectCard({ p }) {
               <p className="mt-1 font-bold text-white truncate">{p.techstack}</p>
             </div>
           </div>
-  {/* Case Study Button */}
-            {/* <Link
+          {/* Case Study Button */}
+          {/* <Link
               href={`/case-studies/${p.id}`}
               className="group/btn inline-flex items-center justify-center  rounded-full bg-white/95 text-sky-900 shadow hover:bg-sky-50 transition px-6 py-2 w-fit"
             >
               View Case Study
               <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform duration-300" />
             </Link> */}
-{/* case study icon button */}
+          {/* case study icon button */}
           <div className="absolute bottom-4 left4 md:top-4 md:right-4 cursor-pointer z-10 mt- ">
             <Link
               href={`/case-studies/${p.id}`}
@@ -175,7 +174,7 @@ function ProjectCard({ p }) {
           </div>
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3">
-          
+
             {/* App Store Badges */}
             <div className="flex items-center gap-2 flex-wrap">
               {p.badges?.play && (

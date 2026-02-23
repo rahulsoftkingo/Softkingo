@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import ImageUploadComponent from '@/components/admin/ImageUploadComponent';
 
 export default function EmployeeDrawer({ open, onClose, onSaved, editing }) {
   const isEdit = !!editing;
@@ -12,7 +10,6 @@ export default function EmployeeDrawer({ open, onClose, onSaved, editing }) {
     email: '',
     phone: '',
   });
-  const [previewUrl, setPreviewUrl] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -26,7 +23,6 @@ export default function EmployeeDrawer({ open, onClose, onSaved, editing }) {
         email: editing.email || '',
         phone: editing.phone || '',
       });
-      setPreviewUrl(editing.photo || '');
     } else {
       setForm({
         name: '',
@@ -36,7 +32,6 @@ export default function EmployeeDrawer({ open, onClose, onSaved, editing }) {
         email: '',
         phone: '',
       });
-      setPreviewUrl('');
     }
   }, [editing]);
 
@@ -103,35 +98,14 @@ export default function EmployeeDrawer({ open, onClose, onSaved, editing }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Photo */}
           <div className="space-y-2">
-            <label className="block text-xs font-medium text-slate-700">
-              Photo URL
-            </label>
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-slate-200 flex items-center justify-center overflow-hidden">
-                {previewUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={previewUrl}
-                    alt="Preview"
-                    className="h-10 w-10 object-cover rounded-full"
-                  />
-                ) : (
-                  <span className="text-xs font-semibold text-slate-700">
-                    {form.name?.[0]?.toUpperCase() || '?'}
-                  </span>
-                )}
-              </div>
-              <input
-                name="photo"
-                value={form.photo}
-                onChange={(e) => {
-                  handleChange(e);
-                  setPreviewUrl(e.target.value || '');
-                }}
-                className="flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
-                placeholder="/images/employees/photo.png or https://..."
-              />
-            </div>
+            <ImageUploadComponent
+              value={form.photo}
+              onChange={(value) => setForm(prev => ({ ...prev, photo: value }))}
+              placeholder="/images/employees/photo.png"
+              title="Profile Photo"
+              showRecent={true}
+              folder="employees"
+            />
           </div>
 
           {/* Name */}

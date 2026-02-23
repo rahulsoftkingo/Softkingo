@@ -39,10 +39,16 @@ export async function PATCH(req, { params }) {
     const category = await prisma.blogCategory.findUnique({ where: { id } });
     if (!category) return NextResponse.json({ message: 'Not found' }, { status: 404 });
 
-    const { name, slug } = await req.json();
+    const data = await req.json();
     const updated = await prisma.blogCategory.update({
       where: { id },
-      data: { name: name?.trim(), slug: slug?.trim() },
+      data: {
+        name: data.name?.trim(),
+        slug: data.slug?.trim(),
+        seoTitle: data.seoTitle || null,
+        seoDescription: data.seoDescription || null,
+        seoImage: data.seoImage || null,
+      },
     });
     return NextResponse.json(updated);
   } catch (err) {

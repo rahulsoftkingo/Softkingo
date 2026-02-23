@@ -38,11 +38,11 @@ export async function generateMetadata({ params }) {
   return {
     title: finalTitle,
     description: finalDesc,
-    alternates: { canonical: `${sectionKey}/${slug}` },
+    alternates: { canonical: `${baseUrl}/${sectionKey}/${slug}` },
     openGraph: {
       title: finalTitle,
       description: finalDesc,
-      url: `${sectionKey}/${slug}`,
+      url: `${baseUrl}/${sectionKey}/${slug}`,
       siteName: 'Softkingo',
       images: [{ url: finalImage }],
       type: 'article',

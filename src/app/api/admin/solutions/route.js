@@ -15,7 +15,7 @@
 //         const hasPage = await fs.access(path.join(baseDir, entry.name, 'page.jsx'))
 //           .then(() => true)
 //           .catch(() => false);
-        
+
 //         if (hasPage) {
 //           pages.push(entry.name); // slug is folder name
 //         }
@@ -75,7 +75,7 @@
 //     }
 
 //     // --- CASE B: FETCH LIST (Merged DB + File System) ---
-    
+
 //     // 1. Fetch DB Pages
 //     let typeFilter = {};
 //     if (section === 'solutions') typeFilter = { type: 'solution' };
@@ -99,7 +99,7 @@
 
 //     // 3. Merge Logic
 //     // We want a list where we know if a page exists in DB, File, or Both.
-    
+
 //     const mergePages = (dbList, fileList, defaultType) => {
 //         const map = new Map();
 
@@ -143,7 +143,7 @@
 //     // Note: Clones might be mixed in solutions folder, logic here assumes standard structure
 //     const finalSolutions = mergePages(dbSolutions, fileSolutions, 'solution');
 //     const finalIndustries = mergePages(dbIndustries, fileIndustries, 'industry');
-    
+
 //     // For clones, we only have DB data usually, unless you have a specific /clones folder. 
 //     // Assuming clones are just db entries for now or subset of solutions.
 //     const finalClones = dbClones.map(p => ({ ...p, source: 'db' })); 
@@ -246,9 +246,9 @@ async function getFilePages(section) {
         const hasPage = await fs.access(path.join(baseDir, entry.name, 'page.jsx'))
           .then(() => true)
           .catch(() => false);
-        
+
         if (hasPage) {
-          pages.push(entry.name); 
+          pages.push(entry.name);
         }
       }
     }
@@ -266,7 +266,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const slug = searchParams.get('slug');
-    const section = searchParams.get('section'); 
+    const section = searchParams.get('section');
 
     // --- CASE A: FETCH SINGLE PAGE (For Editor) ---
     if (id || slug) {
@@ -292,8 +292,11 @@ export async function GET(request) {
           slug: page.slug,
           type: page.type,
           status: page.status,
+          seoTitle: page.seoTitle,
+          seoDescription: page.seoDescription,
+          seoImage: page.seoImage,
           activeSections: parsedContent.activeSections || [],
-          content: parsedContent.content || {} 
+          content: parsedContent.content || {}
         }
       });
     }
@@ -315,27 +318,27 @@ export async function GET(request) {
     const fileIndustries = await getFilePages('industries');
 
     const mergePages = (dbList, fileList, defaultType) => {
-        const map = new Map();
-        // Add DB pages
-        dbList.forEach(p => map.set(p.slug, { ...p, source: 'db' }));
-        // Add/Merge File pages
-        fileList.forEach(slug => {
-            if (map.has(slug)) {
-                const existing = map.get(slug);
-                map.set(slug, { ...existing, source: 'both' }); // Exists in both
-            } else {
-                map.set(slug, {
-                    id: `file-${slug}`, 
-                    title: slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                    slug: slug,
-                    type: defaultType,
-                    status: 'static',
-                    updatedAt: new Date(),
-                    source: 'file' 
-                });
-            }
-        });
-        return Array.from(map.values());
+      const map = new Map();
+      // Add DB pages
+      dbList.forEach(p => map.set(p.slug, { ...p, source: 'db' }));
+      // Add/Merge File pages
+      fileList.forEach(slug => {
+        if (map.has(slug)) {
+          const existing = map.get(slug);
+          map.set(slug, { ...existing, source: 'both' }); // Exists in both
+        } else {
+          map.set(slug, {
+            id: `file-${slug}`,
+            title: slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            slug: slug,
+            type: defaultType,
+            status: 'static',
+            updatedAt: new Date(),
+            source: 'file'
+          });
+        }
+      });
+      return Array.from(map.values());
     };
 
     const dbSolutions = dbPages.filter(p => p.type === 'solution');
@@ -362,7 +365,7 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { id, slug, title, type, status, activeSections, content } = body;
+    const { id, slug, title, type, status, activeSections, content, seoTitle, seoDescription, seoImage } = body;
 
     if (!slug || !title) return NextResponse.json({ success: false, message: "Title and Slug required." }, { status: 400 });
 
@@ -376,7 +379,7 @@ export async function POST(request) {
 
     // 2. Check File Duplicate (Optional Warning, but allow DB creation to 'claim' it)
     // Note: Creating a DB entry for an existing File page effectively "links" them in our Admin logic (source: 'both')
-    
+
     const contentDataString = JSON.stringify({
       activeSections: activeSections || [],
       content: content || {}
@@ -386,11 +389,32 @@ export async function POST(request) {
     if (id) {
       savedPage = await prisma.page.update({
         where: { id: parseInt(id) },
-        data: { title, slug: cleanSlug, key: cleanSlug, type, status: status || 'draft', contentJson: contentDataString, updatedAt: new Date() }
+        data: {
+          title,
+          slug: cleanSlug,
+          key: cleanSlug,
+          type,
+          status: status || 'draft',
+          contentJson: contentDataString,
+          seoTitle: seoTitle || title,
+          seoDescription: seoDescription || null,
+          seoImage: seoImage || null,
+          updatedAt: new Date()
+        }
       });
     } else {
       savedPage = await prisma.page.create({
-        data: { title, slug: cleanSlug, key: cleanSlug, type: type || 'solution', status: status || 'draft', contentJson: contentDataString, seoTitle: title }
+        data: {
+          title,
+          slug: cleanSlug,
+          key: cleanSlug,
+          type: type || 'solution',
+          status: status || 'draft',
+          contentJson: contentDataString,
+          seoTitle: seoTitle || title,
+          seoDescription: seoDescription || null,
+          seoImage: seoImage || null
+        }
       });
     }
 
@@ -413,29 +437,29 @@ export async function DELETE(request) {
 
     // --- OPTION A: DELETE FROM DATABASE ---
     if (action === 'delete_db') {
-        if (!id && !slug) return NextResponse.json({ success: false, message: "ID or Slug required for DB delete" }, { status: 400 });
-        
-        // Use ID if available for precision
-        const whereClause = id && typeof id === 'number' ? { id: parseInt(id) } : { slug: slug };
-        
-        await prisma.page.deleteMany({ where: whereClause });
-        return NextResponse.json({ success: true, message: "Deleted from Database" });
+      if (!id && !slug) return NextResponse.json({ success: false, message: "ID or Slug required for DB delete" }, { status: 400 });
+
+      // Use ID if available for precision
+      const whereClause = id && typeof id === 'number' ? { id: parseInt(id) } : { slug: slug };
+
+      await prisma.page.deleteMany({ where: whereClause });
+      return NextResponse.json({ success: true, message: "Deleted from Database" });
     }
 
     // --- OPTION B: DELETE FROM FILE SYSTEM ---
     if (action === 'delete_file') {
-        if (!section) return NextResponse.json({ success: false, message: "Section required to locate file" }, { status: 400 });
-        
-        const folderName = section === 'industries' ? 'industries' : 'solutions';
-        const dirPath = path.join(process.cwd(), `src/app/(public)/${folderName}/${slug}`);
+      if (!section) return NextResponse.json({ success: false, message: "Section required to locate file" }, { status: 400 });
 
-        try {
-            await fs.rm(dirPath, { recursive: true, force: true });
-            return NextResponse.json({ success: true, message: "Folder Deleted Successfully" });
-        } catch (err) {
-            console.error("Folder Delete Error:", err);
-            return NextResponse.json({ success: false, message: "Failed to delete folder. Check permissions." }, { status: 500 });
-        }
+      const folderName = section === 'industries' ? 'industries' : 'solutions';
+      const dirPath = path.join(process.cwd(), `src/app/(public)/${folderName}/${slug}`);
+
+      try {
+        await fs.rm(dirPath, { recursive: true, force: true });
+        return NextResponse.json({ success: true, message: "Folder Deleted Successfully" });
+      } catch (err) {
+        console.error("Folder Delete Error:", err);
+        return NextResponse.json({ success: false, message: "Failed to delete folder. Check permissions." }, { status: 500 });
+      }
     }
 
     return NextResponse.json({ success: false, message: "Invalid action specified" }, { status: 400 });

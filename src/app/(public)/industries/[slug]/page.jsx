@@ -41,10 +41,28 @@ export async function generateMetadata(props) {
     const params = await props.params;
     const page = await getIndustryPage(params.slug);
     if (!page) return { title: 'Page Not Found' };
+
+    const title = page.seoTitle || `${page.title} | Softkingo`;
+    const description = page.seoDescription || page.sections.hero?.description || `Solutions for the ${page.title} industry by Softkingo.`;
+    const image = page.seoImage || "/og-image.png";
+
     return {
-        title: page.seoTitle || `${page.title} | Softkingo`,
-        description: page.sections.hero?.description || page.title,
-        alternates: { canonical: `/industries/${params.slug}` }
+        title,
+        description,
+        alternates: { canonical: `/industries/${params.slug}` },
+        openGraph: {
+            title,
+            description,
+            url: `https://www.softkingo.com/industries/${params.slug}`,
+            images: [{ url: image }],
+            type: 'website'
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [image],
+        }
     };
 }
 
@@ -100,7 +118,7 @@ export default async function IndustryPage(props) {
                                             </div>
                                             <div>
                                                 <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
-                                               
+
                                             </div>
                                         </div>
                                     ))}
@@ -127,22 +145,22 @@ export default async function IndustryPage(props) {
                     </div>
                 </section>
             )}
-<div className="bg-slate-50" >
-            {/*  3. WHAT WE COVER (Redesigned) */}
+            <div className="bg-slate-50" >
+                {/*  3. WHAT WE COVER (Redesigned) */}
 
-            {show('covers') && (
-                <IndustryCoversTabs data={covers} />
-            )}
+                {show('covers') && (
+                    <IndustryCoversTabs data={covers} />
+                )}
 
-            {/* 4. ADVANCED TECHNOLOGIES */}
-            {show('technologies') && (
-                <IndustryTechCarousel
-                    title={technologies?.title || "Advanced Technologies We Use"}
-                    description="We leverage cutting-edge tech stacks to build robust solutions."
-                    items={technologies?.items}
-                />
-            )}
-</div>
+                {/* 4. ADVANCED TECHNOLOGIES */}
+                {show('technologies') && (
+                    <IndustryTechCarousel
+                        title={technologies?.title || "Advanced Technologies We Use"}
+                        description="We leverage cutting-edge tech stacks to build robust solutions."
+                        items={technologies?.items}
+                    />
+                )}
+            </div>
             {/* 5. PORTFOLIO (Dynamic Card) */}
             {show('portfolio') && (
                 <DynamicPortfolioCard
@@ -153,15 +171,15 @@ export default async function IndustryPage(props) {
                 />
             )}
 
-          
-           {/* 6. OTHER INDUSTRIES (Fixed Alignment) */}
+
+            {/* 6. OTHER INDUSTRIES (Fixed Alignment) */}
             {show('otherIndustries') && (
                 <section className="py-24 bg-slate-50 px-6 relative overflow-hidden">
                     <div className="max-w-7xl mx-auto relative z-10">
-                        
+
                         {/* Common Title */}
-                        <CommonTitle 
-                            title={otherIndustries?.title || "Industries We Serve"} 
+                        <CommonTitle
+                            title={otherIndustries?.title || "Industries We Serve"}
                             subtitle={otherIndustries?.subtitle || "Explore our expertise across diverse sectors."}
                             pill={true}
                             gradientText="Sectors"
@@ -169,12 +187,12 @@ export default async function IndustryPage(props) {
 
                         {/* 3-Column Layout */}
                         <div className="grid lg:grid-cols-5 gap-12 items-center mt-16">
-                            
+
                             {/* LEFT COLUMN (Items 0-2) - Align Right */}
                             <div className="space-y-12">
                                 {otherIndustries?.items?.slice(0, 3).map((item, i) => (
                                     <div key={i} className="flex items-center justify-end group gap-6">
-                                        
+
                                         {/* Text Content (Aligned Right) */}
                                         <div className="flex-1 flex flex-col items-end text-right">
                                             <h4 className="text-xl font-bold text-slate-800 mb-2">{item.title}</h4>
@@ -199,13 +217,13 @@ export default async function IndustryPage(props) {
                                 {/* Decorative Ring */}
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square border border-dashed border-slate-300 rounded-full animate-spin-slow opacity-30"></div>
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] aspect-square bg-sky-100/50 rounded-full blur-3xl -z-10"></div>
-                                
+
                                 <div className="relative w-full max-w-[350px] aspect-[3/4] overflow-hidden ">
-                                    <Image 
-                                        src={otherIndustries?.image || "/images/industry-center.jpg"} 
-                                        alt="Industries Center" 
-                                        fill 
-                                        className="object-cover hover:scale-105 transition-transform duration-700" 
+                                    <Image
+                                        src={otherIndustries?.image || "/images/industry-center.jpg"}
+                                        alt="Industries Center"
+                                        fill
+                                        className="object-cover hover:scale-105 transition-transform duration-700"
                                     />
                                 </div>
                             </div>
@@ -214,7 +232,7 @@ export default async function IndustryPage(props) {
                             <div className="space-y-12">
                                 {otherIndustries?.items?.slice(3, 6).map((item, i) => (
                                     <div key={i} className="flex items-center justify-start group gap-6">
-                                        
+
                                         {/* Icon (Fixed Size) */}
                                         <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                                             {item.icon && item.icon.includes('/') ? (
@@ -245,13 +263,13 @@ export default async function IndustryPage(props) {
             {show('whyChoose') && (
                 <section className="py-24 bg-slate-50 relative overflow-hidden">
                     <div className="max-w-7xl mx-auto px-6 relative z-10">
-                        
+
                         {/* Common Title */}
-                        <CommonTitle 
-                            title={whyChoose?.title || "Why Partner With Softkingo?"} 
+                        <CommonTitle
+                            title={whyChoose?.title || "Why Partner With Softkingo?"}
                             subtitle="We combine domain expertise with technical excellence to deliver solutions that drive real growth."
                             pill={true}
-                            
+
                         />
 
                         {/* Carousel Component */}
@@ -262,7 +280,7 @@ export default async function IndustryPage(props) {
                         {/* Bottom CTA (Optional within section) */}
                         <div className="text-center mt-8">
                             <Link href="/contact" className="inline-flex items-center gap-2 text-sky-600 font-bold hover:gap-3 transition-all">
-                                Get a Quote <ArrowRight size={18}/>
+                                Get a Quote <ArrowRight size={18} />
                             </Link>
                         </div>
 
@@ -331,6 +349,7 @@ export default async function IndustryPage(props) {
                 subtitle="Let's build a solution tailored to your industry needs."
                 buttonLabel="Get a Free Consultation"
                 href="/contact"
+                theme="white"
             />
         </main>
     );

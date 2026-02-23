@@ -28,9 +28,7 @@ import SideBar from "./Sidebar";
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false); // plus popup
   const [isMenuOpen, setIsMenuOpen] = useState(false); // sidebar
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" && window.innerWidth <= 1200
-  );
+  const [isMobile, setIsMobile] = useState(false);
 
   const popupRef = useRef(null);
   const popupButtonRef = useRef(null);
@@ -44,6 +42,7 @@ export default function MobileNav() {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1200);
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -186,8 +185,8 @@ export default function MobileNav() {
             <Link
               href="/portfolio"
               className={`flex flex-col items-center text-xs ${isActive("/portfolio")
-                  ? "text-sky-600"
-                  : "text-gray-500 hover:text-sky-600"
+                ? "text-sky-600"
+                : "text-gray-500 hover:text-sky-600"
                 } transition`}
             >
               <FaBriefcase className="text-lg" />
@@ -212,8 +211,8 @@ export default function MobileNav() {
             <Link
               href="/e-guides"
               className={`flex flex-col items-center text-xs ${isActive("/e-guides")
-                  ? "text-sky-600"
-                  : "text-gray-500 hover:text-sky-600"
+                ? "text-sky-600"
+                : "text-gray-500 hover:text-sky-600"
                 } transition`}
             >
               <FaBook className="text-lg" />
@@ -236,8 +235,8 @@ export default function MobileNav() {
                     />
                     <span
                       className={`block absolute left-0 w-full h-[2px] bg-gray-700 group-hover:bg-sky-500 transition-all duration-300 ${isMenuOpen
-                          ? "opacity-0"
-                          : "top-1/2 -translate-y-1/2"
+                        ? "opacity-0"
+                        : "top-1/2 -translate-y-1/2"
                         }`}
                     />
                     <span

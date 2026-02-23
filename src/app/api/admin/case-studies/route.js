@@ -19,12 +19,12 @@ export async function GET(request) {
 
   const where = q
     ? {
-        OR: [
-          { title: { contains: q } },
-          { subtitle: { contains: q } },
-          { slug: { contains: q } },
-        ],
-      }
+      OR: [
+        { title: { contains: q } },
+        { subtitle: { contains: q } },
+        { slug: { contains: q } },
+      ],
+    }
     : {};
 
   const rows = await prisma.caseStudy.findMany({
@@ -63,6 +63,7 @@ export async function POST(request) {
     findYourAppJson,
     seoTitle,
     seoDescription,
+    seoImage,
   } = body;
 
   if (!slug || !title) {
@@ -94,6 +95,7 @@ export async function POST(request) {
       findYourAppJson: findYourAppJson || null,
       seoTitle: seoTitle || null,
       seoDescription: seoDescription || null,
+      seoImage: seoImage || null,
     },
   });
 

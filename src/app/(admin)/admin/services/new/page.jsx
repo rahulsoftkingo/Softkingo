@@ -39,30 +39,49 @@ export default function NewServicePage() {
     extraImages: ['/images/about/r3.png', '/images/about/r4.png'],
     statsSubtitle: '',
     
-    // Services Section
-    servicesTitle: 'Our Services',
-    servicesSub: 'Comprehensive solutions for your business',
+    // Services section data matching public side
+    services: {
+      title: 'Our Services',
+      subtitle: 'Comprehensive solutions for your business',
+      items: [
+        {
+          iconName: 'FaMobileAlt',
+          title: '',
+          description: '',
+        },
+        {
+          iconName: 'FaHandSparkles',
+          title: '',
+          description: '',
+        },
+        {
+          iconName: 'FaHeadphones',
+          title: '',
+          description: '',
+        },
+      ]
+    },
     
-    cards: [
-      {
-        iconName: 'FaMobileAlt',
-        iconGradient: 'from-cyan-400 to-sky-600',
-        title: '',
-        text: '',
-      },
-      {
-        iconName: 'FaHandSparkles',
-        iconGradient: 'from-purple-400 to-purple-600',
-        title: '',
-        text: '',
-      },
-      {
-        iconName: 'FaHeadphones',
-        iconGradient: 'from-emerald-400 to-emerald-600',
-        title: '',
-        text: '',
-      },
-    ],
+    // Tech section data matching public side  
+    tech: {
+      title: 'Technology Stack',
+      subtitle: 'Cutting-edge technologies we use',
+      items: []
+    },
+    
+    // Process section data matching public side
+    process: {
+      title: 'Our Process',
+      subtitle: 'Streamlined development methodology',
+      items: []
+    },
+    
+    // FAQ section data matching public side
+    faq: {
+      title: 'Frequently Asked Questions',
+      subtitle: 'Everything you need to know',
+      items: []
+    }
   });
 
   const handleChange = (e) => {
@@ -78,30 +97,93 @@ export default function NewServicePage() {
   };
 
   const handleCardChange = (index, field, value) => {
-    const newCards = [...formData.cards];
-    newCards[index] = { ...newCards[index], [field]: value };
-    setFormData((prev) => ({ ...prev, cards: newCards }));
+    const newServices = [...formData.services.items];
+    newServices[index] = { ...newServices[index], [field]: value };
+    setFormData((prev) => ({ 
+      ...prev, 
+      services: { ...prev.services, items: newServices }
+    }));
+  };
+
+  const handleServiceChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      services: { ...prev.services, [field]: value }
+    }));
+  };
+
+  const handleTechChange = (index, field, value) => {
+    const newTech = [...formData.tech.items];
+    newTech[index] = { ...newTech[index], [field]: value };
+    setFormData((prev) => ({
+      ...prev,
+      tech: { ...prev.tech, items: newTech }
+    }));
+  };
+
+  const handleProcessChange = (index, field, value) => {
+    const newProcess = [...formData.process.items];
+    newProcess[index] = { ...newProcess[index], [field]: value };
+    setFormData((prev) => ({
+      ...prev,
+      process: { ...prev.process, items: newProcess }
+    }));
+  };
+
+  const handleFAQChange = (index, field, value) => {
+    const newFAQ = [...formData.faq.items];
+    newFAQ[index] = { ...newFAQ[index], [field]: value };
+    setFormData((prev) => ({
+      ...prev,
+      faq: { ...prev.faq, items: newFAQ }
+    }));
+  };
+
+  const addTechItem = () => {
+    setFormData((prev) => ({
+      ...prev,
+      tech: { ...prev.tech, items: [...prev.tech.items, { name: '', image: '' }] }
+    }));
+  };
+
+  const addProcessStep = () => {
+    setFormData((prev) => ({
+      ...prev,
+      process: { ...prev.process, items: [...prev.process.items, { title: '', description: '' }] }
+    }));
+  };
+
+  const addFAQItem = () => {
+    setFormData((prev) => ({
+      ...prev,
+      faq: { ...prev.faq, items: [...prev.faq.items, { q: '', a: '' }] }
+    }));
   };
 
   const addCard = () => {
     setFormData((prev) => ({
       ...prev,
-      cards: [
-        ...prev.cards,
-        {
-          iconName: 'FaMobileAlt',
-          iconGradient: 'from-cyan-400 to-sky-600',
-          title: '',
-          text: '',
-        },
-      ],
+      services: {
+        ...prev.services,
+        items: [
+          ...prev.services.items,
+          {
+            iconName: 'FaMobileAlt',
+            title: '',
+            description: '',
+          },
+        ],
+      },
     }));
   };
 
   const removeCard = (index) => {
     setFormData((prev) => ({
       ...prev,
-      cards: prev.cards.filter((_, i) => i !== index),
+      services: {
+        ...prev.services,
+        items: prev.services.items.filter((_, i) => i !== index),
+      },
     }));
   };
 
@@ -145,9 +227,11 @@ export default function NewServicePage() {
           mainImage: formData.mainImage,
           extraImages: formData.extraImages,
           statsSubtitle: formData.statsSubtitle,
-          servicesTitle: formData.servicesTitle,
-          servicesSub: formData.servicesSub,
-          cards: formData.cards,
+          
+          services: formData.services,
+          tech: formData.tech,
+          process: formData.process,
+          faq: formData.faq,
         }),
       };
 
@@ -175,6 +259,9 @@ export default function NewServicePage() {
     { id: 'hero', label: 'Hero Section' },
     { id: 'stats', label: 'Stats' },
     { id: 'services', label: 'Service Cards' },
+    { id: 'tech', label: 'Technology Stack' },
+    { id: 'process', label: 'Process' },
+    { id: 'faq', label: 'FAQ' },
     { id: 'seo', label: 'SEO' },
   ];
 
@@ -490,9 +577,8 @@ export default function NewServicePage() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Section Title</label>
                   <input
                     type="text"
-                    name="servicesTitle"
-                    value={formData.servicesTitle}
-                    onChange={handleChange}
+                    value={formData.services.title}
+                    onChange={(e) => handleServiceChange('title', e.target.value)}
                     placeholder="Our Services"
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
@@ -501,9 +587,8 @@ export default function NewServicePage() {
                   <label className="block text-sm font-medium text-slate-700 mb-2">Section Subtitle</label>
                   <input
                     type="text"
-                    name="servicesSub"
-                    value={formData.servicesSub}
-                    onChange={handleChange}
+                    value={formData.services.subtitle}
+                    onChange={(e) => handleServiceChange('subtitle', e.target.value)}
                     placeholder="Description"
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                   />
@@ -511,11 +596,11 @@ export default function NewServicePage() {
               </div>
 
               <div className="space-y-4">
-                {formData.cards.map((card, index) => (
+                {formData.services.items.map((item, index) => (
                   <div key={index} className="p-4 border border-slate-200 rounded-lg space-y-4">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-slate-900">Card {index + 1}</h3>
-                      {formData.cards.length > 1 && (
+                      {formData.services.items.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeCard(index)}
@@ -530,7 +615,7 @@ export default function NewServicePage() {
                       <div>
                         <label className="block text-xs font-medium text-slate-700 mb-1">Icon Name</label>
                         <select
-                          value={card.iconName}
+                          value={item.iconName}
                           onChange={(e) => handleCardChange(index, 'iconName', e.target.value)}
                           className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
                         >
@@ -542,27 +627,13 @@ export default function NewServicePage() {
                           <option value="FaRobot">Robot</option>
                         </select>
                       </div>
-                      <div>
-                        <label className="block text-xs font-medium text-slate-700 mb-1">Icon Gradient</label>
-                        <select
-                          value={card.iconGradient}
-                          onChange={(e) => handleCardChange(index, 'iconGradient', e.target.value)}
-                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
-                        >
-                          <option value="from-cyan-400 to-sky-600">Cyan to Sky</option>
-                          <option value="from-purple-400 to-purple-600">Purple</option>
-                          <option value="from-emerald-400 to-emerald-600">Emerald</option>
-                          <option value="from-rose-400 to-rose-600">Rose</option>
-                          <option value="from-amber-400 to-amber-600">Amber</option>
-                        </select>
-                      </div>
                     </div>
 
                     <div>
                       <label className="block text-xs font-medium text-slate-700 mb-1">Card Title</label>
                       <input
                         type="text"
-                        value={card.title}
+                        value={item.title}
                         onChange={(e) => handleCardChange(index, 'title', e.target.value)}
                         placeholder="Service Name"
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
@@ -572,12 +643,285 @@ export default function NewServicePage() {
                     <div>
                       <label className="block text-xs font-medium text-slate-700 mb-1">Card Description</label>
                       <textarea
-                        value={card.text}
-                        onChange={(e) => handleCardChange(index, 'text', e.target.value)}
+                        value={item.description}
+                        onChange={(e) => handleCardChange(index, 'description', e.target.value)}
                         placeholder="Service description"
                         rows={3}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
                       />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Tech Stack Tab - New Section */}
+          {activeTab === 'tech' && (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+              <h2 className="text-lg font-bold text-slate-900">Technology Stack</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Section Title</label>
+                  <input
+                    type="text"
+                    value={formData.tech.title}
+                    onChange={(e) => handleServiceChange('title', e.target.value)}
+                    placeholder="Technology Stack"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Section Subtitle</label>
+                  <textarea
+                    value={formData.tech.subtitle}
+                    onChange={(e) => handleServiceChange('subtitle', e.target.value)}
+                    rows={3}
+                    placeholder="Cutting-edge technologies we use"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-slate-900">Technologies</h3>
+                <button
+                  type="button"
+                  onClick={addTechItem}
+                  className="flex items-center gap-2 px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg text-sm transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Technology
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {formData.tech.items.map((tech, index) => (
+                  <div key={index} className="p-4 border border-slate-200 rounded-lg space-y-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-slate-900">Technology {index + 1}</h4>
+                      {formData.tech.items.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newTech = [...formData.tech.items];
+                            newTech.splice(index, 1);
+                            setFormData(prev => ({
+                              ...prev,
+                              tech: { ...prev.tech, items: newTech }
+                            }));
+                          }}
+                          className="p-2 hover:bg-rose-100 rounded-lg transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4 text-rose-600" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Technology Name</label>
+                        <input
+                          type="text"
+                          value={tech.name}
+                          onChange={(e) => handleTechChange(index, 'name', e.target.value)}
+                          placeholder="e.g. React, Node.js"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Logo URL</label>
+                        <input
+                          type="text"
+                          value={tech.image}
+                          onChange={(e) => handleTechChange(index, 'image', e.target.value)}
+                          placeholder="/images/tech/react.png"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Process Tab - New Section */}
+          {activeTab === 'process' && (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+              <h2 className="text-lg font-bold text-slate-900">Development Process</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Section Title</label>
+                  <input
+                    type="text"
+                    value={formData.process.title}
+                    onChange={(e) => handleServiceChange('title', e.target.value)}
+                    placeholder="Our Process"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Section Subtitle</label>
+                  <textarea
+                    value={formData.process.subtitle}
+                    onChange={(e) => handleServiceChange('subtitle', e.target.value)}
+                    rows={3}
+                    placeholder="Streamlined development methodology"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-slate-900">Process Steps</h3>
+                <button
+                  type="button"
+                  onClick={addProcessStep}
+                  className="flex items-center gap-2 px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg text-sm transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Step
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {formData.process.items.map((step, index) => (
+                  <div key={index} className="p-4 border border-slate-200 rounded-lg space-y-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-slate-900">Step {index + 1}</h4>
+                      {formData.process.items.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newProcess = [...formData.process.items];
+                            newProcess.splice(index, 1);
+                            setFormData(prev => ({
+                              ...prev,
+                              process: { ...prev.process, items: newProcess }
+                            }));
+                          }}
+                          className="p-2 hover:bg-rose-100 rounded-lg transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4 text-rose-600" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Step Title</label>
+                        <input
+                          type="text"
+                          value={step.title}
+                          onChange={(e) => handleProcessChange(index, 'title', e.target.value)}
+                          placeholder="e.g. Discovery & Planning"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Step Description</label>
+                        <textarea
+                          value={step.description}
+                          onChange={(e) => handleProcessChange(index, 'description', e.target.value)}
+                          rows={3}
+                          placeholder="Detailed description of step"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* FAQ Tab - New Section */}
+          {activeTab === 'faq' && (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+              <h2 className="text-lg font-bold text-slate-900">Frequently Asked Questions</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Section Title</label>
+                  <input
+                    type="text"
+                    value={formData.faq.title}
+                    onChange={(e) => handleServiceChange('title', e.target.value)}
+                    placeholder="Frequently Asked Questions"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Section Subtitle</label>
+                  <textarea
+                    value={formData.faq.subtitle}
+                    onChange={(e) => handleServiceChange('subtitle', e.target.value)}
+                    rows={3}
+                    placeholder="Everything you need to know"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-slate-900">FAQ Items</h3>
+                <button
+                  type="button"
+                  onClick={addFAQItem}
+                  className="flex items-center gap-2 px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg text-sm transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add FAQ
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {formData.faq.items.map((faq, index) => (
+                  <div key={index} className="p-4 border border-slate-200 rounded-lg space-y-4">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-slate-900">FAQ {index + 1}</h4>
+                      {formData.faq.items.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const newFAQ = [...formData.faq.items];
+                            newFAQ.splice(index, 1);
+                            setFormData(prev => ({
+                              ...prev,
+                              faq: { ...prev.faq, items: newFAQ }
+                            }));
+                          }}
+                          className="p-2 hover:bg-rose-100 rounded-lg transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4 text-rose-600" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Question</label>
+                        <input
+                          type="text"
+                          value={faq.q}
+                          onChange={(e) => handleFAQChange(index, 'q', e.target.value)}
+                          placeholder="Enter your question"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-2">Answer</label>
+                        <textarea
+                          value={faq.a}
+                          onChange={(e) => handleFAQChange(index, 'a', e.target.value)}
+                          rows={4}
+                          placeholder="Enter answer"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}

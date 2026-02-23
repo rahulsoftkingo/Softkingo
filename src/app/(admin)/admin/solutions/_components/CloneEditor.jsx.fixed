@@ -1,0 +1,291 @@
+import React from 'react';
+import { 
+    Smartphone, Layout, Database, Code, Settings, Zap, 
+    BarChart3, ShieldCheck, DollarSign, Plus, X, 
+    HelpCircle, Briefcase, MousePointerClick, Award, MessageSquare, Users, Layers, Target, Grid, CheckCircle2, Globe
+} from "lucide-react";
+
+// --- 1. GLOBAL STYLES ---
+const inputStyle = "w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 outline-none transition-all placeholder:text-slate-400";
+const labelStyle = "text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block";
+
+// --- 2. ARRAY FIELD COMPONENT ---
+const ArrayField = ({ label, path, items, renderItem, updateField, defaultItem = {} }) => (
+    <div className="space-y-2">
+        {label && <label className={labelStyle}>{label}</label>}
+        <div className="space-y-2">
+            {(Array.isArray(items) ? items : []).map((item, idx) => {
+                if (item === undefined || item === null) return null;
+                return (
+                    <div key={idx} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100 group relative hover:border-orange-200 transition-colors">
+                        <div className="flex-1 grid gap-2">
+                            {renderItem(item, idx)}
+                        </div>
+                        <button 
+                            type="button" 
+                            onClick={() => {
+                                const newItems = items.filter((_, i) => i !== idx);
+                                updateField(path, newItems);
+                            }} 
+                            className="text-slate-400 hover:text-rose-500 p-1 bg-white rounded shadow-sm hover:shadow"
+                        >
+                            <X size={16} />
+                        </button>
+                    </div>
+                );
+            })}
+        </div>
+        <button 
+            type="button" 
+            onClick={() => {
+                let newItem = typeof defaultItem === 'object' && defaultItem !== null ? JSON.parse(JSON.stringify(defaultItem)) : defaultItem;
+                const currentItems = Array.isArray(items) ? items : [];
+                updateField(path, [...currentItems, newItem]);
+            }}
+            className="flex items-center gap-1 text-xs font-bold text-orange-600 hover:bg-orange-50 px-3 py-2.5 rounded-lg transition-colors border border-orange-100 w-full justify-center border-dashed"
+        >
+            <Plus size={14} /> Add Item
+        </button>
+    </div>
+);
+
+// --- 3. SECTION WRAPPER ---
+const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => {
+    if (!activeSections?.includes(id)) return null;
+    return (
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 border-l-4 border-l-orange-500">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+                <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><Icon size={18} /></div>
+                <h3 className="font-bold text-slate-700">{title}</h3>
+            </div>
+            {children}
+        </div>
+    );
+};
+
+// --- 4. MAIN CLONE EDITOR COMPONENT ---
+export default function CloneEditor({ formData, updateField, MediaInput, activeSections }) {
+    const content = formData?.content || {};
+
+    return (
+        <div className="space-y-8 max-w-4xl mx-auto pb-20">
+            
+            {/* 1. HERO SECTION */}
+            <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Page Title (e.g. Build Your Own Uber Clone)" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
+                <textarea className={inputStyle} rows={3} placeholder="Subtitle (e.g. Launch a successful platform fast...)" value={content.hero?.subtitle || ''} onChange={e => updateField('content.hero.subtitle', e.target.value)} />
+                <MediaInput label="Hero Image (Right Side)" value={content.hero?.image} path="content.hero.image" />
+            </SectionWrapper>
+
+            {/* 2. ABOUT CLONE SECTION */}
+            <SectionWrapper id="about" icon={Layout} title="2. About Our Clone App" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Section Title" value={content.about?.title || ''} onChange={e => updateField('content.about.title', e.target.value)} />
+                <textarea className={inputStyle} rows={4} placeholder="Detailed description..." value={content.about?.description || ''} onChange={e => updateField('content.about.description', e.target.value)} />
+                <MediaInput label="About Image (Right Side)" value={content.about?.image} path="content.about.image" />
+            </SectionWrapper>
+
+            {/* 3. WHY BUILD SECTION */}
+            <SectionWrapper id="whyBuild" icon={Target} title="3. Why Build a Clone App?" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title" value={content.whyBuild?.title || ''} onChange={e => updateField('content.whyBuild.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Section Subtitle" value={content.whyBuild?.subtitle || ''} onChange={e => updateField('content.whyBuild.subtitle', e.target.value)} />
+                </div>
+                <ArrayField 
+                    label="Key Benefits (Cards)" 
+                    path="content.whyBuild.items" 
+                    items={content.whyBuild?.items} 
+                    updateField={updateField}
+                    defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="w-full space-y-2">
+                            <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Benefit Title (e.g. Proven Success)" value={item.title || ''} onChange={e => updateField(content.whyBuild.items.., e.target.value)} />
+                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Short description..." value={item.description || ''} onChange={e => updateField(content.whyBuild.items.., e.target.value)} />
+                        </div>
+                    )}
+                />
+            </SectionWrapper>
+
+            {/* 4. SERVICES / INCLUDED APPS */}
+            <SectionWrapper id="services" icon={Briefcase} title="4. Development Services / Included Apps" activeSections={activeSections}>
+                <p className="text-xs text-slate-500 mb-2">List the apps included (e.g., User App, Driver App, Admin Panel).</p>
+                <ArrayField 
+                    label="Included Components" 
+                    path="content.services.items" 
+                    items={content.services?.items} 
+                    updateField={updateField}
+                    defaultItem={{ title: "" }}
+                    renderItem={(item, i) => (
+                        <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Component Name (e.g. User App)" value={item.title || ''} onChange={e => updateField(content.services.items.., e.target.value)} />
+                    )}
+                />
+            </SectionWrapper>
+
+            {/* 5. APP FEATURES (User, Vendor, Admin) */}
+            <SectionWrapper id="appFeatures" icon={Grid} title="5. App Modules & Features" activeSections={activeSections}>
+                <p className="text-xs text-slate-500 mb-4">Define specific features for each stakeholder app.</p>
+                
+                <div className="grid gap-6">
+                    {/* User App Features */}
+                    <div className="border border-slate-200 p-4 rounded-xl bg-slate-50/50">
+                        <h4 className="font-bold text-slate-700 mb-3 flex items-center gap-2"><Users size={16} className="text-orange-500"/> User App Features</h4>
+                        <ArrayField path="content.appFeatures.user.items" items={content.appFeatures?.user?.items} updateField={updateField} defaultItem={{ title: "" }}
+                            renderItem={(item, i) => (
+                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Feature (e.g. Real-time Tracking)" value={item.title || ''} onChange={e => updateField(content.appFeatures.user.items.., e.target.value)} />
+                            )} 
+                        />
+                    </div>
+
+                    {/* Vendor App Features */}
+                    <div className="border border-slate-200 p-4 rounded-xl bg-slate-50/50">
+                        <h4 className="font-bold text-slate-700 mb-3 flex items-center gap-2"><Briefcase size={16} className="text-orange-500"/> Vendor/Driver Features</h4>
+                        <ArrayField path="content.appFeatures.vendor.items" items={content.appFeatures?.vendor?.items} updateField={updateField} defaultItem={{ title: "" }}
+                            renderItem={(item, i) => (
+                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Feature (e.g. Earnings Dashboard)" value={item.title || ''} onChange={e => updateField(content.appFeatures.vendor.items.., e.target.value)} />
+                            )} 
+                        />
+                    </div>
+
+                    {/* Admin Panel Features */}
+                    <div className="border border-slate-200 p-4 rounded-xl bg-slate-50/50">
+                        <h4 className="font-bold text-slate-700 mb-3 flex items-center gap-2"><Settings size={16} className="text-orange-500"/> Admin Dashboard Features</h4>
+                        <ArrayField path="content.appFeatures.admin.items" items={content.appFeatures?.admin?.items} updateField={updateField} defaultItem={{ title: "" }}
+                            renderItem={(item, i) => (
+                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Feature (e.g. User Management)" value={item.title || ''} onChange={e => updateField(content.appFeatures.admin.items.., e.target.value)} />
+                            )} 
+                        />
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 6. AI & ADVANCED FEATURES */}
+            <SectionWrapper id="aiFeatures" icon={Zap} title="6. AI & Advanced Features" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title" value={content.aiFeatures?.title || ''} onChange={e => updateField('content.aiFeatures.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Section Subtitle" value={content.aiFeatures?.subtitle || ''} onChange={e => updateField('content.aiFeatures.subtitle', e.target.value)} />
+                </div>
+                <ArrayField 
+                    label="Advanced Capabilities" 
+                    path="content.aiFeatures.items" 
+                    items={content.aiFeatures?.items} 
+                    updateField={updateField}
+                    defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="w-full space-y-2">
+                            <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Feature Title (e.g. Smart Routing)" value={item.title || ''} onChange={e => updateField(content.aiFeatures.items.., e.target.value)} />
+                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Description" value={item.description || ''} onChange={e => updateField(content.aiFeatures.items.., e.target.value)} />
+                        </div>
+                    )} 
+                />
+            </SectionWrapper>
+
+            {/* 7. TECH STACK */}
+            <SectionWrapper id="techStack" icon={Code} title="7. Technology Stack" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Section Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
+                <ArrayField 
+                    label="Technologies Used" 
+                    path="content.techStack.items" 
+                    items={content.techStack?.items} 
+                    updateField={updateField}
+                    defaultItem={{ name: "", image: "" }}
+                    renderItem={(item, i) => (
+                        <div className="flex gap-4 items-center bg-white p-2 rounded border border-slate-100">
+                            <div className="flex-1">
+                                <input className="w-full p-2 bg-slate-50 border rounded text-sm font-bold" placeholder="Tech Name (e.g. Flutter)" value={item.name || ''} onChange={e => updateField(content.techStack.items.., e.target.value)} />
+                            </div>
+                            <div className="w-1/2">
+                                <MediaInput label="Logo" value={item.image} path={`content.techStack.items.${i}.image`} />
+                            </div>
+                        </div>
+                    )} 
+                />
+            </SectionWrapper>
+
+            {/* 8. REVENUE MODELS */}
+            <SectionWrapper id="revenue" icon={DollarSign} title="8. Revenue & Monetization" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Section Title" value={content.revenue?.title || ''} onChange={e => updateField('content.revenue.title', e.target.value)} />
+                <ArrayField 
+                    label="Monetization Strategies" 
+                    path="content.revenue.items" 
+                    items={content.revenue?.items} 
+                    updateField={updateField}
+                    defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="w-full space-y-2">
+                            <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Model Name (e.g. Commissions)" value={item.title || ''} onChange={e => updateField(content.revenue.items.., e.target.value)} />
+                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="How it works..." value={item.description || ''} onChange={e => updateField(content.revenue.items.., e.target.value)} />
+                        </div>
+                    )} 
+                />
+            </SectionWrapper>
+
+            {/* 9. PORTFOLIO & INDUSTRIES */}
+            <SectionWrapper id="portfolio" icon={Globe} title="9. Industries & Sectors" activeSections={activeSections}>
+                <p className="text-xs text-slate-500 mb-4">Add industries where this clone app is applicable.</p>
+                <ArrayField 
+                    label="Industries List" 
+                    path="content.portfolio.items" 
+                    items={content.portfolio?.items} 
+                    updateField={updateField}
+                    defaultItem={{ title: "" }}
+                    renderItem={(item, i) => (
+                        <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Industry Name (e.g. Healthcare)" value={item.title || ''} onChange={e => updateField(content.portfolio.items.., e.target.value)} />
+                    )} 
+                />
+            </SectionWrapper>
+
+            {/* 10. PROCESS */}
+            <SectionWrapper id="process" icon={Settings} title="10. Development Process" activeSections={activeSections}>
+                <input className={inputStyle} placeholder="Section Title" value={content.process?.title || ''} onChange={e => updateField('content.process.title', e.target.value)} />
+                <ArrayField 
+                    label="Process Steps" 
+                    path="content.process.items" 
+                    items={content.process?.items} 
+                    updateField={updateField}
+                    defaultItem={{ title: "", description: "" }}
+                    renderItem={(item, i) => (
+                        <div className="w-full space-y-2">
+                            <div className="flex items-center gap-2">
+                                <span className="bg-slate-200 text-slate-600 text-xs font-bold px-2 py-1 rounded">Step {i+1}</span>
+                                <input className="flex-1 p-2 bg-white border rounded text-sm font-bold" placeholder="Step Title" value={item.title || ''} onChange={e => updateField(content.process.items.., e.target.value)} />
+                            </div>
+                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Step Description..." value={item.description || ''} onChange={e => updateField(content.process.items.., e.target.value)} />
+                        </div>
+                    )} 
+                />
+            </SectionWrapper>
+
+            {/* 11. FAQ & CTA */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="11. FAQ & Bottom CTA" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="FAQ Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="FAQ Subtitle" value={content.faq?.subtitle || ''} onChange={e => updateField('content.faq.subtitle', e.target.value)} />
+                </div>
+                
+                <div className="mt-4">
+                    <ArrayField 
+                        label="Frequently Asked Questions" 
+                        path="content.faq.items" 
+                        items={content.faq?.items} 
+                        updateField={updateField}
+                        defaultItem={{ q: "", a: "" }}
+                        renderItem={(item, i) => (
+                            <div className="w-full space-y-2">
+                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateField(content.faq.items.., e.target.value)} />
+                                <textarea className="w-full p-2 bg-white border rounded text-sm" rows={3} placeholder="Answer" value={item.a || ''} onChange={e => updateField(content.faq.items.., e.target.value)} />
+                            </div>
+                        )} 
+                    />
+                </div>
+                
+                <div className="border-t border-slate-100 pt-6 mt-6">
+                    <label className={labelStyle}>Bottom Call To Action</label>
+                    <div className="space-y-4">
+                        <input className={inputStyle} placeholder="CTA Title (e.g. Ready to Launch?)" value={content.cta?.title || ''} onChange={e => updateField('content.cta.title', e.target.value)} />
+                        <input className={inputStyle} placeholder="CTA Subtitle" value={content.cta?.subtitle || ''} onChange={e => updateField('content.cta.subtitle', e.target.value)} />
+                    </div>
+                </div>
+            </SectionWrapper>
+
+        </div>
+    );
+}

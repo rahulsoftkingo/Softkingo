@@ -164,43 +164,43 @@ export default function BlogEditPageClient({ idParam }) {
 
 
   // meta
-useEffect(() => {
-  const loadMeta = async () => {
-    try {
-      const [catRes, tagRes] = await Promise.all([
-        fetch('/api/admin/blog-categories'),
-        fetch('/api/admin/blog-tags'),
-      ]);
-      
-      // ✅ FIXED: Handle both API shapes
-      if (catRes.ok) {
-        const catData = await catRes.json();
-        console.log('Categories API response:', catData); // Debug
-        // Handle {categories: []} OR direct []
-        setCategories(
-          Array.isArray(catData?.categories) 
-            ? catData.categories 
-            : Array.isArray(catData) 
-              ? catData 
-              : []
-        );
+  useEffect(() => {
+    const loadMeta = async () => {
+      try {
+        const [catRes, tagRes] = await Promise.all([
+          fetch('/api/admin/blog-categories'),
+          fetch('/api/admin/blog-tags'),
+        ]);
+
+        // ✅ FIXED: Handle both API shapes
+        if (catRes.ok) {
+          const catData = await catRes.json();
+          console.log('Categories API response:', catData); // Debug
+          // Handle {categories: []} OR direct []
+          setCategories(
+            Array.isArray(catData?.categories)
+              ? catData.categories
+              : Array.isArray(catData)
+                ? catData
+                : []
+          );
+        }
+
+        if (tagRes.ok) {
+          const tagData = await tagRes.json();
+          console.log('Tags API response:', tagData); // Debug
+          setAllTags(
+            Array.isArray(tagData)
+              ? tagData
+              : tagData?.tags || []
+          );
+        }
+      } catch (e) {
+        console.error('Meta load error:', e);
       }
-      
-      if (tagRes.ok) {
-        const tagData = await tagRes.json();
-        console.log('Tags API response:', tagData); // Debug
-        setAllTags(
-          Array.isArray(tagData) 
-            ? tagData 
-            : tagData?.tags || []
-        );
-      }
-    } catch (e) {
-      console.error('Meta load error:', e);
-    }
-  };
-  loadMeta();
-}, []);
+    };
+    loadMeta();
+  }, []);
 
   // keep primary placement
   useEffect(() => {
@@ -316,7 +316,7 @@ useEffect(() => {
       </main>
     );
   }
- const handleThumbnailUpload = useCallback((e) => {
+  const handleThumbnailUpload = useCallback((e) => {
     const file = e.target.files?.[0];
     if (!file || !file.type.startsWith('image/')) {
       setError('Please select valid image');
@@ -412,7 +412,7 @@ useEffect(() => {
 
   const openImageBrowser = (fieldName) => {
     setCurrentImageField(fieldName);
-    setCurrentFolder('blog');
+    setCurrentFolder('blogs');
     setSearchQuery('');
     setShowImageBrowser(true);
   };
@@ -433,7 +433,7 @@ useEffect(() => {
     setForm((prev) => ({ ...prev, [currentImageField]: path }));
     setShowImageBrowser(false);
   };
- 
+
   const handleFileUpload = async (e, fieldName) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -441,7 +441,7 @@ useEffect(() => {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      fd.append('folder', 'blog');
+      fd.append('folder', 'blogs');
       const res = await fetch('/api/admin/media/upload', { method: 'POST', body: fd });
       if (!res.ok) throw new Error('Upload failed');
       const data = await res.json();

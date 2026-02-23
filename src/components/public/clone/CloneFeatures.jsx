@@ -1,104 +1,130 @@
 import React from 'react';
-import { Smartphone, Users, Settings, Zap, Shield, Globe } from 'lucide-react';
+import { Users, Briefcase, Settings, Smartphone, ArrowRight } from 'lucide-react';
 import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function CloneFeatures({ data }) {
-  const { user, vendor, admin } = data || {};
+  const defaultFeatures = {
+    user: {
+      title: "User App Features",
+      icon: <Users className="text-sky-500" size={32} />,
+      items: [
+        "Real-time GPS Tracking",
+        "Secure Payment Integration", 
+        "Multi-language Support",
+        "Push Notifications",
+        "Rating & Review System"
+      ]
+    },
+    vendor: {
+      title: "Driver/Partner App Features", 
+      icon: <Briefcase className="text-sky-500" size={32} />,
+      items: [
+        "Earnings Dashboard",
+        "Route Optimization",
+        "Instant Notifications",
+        "Document Management",
+        "Performance Analytics"
+      ]
+    },
+    admin: {
+      title: "Admin Panel Features",
+      icon: <Settings className="text-sky-500" size={32} />,
+      items: [
+        "User Management",
+        "Revenue Analytics",
+        "Content Management",
+        "Support Ticket System",
+        "Custom Reports"
+      ]
+    }
+  };
 
-  const renderFeatureList = (features, title, icon, bgColor) => (
-    <div className={`${bgColor} p-8 rounded-2xl border border-slate-200`}>
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-      </div>
-      
-      <div className="space-y-4">
-        {features?.items?.map((feature, i) => (
-          <div key={i} className="flex items-start gap-3 group">
-            <div className="w-6 h-6 bg-sky-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-            <div>
-              <h4 className="font-semibold text-slate-900 mb-1 group-hover:text-sky-600 transition-colors">
-                {feature.title}
-              </h4>
-            </div>
-          </div>
-        )) || (
-          <p className="text-slate-500 italic">No features added yet</p>
-        )}
-      </div>
-    </div>
-  );
+  // Safe render function to handle malformed data
+  const safeRenderItem = (item) => {
+    if (typeof item === 'string') return item;
+    if (typeof item === 'object' && item !== null) {
+      return item.title || item.name || item.description || JSON.stringify(item);
+    }
+    return String(item || '');
+  };
+
+  const features = data || defaultFeatures;
 
   return (
-    <section className="py-20 lg:py-28 px-6 bg-white">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Header */}
+    <section className="py-20 lg:py-28 px-6 bg-slate-50 relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <CommonTitle 
-            title={data?.title || "Comprehensive Clone Features"}
-            subtitle={data?.subtitle || "Complete platform with features for all user types and administrators"}
-            pill={true}
+          title="Comprehensive App Features"
+          subtitle="Powerful functionality designed for all stakeholders in your clone ecosystem"
+          pill={true}
+          align="center"
         />
 
-        {/* Features Grid */}
-        <div className="space-y-8">
-          
-          {/* User Features */}
-          {user && renderFeatureList(
-            user,
-            "User Features",
-            <Smartphone className="text-sky-500" size={24} />,
-            "bg-slate-50"
-          )}
+        <div className="grid md:grid-cols-3 gap-8 mt-16">
+          {Object.entries(features).map(([key, section]) => {
+            // Skip if section is malformed
+            if (!section || typeof section !== 'object') return null;
+            
+            return (
+              <div key={key} className="group">
+                {/* Feature Card */}
+                <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full">
+                  {/* Header */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 bg-sky-50 rounded-2xl flex items-center justify-center group-hover:bg-sky-100 group-hover:scale-110 transition-all duration-300">
+                      {section.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
+                        {typeof section.title === 'string' ? section.title : 'Features'}
+                      </h3>
+                    </div>
+                  </div>
 
-          {/* Vendor/Partner Features */}
-          {vendor && renderFeatureList(
-            vendor,
-            "Vendor/Partner Features",
-            <Users className="text-sky-500" size={24} />,
-            "bg-sky-50"
-          )}
+                  {/* Features List */}
+                  <div className="space-y-4">
+                    {(Array.isArray(section.items) ? section.items : []).map((item, i) => (
+                      <div key={i} className="flex items-center gap-3 group/item">
+                        <div className="w-2 h-2 bg-sky-400 rounded-full group-hover/item:bg-sky-600 group-hover/item:scale-150 transition-all duration-300"></div>
+                        <span className="text-slate-700 group-hover/item:text-sky-600 transition-colors">
+                          {safeRenderItem(item)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
 
-          {/* Admin Features */}
-          {admin && renderFeatureList(
-            admin,
-            "Admin Dashboard",
-            <Settings className="text-sky-500" size={24} />,
-            "bg-slate-50"
-          )}
+                  {/* CTA */}
+                  <div className="mt-8 pt-6 border-t border-slate-100">
+                    <a 
+                      href="/contact" 
+                      className="inline-flex items-center gap-2 text-sky-600 font-semibold hover:text-sky-700 hover:gap-3 transition-all duration-300"
+                    >
+                      Explore {key === 'user' ? 'User' : key === 'vendor' ? 'Driver' : 'Admin'} Features 
+                      <ArrowRight size={16} />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            );
+          }).filter(Boolean)}
         </div>
 
-        {/* Additional Benefits */}
-        <div className="mt-16 bg-gradient-to-r from-sky-50 to-slate-50 rounded-2xl p-8 border border-sky-100">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Zap className="text-white" size={32} />
-              </div>
-              <h4 className="font-bold text-slate-900 mb-2">Lightning Fast</h4>
-              <p className="text-slate-600 text-sm">Optimized performance for smooth user experience</p>
+        {/* Bottom Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
+          {[
+            { number: "50+", label: "Core Features" },
+            { number: "100%", label: "Customizable" },
+            { number: "24/7", label: "Support" },
+            { number: "99.9%", label: "Uptime" }
+          ].map((stat, i) => (
+            <div key={i} className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="text-3xl font-bold text-sky-600 mb-2">{stat.number}</div>
+              <div className="text-sm text-slate-600">{stat.label}</div>
             </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Shield className="text-white" size={32} />
-              </div>
-              <h4 className="font-bold text-slate-900 mb-2">Secure & Reliable</h4>
-              <p className="text-slate-600 text-sm">Enterprise-grade security and data protection</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Globe className="text-white" size={32} />
-              </div>
-              <h4 className="font-bold text-slate-900 mb-2">Scalable</h4>
-              <p className="text-slate-600 text-sm">Built to grow with your business needs</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

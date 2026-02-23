@@ -8,7 +8,7 @@ const UPLOAD_ROOT = path.join(process.cwd(), 'public', 'uploads');
 async function ensureDir(dir) {
   try {
     await fs.mkdir(dir, { recursive: true });
-  } catch {}
+  } catch { }
 }
 
 // ✅ Helper: Sanitize filename
@@ -25,7 +25,7 @@ export async function POST(req) {
   try {
     const formData = await req.formData();
     const file = formData.get('file');
-    const folder = (formData.get('folder') || 'general').toString();
+    const folder = (formData.get('folder') || '').toString();
 
     if (!file || typeof file === 'string') {
       return NextResponse.json(

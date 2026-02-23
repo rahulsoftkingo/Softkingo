@@ -36,6 +36,20 @@ export default function CloneAI({ data }) {
     }
   ];
 
+  // Safe render function to handle malformed data
+  const safeRenderFeature = (feature) => {
+    if (typeof feature === 'string') return { title: feature, description: '' };
+    if (typeof feature === 'object' && feature !== null) {
+      return {
+        title: typeof feature.title === 'string' ? feature.title : 
+               typeof feature.name === 'string' ? feature.name : 'AI Feature',
+        description: typeof feature.description === 'string' ? feature.description : 
+                    typeof feature.desc === 'string' ? feature.desc : 'Advanced AI capability'
+      };
+    }
+    return { title: 'AI Feature', description: 'Advanced AI capability' };
+  };
+
   const features = data?.items?.length > 0 ? data.items : defaultFeatures;
 
   return (
@@ -51,25 +65,28 @@ export default function CloneAI({ data }) {
 
         {/* Features Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, i) => (
-            <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-lg hover:border-sky-200 transition-all duration-300 group">
-              
-              {/* Icon */}
-              <div className="w-16 h-16 bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                {feature.icon || (
-                  <div className="w-8 h-8 bg-sky-500 rounded-lg"></div>
-                )}
-              </div>
+          {(Array.isArray(features) ? features : []).map((feature, i) => {
+            const safeFeature = safeRenderFeature(feature);
+            return (
+              <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-lg hover:border-sky-200 transition-all duration-300 group">
+                
+                {/* Icon */}
+                <div className="w-16 h-16 bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  {safeFeature.icon || (
+                    <div className="w-8 h-8 bg-sky-500 rounded-lg"></div>
+                  )}
+                </div>
 
-              {/* Content */}
-              <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-sky-600 transition-colors">
-                {feature.title}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
+                {/* Content */}
+                <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-sky-600 transition-colors">
+                  {safeFeature.title}
+                </h3>
+                <p className="text-slate-600 leading-relaxed">
+                  {safeFeature.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
 
         {/* AI Capabilities Showcase */}

@@ -15,7 +15,7 @@ export async function GET(request) {
   const status = searchParams.get('status') || 'all';
 
   const whereClause = {};
-  
+
   // Search filter
   if (q) {
     whereClause.OR = [
@@ -24,12 +24,12 @@ export async function GET(request) {
       { department: { contains: q } },
     ];
   }
-  
+
   // Category filter
   if (category !== 'all') {
     whereClause.category = category;
   }
-  
+
   // Status filter
   if (status !== 'all') {
     whereClause.status = status;
@@ -69,7 +69,7 @@ export async function POST(request) {
   }
 
   const body = await request.json();
-  const { name, title, department, category, photo, bio, linkedinUrl, status, order, featured } =
+  const { name, title, department, category, photo, bio, linkedinUrl, status, order, featured, seoTitle, seoDescription, seoImage } =
     body;
 
   if (!name) {
@@ -91,6 +91,9 @@ export async function POST(request) {
       status: status || 'active',
       order: parseInt(order) || 0,
       featured: !!featured,
+      seoTitle: seoTitle || null,
+      seoDescription: seoDescription || null,
+      seoImage: seoImage || null,
     },
   });
 

@@ -32,15 +32,18 @@ export async function POST(req) {
   }
 
   try {
-    const { name, slug } = await req.json();
+    const { name, slug, seoTitle, seoDescription, seoImage } = await req.json();
     if (!name?.trim() || !slug?.trim()) {
       return NextResponse.json({ message: 'Name and slug required' }, { status: 400 });
     }
 
     const category = await prisma.blogCategory.create({
-      data: { 
-        name: name.trim(), 
-        slug: slug.trim() 
+      data: {
+        name: name.trim(),
+        slug: slug.trim(),
+        seoTitle: seoTitle || null,
+        seoDescription: seoDescription || null,
+        seoImage: seoImage || null,
       },
     });
     return NextResponse.json(category, { status: 201 });

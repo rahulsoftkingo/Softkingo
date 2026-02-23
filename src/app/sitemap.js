@@ -194,18 +194,20 @@ export default async function sitemap() {
         url: `${baseUrl}/e-guides/${guide.slug}`,
         lastModified: guide.updatedAt ?? new Date(),
         // changeFrequency: "monthly",
-        priority: 8
+        priority: 0.8
       }));
     dynamicRoutes.push(...eGuideRoutes);
 
-    // 5. Pages (services, hire, solutions)
+    // 5. Pages (services, hire, solutions, industries)
     const pageRoutes = pages
       .filter(page => page.slug)
       .map(page => {
         const basePath = {
           'service': '/services',
           'hire': '/hire',
-          'solution': '/solutions'
+          'solution': '/solutions',
+          'industry': '/industries',
+          'clone': '/solutions'
         }[page.type] || `/${page.type}`;
 
         return {

@@ -328,23 +328,21 @@ export default async function ServicePage({ params }) {
         </section>
       )}
 
-      {/* Service Cards Section */}
-      {content.cards && (
+      {/* Services Section */}
+      {content.services && (
         <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-12 md:py-16 px-4 md:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
-
             <CommonTitle
               align="center"
               pill={false}
-              title={content.servicesTitle}
+              title={content.services.title}
               gradientText=""
-              subtitle={content.servicesSub}
+              subtitle={content.services.subtitle}
             />
 
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {content.cards.map((card, idx) => {
-                const Icon = iconMap[card.iconName] || FaMobileAlt;
+              {content.services.items.map((item, idx) => {
+                const Icon = iconMap[item.iconName] || FaMobileAlt;
                 return (
                   <div
                     key={idx}
@@ -361,14 +359,108 @@ export default async function ServicePage({ params }) {
                       <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-cyan-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3 group-hover:text-cyan-600 transition-colors">
-                      {card.title}
+                      {item.title}
                     </h3>
                     <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                      {card.text}
+                      {item.description}
                     </p>
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Tech Stack Section */}
+      {content.tech && (
+        <section className="bg-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
+          <div className="max-w-7xl mx-auto">
+            <CommonTitle
+              align="center"
+              pill={false}
+              title={content.tech.title}
+              gradientText=""
+              subtitle={content.tech.subtitle}
+            />
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
+              {content.tech.items.map((tech, idx) => (
+                <div key={idx} className="flex flex-col items-center space-y-3">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
+                    <Image
+                      src={tech.image}
+                      alt={tech.name}
+                      width={60}
+                      height={60}
+                      className="w-12 h-12 md:w-16 md:h-16 object-contain"
+                    />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700 text-center">
+                    {tech.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Process Section */}
+      {content.process && (
+        <section className="bg-gradient-to-br from-slate-50 to-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
+          <div className="max-w-7xl mx-auto">
+            <CommonTitle
+              align="center"
+              pill={false}
+              title={content.process.title}
+              gradientText=""
+              subtitle={content.process.subtitle}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {content.process.items.map((step, idx) => (
+                <div key={idx} className="relative">
+                  <div className="bg-white rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
+                    <div className="flex items-center mb-4">
+                      <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-sky-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        {idx + 1}
+                      </div>
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
+                      {step.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ Section */}
+      {content.faq && (
+        <section className="bg-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
+          <div className="max-w-4xl mx-auto">
+            <CommonTitle
+              align="center"
+              pill={false}
+              title={content.faq.title}
+              gradientText=""
+              subtitle={content.faq.subtitle}
+            />
+
+            <div className="space-y-4">
+              {content.faq.items.map((faq, idx) => (
+                <FAQAccordion
+                  key={idx}
+                  question={faq.q}
+                  answer={faq.a}
+                />
+              ))}
             </div>
           </div>
         </section>

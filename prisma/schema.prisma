@@ -139,17 +139,23 @@ model BlogCategory {
   name      String
   slug      String     @unique(map: "BlogCategory_slug_key")
   createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  posts     BlogPost[]
+  updatedAt      DateTime   @updatedAt
+  posts          BlogPost[]
+  seoTitle       String?
+  seoDescription String?
+  seoImage       String?
 
   @@map("blogcategory")
 }
 
 model BlogTag {
   id    Int           @id @default(autoincrement())
-  name  String
-  slug  String        @unique(map: "BlogTag_slug_key")
-  posts BlogPostTag[]
+  name           String
+  slug           String        @unique(map: "BlogTag_slug_key")
+  posts          BlogPostTag[]
+  seoTitle       String?
+  seoDescription String?
+  seoImage       String?
 
   @@map("blogtag")
 }
@@ -311,6 +317,7 @@ model CaseStudy {
   findYourAppJson   String?            @db.Text
   seoTitle          String?
   seoDescription    String?
+  seoImage          String?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   portfolioProjects PortfolioProject[]
@@ -372,8 +379,11 @@ model TeamMember {
   updatedAt   DateTime @updatedAt
 
   // New optional fields - won't affect existing data
-  category    String?  // employee, management, tech-lead, intern
-  status      String?  // active, inactive, alumni
+  category       String?  // employee, management, tech-lead, intern
+  status         String?  // active, inactive, alumni
+  seoTitle       String?
+  seoDescription String?
+  seoImage       String?
 
   @@map("teammember")
 }

@@ -8,7 +8,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 export default function CloneFAQ({ data }) {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const defaultFAQs = [
+  const defaultFaqs= [
     {
       q: "How long does it take to develop a clone app?",
       a: "Typically, a basic clone app takes 4-8 weeks for development, while more complex platforms with custom features can take 3-6 months. The timeline depends on the scope of features and customization required."
@@ -35,7 +35,23 @@ export default function CloneFAQ({ data }) {
     }
   ];
 
-  const faqs = data?.items?.length > 0 ? data.items : defaultFAQs;
+  // Safe render function to handle malformed data
+  const safeRenderFAQ = (faq) => {
+    if (typeof faq === 'string') return { q: faq, a: '' };
+    if (typeof faq === 'object' && faq !== null) {
+      return {
+        q: typeof faq.q === 'string' ? faq.q : 
+           typeof faq.question === 'string' ? faq.question : 
+           typeof faq.title === 'string' ? faq.title : 'Question?',
+        a: typeof faq.a === 'string' ? faq.a : 
+           typeof faq.answer === 'string' ? faq.answer : 
+           typeof faq.description === 'string' ? faq.description : 'Answer not available'
+      };
+    }
+    return { q: 'Question?', a: 'Answer not available' };
+  };
+
+  const faqs = data?.items?.length > 0 ? data.items.map(safeRenderFAQ) : defaultFaqs.map(safeRenderFAQ);
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);

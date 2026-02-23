@@ -15,7 +15,7 @@ export default function JoinTeamPopup({ isOpen, onClose }) {
     portfolio: '',
     message: ''
   });
-
+  const [resume, setResume] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -23,14 +23,33 @@ export default function JoinTeamPopup({ isOpen, onClose }) {
     setIsSubmitting(true);
 
     try {
-      // Send to your email or API endpoint
-      const response = await fetch('/api/career-application', {
+      // Split name into first and last
+      const nameParts = formData.name.trim().split(/\s+/);
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '.'; // Fallback dot if no last name
+
+      const data = new FormData();
+      data.append('firstName', firstName);
+      data.append('lastName', lastName);
+      data.append('email', formData.email);
+      data.append('phone', formData.phone);
+      data.append('position', formData.position);
+      data.append('experience', formData.experience);
+      data.append('linkedinUrl', formData.linkedin);
+      data.append('portfolioUrl', formData.portfolio);
+      data.append('coverLetter', formData.message);
+      data.append('source', 'JoinTeamPopup');
+
+      if (resume) {
+        data.append('resume', resume);
+      }
+
+      const response = await fetch('/api/career', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: data, // FormData handles Content-Type automatically
       });
+
+      const result = await response.json();
 
       if (response.ok) {
         alert('Application submitted successfully! We will get back to you soon.');
@@ -45,9 +64,10 @@ export default function JoinTeamPopup({ isOpen, onClose }) {
           portfolio: '',
           message: ''
         });
+        setResume(null);
         onClose();
       } else {
-        alert('Failed to submit application. Please try again.');
+        alert(result.error || 'Failed to submit application. Please try again.');
       }
     } catch (error) {
       console.error('Application error:', error);
@@ -58,8 +78,12 @@ export default function JoinTeamPopup({ isOpen, onClose }) {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setResume(files[0]);
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   if (!isOpen) return null;
@@ -67,11 +91,11 @@ export default function JoinTeamPopup({ isOpen, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex">
       {/* Backdrop */}
-      <div 
+      <div
         className="flex-1 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      
+
       {/* Modal */}
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -221,19 +245,33 @@ export default function JoinTeamPopup({ isOpen, onClose }) {
                   />
                 </div>
 
-                {/* Portfolio */}
+                {/* Resume Upload */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Portfolio/Website
+                    Upload Resume (PDF/Doc) *
                   </label>
-                  <input
-                    type="url"
-                    name="portfolio"
-                    value={formData.portfolio}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500"
-                    placeholder="https://yourportfolio.com"
-                  />
+                  <div className="relative">
+                    <input
+                      type="file"
+                      name="resume"
+                      onChange={handleChange}
+                      accept=".pdf,.doc,.docx"
+                      required
+                      className="hidden"
+                      id="resume-upload"
+                    />
+                    <label
+                      htmlFor="resume-upload"
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-lg border border-dashed border-slate-300 hover:border-sky-500 hover:bg-sky-50 transition-all cursor-pointer"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500">
+                        <Plus className="w-4 h-4" />
+                      </div>
+                      <span className="text-sm text-slate-600 truncate">
+                        {resume ? resume.name : 'Choose file...'}
+                      </span>
+                    </label>
+                  </div>
                 </div>
 
                 {/* Message */}

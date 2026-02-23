@@ -16,13 +16,13 @@ export default function OptimizedChatWidget() {
   useEffect(() => {
     const savedConversation = localStorage.getItem('chatConversation');
     const savedVisitorInfo = localStorage.getItem('chatVisitorInfo');
-    
+
     if (savedConversation) {
       const data = JSON.parse(savedConversation);
       setConversationId(data.id);
       setShowInfoForm(false);
     }
-    
+
     if (savedVisitorInfo) {
       setVisitorInfo(JSON.parse(savedVisitorInfo));
     }
@@ -30,7 +30,7 @@ export default function OptimizedChatWidget() {
 
   // Use optimized polling hook
   const { messages, isLoading, refetch } = useChatPolling(
-    conversationId, 
+    conversationId,
     !showInfoForm && isOpen, // Only poll when chat is open and form is not shown
     15000 // Increased to 15 seconds
   );
@@ -42,7 +42,7 @@ export default function OptimizedChatWidget() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(visitorInfo),
       });
-      
+
       if (res.ok) {
         const data = await res.json();
         setConversationId(data.id);
@@ -80,7 +80,7 @@ export default function OptimizedChatWidget() {
 
   const markMessagesAsRead = async () => {
     if (!conversationId) return;
-    
+
     try {
       await fetch('/api/chat/message', {
         method: 'PUT',
@@ -100,7 +100,7 @@ export default function OptimizedChatWidget() {
   }, [isOpen, conversationId]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-[100px] lg:bottom-4 right-4 z-50">
       {/* Chat Button */}
       {!isOpen && (
         <button
@@ -141,13 +141,13 @@ export default function OptimizedChatWidget() {
                   type="text"
                   placeholder="Your Name"
                   className="w-full p-2 border rounded-lg"
-                  onChange={(e) => setVisitorInfo({...visitorInfo, name: e.target.value})}
+                  onChange={(e) => setVisitorInfo({ ...visitorInfo, name: e.target.value })}
                 />
                 <input
                   type="email"
                   placeholder="Your Email"
                   className="w-full p-2 border rounded-lg"
-                  onChange={(e) => setVisitorInfo({...visitorInfo, email: e.target.value})}
+                  onChange={(e) => setVisitorInfo({ ...visitorInfo, email: e.target.value })}
                 />
                 <button
                   onClick={createConversation}
@@ -164,11 +164,10 @@ export default function OptimizedChatWidget() {
                     className={`flex ${message.sender === 'visitor' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[70%] p-3 rounded-lg ${
-                        message.sender === 'visitor'
-                          ? 'bg-sky-600 text-white'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
+                      className={`max-w-[70%] p-3 rounded-lg ${message.sender === 'visitor'
+                        ? 'bg-sky-600 text-white'
+                        : 'bg-gray-100 text-gray-800'
+                        }`}
                     >
                       <p className="text-sm">{message.content}</p>
                       <p className="text-xs opacity-70 mt-1">
@@ -182,8 +181,8 @@ export default function OptimizedChatWidget() {
                     <div className="bg-gray-100 p-3 rounded-lg">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>

@@ -71,7 +71,7 @@ function RightVisualCarousel({ items = [], type = 'app' }) {
 
   return (
     <div className="relative w-full h-full" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {slides.map((slide, i) => {
           const offset = i - index;
           if (Math.abs(offset) > 1) return null;
@@ -136,9 +136,8 @@ function RightVisualCarousel({ items = [], type = 'app' }) {
           <button
             key={i}
             onClick={() => setIndex(i)}
-            className={`rounded-full transition-all duration-300 ${
-              i === index ? 'w-5 h-1.5 bg-sky-800' : 'w-1.5 h-1.5 bg-sky-300 hover:bg-sky-500'
-            }`}
+            className={`rounded-full transition-all duration-300 ${i === index ? 'w-5 h-1.5 bg-sky-800' : 'w-1.5 h-1.5 bg-sky-300 hover:bg-sky-500'
+              }`}
             aria-label={`Go to slide ${i + 1}`}
           />
         ))}
@@ -420,9 +419,8 @@ export default function PortfolioSlider() {
             <button
               key={index}
               onClick={() => setActiveSlide(index)}
-              className={`h-2.5 rounded-full transition-all ${
-                activeSlide === index ? 'bg-sky-600 w-8' : 'bg-gray-300 w-2.5'
-              }`}
+              className={`h-2.5 rounded-full transition-all ${activeSlide === index ? 'bg-sky-600 w-8' : 'bg-gray-300 w-2.5'
+                }`}
               aria-label={`Slide ${index + 1}`}
             />
           ))}

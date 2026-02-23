@@ -94,6 +94,7 @@ export async function PATCH(request, { params }) {
           : body.findYourAppJson || null,
       seoTitle: body.seoTitle || null,
       seoDescription: body.seoDescription || null,
+      seoImage: body.seoImage || null,
     },
   });
 

@@ -39,7 +39,7 @@ export async function PATCH(request, { params }) {
   }
 
   const body = await request.json();
-  const { name, title, department, category, photo, bio, linkedinUrl, status, order, featured } =
+  const { name, title, department, category, photo, bio, linkedinUrl, status, order, featured, seoTitle, seoDescription, seoImage } =
     body;
 
   const member = await prisma.teamMember.update({
@@ -55,6 +55,9 @@ export async function PATCH(request, { params }) {
       status,
       order: order ? parseInt(order) : 0,
       featured,
+      seoTitle: seoTitle || null,
+      seoDescription: seoDescription || null,
+      seoImage: seoImage || null,
     },
   });
 

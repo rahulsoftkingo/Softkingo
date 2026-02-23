@@ -3,7 +3,7 @@
 
 import TestimonialCarousel from "./TestimonialCarousel";
 
-export default function TechAheadSection({ 
+export default function TechAheadSection({
   showTitle = true,
   showAddress = true,
   showContact = true, // New option to show/hide contact
@@ -35,15 +35,15 @@ export default function TechAheadSection({
       <div className="mb-6">
         {showTitle && (
           <>
-          
-             <span className="inline-flex items-center gap-2 rounded-full bg-sky-50/50 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#0B3250] shadow-[0_8px_20px_rgba(0,0,0,0.05)] mb-3">
-            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+
+            <span className="inline-flex items-center gap-2 rounded-full bg-sky-50/50 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#0B3250] shadow-[0_8px_20px_rgba(0,0,0,0.05)] mb-3">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               {tagline}
-          </span>
+            </span>
             <h2 className="text-2xl lg:text-3xl font-bold text-sky-900  leading-tight bg-gradient-to-r from-sky-900 via-sky-800 to-sky-700 bg-clip-text">
               {title}
             </h2>
-            
+
             {/* <p className="text-sm text-gray-600 mb-1 leading-relaxed">
               {subtitle}
             </p> */}
@@ -54,12 +54,12 @@ export default function TechAheadSection({
       {/* Testimonial Carousel */}
       <div className="mb-8 flex-1">
         <TestimonialCarousel columns={testimonialColumns} />
-        
+
         {/* Contact Buttons - Conditional Rendering */}
         {showContact && (showEmail || showPhone) && (
           <div className="space-y-2.5 mt-5 hidden">
             {showEmail && (
-              <a 
+              <a
                 href={`mailto:${email}`}
                 className="inline-flex items-center gap-3 group w-full hover:bg-gradient-to-r hover:from-sky-50 hover:to-blue-50 p-3 rounded-xl transition-all border border-transparent hover:border-sky-200"
               >
@@ -73,7 +73,7 @@ export default function TechAheadSection({
             )}
 
             {showPhone && (
-              <a 
+              <a
                 href={`tel:${phone.replace(/[^0-9+]/g, '')}`}
                 className="inline-flex items-center gap-3 group w-full hover:bg-gradient-to-r hover:from-blue-50 hover:to-sky-50 p-3 rounded-xl transition-all border border-transparent hover:border-blue-200"
               >
@@ -99,11 +99,11 @@ export default function TechAheadSection({
             Trusted by Leading Companies
           </p>
         </div>
-        
+
         {/* Logo Grid */}
         <div className="flex flex-wrap gap-3 mb-4 items-center justify-center">
           {clientLogos.map((logo, index) => (
-            <div 
+            <div
               key={index}
               className="aspect-[0]  transition-all flex items-center justify-center p-2 group overflow-hidden"
             >
@@ -113,7 +113,7 @@ export default function TechAheadSection({
                 className="w-full h-full object-contain opacity-100 group-hover:opacity-100 transition-opacity filter grayscale-0 group-hover:grayscale-0"
                 onError={(e) => {
                   e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center  text-xs font-bold">LOGO</div>';
+                  e.target.parentElement.innerHTML = '<div className="w-full h-full flex items-center justify-center  text-xs font-bold">LOGO</div>';
                 }}
               />
             </div>
