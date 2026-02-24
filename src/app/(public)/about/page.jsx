@@ -237,7 +237,7 @@ export default async function AboutUs() {
 
             <div className='flex justify-between text-white items-center'>
               <a href="gallery" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
-               Inside  Gallery
+                Inside  Gallery
               </a>
               <FiArrowRight size={20} className="ml-4" />
             </div>
@@ -580,7 +580,7 @@ export default async function AboutUs() {
 
 
       <GallerySectionSafe />
-        {/* <FAQAccordion /> */}
+      <FAQAccordion />
       <InquirySection />
     </div>
   );

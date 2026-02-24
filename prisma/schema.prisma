@@ -778,3 +778,22 @@ model CareerApplication {
 
   @@map("careerapplication")
 }
+
+model JobOpening {
+  id           Int      @id @default(autoincrement())
+  title        String
+  department   String
+  location     String
+  experience   String
+  type         String   @default("Full Time")
+  salary       String?
+  description  String?  @db.Text
+  requirements String?  @db.Text
+  status       String   @default("active") // active | inactive | filled
+  featured     Boolean  @default(false)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("jobopening")
+}

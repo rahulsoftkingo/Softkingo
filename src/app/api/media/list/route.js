@@ -9,7 +9,16 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     // Sanitize folder path
     const folder = (searchParams.get('folder') || '').replace(/\\/g, '/');
-    const safeFolder = folder.replace(/^\//, '').replace(/\.\./g, '');
+    // Ensure we are always inside public/uploads or similar for safety
+    let safeFolder = folder.replace(/^\//, '').replace(/\.\./g, '');
+
+    // If it doesn't start with 'uploads', prepend it to match the UPLOAD_ROOT in upload API
+    if (!safeFolder.startsWith('uploads') && safeFolder !== '') {
+      safeFolder = `uploads/${safeFolder}`;
+    } else if (safeFolder === '') {
+      safeFolder = 'uploads';
+    }
+
     const targetDir = path.join(PUBLIC_DIR, safeFolder);
 
     // 1. Check if directory exists
@@ -26,20 +35,20 @@ export async function GET(req) {
           return NextResponse.json({ files: [] });
         }
       } else {
-         // If path is invalid or non-existent and we won't create it
-         return NextResponse.json({ files: [] });
+        // If path is invalid or non-existent and we won't create it
+        return NextResponse.json({ files: [] });
       }
     }
 
     let files = [];
     try {
       const entries = await fs.readdir(targetDir, { withFileTypes: true });
-      
+
       // ✅ Parallel stat calls for performance
       const filePromises = entries.map(async (e) => {
         const fullPath = path.join(targetDir, e.name);
         let size = 0;
-        
+
         if (!e.isDirectory()) {
           try {
             const stat = await fs.stat(fullPath);

@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Search, Plus, Edit2, Trash2 } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, } from 'lucide-react';
 import EmployeeDrawer from './EmployeeDrawer';
 
 export default function EmployeesPage() {
@@ -142,8 +142,8 @@ export default function EmployeesPage() {
                                 emp.photo.startsWith('http')
                                   ? emp.photo
                                   : emp.photo.startsWith('/')
-                                  ? emp.photo
-                                  : `/${emp.photo}`
+                                    ? emp.photo
+                                    : `/${emp.photo}`
                               }
                               alt={emp.name}
                               className="h-9 w-9 rounded-full object-cover"
@@ -218,8 +218,8 @@ export default function EmployeesPage() {
                           emp.photo.startsWith('http')
                             ? emp.photo
                             : emp.photo.startsWith('/')
-                            ? emp.photo
-                            : `/${emp.photo}`
+                              ? emp.photo
+                              : `/${emp.photo}`
                         }
                         alt={emp.name}
                         className="h-10 w-10 rounded-full object-cover"

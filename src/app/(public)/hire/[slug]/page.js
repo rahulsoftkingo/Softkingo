@@ -971,6 +971,7 @@ import FooterForm from '@/components/footer/InquirySection';
 import HireDevelopersPage from './SelectDeveloper';
 import TechStack from './TechStack';
 import CommonTitle from '@/components/ui/CommonTitle';
+import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
 
 // --- ICONS ---
 import { BsCheckCircle, BsTransparency, BsFileEarmarkBarGraph } from 'react-icons/bs';
@@ -1040,6 +1041,7 @@ function normalizeHireContent(page) {
     steps: Array.isArray(c.steps) ? c.steps : [],
     services: Array.isArray(c.services) ? c.services : [],
     moreServices: Array.isArray(c.moreServices) ? c.moreServices : [],
+    portfolioCategory: c.portfolioCategory || "", // NEW: for dynamic portfolio linking
 
     profileSection: {
       enabled: c.profileSection?.enabled ?? true,
@@ -1366,107 +1368,107 @@ export default async function HireSlugPage({ params }) {
       {/* 6. SELECT DEVELOPER COMPONENT (Already built) */}
       <HireDevelopersPage />
 
-     {/* 7. MORE SERVICES (Stacking Cards + Sticky Right Content) */}
+      {/* 7. MORE SERVICES (Stacking Cards + Sticky Right Content) */}
       {content.moreServices.length > 0 && (
         <section className="py-24 bg-gradient-to-br from-white via-sky-50 to-sky-200 px-6">
-            <div className="max-w-7xl mx-auto">
-                
-                <div className="flex flex-col lg:flex-row gap-16 items-start">
-                    
-                    {/* LEFT SIDE: SCROLLABLE STACKING CARDS */}
-                    <div className="w-full lg:w-1/2">
-                        <div className="mb-12">
-                             <CommonTitle 
-                                align="left"
-                                title="Services Provided" 
-                                subtitle="Comprehensive tech solutions for your business growth."
-                            />
-                        </div>
+          <div className="max-w-7xl mx-auto">
 
-                        <div className="flex flex-col pb-24 max-h-[90vh] overflow-auto">
-                            {content.moreServices.map((s, i) => (
-                                <div 
-                                    key={i} 
-                                    // STICKY MAGIC: Har card thoda niche stick hoga
-                                    className="sticky bg-white rounded-3xl p-8 border border-slate-200 mb-6 transition-all"
-                                    style={{ 
-                                        top: `${100 + (i * 20)}px`, // 100px base + 20px increment per card
-                                        zIndex: i + 1 
-                                    }} 
-                                >
-                                    <div className="flex gap-6 items-start">
-                                        <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600">
-                                            {getIcon(s.iconKey, 30)}
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-slate-900 mb-3 text-xl">{s.title}</h4>
-                                            <p className="text-slate-600 leading-relaxed text-base">
-                                                {s.description}
-                                            </p>
-                                            
-                                            {/* Optional: Add small tags or bullet points if available in data */}
-                                            <div className="mt-4 flex flex-wrap gap-2">
-                                                <span className="text-[10px] uppercase font-bold text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
-                                                    Professional
-                                                </span>
-                                                <span className="text-[10px] uppercase font-bold text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-                                                    Reliable
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+            <div className="flex flex-col lg:flex-row gap-16 items-start">
 
-                    {/* RIGHT SIDE: STATIC CONTENT (Sticky) */}
-                    <div className="hidden lg:block w-1/2 sticky top-32 h-fit">
-                        <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden border border-slate-800">
-                             {/* Decorative Background */}
-                             <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500 rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
-                             <div className="absolute bottom-0 left-0 w-40 h-40 bg-emerald-500 rounded-full blur-[60px] opacity-10 pointer-events-none"></div>
-
-                             <div className="relative z-10">
-                                 <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 border border-white/10">
-                                     <BsFileEarmarkBarGraph className="w-8 h-8 text-sky-400" />
-                                 </div>
-
-                                 <h3 className="text-3xl font-bold mb-6 leading-tight">
-                                     Why Choose Our <br/> <span className="text-sky-400">Development Services?</span>
-                                 </h3>
-
-                                 <p className="text-slate-300 leading-relaxed mb-8 text-lg">
-                                     We don't just write code; we build future-proof solutions. Our experts ensure every deliverable meets the highest standards of quality, security, and performance.
-                                 </p>
-
-                                 <div className="space-y-4">
-                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                                         <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                                         <span className="font-medium">100% Source Code Ownership</span>
-                                     </div>
-                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                                         <div className="w-2 h-2 rounded-full bg-sky-400"></div>
-                                         <span className="font-medium">Agile Methodology</span>
-                                     </div>
-                                     <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                                         <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                                         <span className="font-medium">Dedicated Support Team</span>
-                                     </div>
-                                 </div>
-
-                                 <div className="mt-10 pt-8 border-t border-white/10">
-                                     <p className="text-sm text-slate-400 mb-2">Need a custom package?</p>
-                                     <Link href="/contact" className="inline-flex items-center gap-2 text-sky-400 font-bold hover:text-sky-300 transition-colors">
-                                         Talk to an Expert <span>→</span>
-                                     </Link>
-                                 </div>
-                             </div>
-                        </div>
-                    </div>
-
+              {/* LEFT SIDE: SCROLLABLE STACKING CARDS */}
+              <div className="w-full lg:w-1/2">
+                <div className="mb-12">
+                  <CommonTitle
+                    align="left"
+                    title="Services Provided"
+                    subtitle="Comprehensive tech solutions for your business growth."
+                  />
                 </div>
+
+                <div className="flex flex-col pb-24 max-h-[90vh] overflow-auto">
+                  {content.moreServices.map((s, i) => (
+                    <div
+                      key={i}
+                      // STICKY MAGIC: Har card thoda niche stick hoga
+                      className="sticky bg-white rounded-3xl p-8 border border-slate-200 mb-6 transition-all"
+                      style={{
+                        top: `${100 + (i * 20)}px`, // 100px base + 20px increment per card
+                        zIndex: i + 1
+                      }}
+                    >
+                      <div className="flex gap-6 items-start">
+                        <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600">
+                          {getIcon(s.iconKey, 30)}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-slate-900 mb-3 text-xl">{s.title}</h4>
+                          <p className="text-slate-600 leading-relaxed text-base">
+                            {s.description}
+                          </p>
+
+                          {/* Optional: Add small tags or bullet points if available in data */}
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            <span className="text-[10px] uppercase font-bold text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
+                              Professional
+                            </span>
+                            <span className="text-[10px] uppercase font-bold text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+                              Reliable
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* RIGHT SIDE: STATIC CONTENT (Sticky) */}
+              <div className="hidden lg:block w-1/2 sticky top-32 h-fit">
+                <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden border border-slate-800">
+                  {/* Decorative Background */}
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500 rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
+                  <div className="absolute bottom-0 left-0 w-40 h-40 bg-emerald-500 rounded-full blur-[60px] opacity-10 pointer-events-none"></div>
+
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 border border-white/10">
+                      <BsFileEarmarkBarGraph className="w-8 h-8 text-sky-400" />
+                    </div>
+
+                    <h3 className="text-3xl font-bold mb-6 leading-tight">
+                      Why Choose Our <br /> <span className="text-sky-400">Development Services?</span>
+                    </h3>
+
+                    <p className="text-slate-300 leading-relaxed mb-8 text-lg">
+                      We don't just write code; we build future-proof solutions. Our experts ensure every deliverable meets the highest standards of quality, security, and performance.
+                    </p>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
+                        <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+                        <span className="font-medium">100% Source Code Ownership</span>
+                      </div>
+                      <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
+                        <div className="w-2 h-2 rounded-full bg-sky-400"></div>
+                        <span className="font-medium">Agile Methodology</span>
+                      </div>
+                      <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
+                        <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+                        <span className="font-medium">Dedicated Support Team</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-10 pt-8 border-t border-white/10">
+                      <p className="text-sm text-slate-400 mb-2">Need a custom package?</p>
+                      <Link href="/contact" className="inline-flex items-center gap-2 text-sky-400 font-bold hover:text-sky-300 transition-colors">
+                        Talk to an Expert <span>→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
+          </div>
         </section>
       )}
       {/* 8. PROFILE SECTION */}
@@ -1508,6 +1510,14 @@ export default async function HireSlugPage({ params }) {
           </div>
         </section>
       )}
+
+      {/* 8.5 PORTFOLIO SECTION */}
+      <DynamicPortfolioCard
+        category={content.portfolioCategory || slug}
+        portfolioType="app"
+        title="Our Success Stories"
+        subtitle={`See how we've helped clients in the ${content.heroTitle} space.`}
+      />
 
       {/* 9. TECH STACK */}
       <TechStack />

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Linkedin, Quote } from 'lucide-react';
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 // import CoreValues from '@/components/public/CoreValues'; 
-import CoreValues from './CoreValues'; 
+import CoreValues from './CoreValues';
 import TestimonialCarousel from '@/components/public/TestimonialCarousel2';
 import { testimonials as testimonialsData } from '@/data/testimonials';
 import CommonTitle from '@/components/ui/CommonTitle';
@@ -38,9 +38,9 @@ const STATIC_DATA = {
         { title: "Focus on Value", description: "We don't just build features; we build solutions that work." }
     ],
     expertise: [
-        { 
-            title: "Web Development", 
-            iconName: "Layout", 
+        {
+            title: "Web Development",
+            iconName: "Layout",
             description: "Building modern, scalable web applications with cutting-edge technologies",
             skills: [
                 { name: "React / Next.js", level: 95 },
@@ -50,9 +50,9 @@ const STATIC_DATA = {
                 { name: "Node.js", level: 88 }
             ]
         },
-        { 
-            title: "Mobile Apps", 
-            iconName: "Smartphone", 
+        {
+            title: "Mobile Apps",
+            iconName: "Smartphone",
             description: "Creating native and cross-platform mobile experiences",
             skills: [
                 { name: "React Native", level: 90 },
@@ -62,9 +62,9 @@ const STATIC_DATA = {
                 { name: "Expo", level: 88 }
             ]
         },
-        { 
-            title: "Backend & Cloud", 
-            iconName: "Database", 
+        {
+            title: "Backend & Cloud",
+            iconName: "Database",
             description: "Robust server-side architecture and cloud solutions",
             skills: [
                 { name: "AWS / Azure", level: 92 },
@@ -74,9 +74,9 @@ const STATIC_DATA = {
                 { name: "Microservices", level: 83 }
             ]
         },
-        { 
-            title: "UI/UX Design", 
-            iconName: "Heart", 
+        {
+            title: "UI/UX Design",
+            iconName: "Heart",
             description: "Designing intuitive and beautiful user interfaces",
             skills: [
                 { name: "Figma", level: 95 },
@@ -100,17 +100,17 @@ const STATIC_DATA = {
     ]
 };
 
-// --- DATA FETCHER (Hero, Text, Team) ---
+// --- DATA FETCHER (Hero, Text, Team, Gallery) ---
 async function getTeamData() {
     try {
         // Import prisma dynamically to avoid SSR issues
         const { default: prisma } = await import('@/lib/db');
-        
+
         const page = await prisma.page.findUnique({ where: { slug: 'our-team' } });
-        
-        // Fetch Team Members from TeamMember table (not User table)
+
+        // Fetch Team Members
         const dbTeamMembers = await prisma.teamMember.findMany({
-            where: { },
+            where: {},
             orderBy: [
                 { featured: 'desc' },
                 { order: 'asc' },
@@ -118,7 +118,33 @@ async function getTeamData() {
             ]
         });
 
-        // Map Team Data with proper categorization
+        // Fetch Gallery Images for Team/Culture
+        const galleryImages = await prisma.mediaItem.findMany({
+            where: {
+                type: 'image',
+                tags: { contains: 'gallery-team' }
+            },
+            orderBy: { createdAt: 'desc' },
+            take: 10
+        }).then(images =>
+            images.map((img, i) => {
+                const spans = [
+                    { span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
+                    { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+                    { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+                    { span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
+                    { span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
+                ];
+                return {
+                    id: img.id,
+                    src: img.filePath?.startsWith('/') || img.filePath?.startsWith('http') ? img.filePath : `/uploads/${img.filePath}`,
+                    alt: img.title || 'Life at Softkingo',
+                    span: spans[i % 5].span,
+                    height: spans[i % 5].height
+                };
+            })
+        );
+
         let teamFromDB = [];
         if (dbTeamMembers.length > 0) {
             teamFromDB = dbTeamMembers.map(member => ({
@@ -126,9 +152,9 @@ async function getTeamData() {
                 name: member.name,
                 role: member.title || "Team Member",
                 image: member.photo ? (member.photo.startsWith('http') || member.photo.startsWith('/') ? member.photo : `/uploads/${member.photo}`) : "/images/placeholder-user.jpg",
-                category: member.category || 
-                         (member.department?.toLowerCase() === 'management' || member.title?.toLowerCase().includes('ceo') || member.title?.toLowerCase().includes('cto') || member.title?.toLowerCase().includes('coo') || member.title?.toLowerCase().includes('founder') ? 'management' : 
-                          member.title?.toLowerCase().includes('lead') || member.title?.toLowerCase().includes('head') ? 'tech-lead' : 'employee'),
+                category: member.category ||
+                    (member.department?.toLowerCase() === 'management' || member.title?.toLowerCase().includes('ceo') || member.title?.toLowerCase().includes('cto') || member.title?.toLowerCase().includes('coo') || member.title?.toLowerCase().includes('founder') ? 'management' :
+                        member.title?.toLowerCase().includes('lead') || member.title?.toLowerCase().includes('head') ? 'tech-lead' : 'employee'),
                 department: member.department,
                 bio: member.bio,
                 linkedinUrl: member.linkedinUrl,
@@ -138,118 +164,37 @@ async function getTeamData() {
             }));
         }
 
+        const baseData = {
+            ...STATIC_DATA,
+            galleryImages: galleryImages.length > 0 ? galleryImages : [
+                { id: 'g1', src: "/images/team/gallery/g1.jpg", alt: "Team building", span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
+                { id: 'g2', src: "/images/team/gallery/g2.jpg", alt: "Workspace", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+                { id: 'g3', src: "/images/team/gallery/g3.jpg", alt: "Lunch", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
+                { id: 'g4', src: "/images/team/gallery/g4.jpg", alt: "Meeting", span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
+                { id: 'g5', src: "/images/team/gallery/g5.jpg", alt: "Trip", span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
+            ]
+        };
+
         if (page && page.contentJson) {
             const dbContent = JSON.parse(page.contentJson);
             return {
-                ...STATIC_DATA,
+                ...baseData,
                 ...dbContent.content,
                 teamList: teamFromDB.length > 0 ? teamFromDB : (dbContent.content?.teamList || STATIC_DATA.teamList)
             };
         }
-        
-        // Return with team data even if no page content
+
         return {
-            ...STATIC_DATA,
+            ...baseData,
             teamList: teamFromDB.length > 0 ? teamFromDB : STATIC_DATA.teamList
         };
-    } catch (e) { 
-        console.error('Error fetching team data:', e); 
-        return STATIC_DATA;
+    } catch (e) {
+        console.error('Error fetching team data:', e);
+        return { ...STATIC_DATA, galleryImages: [] };
     }
 }
 
-// --- ISOLATED GALLERY COMPONENT (Direct DB Access) ---
-async function GallerySectionSafe() {
-    let galleryImages = [];
-  
-    try {
-      // 1. Fetch images from MediaItem
-      galleryImages = await prisma.mediaItem.findMany({
-        where: {
-          type: 'image',
-          // Optional: Add specific tag filter if you only want 'culture' images here
-          // tags: { contains: 'gallery-culture' } 
-        },
-        orderBy: { createdAt: 'desc' },
-        take: 5, // Take 5 for our masonry layout
-        select: {
-          id: true,
-          filePath: true,
-          title: true,
-        }
-      }).then(images =>
-        images.filter(img => img.filePath).map((img, i) => {
-            // Apply Layout Logic inside Map (Masonry Spans)
-            const spans = [
-                { span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
-                { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-                { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-                { span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
-                { span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
-            ];
-            
-            return {
-                id: img.id,
-                src: img.filePath?.startsWith('/') || img.filePath?.startsWith('http') ? img.filePath : `/uploads/${img.filePath}`,
-                alt: img.title || 'Life at Softkingo',
-                // Loop through span patterns based on index
-                span: spans[i % 5].span, 
-                height: spans[i % 5].height
-            };
-        })
-      );
-    } catch (error) {
-      console.log('Gallery DB timeout, using fallback');
-      // Static Fallback if DB fails
-      galleryImages = [
-        { id: 'g1', src: "/images/team/gallery/g1.jpg", alt: "Team building", span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
-        { id: 'g2', src: "/images/team/gallery/g2.jpg", alt: "Workspace", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-        { id: 'g3', src: "/images/team/gallery/g3.jpg", alt: "Lunch", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-        { id: 'g4', src: "/images/team/gallery/g4.jpg", alt: "Meeting", span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
-        { id: 'g5', src: "/images/team/gallery/g5.jpg", alt: "Trip", span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
-      ];
-    }
-  
-    return (
-      <section className="py-24 bg-white px-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Header Text */}
-          <div className="text-center mb-16">
-            <h3 className="text-sky-600 font-bold uppercase tracking-wider mb-2">Life at Softkingo</h3>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6">More Than Just Code</h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
-              We believe that happy teams build better products. Get a glimpse of our culture.
-            </p>
-          </div>
-  
-          {/* Masonry Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[190px]">
-            {galleryImages.map((img) => (
-              <div key={img.id} className={`relative rounded-[2rem] overflow-hidden group ${img.span} ${img.height}`}>
-                <Image 
-                    src={img.src} 
-                    alt={img.alt} 
-                    fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
-                <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    {img.alt}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="text-center mt-12">
-             <p className="text-xl font-bold text-slate-800">Building memories, <span className="text-sky-500">not just software.</span></p>
-          </div>
-        </div>
-      </section>
-    );
-}
+// Gallery section removed from here, handled in OurTeamClient
 
 
 export const metadata = {
@@ -259,29 +204,29 @@ export const metadata = {
 };
 
 export default async function OurTeamPage() {
-    // 1. Fetch Main Page Data (Hero, Text, Team List from User Table)
+    // 1. Fetch Main Page Data (Hero, Text, Team List, Gallery)
     const data = await getTeamData();
-    const { hero, ceo, teamList, values, expertise, process, testimonials } = data;
-    
+    const { hero, ceo, teamList, values, expertise, process, testimonials, galleryImages } = data;
+
     // --- TEAM SPLIT LOGIC ---
     // Leaders (Exclude CEO)
-    const leaders = Array.isArray(teamList) ? teamList.filter(m => 
-        (m.category === 'management' || m.category === 'tech-lead' || m.role?.includes('Head')) 
-        && !m.role?.includes('CEO') 
+    const leaders = Array.isArray(teamList) ? teamList.filter(m =>
+        (m.category === 'management' || m.category === 'tech-lead' || m.role?.includes('Head'))
+        && !m.role?.includes('CEO')
         && !(m.name === ceo.name)
     ).slice(0, 6) : [];
 
     // Marquee (Everyone Else - Exclude Leaders & CEO)
-    const marqueeTeam = Array.isArray(teamList) ? teamList.filter(m => 
-        !leaders.includes(m) 
-        && !m.role?.includes('CEO') 
+    const marqueeTeam = Array.isArray(teamList) ? teamList.filter(m =>
+        !leaders.includes(m)
+        && !m.role?.includes('CEO')
         && !(m.name === ceo.name)
     ) : [];
 
 
     return (
         <>
-            <OurTeamClient 
+            <OurTeamClient
                 hero={hero}
                 ceo={ceo}
                 leaders={leaders}
@@ -291,8 +236,9 @@ export default async function OurTeamPage() {
                 process={process}
                 testimonials={testimonials}
                 testimonialsData={testimonialsData}
+                galleryImages={galleryImages}
             />
-     <InquirySection />
+            <InquirySection />
         </>
     );
 }

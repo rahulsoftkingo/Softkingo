@@ -12,6 +12,7 @@ import Blogs from '../../home/blogs/BlogSliderClient';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from '@/components/footer/InquirySection';
 import IndustriesPage from '../../industries/page';
+import AwardsSection from '@/components/common/AwardsSection';
 
 export default function FoodDeliveryHero() {
     const logos = [
@@ -177,7 +178,7 @@ export default function FoodDeliveryHero() {
             </section>
 
             <section className="max-w-7xl mx-auto p-6 lg:px-20">
-                
+
                 <div className="text-center mb-12 max-w-3xl mx-auto">
 
                     <CommonTitle pill={false}
@@ -449,19 +450,19 @@ export default function FoodDeliveryHero() {
 
 
             {/*  Our Awards & Recognitions */}
-{/* <AwardsSection /> */}
+            <AwardsSection />
             {/*  what our client say */}
 
-             <ConsultationCTA imageSrc="/images/cta/cta.png" href="/contact" title="Let’s Build Your Next Big Mobile App" subtitle="Collaborate with a leading mobile app development agency to turn your innovative idea into a feature-rich mobile application." />
-                  
-                  <Blogs
-                    category=""
-                    featured={false}    // Latest uploaded
-                    title="Our Latest Blogs"
-                    subtitle="Explore our latest insights, product lessons, and engineering best practices."
-                  />
-                  <FAQAccordion />
-                  <InquirySection />
+            <ConsultationCTA imageSrc="/images/cta/cta.png" href="/contact" title="Let’s Build Your Next Big Mobile App" subtitle="Collaborate with a leading mobile app development agency to turn your innovative idea into a feature-rich mobile application." />
+
+            <Blogs
+                category=""
+                featured={false}    // Latest uploaded
+                title="Our Latest Blogs"
+                subtitle="Explore our latest insights, product lessons, and engineering best practices."
+            />
+            <FAQAccordion />
+            <InquirySection />
         </main>
     );
 }

@@ -199,7 +199,7 @@ export default async function DynamicSolutionPage(props) {
                 </>
             )}
             {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
-            {show('portfolio') && <DynamicPortfolioCard category="" portfolioType="app" title="Our Portfolio" />}
+            {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title="Our Portfolio" />}
             {show('process') && <SolutionsProcess data={process} />}
             {show('techStack') && <SolutionsTechStack data={techStack} />}
             {show('monetization') && <SolutionsMonetization data={monetization} />}

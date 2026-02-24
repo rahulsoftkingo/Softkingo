@@ -2,31 +2,31 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { 
-  FaCheckCircle, FaClock, FaDollarSign, FaUsers, 
-  FaMobileAlt, FaLink, FaUserShield, FaSun, FaArrowRight 
+import {
+  FaCheckCircle, FaClock, FaDollarSign, FaUsers,
+  FaMobileAlt, FaLink, FaUserShield, FaSun, FaArrowRight
 } from 'react-icons/fa';
 import { BsCheckCircle } from 'react-icons/bs';
 
 // Components
-import LeadForm from "@/components/public/InquiryForm"; 
+import LeadForm from "@/components/public/InquiryForm";
 import Blogs from "@/app/(public)/home/blogs/BlogSliderClient";
 import InquirySection from "@/components/footer/InquirySection";
 import CommonTitle from "@/components/ui/CommonTitle";
 import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
-import ConsultationCTA from "@/components/common/Consultation-Cta";
-import FAQAccordion from "@/components/common/Faqaccordion";
 import TechView from "@/components/common/TechView";
-
+import AwardsSection from "@/components/common/AwardsSection";
+import ConsultationCTA from "@/components/common/ConsultationCTA";
+import FAQAccordion from "@/components/common/FAQAccordion";
 
 export default function GeneratedPage() {
-    // 🔥 CRITICAL FIX: Inject content variable here
-    const content = {"hero":{"title":"hh","subtitle":"","image":""},"aboutTitle":"About Our Solution","aboutSubtitle":"We provide comprehensive solutions.","benefits":["Scalable Architecture","24/7 Support"],"services":[{"title":"User App","image":""},{"title":"Admin Panel","image":""}],"caseStudy":{"image":""},"portfolioCategory":"app","cta":{"title":"Ready to Scale?"}}; 
+  // 🔥 CRITICAL FIX: Inject content variable here
+  const content = { "hero": { "title": "hh", "subtitle": "", "image": "" }, "aboutTitle": "About Our Solution", "aboutSubtitle": "We provide comprehensive solutions.", "benefits": ["Scalable Architecture", "24/7 Support"], "services": [{ "title": "User App", "image": "" }, { "title": "Admin Panel", "image": "" }], "caseStudy": { "image": "" }, "portfolioCategory": "app", "cta": { "title": "Ready to Scale?" } };
 
-    return (
-        <main className="bg-white text-slate-900 font-sans">
-            
-        
+  return (
+    <main className="bg-white text-slate-900 font-sans">
+
+
       <section className="relative overflow-hidden flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900 min-h-[600px]">
         {/* Background */}
         <div className="absolute inset-0 z-0">
@@ -69,7 +69,7 @@ export default function GeneratedPage() {
             </div>
           </div>
         </div>
-        
+
         <style>{`
             @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
             .animate-fadeInUp { animation: fadeInUp 0.6s ease-out; }
@@ -78,11 +78,11 @@ export default function GeneratedPage() {
             .animation-delay-600 { animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards; }
         `}</style>
       </section>
-    
-        
+
+
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16" id="lead-form">
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_minmax(320px,380px)] gap-10 items-start">
-          
+
           {/* Left: About Text & Benefits */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
@@ -108,25 +108,25 @@ export default function GeneratedPage() {
 
           {/* Right: Lead Form */}
           <div className="w-full relative">
-             <div className="absolute inset-0 bg-sky-200 blur-2xl opacity-20 rounded-full" />
-             <LeadForm
-               formType="service"
-               formKey="hh"
-               serviceName={content.hero.title}
-               title="Get Your Free Quote"
-               subtitle="Fast response within 24 hours"
-               variant="solid"
-               showLogo={true}
-               showCompany={false}
-               showBudget={false}
-               showAttachment={false}
-               showNDA={false}
-             />
+            <div className="absolute inset-0 bg-sky-200 blur-2xl opacity-20 rounded-full" />
+            <LeadForm
+              formType="service"
+              formKey="hh"
+              serviceName={content.hero.title}
+              title="Get Your Free Quote"
+              subtitle="Fast response within 24 hours"
+              variant="solid"
+              showLogo={true}
+              showCompany={false}
+              showBudget={false}
+              showAttachment={false}
+              showNDA={false}
+            />
           </div>
         </div>
       </section>
-    
-        
+
+
       <section className="max-w-7xl mx-auto p-6 lg:px-20 py-16">
         <div className="text-center mb-12 max-w-3xl mx-auto">
           <CommonTitle pill={false}
@@ -135,7 +135,7 @@ export default function GeneratedPage() {
             gradientText="Key Capabilities"
             align="center" />
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {content.services?.map((service, idx) => (
             <div key={idx} className="group gap-4 transition-all duration-300 cursor-pointer">
@@ -156,8 +156,8 @@ export default function GeneratedPage() {
           ))}
         </div>
       </section>
-    
-        
+
+
       <section className="relative w-full mb-16 max-w-7xl mx-auto px-6">
         <div className="bg-sky-50 rounded-[3rem] w-full overflow-hidden border border-sky-100">
           <div className="flex flex-col md:flex-row items-center justify-between p-8 md:p-12 gap-8">
@@ -173,27 +173,27 @@ export default function GeneratedPage() {
               </Link>
             </div>
             <div className="relative w-full md:w-1/3 h-64">
-               <Image
-                  src="/images/food-service/i6.png"
-                  alt="Illustration"
-                  fill
-                  className="object-contain"
-               />
+              <Image
+                src="/images/food-service/i6.png"
+                alt="Illustration"
+                fill
+                className="object-contain"
+              />
             </div>
           </div>
         </div>
       </section>
-    
-        
+
+
       <section className='py-20 bg-gradient-to-br from-white to-slate-50'>
         <div className='max-w-7xl mx-auto px-6'>
           <div className="text-center mb-16">
-             <CommonTitle pill={false} title="Why" subtitle={false} gradientText="Invest In This Solution?" align="center" />
+            <CommonTitle pill={false} title="Why" subtitle={false} gradientText="Invest In This Solution?" align="center" />
           </div>
           <div className='grid lg:grid-cols-2 gap-16 items-center'>
             <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
               <Image
-                src={content.caseStudy.image || "/images/food-service/i4.png"} 
+                src={content.caseStudy.image || "/images/food-service/i4.png"}
                 alt="Why Invest"
                 fill
                 className="object-cover"
@@ -208,7 +208,7 @@ export default function GeneratedPage() {
               ].map((item, i) => (
                 <div key={i} className='flex gap-5 items-start p-4 rounded-xl hover:bg-white transition-colors hover:shadow-sm'>
                   <div className="w-12 h-12 flex-shrink-0 bg-sky-100 rounded-full flex items-center justify-center text-sky-600 font-bold">
-                    {i+1}
+                    {i + 1}
                   </div>
                   <div>
                     <h4 className='text-lg font-bold text-slate-900 mb-1'>{item.title}</h4>
@@ -220,49 +220,38 @@ export default function GeneratedPage() {
           </div>
         </div>
       </section>
-    
-        <TechView />
-        
-      <DynamicPortfolioCard 
-        category="app" 
-        portfolioType="app" 
-        title="Latest Projects" 
-        subtitle="Explore our recent work in this domain." 
+
+      <TechView />
+
+      <DynamicPortfolioCard
+        category="app"
+        portfolioType="app"
+        title="Latest Projects"
+        subtitle="Explore our recent work in this domain."
       />
-    
-        
-      <section className="bg-white py-16 border-y border-slate-50">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <CommonTitle align="center" pill={false} title='Our' gradientText='Awards & Recognitions' subtitle='Recognized for excellence.' />
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-center opacity-80 grayscale hover:grayscale-0 transition-all duration-500">
-             <Image src="/images/award/Goodfirms award-softkingo.png" alt="award" width={150} height={80} className="mx-auto"/>
-             <Image src="/images/award/techbeheb.png" alt="award" width={150} height={80} className="mx-auto"/>
-             <Image src="/images/award/Black And Gold Modern Award Ceremony Instagram Post (1).png" alt="award" width={150} height={80} className="mx-auto"/>
-             <Image src="/images/award/Black And Gold Modern Award Ceremony Instagram Post (2).png" alt="award" width={150} height={80} className="mx-auto"/>
-             <Image src="/images/award/Black And Gold Modern Award Ceremony Instagram Post (4).png" alt="award" width={150} height={80} className="mx-auto"/>
-          </div>
-        </div>
-      </section>
-    
-        
-      <ConsultationCTA 
-        imageSrc="/images/cta/cta.png" 
-        href="/contact" 
-        title={content.cta?.title || "Let’s Build Your Next Big App"} 
-        subtitle="Collaborate with a leading development agency to turn your innovative idea into a feature-rich mobile application." 
+
+
+      <AwardsSection />
+
+
+      <ConsultationCTA
+        imageSrc="/images/cta/cta.png"
+        href="/contact"
+        title={content.cta?.title || "Let’s Build Your Next Big App"}
+        subtitle="Collaborate with a leading development agency to turn your innovative idea into a feature-rich mobile application."
       />
-    
-        
+
+
       <Blogs
         category=""
         featured={false}
         title="Related Insights"
         subtitle="Expert articles and guides to help you scale."
       />
-    
-        <FAQAccordion />
-    
-            <InquirySection />
-        </main>
-    );
+
+      <FAQAccordion />
+
+      <InquirySection />
+    </main>
+  );
 }

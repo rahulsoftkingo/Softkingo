@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import {
   Upload, X, Image as ImageIcon, Folder,
   FolderOpen, Search, ZoomIn, ChevronRight,
-  Home, Loader2, CheckCircle2, Link as LinkIcon
+  Home, Loader2, CheckCircle2, Link as LinkIcon, Trash2
 } from 'lucide-react';
 
 export default function ImageUploadComponent({
@@ -14,7 +14,8 @@ export default function ImageUploadComponent({
   title = "Select Image",
   showRecent = true,
   maxHeight = "400px",
-  folder = "general" // Default folder
+  folder = "general", // Default folder
+  hidePreview = false
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -97,6 +98,30 @@ export default function ImageUploadComponent({
     setIsOpen(false);
   };
 
+  // Delete image
+  const handleDelete = async (e, path) => {
+    e.stopPropagation(); // Don't trigger selection
+    if (!confirm('Are you sure you want to delete this file permanently?')) return;
+
+    try {
+      const res = await fetch('/api/media/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ targetPath: path, type: 'file' })
+      });
+
+      if (res.ok) {
+        // Refresh local list
+        setFolderFiles(prev => prev.filter(f => f.path !== path));
+      } else {
+        alert('Failed to delete file.');
+      }
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Delete failed.');
+    }
+  };
+
   // Format size
   const formatSize = (bytes) => {
     if (!bytes) return '0 B';
@@ -143,7 +168,7 @@ export default function ImageUploadComponent({
           </div>
         </div>
 
-        {value && (
+        {value && !hidePreview && (
           <div className="flex items-center gap-4 p-3 bg-white rounded-xl border border-slate-100 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="h-14 w-14 rounded-lg bg-slate-100 overflow-hidden border border-slate-200 shrink-0">
               <img
@@ -336,6 +361,15 @@ export default function ImageUploadComponent({
                               <CheckCircle2 size={12} />
                             </div>
                           )}
+
+                          <button
+                            type="button"
+                            onClick={(e) => handleDelete(e, img.path)}
+                            className="absolute top-2 left-2 p-1.5 bg-rose-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-rose-600 shadow-lg"
+                            title="Delete File"
+                          >
+                            <Trash2 size={12} />
+                          </button>
                         </button>
                       ))}
                     </div>

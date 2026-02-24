@@ -15,12 +15,19 @@ function normalizeType(type) {
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const type = (searchParams.get("type") || "app").toLowerCase();
+  const category = searchParams.get("category");
   const take = Number(searchParams.get("take") || 8);
 
+  const where = {
+    type: type,
+  };
+
+  if (category) {
+    where.category = category;
+  }
+
   const rows = await prisma.portfolioProject.findMany({
-    where: {
-      type: type,
-    },
+    where,
     orderBy: { createdAt: "desc" },
     take: Math.min(Math.max(take, 1), 50),
     include: {
@@ -48,14 +55,14 @@ export async function GET(req) {
     phoneMockup: p.phoneMockup || "",
     icon: p.icon || "",
     badges: safeBadges(p.badgesJson),
-   techstack: p.techStack || "",  // ✅ Prisma field → frontend field
-  bgColor: p.bgColor || "rgba(2, 132, 199, 0.92)",
+    techstack: p.techStack || "",  // ✅ Prisma field → frontend field
+    bgColor: p.bgColor || "rgba(2, 132, 199, 0.92)",
     caseStudy: p.caseStudy
       ? {
-          id: p.caseStudy.id,
-          slug: p.caseStudy.slug,
-          title: p.caseStudy.title,
-        }
+        id: p.caseStudy.id,
+        slug: p.caseStudy.slug,
+        title: p.caseStudy.title,
+      }
       : null,
   }));
 
@@ -63,7 +70,7 @@ export async function GET(req) {
   const uniqueCountries = new Set(projects.map(p => p.country).filter(Boolean));
   const uniqueCategories = new Set(projects.map(p => p.category).filter(Boolean));
   const projectsWithCaseStudy = projects.filter(p => p.caseStudy);
-  
+
   // Get top 3 platforms used
   const platformCounts = {};
   projects.forEach(p => {
@@ -74,7 +81,7 @@ export async function GET(req) {
       });
     }
   });
-  
+
   const topPlatforms = Object.entries(platformCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
@@ -90,7 +97,7 @@ export async function GET(req) {
       });
     }
   });
-  
+
   const topTech = Object.entries(techCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
@@ -113,8 +120,8 @@ export async function GET(req) {
     })),
   };
 
-  return NextResponse.json({ 
-    ok: true, 
+  return NextResponse.json({
+    ok: true,
     projects,
     stats,
   });

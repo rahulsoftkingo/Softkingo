@@ -18,25 +18,40 @@ export default function DynamicPortfolioCard({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchLatestProject() {
+    async function fetchProject() {
       setLoading(true);
       try {
-        const params = new URLSearchParams({
+        // 1. Try fetching with category
+        let params = new URLSearchParams({
           type: portfolioType,
           ...(category && { category }),
           limit: 1,
-          sort: 'createdAt:desc' // LATEST FIRST
+          sort: 'createdAt:desc'
         });
-        const res = await fetch(`/api/public/portfolio?${params}`);
-        const data = await res.json();
-        setProject(Array.isArray(data.projects) && data.projects[0] ? data.projects[0] : null);
+        let res = await fetch(`/api/public/portfolio?${params}`);
+        let data = await res.json();
+        let found = Array.isArray(data.projects) && data.projects[0] ? data.projects[0] : null;
+
+        // 2. FALLBACK: If no project found and category was provided, fetch latest without category
+        if (!found && category) {
+          params = new URLSearchParams({
+            type: portfolioType,
+            limit: 1,
+            sort: 'createdAt:desc'
+          });
+          res = await fetch(`/api/public/portfolio?${params}`);
+          data = await res.json();
+          found = Array.isArray(data.projects) && data.projects[0] ? data.projects[0] : null;
+        }
+
+        setProject(found);
       } catch {
         setProject(null);
       } finally {
         setLoading(false);
       }
     }
-    fetchLatestProject();
+    fetchProject();
   }, [portfolioType, category]);
 
   if (loading) {

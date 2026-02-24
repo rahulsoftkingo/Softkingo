@@ -19,99 +19,7 @@ const iconMap = {
 };
 
 
-// --- ISOLATED GALLERY COMPONENT (Direct DB Access) ---
-async function GallerySectionSafe() {
-    let galleryImages = [];
-
-    try {
-        // Import prisma dynamically to avoid SSR issues
-        const { default: prisma } = await import('@/lib/db');
-
-        // 1. Fetch images from MediaItem
-        galleryImages = await prisma.mediaItem.findMany({
-            where: {
-                type: 'image',
-            },
-            orderBy: { createdAt: 'desc' },
-            take: 5, // Take 5 for our masonry layout
-            select: {
-                id: true,
-                filePath: true,
-                title: true,
-            }
-        }).then(images =>
-            images.filter(img => img.filePath).map((img, i) => {
-                // Apply Layout Logic inside Map (Masonry Spans)
-                const spans = [
-                    { span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
-                    { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-                    { span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-                    { span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
-                    { span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
-                ];
-
-                return {
-                    id: img.id,
-                    src: img.filePath?.startsWith('/') || img.filePath?.startsWith('http') ? img.filePath : `/uploads/${img.filePath}`,
-                    alt: img.title || 'Life at Softkingo',
-                    // Loop through span patterns based on index
-                    span: spans[i % 5].span,
-                    height: spans[i % 5].height
-                };
-            })
-        );
-    } catch (error) {
-        console.log('Gallery DB timeout, using fallback:', error);
-        // Static Fallback if DB fails
-        galleryImages = [
-            { id: 'g1', src: "/images/team/gallery/g1.jpg", alt: "Team building", span: "md:col-span-2 md:row-span-2", height: "h-[400px]" },
-            { id: 'g2', src: "/images/team/gallery/g2.jpg", alt: "Workspace", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-            { id: 'g3', src: "/images/team/gallery/g3.jpg", alt: "Lunch", span: "md:col-span-1 md:row-span-1", height: "h-[190px]" },
-            { id: 'g4', src: "/images/team/gallery/g4.jpg", alt: "Meeting", span: "md:col-span-1 md:row-span-2", height: "h-[400px]" },
-            { id: 'g5', src: "/images/team/gallery/g5.jpg", alt: "Trip", span: "md:col-span-2 md:row-span-1", height: "h-[190px]" },
-        ];
-    }
-
-    return (
-        <section className="py-24 bg-white px-6">
-            <div className="max-w-7xl mx-auto">
-                {/* Header Text */}
-                <div className="text-center mb-16">
-                    <h3 className="text-sky-600 font-bold uppercase tracking-wider mb-2">Life at Softkingo</h3>
-                    <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6">More Than Just Code</h2>
-                    <p className="text-slate-600 text-lg max-w-2xl mx-auto leading-relaxed">
-                        We believe that happy teams build better products. Get a glimpse of our culture.
-                    </p>
-                </div>
-
-                {/* Masonry Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[190px]">
-                    {galleryImages.map((img) => (
-                        <div key={img.id} className={`relative rounded-[2rem] overflow-hidden group ${img.span} ${img.height}`}>
-                            <Image
-                                src={img.src}
-                                alt={img.alt}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                            />
-                            <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
-                            <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                    {img.alt}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="text-center mt-12">
-                    <p className="text-xl font-bold text-slate-800">Building memories, <span className="text-sky-500">not just software.</span></p>
-                </div>
-            </div>
-        </section>
-    );
-}
+// Gallery Section handled via props
 
 const OurTeamClient = ({
     hero,
@@ -122,7 +30,8 @@ const OurTeamClient = ({
     expertise,
     process,
     testimonials,
-    testimonialsData
+    testimonialsData,
+    galleryImages
 }) => {
     const [isJoinPopupOpen, setIsJoinPopupOpen] = useState(false);
 
@@ -404,7 +313,7 @@ const OurTeamClient = ({
             {/* 7. AWARDS & RECOGNITIONS */}
             <AwardsSection />
 
-            {/* 8. GALLERY */}
+            {/* 8. GALLERY - LIFE AT SOFTKINGO */}
             <section className="py-24 bg-white px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Header using CommonTitle */}
@@ -414,8 +323,31 @@ const OurTeamClient = ({
                         title="Life at Softkingo"
                         subtitle="We believe that happy teams build better products. Get a glimpse of our culture."
                     />
-                    {/* Gallery will be loaded from server component */}
-                    <GallerySectionSafe />
+
+                    {/* Masonry Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[190px] mt-16">
+                        {galleryImages?.map((img) => (
+                            <div key={img.id} className={`relative rounded-[2rem] overflow-hidden group ${img.span} ${img.height}`}>
+                                <Image
+                                    src={img.src}
+                                    alt={img.alt}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                />
+                                <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
+                                <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                        {img.alt}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="text-center mt-12">
+                        <p className="text-xl font-bold text-slate-800">Building memories, <span className="text-sky-500">not just software.</span></p>
+                    </div>
                 </div>
             </section>
 
