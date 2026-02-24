@@ -116,6 +116,7 @@ export default async function ServicePage({ params }) {
   }
 
   const content = service.contentJson ? JSON.parse(service.contentJson) : {};
+  const show = (section) => !!content[section] || section === 'portfolio'; // Always show portfolio if not explicitly disabled or if it's the default
 
   return (
     <main className="text-gray-800">
