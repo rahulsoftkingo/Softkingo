@@ -468,9 +468,9 @@ export default async function ServicePage({ params }) {
 
       {show('portfolio') && (
         <DynamicPortfolioCard
-          category={portfolio?.category || data.slug}
+          category={content.portfolioCategory || service.slug}
           portfolioType="app"
-          title="Our Portfolio"
+          title={content.portfolioTitle || "Our Portfolio"}
         />
       )}
       <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />

@@ -11,7 +11,7 @@ export default function EditServicePage({ params }) {
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('basic');
   const [serviceId, setServiceId] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -19,11 +19,15 @@ export default function EditServicePage({ params }) {
     status: 'draft',
     seoTitle: '',
     seoDescription: '',
-    
+
     heroBg: '/images/services/default-bg.png',
     heroTitle: '',
     heroSubtitle: '',
-    
+
+    // Portfolio section configuration
+    portfolioTitle: 'Our Portfolio',
+    portfolioCategory: '',
+
     stats: {
       years: '6+',
       yearsLabel: 'Years of Experience',
@@ -34,32 +38,32 @@ export default function EditServicePage({ params }) {
       rating: '5.0',
       ratingLabel: 'Client Rating',
     },
-    
+
     mainImage: '/images/about/r1.png',
     extraImages: ['/images/about/r3.png', '/images/about/r4.png'],
     statsSubtitle: '',
-    
+
     // Services section data matching public side
     services: {
       title: 'Our Services',
       subtitle: 'Comprehensive solutions for your business',
       items: []
     },
-    
+
     // Tech section data matching public side  
     tech: {
       title: 'Technology Stack',
       subtitle: 'Cutting-edge technologies we use',
       items: []
     },
-    
+
     // Process section data matching public side
     process: {
       title: 'Our Process',
       subtitle: 'Streamlined development methodology',
       items: []
     },
-    
+
     // FAQ section data matching public side
     faq: {
       title: 'Frequently Asked Questions',
@@ -77,13 +81,13 @@ export default function EditServicePage({ params }) {
     try {
       const { id } = await params;
       setServiceId(id);
-      
+
       const res = await fetch(`/api/admin/services/${id}`);
       const data = await res.json();
-      
+
       if (data.service) {
         const content = JSON.parse(data.service.contentJson || '{}');
-        
+
         setFormData({
           title: data.service.title,
           slug: data.service.slug,
@@ -91,11 +95,15 @@ export default function EditServicePage({ params }) {
           status: data.service.status,
           seoTitle: data.service.seoTitle || '',
           seoDescription: data.service.seoDescription || '',
-          
+
           heroBg: content.heroBg || '/images/services/default-bg.png',
           heroTitle: content.heroTitle || data.service.title,
           heroSubtitle: content.heroSubtitle || '',
-          
+
+          // Loaded from contentJson
+          portfolioTitle: content.portfolioTitle || 'Our Portfolio',
+          portfolioCategory: content.portfolioCategory || '',
+
           stats: content.stats || {
             years: '6+',
             yearsLabel: 'Years of Experience',
@@ -109,7 +117,7 @@ export default function EditServicePage({ params }) {
           mainImage: content.mainImage || '/images/about/r1.png',
           extraImages: content.extraImages || [],
           statsSubtitle: content.statsSubtitle || '',
-          
+
           services: content.services || {
             title: 'Our Services',
             subtitle: 'Comprehensive solutions for your business',
@@ -174,8 +182,8 @@ export default function EditServicePage({ params }) {
   const handleCardChange = (index, field, value) => {
     const newServices = [...formData.services.items];
     newServices[index] = { ...newServices[index], [field]: value };
-    setFormData((prev) => ({ 
-      ...prev, 
+    setFormData((prev) => ({
+      ...prev,
       services: { ...prev.services, items: newServices }
     }));
   };
@@ -275,7 +283,11 @@ export default function EditServicePage({ params }) {
           mainImage: formData.mainImage,
           extraImages: formData.extraImages,
           statsSubtitle: formData.statsSubtitle,
-          
+
+          // Saved to contentJson
+          portfolioTitle: formData.portfolioTitle,
+          portfolioCategory: formData.portfolioCategory,
+
           services: formData.services,
           tech: formData.tech,
           process: formData.process,
@@ -317,6 +329,7 @@ export default function EditServicePage({ params }) {
     { id: 'stats', label: 'Stats' },
     { id: 'services', label: 'Service Cards' },
     { id: 'tech', label: 'Technology Stack' },
+    { id: 'portfolio', label: 'Portfolio' },
     { id: 'process', label: 'Process' },
     { id: 'faq', label: 'FAQ' },
     { id: 'seo', label: 'SEO' },
@@ -366,9 +379,8 @@ export default function EditServicePage({ params }) {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-3 text-sm font-medium transition-colors relative ${
-                  activeTab === tab.id ? 'text-cyan-600' : 'text-slate-600 hover:text-slate-900'
-                }`}
+                className={`px-4 py-3 text-sm font-medium transition-colors relative ${activeTab === tab.id ? 'text-cyan-600' : 'text-slate-600 hover:text-slate-900'
+                  }`}
               >
                 {tab.label}
                 {activeTab === tab.id && (
@@ -723,7 +735,7 @@ export default function EditServicePage({ params }) {
           {activeTab === 'tech' && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
               <h2 className="text-lg font-bold text-slate-900">Technology Stack</h2>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Section Title</label>
@@ -746,7 +758,7 @@ export default function EditServicePage({ params }) {
                   />
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-slate-900">Technologies</h3>
                 <button
@@ -810,11 +822,47 @@ export default function EditServicePage({ params }) {
             </div>
           )}
 
+          {/* Portfolio Tab */}
+          {activeTab === 'portfolio' && (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
+              <h2 className="text-lg font-bold text-slate-900">Portfolio Configuration</h2>
+              <p className="text-sm text-slate-500">Configure how the portfolio section appears on this service page.</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Section Heading</label>
+                  <input
+                    type="text"
+                    name="portfolioTitle"
+                    value={formData.portfolioTitle}
+                    onChange={handleChange}
+                    placeholder="e.g. Our Success Stories"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Portfolio Category Tag</label>
+                  <input
+                    type="text"
+                    name="portfolioCategory"
+                    value={formData.portfolioCategory}
+                    onChange={handleChange}
+                    placeholder="e.g. healthcare, fintech (optional)"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  />
+                  <p className="text-xs text-slate-400 mt-1">
+                    If left blank, it will fall back to the service slug: "{formData.slug}"
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Process Tab - New Section */}
           {activeTab === 'process' && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
               <h2 className="text-lg font-bold text-slate-900">Development Process</h2>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Section Title</label>
@@ -837,7 +885,7 @@ export default function EditServicePage({ params }) {
                   />
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-slate-900">Process Steps</h3>
                 <button
@@ -905,7 +953,7 @@ export default function EditServicePage({ params }) {
           {activeTab === 'faq' && (
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-6">
               <h2 className="text-lg font-bold text-slate-900">Frequently Asked Questions</h2>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Section Title</label>
@@ -928,7 +976,7 @@ export default function EditServicePage({ params }) {
                   />
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-slate-900">FAQ Items</h3>
                 <button

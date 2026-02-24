@@ -117,7 +117,9 @@ function ProjectCard({ p }) {
       <div
         className="absolute inset-0 group-hover:opacity-60 transition-opacity duration-500"
         style={{
-          background: p.bgColor ? `linear-gradient(135deg, ${p.bgColor}, transparent)` : "linear-gradient(135deg, #0284c7, transparent)",
+          background: p.bgColor
+            ? (p.bgColor.includes("gradient") ? p.bgColor : `linear-gradient(135deg, ${p.bgColor}, transparent)`)
+            : "linear-gradient(135deg, #0284c7, transparent)",
           opacity: 0.8
         }}
       />
