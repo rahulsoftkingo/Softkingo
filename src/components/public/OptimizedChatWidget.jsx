@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { io } from 'socket.io-client';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ImagePlus, X, Send, Paperclip, Loader2 } from 'lucide-react';
 
 export default function OptimizedChatWidget() {
@@ -24,12 +26,23 @@ export default function OptimizedChatWidget() {
     if (typeof window !== 'undefined') {
       socketRef.current = io();
 
+      socketRef.current.on('connect', () => {
+        console.log('Socket connected');
+        // We handle room joining in a separate effect that watches conversationId
+      });
+
       socketRef.current.on('receive-message', (message) => {
-        setMessages((prev) => [...prev, {
-          ...message,
-          id: Date.now(),
-          timestamp: new Date(message.timestamp)
-        }]);
+        setMessages((prev) => {
+          // Prevent duplicates if the message was added locally
+          if (message.sender === 'visitor' && prev.some(m => m.content === message.content && Math.abs(new Date(m.timestamp) - new Date(message.timestamp)) < 2000)) {
+            return prev;
+          }
+          return [...prev, {
+            ...message,
+            id: Date.now() + Math.random(),
+            timestamp: new Date(message.timestamp)
+          }];
+        });
         setIsTyping(false);
       });
 
@@ -43,6 +56,14 @@ export default function OptimizedChatWidget() {
       if (socketRef.current) socketRef.current.disconnect();
     };
   }, []);
+
+  // Room Joining Logic (Handles refreshes and id changes)
+  useEffect(() => {
+    if (socketRef.current && conversationId) {
+      socketRef.current.emit('join-conversation', conversationId);
+      console.log('Joined room:', conversationId);
+    }
+  }, [conversationId, socketRef.current]);
 
   // Load saved conversation and messages
   useEffect(() => {
@@ -93,6 +114,10 @@ export default function OptimizedChatWidget() {
         setShowInfoForm(false);
         localStorage.setItem('chatConversation', JSON.stringify(data));
         localStorage.setItem('chatVisitorInfo', JSON.stringify(visitorInfo));
+
+        if (socketRef.current) {
+          socketRef.current.emit('join-conversation', data.conversationId);
+        }
       }
     } catch (error) {
       console.error('Create conversation error:', error);
@@ -157,7 +182,10 @@ export default function OptimizedChatWidget() {
 
     // Send via socket for AI response
     if (socketRef.current) {
-      socketRef.current.emit('send-message', messageData);
+      socketRef.current.emit('send-message', {
+        ...messageData,
+        visitorName: visitorInfo.name
+      });
     }
   };
 
@@ -279,7 +307,11 @@ export default function OptimizedChatWidget() {
                             <img src={message.image} alt="attached" className="max-w-full h-auto" />
                           </div>
                         )}
-                        <p className="leading-relaxed">{message.content}</p>
+                        <div className={`prose prose-sm max-w-none ${message.sender === 'visitor' ? 'prose-invert' : 'prose-slate'}`}>
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {message.content}
+                          </ReactMarkdown>
+                        </div>
                       </div>
                       <span className="text-[10px] text-slate-400 px-1">
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

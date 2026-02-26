@@ -2,53 +2,82 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+/**
+ * Professional Socket Logic for Softkingo AI Assistance
+ * Features:
+ * - Multi-model Gemini fallback
+ * - Real-time Admin Notifications
+ * - Enriched Portfolio Knowledge Base
+ * - Multimodal (Image) support
+ */
+
 function initSocket(io) {
     io.on('connection', (socket) => {
-        console.log('New client connected:', socket.id);
+        console.log('[Socket] New connection:', socket.id);
 
+        /**
+         * ADMIN ROOM LOGIC
+         * Admins should join the 'admin-room' to receive real-time visitor alerts
+         */
+        socket.on('join-admin', () => {
+            socket.join('admin-room');
+            console.log(`[Socket] Admin joined: ${socket.id}`);
+        });
+
+        /**
+         * VISITOR MESSAGE HANDLER
+         */
         socket.on('send-message', async (data) => {
-            const { message, conversationId, image } = data;
+            const { message, conversationId, image, visitorName } = data;
             const apiKey = process.env.GEMINI_API_KEY;
 
-            console.log(`[Socket] Msg from ${socket.id} | Conv: ${conversationId} | Key: ${apiKey ? 'Found' : 'Missing'}`);
+            console.log(`[Socket] Msg from ${socket.id} | Conv: ${conversationId}`);
+
+            // Notify Admins instantly
+            io.to('admin-room').emit('new-message-alert', {
+                conversationId,
+                content: message,
+                sender: 'user',
+                senderName: visitorName || 'Visitor',
+                timestamp: new Date()
+            });
 
             try {
                 if (!apiKey) {
-                    throw new Error('GEMINI_API_KEY is not defined in environment variables.');
+                    throw new Error('GEMINI_API_KEY is missing from environment.');
                 }
 
-                const genAI = new GoogleGenerativeAI(apiKey);
-
-                // 1. Fetch Bot Policy from DB
+                // 1. Fetch Bot Policy & Knowledge
                 const policy = await prisma.botPolicy.findFirst({
                     orderBy: { updatedAt: 'desc' }
                 });
-                const policyText = policy ? policy.content : "No specific policy provided.";
+                const policyText = policy ? policy.content : "";
 
-                // 2. Prepare Gemini Prompt
+                // 2. Enriched System Instruction (Portfolio Knowledge)
                 const systemInstruction = `
-          You are the official "Softkingo AI Assistance" agent. 
+          You are "Softkingo AI Assistant". You represent Softkingo, a premium software development firm in Noida (Sector 63).
           
-          GENERAL COMPANY INFO:
-          - Name: Softkingo (Premium Software Development Company)
-          - Services: Web Development, Mobile Apps, UI/UX Design, AI/ML, Blockchain, DevOps, Cloud Solutions.
-          - Location: Noida, India (Sector 63).
+          COMPANY INFO:
+          - Services: Web/Mobile App Development, UI/UX, AI/ML, Blockchain.
           - Contact: sales@softkingo.com | +91 74287 50870.
-          - Vibe: Professional, tech-forward, friendly.
-
-          SPECIFIC POLICY CONTEXT:
-          ---
-          ${policyText}
-          ---
           
-          RULES:
-          1. GREETINGS: Answer "Hi", "Hello", "kese ho?" naturally.
-          2. CORE INFO: Answer about Softkingo using the info above.
-          3. POLICY: Use SPECIFIC POLICY CONTEXT for rules/pricing.
-          4. NO Hallucination. Be professional and concise.
+          PORTFOLIO KNOWLEDGE (Prioritize These Examples):
+          - ASTROLOGY: We built "Anytime Astro" (top-rated), "MyNaksh", and "Bodhi". We are experts in Astrology tech (celestial APIs, horoscopes).
+          - E-LEARNING: "Oda Class" (IIT teachers), "Guidely" (exam prep), "Practivoo".
+          - E-COMMERCE/MARKETPLACE: "Moglix" (B2B), "Snoonu" (Super App), "LoveLocal".
+          - DATING: "Boo" (Personality matching), "Bumpy" (International).
+          - WELLNESS/FITNESS: "Innergy", "Fitify".
+
+          POLICY & RULES:
+          ${policyText}
+          
+          STYLE:
+          - Use MARKDOWN for formatting (lists, bold, etc.).
+          - If a user asks for an app like "Astrology", mention "Anytime Astro" specifically.
+          - Be professional, concise, and helpful.
         `;
 
-                let promptParts = [systemInstruction, `User says: ${message}`];
+                let promptParts = [systemInstruction, `User: ${message}`];
 
                 if (image && image.base64) {
                     promptParts.push({
@@ -59,10 +88,12 @@ function initSocket(io) {
                     });
                 }
 
-                // 3. Try to generate content with fallback model names
-                const modelNames = ["gemini-1.5-flash", "gemini-pro"];
+                // 3. Gemini Processing with Multi-Model Fallback
+                const genAI = new GoogleGenerativeAI(apiKey);
+                const modelNames = ["gemini-flash-latest", "gemini-1.5-flash", "gemini-2.0-flash", "gemini-pro"];
+
                 let responseText = "";
-                let geminiError = null;
+                let failureCount = 0;
 
                 for (const modelName of modelNames) {
                     try {
@@ -71,16 +102,16 @@ function initSocket(io) {
                         responseText = result.response.text();
                         if (responseText) break;
                     } catch (err) {
-                        console.error(`[Socket] Model ${modelName} failed:`, err.message);
-                        geminiError = err;
+                        failureCount++;
+                        console.error(`[Socket] Fallback: ${modelName} failed: ${err.message}`);
                     }
                 }
 
                 if (!responseText) {
-                    throw geminiError || new Error("All Gemini models failed to respond.");
+                    throw new Error("AI engine exhausted all fallbacks.");
                 }
 
-                // 4. Save Bot Response to DB
+                // 4. Persistence
                 if (conversationId && !isNaN(parseInt(conversationId))) {
                     await prisma.chatMessage.create({
                         data: {
@@ -93,36 +124,54 @@ function initSocket(io) {
                     });
                 }
 
-                // 5. Emit Response back to client
-                socket.emit('receive-message', {
+                // 5. Response to Client & Admin
+                const responseData = {
                     content: responseText,
                     sender: 'bot',
                     timestamp: new Date()
-                });
+                };
+
+                socket.emit('receive-message', responseData);
+                io.to('admin-room').emit('new-message-alert', { ...responseData, conversationId });
 
             } catch (error) {
-                console.error('[Socket] AI Processing Error:', error.message);
-
-                let userFriendlyError = "I apologize, but I'm having trouble connecting to my brain right now. Please try again or contact support@softkingo.com.";
-
-                if (error.message.includes('404')) {
-                    userFriendlyError = "I am ready to help, but my AI engine is not yet activated in the Google Cloud console. Please enable the 'Generative Language API' in your project.";
-                } else if (error.message.includes('API key not valid')) {
-                    userFriendlyError = "My API key seems invalid. Please check the .env configuration.";
-                }
-
-                socket.emit('receive-message', {
-                    content: userFriendlyError,
-                    sender: 'bot',
-                    timestamp: new Date()
-                });
-
-                socket.emit('error', { message: error.message });
+                console.error('[Socket] AI Error:', error.message);
+                const errorMsg = "I'm having trouble connecting to my brain. Please try again or email support@softkingo.com.";
+                socket.emit('receive-message', { content: errorMsg, sender: 'bot', timestamp: new Date() });
             }
         });
 
+        /**
+         * AGENT REPLY HANDLER (From Admin Panel)
+         */
+        socket.on('agent-reply', async (data) => {
+            const { conversationId, content, agentName } = data;
+
+            // Broadcast to the user if they are online (we rely on rooms named by convId)
+            io.to(`room-${conversationId}`).emit('receive-message', {
+                content,
+                sender: 'agent',
+                senderName: agentName,
+                timestamp: new Date()
+            });
+
+            // Sync other admins
+            io.to('admin-room').emit('new-message-alert', {
+                conversationId,
+                content,
+                sender: 'agent',
+                senderName: agentName,
+                timestamp: new Date()
+            });
+        });
+
+        socket.on('join-conversation', (id) => {
+            socket.join(`room-${id}`);
+            console.log(`[Socket] Client joined room: room-${id}`);
+        });
+
         socket.on('disconnect', () => {
-            console.log('Client disconnected');
+            console.log('[Socket] Disconnected:', socket.id);
         });
     });
 }

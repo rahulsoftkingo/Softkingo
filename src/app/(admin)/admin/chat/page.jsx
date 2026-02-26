@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  MessageSquare, 
-  Send, 
-  X, 
-  Search, 
+import { io } from 'socket.io-client';
+import {
+  MessageSquare,
+  Send,
+  X,
+  Search,
   Filter,
   MoreVertical,
   Clock,
@@ -29,7 +30,7 @@ export default function AdminChatPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showMobileList, setShowMobileList] = useState(true);
   const messagesEndRef = useRef(null);
-  const pollingInterval = useRef(null);
+  const socketRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -39,29 +40,43 @@ export default function AdminChatPage() {
     scrollToBottom();
   }, [messages]);
 
+  // Handle Socket Connection
+  useEffect(() => {
+    socketRef.current = io();
+
+    socketRef.current.on('connect', () => {
+      console.log('Admin Socket Connected');
+      socketRef.current.emit('join-admin');
+    });
+
+    socketRef.current.on('new-message-alert', (data) => {
+      // Reload conversations list to show unread/last msg
+      loadConversations();
+
+      // If we are looking at this conversation, update messages
+      if (selectedConv && data.conversationId === selectedConv.id) {
+        setMessages(prev => {
+          // Avoid duplicates
+          if (prev.some(m => m.id === data.id || (m.content === data.content && m.sender === data.sender))) {
+            return prev;
+          }
+          return [...prev, {
+            ...data,
+            id: Date.now() + Math.random(),
+            createdAt: data.timestamp || new Date()
+          }];
+        });
+      }
+    });
+
+    return () => {
+      if (socketRef.current) socketRef.current.disconnect();
+    };
+  }, [selectedConv]);
+
   useEffect(() => {
     loadConversations();
-    
-    // Poll for new conversations every 5 seconds
-    pollingInterval.current = setInterval(loadConversations, 5000);
-    
-    return () => {
-      if (pollingInterval.current) {
-        clearInterval(pollingInterval.current);
-      }
-    };
   }, [filter]);
-
-  // Poll for new messages when conversation is selected
-  useEffect(() => {
-    if (!selectedConv) return;
-
-    const messagePolling = setInterval(() => {
-      loadMessages(selectedConv.id, true); // silent reload
-    }, 3000);
-
-    return () => clearInterval(messagePolling);
-  }, [selectedConv]);
 
   const loadConversations = async () => {
     try {
@@ -101,20 +116,43 @@ export default function AdminChatPage() {
     if (!replyInput.trim() || !selectedConv) return;
 
     setSending(true);
+    const content = replyInput;
+    const conversationId = selectedConv.id;
+
     try {
-      await fetch('/api/chat/message', {
+      // 1. Save to database via API
+      const res = await fetch('/api/chat/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          conversationId: selectedConv.id,
-          content: replyInput,
+          conversationId,
+          content,
           sender: 'agent',
           senderName: 'Support Team',
         }),
       });
 
-      setReplyInput('');
-      loadMessages(selectedConv.id, true);
+      if (res.ok) {
+        // 2. Emit via socket for INSTANT delivery
+        if (socketRef.current) {
+          socketRef.current.emit('agent-reply', {
+            conversationId,
+            content,
+            agentName: 'Support Team'
+          });
+        }
+
+        // 3. Update local state instantly
+        setMessages(prev => [...prev, {
+          id: Date.now(),
+          content,
+          sender: 'agent',
+          senderName: 'Support Team',
+          createdAt: new Date()
+        }]);
+
+        setReplyInput('');
+      }
     } catch (error) {
       console.error('Send reply error:', error);
     } finally {
@@ -157,8 +195,8 @@ export default function AdminChatPage() {
   };
 
   const getStatusColor = (status) => {
-    return status === 'active' 
-      ? 'bg-emerald-500' 
+    return status === 'active'
+      ? 'bg-emerald-500'
       : 'bg-slate-400';
   };
 
@@ -172,16 +210,16 @@ export default function AdminChatPage() {
     const messageDate = new Date(date);
     const diff = now - messageDate;
     const hours = Math.floor(diff / (1000 * 60 * 60));
-    
+
     if (hours < 24) {
-      return messageDate.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
+      return messageDate.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
       });
     }
-    return messageDate.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric' 
+    return messageDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
     });
   };
 
@@ -218,9 +256,8 @@ export default function AdminChatPage() {
 
       <div className="flex-1 flex overflow-hidden">
         {/* Conversations List */}
-        <div className={`${
-          showMobileList ? 'flex' : 'hidden'
-        } lg:flex w-full lg:w-96 bg-white border-r border-slate-200 flex-col`}>
+        <div className={`${showMobileList ? 'flex' : 'hidden'
+          } lg:flex w-full lg:w-96 bg-white border-r border-slate-200 flex-col`}>
           {/* Search & Filter */}
           <div className="p-4 space-y-3 border-b border-slate-200 flex-shrink-0">
             {/* Search */}
@@ -245,11 +282,10 @@ export default function AdminChatPage() {
                 <button
                   key={status.value}
                   onClick={() => setFilter(status.value)}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
-                    filter === status.value
-                      ? 'bg-sky-600 text-white shadow-sm'
-                      : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
-                  }`}
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-all ${filter === status.value
+                    ? 'bg-sky-600 text-white shadow-sm'
+                    : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                    }`}
                 >
                   <span className="mr-1">{status.icon}</span>
                   {status.label}
@@ -279,16 +315,15 @@ export default function AdminChatPage() {
                 {filteredConversations.map((conv) => {
                   const lastMessage = conv.messages?.[0];
                   const unreadCount = conv.messages?.filter(m => !m.isRead && m.sender === 'user').length || 0;
-                  
+
                   return (
                     <button
                       key={conv.id}
                       onClick={() => loadMessages(conv.id)}
-                      className={`w-full text-left p-4 transition-all hover:bg-slate-50 ${
-                        selectedConv?.id === conv.id
-                          ? 'bg-sky-50 border-l-4 border-sky-600'
-                          : 'border-l-4 border-transparent'
-                      }`}
+                      className={`w-full text-left p-4 transition-all hover:bg-slate-50 ${selectedConv?.id === conv.id
+                        ? 'bg-sky-50 border-l-4 border-sky-600'
+                        : 'border-l-4 border-transparent'
+                        }`}
                     >
                       <div className="flex items-start gap-3">
                         {/* Avatar */}
@@ -308,7 +343,7 @@ export default function AdminChatPage() {
                               {formatTime(conv.updatedAt)}
                             </span>
                           </div>
-                          
+
                           <p className="text-xs text-slate-600 truncate mb-2">
                             {conv.visitorEmail}
                           </p>
@@ -341,9 +376,8 @@ export default function AdminChatPage() {
         </div>
 
         {/* Chat Messages */}
-        <div className={`${
-          showMobileList ? 'hidden' : 'flex'
-        } lg:flex flex-1 flex-col bg-white`}>
+        <div className={`${showMobileList ? 'hidden' : 'flex'
+          } lg:flex flex-1 flex-col bg-white`}>
           {selectedConv ? (
             <>
               {/* Chat Header */}
@@ -356,7 +390,7 @@ export default function AdminChatPage() {
                     >
                       <ArrowLeft className="w-5 h-5 text-slate-600" />
                     </button>
-                    
+
                     <div className="relative">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center text-white font-semibold">
                         {selectedConv.visitorName?.charAt(0)?.toUpperCase() || '?'}
@@ -418,9 +452,8 @@ export default function AdminChatPage() {
                   return (
                     <div
                       key={msg.id}
-                      className={`flex ${isUser ? 'justify-end' : 'justify-start'} ${
-                        showAvatar ? 'mt-4' : 'mt-1'
-                      }`}
+                      className={`flex ${isUser ? 'justify-end' : 'justify-start'} ${showAvatar ? 'mt-4' : 'mt-1'
+                        }`}
                     >
                       {!isUser && showAvatar && (
                         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold text-xs mr-2 flex-shrink-0">
@@ -436,13 +469,12 @@ export default function AdminChatPage() {
                         )}
 
                         <div
-                          className={`rounded-2xl px-4 py-2.5 shadow-sm ${
-                            isUser
-                              ? 'bg-sky-600 text-white rounded-br-md'
-                              : isAgent
+                          className={`rounded-2xl px-4 py-2.5 shadow-sm ${isUser
+                            ? 'bg-sky-600 text-white rounded-br-md'
+                            : isAgent
                               ? 'bg-emerald-600 text-white rounded-bl-md'
                               : 'bg-white text-slate-800 border border-slate-200 rounded-bl-md'
-                          }`}
+                            }`}
                         >
                           {msg.type === 'file' && msg.fileUrl && (
                             <a
@@ -458,9 +490,8 @@ export default function AdminChatPage() {
                           <p className="text-sm leading-relaxed whitespace-pre-line break-words">
                             {msg.content}
                           </p>
-                          <div className={`flex items-center gap-1.5 mt-1 text-xs ${
-                            isUser || isAgent ? 'opacity-75' : 'text-slate-400'
-                          }`}>
+                          <div className={`flex items-center gap-1.5 mt-1 text-xs ${isUser || isAgent ? 'opacity-75' : 'text-slate-400'
+                            }`}>
                             <Clock className="w-3 h-3" />
                             <span>{formatTime(msg.createdAt)}</span>
                             {msg.isRead && isUser && (
@@ -488,7 +519,7 @@ export default function AdminChatPage() {
                   >
                     <Paperclip className="w-5 h-5" />
                   </button>
-                  
+
                   <div className="flex-1 relative">
                     <textarea
                       value={replyInput}
