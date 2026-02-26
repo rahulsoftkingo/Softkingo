@@ -3,7 +3,7 @@ import Navbar from "@/components/HeaderNavbar";
 import MobileNavbar from "@/components/Mobilenave";
 import InquirySection from "@/components/footer/Footer";
 import EventPopup from "@/components/public/EventPopup";
-import ChatWidget from "@/components/public/ChatWidget";
+import ChatWidget from "@/components/public/OptimizedChatWidget";
 import WhatsAppButton from "@/components/public/WhatsAppButton";
 
 export const dynamic = 'force-dynamic';

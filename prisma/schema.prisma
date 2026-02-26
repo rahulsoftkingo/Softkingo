@@ -797,3 +797,11 @@ model JobOpening {
 
   @@map("jobopening")
 }
+
+model BotPolicy {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.LongText
+  updatedAt DateTime @updatedAt
+
+  @@map("botpolicy")
+}

@@ -43,6 +43,7 @@ const sections = [
       { label: 'WhatsApp', href: '/admin/whatsapp', icon: MessageCircle, badge: 'new' },
       { label: 'Newsletters', href: '/admin/newsletters', icon: Mail },
       { label: 'Email Campaigns', href: '/admin/email-campaigns', icon: MailOpen, badge: 'new' },
+      { label: 'AI Assistance', href: '/admin/ai-assistance', icon: ShieldCheck, badge: 'AI' },
     ]
   },
   {
