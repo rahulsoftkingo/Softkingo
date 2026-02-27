@@ -23,7 +23,28 @@ export async function GET(req) {
   };
 
   if (category) {
-    where.category = category;
+    // Map common slugs to potential DB values if needed, 
+    // or just use a more flexible search.
+    const categoryMap = {
+      'dating': ['Dating', 'Dating App', 'Dating Apps'],
+      'ecommerce': ['E-commerce', 'Ecommerce', 'Shopping', 'Retail'],
+      'delivery': ['Delivery', 'Food Delivery', 'Courier', 'Logistics'],
+      'taxi': ['Taxi', 'Ride Sharing', 'Mobility', 'Transport'],
+      'education': ['Education', 'E-Learning', 'Learning', 'EdTech'],
+      'fitness': ['Fitness', 'Health', 'Healthcare', 'Gym', 'Wellness'],
+      'healthcare': ['Healthcare', 'Health', 'Medical', 'Doctor', 'Clinic'],
+      'fintech': ['Fintech', 'Finance', 'Banking', 'Wallet', 'Payment'],
+      'realestate': ['Real Estate', 'Property', 'Housing', 'Realestate'],
+      'booking': ['Booking', 'Travel', 'Hotel', 'Reservation'],
+      'social': ['Social', 'Social Media', 'Networking', 'Community'],
+    };
+
+    const targetCategories = categoryMap[category.toLowerCase()] || [category];
+
+    where.OR = [
+      { category: { in: targetCategories } },
+      { category: { contains: category } }
+    ];
   }
 
   const rows = await prisma.portfolioProject.findMany({

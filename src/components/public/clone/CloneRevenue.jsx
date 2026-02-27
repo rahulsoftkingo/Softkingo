@@ -1,156 +1,132 @@
-import React from 'react';
-import { DollarSign, TrendingUp, Target, Zap, ArrowRight } from 'lucide-react';
-import CommonTitle from '@/components/ui/CommonTitle';
+"use client";
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 export default function CloneRevenue({ data }) {
-  const defaultRevenue = [
+  const [activeTab, setActiveTab] = useState(0);
+
+  const defaultTitle = "Our Revenue Model";
+  const defaultHighlight = "Scalable, Transparent. \nBuilt For long term growth.";
+  const defaultRightDesc = "At Softkingo, we consistently stay ahead of the competition by using the latest tools and technologies in mobile app development. Our commitment to innovation ensures superior services that meet our clients' evolving needs.";
+
+  const defaultTabs = [
     {
-      icon: <DollarSign className="text-sky-500" size={32} />,
-      title: "Commission-Based",
-      description: "Earn percentage from every transaction or service booking through your platform"
+      label: "Fixed Cost Development Model",
+      title: "Fixed Cost development Model",
+      description: "This AI-based feature determines pricing based on traffic, cab demand, and availability, ensuring a competitive advantage with real-time pricing models to benefit both drivers and riders through:",
+      bullets: ["No Hidden cost", "Milestone based payments", "Lifetime technical guidance"],
+      image: "/images/revenue/fixed-cost.png"
     },
     {
-      icon: <TrendingUp className="text-sky-500" size={32} />,
-      title: "Subscription Plans",
-      description: "Recurring revenue through monthly or annual premium membership tiers"
+      label: "SaaS-Based Subscription Model",
+      title: "SaaS-Based Subscription",
+      description: "Perfect for long-term partnerships with recurring revenue streams. Our SaaS model provides continuous updates and premium support.",
+      bullets: ["Monthly/Yearly plans", "Multi-tenant architecture", "Seamless scaling"],
+      image: "/images/revenue/saas.png"
     },
     {
-      icon: <Target className="text-sky-500" size={32} />,
-      title: "Premium Features",
-      description: "One-time payments for advanced features and enhanced functionality"
+      label: "Revenue Sharing Partnership",
+      title: "Revenue Sharing",
+      description: "We grow as you grow. This model is designed for high-potential startups looking for a technical partner rather than just a vendor.",
+      bullets: ["Shared risk", "Success-driven development", "Co-innovation"],
+      image: "/images/revenue/sharing.png"
     },
     {
-      icon: <Zap className="text-sky-500" size={32} />,
-      title: "Advertisement Revenue",
-      description: "Generate income through targeted ads and promotional partnerships"
+      label: "White-Label Licensing",
+      title: "White-Label Licensing",
+      description: "Quickest way to market. Buy the license once and launch under your own brand with minimal setup time.",
+      bullets: ["Source code ownership", "Custom branding", "One-time fee"],
+      image: "/images/revenue/licensing.png"
     }
   ];
 
-  // Safe render function to handle malformed data
-  const safeRenderRevenue = (model) => {
-    if (typeof model === 'string') return { title: model, description: '', icon: <DollarSign className="text-sky-500" size={32} /> };
-    if (typeof model === 'object' && model !== null) {
-      return {
-        title: typeof model.title === 'string' ? model.title : 
-              typeof model.name === 'string' ? model.name : 'Revenue Model',
-        description: typeof model.description === 'string' ? model.description : 
-                    typeof model.desc === 'string' ? model.desc : 'Monetization strategy',
-        icon: model.icon || <DollarSign className="text-sky-500" size={32} />
-      };
-    }
-    return { title: 'Revenue Model', description: 'Monetization strategy', icon: <DollarSign className="text-sky-500" size={32} /> };
-  };
-
-  const revenueModels = data?.items?.length > 0 ? data.items : defaultRevenue;
+  const tabs = data?.tabs?.length > 0 ? data.tabs : defaultTabs;
 
   return (
-    <section className="py-20 lg:py-28 px-6 bg-white relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/patterns/dots.svg')] opacity-5"></div>
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        <CommonTitle 
-          title={data?.title || "Revenue & Monetization Models"}
-          subtitle={data?.subtitle || "Multiple revenue streams to ensure sustainable business growth and profitability"}
-          pill={true}
-          align="center"
-        />
+    <section className="py-24 bg-[#E6F4FA]/50">
+      <div className="max-w-7xl mx-auto px-6">
 
-        {/* Revenue Models Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {(Array.isArray(revenueModels) ? revenueModels : []).map((model, i) => {
-            const safeModel = safeRenderRevenue(model);
-            return (
-              <div key={i} className="group">
-                <div className="bg-gradient-to-b from-white to-sky-50 rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full">
-                  {/* Icon */}
-                  <div className="w-20 h-20 bg-sky-50 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:bg-sky-100 group-hover:scale-110 transition-all duration-300">
-                    {safeModel.icon}
-                  </div>
+        {/* Header Grid */}
+        <div className="grid lg:grid-cols-2 gap-12 mb-12 items-start">
+          <div className="space-y-4">
+            <h4 className="text-[#2FB3E0] font-black text-3xl lg:text-4xl  tracking-tighter">
+              {data?.title || defaultTitle}
+            </h4>
+            <h2 className="text-3xl lg:text-4xl  font-black text-slate-900 leading-tight whitespace-pre-line">
+              {data?.highlight || defaultHighlight}
+            </h2>
+          </div>
 
-                  {/* Content */}
-                  <h3 className="text-xl font-bold text-slate-900 text-center mb-4 group-hover:text-sky-600 transition-colors">
-                    {safeModel.title}
-                  </h3>
-                  
-                  <p className="text-slate-600 text-center leading-relaxed">
-                    {safeModel.description}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+          <div className="lg:pt-14">
+            <p className="text-slate-600 font-bold text-sm leading-relaxed max-w-lg">
+              {data?.rightDesc || defaultRightDesc}
+            </p>
+          </div>
         </div>
 
-        {/* Revenue Calculator */}
-        <div className="bg-gradient-to-r from-sky-500 to-sky-600 rounded-3xl p-8 text-white relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-sky-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
-          <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-3xl font-bold mb-4">
-                Estimate Your Revenue Potential
-              </h3>
-              <p className="text-sky-100 mb-6 text-lg">
-                See how quickly your clone app can generate returns with our proven monetization strategies
-              </p>
-              <a 
-                href="/contact" 
-                className="inline-flex items-center gap-2 bg-white text-sky-600 px-6 py-3 rounded-xl font-semibold hover:bg-sky-50 hover:-translate-y-1 transition-all duration-300"
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-[2rem] shadow-xl shadow-sky-900/5 overflow-hidden mb-12 border border-white/50">
+          <div className="flex flex-col md:flex-row items-stretch">
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveTab(index)}
+                className={`flex-1 px-8 py-8 text-sm font-black transition-all duration-300 border-b-4 md:border-b-0 md:border-r last:border-r-0 border-slate-100 ${activeTab === index
+                  ? "text-slate-900 bg-white"
+                  : "text-slate-400 bg-slate-50/50 hover:bg-slate-50 hover:text-slate-600"
+                  }`}
               >
-                Get Revenue Projection <ArrowRight size={18} />
-              </a>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-6">
-              {[
-                { metric: "$50K+", label: "Avg. Monthly Revenue" },
-                { metric: "6 Months", label: "ROI Timeline" },
-                { metric: "4x", label: "Revenue Multiple" },
-                { metric: "90%", label: "Profit Margin" }
-              ].map((stat, i) => (
-                <div key={i} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
-                  <div className="text-2xl font-bold mb-1">{stat.metric}</div>
-                  <div className="text-sm text-sky-100">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+                <span className={`block text-left relative ${activeTab === index ? 'after:content-[""] after:absolute after:-bottom-4 after:left-0 after:w-12 after:h-1 after:bg-[#2FB3E0] after:rounded-full' : ''}`}>
+                  {tab.label}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Features Comparison */}
-        <div className="mt-16">
-          <h3 className="text-2xl font-bold text-center text-slate-900 mb-8">
-            Monetization Features Comparison
-          </h3>
-          
-          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-sky-50 border-b border-slate-200">
-                  <th className="text-left p-4 font-semibold text-slate-900">Feature</th>
-                  <th className="text-center p-4 font-semibold text-slate-900">Basic</th>
-                  <th className="text-center p-4 font-semibold text-slate-900">Premium</th>
-                  <th className="text-center p-4 font-semibold text-sky-600">Enterprise</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { feature: "Commission Rate", basic: "5%", premium: "3%", enterprise: "2%" },
-                  { feature: "Payment Gateway", basic: "Standard", premium: "Multiple", enterprise: "Custom" },
-                  { feature: "Analytics", basic: "Basic", premium: "Advanced", enterprise: "Real-time" },
-                  { feature: "Support", basic: "Email", premium: "24/7 Chat", enterprise: "Dedicated" }
-                ].map((row, i) => (
-                  <tr key={i} className="border-b border-slate-100 hover:bg-sky-50/50 transition-colors">
-                    <td className="p-4 font-medium text-slate-900">{row.feature}</td>
-                    <td className="p-4 text-center text-slate-600">{row.basic}</td>
-                    <td className="p-4 text-center text-slate-600">{row.premium}</td>
-                    <td className="p-4 text-center font-semibold text-sky-600">{row.enterprise}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* Content Area */}
+        <div className="bg-white rounded-[3rem] p-8 lg:p-20 shadow-2xl shadow-sky-900/5 relative overflow-hidden group border border-white">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4, ease: "circOut" }}
+              className="grid lg:grid-cols-2 gap-16 items-center"
+            >
+              <div className="space-y-8">
+                <h3 className="text-4xl lg:text-5xl font-black text-slate-900 leading-tight italic">
+                  {tabs[activeTab].title}
+                </h3>
+                <p className="text-slate-500 text-lg leading-relaxed font-medium">
+                  {tabs[activeTab].description}
+                </p>
+
+                <ul className="space-y-4">
+                  {(tabs[activeTab].bullets || []).map((bullet, i) => (
+                    <li key={i} className="flex items-center gap-3 text-slate-800 font-bold">
+                      <div className="w-2 h-2 rounded-full bg-[#2FB3E0]" />
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3]">
+                <Image
+                  src={tabs[activeTab].image || "/images/placeholder-revenue.png"}
+                  alt={tabs[activeTab].title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                {/* Bottom Glow Effect */}
+                <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[#2FB3E0]/20 blur-3xl rounded-full" />
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

@@ -19,14 +19,20 @@ import SolutionsSecurity from '@/components/public/solutions/SolutionsSecurity';
 
 // --- CLONE COMPONENTS (NEW) ---
 import CloneHero from '@/components/public/clone/CloneHero';
+import CloneStats from '@/components/public/clone/CloneStats';
+import CloneVerticalSuite from '@/components/public/clone/CloneVerticalSuite';
+import CloneComparison from '@/components/public/clone/CloneComparison';
 import CloneAbout from '@/components/public/clone/CloneAbout';
 import CloneWhyBuild from '@/components/public/clone/CloneWhyBuild';
 import CloneFeatures from '@/components/public/clone/CloneFeatures';
 import CloneAI from '@/components/public/clone/CloneAI';
-import CloneTechStack from '@/components/public/clone/CloneTechStack';
+import CloneAISolutions from '@/components/public/clone/CloneAISolutions';
+import CloneInvestment from '@/components/public/clone/CloneInvestment';
 import CloneRevenue from '@/components/public/clone/CloneRevenue';
+import CloneTechStack from '@/components/public/clone/CloneTechStack';
 import CloneProcess from '@/components/public/clone/CloneProcess';
 import CloneFAQ from '@/components/public/clone/CloneFAQ';
+import CloneIndustries from '@/components/public/clone/CloneIndustries';
 
 // --- SHARED COMPONENTS ---
 import FAQAccordion from '@/components/common/Faqaccordion';
@@ -40,10 +46,37 @@ async function getSolutionPage(slug) {
         const page = await prisma.page.findUnique({ where: { slug: slug } });
         if (!page) return null;
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
+
+        // Fetch selected industries data if present
+        let industryPages = [];
+        const industryConfig = jsonContent.content?.industries;
+
+        if (industryConfig?.items?.length > 0) {
+            const selectedSlugs = industryConfig.items.map(i => i.slug);
+            const rawIndustries = await prisma.page.findMany({
+                where: {
+                    slug: { in: selectedSlugs },
+                    type: 'industry'
+                }
+            });
+
+            // Map and parse content for each industry
+            industryPages = rawIndustries.map(ind => ({
+                ...ind,
+                content: ind.contentJson ? JSON.parse(ind.contentJson).content : {}
+            }));
+
+            // Maintain selection order
+            industryPages.sort((a, b) =>
+                selectedSlugs.indexOf(a.slug) - selectedSlugs.indexOf(b.slug)
+            );
+        }
+
         return {
             ...page,
             activeSections: jsonContent.activeSections || [],
-            sections: jsonContent.content || {}
+            sections: jsonContent.content || {},
+            industryPages
         };
     } catch (error) {
         console.error("Error fetching solution page:", error);
@@ -96,8 +129,8 @@ export default async function DynamicSolutionPage(props) {
     // =========================================================
     if (data.type === 'clone') {
         const {
-            hero, about, whyBuild, services, appFeatures,
-            aiFeatures, techStack, revenue, portfolio, process, faq
+            hero, about, verticalSuite, aiFeatures, aiSolutions,
+            investment, revenue, techStack, portfolio, process, faq
         } = data.sections;
 
         return (
@@ -113,34 +146,34 @@ export default async function DynamicSolutionPage(props) {
                     <CloneAbout data={about} />
                 )}
 
-                {/* 3. Why Build a clone app */}
-                {show('whyBuild') && (
-                    <CloneWhyBuild items={whyBuild?.items} />
+                {/* 3. Features (Tabbed Vertical Suite / Why वाला ) */}
+                {show('verticalSuite') && (
+                    <CloneVerticalSuite data={verticalSuite} />
                 )}
 
-                {/* 4. Our Clone App Development Services */}
-                {show('services') && (
-                    <SolutionsServicesList data={services} />
-                )}
-
-                {/* 5. Features (User, Vendor, Admin) */}
-                {show('appFeatures') && (
-                    <CloneFeatures data={appFeatures} />
-                )}
-
-                {/* 6. AI-Powered & Advanced Features */}
+                {/* 4. AI-Powered & Advanced Features (New 设计) */}
                 {show('aiFeatures') && (
                     <CloneAI data={aiFeatures} />
                 )}
 
-                {/* 7. Technology Stack We Use */}
-                {show('techStack') && (
-                    <CloneTechStack data={techStack} />
+                {/* 5. Ai Feature Solutions (Indigo Hover Menu) */}
+                {show('aiSolutions') && (
+                    <CloneAISolutions data={aiSolutions} />
                 )}
 
-                {/* 8. Revenue & Monetization Models */}
+                {/* 6. Why to Invest (New) */}
+                {show('investment') && (
+                    <CloneInvestment data={investment} />
+                )}
+
+                {/* 7. Revenue Model (New tabbed design) */}
                 {show('revenue') && (
                     <CloneRevenue data={revenue} />
+                )}
+
+                {/* 8. Technology Stack We Use (Scrollable tabs) */}
+                {show('techStack') && (
+                    <CloneTechStack data={techStack} />
                 )}
 
                 {/* 9. Our Portfolio & Experience */}
@@ -148,8 +181,8 @@ export default async function DynamicSolutionPage(props) {
                     <DynamicPortfolioCard
                         category={portfolio?.category || data.slug}
                         portfolioType="app"
-                        title="Similar Clone Solutions"
-                        subtitle="See what we've built for others."
+                        title={portfolio?.title}
+                        subtitle={portfolio?.subtitle}
                     />
                 )}
 
@@ -158,10 +191,15 @@ export default async function DynamicSolutionPage(props) {
                     <CloneProcess data={process} />
                 )}
 
-                {/* 11. FAQ */}
+                {/* 11. Industries We Serve (Tabbed UI) */}
+                {show('industries') && (
+                    <CloneIndustries data={data.sections.industries} industries={data.industryPages} />
+                )}
+
+                {/* 12. FAQ */}
                 {show('faq') && <CloneFAQ data={faq} />}
 
-                {/* 12. Contact & Free Consultation */}
+                {/* 13. Contact & Free Consultation */}
                 <ConsultationCTA
                     title="Launch Your Clone App Today"
                     subtitle="Get a free quote and technical roadmap for your idea."
@@ -199,7 +237,7 @@ export default async function DynamicSolutionPage(props) {
                 </>
             )}
             {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
-            {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title="Our Portfolio" />}
+            {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title={portfolio?.title} subtitle={portfolio?.subtitle} />}
             {show('process') && <SolutionsProcess data={process} />}
             {show('techStack') && <SolutionsTechStack data={techStack} />}
             {show('monetization') && <SolutionsMonetization data={monetization} />}

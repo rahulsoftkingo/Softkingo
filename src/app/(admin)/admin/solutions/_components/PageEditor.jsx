@@ -6,7 +6,7 @@ import {
     Target, Settings, Zap, CheckCircle2, X, Image as ImageIcon, Folder,
     Briefcase, Code, DollarSign, BarChart3, ShieldCheck, HelpCircle,
     UploadCloud, FolderPlus, ChevronRight, Home, Search, Loader2, FolderOpen,
-    Award, MessageSquare, MousePointerClick, Layers, Save, Grid
+    Award, MessageSquare, MousePointerClick, Layers, Save, Grid, Cpu, TrendingUp
 } from "lucide-react";
 import SolutionsEditor from "./SolutionEditor";
 import IndustryEditor from "./IndustryEditor";
@@ -97,18 +97,19 @@ export default function PageEditor({ data, type, onBack }) {
             label: "Clone Script Page",
             uploadDir: "uploads/clones",
             sections: [
-                { id: 'hero', label: '1. Hero', icon: Smartphone },
-                { id: 'about', label: '2. About Clone', icon: Layout },
-                { id: 'whyBuild', label: '3. Why Build', icon: Target },
-                { id: 'services', label: '4. Services', icon: Briefcase },
-                { id: 'appFeatures', label: '5. App Features', icon: Grid }, // Split into User/Vendor/Admin inside editor
-                { id: 'aiFeatures', label: '6. AI Features', icon: Zap },
-                { id: 'techStack', label: '7. Tech Stack', icon: Code },
-                { id: 'revenue', label: '8. Revenue', icon: DollarSign },
+                { id: 'hero', label: '1. Hero Section', icon: Smartphone },
+                { id: 'about', label: '2. About Product', icon: Layout },
+                { id: 'verticalSuite', label: '3. Tech Suite (Why)', icon: Layers },
+                { id: 'aiFeatures', label: '4. Advanced Features', icon: Zap },
+                { id: 'aiSolutions', label: '5. Ai Feature Solutions', icon: Cpu },
+                { id: 'investment', label: '6. Why to Invest', icon: TrendingUp },
+                { id: 'revenue', label: '7. Revenue Model', icon: DollarSign },
+                { id: 'techStack', label: '8. Tech Stack', icon: Code },
                 { id: 'portfolio', label: '9. Portfolio', icon: Layout },
                 { id: 'process', label: '10. Process', icon: Settings },
-                { id: 'faq', label: '11. FAQ & CTA', icon: HelpCircle },
-                { id: 'seo', label: '12. SEO Settings', icon: Search }
+                { id: 'industries', label: '11. Industries', icon: Grid },
+                { id: 'faq', label: '12. FAQ & CTA', icon: HelpCircle },
+                { id: 'seo', label: '13. SEO Settings', icon: Search }
             ]
         }
     }[type] || config.solution;

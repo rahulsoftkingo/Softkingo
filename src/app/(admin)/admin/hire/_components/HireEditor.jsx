@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { 
-    ArrowLeft , Save, Eye, Image as ImageIcon, Plus, X, 
+import {
+    ArrowLeft, Save, Eye, Image as ImageIcon, Plus, X,
     Smartphone, Layout, Database, Settings, Briefcase, Users, Zap, CheckCircle2, Layers, DollarSign, BarChart3, MousePointerClick, FolderOpen, Loader2,
 } from 'lucide-react';
 
@@ -44,7 +44,7 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
 };
 
 export default function HireEditor({ data, onBack, onSave, loading }) {
-    
+
     // Config: Sections List
     const sections = [
         { id: 'hero', label: '1. Hero', icon: Smartphone },
@@ -52,28 +52,52 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
         { id: 'features', label: '3. Features', icon: Database },
         { id: 'steps', label: '4. Steps', icon: Settings },
         { id: 'services', label: '5. Services', icon: Briefcase },
-        { id: 'profile', label: '6. Profile', icon: Users },
-        { id: 'models', label: '7. Models', icon: Zap },
-        { id: 'why', label: '8. Why Hire', icon: CheckCircle2 },
-        { id: 'business', label: '9. Biz Types', icon: Layers },
-        { id: 'pricing', label: '10. Pricing', icon: DollarSign },
-        { id: 'comparison', label: '11. Compare', icon: BarChart3 },
-        { id: 'cta', label: '12. CTA', icon: MousePointerClick }
+        { id: 'portfolio', label: '6. Portfolio', icon: FolderOpen },
+        { id: 'profile', label: '7. Profile', icon: Users },
+        { id: 'models', label: '8. Models', icon: Zap },
+        { id: 'why', label: '9. Why Hire', icon: CheckCircle2 },
+        { id: 'business', label: '10. Biz Types', icon: Layers },
+        { id: 'pricing', label: '11. Pricing', icon: DollarSign },
+        { id: 'comparison', label: '12. Compare', icon: BarChart3 },
+        { id: 'cta', label: '13. CTA', icon: MousePointerClick }
     ];
 
-    // State
+    // State - always ensure new sections are included even in older saved pages
+    const allSectionIds = sections.map(s => s.id);
+    const savedSections = data?.activeSections || [];
+    const mergedSections = savedSections.length > 0
+        ? [...new Set([...savedSections, 'portfolio'])] // ensure portfolio always present
+        : allSectionIds;
+
     const [formData, setFormData] = useState({
         ...data,
-        activeSections: data?.activeSections || sections.map(s => s.id),
-        content: data?.content || {} 
+        activeSections: mergedSections,
+        content: data?.content || {}
     });
+
+    const [availableCategories, setAvailableCategories] = useState([]);
+
+    useEffect(() => {
+        async function fetchCategories() {
+            try {
+                const res = await fetch('/api/admin/portfolio-projects/categories');
+                if (res.ok) {
+                    const data = await res.json();
+                    setAvailableCategories(data || []);
+                }
+            } catch (err) {
+                console.error('Error fetching portfolio categories:', err);
+            }
+        }
+        fetchCategories();
+    }, []);
 
     // --- Helper: Update Fields ---
     const updateField = (path, value) => {
         setFormData(prev => {
             const copy = JSON.parse(JSON.stringify(prev));
             if (!copy.content) copy.content = {};
-            
+
             const keys = path.split('.');
             let current = copy;
             for (let i = 0; i < keys.length - 1; i++) {
@@ -88,7 +112,7 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
     // --- Helper: Update Nested Arrays ---
     const updateArrayObject = (path, index, field, value) => {
         const parts = path.split('.');
-        const parentKey = parts[1]; 
+        const parentKey = parts[1];
         const currentArr = [...(formData.content?.[parentKey] || [])];
         if (!currentArr[index]) currentArr[index] = {};
         currentArr[index] = { ...currentArr[index], [field]: value };
@@ -101,19 +125,29 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
             {/* SIDEBAR */}
             <div className="w-80 border-r border-slate-200 bg-slate-50 flex flex-col">
                 <div className="p-5 border-b bg-white">
-                    <button onClick={onBack} className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-slate-800 mb-4"><ArrowLeft size={14}/> BACK</button>
+                    <button onClick={onBack} className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-slate-800 mb-4"><ArrowLeft size={14} /> BACK</button>
                     <h2 className="text-lg font-black text-cyan-600 flex items-center gap-2 uppercase">Hire Page Editor</h2>
                 </div>
-                
+
                 <div className="flex-1 overflow-y-auto p-5 space-y-6">
                     {/* Basic Settings */}
                     <div className="space-y-3">
                         <label className="text-[10px] font-bold text-slate-400 block">PAGE INFO</label>
-                        <input className={inputStyle} value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} placeholder="Page Title" />
+                        <input className={inputStyle} value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="Page Title" />
+
                         <div className="flex items-center bg-white rounded-lg border border-slate-200 px-2">
                             <span className="text-slate-400 text-xs">/hire/</span>
-                            <input className="w-full p-2 bg-transparent border-none text-sm font-mono text-slate-600 outline-none" value={formData.slug} onChange={e => setFormData({...formData, slug: e.target.value})} placeholder="slug" />
+                            <input className="w-full p-2 bg-transparent border-none text-sm font-mono text-slate-600 outline-none" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} placeholder="slug" />
                         </div>
+
+                        <input className={inputStyle} value={formData.key} onChange={e => setFormData({ ...formData, key: e.target.value })} placeholder="Page Key (e.g. hire-android)" />
+
+                        <textarea className={inputStyle} rows={3} value={formData.excerpt} onChange={e => setFormData({ ...formData, excerpt: e.target.value })} placeholder="Excerpt / Short Description" />
+
+                        <select className={inputStyle} value={formData.status} onChange={e => setFormData({ ...formData, status: e.target.value })}>
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
                     </div>
 
                     {/* Section Toggles */}
@@ -124,7 +158,7 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                             return (
                                 <button key={section.id} onClick={() => {
                                     const newSections = isActive ? formData.activeSections.filter(id => id !== section.id) : [...(formData.activeSections || []), section.id];
-                                    setFormData({...formData, activeSections: newSections});
+                                    setFormData({ ...formData, activeSections: newSections });
                                 }} className={`flex items-center gap-3 w-full p-3 rounded-xl border transition-all ${isActive ? 'bg-cyan-50 border-cyan-200 text-cyan-700' : 'bg-white border-slate-100 text-slate-400'}`}>
                                     <div className={`p-2 rounded-lg ${isActive ? 'bg-cyan-100' : 'bg-slate-50'}`}><section.icon size={16} /></div>
                                     <span className="text-xs font-bold uppercase">{section.label}</span>
@@ -137,7 +171,7 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
 
                 <div className="p-5 border-t bg-white">
                     <button onClick={() => onSave(formData)} className="w-full bg-cyan-600 text-white py-3 rounded-xl font-bold text-sm flex justify-center gap-2 hover:bg-cyan-700 transition-all shadow-lg">
-                        {loading ? <Loader2 className="animate-spin" size={16}/> : <Save size={16}/>} Save Page
+                        {loading ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />} Save Page
                     </button>
                 </div>
             </div>
@@ -145,13 +179,13 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
             {/* MAIN EDITOR AREA */}
             <div className="flex-1 bg-slate-100 overflow-y-auto p-8 lg:p-12">
                 <div className="max-w-4xl mx-auto">
-                    
+
                     {/* 1. HERO */}
                     <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={formData.activeSections}>
                         <input className={inputStyle} placeholder="Hero Title" value={formData.content.heroTitle || ''} onChange={e => updateField('content.heroTitle', e.target.value)} />
                         <textarea className={inputStyle} rows={2} placeholder="Hero Subtitle" value={formData.content.heroSubtitle || ''} onChange={e => updateField('content.heroSubtitle', e.target.value)} />
                         <input className={inputStyle} placeholder="Badge Text" value={formData.content.badgeText || ''} onChange={e => updateField('content.badgeText', e.target.value)} />
-                        
+
                         <div className="grid grid-cols-3 gap-2">
                             <input className={inputStyle} placeholder="Avg Time" value={formData.content.metrics?.avgTime || ''} onChange={e => updateField('content.metrics.avgTime', e.target.value)} />
                             <input className={inputStyle} placeholder="Network" value={formData.content.metrics?.network || ''} onChange={e => updateField('content.metrics.network', e.target.value)} />
@@ -171,7 +205,7 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                                     <input className={inputStyle} value={item || ''} onChange={e => {
                                         const arr = [...(formData.content.benefits || [])]; arr[i] = e.target.value; updateField('content.benefits', arr);
                                     }} />
-                                )} 
+                                )}
                             />
                         </div>
                     </SectionWrapper>
@@ -185,7 +219,7 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                                     <textarea className={inputStyle} rows={2} placeholder="Description" value={item.description || ''} onChange={e => updateArrayObject('content.features', i, 'description', e.target.value)} />
                                     <input className={inputStyle} placeholder="Icon Key (e.g. FaUser)" value={item.iconKey || ''} onChange={e => updateArrayObject('content.features', i, 'iconKey', e.target.value)} />
                                 </div>
-                            )} 
+                            )}
                         />
                     </SectionWrapper>
 
@@ -194,14 +228,14 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                         <ArrayField path="content.steps" items={formData.content.steps} updateField={updateField} defaultItem={{ number: 1, title: "", description: "", icon: "" }}
                             renderItem={(item, i) => (
                                 <div className="flex gap-2">
-                                    <div className="w-8 pt-2 text-center font-bold text-slate-300">{i+1}</div>
+                                    <div className="w-8 pt-2 text-center font-bold text-slate-300">{i + 1}</div>
                                     <div className="flex-1 space-y-2">
                                         <input className={inputStyle} placeholder="Title" value={item.title || ''} onChange={e => updateArrayObject('content.steps', i, 'title', e.target.value)} />
                                         <textarea className={inputStyle} rows={2} placeholder="Description" value={item.description || ''} onChange={e => updateArrayObject('content.steps', i, 'description', e.target.value)} />
                                         <input className={inputStyle} placeholder="Icon URL" value={item.icon || ''} onChange={e => updateArrayObject('content.steps', i, 'icon', e.target.value)} />
                                     </div>
                                 </div>
-                            )} 
+                            )}
                         />
                     </SectionWrapper>
 
@@ -219,7 +253,7 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                                             <input className={inputStyle} placeholder="Gradient Class" value={item.bg || ''} onChange={e => updateArrayObject('content.services', i, 'bg', e.target.value)} />
                                         </div>
                                     </div>
-                                )} 
+                                )}
                             />
                         </div>
                     </SectionWrapper>
@@ -228,7 +262,7 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                     <SectionWrapper id="profile" icon={Users} title="6. Detailed Profile" activeSections={formData.activeSections}>
                         <input className={inputStyle} placeholder="Title" value={formData.content.profileSection?.title || ''} onChange={e => updateField('content.profileSection.title', e.target.value)} />
                         <input className={inputStyle} placeholder="Subtitle" value={formData.content.profileSection?.subtitle || ''} onChange={e => updateField('content.profileSection.subtitle', e.target.value)} />
-                        
+
                         <div className="grid grid-cols-3 gap-2 mt-4">
                             <input className={inputStyle} placeholder="Left Img" value={formData.content.profileSection?.images?.leftTop || ''} onChange={e => updateField('content.profileSection.images.leftTop', e.target.value)} />
                             <input className={inputStyle} placeholder="Right Top" value={formData.content.profileSection?.images?.rightTop || ''} onChange={e => updateField('content.profileSection.images.rightTop', e.target.value)} />
@@ -236,11 +270,34 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                         </div>
                     </SectionWrapper>
 
+                    {/* PORTFOLIO SECTION */}
+                    <SectionWrapper id="portfolio" icon={FolderOpen} title="6. Portfolio" activeSections={formData.activeSections}>
+                        <div className="space-y-3">
+                            <div className="grid md:grid-cols-2 gap-3">
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Portfolio Title</label>
+                                    <input className={inputStyle} placeholder="e.g. Our Success Stories" value={formData.content.portfolioTitle || ''} onChange={e => updateField('content.portfolioTitle', e.target.value)} />
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Category Filter</label>
+                                    <select className={inputStyle} value={formData.content.portfolioCategory || ''} onChange={e => updateField('content.portfolioCategory', e.target.value)}>
+                                        <option value="">Select Category (Top 7)...</option>
+                                        {availableCategories.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
+                                    <p className="text-[10px] text-slate-400 mt-1">Leave blank → shows top 7 projects</p>
+                                </div>
+                            </div>
+                            <textarea className={inputStyle} rows={2} placeholder="Portfolio subtitle..." value={formData.content.portfolioSubtitle || ''} onChange={e => updateField('content.portfolioSubtitle', e.target.value)} />
+                        </div>
+                    </SectionWrapper>
+
                     {/* 10. PRICING */}
                     <SectionWrapper id="pricing" icon={DollarSign} title="10. Pricing Plans" activeSections={formData.activeSections}>
                         <input className={inputStyle} placeholder="Title" value={formData.content.pricingSection?.title || ''} onChange={e => updateField('content.pricingSection.title', e.target.value)} />
                         <input className={inputStyle} placeholder="Subtitle" value={formData.content.pricingSection?.subtitle || ''} onChange={e => updateField('content.pricingSection.subtitle', e.target.value)} />
-                        
+
                         <ArrayField path="content.pricingSection.plans" items={formData.content.pricingSection?.plans} updateField={updateField} defaultItem={{ title: "", price: "", features: [] }}
                             renderItem={(item, i) => (
                                 <div className="grid grid-cols-2 gap-2">
@@ -248,10 +305,10 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                                     <input className={inputStyle} placeholder="Price" value={item.price || ''} onChange={e => updateArrayObject('content.pricingSection.plans', i, 'price', e.target.value)} />
                                     {/* Features handling simplified for brevity */}
                                 </div>
-                            )} 
+                            )}
                         />
                     </SectionWrapper>
-                    
+
                 </div>
             </div>
         </div>

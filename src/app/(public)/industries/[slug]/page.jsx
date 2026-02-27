@@ -164,10 +164,10 @@ export default async function IndustryPage(props) {
             {/* 5. PORTFOLIO (Dynamic Card) */}
             {show('portfolio') && (
                 <DynamicPortfolioCard
-                    category={portfolio?.category || data.slug} // Fallback to slug if category not set
+                    category={portfolio?.category || data.slug}
                     portfolioType=""
-                    title="Our Success Stories"
-                    subtitle="Explore how we've transformed businesses in this sector."
+                    title={portfolio?.title}
+                    subtitle={portfolio?.subtitle}
                 />
             )}
 

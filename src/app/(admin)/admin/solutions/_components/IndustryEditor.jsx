@@ -112,10 +112,28 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
             {/* 5. PORTFOLIO */}
             <SectionWrapper id="portfolio" icon={Layout} title="5. Industry Portfolio" activeSections={activeSections}>
                 <div className="space-y-4">
-                    <input className={inputStyle} placeholder="Portfolio Type" value={content.portfolio?.type || ''} onChange={e => updateField('content.portfolio.type', e.target.value)} />
-                    <input className={inputStyle} placeholder="Category Tag" value={content.portfolio?.category || ''} onChange={e => updateField('content.portfolio.category', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Category Filter</label>
+                            <select className={inputStyle} value={content.portfolio?.category || ''} onChange={e => updateField('content.portfolio.category', e.target.value)}>
+                                <option value="">Select Category...</option>
+                                <option value="dating">Dating Apps</option>
+                                <option value="ecommerce">E-commerce</option>
+                                <option value="delivery">Delivery Apps</option>
+                                <option value="taxi">Taxi / Ride Sharing</option>
+                                <option value="education">E-Learning</option>
+                                <option value="fitness">Health & Fitness</option>
+                                <option value="healthcare">Healthcare / Medical</option>
+                                <option value="fintech">Fintech / Banking</option>
+                                <option value="realestate">Real Estate / Property</option>
+                                <option value="booking">Travel & Booking</option>
+                                <option value="social">Social Media</option>
+                            </select>
+                        </div>
+                    </div>
+                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
+                    <p className="text-[10px] text-slate-400">Leave category blank → shows top 7 projects by default.</p>
                 </div>
             </SectionWrapper>
 

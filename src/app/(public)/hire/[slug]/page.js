@@ -1041,7 +1041,9 @@ function normalizeHireContent(page) {
     steps: Array.isArray(c.steps) ? c.steps : [],
     services: Array.isArray(c.services) ? c.services : [],
     moreServices: Array.isArray(c.moreServices) ? c.moreServices : [],
-    portfolioCategory: c.portfolioCategory || "", // NEW: for dynamic portfolio linking
+    portfolioCategory: c.portfolioCategory || "", // from select dropdown in editor
+    portfolioTitle: c.portfolioTitle || "",
+    portfolioSubtitle: c.portfolioSubtitle || "",
 
     profileSection: {
       enabled: c.profileSection?.enabled ?? true,
@@ -1513,10 +1515,10 @@ export default async function HireSlugPage({ params }) {
 
       {/* 8.5 PORTFOLIO SECTION */}
       <DynamicPortfolioCard
-        category={content.portfolioCategory || slug}
+        category={content.portfolioCategory || ""}
         portfolioType="app"
-        title="Our Success Stories"
-        subtitle={`See how we've helped clients in the ${content.heroTitle} space.`}
+        title={content.portfolioTitle}
+        subtitle={content.portfolioSubtitle}
       />
 
       {/* 9. TECH STACK */}

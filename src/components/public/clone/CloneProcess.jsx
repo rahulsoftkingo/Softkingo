@@ -1,141 +1,137 @@
-import React from 'react';
-import { CheckCircle2, ArrowRight, Clock, Users, Code, Rocket, CheckCircle } from 'lucide-react';
+"use client";
+
+import React, { useState } from 'react';
 import CommonTitle from '@/components/ui/CommonTitle';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CloneProcess({ data }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const defaultSteps = [
-    {
-      title: "Discovery & Planning",
-      description: "We analyze your requirements and create a detailed roadmap for your clone development project."
-    },
-    {
-      title: "UI/UX Design",
-      description: "Create intuitive and attractive interfaces that match modern design standards and user expectations."
-    },
-    {
-      title: "Core Development",
-      description: "Build the essential features and functionality that make your clone platform operational."
-    },
-    {
-      title: "Advanced Features",
-      description: "Implement AI capabilities, analytics, and custom features to differentiate your platform."
-    },
-    {
-      title: "Testing & QA",
-      description: "Rigorous testing to ensure your platform is bug-free and performs optimally."
-    },
-    {
-      title: "Launch & Support",
-      description: "Deploy your clone platform and provide ongoing maintenance and support."
-    }
+    { title: "Consulting, Discovery, And Product Definition", description: "Every project begins with discovery. Our experts hold workshops to understand your goals, audience, and business model. This phase helps identify what kind of platform to build, whether it's community-driven, content-led, or creator-focused and how our social media application development services can turn that vision into a working product." },
+    { title: "Strategic Planning & UI/UX Design", description: "We define the technical architecture and create intuitive, high-fidelity designs. Our focus is on user engagement and seamless navigation, ensuring your clone app feels premium and familiar yet uniquely yours." },
+    { title: "Robust Core Development", description: "Our developers build the engine of your application using modern tech stacks. We implement scalable backend systems and responsive frontend interfaces to handle high traffic and complex interactions." },
+    { title: "AI & Third-Party Integration", description: "Enhance your app with smart features like AI-driven recommendations, real-time chats, and secure payment gateways. We integrate the best-in-class APIs to give your users a complete experience." },
+    { title: "Quality Assurance & Testing", description: "Rigorous testing across multiple devices and network conditions. We ensure your app is bug-free, secure, and performs optimally before it reaches your first user." },
+    { title: "Market-Ready Launch & Support", description: "We handle the deployment process to App Store and Google Play. Post-launch, we provide continuous monitoring and updates to keep your application competitive and synchronized with market trends." }
   ];
 
-  // Safe render function to handle malformed data
-  const safeRenderStep = (step) => {
-    if (typeof step === 'string') return { title: step, description: '', icon: <CheckCircle className="text-sky-500" size={32} /> };
-    if (typeof step === 'object' && step !== null) {
-      return {
-        title: typeof step.title === 'string' ? step.title : 
-              typeof step.name === 'string' ? step.name : 'Process Step',
-        description: typeof step.description === 'string' ? step.description : 
-                    typeof step.desc === 'string' ? step.desc : 'Development phase',
-        icon: step.icon || <CheckCircle className="text-sky-500" size={32} />
-      };
-    }
-    return { title: 'Process Step', description: 'Development phase', icon: <CheckCircle className="text-sky-500" size={32} /> };
-  };
-
   const steps = data?.items?.length > 0 ? data.items : defaultSteps;
+  const currentStep = steps[activeIndex] || steps[0];
 
   return (
-    <section className="py-20 lg:py-28 px-6 bg-white">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Header */}
-        <CommonTitle 
-            title={data?.title || "Our Clone Development Process"}
-            subtitle={data?.subtitle || "Streamlined methodology to deliver high-quality clone applications efficiently"}
-            pill={true}
-        />
+    <section className="py-24 bg-[#F8FAFC] relative overflow-hidden">
+      {/* Background Grid Accent */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2FB3E0 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
-        {/* Process Timeline */}
-        <div className="relative mt-16">
-          {/* Connection Line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-sky-200 via-sky-400 to-sky-200 transform -translate-x-1/2 hidden lg:block"></div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {(Array.isArray(steps) ? steps : []).map((step, i) => {
-              const safeStep = safeRenderStep(step);
-              return (
-                <div key={i} className="relative group">
-                  {/* Step Card */}
-                  <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full">
-                    {/* Step Number */}
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-sky-400 to-sky-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      {i + 1}
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="mb-16">
+          <CommonTitle
+            title={data?.title || "Our Complete Clone App Development Process"}
+            subtitle={data?.subtitle || "As a leading clone app development company, our developers at Softkingo can help you build a top-tier solution tailored to your business-specific needs."}
+            center={true}
+          />
+        </div>
+
+        <div className="grid lg:grid-cols-[1fr_1.5fr] gap-12 items-start">
+
+          {/* Left: Interactive Steps List */}
+          <div className="relative">
+            {/* Vertical Dotted Line */}
+            <div className="absolute right-[19px] top-8 bottom-8 w-[2px] border-r-2 border-dashed border-sky-100 hidden md:block"></div>
+
+            <div className="space-y-6">
+              {steps.map((step, i) => (
+                <div
+                  key={i}
+                  onClick={() => setActiveIndex(i)}
+                  className="flex items-center justify-end gap-0 group cursor-pointer"
+                >
+                  {/* Item Capsule */}
+                  <div className={`
+                                        flex-1 max-w-[340px] flex items-center gap-4 px-6 py-4 rounded-2xl border transition-all duration-500
+                                        ${activeIndex === i
+                      ? 'bg-gradient-to-r from-sky-500 to-sky-400 border-sky-400 shadow-lg shadow-sky-500/20 text-white'
+                      : 'bg-white border-slate-100 text-slate-600 hover:border-sky-200 hover:bg-sky-50/50'
+                    }
+                                    `}>
+                    <div className={`
+                                            w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors
+                                            ${activeIndex === i ? 'bg-white/20' : 'bg-slate-50 group-hover:bg-sky-100'}
+                                        `}>
+                      {step.icon ? (
+                        <img src={step.icon} alt="" className="w-5 h-5 object-contain" />
+                      ) : (
+                        <div className={`w-5 h-5 rounded-md ${activeIndex === i ? 'bg-white' : 'bg-sky-500'} opacity-50`}></div>
+                      )}
                     </div>
+                    <span className="text-xs md:text-sm font-bold leading-tight uppercase tracking-wide">
+                      {step.title}
+                    </span>
+                  </div>
 
-                    {/* Icon */}
-                    <div className="w-20 h-20 bg-sky-50 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:bg-sky-100 group-hover:scale-110 transition-all duration-300">
-                      {safeStep.icon}
-                    </div>
+                  {/* Horizontal Notch Connector */}
+                  <div className={`
+                                        w-12 h-[2px] transition-all duration-500 hidden md:block
+                                        ${activeIndex === i ? 'bg-sky-400' : 'bg-transparent'}
+                                    `}></div>
 
-                    {/* Content */}
-                    <h3 className="text-xl font-bold text-slate-900 text-center mb-4 group-hover:text-sky-600 transition-colors">
-                      {safeStep.title}
-                    </h3>
-                    
-                    <p className="text-slate-600 text-center leading-relaxed">
-                      {safeStep.description}
+                  {/* Step Number Circle */}
+                  <div className={`
+                                        w-10 h-10 rounded-full flex items-center justify-center font-black text-xs z-10 transition-all duration-500 hidden md:flex
+                                        ${activeIndex === i
+                      ? 'bg-white border-4 border-sky-500 text-sky-600 scale-110 shadow-lg'
+                      : 'bg-white border-2 border-slate-100 text-slate-300'
+                    }
+                                    `}>
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Detailed Content Card */}
+          <div className="min-h-[500px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="bg-white rounded-2xl overflow-hidden shadow-2xl shadow-sky-900/5 border border-slate-50 h-full flex flex-col"
+              >
+                {/* Card Header */}
+                <div className="bg-gradient-to-r from-[#2FB3E0] to-[#2FB3E0]/80 p-6 md:p-8 relative overflow-hidden">
+                  <div className="absolute right-[-20px] top-[-20px] text-[180px] font-black text-white/10 leading-none select-none">
+                    {String(activeIndex + 1).padStart(2, '0')}
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-tight relative z-10 max-w-[80%]">
+                    {currentStep.title}
+                  </h3>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-6 md:p-8 flex-1 rounded-t-2xl">
+                  <div className="flex items-start gap-4">
+                    <div className="w-4 h-4 rounded-full bg-gradient-to-tr from-sky-400 to-sky-300 mt-1.5 shrink-0 shadow-lg shadow-sky-400/30"></div>
+                    <p className="text-slate-600 text-sm md:text-base leading-relaxed font-medium">
+                      {currentStep.description}
                     </p>
                   </div>
 
-                  {/* Timeline Dot */}
-                  <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full w-4 h-4 bg-sky-400 rounded-full border-4 border-white shadow-md hidden lg:block"></div>
+                  {/* Decorative Placeholder or Image if available */}
+                  {currentStep.image && (
+                    <div className="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-inner">
+                      <img src={currentStep.image} alt={currentStep.title} className="w-full h-auto object-cover" />
+                    </div>
+                  )}
                 </div>
-              );
-            })}
+              </motion.div>
+            </AnimatePresence>
           </div>
-        </div>
 
-        {/* Process Benefits */}
-        <div className="mt-16 bg-gradient-to-r from-sky-50 to-slate-50 rounded-2xl p-8 border border-sky-100">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Clock className="text-white" size={32} />
-              </div>
-              <h4 className="font-bold text-slate-900 mb-2">Fast Delivery</h4>
-              <p className="text-slate-600 text-sm">Launch in weeks, not months</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Users className="text-white" size={32} />
-              </div>
-              <h4 className="font-bold text-slate-900 mb-2">Expert Team</h4>
-              <p className="text-slate-600 text-sm">Experienced clone developers</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Rocket className="text-white" size={32} />
-              </div>
-              <h4 className="font-bold text-slate-900 mb-2">Quality Assured</h4>
-              <p className="text-slate-600 text-sm">Rigorous testing & QA process</p>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-16">
-          <div className="inline-flex items-center gap-3 bg-sky-500 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-sky-500/30 transition-all hover:scale-105">
-            <Code size={20} />
-            Start Your Clone Project
-          </div>
-          <p className="mt-4 text-slate-600">
-            Ready to build your successful clone platform?
-          </p>
         </div>
       </div>
     </section>

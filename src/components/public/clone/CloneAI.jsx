@@ -1,127 +1,85 @@
+"use client";
+
 import React from 'react';
-import { Brain, Sparkles, Bot, Zap, Target, Shield } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Bot, Sparkles, Cpu, Zap, Brain, Shield, Rocket, Globe } from 'lucide-react';
 import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function CloneAI({ data }) {
   const defaultFeatures = [
     {
-      icon: <Brain className="text-sky-500" size={32} />,
-      title: "Smart Recommendations",
-      description: "AI-powered suggestions to enhance user engagement and satisfaction"
+      title: "Advanced Data Security",
+      description: "Protecting user data with enterprise-grade encryption and secure access controls to ensure maximum privacy."
     },
     {
-      icon: <Bot className="text-sky-500" size={32} />,
-      title: "Chatbot Integration",
-      description: "Intelligent chat support for 24/7 customer assistance"
+      title: "Real-time AI Analytics",
+      description: "Leveraging machine learning to provide actionable insights and trend analysis for business growth."
     },
     {
-      icon: <Sparkles className="text-sky-500" size={32} />,
-      title: "Predictive Analytics",
-      description: "Data-driven insights to optimize business decisions"
+      title: "Custom User Experiences",
+      description: "Crafting personalized interfaces that adapt to user behavior through intelligent design systems."
     },
     {
-      icon: <Zap className="text-sky-500" size={32} />,
-      title: "Automated Workflows",
-      description: "Streamline operations with intelligent automation"
+      title: "Strategic API Integrations",
+      description: "Seamlessly connecting your platform with third-party tools to expand functionality and reach."
     },
     {
-      icon: <Target className="text-sky-500" size={32} />,
-      title: "Personalization Engine",
-      description: "Tailored experiences based on user behavior and preferences"
+      title: "Performance Optimization",
+      description: "High-speed infrastructure designed to handle millions of requests with low latency and high availability."
     },
     {
-      icon: <Shield className="text-sky-500" size={32} />,
-      title: "AI-Powered Security",
-      description: "Advanced threat detection and fraud prevention"
+      title: "Global Scalability",
+      description: "Cloud-native solutions that grow alongside your user base, supporting multi-region deployments."
     }
   ];
 
-  // Safe render function to handle malformed data
-  const safeRenderFeature = (feature) => {
-    if (typeof feature === 'string') return { title: feature, description: '' };
-    if (typeof feature === 'object' && feature !== null) {
-      return {
-        title: typeof feature.title === 'string' ? feature.title : 
-               typeof feature.name === 'string' ? feature.name : 'AI Feature',
-        description: typeof feature.description === 'string' ? feature.description : 
-                    typeof feature.desc === 'string' ? feature.desc : 'Advanced AI capability'
-      };
-    }
-    return { title: 'AI Feature', description: 'Advanced AI capability' };
-  };
-
   const features = data?.items?.length > 0 ? data.items : defaultFeatures;
 
+  // Icon mapping logic based on index or keywords
+  const getFeatureIcon = (index) => {
+    const icons = [Bot, Sparkles, Cpu, Zap, Brain, Shield, Rocket, Globe];
+    const IconComponent = icons[index % icons.length] || Zap;
+    return <IconComponent className="text-white" size={32} />;
+  };
+
   return (
-    <section className="py-20 lg:py-28 px-6 bg-slate-50">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Header */}
-        <CommonTitle 
-            title={data?.title || "AI-Powered Advanced Features"}
-            subtitle={data?.subtitle || "Cutting-edge artificial intelligence capabilities to give your clone app a competitive edge"}
-            pill={true}
+    <section className="py-24 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+
+        <CommonTitle
+          title={data?.title || "Advanced Features"}
+          subtitle={data?.subtitle || "Leverage cutting-edge technologies and intelligent systems to stay ahead in the competitive market."}
+          align="center"
         />
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {(Array.isArray(features) ? features : []).map((feature, i) => {
-            const safeFeature = safeRenderFeature(feature);
-            return (
-              <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-lg hover:border-sky-200 transition-all duration-300 group">
-                
-                {/* Icon */}
-                <div className="w-16 h-16 bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  {safeFeature.icon || (
-                    <div className="w-8 h-8 bg-sky-500 rounded-lg"></div>
-                  )}
+        <div className="grid md:grid-cols-2 gap-x-12 gap-y-16 mt-16">
+          {features.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="relative flex items-center group"
+            >
+              {/* Icon Container - Overlapping the card */}
+              <div className="absolute left-0 z-10 transition-transform duration-300 group-hover:scale-110">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#4FC3F7] to-[#29B6F6] flex items-center justify-center shadow-[0_10px_25px_rgba(79,195,247,0.4)] border-4 border-white">
+                  {getFeatureIcon(i)}
                 </div>
+              </div>
 
-                {/* Content */}
-                <h3 className="text-xl font-bold text-slate-900 mb-4 group-hover:text-sky-600 transition-colors">
-                  {safeFeature.title}
-                </h3>
-                <p className="text-slate-600 leading-relaxed">
-                  {safeFeature.description}
+              {/* Card Content with Title and Description */}
+              <div className="ml-10 flex-1 bg-white rounded-[2rem] p-8 pl-14 min-h-[160px] flex flex-col justify-center border border-slate-100 hover:border-sky-100 hover:shadow-xl hover:shadow-sky-900/5 transition-all duration-300">
+                <h4 className="text-[#1e293b] text-lg font-black mb-2 group-hover:text-sky-600 transition-colors">
+                  {item.title}
+                </h4>
+                <p className="text-[#64748b] text-sm md:text-base font-medium leading-relaxed">
+                  {item.description}
                 </p>
               </div>
-            );
-          })}
-        </div>
-
-        {/* AI Capabilities Showcase */}
-        <div className="mt-16 bg-gradient-to-r from-sky-600 to-slate-800 rounded-2xl p-8 text-white">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-bold mb-4">Next-Generation AI Integration</h3>
-              <p className="text-sky-100 leading-relaxed mb-6">
-                Our clone apps come equipped with state-of-the-art AI features that automate processes, 
-                enhance user experiences, and provide actionable business insights.
-              </p>
-              <div className="space-y-3">
-                {[
-                  "Machine Learning Algorithms",
-                  "Natural Language Processing", 
-                  "Computer Vision Capabilities",
-                  "Real-time Data Processing"
-                ].map((capability, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-sky-300 rounded-full"></div>
-                    <span className="text-sky-100">{capability}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="relative">
-              <div className="aspect-square bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                <Brain className="text-sky-300" size={80} />
-              </div>
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 w-8 h-8 bg-sky-400 rounded-full animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-sky-300 rounded-full animate-bounce"></div>
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

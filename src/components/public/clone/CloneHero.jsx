@@ -1,94 +1,201 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Calendar } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 
 export default function CloneHero({ data }) {
-  const [showModal, setShowModal] = useState(false);
-  
+  const [index, setIndex] = useState(0);
+
+  const defaultImages = [
+    "/images/solutions/clone-preview.jpg",
+    "/images/solutions/clone-preview.jpg",
+    "/images/solutions/clone-preview.jpg",
+    "/images/solutions/clone-preview.jpg",
+    "/images/solutions/clone-preview.jpg",
+    "/images/solutions/clone-preview.jpg"
+  ];
+
+  const sliderImages = data?.sliderImages && data.sliderImages.length >= 3
+    ? data.sliderImages
+    : defaultImages;
+
+  // Auto-slide (disabled when active dragging is handled by user, but let's keep it subtle)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % sliderImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [sliderImages.length]);
+
+  const handleDragEnd = (event, info) => {
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold) {
+      setIndex((prev) => (prev + 1) % sliderImages.length);
+    } else if (info.offset.x > swipeThreshold) {
+      setIndex((prev) => (prev - 1 + sliderImages.length) % sliderImages.length);
+    }
+  };
+
   return (
-    <section className="relative min-h-[80vh] bg-gradient-to-br from-sky-600 via-sky-700 to-slate-900 text-white overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-10"></div>
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          
-          {/* Left Content */}
-          <div className="space-y-8">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-300 mb-4">
-              <Link href="/" className="hover:text-sky-400 transition-colors">
-                Home
-              </Link>
-              <span>›</span>
-              <Link href="/solutions" className="hover:text-sky-400 transition-colors">
-                Solutions
-              </Link>
-              <span>›</span>
-              <span className="text-sky-400 font-medium">{data?.title || "Clone App"}</span>
-            </nav>
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-black leading-tight">
-                {data?.title || "Build Your Own Clone App"}
-              </h1>
-              <p className="text-xl text-slate-300 leading-relaxed">
-                {data?.subtitle || "Launch a successful platform with our proven clone solutions. Fast, reliable, and customizable."}
-              </p>
-            </div>
+    <section className="relative min-h-screen pt-24 pb-20 bg-[#111111] overflow-hidden flex flex-col items-center select-none">
+      {/* Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-sky-500/10 blur-[130px] rounded-full pointer-events-none"></div>
 
-            
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 text-center">
+        {/* Breadcrumbs: Home > Solutions > [Slug] */}
+        <nav className="flex items-center justify-center gap-2 text-[10px] md:text-xs text-slate-500 mb-10 tracking-[0.2em] uppercase font-bold">
+          <Link href="/" className="hover:text-white transition-colors">Home</Link>
+          <ChevronRight size={12} className="text-slate-700" />
+          <Link href="/solutions" className="hover:text-white transition-colors">Solutions</Link>
+          <ChevronRight size={12} className="text-slate-700" />
+          <span className="text-sky-400">{data?.title || "Page"}</span>
+        </nav>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
-              <button 
-                onClick={() => setShowModal(true)}
-                className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2">
-                Let's Work Together <ArrowRight size={18}/>
-              </button>
-              <Link href="https://calendly.com/paramhans-softkingo/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center gap-2">
-                <Calendar size={18}/> Schedule Meeting
-              </Link>
-            </div>
-
-            
-          </div>
-
-          {/* Right Image */}
-          <div className="relative">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl ">
-              <Image 
-                src={data?.image || "/images/clone-hero.jpg"} 
-                alt="Clone App Development" 
-                fill 
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent"></div>
-            </div>
-            
-            {/* Floating Elements */}
-            <div className="absolute -top-8 -right-8 bg-sky-500 text-white rounded-full p-4 shadow-lg animate-bounce">
-              <span className="text-2xl font-bold">2M+</span>
-            </div>
-            <div className="absolute -bottom-6 -left-6 bg-slate-700 text-white rounded-full p-4 shadow-lg">
-              <span className="text-lg font-bold">500+</span>
-            </div>
-          </div>
+        {/* Title & Subtitle */}
+        <div className="max-w-4xl mx-auto mb-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-6xl font-black text-white mb-6 leading-[1.1] uppercase tracking-tighter"
+          >
+            {data?.title || "Clone App Development Company"}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-slate-400 text-sm md:text-base leading-relaxed max-w-3xl mx-auto font-medium"
+          >
+            {data?.subtitle || "Softkingo provides the most intuitive user interfaces and interactive user experience for your clone app project architecture."}
+          </motion.p>
         </div>
+
+        {/* CTA Section */}
+        <div className="flex justify-center mb-24">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-12 py-4 rounded-xl bg-sky-500 text-white font-black text-xs hover:bg-sky-400 transform transition-all shadow-2xl shadow-sky-500/25 uppercase tracking-[0.2em]"
+          >
+            Request A Quote
+          </motion.button>
+        </div>
+
+        {/* 3D C-Shape Carousel (Draggable) */}
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={handleDragEnd}
+          className="relative h-[450px] w-full max-w-5xl mx-auto mb-32 flex items-center justify-center perspective-[1200px] cursor-grab active:cursor-grabbing"
+        >
+          <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
+            <AnimatePresence mode='popLayout'>
+              {sliderImages.map((src, i) => {
+                let offset = i - index;
+                if (offset > sliderImages.length / 2) offset -= sliderImages.length;
+                if (offset < -sliderImages.length / 2) offset += sliderImages.length;
+
+                // 225-degree arc math for up to 6 slides
+                const angle = offset * 45;
+                const isCenter = offset === 0;
+                const absOffset = Math.abs(offset);
+
+                const radius = 350; // slightly tighter radius
+                const x = Math.sin(angle * (Math.PI / 180)) * radius;
+                const z = (Math.cos(angle * (Math.PI / 180)) - 1) * radius;
+                const rotationY = -angle;
+
+                return (
+                  <motion.div
+                    key={i}
+                    initial={false}
+                    animate={{
+                      x: x,
+                      z: z,
+                      rotateY: rotationY,
+                      scale: isCenter ? 1.05 : 0.8 - (absOffset * 0.08),
+                      opacity: absOffset > 3 ? 0 : 1 - (absOffset * 0.25),
+                      zIndex: 10 - absOffset,
+                    }}
+                    transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                    className="absolute w-[200px] md:w-[220px] aspect-[9/18.5] rounded-[2.2rem] overflow-hidden border-[6px] border-[#222] shadow-2xl bg-black group"
+                    style={{ transformStyle: 'preserve-3d' }}
+                  >
+                    <Image
+                      src={src}
+                      alt={`App Slide ${i + 1}`}
+                      fill
+                      className="object-cover transition-opacity duration-700"
+                      style={{ opacity: isCenter ? 1 : 0.5 }}
+                      draggable={false}
+                    />
+                    {/* Depth Gradient */}
+                    {!isCenter && (
+                      <div className="absolute inset-0 bg-black/50 pointer-events-none transition-opacity duration-700"></div>
+                    )}
+                    {/* Glass Shine */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-transparent pointer-events-none"></div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+
+          {/* Hint Overlay (optional) */}
+          <div className="absolute bottom-[-40px] left-1/2 -translate-x-1/2 text-[9px] text-slate-600 font-bold uppercase tracking-[0.3em] opacity-50">
+            Swipe to explore
+          </div>
+        </motion.div>
+
+        {/* Trusted By Brands section */}
+        {data?.brands && data.brands.length > 0 && (
+          <div className="max-w-5xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-[2.5rem] p-6 md:p-10 shadow-3xl flex flex-col md:flex-row items-center gap-10 md:gap-14 relative overflow-hidden group border border-slate-100"
+            >
+              <div className="flex-shrink-0 relative z-10">
+                <h3 className="text-xl md:text-2xl font-black text-slate-800 flex items-center gap-3 whitespace-nowrap tracking-tighter">
+                  TRUSTED BY BRANDS <ChevronRight className="text-sky-500" strokeWidth={4} size={20} />
+                </h3>
+              </div>
+
+              <div className="hidden md:block w-px h-16 bg-slate-100"></div>
+
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-10 md:gap-14 flex-grow relative z-10">
+                {data.brands.map((brand, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{ scale: 1.15, y: -5 }}
+                    className="relative w-36 h-10 flex items-center justify-center"
+                  >
+                    <Image
+                      src={brand}
+                      alt={`Partner ${i + 1}`}
+                      fill
+                      className="object-contain"
+                      draggable={false}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="absolute -top-32 -right-32 w-80 h-80 bg-sky-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000 pointer-events-none"></div>
+            </motion.div>
+          </div>
+        )}
       </div>
 
-      {/* Bottom Wave */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 50 720 45C840 40 960 35 1080 30C1200 25 1320 20 1380 15L1440 10V120H0V120Z" fill="white"/>
-        </svg>
-      </div>
+      <style jsx global>{`
+        .perspective-1200 {
+          perspective: 1200px;
+        }
+      `}</style>
     </section>
   );
 }

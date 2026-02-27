@@ -443,7 +443,7 @@
 //                   <p className="text-slate-600 text-xs sm:text-sm md:text-base leading-relaxed mb-8 font-medium line-clamp-3 md:line-clamp-none">
 //                     {active.subtitle}
 //                   </p>
-                  
+
 //                   {/* Checkmark List */}
 //                   <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 mb-10">
 //                     {active.points.map((point, i) => (
@@ -470,7 +470,7 @@
 //                     />
 //                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 //                   </div>
-                  
+
 //                   {/* Glassmorphism Buttons Grid */}
 //                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 lg:p-8 lg:pr-12 grid grid-cols-2 gap-2 md:gap-3 bg-white/10 backdrop-blur-md border-t border-white/20">
 //                     {active.subButtons.map((btn, idx) => (
@@ -481,7 +481,7 @@
 //                       >
 //                       <FaArrowRight className="text-sky-500 text-[8px] md:text-[10px] flex-shrink-0"/>
 //                         <span className="text-sky-600  text-base md:text-[10px]  tracking-tighter  truncate pr-1">{btn}</span>
-                        
+
 //                       </motion.div>
 //                     ))}
 //                   </div>
@@ -847,7 +847,7 @@ export default function IndustryTabsSection() {
 
   return (
     <section className="relative bg-white pt-16 pb-20">
-      
+
       {/* SECTION HEADER */}
       <div className="text-center mb-8 px-4">
         <motion.h2
@@ -873,10 +873,8 @@ export default function IndustryTabsSection() {
 
       {/* MAIN CONTAINER */}
       <div className="w-full flex items-center justify-center px-4 md:px-6">
-        <div className="w-full max-w-7xl bg-sky-400 rounded-3xl px-2 pb-2 sm:px-4 sm:pb-4 pt-0 shadow-2xl relative overflow-hidden">
-          
-          {/* Background Decoration */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="w-full max-w-7xl px-2 pb-2 sm:px-4 sm:pb-4 pt-0 relative overflow-hidden">
+
 
           {/* 1. TOP TABS BAR (SCROLLABLE) */}
           <div className="w-full mb-0 relative -bottom-12 z-20 overflow-x-auto scrollbar-hide pb-6">
@@ -884,12 +882,11 @@ export default function IndustryTabsSection() {
               {industries.map((item, idx) => (
                 <button
                   key={item.id}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`flex flex-col items-center gap-3 transition-all duration-300 flex-shrink-0 group ${
-                    currentIndex === idx 
-                    ? 'bg-white rounded-lg p-3 shadow-lg scale-110 -translate-y-1 text-[#00B7EB]' 
-                    : 'text-white/80 hover:text-white hover:scale-105'
-                  }`}
+                  onMouseEnter={() => setCurrentIndex(idx)}
+                  className={`flex flex-col items-center gap-3 transition-all duration-300 flex-shrink-0 group ${currentIndex === idx
+                    ? 'bg-white rounded-lg p-3 shadow-lg scale-110 -translate-y-1 text-[#00B7EB]'
+                    : 'text-sky-800 hover:text-black hover:scale-105'
+                    }`}
                 >
                   <div className="text-xl md:text-2xl transition-transform">{item.icon}</div>
                   <span className="text-[9px] md:text-[10px] fontblack trackingwidest text-center leading-normal shrink-0 w-fit min-w-20">
@@ -901,29 +898,29 @@ export default function IndustryTabsSection() {
           </div>
 
           {/* 2. DYNAMIC CONTENT CARD */}
-          <div className="w-full relative z-10">
-            <AnimatePresence mode="wait">
-              <motion.div 
+          <div className="w-full relative z-10 grid grid-cols-1">
+            <AnimatePresence>
+              <motion.div
                 key={active.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="bg-gradient-to-b from-white to-[#DFF7FF] rounded-2xl overflow-hidden flex flex-col lg:flex-row min-h-[450px] shadow-inner"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="col-start-1 row-start-1 bg-gradient-to-b from-white to-[#DFF7FF] rounded-2xl overflow-hidden flex flex-col lg:flex-row min-h-[450px] "
               >
-                
+
                 {/* Left Side: Content */}
                 <div className="flex-1 p-6 md:p-10 flex flex-col justify-center">
-                  <Link href={active.href} className="group"> 
+                  <Link href={active.href} className="group">
                     <h2 className="text-2xl md:text-3xl lg:text-3xl font-bold text-sky-950 mb-6 flex items-center gap-4 group-hover:text-sky-600 transition-colors">
-                      {active.title} <FaArrowRight className="text-sky-500 text-xl md:text-2xl group-hover:translate-x-1 transition-transform"/>
+                      {active.title} <FaArrowRight className="text-sky-500 text-xl md:text-2xl group-hover:translate-x-1 transition-transform" />
                     </h2>
                   </Link>
 
                   <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-8 font-medium">
                     {active.subtitle}
                   </p>
-                  
+
                   {/* Checkmark List */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 mb-10">
                     {active.points.map((point, i) => (
@@ -942,25 +939,25 @@ export default function IndustryTabsSection() {
                 {/* Right Side: Media & Glass Grid */}
                 <div className="flex-1 relative min-h-[150px] lg:min-h-full">
                   <div className="relative w-full h-full lg:rounded-tl-none lg:rounded-bl-none overflow-hidden">
-                    <Image 
-                      src={active.image} 
-                      alt={active.title} 
-                      fill 
+                    <Image
+                      src={active.image}
+                      alt={active.title}
+                      fill
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                   </div>
-                  
+
                   {/* Glassmorphism Buttons Grid */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 grid grid-cols-2 gap-3 bg-white/10 backdrop-blur-md border-t border-white/20 lg:rounded-br-lh">
                     {active.subButtons.map((btn, idx) => (
-                      <div 
-                        key={idx} 
+                      <div
+                        key={idx}
                         className="bg-white/95 border border-sky-100 p-3 rounded-lg flex items-center justify-between group cursor-default hover:bg-sky-50 transition-colors"
                       >
-                         <FaArrowRight className="text-sky-500 text-xs flex-shrink-0"/>
+                        <FaArrowRight className="text-sky-500 text-xs flex-shrink-0" />
                         <span className="text-sky-700 font-bold text-[10px] uppercase tracking-tight truncate pl-2 w-full">{btn}</span>
-                       
+
                       </div>
                     ))}
                   </div>

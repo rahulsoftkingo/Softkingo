@@ -1,141 +1,87 @@
-import React from 'react';
-import Image from 'next/image';
-import { Code, Database, Cloud, Shield, Zap, Globe, ArrowRight } from 'lucide-react';
+"use client";
+
+import React, { useState } from 'react';
 import CommonTitle from '@/components/ui/CommonTitle';
+import Image from 'next/image';
 
 export default function CloneTechStack({ data }) {
-  const defaultTech = [
-    { name: "React Native", image: "/images/tech/react-native.png" },
-    { name: "Node.js", image: "/images/tech/nodejs.png" },
-    { name: "MongoDB", image: "/images/tech/mongodb.png" },
-    { name: "AWS", image: "/images/tech/aws.png" },
-    { name: "Docker", image: "/images/tech/docker.png" },
-    { name: "Redis", image: "/images/tech/redis.png" }
+  const [activeTab, setActiveTab] = useState(0);
+
+  if (!data) return null;
+
+  // Use default values if no data is provided from admin
+  const defaultTabs = [
+    { label: "Frontend", items: [{ name: "React", image: "/images/tech/react.png" }] },
+    { label: "Backend", items: [{ name: "Node.js", image: "/images/tech/node.png" }] }
   ];
 
-  // Safe render function to handle malformed data
-  const safeRenderTech = (tech) => {
-    if (typeof tech === 'string') return { name: tech, image: '/images/tech/default.png' };
-    if (typeof tech === 'object' && tech !== null) {
-      return {
-        name: typeof tech.name === 'string' ? tech.name : 
-              typeof tech.title === 'string' ? tech.title : 'Technology',
-        image: typeof tech.image === 'string' ? tech.image : '/images/tech/default.png'
-      };
-    }
-    return { name: 'Technology', image: '/images/tech/default.png' };
-  };
-
-  const technologies = data?.items?.length > 0 ? data.items : defaultTech;
+  const tabs = data.tabs?.length > 0 ? data.tabs : defaultTabs;
 
   return (
-    <section className="py-20 lg:py-28 px-6 bg-gradient-to-b from-white to-sky-50 relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('/patterns/circuit.svg')] opacity-5"></div>
-      
-      <div className="max-w-7xl mx-auto relative z-10">
-        <CommonTitle 
-          title={data?.title || "Technology Stack We Use"}
-          subtitle={data?.subtitle || "Cutting-edge technologies to build scalable, secure, and high-performance clone applications"}
-          pill={true}
+    <section className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6">
+
+        <CommonTitle
           align="center"
+          title={data.title || "Technology Stack We Use"}
+          gradientText={data.highlight}
+          subtitle={data.subtitle || "The modern tools and frameworks power our solutions."}
         />
 
-        {/* Tech Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-16">
-          {(Array.isArray(technologies) ? technologies : []).map((tech, i) => {
-            const safeTech = safeRenderTech(tech);
-            return (
-              <div key={i} className="group">
-                <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 h-full flex flex-col items-center justify-center">
-                  <div className="relative mb-4">
-                    <div className="absolute inset-0 bg-gradient-to-br from-sky-400 to-sky-600 rounded-xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                    <Image 
-                      src={safeTech.image} 
-                      alt={safeTech.name}
-                      width={60}
-                      height={60}
-                      className="relative z-10 group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                  <h4 className="text-sm font-semibold text-slate-700 text-center group-hover:text-sky-600 transition-colors">
-                    {safeTech.name}
-                  </h4>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Categories */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {[
-            {
-              icon: <Code className="text-sky-500" size={32} />,
-              title: "Frontend Development",
-              description: "Modern, responsive user interfaces with React Native and Flutter",
-              tech: ["React Native", "Flutter", "TypeScript"]
-            },
-            {
-              icon: <Database className="text-sky-500" size={32} />,
-              title: "Backend & Database",
-              description: "Scalable server architecture with Node.js and MongoDB",
-              tech: ["Node.js", "MongoDB", "PostgreSQL"]
-            },
-            {
-              icon: <Cloud className="text-sky-500" size={32} />,
-              title: "Cloud & DevOps",
-              description: "Enterprise-grade deployment with AWS and containerization",
-              tech: ["AWS", "Docker", "Kubernetes"]
-            }
-          ].map((category, i) => (
-            <div key={i} className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 bg-sky-50 rounded-2xl flex items-center justify-center group-hover:bg-sky-100 group-hover:scale-110 transition-all duration-300">
-                  {category.icon}
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
-                    {category.title}
-                  </h3>
-                </div>
-              </div>
-              
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                {category.description}
-              </p>
-              
-              <div className="flex flex-wrap gap-2">
-                {category.tech.map((item, j) => (
-                  <span key={j} className="px-3 py-1 bg-sky-50 text-sky-700 text-xs font-semibold rounded-full border border-sky-200 hover:bg-sky-100 transition-colors">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* CTA Section */}
-        <div className="text-center">
-          <div className="bg-gradient-to-r from-sky-500 to-sky-600 rounded-2xl p-8 text-white relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-r from-sky-600 to-sky-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="relative z-10">
-              <h3 className="text-2xl font-bold mb-4">
-                Need Custom Technology Solutions?
-              </h3>
-              <p className="text-sky-100 mb-6 max-w-2xl mx-auto">
-                We can integrate any specific technology stack your business requires
-              </p>
-              <a 
-                href="/contact" 
-                className="inline-flex items-center gap-2 bg-white text-sky-600 px-6 py-3 rounded-xl font-semibold hover:bg-sky-50 hover:-translate-y-1 transition-all duration-300"
-              >
-                Discuss Tech Requirements <ArrowRight size={18} />
-              </a>
+        {/* Scrollable Tab Navigation (Fix for mobile wrapping) */}
+        <div className="mt-10 mb-16 relative">
+          <div className="flex overflow-x-auto scrollbar-hide pb-2 gap-3 md:gap-4 snap-x snap-mandatory">
+            <div className="flex gap-3 md:gap-4 mx-auto">
+              {tabs.map((tab, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveTab(idx)}
+                  className={`px-8 py-3 rounded-full text-sm font-black transition-all duration-300 border whitespace-nowrap snap-center ${activeTab === idx
+                      ? "bg-[#2FB3E0] text-white border-[#2FB3E0] shadow-lg shadow-sky-900/20 transform scale-105"
+                      : "bg-slate-50 text-slate-500 border-slate-200 hover:border-[#2FB3E0]/30 hover:text-[#2FB3E0] hover:bg-[#2FB3E0]/5"
+                    }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
           </div>
         </div>
+
+        <style jsx>{`
+                    .scrollbar-hide::-webkit-scrollbar {
+                        display: none;
+                    }
+                    .scrollbar-hide {
+                        -ms-overflow-style: none;
+                        scrollbar-width: none;
+                    }
+                `}</style>
+
+        {/* Tech Grid Display */}
+        <div className="min-h-[200px]">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-center">
+            {tabs[activeTab]?.items?.map((tech, idx) => (
+              <div
+                key={idx}
+                className="group flex flex-col items-center justify-center gap-4 p-8 rounded-[2rem] bg-slate-50/50 border border-slate-100/50 hover:bg-white hover:shadow-2xl hover:shadow-sky-900/10 hover:border-[#2FB3E0]/20 transition-all duration-500"
+              >
+                <div className="relative w-12 h-12 md:w-16 md:h-16 group-hover:scale-110 transition-transform duration-500">
+                  <Image
+                    src={tech.image || "/images/placeholder-icon.png"}
+                    alt={tech.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <span className="text-sm font-bold text-slate-500 group-hover:text-[#2FB3E0] transition-colors">
+                  {tech.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </section>
   );

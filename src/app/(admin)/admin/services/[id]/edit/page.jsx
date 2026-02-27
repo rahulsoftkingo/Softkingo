@@ -26,6 +26,7 @@ export default function EditServicePage({ params }) {
 
     // Portfolio section configuration
     portfolioTitle: 'Our Portfolio',
+    portfolioSubtitle: '',
     portfolioCategory: '',
 
     stats: {
@@ -102,6 +103,7 @@ export default function EditServicePage({ params }) {
 
           // Loaded from contentJson
           portfolioTitle: content.portfolioTitle || 'Our Portfolio',
+          portfolioSubtitle: content.portfolioSubtitle || '',
           portfolioCategory: content.portfolioCategory || '',
 
           stats: content.stats || {
@@ -286,6 +288,7 @@ export default function EditServicePage({ params }) {
 
           // Saved to contentJson
           portfolioTitle: formData.portfolioTitle,
+          portfolioSubtitle: formData.portfolioSubtitle,
           portfolioCategory: formData.portfolioCategory,
 
           services: formData.services,
@@ -842,18 +845,36 @@ export default function EditServicePage({ params }) {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Portfolio Category Tag</label>
-                  <input
-                    type="text"
+                  <select
                     name="portfolioCategory"
                     value={formData.portfolioCategory}
                     onChange={handleChange}
-                    placeholder="e.g. healthcare, fintech (optional)"
                     className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  />
+                  >
+                    <option value="">Select Category...</option>
+                    <option value="dating">Dating Apps</option>
+                    <option value="ecommerce">E-commerce</option>
+                    <option value="delivery">Delivery Apps</option>
+                    <option value="taxi">Taxi / Ride Sharing</option>
+                    <option value="education">E-Learning</option>
+                    <option value="fitness">Health & Fitness</option>
+                  </select>
                   <p className="text-xs text-slate-400 mt-1">
                     If left blank, it will fall back to the service slug: "{formData.slug}"
                   </p>
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Section Subtitle</label>
+                <textarea
+                  name="portfolioSubtitle"
+                  value={formData.portfolioSubtitle}
+                  onChange={handleChange}
+                  rows={2}
+                  placeholder="Supporting text for portfolio section"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                />
               </div>
             </div>
           )}

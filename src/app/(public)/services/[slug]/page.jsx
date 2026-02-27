@@ -472,6 +472,7 @@ export default async function ServicePage({ params }) {
           category={content.portfolioCategory || service.slug}
           portfolioType="app"
           title={content.portfolioTitle || "Our Portfolio"}
+          subtitle={content.portfolioSubtitle}
         />
       )}
       <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />

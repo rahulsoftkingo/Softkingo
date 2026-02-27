@@ -191,29 +191,31 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            {/* 10. PORTFOLIO / MARKET APPLICABILITY */}
-            <SectionWrapper id="portfolio" icon={Globe} title="10. Market Applicability / Industries" activeSections={activeSections}>
-                <p className="text-[11px] text-slate-400 mb-4 bg-slate-50 p-2.5 rounded-xl border border-slate-100">Select or add industries where this solution is most effective.</p>
-                <div className="grid md:grid-cols-3 gap-3">
-                    {(content.portfolio?.items || []).map((item, i) => (
-                        <div key={i} className="flex gap-2 items-center bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm transition-all hover:border-sky-300 hover:shadow-md group">
-                            <div className="w-1.5 h-1.5 rounded-full bg-sky-400 group-hover:scale-125 transition-transform"></div>
-                            <input className="flex-1 text-xs outline-none bg-transparent font-medium" placeholder="Industry Name" value={item.title || ''} onChange={e => updateField(`content.portfolio.items.${i}.title`, e.target.value)} />
-                            <button type="button" onClick={() => updateField('content.portfolio.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-200 hover:text-rose-500 transition-colors"><X size={14} /></button>
+            {/* 10. PORTFOLIO */}
+            <SectionWrapper id="portfolio" icon={Globe} title="10. Portfolio" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Category Filter</label>
+                            <select className={inputStyle} value={content.portfolio?.category || ''} onChange={e => updateField('content.portfolio.category', e.target.value)}>
+                                <option value="">Select Category...</option>
+                                <option value="dating">Dating Apps</option>
+                                <option value="ecommerce">E-commerce</option>
+                                <option value="delivery">Delivery Apps</option>
+                                <option value="taxi">Taxi / Ride Sharing</option>
+                                <option value="education">E-Learning</option>
+                                <option value="fitness">Health & Fitness</option>
+                                <option value="healthcare">Healthcare / Medical</option>
+                                <option value="fintech">Fintech / Banking</option>
+                                <option value="realestate">Real Estate / Property</option>
+                                <option value="booking">Travel & Booking</option>
+                                <option value="social">Social Media</option>
+                            </select>
                         </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.portfolio.items', (prev) => [...(prev || []), { title: "" }])} className="border-2 border-dashed border-slate-100 rounded-xl flex items-center justify-center text-[10px] font-bold text-slate-400 hover:border-sky-200 hover:text-sky-600 h-11 transition-all bg-slate-50/30">+ Add Industry</button>
-                </div>
-
-                <div className="pt-6 border-t border-slate-100 mt-6 grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Section Heading</label>
-                        <input className={inputStyle} placeholder="e.g. Our Success Stories" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
                     </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Category Tag</label>
-                        <input className={inputStyle} placeholder="e.g. enterprise-solutions" value={content.portfolio?.category || ''} onChange={e => updateField('content.portfolio.category', e.target.value)} />
-                    </div>
+                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
+                    <p className="text-[10px] text-slate-400">Leave category blank → shows top 7 projects by default.</p>
                 </div>
             </SectionWrapper>
 
