@@ -108,8 +108,11 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'portfolio', label: '9. Portfolio', icon: Layout },
                 { id: 'process', label: '10. Process', icon: Settings },
                 { id: 'industries', label: '11. Industries', icon: Grid },
-                { id: 'faq', label: '12. FAQ & CTA', icon: HelpCircle },
-                { id: 'seo', label: '13. SEO Settings', icon: Search }
+                { id: 'popularSolutions', label: '12. Popular Solutions', icon: Layout },
+                { id: 'comparison', label: '13. Comparison Table', icon: BarChart3 },
+                { id: 'consultation', label: '14. Consultation CTA', icon: TrendingUp },
+                { id: 'faq', label: '15. FAQ', icon: HelpCircle },
+                { id: 'seo', label: '16. SEO Settings', icon: Search }
             ]
         }
     }[type] || config.solution;

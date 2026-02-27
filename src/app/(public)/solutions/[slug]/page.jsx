@@ -31,14 +31,17 @@ import CloneInvestment from '@/components/public/clone/CloneInvestment';
 import CloneRevenue from '@/components/public/clone/CloneRevenue';
 import CloneTechStack from '@/components/public/clone/CloneTechStack';
 import CloneProcess from '@/components/public/clone/CloneProcess';
+import ClonePopularSolutions from '@/components/public/clone/ClonePopularSolutions';
 import CloneFAQ from '@/components/public/clone/CloneFAQ';
 import CloneIndustries from '@/components/public/clone/CloneIndustries';
+import FooterForm from "@/components/footer/InquirySection";
 
 // --- SHARED COMPONENTS ---
 import FAQAccordion from '@/components/common/Faqaccordion';
 import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import CommonTitle from '@/components/ui/CommonTitle';
+import Blogs from '../../home/blogs/BlogSliderClient';
 
 // --- 1. HELPER: FETCH DATA FROM DB ---
 async function getSolutionPage(slug) {
@@ -196,15 +199,36 @@ export default async function DynamicSolutionPage(props) {
                     <CloneIndustries data={data.sections.industries} industries={data.industryPages} />
                 )}
 
-                {/* 12. FAQ */}
-                {show('faq') && <CloneFAQ data={faq} />}
+                {/* 12. Popular App Solutions (Grid) */}
+                {show('popularSolutions') && (
+                    <ClonePopularSolutions data={data.sections.popularSolutions} />
+                )}
 
-                {/* 13. Contact & Free Consultation */}
-                <ConsultationCTA
-                    title="Launch Your Clone App Today"
-                    subtitle="Get a free quote and technical roadmap for your idea."
-                    href="/contact"
+                {/* 13. Comparison Table */}
+                {show('comparison') && (
+                    <CloneComparison data={data.sections.comparison} />
+                )}
+
+                {/* 14. Consultation CTA */}
+                {show('consultation') && (
+                    <ConsultationCTA
+                        title={data.sections.consultation?.title}
+                        subtitle={data.sections.consultation?.subtitle}
+                        buttonLabel={data.sections.consultation?.buttonLabel}
+                        imageSrc={data.sections.consultation?.imageSrc}
+                    />
+                )}
+
+                {/* 15. FAQ */}
+                {show('faq') && <FAQAccordion data={data.sections.faq} />}
+                <Blogs
+                    category=""
+                    featured={false}    // Latest uploaded
+                    title="Our Latest Blogs"
+                    subtitle="Explore our latest insights, product lessons, and engineering best practices."
                 />
+
+                <FooterForm />
 
             </main>
         );

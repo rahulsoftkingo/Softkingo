@@ -415,20 +415,80 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                 </div>
             </SectionWrapper>
 
-            {/* 12. FAQ & CTA SECTION */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="12. FAQ & CTA" activeSections={activeSections}>
+            {/* 12. POPULAR APP SOLUTIONS GRID */}
+            <SectionWrapper id="popularSolutions" icon={Layout} title="12. Popular App Solutions" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Section Title (e.g. Popular App Solutions)" value={content.popularSolutions?.title || ''} onChange={e => updateField('content.popularSolutions.title', e.target.value)} />
+                        <input className={inputStyle} placeholder="Section Subtitle" value={content.popularSolutions?.subtitle || ''} onChange={e => updateField('content.popularSolutions.subtitle', e.target.value)} />
+                    </div>
+                    <div className="pt-4 border-t border-slate-100 space-y-4">
+                        <label className={labelStyle}>Solution Cards Grid</label>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            {(content.popularSolutions?.items || []).map((item, i) => (
+                                <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative group">
+                                    <button type="button" onClick={() => updateField('content.popularSolutions.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100"><X size={16} /></button>
+                                    <div className="space-y-4">
+                                        <input className={inputStyle} placeholder="Solution Name (e.g. Taxi Apps)" value={item.title || ''} onChange={e => updateField(`content.popularSolutions.items.${i}.title`, e.target.value)} />
+                                        <MediaInput label="Phone Mockup Image" value={item.image} path={`content.popularSolutions.items.${i}.image`} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <button type="button" onClick={() => updateField('content.popularSolutions.items', (prev) => [...(prev || []), { title: "", image: "" }])} className="w-full py-3 border-2 border-dashed border-orange-200 rounded-xl text-orange-600 font-bold uppercase tracking-tight">+ Add Solution Card</button>
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 13. COMPARISON TABLE */}
+            <SectionWrapper id="comparison" icon={BarChart3} title="13. Comparison Table" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Comparison Title" value={content.comparison?.title || ''} onChange={e => updateField('content.comparison.title', e.target.value)} />
+                        <input className={inputStyle} placeholder="Comparison Subtitle" value={content.comparison?.subtitle || ''} onChange={e => updateField('content.comparison.subtitle', e.target.value)} />
+                    </div>
+                    <div className="pt-4 border-t border-slate-100 space-y-4">
+                        <label className={labelStyle}>Comparison Rows</label>
+                        <div className="space-y-3">
+                            {(content.comparison?.rows || []).map((item, i) => (
+                                <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative group">
+                                    <button type="button" onClick={() => updateField('content.comparison.rows', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100"><X size={16} /></button>
+                                    <div className="grid md:grid-cols-5 gap-3">
+                                        <input className={inputStyle} placeholder="Feature" value={item.feature || ''} onChange={e => updateField(`content.comparison.rows.${i}.feature`, e.target.value)} />
+                                        <input className={inputStyle} placeholder="Icon (e.g. Brain)" value={item.iconKey || ''} onChange={e => updateField(`content.comparison.rows.${i}.iconKey`, e.target.value)} />
+                                        <input className={inputStyle} placeholder="Softkingo (true/100%)" value={item.sk || ''} onChange={e => updateField(`content.comparison.rows.${i}.sk`, e.target.value)} />
+                                        <input className={inputStyle} placeholder="Comp 1 (true/false)" value={item.comp1 || ''} onChange={e => updateField(`content.comparison.rows.${i}.comp1`, e.target.value)} />
+                                        <input className={inputStyle} placeholder="Comp 2 (true/false)" value={item.comp2 || ''} onChange={e => updateField(`content.comparison.rows.${i}.comp2`, e.target.value)} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <button type="button" onClick={() => updateField('content.comparison.rows', (prev) => [...(prev || []), { feature: "", iconKey: "CheckCircle2", sk: "true", comp1: "false", comp2: "false" }])} className="w-full py-2 border-2 border-dashed border-orange-200 rounded-lg text-orange-600 font-bold text-xs uppercase">+ Add Comparison Row</button>
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 14. CONSULTATION CTA */}
+            <SectionWrapper id="consultation" icon={TrendingUp} title="14. Consultation CTA" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
+                        <input className={inputStyle} placeholder="CTA Subtitle" value={content.consultation?.subtitle || ''} onChange={e => updateField('content.consultation.subtitle', e.target.value)} />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Button Label" value={content.consultation?.buttonLabel || ''} onChange={e => updateField('content.consultation.buttonLabel', e.target.value)} />
+                        <MediaInput label="Consultant Image" value={content.consultation?.imageSrc} path="content.consultation.imageSrc" />
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 15. FAQ SECTION */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="15. FAQ" activeSections={activeSections}>
                 <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <label className={labelStyle}>Section Heading</label>
-                            <input className={inputStyle} placeholder="FAQ Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
-                        </div>
-                        <div className="space-y-2">
-                            <label className={labelStyle}>Section Subtitle</label>
-                            <input className={inputStyle} placeholder="FAQ Subtitle" value={content.faq?.subtitle || ''} onChange={e => updateField('content.faq.subtitle', e.target.value)} />
-                        </div>
+                        <input className={inputStyle} placeholder="FAQ Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
+                        <input className={inputStyle} placeholder="FAQ Subtitle" value={content.faq?.subtitle || ''} onChange={e => updateField('content.faq.subtitle', e.target.value)} />
                     </div>
-
                     <div className="space-y-4">
                         <label className={labelStyle}>Individual Questions</label>
                         <div className="space-y-3">
@@ -444,28 +504,11 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                         </div>
                         <button type="button" onClick={() => updateField('content.faq.items', (prev) => [...(prev || []), { q: "", a: "" }])} className="text-xs font-bold text-orange-600 uppercase tracking-tight bg-orange-50 py-3 rounded-xl border border-dashed border-orange-200 w-full text-center hover:bg-orange-100 transition-colors">+ Add New FAQ Item</button>
                     </div>
-
-                    <div className="border-t border-slate-100 pt-8 mt-4 bg-orange-50/30 p-6 rounded-2xl border border-dashed border-orange-100">
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="p-2 bg-orange-600 text-white rounded-lg shadow-lg shadow-orange-100"><TrendingUp size={18} /></div>
-                            <h4 className="font-black text-slate-800 uppercase tracking-tight text-sm">Final Call To Action</h4>
-                        </div>
-                        <div className="grid md:grid-cols-2 gap-4">
-                            <div className="space-y-1">
-                                <label className={labelStyle}>CTA Headline</label>
-                                <input className={inputStyle} placeholder="e.g. Build Your Future Today" value={content.cta?.title || ''} onChange={e => updateField('content.cta.title', e.target.value)} />
-                            </div>
-                            <div className="space-y-1">
-                                <label className={labelStyle}>CTA Button Text</label>
-                                <input className={inputStyle} placeholder="e.g. Get Started Now" value={content.cta?.subtitle || ''} onChange={e => updateField('content.cta.subtitle', e.target.value)} />
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </SectionWrapper>
 
-            {/* 13. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="13. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
+            {/* 16. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="16. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
                 <div className="space-y-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>SEO Title</label>
