@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Users, Clock } from 'lucide-react';
 import prisma from '@/lib/prisma';
 import { AppScreensCarousel } from './AppScreensCarousel';
+import BlogSection from '@/components/common/BlogSection';
 import InquirySection from '@/components/footer/InquirySection';
 
 
@@ -117,6 +118,9 @@ async function getCaseStudy(slug) {
       title: 'Want to build an app like this?',
       description: '',
       mockup: '/images/case-studies/find-app-phone.png',
+      blogTitle: 'Our Latest Blogs',
+      blogSubtitle: 'Explore our latest insights, product lessons, and engineering best practices.',
+      blogCategory: '',
     }
   );
 
@@ -238,7 +242,12 @@ export default async function CaseStudyPage({ params }) {
         <AppScreensShowcase data={data} />
         <ResultsDelivered data={data} />
         <FindYourApp data={data} />
-              <InquirySection />
+        <BlogSection
+          category={data.findYourApp.blogCategory || ""}
+          title={data.findYourApp.blogTitle || "Our Latest Blogs"}
+          subtitle={data.findYourApp.blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
+        />
+        <InquirySection />
 
       </main>
     </>
@@ -298,7 +307,7 @@ function HeroSection({ data }) {
           priority
         />
       </div>
-       <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/80 via-[#001322]/75 to-[#001322]/30" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/80 via-[#001322]/75 to-[#001322]/30" />
 
       {/* Circle */}
       {/* <div className="absolute right-[-120px] top-1/2 -translate-y-1/2 w-[340px] h-[340px] md:w-[460px] md:h-[460px] opacity-10">
@@ -333,7 +342,7 @@ function HeroSection({ data }) {
               {data.subtitle}
             </p>
 
-           
+
 
             <div className="hidden flex-wrap gap-3 pt-3">
               <a href={data.downloads.googlePlay.url} className="hover-scale">
@@ -771,9 +780,8 @@ function ResultsDelivered({ data }) {
           <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* image */}
             <div
-              className={`relative flex justify-center ${
-                result.position === "right" ? "lg:order-2" : ""
-              }`}
+              className={`relative flex justify-center ${result.position === "right" ? "lg:order-2" : ""
+                }`}
             >
               <div
                 className="absolute inset-0 rounded-full blur-3xl opacity-30 animate-float"
@@ -794,9 +802,8 @@ function ResultsDelivered({ data }) {
 
             {/* text */}
             <div
-              className={`space-y-4 sm:space-y-5 lg:space-y-6 ${
-                result.position === "right" ? "lg:order-1" : ""
-              }`}
+              className={`space-y-4 sm:space-y-5 lg:space-y-6 ${result.position === "right" ? "lg:order-1" : ""
+                }`}
             >
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
                 Results Delivered
@@ -871,8 +878,8 @@ function adjustColor(color, amount) {
   return `#${clamp(r + amount)
     .toString(16)
     .padStart(2, "0")}${clamp(g + amount)
-    .toString(16)
-    .padStart(2, "0")}${clamp(b + amount).toString(16).padStart(2, "0")}`;
+      .toString(16)
+      .padStart(2, "0")}${clamp(b + amount).toString(16).padStart(2, "0")}`;
 }
 
 // =================== SEO ===================

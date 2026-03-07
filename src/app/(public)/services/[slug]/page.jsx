@@ -38,14 +38,22 @@ import {
   Shield
 } from "lucide-react";
 
-import Blogs from "../../home/blogs/BlogSliderClient";
 import InquirySection from "@/components/footer/InquirySection";
 import { FaArrowRight } from "react-icons/fa6";
 import CommonTitle from "@/components/ui/CommonTitle";
 import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import FAQAccordion from "@/components/common/Faqaccordion";
+import IndustriesServe from "../_components/IndustriesServe";
 import Industries from "../../home/h6-industries-section/page";
+import ServicesCategoryLayout from "../_components/ServicesCategoryLayout";
+import CloneTechStack from "@/components/public/clone/CloneTechStack";
+import ServiceProcess from "../_components/ServiceProcess";
+import AwardsSection from "@/components/common/AwardsSection";
+import SolutionHighlight from "../_components/SolutionHighlight";
+import IndustrySolutions from "../_components/IndustrySolutions";
+import UserGuide from "../_components/UserGuide";
+import BlogSection from "@/components/common/BlogSection";
 
 // Force SSR (no build-time DB access)
 export const dynamic = "force-dynamic";
@@ -115,132 +123,145 @@ export default async function ServicePage({ params }) {
     return notFound();
   }
 
-  const content = service.contentJson ? JSON.parse(service.contentJson) : {};
-  const show = (section) => !!content[section] || section === 'portfolio'; // Always show portfolio if not explicitly disabled or if it's the default
+  const jsonContent = service.contentJson ? JSON.parse(service.contentJson) : {};
+
+  // If activeSections is missing OR empty, default to showing everything
+  const defaultSections = ['hero', 'stats', 'services', 'consultation', 'tech', 'process', 'highlight', 'portfolio', 'solutions', 'industries', 'user-guide', 'faq', 'seo'];
+  const activeSections = (jsonContent.activeSections && jsonContent.activeSections.length > 0)
+    ? jsonContent.activeSections
+    : defaultSections;
+
+  // Fallback to jsonContent itself if 'content' object is missing (old structure)
+  const content = (jsonContent.content && Object.keys(jsonContent.content).length > 0)
+    ? jsonContent.content
+    : jsonContent;
+
+  const show = (section) => activeSections.includes(section);
 
   return (
     <main className="text-gray-800">
       {/* Hero Section with Lead Form */}
-      <section className="relative overflow-hidden flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900 min-h-[600px]">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={content.heroBg || "/images/services/default-bg.png"}
-            alt={service.title}
-            fill
-            className="object-cover opacity-90"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-800/70 to-slate-500/60 opacity-40" />
-        </div>
+      {show('hero') && (
+        <section className="relative overflow-hidden flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900 min-h-[600px]">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={content.heroBg || "/images/services/default-bg.png"}
+              alt={service.title}
+              fill
+              className="object-cover opacity-90"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-800/70 to-slate-500/60 opacity-40" />
+          </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 w-full">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 w-full">
 
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-            {/* Left Content */}
-            <div className="text-white space-y-6 md:space-y-8">
-              {/* Breadcrumb */}
-              <nav className="mb-6 md:mb-8 animate-fadeInUp">
-                <div className="flex flex-wrap items-center text-xs md:text-sm text-sky-100/80 gap-1 md:gap-2">
-                  <Link href="/" className="hover:text-white transition-colors">
-                    Home
-                  </Link>
-                  <span>›</span>
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+              {/* Left Content */}
+              <div className="text-white space-y-6 md:space-y-8">
+                {/* Breadcrumb */}
+                <nav className="mb-6 md:mb-8 animate-fadeInUp">
+                  <div className="flex flex-wrap items-center text-xs md:text-sm text-sky-100/80 gap-1 md:gap-2">
+                    <Link href="/" className="hover:text-white transition-colors">
+                      Home
+                    </Link>
+                    <span>›</span>
+                    <Link
+                      href="/services"
+                      className="hover:text-white transition-colors"
+                    >
+                      Services
+                    </Link>
+                    <span>›</span>
+                    <span className="font-semibold text-cyan-400">{service.title}</span>
+                  </div>
+
+                </nav>
+                <div className="space-y-4">
+                  <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight animate-fadeInUp animation-delay-200">
+                    {content.heroTitle || service.title}
+                  </h1>
+                  <p className="text-sky-100 text-base md:text-lg lg:text-xl max-w-xl leading-relaxed animate-fadeInUp animation-delay-400">
+                    {content.heroSubtitle || service.excerpt}
+                  </p>
+                </div>
+
+                <div className="flex gap-4 animate-fadeInUp animation-delay-600">
                   <Link
-                    href="/services"
-                    className="hover:text-white transition-colors"
+                    href="/contact"
+                    className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
+                  // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
                   >
-                    Services
+                    Let’s Work Together <FaArrowRight className="ml-2" />
                   </Link>
-                  <span>›</span>
-                  <span className="font-semibold text-cyan-400">{service.title}</span>
                 </div>
 
-              </nav>
-              <div className="space-y-4">
-                <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight animate-fadeInUp animation-delay-200">
-                  {content.heroTitle || service.title}
-                </h1>
-                <p className="text-sky-100 text-base md:text-lg lg:text-xl max-w-xl leading-relaxed animate-fadeInUp animation-delay-400">
-                  {content.heroSubtitle || service.excerpt}
-                </p>
-              </div>
-
-              <div className="flex gap-4 animate-fadeInUp animation-delay-600">
-                <Link
-                  href="/contact"
-                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
-                // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
-                >
-                  Let’s Work Together <FaArrowRight className="ml-2" />
-                </Link>
-              </div>
-
-              {/* Trusted By Section */}
-              <div className="pt-6 md:pt-8 animate-fadeInUp animation-delay-800  ">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
-                  <h3 className="text-sky-200 text-sm md:text-base font-semibold">
-                    Trusted By Leading Brands
-                  </h3>
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
-                </div>
-                <div className="flex items-center gap-6 md:gap-8 flex-wrap justify-center lg:justify-start">
-                  <div className="flex flex-col items-center">
-                    <p className="text-yellow-400 text-sm">★★★★★</p>
-                    <Image
-                      src="/images/about/clutch.png"
-                      alt="Clutch"
-                      width={100}
-                      height={50}
-                      className="opacity-70 hover:opacity-100 transition-opacity"
-                    />
+                {/* Trusted By Section */}
+                <div className="pt-6 md:pt-8 animate-fadeInUp animation-delay-800  ">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
+                    <h3 className="text-sky-200 text-sm md:text-base font-semibold">
+                      Trusted By Leading Brands
+                    </h3>
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <p className="text-yellow-400 text-sm">★★★★★</p>
-                    <Image
-                      src="/images/about/goodfirm.png"
-                      alt="GoodFirms"
-                      width={120}
-                      height={40}
-                      className="opacity-70 hover:opacity-100 transition-opacity"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <p className="text-yellow-400 text-sm">★★★★★</p>
-                    <Image
-                      src="/images/about/upwork.png"
-                      alt="Upwork"
-                      width={90}
-                      height={40}
-                      className="opacity-70 hover:opacity-100 transition-opacity"
-                    />
+                  <div className="flex items-center gap-6 md:gap-8 flex-wrap justify-center lg:justify-start">
+                    <div className="flex flex-col items-center">
+                      <p className="text-yellow-400 text-sm">★★★★★</p>
+                      <Image
+                        src="/images/about/clutch.png"
+                        alt="Clutch"
+                        width={100}
+                        height={50}
+                        className="opacity-70 hover:opacity-100 transition-opacity"
+                      />
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <p className="text-yellow-400 text-sm">★★★★★</p>
+                      <Image
+                        src="/images/about/goodfirm.png"
+                        alt="GoodFirms"
+                        width={120}
+                        height={40}
+                        className="opacity-70 hover:opacity-100 transition-opacity"
+                      />
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <p className="text-yellow-400 text-sm">★★★★★</p>
+                      <Image
+                        src="/images/about/upwork.png"
+                        alt="Upwork"
+                        width={90}
+                        height={40}
+                        className="opacity-70 hover:opacity-100 transition-opacity"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Right - Lead Form Component */}
-            <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
-              <LeadForm
-                formType="service"
-                formKey={service.slug}
-                serviceName={service.title}
-                title="Book a Free Consultation"
-                subtitle="Response within 1 Business Day!"
-                variant="hero"
-                showLogo={true}
-                showCompany={false}
-                showBudget={false}
-                showAttachment={false}
-                showNDA={false}
-              />
+              {/* Right - Lead Form Component */}
+              <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
+                <LeadForm
+                  formType="service"
+                  formKey={service.slug}
+                  serviceName={service.title}
+                  title="Book a Free Consultation"
+                  subtitle="Response within 1 Business Day!"
+                  variant="hero"
+                  showLogo={true}
+                  showCompany={false}
+                  showBudget={false}
+                  showAttachment={false}
+                  showNDA={false}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <style>{`
+          <style>{`
           @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -256,10 +277,11 @@ export default async function ServicePage({ params }) {
           .animation-delay-600 { animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards; }
           .animation-delay-800 { animation-delay: 0.8s; opacity: 0; animation-fill-mode: forwards; }
         `}</style>
-      </section>
+        </section>
+      )}
 
       {/* Stats Section */}
-      {content.stats && (
+      {show('stats') && (
         <section className="bg-gradient-to-br from-white  to-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
 
@@ -271,200 +293,76 @@ export default async function ServicePage({ params }) {
               subtitle={content.statsSubtitle || content.heroSubtitle}
             />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <StatBox
                 value={content.stats.years}
                 label={content.stats.yearsLabel}
                 color="from-sky-300 to-sky-600"
-                icon=""
               />
               <StatBox
                 value={content.stats.projects}
                 label={content.stats.projectsLabel}
                 color="from-sky-300 to-sky-600"
-                icon=""
               />
-
-              {content.mainImage && (
-                <div className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-sm row-span-1 sm:row-span-3 h-64 sm:h-96 lg:h-auto shadow">
-                  <Image
-                    src={content.mainImage}
-                    alt="Team"
-                    width={400}
-                    height={600}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              )}
-
               <StatBox
                 value={content.stats.team}
                 label={content.stats.teamLabel}
                 color="from-sky-300 to-sky-600"
-                icon=""
               />
               <StatBox
                 value={content.stats.rating}
                 label={content.stats.ratingLabel}
                 color="from-sky-300 to-sky-600"
-                icon=""
               />
-
-              {content.extraImages?.map((img, idx) => (
-                <div
-                  key={idx}
-                  className="bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden rounded-sm hidden lg:block shadow"
-                >
-                  <Image
-                    src={img}
-                    alt={`Extra ${idx + 1}`}
-                    width={300}
-                    height={200}
-                    className="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              ))}
             </div>
           </div>
         </section>
       )}
-
-      {/* Services Section */}
-      {content.services && (
-        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-12 md:py-16 px-4 md:px-6 lg:px-12">
+      <AwardsSection />
+      {/* Services Section - Revamped Category Layout */}
+      {show('services') && (
+        <section className="bg-white py-20 px-4 md:px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
-            <CommonTitle
-              align="center"
-              pill={false}
-              title={content.services.title}
-              gradientText=""
-              subtitle={content.services.subtitle}
-            />
+            <div className="text-center mb-16">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {content.services.items.map((item, idx) => {
-                const Icon = iconMap[item.iconName] || FaMobileAlt;
-                return (
-                  <div
-                    key={idx}
-                    className="bg-white rounded-sm p-6 md:p-8 shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group"
-                  >
-                    <div className="mb-6 relative">
-                      <div
-                        className={`w-8 h-8 md:w-10 md:h-10
-                         
-                          flex items-center justify-center group-hover:scale-110 transition-transform duration-300 `}
-                      >
-                        <Icon className="w-8 h-8 md:w-10 md:h-10 text-sky-500" />
-                      </div>
-                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-cyan-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-3 group-hover:text-cyan-600 transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                );
-              })}
+              <CommonTitle
+                align="center"
+                pill={false}
+                title={content.services?.title}
+                gradientText=""
+                subtitle={content.services?.subtitle}
+              />
             </div>
+
+            <ServicesCategoryLayout categories={content.services?.categories || []} />
           </div>
         </section>
+      )}
+
+      {/* Consultation CTA Section */}
+      {show('consultation') && (
+        <ConsultationCTA
+          title={content.consultation?.title}
+          subtitle={content.consultation?.subtitle}
+          buttonLabel={content.consultation?.buttonLabel}
+          imageSrc={content.consultation?.imageSrc}
+          theme="white"
+        />
       )}
 
       {/* Tech Stack Section */}
-      {content.tech && (
-        <section className="bg-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
-            <CommonTitle
-              align="center"
-              pill={false}
-              title={content.tech.title}
-              gradientText=""
-              subtitle={content.tech.subtitle}
-            />
-
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8">
-              {content.tech.items.map((tech, idx) => (
-                <div key={idx} className="flex flex-col items-center space-y-3">
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl shadow-lg flex items-center justify-center hover:shadow-xl transition-shadow">
-                    <Image
-                      src={tech.image}
-                      alt={tech.name}
-                      width={60}
-                      height={60}
-                      className="w-12 h-12 md:w-16 md:h-16 object-contain"
-                    />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700 text-center">
-                    {tech.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+      {show('tech') && (
+        <CloneTechStack data={content.techStack || content.tech} />
       )}
 
       {/* Process Section */}
-      {content.process && (
-        <section className="bg-gradient-to-br from-slate-50 to-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
-            <CommonTitle
-              align="center"
-              pill={false}
-              title={content.process.title}
-              gradientText=""
-              subtitle={content.process.subtitle}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {content.process.items.map((step, idx) => (
-                <div key={idx} className="relative">
-                  <div className="bg-white rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
-                    <div className="flex items-center mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-sky-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                        {idx + 1}
-                      </div>
-                    </div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+      {show('process') && (
+        <ServiceProcess data={content.process} />
       )}
 
-      {/* FAQ Section */}
-      {content.faq && (
-        <section className="bg-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
-          <div className="max-w-4xl mx-auto">
-            <CommonTitle
-              align="center"
-              pill={false}
-              title={content.faq.title}
-              gradientText=""
-              subtitle={content.faq.subtitle}
-            />
-
-            <div className="space-y-4">
-              {content.faq.items.map((faq, idx) => (
-                <FAQAccordion
-                  key={idx}
-                  question={faq.q}
-                  answer={faq.a}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+      {/* Solution Highlight Section */}
+      {show('highlight') && (
+        <SolutionHighlight data={content.highlight} />
       )}
 
       {show('portfolio') && (
@@ -475,39 +373,51 @@ export default async function ServicePage({ params }) {
           subtitle={content.portfolioSubtitle}
         />
       )}
-      <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />
-      <TechView />
-      <MethodologySection />
-      <ConsultationCTA imageSrc="/images/cta/cta.png" href="/contact" title="Let’s Build Your Next Big Mobile App" subtitle="Collaborate with a leading mobile app development agency to turn your innovative idea into a feature-rich mobile application." />
-      <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100">
-        <Industries />
-      </section>
 
-      <Blogs
-        category=""
-        featured={false}    // Latest uploaded
-        title="Our Latest Blogs"
-        subtitle="Explore our latest insights, product lessons, and engineering best practices."
+      {/* Industry Solutions Section */}
+      {show('solutions') && (
+        <IndustrySolutions data={content.solutions} />
+      )}
+
+      {/* Industries We ServeSection */}
+      {show('industries') && (
+        <IndustriesServe data={content.industrySection} />
+      )}
+
+      {/* User Guide Section */}
+      {show('user-guide') && (
+        <UserGuide data={content.userGuide} />
+      )}
+
+      {/* FAQ Section */}
+      {show('faq') && (
+        <FAQAccordion data={content.faq} />
+      )}
+      {/* <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100">
+        <Industries />
+      </section> */}
+
+      <BlogSection
+        category={content.blogCategory || ""}
+        title={content.blogTitle || "Our Latest Blogs"}
+        subtitle={content.blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
       />
-      <FAQAccordion />
       <InquirySection />
     </main>
   );
 }
 
 // Stat Box Component
-function StatBox({ value, label, color, icon }) {
+function StatBox({ value, label, color }) {
   return (
     <div
-      className={`bg-gradient-to-br ${color} p-6 md:p-8 text-center rounded-sm shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}
+      className={`bg-gradient-to-br ${color} p-4 md:p-6 text-center rounded-sm shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}
     >
-      <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">
-        {icon}
-      </div>
-      <h3 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2 group-hover:scale-105 transition-transform">
+      <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-1 group-hover:scale-105 transition-transform">
         {value}
       </h3>
-      <p className="text-white/90 font-medium text-xs md:text-sm">{label}</p>
+      <p className="text-white/90 font-medium text-[10px] md:text-xs uppercase tracking-wider">{label}</p>
     </div>
   );
 }
+

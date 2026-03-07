@@ -507,8 +507,27 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                 </div>
             </SectionWrapper>
 
-            {/* 16. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="16. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
+            {/* 16. BLOG SECTION */}
+            <SectionWrapper id="blogs" icon={MessageSquare} title="16. Blog Section" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Title</label>
+                        <input className={inputStyle} placeholder="Latest Blogs" value={content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Subtitle</label>
+                        <input className={inputStyle} placeholder="Subtitle text..." value={content.blogSubtitle || ''} onChange={e => updateField('content.blogSubtitle', e.target.value)} />
+                    </div>
+                </div>
+                <div className="space-y-2">
+                    <label className={labelStyle}>Blog Category (Slug)</label>
+                    <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
+                    <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
+                </div>
+            </SectionWrapper>
+
+            {/* 17. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="17. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
                 <div className="space-y-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>SEO Title</label>

@@ -14,7 +14,11 @@ export async function GET(request) {
         type: type
     };
 
-    if (category) whereClause.category = { slug: category };
+    if (category) {
+        whereClause.category = {
+            slug: category
+        };
+    }
     if (featured) whereClause.featured = true;
 
     try {
@@ -39,8 +43,11 @@ export async function GET(request) {
         }));
 
 
-        return NextResponse.json(blogs);
+        return NextResponse.json(transformedBlogs);
     } catch (error) {
-        return NextResponse.json([], { status: 500 });
+        console.error("API Blogs Error:", error);
+        return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }
+
+

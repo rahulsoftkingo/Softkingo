@@ -6,7 +6,7 @@ import SolutionsHero from '@/components/public/solutions/SolutionsHero';
 import SolutionsStats from '@/components/public/solutions/SolutionsStats';
 import SolutionsContentSplit from '@/components/public/solutions/SolutionsContentSplit';
 import SolutionsFeatureGrid from '@/components/public/solutions/SolutionsFeatureGrid';
-import AwardsSection from '@/components/public/solutions/AwardsSection';
+import AwardsSection from '@/components/common/AwardsSection';
 import SolutionsWhyNeed from '@/components/public/solutions/SolutionsWhyNeed';
 import SolutionsServicesList from '@/components/public/solutions/SolutionsServicesList';
 import SolutionsAppModule from '@/components/public/solutions/SolutionsAppModule';

@@ -7,7 +7,7 @@ import SolutionsHero from '@/components/public/solutions/SolutionsHero';
 import SolutionsStats from '@/components/public/solutions/SolutionsStats';
 import SolutionsContentSplit from '@/components/public/solutions/SolutionsContentSplit';
 import SolutionsFeatureGrid from '@/components/public/solutions/SolutionsFeatureGrid';
-import AwardsSection from '@/components/public/solutions/AwardsSection';
+import AwardsSection from '@/components/common/AwardsSection';
 import SolutionsWhyNeed from '@/components/public/solutions/SolutionsWhyNeed';
 import SolutionsServicesList from '@/components/public/solutions/SolutionsServicesList';
 import SolutionsAppModule from '@/components/public/solutions/SolutionsAppModule';
@@ -41,7 +41,7 @@ import FAQAccordion from '@/components/common/Faqaccordion';
 import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import CommonTitle from '@/components/ui/CommonTitle';
-import Blogs from '../../home/blogs/BlogSliderClient';
+import BlogSection from '@/components/common/BlogSection';
 
 // --- 1. HELPER: FETCH DATA FROM DB ---
 async function getSolutionPage(slug) {
@@ -221,12 +221,14 @@ export default async function DynamicSolutionPage(props) {
 
                 {/* 15. FAQ */}
                 {show('faq') && <FAQAccordion data={data.sections.faq} />}
-                <Blogs
-                    category=""
-                    featured={false}    // Latest uploaded
-                    title="Our Latest Blogs"
-                    subtitle="Explore our latest insights, product lessons, and engineering best practices."
-                />
+
+                {show('blogs') && (
+                    <BlogSection
+                        category={data.sections.blogCategory || ""}
+                        title={data.sections.blogTitle || "Our Latest Blogs"}
+                        subtitle={data.sections.blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
+                    />
+                )}
 
                 <FooterForm />
 
@@ -241,7 +243,8 @@ export default async function DynamicSolutionPage(props) {
         hero, stats, intro, features, awards, whyNeed,
         servicesList, userApp, vendorApp, adminPanel,
         aiCapabilities, portfolio, process, techStack,
-        monetization, whyChoose, consultation, faq
+        monetization, whyChoose, consultation, faq,
+        blogTitle, blogSubtitle, blogCategory
     } = data.sections;
 
     return (
@@ -274,6 +277,14 @@ export default async function DynamicSolutionPage(props) {
                 />
             )}
             {show('faq') && <FAQAccordion data={faq} />}
+
+            {show('blogs') && (
+                <BlogSection
+                    category={blogCategory || ""}
+                    title={blogTitle || "Our Latest Blogs"}
+                    subtitle={blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
+                />
+            )}
         </main>
     );
 }

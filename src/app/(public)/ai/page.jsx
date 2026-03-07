@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
 import CommonTitle from '@/components/ui/CommonTitle';
 import InquirySection from '@/components/footer/InquirySection';
-import Blogs from '../home/blogs/BlogSliderClient';
+import BlogSection from '@/components/common/BlogSection';
 import LeadForm from '@/components/public/LeadForm';
 import HireDevelopersPage from '../hire/[slug]/SelectDeveloper';
 import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
@@ -335,9 +335,9 @@ export default function AIPage() {
         </div>
       </section>
 
-            <div className="section-divider" />
+      <div className="section-divider" />
 
-<DynamicPortfolioCard
+      <DynamicPortfolioCard
         category="Fitnes app"
         portfolioType="app"
         title="Latest App Projects"
@@ -383,12 +383,12 @@ export default function AIPage() {
             ))}
           </div>
         </div>
-       
+
       </section>
-       <HireDevelopersPage />
+      <HireDevelopersPage />
       <div className="section-divider" />
 
-        <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />
+      <ConsultationCTA imageSrc="/images/cta/cta-img.png" href="/contact" />
       <div className="section-divider" />
 
       {/* 07. Technology Stack */}
@@ -533,9 +533,8 @@ export default function AIPage() {
         </div>
       </section>
 
-      <Blogs
+      <BlogSection
         category=""
-        featured={false}
         title="Latest AI Insights"
         subtitle="Fresh perspectives from our AI engineering team"
       />

@@ -71,9 +71,10 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'monetization', label: '13. Revenue', icon: DollarSign },
                 { id: 'whyChoose', label: '14. Security/Why', icon: ShieldCheck },
                 { id: 'consultation', label: '15. Consult CTA', icon: MessageSquare },
-                { id: 'faq', label: '16. FAQ', icon: HelpCircle },
-                { id: 'cta', label: '17. Bottom CTA', icon: MousePointerClick },
-                { id: 'seo', label: '18. SEO Settings', icon: Search }
+                { id: 'blogs', label: '16. Blog Section', icon: MessageSquare },
+                { id: 'faq', label: '17. FAQ', icon: HelpCircle },
+                { id: 'cta', label: '18. Bottom CTA', icon: MousePointerClick },
+                { id: 'seo', label: '19. SEO Settings', icon: Search }
             ]
         },
         industry: {
@@ -89,7 +90,8 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'process', label: '8. Development Process', icon: Settings },
                 { id: 'faq', label: '9. FAQ', icon: HelpCircle },
                 { id: 'testimonials', label: '10. Client Testimonials', icon: MessageSquare },
-                { id: 'seo', label: '11. SEO Settings', icon: Search }
+                { id: 'blogs', label: '11. Blog Section', icon: MessageSquare },
+                { id: 'seo', label: '12. SEO Settings', icon: Search }
             ]
         },
         clone: {
@@ -112,9 +114,10 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'comparison', label: '13. Comparison Table', icon: BarChart3 },
                 { id: 'consultation', label: '14. Consultation CTA', icon: TrendingUp },
                 { id: 'faq', label: '15. FAQ', icon: HelpCircle },
-                { id: 'seo', label: '16. SEO Settings', icon: Search }
+                { id: 'blogs', label: '16. Blog Section', icon: MessageSquare },
+                { id: 'seo', label: '17. SEO Settings', icon: Search }
             ]
-        }
+        },
     }[type] || config.solution;
 
     const themeColor = config.theme;
@@ -193,7 +196,10 @@ export default function PageEditor({ data, type, onBack }) {
         setLoading(true);
         try {
             const payload = { ...formData, type };
-            const res = await fetch("/api/admin/solutions", {
+            // Determine API endpoint based on type
+            const apiEndpoint = "/api/admin/solutions";
+
+            const res = await fetch(apiEndpoint, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -355,6 +361,7 @@ export default function PageEditor({ data, type, onBack }) {
                             activeSections={formData.activeSections}
                         />
                     )}
+
                 </div>
             </div>
 

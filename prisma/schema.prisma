@@ -79,7 +79,6 @@ model User {
   leaveRequests    LeaveRequest[]     @relation("UserLeaveRequests")
   MediaItem        MediaItem[]
   pages            Page[]
-  // payslips         Payslip[]          @relation("UserPayslips")
   ticketsOwned     Ticket[]           @relation("TicketOwner")
   ticketsRequested Ticket[]           @relation("TicketRequester")
   ticketComments   TicketComment[]
@@ -135,27 +134,27 @@ model RolePermission {
 }
 
 model BlogCategory {
-  id        Int        @id @default(autoincrement())
-  name      String
-  slug      String     @unique(map: "BlogCategory_slug_key")
-  createdAt DateTime   @default(now())
+  id             Int        @id @default(autoincrement())
+  name           String
+  slug           String     @unique(map: "BlogCategory_slug_key")
+  createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
-  posts          BlogPost[]
-  seoTitle       String?
   seoDescription String?
   seoImage       String?
+  seoTitle       String?
+  posts          BlogPost[]
 
   @@map("blogcategory")
 }
 
 model BlogTag {
-  id    Int           @id @default(autoincrement())
+  id             Int           @id @default(autoincrement())
   name           String
   slug           String        @unique(map: "BlogTag_slug_key")
-  posts          BlogPostTag[]
-  seoTitle       String?
   seoDescription String?
   seoImage       String?
+  seoTitle       String?
+  posts          BlogPostTag[]
 
   @@map("blogtag")
 }
@@ -317,9 +316,9 @@ model CaseStudy {
   findYourAppJson   String?            @db.Text
   seoTitle          String?
   seoDescription    String?
-  seoImage          String?
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
+  seoImage          String?
   portfolioProjects PortfolioProject[]
 
   @@map("casestudy")
@@ -333,7 +332,6 @@ model Page {
   type           String
   excerpt        String?          @db.LongText
   contentJson    String?          @db.LongText
-  heroImage      String?
   status         String           @default("draft")
   featured       Boolean          @default(false)
   seoTitle       String?
@@ -342,6 +340,7 @@ model Page {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   authorId       Int?
+  heroImage      String?
   navItems       NavigationItem[]
   author         User?            @relation(fields: [authorId], references: [id], map: "Page_authorId_fkey")
 
@@ -366,24 +365,22 @@ model NavigationItem {
 }
 
 model TeamMember {
-  id          Int      @id @default(autoincrement())
-  name        String
-  title       String?
-  department  String?
-  photo       String?
-  bio         String?
-  linkedinUrl String?
-  order       Int      @default(0)
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // New optional fields - won't affect existing data
-  category       String?  // employee, management, tech-lead, intern
-  status         String?  // active, inactive, alumni
-  seoTitle       String?
+  id             Int      @id @default(autoincrement())
+  name           String
+  title          String?
+  department     String?
+  photo          String?
+  bio            String?
+  linkedinUrl    String?
+  order          Int      @default(0)
+  featured       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  category       String?
+  status         String?
   seoDescription String?
   seoImage       String?
+  seoTitle       String?
 
   @@map("teammember")
 }
@@ -789,7 +786,7 @@ model JobOpening {
   salary       String?
   description  String?  @db.Text
   requirements String?  @db.Text
-  status       String   @default("active") // active | inactive | filled
+  status       String   @default("active")
   featured     Boolean  @default(false)
   order        Int      @default(0)
   createdAt    DateTime @default(now())

@@ -15,6 +15,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import IndustryTechCarousel from '@/components/public/industries/IndustryTechCarousel';
 import IndustryCoversTabs from '@/components/public/industries/IndustryCoversTabs';
 import IndustryWhyChooseCarousel from '@/components/public/industries/IndustryWhyChooseCarousel';
+import BlogSection from '@/components/common/BlogSection';
 // --- 1. FETCH DATA HELPER ---
 async function getIndustryPage(slug) {
     try {
@@ -342,6 +343,15 @@ export default async function IndustryPage(props) {
                     </div>
                 </section>
             )} */}
+
+            {/* 10. BLOG SECTION */}
+            {show('blogs') && (
+                <BlogSection
+                    category={data.sections.blogCategory || ""}
+                    title={data.sections.blogTitle || "Our Latest Blogs"}
+                    subtitle={data.sections.blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
+                />
+            )}
 
             {/* Call To Action */}
             <ConsultationCTA

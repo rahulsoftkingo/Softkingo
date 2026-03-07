@@ -4,13 +4,14 @@ import Feature from "./h2-feature-section/page";
 import Crafting from "./h3-crafting/page";
 import Service from "./h4-service/page";
 import Portfolio from "./h5-portfolio-section/page";
+import HomePortfolio from "./HomePortfolio";
 import Industries from "./h6-industries-section/page";
 import Process from "./h7-process/page";
 import Strengths_Scroll from "./h8-strengths-scroll/page";
 import ReviewSection from "./h9-clients-review/page";
 import Tech from "@/app/(public)/home/h10-technology/page";
 import FooterForm from "@/components/footer/InquirySection";
-import Blogs from "@/app/(public)/home/blogs/BlogSliderClient"
+import BlogSection from "@/components/common/BlogSection";
 import TechView from "@/components/common/TechView";
 import IndustryTabsSection from "./IndustryTabsSection";
 export const dynamic = 'force-dynamic';
@@ -23,17 +24,17 @@ export default function Home() {
       <Feature />
       <Crafting />
       <Service />
-      <Portfolio />
-      <IndustryTabsSection/>
+      <HomePortfolio />
+      {/* <Portfolio /> */}
+      <IndustryTabsSection />
       {/* <Industries /> */}
       <Tech />
       {/* <TechView/> */}
       <Process />
       <Strengths_Scroll />
 
-      <Blogs
+      <BlogSection
         category=""
-        featured={false}    // Latest uploaded
         title="Our Latest Blogs"
         subtitle="Explore our latest insights, product lessons, and engineering best practices."
       />

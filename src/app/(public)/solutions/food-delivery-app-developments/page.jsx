@@ -8,7 +8,7 @@ import { SiFsecure, SiSymfony, SiSystem76 } from 'react-icons/si';
 import { Caesar_Dressing } from 'next/font/google';
 import CommonTitle from '@/components/ui/CommonTitle';
 import ConsultationCTA from '@/components/common/Consultation-Cta';
-import Blogs from '../../home/blogs/BlogSliderClient';
+import BlogSection from '@/components/common/BlogSection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from '@/components/footer/InquirySection';
 import IndustriesPage from '../../industries/page';
@@ -455,9 +455,8 @@ export default function FoodDeliveryHero() {
 
             <ConsultationCTA imageSrc="/images/cta/cta.png" href="/contact" title="Let’s Build Your Next Big Mobile App" subtitle="Collaborate with a leading mobile app development agency to turn your innovative idea into a feature-rich mobile application." />
 
-            <Blogs
+            <BlogSection
                 category=""
-                featured={false}    // Latest uploaded
                 title="Our Latest Blogs"
                 subtitle="Explore our latest insights, product lessons, and engineering best practices."
             />

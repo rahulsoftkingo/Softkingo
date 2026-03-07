@@ -59,7 +59,8 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
         { id: 'business', label: '10. Biz Types', icon: Layers },
         { id: 'pricing', label: '11. Pricing', icon: DollarSign },
         { id: 'comparison', label: '12. Compare', icon: BarChart3 },
-        { id: 'cta', label: '13. CTA', icon: MousePointerClick }
+        { id: 'cta', label: '13. CTA', icon: MousePointerClick },
+        { id: 'blogs', label: '14. Blog Section', icon: MessageSquare }
     ];
 
     // State - always ensure new sections are included even in older saved pages
@@ -307,6 +308,25 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                                 </div>
                             )}
                         />
+                    </SectionWrapper>
+
+                    {/* 14. BLOG SECTION */}
+                    <SectionWrapper id="blogs" icon={MessageSquare} title="14. Blog Section" activeSections={formData.activeSections}>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Blog Section Title</label>
+                                <input className={inputStyle} placeholder="Latest Blogs" value={formData.content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Blog Section Subtitle</label>
+                                <input className={inputStyle} placeholder="Subtitle text..." value={formData.content.blogSubtitle || ''} onChange={e => updateField('content.blogSubtitle', e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Blog Category (Slug)</label>
+                            <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={formData.content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
+                            <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
+                        </div>
                     </SectionWrapper>
 
                 </div>

@@ -30,7 +30,7 @@ export const metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
 
   robots: {
     index: true,

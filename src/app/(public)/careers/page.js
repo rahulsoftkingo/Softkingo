@@ -6,7 +6,7 @@ import ApplicationForm from './CareerForm';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import CommonTitle from '@/components/ui/CommonTitle';
-import Blogs from '../home/blogs/BlogSliderClient';
+import BlogSection from '@/components/common/BlogSection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from '@/components/footer/InquirySection';
 
@@ -462,7 +462,7 @@ const WhyJoinUs = () => {
                 </div>
             </section>
 
-            <Blogs title="Our Latest Blogs" />
+            <BlogSection title="Our Latest Blogs" />
             <FAQAccordion />
             <InquirySection />
             <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />

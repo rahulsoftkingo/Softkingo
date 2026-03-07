@@ -14,38 +14,58 @@ export default function CloneIndustries({ data, industries = [] }) {
     const activeIndustry = industries[activeIndex] || industries[0];
     const content = activeIndustry.content || {};
 
-    // Get custom image from data.items if available
+    // Default Images mapping from public/images/industries/clone
+    const defaultIndustryImages = {
+        'healthcare': '/images/industries/clone/healthcare.png',
+        'blockchain': '/images/industries/clone/blockchain.png',
+        'iot-solutions': '/images/industries/clone/iot-solutions.png',
+        'ott-solution': '/images/industries/clone/ott-solution.png',
+        'fitness': '/images/industries/clone/fitness.png',
+        'real-estate': '/images/industries/clone/real-estate.png',
+        'enterprise': '/images/industries/clone/enterprise.png',
+        'education': '/images/industries/clone/education.png',
+        'logistics': '/images/industries/clone/logistics.png',
+        'ecommerce': '/images/industries/clone/ecommerce.png',
+        'fintech': '/images/industries/clone/fintech.png',
+    };
+
+    // Get custom image from data.items or fallback to industry mapping
     const customSelection = data?.items?.find(item => item.slug === activeIndustry.slug);
-    const displayImage = customSelection?.image || content.hero?.image || '/images/placeholders/laptop-mockup.png';
+    const displayImage = customSelection?.image || content.hero?.image || defaultIndustryImages[activeIndustry.slug] || '/images/industries/clone/149.png';
 
     return (
-        <section className="py-24 bg-white relative overflow-hidden">
+        <section className="py-20 bg-[#EFF9FF] relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="mb-8">
-                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 text-center mb-12">
+                    <h2 className="text-4xl md:text-5xl font-black text-[#1A1A1A] text-center mb-12 tracking-tight">
                         {data?.title || "Industries"}
                     </h2>
                 </div>
 
-                {/* Figma Accurate Tabs: Underlined style with gray baseline */}
-                <div className="relative mb-20">
-                    <div className="absolute bottom-0 left-0 right-0 h-px bg-slate-200"></div>
-                    <div className="flex flex-wrap justify-center gap-4 md:gap-12 relative overflow-x-auto no-scrollbar pb-0">
+                {/* Tabs: Separated Underlined style per Figure */}
+                <div className="relative mb-16 flex justify-center">
+                    <div className="flex flex-wrap justify-center gap-2 md:gap-8 overflow-x-auto no-scrollbar pb-4 relative z-10 w-full px-4">
                         {industries.map((ind, i) => (
                             <button
                                 key={ind.slug}
                                 onClick={() => setActiveIndex(i)}
                                 className={`
-                                    relative py-4 px-2 text-sm md:text-lg font-bold transition-all duration-300 whitespace-nowrap
-                                    ${activeIndex === i ? 'text-sky-500' : 'text-slate-400 hover:text-slate-600'}
+                                    relative py-3 px-4 text-sm md:text-xl font-bold transition-all duration-300 whitespace-nowrap flex flex-col items-center group
+                                    ${activeIndex === i ? 'text-[#1EAEDB]' : 'text-slate-400 hover:text-slate-600'}
                                 `}
                             >
-                                {ind.title}
+                                <span className="mb-2">{ind.title}</span>
+
+                                {/* Individual Underline Segment */}
+                                <div
+                                    className={`h-[2px] w-full transition-colors duration-300 ${activeIndex === i ? 'bg-[#1EAEDB]' : 'bg-slate-300'}`}
+                                />
+
+                                {/* Active Pointer Triangle */}
                                 {activeIndex === i && (
-                                    <motion.div
-                                        layoutId="activeTabUnderline"
-                                        className="absolute bottom-[-1px] left-0 right-0 h-[3px] bg-sky-400 rounded-t-full z-10"
-                                    />
+                                    <div className="absolute bottom-[-1px] left-1/2 -translate-x-1/2">
+                                        <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-[#1EAEDB]"></div>
+                                    </div>
                                 )}
                             </button>
                         ))}
@@ -55,75 +75,76 @@ export default function CloneIndustries({ data, industries = [] }) {
                 {/* Content Area */}
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-                    {/* Left: Combined Image (Canva Style) */}
-                    <div className="relative">
+                    {/* Left: Device Mockups */}
+                    <div className="relative flex justify-center lg:justify-start">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeIndex}
-                                initial={{ opacity: 0, scale: 0.98 }}
+                                initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.98 }}
-                                transition={{ duration: 0.5 }}
-                                className="relative z-10"
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.5, ease: "easeOut" }}
+                                className="relative w-full"
                             >
-                                <div className="relative group">
-                                    <div className="rounded-3xl overflow-hidden relative">
-                                        <img
-                                            src={displayImage}
-                                            alt={activeIndustry.title}
-                                            className="w-full h-auto drop-shadow-xl"
-                                        />
-                                    </div>
-                                </div>
+                                <img
+                                    src={displayImage}
+                                    alt={activeIndustry.title}
+                                    className="w-full h-auto object-contain"
+                                />
                             </motion.div>
                         </AnimatePresence>
                     </div>
 
                     {/* Right: Text Content */}
-                    <div className="lg:pl-6">
+                    <div className="lg:pl-6 text-left">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeIndex}
-                                initial={{ opacity: 0, x: 20 }}
+                                initial={{ opacity: 0, x: 30 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
+                                exit={{ opacity: 0, x: -30 }}
                                 transition={{ duration: 0.4 }}
                                 className="space-y-8"
                             >
-                                <div className="space-y-4">
-                                    <h3 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+                                <div className="space-y-6">
+                                    <h3 className="text-4xl md:text-5xl font-black text-[#1A1A1A] tracking-tight">
                                         {activeIndustry.title}
                                     </h3>
-                                    <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">
-                                        {content.hero?.description || activeIndustry.excerpt || "We build affordable platforms tailored to your business. Our expert developers create secure, scalable solutions that elevate customer experience and boost growth."}
+                                    <p className="text-[#333] text-sm md:text-lg leading-relaxed font-medium max-w-xl opacity-90">
+                                        {content.hero?.description || activeIndustry.excerpt || "We build affordable platforms tailored to your business. Our expert developers create secure, scalable solutions that elevate patient care, streamline workflows, and boost growth."}
                                     </p>
                                 </div>
 
-                                {/* Feature Bullets: Pulling from content.challenges.items */}
-                                <div className="space-y-4">
+                                {/* Feature Bullets */}
+                                <div className="space-y-4 pt-2">
                                     {(content.challenges?.items || [
-                                        { title: "Custom feature integration" },
-                                        { title: "Scalable cloud architecture" },
-                                        { title: "User-centric design focus" }
+                                        { title: "First product search tools" },
+                                        { title: "Secure checkout flow setup" },
+                                        { title: "Personalized buyer experience path" }
                                     ]).slice(0, 3).map((item, i) => (
                                         <div key={i} className="flex items-center gap-3">
-                                            <Check size={20} className="text-slate-800" strokeWidth={3} />
-                                            <span className="text-slate-800 font-bold text-sm md:text-base">
+                                            <Check size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                                            <span className="text-[#1A1A1A] font-bold text-sm md:text-lg">
                                                 {item.title}
                                             </span>
                                         </div>
                                     ))}
                                 </div>
 
-                                {/* Standard Site Button UI */}
+                                {/* Custom CTA Button */}
                                 <div className="pt-4">
-                                    <Link
-                                        href={`/industries/${activeIndustry.slug}`}
-                                        className="inline-flex items-center gap-4 px-10 py-5 rounded-full font-black text-[14px] shadow-2xl transition-all hover:-translate-y-1 active:scale-95 cursor-pointer z-20 bg-gradient-to-r from-sky-600 via-sky-600 to-sky-400 text-white shadow-sky-400/30 group"
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className="inline-block"
                                     >
-                                        <span className="inline-block w-3 h-3 rounded-full bg-white animate-pulse" />
-                                        <span>{activeIndustry.title} case studies</span>
-                                    </Link>
+                                        <Link
+                                            href={`/industries/${activeIndustry.slug}`}
+                                            className="px-10 py-4 rounded-full bg-[#1EAEDB] text-white font-bold text-base md:text-lg transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] capitalize"
+                                        >
+                                            {activeIndustry.title} case studies
+                                        </Link>
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         </AnimatePresence>
@@ -131,6 +152,9 @@ export default function CloneIndustries({ data, industries = [] }) {
 
                 </div>
             </div>
+            {/* Custom Background Circle for texture if needed */}
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-sky-100 rounded-full opacity-30 blur-[100px] pointer-events-none"></div>
+
             <style jsx>{`
                 .no-scrollbar::-webkit-scrollbar {
                     display: none;

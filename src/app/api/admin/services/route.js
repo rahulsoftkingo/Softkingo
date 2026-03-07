@@ -31,33 +31,38 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const body = await req.json();
+    const { title, slug, excerpt, status, featured, seoTitle, seoDescription, seoImage, activeSections, content } = body;
 
     // Generate unique key from slug
-    const key = body.slug || body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const key = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+    const contentDataString = JSON.stringify({
+      activeSections: activeSections || [],
+      content: content || {}
+    });
 
     const service = await prisma.page.create({
       data: {
-        title: body.title,
-        slug: body.slug,
+        title: title,
+        slug: slug,
         key: key,
         type: 'service',
-        excerpt: body.excerpt || null,
-        // Remove content field - it doesn't exist in schema
-        contentJson: body.contentJson,
-        status: body.status || 'draft',
-        featured: body.featured || false,
-        seoTitle: body.seoTitle || body.title,
-        seoDescription: body.seoDescription || body.excerpt || null,
-        seoImage: body.seoImage || null,
+        excerpt: excerpt || null,
+        contentJson: contentDataString,
+        status: status || 'draft',
+        featured: featured || false,
+        seoTitle: seoTitle || title,
+        seoDescription: seoDescription || excerpt || null,
+        seoImage: seoImage || null,
       },
     });
 
     return NextResponse.json({ service });
   } catch (error) {
     console.error('Create service error:', error);
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: 'Failed to create service',
-      details: error.message 
+      details: error.message
     }, { status: 500 });
   }
 }

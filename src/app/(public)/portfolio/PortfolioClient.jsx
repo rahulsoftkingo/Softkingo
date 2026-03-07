@@ -329,9 +329,9 @@ function ProjectCard({ p }) {
               </p>
             </div>
           </div>
-         
+
           <div className="mt-4 flex items-center gap-3 flex-wrap">
- 
+
             {p.badges?.play && (
               <Link
                 href={p.badges.play.href || "#"}
@@ -378,16 +378,16 @@ function ProjectCard({ p }) {
               </Link>
             )}
 
-{/* case study icon button */}
-          <div className="absolute bottom-4 left4 md:top-4 md:right-4 cursor-pointer z-10 mt- ">
-            <Link
-              href={`/case-studies/${p.id}`}
-              className="inline-flex items-center justify-center w-9h-9 rounded-full bg-white/95 text-sky-900 shadow hover:bg-sky-50 transition px-4 py-2 text-xs"
+            {/* case study icon button */}
+            <div className="absolute bottom-4 left4 md:top-4 md:right-4 cursor-pointer z-10 mt- ">
+              <Link
+                href={`/case-studies/${p.id}`}
+                className="inline-flex items-center justify-center w-9h-9 rounded-full bg-white/95 text-sky-900 shadow hover:bg-sky-50 transition px-4 py-2 text-xs"
 
-            >Case Study
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
+              >Case Study
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
           </div>
 
 

@@ -32,33 +32,38 @@ export async function PUT(req, { params }) {
   try {
     const { id } = await params;
     const body = await req.json();
+    const { title, slug, excerpt, status, featured, seoTitle, seoDescription, seoImage, activeSections, content } = body;
 
     // Generate key from slug if not provided
-    const key = body.key || body.slug;
+    const key = body.key || slug;
+
+    const contentDataString = JSON.stringify({
+      activeSections: activeSections || [],
+      content: content || {}
+    });
 
     const service = await prisma.page.update({
       where: { id: parseInt(id) },
       data: {
-        title: body.title,
-        slug: body.slug,
+        title: title,
+        slug: slug,
         key: key,
-        excerpt: body.excerpt || null,
-        // Remove content field
-        contentJson: body.contentJson,
-        status: body.status,
-        featured: body.featured || false,
-        seoTitle: body.seoTitle || body.title,
-        seoDescription: body.seoDescription || null,
-        seoImage: body.seoImage || null,
+        excerpt: excerpt || null,
+        contentJson: contentDataString,
+        status: status,
+        featured: featured || false,
+        seoTitle: seoTitle || title,
+        seoDescription: seoDescription || null,
+        seoImage: seoImage || null,
       },
     });
 
     return NextResponse.json({ service });
   } catch (error) {
     console.error('Update service error:', error);
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: 'Failed to update service',
-      details: error.message 
+      details: error.message
     }, { status: 500 });
   }
 }
@@ -74,9 +79,9 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete service error:', error);
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: 'Failed to delete service',
-      details: error.message 
+      details: error.message
     }, { status: 500 });
   }
 }

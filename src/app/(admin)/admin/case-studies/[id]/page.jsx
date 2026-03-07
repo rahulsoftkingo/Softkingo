@@ -18,6 +18,7 @@ const TABS = [
   { id: 'content', label: 'Content', icon: Layout, mobileLabel: 'Content' },
   { id: 'screens', label: 'Screens', icon: ImageIcon, mobileLabel: 'Screens' },
   { id: 'results', label: 'Results', icon: TrendingUp, mobileLabel: 'Results' },
+  { id: 'blogs', label: 'Blog Section', icon: FileText, mobileLabel: 'Blogs' },
   { id: 'seo', label: 'SEO', icon: SearchIcon, mobileLabel: 'SEO' },
 ];
 
@@ -52,7 +53,7 @@ export default function CaseStudyEditPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [uploadingField, setUploadingField] = useState(null);
-  
+
   // Image browser modal state
   const [showImageBrowser, setShowImageBrowser] = useState(false);
   const [currentImageField, setCurrentImageField] = useState('');
@@ -112,6 +113,9 @@ export default function CaseStudyEditPage() {
     findTitle: '',
     findDescription: '',
     findMockup: '/images/case-studies/find-app-phone.png',
+    blogTitle: 'Our Latest Blogs',
+    blogSubtitle: 'Explore our latest insights, product lessons, and engineering best practices.',
+    blogCategory: '',
     seoTitle: '',
     seoDescription: '',
   });
@@ -188,6 +192,9 @@ export default function CaseStudyEditPage() {
         findTitle: findYourApp.title || '',
         findDescription: findYourApp.description || '',
         findMockup: findYourApp.mockup || prev.findMockup,
+        blogTitle: findYourApp.blogTitle || 'Our Latest Blogs',
+        blogSubtitle: findYourApp.blogSubtitle || 'Explore our latest insights, product lessons, and engineering best practices.',
+        blogCategory: findYourApp.blogCategory || '',
         seoTitle: data.seoTitle || '',
         seoDescription: data.seoDescription || '',
       }));
@@ -497,6 +504,9 @@ export default function CaseStudyEditPage() {
       title: form.findTitle,
       description: form.findDescription,
       mockup: form.findMockup,
+      blogTitle: form.blogTitle,
+      blogSubtitle: form.blogSubtitle,
+      blogCategory: form.blogCategory,
     });
   }
 
@@ -570,11 +580,11 @@ export default function CaseStudyEditPage() {
   }
 
   // Advanced Image Upload Field Component with 3 Options
-   // ✅ FIXED: Advanced Image Upload Field with proper name handling
+  // ✅ FIXED: Advanced Image Upload Field with proper name handling
   const ImageUploadField = ({ label, name, value, placeholder }) => (
     <div className="space-y-2">
       <label className="block text-xs sm:text-sm font-medium text-slate-700">{label}</label>
-      
+
       {/* ✅ FIXED: Added proper name and value props */}
       <input
         type="text"
@@ -584,7 +594,7 @@ export default function CaseStudyEditPage() {
         placeholder={placeholder}
         className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
       />
-      
+
       {/* Action Buttons */}
       <div className="flex flex-wrap items-center gap-2">
         {/* 1. Upload from Device */}
@@ -633,7 +643,7 @@ export default function CaseStudyEditPage() {
               <span className="hidden sm:inline">Preview</span>
               <span className="sm:hidden">🔍</span>
             </button>
-            
+
             <div className="flex items-center gap-1 sm:gap-1.5">
               <div className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
                 <img src={value} alt="preview" className="h-full w-full object-cover" />
@@ -654,7 +664,7 @@ export default function CaseStudyEditPage() {
     return (
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-3 md:p-4 lg:p-6">
         <div className="w-full max-w-6xl bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] flex flex-col">
-          
+
           {/* Header */}
           <div className="flex items-center justify-between p-3 sm:p-4 md:p-5 border-b border-slate-200 bg-gradient-to-r from-sky-50 to-slate-50 flex-shrink-0">
             <div>
@@ -854,7 +864,7 @@ export default function CaseStudyEditPage() {
               alt="Preview"
               className="w-full h-auto max-h-[85vh] object-contain"
             />
-            
+
             {/* Image Info */}
             <div className="p-2 sm:p-3 md:p-4 bg-gradient-to-t from-slate-900/90 to-transparent absolute bottom-0 left-0 right-0">
               <p className="text-[10px] xs:text-xs sm:text-sm text-white font-medium truncate">
@@ -870,7 +880,7 @@ export default function CaseStudyEditPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50/30">
       <div className="w-full max-w-7xl mx-auto px-2 xs:px-3 sm:px-4 md:px-6 lg:px-8 py-2 xs:py-3 sm:py-4 md:py-6 lg:py-8 space-y-3 sm:space-y-4 lg:space-y-6">
-        
+
         {/* Header */}
         <section className="flex items-center justify-between gap-2 sm:gap-4">
           <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
@@ -937,7 +947,7 @@ export default function CaseStudyEditPage() {
 
         {/* Main Content */}
         <section className="rounded-xl sm:rounded-2xl bg-white border border-slate-200 shadow-xl overflow-hidden">
-          
+
           {/* Tabs */}
           <div className="border-b border-slate-200 bg-slate-50 overflow-hidden">
             <div className="flex overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth">
@@ -947,11 +957,10 @@ export default function CaseStudyEditPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 lg:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium whitespace-nowrap transition-all flex-shrink-0 ${
-                      activeTab === tab.id
-                        ? 'text-sky-600 border-b-2 border-sky-600 bg-white'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                    }`}
+                    className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-5 lg:px-6 py-3 sm:py-4 text-xs sm:text-sm font-medium whitespace-nowrap transition-all flex-shrink-0 ${activeTab === tab.id
+                      ? 'text-sky-600 border-b-2 border-sky-600 bg-white'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      }`}
                   >
                     <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     <span className="hidden sm:inline">{tab.label}</span>
@@ -964,7 +973,7 @@ export default function CaseStudyEditPage() {
 
           {/* Tab Content */}
           <div className="p-3 xs:p-4 sm:p-5 md:p-6 lg:p-8 max-h-[calc(100vh-220px)] xs:max-h-[calc(100vh-240px)] sm:max-h-[calc(100vh-280px)] overflow-y-auto">
-            
+
             {/* Basic Info Tab */}
             {activeTab === 'basic' && (
               <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
@@ -1149,7 +1158,7 @@ export default function CaseStudyEditPage() {
 
             {/* Add remaining tabs: team, tech, content, screens, results, seo */}
             {/* Use similar responsive patterns as shown above */}
-                        {/* Team & Client Tab */}
+            {/* Team & Client Tab */}
             {activeTab === 'team' && (
               <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
                 <div>
@@ -1812,7 +1821,65 @@ export default function CaseStudyEditPage() {
               </div>
             )}
 
-            {/* SEO Tab */}
+            {/* Blog Section Tab */}
+            1823:             {activeTab === 'blogs' && (
+              1824:               <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
+              1825:                 <div>
+                1826:                   <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-slate-900 mb-1">
+                  1827:                     Blog Section
+                  1828:                   </h3>
+                1829:                   <p className="text-[10px] xs:text-xs sm:text-sm text-slate-500">
+                  1830:                     Configure how blogs appear on this case study page
+                  1831:                   </p>
+                1832:                 </div>
+              1833:
+              1834:                 <div className="space-y-4 sm:space-y-6">
+                1835:                   <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-sky-50 border border-sky-200">
+                  1836:                     <div className="grid grid-cols-1 gap-4">
+                    1837:                       <div>
+                      1838:                         <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                        1839:                           Blog Section Title
+                        1840:                         </label>
+                      1841:                         <input
+1842:                           name="blogTitle"
+                      1843:                           value={form.blogTitle}
+                      1844:                           onChange={handleChange}
+                      1845:                           placeholder="Our Latest Blogs"
+                      1846:                           className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+1847:                         />
+                      1848:                       </div>
+                    1849:                       <div>
+                      1850:                         <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                        1851:                           Blog Section Subtitle
+                        1852:                         </label>
+                      1853:                         <textarea
+1854:                           name="blogSubtitle"
+                      1855:                           value={form.blogSubtitle}
+                      1856:                           onChange={handleChange}
+                      1857:                           rows={2}
+                      1858:                           placeholder="Explore our latest insights..."
+                      1859:                           className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+1860:                         />
+                      1861:                       </div>
+                    1862:                       <div>
+                      1863:                         <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                        1864:                           Blog Category Slug
+                        1865:                         </label>
+                      1866:                         <input
+1867:                           name="blogCategory"
+                      1868:                           value={form.blogCategory}
+                      1869:                           onChange={handleChange}
+                      1870:                           placeholder="e.g. mobile-apps (leave empty for all)"
+                      1871:                           className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+1872:                         />
+                      1873:                       </div>
+                    1874:                     </div>
+                  1875:                   </div>
+                1876:                 </div>
+              1877:               </div>
+1878:             )}
+            1879:
+            1880:             {/* SEO Tab */}
             {activeTab === 'seo' && (
               <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
                 <div>
@@ -1887,7 +1954,7 @@ export default function CaseStudyEditPage() {
               </div>
             )}
 
-            
+
           </div>
         </section>
       </div>
