@@ -21,21 +21,18 @@ export default function CloneComparison({ data }) {
     const rows = data?.rows?.length > 0 ? data.rows : defaultRows;
 
     const StatusIcon = ({ value, isSK = false }) => {
-        if (value === true || value === "true") {
+        if (value === true || value === "true" || (isSK && value === "100%")) {
             return (
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${isSK ? 'bg-white text-green-500 border-2 border-green-500' : 'bg-white text-red-400 border-2 border-red-200'}`}>
-                    {isSK ? <Check size={20} strokeWidth={3} /> : <X size={20} strokeWidth={3} />}
+                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-green-500 text-white shadow-sm">
+                    <Check size={18} strokeWidth={3} />
                 </div>
             );
         }
-        if (value === false || value === "false") {
-            return (
-                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-white text-red-400 border-2 border-red-200">
-                    <X size={20} strokeWidth={3} />
-                </div>
-            );
-        }
-        return <span className={`text-2xl font-black ${isSK ? 'text-green-500' : 'text-slate-300'}`}>{value}</span>;
+        return (
+            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-red-500 text-white shadow-sm">
+                <X size={18} strokeWidth={3} />
+            </div>
+        );
     };
 
     return (
@@ -47,26 +44,28 @@ export default function CloneComparison({ data }) {
                     align="center"
                 />
 
-                <div className="mt-20 relative px-4">
+                <div className="mt-20 relative">
                     {/* Table Container */}
                     <div className="overflow-x-auto pb-10 scrollbar-hide">
                         <table className="w-full border-separate border-spacing-0 min-w-[800px]">
                             <thead>
                                 <tr>
-                                    <th className="py-8 px-6 text-left border-b border-slate-100">
-                                        <span className="text-xl font-bold text-slate-800">Features</span>
+                                    <th className="py-8 px-6 text-left border-b border-slate-100 pb-10">
+                                        <span className="text-xl font-black text-slate-900">Features</span>
                                     </th>
-                                    <th className="py-8 px-6 text-center border-b border-slate-100 bg-[#B5EDFF] rounded-t-3xl border-x-2 border-t-2 border-[#B5EDFF] shadow-[-10px_0_20px_rgba(0,183,235,0.05)]">
-                                        <div className="flex flex-col items-center gap-2">
+                                    <th className="relative py-8 px-6 text-center border-b border-slate-100 bg-[#DFF7FF] rounded-t-2xl">
+                                        <div className="flex flex-col items-center gap-2 relative z-10">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src="/logo.png" alt="Softkingo" className="h-8 object-contain" />
+                                            <img src="/images/softkingo-logo.png" alt="Softkingo" className="h-7 object-contain" />
                                         </div>
+                                        {/* Vertical Highlight Overlay for Header */}
+                                        <div className="absolute inset-0 bg-[#DFF7FF] rounded-t-2xl -z-10 shadow-[0_-10px_30px_rgba(30,174,219,0.1)]"></div>
                                     </th>
-                                    <th className="py-8 px-6 text-center border-b border-slate-100">
-                                        <span className="text-xl font-bold text-slate-800">Company 1</span>
+                                    <th className="py-8 px-6 text-center border-b border-slate-100 pb-10">
+                                        <span className="text-xl font-black text-slate-900 opacity-80">Company 1</span>
                                     </th>
-                                    <th className="py-8 px-6 text-center border-b border-slate-100">
-                                        <span className="text-xl font-bold text-slate-800">Company 2</span>
+                                    <th className="py-8 px-6 text-center border-b border-slate-100 pb-10">
+                                        <span className="text-xl font-black text-slate-900 opacity-80">Company 2</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -85,21 +84,26 @@ export default function CloneComparison({ data }) {
                                     return (
                                         <tr key={i} className="group">
                                             <td className="py-6 px-6 border-b border-slate-100">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-lg bg-sky-50 border border-sky-100 flex items-center justify-center">
-                                                        <IconComponent size={20} className="text-sky-500" />
+                                                <div className="flex items-center gap-5">
+                                                    <div className="w-11 h-11 rounded-xl bg-[#DFF7FF] flex items-center justify-center border border-sky-100 transition-transform group-hover:scale-110">
+                                                        <IconComponent size={22} className="text-[#1EAEDB]" />
                                                     </div>
-                                                    <span className="text-lg font-bold text-slate-800">{row.feature}</span>
+                                                    <span className="text-lg font-bold text-slate-800 leading-tight">{row.feature}</span>
                                                 </div>
                                             </td>
-                                            <td className={`py-6 px-6 text-center border-b border-slate-100 bg-[#B5EDFF] border-x-2 border-[#B5EDFF] shadow-[-10px_0_20px_rgba(0,183,235,0.05)] ${i === rows.length - 1 ? 'rounded-b-3xl border-b-2' : ''}`}>
-                                                <div className="flex justify-center">
-                                                    <StatusIcon value={row.sk} isSK={true} />
+                                            <td className={`relative py-6 px-6 text-center border-b border-slate-100 bg-[#DFF7FF] ${i === rows.length - 1 ? 'rounded-b-2xl shadow-[0_10px_30px_rgba(30,174,219,0.1)]' : ''}`}>
+                                                {/* Softkingo Value Cell */}
+                                                <div className="flex flex-col items-center justify-center relative z-10">
+                                                    {row.sk === "100%" ? (
+                                                        <span className="text-3xl font-black text-[#1EAEDB] mb-2">100%</span>
+                                                    ) : (
+                                                        <StatusIcon value={row.sk} isSK={true} />
+                                                    )}
                                                 </div>
                                             </td>
                                             <td className="py-6 px-6 text-center border-b border-slate-100">
-                                                <div className="flex justify-center">
-                                                    <StatusIcon value={row.comp1} />
+                                                <div className="flex justify-center flex-col items-center gap-1">
+                                                    {i === 0 ? <span className="text-xl font-bold text-slate-400">50%</span> : <StatusIcon value={row.comp1} />}
                                                 </div>
                                             </td>
                                             <td className="py-6 px-6 text-center border-b border-slate-100">
@@ -113,9 +117,6 @@ export default function CloneComparison({ data }) {
                             </tbody>
                         </table>
                     </div>
-
-                    {/* Bottom Shadow Decoration */}
-                    <div className="absolute -bottom-4 left-1/4 right-1/4 h-10 bg-sky-500/10 blur-3xl -z-10 rounded-full"></div>
                 </div>
             </div>
         </section>

@@ -37,8 +37,8 @@ export default function CloneTechStack({ data }) {
                   key={idx}
                   onClick={() => setActiveTab(idx)}
                   className={`px-8 py-3 rounded-full text-sm font-black transition-all duration-300 border whitespace-nowrap snap-center ${activeTab === idx
-                      ? "bg-[#2FB3E0] text-white border-[#2FB3E0] shadow-lg shadow-sky-900/20 transform scale-105"
-                      : "bg-slate-50 text-slate-500 border-slate-200 hover:border-[#2FB3E0]/30 hover:text-[#2FB3E0] hover:bg-[#2FB3E0]/5"
+                    ? "bg-[#2FB3E0] text-white border-[#2FB3E0] shadow-lg shadow-sky-900/20 transform scale-105"
+                    : "bg-slate-50 text-slate-500 border-slate-200 hover:border-[#2FB3E0]/30 hover:text-[#2FB3E0] hover:bg-[#2FB3E0]/5"
                     }`}
                 >
                   {tab.label}

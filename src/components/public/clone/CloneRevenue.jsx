@@ -98,7 +98,7 @@ export default function CloneRevenue({ data }) {
               className="grid lg:grid-cols-2 gap-16 items-center"
             >
               <div className="space-y-8">
-                <h3 className="text-4xl lg:text-5xl font-black text-slate-900 leading-tight italic">
+                <h3 className="text-4xl lg:text-5xl font-black text-slate-900 leading-tight ">
                   {tabs[activeTab].title}
                 </h3>
                 <p className="text-slate-500 text-lg leading-relaxed font-medium">
@@ -115,7 +115,7 @@ export default function CloneRevenue({ data }) {
                 </ul>
               </div>
 
-              <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3]">
+              <div className="relative  aspect-[4/4]">
                 <Image
                   src={tabs[activeTab].image || "/images/placeholder-revenue.png"}
                   alt={tabs[activeTab].title}

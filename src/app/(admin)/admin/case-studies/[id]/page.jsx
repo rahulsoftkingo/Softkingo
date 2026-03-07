@@ -1822,64 +1822,63 @@ export default function CaseStudyEditPage() {
             )}
 
             {/* Blog Section Tab */}
-            1823:             {activeTab === 'blogs' && (
-              1824:               <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
-              1825:                 <div>
-                1826:                   <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-slate-900 mb-1">
-                  1827:                     Blog Section
-                  1828:                   </h3>
-                1829:                   <p className="text-[10px] xs:text-xs sm:text-sm text-slate-500">
-                  1830:                     Configure how blogs appear on this case study page
-                  1831:                   </p>
-                1832:                 </div>
-              1833:
-              1834:                 <div className="space-y-4 sm:space-y-6">
-                1835:                   <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-sky-50 border border-sky-200">
-                  1836:                     <div className="grid grid-cols-1 gap-4">
-                    1837:                       <div>
-                      1838:                         <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
-                        1839:                           Blog Section Title
-                        1840:                         </label>
-                      1841:                         <input
-1842:                           name="blogTitle"
-                      1843:                           value={form.blogTitle}
-                      1844:                           onChange={handleChange}
-                      1845:                           placeholder="Our Latest Blogs"
-                      1846:                           className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
-1847:                         />
-                      1848:                       </div>
-                    1849:                       <div>
-                      1850:                         <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
-                        1851:                           Blog Section Subtitle
-                        1852:                         </label>
-                      1853:                         <textarea
-1854:                           name="blogSubtitle"
-                      1855:                           value={form.blogSubtitle}
-                      1856:                           onChange={handleChange}
-                      1857:                           rows={2}
-                      1858:                           placeholder="Explore our latest insights..."
-                      1859:                           className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
-1860:                         />
-                      1861:                       </div>
-                    1862:                       <div>
-                      1863:                         <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
-                        1864:                           Blog Category Slug
-                        1865:                         </label>
-                      1866:                         <input
-1867:                           name="blogCategory"
-                      1868:                           value={form.blogCategory}
-                      1869:                           onChange={handleChange}
-                      1870:                           placeholder="e.g. mobile-apps (leave empty for all)"
-                      1871:                           className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
-1872:                         />
-                      1873:                       </div>
-                    1874:                     </div>
-                  1875:                   </div>
-                1876:                 </div>
-              1877:               </div>
-1878:             )}
-            1879:
-            1880:             {/* SEO Tab */}
+            {activeTab === 'blogs' && (
+              <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
+                <div>
+                  <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-slate-900 mb-1">
+                    Blog Section
+                  </h3>
+                  <p className="text-[10px] xs:text-xs sm:text-sm text-slate-500">
+                    Configure how blogs appear on this case study page
+                  </p>
+                </div>
+
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-sky-50 border border-sky-200">
+                    <div className="grid grid-cols-1 gap-4">
+                      <div>
+                        <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                          Blog Section Title
+                        </label>
+                        <input
+                          name="blogTitle"
+                          value={form.blogTitle}
+                          onChange={handleChange}
+                          placeholder="Our Latest Blogs"
+                          className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                          Blog Section Subtitle
+                        </label>
+                        <textarea
+                          name="blogSubtitle"
+                          value={form.blogSubtitle}
+                          onChange={handleChange}
+                          rows={2}
+                          placeholder="Explore our latest insights..."
+                          className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                          Blog Category Slug
+                        </label>
+                        <input
+                          name="blogCategory"
+                          value={form.blogCategory}
+                          onChange={handleChange}
+                          placeholder="e.g. mobile-apps (leave empty for all)"
+                          className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {activeTab === 'seo' && (
               <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
                 <div>

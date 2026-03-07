@@ -119,9 +119,9 @@ export default function CloneVerticalSuite({ data }) {
                             initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
                             animate={{ opacity: 1, scale: 1, rotate: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="relative z-10 bg-white/20 backdrop-blur-sm p-4 md:p-10 rounded-[2.5rem] border border-white/50 shadow-2xl"
+                            className="relative z-10 "
                         >
-                            <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-2xl grayscale-[0.2] hover:grayscale-0 transition-all duration-700">
+                            <div className="relative aspect-[4/4] w-full ">
                                 <Image
                                     src={currentTabContent.image || "/images/solutions/tablet-mockup.png"}
                                     alt={tabs.find(t => t.id === activeTab)?.label}
