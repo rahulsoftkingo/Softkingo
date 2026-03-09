@@ -121,12 +121,13 @@ export default function CloneVerticalSuite({ data }) {
                             transition={{ duration: 0.5 }}
                             className="relative z-10 "
                         >
-                            <div className="relative aspect-[4/4] w-full ">
+                            <div className="relative w-full flex justify-center">
                                 <Image
                                     src={currentTabContent.image || "/images/solutions/tablet-mockup.png"}
                                     alt={tabs.find(t => t.id === activeTab)?.label}
-                                    fill
-                                    className="object-cover"
+                                    width={800}
+                                    height={800}
+                                    className="w-full h-auto max-h-[600px] object-contain rounded-md"
                                 />
                             </div>
                         </motion.div>

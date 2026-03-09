@@ -107,65 +107,66 @@ export function AppScreensCarousel({ data, primaryColor }) {
       {/* Infinite carousel */}
       <div className="relative">
         <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-sky-50 via-sky-50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-sky-50 via-sky-50 to-transparent z-10 pointer-events-none" />
+        {/* Always show infinite mobile carousel if baseScreens exist */}
+        {baseScreens.length > 0 && (
+          <div
+            ref={carouselRef}
+            className="flex items-center gap-6 sm:gap-8 px-3 sm:px-4 py-8 sm:py-10 overflow-x-scroll scrollbar-hide"
+            style={{
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+            }}
+          >
+            {infiniteScreens.map((screen, i) => {
+              const isCenterItem = i === centerIndex;
+              const distanceFromCenter = Math.abs(i - centerIndex);
 
-        <div
-          ref={carouselRef}
-          className="flex items-center gap-6 sm:gap-8 px-3 sm:px-4 py-8 sm:py-10 overflow-x-scroll scrollbar-hide"
-          style={{
-            scrollSnapType: "x mandatory",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
-          {infiniteScreens.map((screen, i) => {
-            const isCenterItem = i === centerIndex;
-            const distanceFromCenter = Math.abs(i - centerIndex);
+              let scale = 0.7;
+              let opacity = 0.4;
 
-            let scale = 0.7;
-            let opacity = 0.4;
+              if (isCenterItem) {
+                scale = 1.1;
+                opacity = 1;
+              } else if (distanceFromCenter === 1) {
+                scale = 0.9;
+                opacity = 0.75;
+              } else if (distanceFromCenter === 2) {
+                scale = 0.8;
+                opacity = 0.6;
+              }
 
-            if (isCenterItem) {
-              scale = 1.1;
-              opacity = 1;
-            } else if (distanceFromCenter === 1) {
-              scale = 0.9;
-              opacity = 0.75;
-            } else if (distanceFromCenter === 2) {
-              scale = 0.8;
-              opacity = 0.6;
-            }
-
-            return (
-              <div
-                key={`screen-${i}-${screen.name}`}
-                className="carousel-item flex-shrink-0 transition-all duration-500 ease-out"
-                style={{
-                  scrollSnapAlign: "center",
-                  transform: `scale(${scale})`,
-                  opacity,
-                  zIndex: isCenterItem ? 20 : distanceFromCenter === 1 ? 10 : 1,
-                }}
-              >
-                <div className="relative">
-                  <div className="w-32 h-64 sm:w-40 sm:h-80 md:w-48 md:h-[420px]">
-                    <Image
-                      src={screen.image}
-                      alt={screen.name}
-                      fill
-                      className="object-contain drop-shadow-2xl pointer-events-none"
-                    />
+              return (
+                <div
+                  key={`screen-${i}-${screen.name}`}
+                  className="carousel-item flex-shrink-0 transition-all duration-500 ease-out"
+                  style={{
+                    scrollSnapAlign: "center",
+                    transform: `scale(${scale})`,
+                    opacity,
+                    zIndex: isCenterItem ? 20 : distanceFromCenter === 1 ? 10 : 1,
+                  }}
+                >
+                  <div className="relative">
+                    <div className="w-32 h-64 sm:w-40 sm:h-80 md:w-48 md:h-[420px]">
+                      <Image
+                        src={screen.image || '/images/placeholder.png'}
+                        alt={screen.name || 'App Screen'}
+                        fill
+                        className="object-contain drop-shadow-2xl pointer-events-none rounded-sm"
+                      />
+                    </div>
+                    {isCenterItem && (
+                      <div
+                        className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full"
+                        style={{ backgroundColor: primaryColor }}
+                      />
+                    )}
                   </div>
-                  {isCenterItem && (
-                    <div
-                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-10 h-1 rounded-full"
-                      style={{ backgroundColor: primaryColor }}
-                    />
-                  )}
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <CategoryTabs
@@ -207,18 +208,18 @@ function CategoryTabs({ categories, primaryColor, activeTab, onTabChange }) {
           <button
             key={category.id || category.name || i}
             onClick={() => onTabChange(i)}
-            className={`px-4 sm:px-6 lg:px-8 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-sm lg:text-base transition-all ${
-              i === activeTab
-                ? "bg-white shadow-xl scale-105"
-                : "bg-white/80 hover:bg-white hover:shadow-md"
-            }`}
+            className={`px-4 sm:px-6 lg:px-8 py-2 sm:py-3 rounded-full font-semibold text-xs sm:text-sm lg:text-base transition-all ${i === activeTab
+              ? "bg-white shadow-xl scale-105"
+              : "bg-white/80 hover:bg-white hover:shadow-md"
+              }`}
             style={
               i === activeTab
                 ? {
-                    color: primaryColor,
-                    borderBottom: `3px solid ${primaryColor}`,
-                  }
-                : {}
+                  color: primaryColor,
+                  borderBottom: `2px solid ${primaryColor}`,
+                  borderRadius: "8px",
+                }
+                : { borderRadius: "8px" }
             }
           >
             {category.name}
@@ -236,13 +237,15 @@ function CategoryTabs({ categories, primaryColor, activeTab, onTabChange }) {
               background: `radial-gradient(circle, ${primaryColor}60, transparent)`,
             }}
           />
-          <div className="relative w-40 h-80 sm:w-52 sm:h-[380px] md:w-64 md:h-[440px] lg:w-72 lg:h-[520px]">
+          <div className={`relative ${currentCategory.layout === 'web' ? 'w-full lg:w-[125%] -ml-[5%] lg:-ml-[12%]' : 'w-40 h-80 sm:w-52 sm:h-[380px] md:w-64 md:h-[440px] lg:w-72 lg:h-[520px]'}`}>
             <Image
               key={`${activeTab}-${selectedScreen}`}
-              src={screens[selectedScreen].image}
-              alt={screens[selectedScreen].name}
-              fill
-              className="object-contain drop-shadow-2xl"
+              src={(currentCategory.layout === 'web' ? currentCategory.categoryImage : screens[selectedScreen].image) || '/images/placeholder.png'}
+              alt={screens[selectedScreen]?.name || 'App Preview'}
+              fill={currentCategory.layout !== 'web'}
+              width={currentCategory.layout === 'web' ? 1200 : undefined}
+              height={currentCategory.layout === 'web' ? 800 : undefined}
+              className={`object-contain drop-shadow-2xl rounded-sm ${currentCategory.layout === 'web' ? 'w-full h-auto max-h-[600px] border border-slate-200/50 bg-white p-2' : ''}`}
             />
           </div>
         </div>
@@ -262,36 +265,39 @@ function CategoryTabs({ categories, primaryColor, activeTab, onTabChange }) {
                 key={screen.name}
                 type="button"
                 onClick={() => setSelectedScreen(i)}
-                className={`w-full flex items-center gap-3 sm:gap-4 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-2xl shadow-sm hover:shadow-lg text-left transition-all ${
-                  active ? "ring-2" : ""
-                }`}
+                className={`w-full flex items-start flex-col gap-1 sm:gap-2 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-xl shadow-sm hover:shadow-lg text-left transition-all ${active ? "ring-2" : "opacity-80 hover:opacity-100"
+                  }`}
                 style={
                   active
                     ? {
-                        borderColor: primaryColor,
-                        backgroundColor: `${primaryColor}10`,
-                      }
+                      borderColor: primaryColor,
+                      backgroundColor: `${primaryColor}10`,
+                      ringColor: primaryColor,
+                    }
                     : {}
                 }
               >
-                <span
-                  className="rounded-full"
-                  style={{
-                    width: active ? 14 : 12,
-                    height: active ? 14 : 12,
-                    backgroundColor: active
-                      ? primaryColor
-                      : `${primaryColor}60`,
-                  }}
-                />
-                <span
-                  className={`text-xs sm:text-sm lg:text-base ${
-                    active ? "font-semibold" : "font-medium"
-                  }`}
-                  style={active ? { color: primaryColor } : {}}
-                >
-                  {screen.name}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="rounded-full flex-shrink-0"
+                    style={{
+                      width: 10,
+                      height: 10,
+                      backgroundColor: active ? primaryColor : `${primaryColor}40`,
+                    }}
+                  />
+                  <span
+                    className={`text-sm sm:text-base lg:text-lg font-bold ${active ? "" : "text-slate-600"}`}
+                    style={active ? { color: primaryColor } : {}}
+                  >
+                    {screen.name}
+                  </span>
+                </div>
+                {screen.description && (
+                  <p className="text-xs sm:text-sm text-slate-500 pl-4.5 sm:pl-5 line-clamp-2">
+                    {screen.description}
+                  </p>
+                )}
               </button>
             );
           })}

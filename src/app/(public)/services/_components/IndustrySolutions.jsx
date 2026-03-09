@@ -83,7 +83,7 @@ export default function IndustrySolutions({ data }) {
                                 {/* Content */}
                                 <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
                                     <div className="space-y-3">
-                                        <h3 className="text-2xl md:text-2xl font-bold tracking-tight leading-tight">
+                                        <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-tight">
                                             {item.itemTitle}
                                         </h3>
                                         <p className="text-sm md:text-base font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300">

@@ -558,98 +558,28 @@ export default function BlogEditPageClient({ idParam }) {
 
   return (
     <main className="flex flex-col h-screen overflow-hidden">
-      <header className="flex-shrink-0 bg-white border-b border-slate-200 p-4 space-y-3">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => router.push('/admin/blog')}
-              className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white h-8 w-8 text-slate-600 hover:bg-slate-50"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </button>
-            <div>
-              <h1 className="text-lg sm:text-xl font-semibold text-slate-900">
-                {isNew ? 'Create blog post' : 'Edit blog post'}
-              </h1>
-              <p className="text-xs sm:text-sm text-slate-500">Placements + images + SEO</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-2 text-[11px] text-slate-500">
-              <span>Words: {wordCount}</span>
-              {!isNew && <span className="hidden sm:inline">ID: #{idParam}</span>}
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => handleSave(false)}
-                disabled={saving}
-                className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[11px] font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
-              >
-                {saving ? 'Saving…' : 'Save draft'}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSave(true)}
-                disabled={saving}
-                className="rounded-full bg-sky-600 px-4 py-1.5 text-[11px] font-semibold text-white hover:bg-sky-500 disabled:bg-sky-300"
-              >
-                Publish
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="inline-flex items-center gap-2 rounded-full bg-slate-50 border border-slate-200 px-3 py-1 text-[11px] text-slate-600 max-w-full">
-          <LinkIcon className="h-3.5 w-3.5 text-sky-500" />
-          <span className="truncate">{computedUrl}</span>
+      <header className="flex-shrink-0 bg-white border-b border-slate-200 p-4">
+        <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => window.open(computedUrl, '_blank')}
-            className="ml-2 inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-50"
+            onClick={() => router.push('/admin/blog')}
+            className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white h-10 w-10 text-slate-600 hover:bg-slate-50 transition-colors"
           >
-            <Eye className="h-3.5 w-3.5" />
-            Preview
+            <ArrowLeft className="h-5 w-5" />
           </button>
+          <div>
+            <h1 className="text-xl font-bold text-slate-900 leading-tight">
+              {isNew ? 'Create post' : 'Edit post'}
+            </h1>
+            <p className="text-xs text-slate-500 font-medium">Design & Content Studio</p>
+          </div>
         </div>
-
-        <nav className="flex flex-wrap gap-2 pb-1">
-          {TABS.map((tab) => {
-            const isActive = activeTab === tab;
-            const icon =
-              tab === 'basics' ? (
-                <Type className="h-3.5 w-3.5" />
-              ) : tab === 'content' ? (
-                <FileText className="h-3.5 w-3.5" />
-              ) : tab === 'seo' ? (
-                <Settings2 className="h-3.5 w-3.5" />
-              ) : (
-                <ImageIcon className="h-3.5 w-3.5" />
-              );
-            const label =
-              tab === 'basics' ? 'Basics' : tab === 'content' ? 'Content' : tab === 'seo' ? 'SEO' : 'Media';
-
-            return (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setActiveTab(tab)}
-                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold ${isActive ? 'bg-sky-600 text-white shadow-sm' : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
-                  }`}
-              >
-                {icon}
-                <span>{label}</span>
-              </button>
-            );
-          })}
-        </nav>
       </header>
 
       <section className="flex-1 overflow-y-auto hide-scrollbar bg-slate-50">
-        <div className="max-w-7xl mx-auto p-4">
-          <div className="rounded-2xl bg-white shadow-[0_10px_30px_rgba(15,23,42,0.06)] p-4 sm:p-5 space-y-4">
+        <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row items-start gap-4 px-4 pt-2 pb-6 transition-all duration-300">
+          {/* Main Editing Area */}
+          <div className={`flex-1 w-full rounded-2xl bg-white ${activeTab === 'content' ? 'shadow-none' : 'border border-slate-100 shadow-sm'} ${activeTab === 'content' ? 'p-0 sm:p-2' : 'p-4 sm:p-5'} space-y-4`}>
             {activeTab === 'basics' && (
               <BasicsTab form={form} onChange={handleChange} categories={categories} allPlacements={allPlacements} />
             )}
@@ -667,17 +597,6 @@ export default function BlogEditPageClient({ idParam }) {
               />
             )}
 
-            {/* {activeTab === 'media' && (
-              <MediaTab
-                form={form}
-                onChange={handleChange}
-                onUpload={handleFileUpload}
-                uploadingField={uploadingField}
-                onBrowse={openImageBrowser}
-                onPreview={setImagePreview}
-              />
-            )} */}
-
             {activeTab === 'media' && (
               <MediaTab
                 form={form}
@@ -686,7 +605,6 @@ export default function BlogEditPageClient({ idParam }) {
                 uploadingField={uploadingField}
                 onBrowse={openImageBrowser}
                 onPreview={setImagePreview}
-                // ✅ NEW PROPS
                 thumbnailPreview={thumbnailPreview}
                 thumbnailFile={thumbnailFile}
                 onThumbnailUpload={handleThumbnailUpload}
@@ -694,13 +612,111 @@ export default function BlogEditPageClient({ idParam }) {
               />
             )}
 
-
             {error && (
               <p className="text-xs text-rose-600 bg-rose-50 border border-rose-100 rounded-lg px-3 py-2">
                 {error}
               </p>
             )}
           </div>
+
+          {/* Sticky Right Sidebar Navigation */}
+          <aside className="w-full lg:w-64 xl:w-72 lg:sticky lg:top-4 flex-shrink-0 space-y-4">
+            {/* 1. Status & Actions */}
+            <div className="bg-white rounded-2xl shadow-[0_10px_30px_rgba(15,23,42,0.06)] border border-slate-100 p-4 space-y-3">
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Publishing</p>
+              <div className="grid grid-cols-1 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleSave(false)}
+                  disabled={saving}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60 transition-all"
+                >
+                  {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save as Draft'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSave(true)}
+                  disabled={saving}
+                  className="flex items-center justify-center gap-2 rounded-xl bg-sky-600 py-2.5 text-sm font-semibold text-white hover:bg-sky-700 disabled:bg-sky-300 transition-all shadow-md hover:shadow-lg"
+                >
+                  {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Publish Now'}
+                </button>
+              </div>
+              <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                <span>Auto-saving enabled</span>
+                <span className="flex h-2 w-2 rounded-full bg-green-500"></span>
+              </div>
+            </div>
+
+            {/* 2. Navigation */}
+            <div className="bg-white rounded-2xl shadow-[0_10px_30px_rgba(15,23,42,0.06)] border border-slate-100 p-2 space-y-1">
+              <p className="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Editor Sections</p>
+              {TABS.map((tab) => {
+                const isActive = activeTab === tab;
+                const icon =
+                  tab === 'basics' ? (
+                    <Type className="h-4 w-4" />
+                  ) : tab === 'content' ? (
+                    <FileText className="h-4 w-4" />
+                  ) : tab === 'seo' ? (
+                    <Settings2 className="h-4 w-4" />
+                  ) : (
+                    <ImageIcon className="h-4 w-4" />
+                  );
+                const label =
+                  tab === 'basics' ? 'Basics' : tab === 'content' ? 'Content' : tab === 'seo' ? 'SEO' : 'Media';
+
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => setActiveTab(tab)}
+                    className={`w-full inline-flex items-center gap-3 rounded-xl px-4 py-3 text-[13px] font-semibold transition-all ${isActive
+                      ? 'bg-sky-600 text-white shadow-md'
+                      : 'text-slate-600 hover:bg-slate-50'
+                      }`}
+                  >
+                    {icon}
+                    <span>{label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* 3. Post Details & Stats */}
+            <div className="bg-white rounded-2xl shadow-[0_10px_30px_rgba(15,23,42,0.06)] border border-slate-100 p-4 space-y-4">
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Live Statistics</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-slate-50 rounded-xl p-3 flex flex-col items-center justify-center border border-slate-100">
+                    <span className="text-lg font-bold text-slate-900">{wordCount}</span>
+                    <span className="text-[10px] text-slate-500 font-medium">Words</span>
+                  </div>
+                  <div className="bg-slate-50 rounded-xl p-3 flex flex-col items-center justify-center border border-slate-100">
+                    <span className="text-lg font-bold text-slate-900">#{idParam || 'New'}</span>
+                    <span className="text-[10px] text-slate-500 font-medium">Post ID</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Public Link</p>
+                <div className="bg-slate-50 rounded-xl p-3 border border-slate-100 space-y-2">
+                  <div className="flex items-center gap-2 text-[11px] text-slate-600 bg-white rounded-lg px-2 py-1.5 border border-slate-100">
+                    <LinkIcon className="h-3 w-3 text-sky-500 flex-shrink-0" />
+                    <span className="truncate">{computedUrl}</span>
+                  </div>
+                  <button
+                    onClick={() => window.open(computedUrl, '_blank')}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-white border border-slate-200 py-1.5 rounded-lg text-[11px] font-semibold text-slate-700 hover:bg-slate-50 transition-all"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                    View Public Page
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
       </section>
 

@@ -29,6 +29,64 @@ import FontFamily from '@tiptap/extension-font-family';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
 import Typography from '@tiptap/extension-typography';
+import { Node, mergeAttributes } from '@tiptap/core';
+
+// Custom Summary Block
+const SummaryBlock = Node.create({
+  name: 'summaryBlock',
+  group: 'block',
+  content: 'inline*',
+  parseHTML() {
+    return [{ tag: 'div.blog-summary-block' }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ['div', mergeAttributes(HTMLAttributes, { class: 'blog-summary-block' }), 0];
+  },
+  addCommands() {
+    return {
+      toggleSummary: () => ({ commands }) => {
+        return commands.toggleNode('summaryBlock', 'paragraph');
+      },
+    };
+  },
+});
+
+// Custom Blog CTA Block
+const BlogCTA = Node.create({
+  name: 'blogCTA',
+  group: 'block',
+  atom: true,
+  addAttributes() {
+    return {
+      title: { default: 'Ready to Transform Your Business?' },
+      description: { default: 'Partner with Softkingo for premium software solutions tailored to your success.' },
+      buttonText: { default: 'Get Started' },
+      buttonLink: { default: 'https://softkingo.com/contact' },
+      image: { default: '/images/logo.png' },
+    };
+  },
+  parseHTML() {
+    return [{ tag: 'div[data-type="blog-cta"]' }];
+  },
+  renderHTML({ node, HTMLAttributes }) {
+    return [
+      'div',
+      mergeAttributes(HTMLAttributes, { 'data-type': 'blog-cta', class: 'blog-cta-editor-preview' }),
+      ['div', { class: 'cta-preview-info' },
+        ['h4', {}, node.attrs.title],
+        ['p', {}, node.attrs.description],
+      ],
+      ['div', { class: 'cta-preview-btn' }, node.attrs.buttonText]
+    ];
+  },
+  addCommands() {
+    return {
+      insertCTA: (attrs) => ({ commands }) => {
+        return commands.insertContent({ type: this.name, attrs });
+      },
+    };
+  },
+});
 
 import {
   Bold,
@@ -60,6 +118,9 @@ import {
   Subscript as SubIcon,
   Superscript as SupIcon,
   Text as TextIcon,
+  Quote,
+  Zap,
+  Loader2,
 } from 'lucide-react';
 
 export default function AdvancedTipTapEditor({ value, onChange }) {
@@ -81,6 +142,9 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
   const colorPickerRef = useRef(null);
   const fontPickerRef = useRef(null);
   const fontSizePickerRef = useRef(null);
+  const headingPickerRef = useRef(null);
+
+  const [showHeadingPicker, setShowHeadingPicker] = useState(false);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -153,6 +217,9 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
       TaskList.configure({ HTMLAttributes: { class: 'editor-task-list' } }),
       TaskItem.configure({ nested: true, HTMLAttributes: { class: 'editor-task-item' } }),
 
+      SummaryBlock,
+      BlogCTA,
+
       CharacterCount.configure({ mode: 'textSize' }),
       Dropcursor.configure({ width: 3, color: '#0ea5e9' }),
     ],
@@ -161,7 +228,7 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     editorProps: {
       attributes: {
         // NOTE: keep simple class; styling should be in global css
-        class: 'focus:outline-none',
+        class: 'prose max-w-none focus:outline-none',
         spellcheck: 'true',
       },
       transformPastedHTML(html) {
@@ -225,6 +292,7 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
       if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) setShowColorPicker(false);
       if (fontPickerRef.current && !fontPickerRef.current.contains(e.target)) setShowFontPicker(false);
       if (fontSizePickerRef.current && !fontSizePickerRef.current.contains(e.target)) setShowFontSizePicker(false);
+      if (headingPickerRef.current && !headingPickerRef.current.contains(e.target)) setShowHeadingPicker(false);
     };
     document.addEventListener('mousedown', onDown);
     return () => document.removeEventListener('mousedown', onDown);
@@ -314,6 +382,9 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
         fontSizePickerRef={fontSizePickerRef}
         setLinkPrompt={setLinkPrompt}
         isSaving={isSaving}
+        showHeadingPicker={showHeadingPicker}
+        setShowHeadingPicker={setShowHeadingPicker}
+        headingPickerRef={headingPickerRef}
       />
 
       <input
@@ -366,6 +437,9 @@ function EditorToolbar({
 
   setLinkPrompt,
   isSaving,
+  showHeadingPicker,
+  setShowHeadingPicker,
+  headingPickerRef,
 }) {
   if (!editor) return null;
 
@@ -404,10 +478,19 @@ function EditorToolbar({
   const ToolbarSeparator = () => <div className="toolbar-separator" />;
   const ToolbarGroup = ({ children }) => <div className="toolbar-group">{children}</div>;
 
+  const getCurrentHeading = () => {
+    if (editor.isActive('heading', { level: 2 })) return 'Heading 2';
+    if (editor.isActive('heading', { level: 3 })) return 'Heading 3';
+    if (editor.isActive('heading', { level: 4 })) return 'Heading 4';
+    if (editor.isActive('heading', { level: 5 })) return 'Heading 5';
+    if (editor.isActive('heading', { level: 6 })) return 'Heading 6';
+    return 'Normal Text';
+  };
+
   return (
     <div className="editor-toolbar">
       <div className="toolbar-section">
-        {/* Undo / Redo */}
+        {/* Island 1: History */}
         <ToolbarGroup>
           <ToolbarButton
             onClick={() => editor.chain().focus().undo().run()}
@@ -425,158 +508,126 @@ function EditorToolbar({
 
         <ToolbarSeparator />
 
-        {/* Font family */}
-        <div className="toolbar-group relative" ref={fontPickerRef}>
-          <button
-            type="button"
-            onClick={() => setShowFontPicker(!showFontPicker)}
-            className="toolbar-btn-select"
-            title="Font family"
-          >
-            <Type size={14} />
-            <span className="toolbar-select-text">{currentFont}</span>
-          </button>
+        {/* Island 2: Typography Style */}
+        <ToolbarGroup>
+          <div className="editor-dropdown-container" ref={headingPickerRef}>
+            <button
+              type="button"
+              onClick={() => setShowHeadingPicker(!showHeadingPicker)}
+              className="toolbar-btn-select min-w-[130px]"
+              title="Heading style"
+            >
+              <Heading2 size={14} />
+              <span className="toolbar-select-text text-left">{getCurrentHeading()}</span>
+            </button>
 
-          {showFontPicker && (
-            <div className="font-picker-dropdown">
-              {fonts.map((font) => (
+            {showHeadingPicker && (
+              <div className="font-picker-dropdown w-48">
+                <button type="button" onClick={() => { editor.chain().focus().setParagraph().run(); setShowHeadingPicker(false); }} className="font-picker-item">Normal Text</button>
+                <div className="font-picker-divider" />
+                {[2, 3, 4, 5, 6].map(level => (
+                  <button
+                    key={level}
+                    type="button"
+                    onClick={() => { editor.chain().focus().toggleHeading({ level }).run(); setShowHeadingPicker(false); }}
+                    className={`font-picker-item h${level}-preview`}
+                  >
+                    Heading {level}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <ToolbarSeparator />
+
+          <div className="editor-dropdown-container" ref={fontPickerRef}>
+            <button
+              type="button"
+              onClick={() => setShowFontPicker(!showFontPicker)}
+              className="toolbar-btn-select"
+              title="Font family"
+            >
+              <Type size={14} />
+              <span className="toolbar-select-text">{currentFont}</span>
+            </button>
+
+            {showFontPicker && (
+              <div className="font-picker-dropdown">
+                {fonts.map((font) => (
+                  <button
+                    key={font.value}
+                    type="button"
+                    onClick={() => {
+                      editor.chain().focus().setFontFamily(font.value).run();
+                      setCurrentFont(font.label);
+                      setShowFontPicker(false);
+                    }}
+                    className="font-picker-item"
+                    style={{ fontFamily: font.value }}
+                  >
+                    {font.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="editor-dropdown-container" ref={fontSizePickerRef}>
+            <button
+              type="button"
+              onClick={() => setShowFontSizePicker(!showFontSizePicker)}
+              className="toolbar-btn-select"
+              title="Font size"
+            >
+              <TextIcon size={14} />
+              <span className="toolbar-select-text">{currentFontSize}</span>
+            </button>
+
+            {showFontSizePicker && (
+              <div className="font-picker-dropdown">
+                {fontSizes.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => applyFontSize(s)}
+                    className="font-picker-item"
+                  >
+                    {s}
+                  </button>
+                ))}
+                <div className="font-picker-divider" />
                 <button
-                  key={font.value}
                   type="button"
+                  className="font-picker-item"
                   onClick={() => {
-                    editor.chain().focus().setFontFamily(font.value).run();
-                    setCurrentFont(font.label);
-                    setShowFontPicker(false);
+                    editor.chain().focus().unsetMark('textStyle').run();
+                    setCurrentFontSize('16px');
+                    setShowFontSizePicker(false);
                   }}
-                  className="font-picker-item"
-                  style={{ fontFamily: font.value }}
                 >
-                  {font.label}
+                  Reset size
                 </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Font size */}
-        <div className="toolbar-group relative" ref={fontSizePickerRef}>
-          <button
-            type="button"
-            onClick={() => setShowFontSizePicker(!showFontSizePicker)}
-            className="toolbar-btn-select"
-            title="Font size"
-          >
-            <TextIcon size={14} />
-            <span className="toolbar-select-text">{currentFontSize}</span>
-          </button>
-
-          {showFontSizePicker && (
-            <div className="font-picker-dropdown">
-              {fontSizes.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => applyFontSize(s)}
-                  className="font-picker-item"
-                >
-                  {s}
-                </button>
-              ))}
-              <div className="font-picker-divider" />
-              <button
-                type="button"
-                className="font-picker-item"
-                onClick={() => {
-                  editor.chain().focus().unsetMark('textStyle').run();
-                  setCurrentFontSize('16px');
-                  setShowFontSizePicker(false);
-                }}
-              >
-                Reset size
-              </button>
-            </div>
-          )}
-        </div>
+              </div>
+            )}
+          </div>
+        </ToolbarGroup>
 
         <ToolbarSeparator />
 
-        {/* Formatting */}
+        {/* Island 3: Emphasis */}
         <ToolbarGroup>
           <ToolbarButton active={isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()} icon={Bold} title="Bold (Ctrl+B)" />
           <ToolbarButton active={isActive('italic')} onClick={() => editor.chain().focus().toggleItalic().run()} icon={Italic} title="Italic (Ctrl+I)" />
           <ToolbarButton active={isActive('underline')} onClick={() => editor.chain().focus().toggleUnderline().run()} icon={UnderlineIcon} title="Underline (Ctrl+U)" />
           <ToolbarButton active={isActive('strike')} onClick={() => editor.chain().focus().toggleStrike().run()} icon={Strikethrough} title="Strikethrough" />
-          <ToolbarButton active={isActive('subscript')} onClick={() => editor.chain().focus().toggleSubscript().run()} icon={SubIcon} title="Subscript" />
-          <ToolbarButton active={isActive('superscript')} onClick={() => editor.chain().focus().toggleSuperscript().run()} icon={SupIcon} title="Superscript" />
-          <ToolbarButton active={isActive('code')} onClick={() => editor.chain().focus().toggleCode().run()} icon={Code} title="Inline Code" />
-        </ToolbarGroup>
 
-        <ToolbarSeparator />
-
-        {/* Headings (H2–H6 only) */}
-        <ToolbarGroup>
-          <ToolbarButton
-            active={isActive('heading', { level: 2 })}
-            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-            icon={Heading2}
-            title="Heading 2"
-          />
-          <ToolbarButton
-            active={isActive('heading', { level: 3 })}
-            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-            icon={Heading3}
-            title="Heading 3"
-          />
-
-          {/* H4/H5/H6: icons not available in lucide by default; use same icons with different levels */}
-          <ToolbarButton
-            active={isActive('heading', { level: 4 })}
-            onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-            icon={Heading3}
-            title="Heading 4"
-          />
-          <ToolbarButton
-            active={isActive('heading', { level: 5 })}
-            onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-            icon={Heading3}
-            title="Heading 5"
-          />
-          <ToolbarButton
-            active={isActive('heading', { level: 6 })}
-            onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-            icon={Heading3}
-            title="Heading 6"
-          />
-        </ToolbarGroup>
-
-        <ToolbarSeparator />
-
-        {/* Lists */}
-        <ToolbarGroup>
-          <ToolbarButton active={isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()} icon={List} title="Bullet List (Ctrl+Shift+8)" />
-          <ToolbarButton active={isActive('orderedList')} onClick={() => editor.chain().focus().toggleOrderedList().run()} icon={ListOrdered} title="Numbered List (Ctrl+Shift+7)" />
-          <ToolbarButton active={isActive('taskList')} onClick={() => editor.chain().focus().toggleTaskList().run()} icon={CheckSquare} title="Task List" />
-        </ToolbarGroup>
-
-        <ToolbarSeparator />
-
-        {/* Align */}
-        <ToolbarGroup>
-          <ToolbarButton active={isActive({ textAlign: 'left' })} onClick={() => editor.chain().focus().setTextAlign('left').run()} icon={AlignLeft} title="Align Left" />
-          <ToolbarButton active={isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()} icon={AlignCenter} title="Align Center" />
-          <ToolbarButton active={isActive({ textAlign: 'right' })} onClick={() => editor.chain().focus().setTextAlign('right').run()} icon={AlignRight} title="Align Right" />
-          <ToolbarButton active={isActive({ textAlign: 'justify' })} onClick={() => editor.chain().focus().setTextAlign('justify').run()} icon={AlignJustify} title="Justify" />
-        </ToolbarGroup>
-
-        <ToolbarSeparator />
-
-        {/* Color & Highlight */}
-        <ToolbarGroup>
-          <div className="relative" ref={colorPickerRef}>
+          <div className="editor-dropdown-container" ref={colorPickerRef}>
             <button
               type="button"
               onClick={() => setShowColorPicker(!showColorPicker)}
               className="toolbar-btn"
+              style={{ color: currentColor !== '#000000' ? currentColor : 'inherit' }}
               title="Text Color"
             >
               <Palette size={16} />
@@ -600,9 +651,7 @@ function EditorToolbar({
                     />
                   ))}
                 </div>
-
                 <div className="color-picker-divider" />
-
                 <button
                   type="button"
                   className="color-reset"
@@ -617,26 +666,55 @@ function EditorToolbar({
               </div>
             )}
           </div>
-
-          <ToolbarButton
-            active={isActive('highlight')}
-            onClick={() => editor.chain().focus().toggleHighlight().run()}
-            icon={Highlighter}
-            title="Highlight"
-          />
+          <ToolbarButton active={isActive('highlight')} onClick={() => editor.chain().focus().toggleHighlight().run()} icon={Highlighter} title="Highlight" />
         </ToolbarGroup>
 
         <ToolbarSeparator />
 
-        {/* Insert */}
+        {/* Island 4: Structure */}
+        <ToolbarGroup>
+          <ToolbarButton active={isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()} icon={List} title="Bullet List" />
+          <ToolbarButton active={isActive('orderedList')} onClick={() => editor.chain().focus().toggleOrderedList().run()} icon={ListOrdered} title="Numbered List" />
+          <ToolbarSeparator />
+          <ToolbarButton active={isActive({ textAlign: 'left' })} onClick={() => editor.chain().focus().setTextAlign('left').run()} icon={AlignLeft} title="Align Left" />
+          <ToolbarButton active={isActive({ textAlign: 'center' })} onClick={() => editor.chain().focus().setTextAlign('center').run()} icon={AlignCenter} title="Align Center" />
+          <ToolbarButton active={isActive({ textAlign: 'right' })} onClick={() => editor.chain().focus().setTextAlign('right').run()} icon={AlignRight} title="Align Right" />
+        </ToolbarGroup>
+
+        <ToolbarSeparator />
+
+        {/* Island 5: Insert & Media */}
         <ToolbarGroup>
           <ToolbarButton onClick={setLinkPrompt} icon={Link2} title="Insert Link (Ctrl+K)" active={isActive('link')} />
-          <ToolbarButton onClick={onImageUpload} icon={isUploading ? Upload : ImageIcon} title={isUploading ? 'Uploading...' : 'Upload Image'} disabled={isUploading} />
+          <ToolbarButton onClick={onImageUpload} icon={isUploading ? Loader2 : ImageIcon} title={isUploading ? 'Uploading...' : 'Upload Image'} disabled={isUploading} />
           <ToolbarButton
             active={isActive('table')}
             onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
             icon={TableIcon}
             title="Insert Table"
+          />
+        </ToolbarGroup>
+
+        <ToolbarSeparator />
+
+        {/* Island 6: Advanced Blocks */}
+        <ToolbarGroup>
+          <ToolbarButton
+            active={isActive('summaryBlock')}
+            onClick={() => editor.chain().focus().toggleSummary().run()}
+            icon={Quote}
+            title="Summary Block"
+          />
+          <ToolbarButton
+            onClick={() => {
+              const title = window.prompt('CTA Title:', 'Ready to Transform Your Business?');
+              const link = window.prompt('CTA Button Link:', 'https://softkingo.com/contact');
+              if (title && link) {
+                editor.chain().focus().insertCTA({ title, buttonLink: link }).run();
+              }
+            }}
+            icon={Zap}
+            title="CTA Block"
           />
         </ToolbarGroup>
 
@@ -649,15 +727,14 @@ function EditorToolbar({
               <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} icon={Plus} title="Add Row" />
               <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} icon={Minus} title="Delete Column" variant="danger" />
               <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} icon={Minus} title="Delete Row" variant="danger" />
-              <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} icon={TableIcon} title="Delete Table" variant="danger" />
             </ToolbarGroup>
           </>
         )}
 
         {isSaving && (
-          <div className="toolbar-saving">
-            <Save size={12} />
-            <span>Saving...</span>
+          <div className="toolbar-saving ml-auto flex items-center gap-1 text-[10px] text-slate-400 font-medium whitespace-nowrap">
+            <Save size={10} className="animate-pulse" />
+            <span>Saved</span>
           </div>
         )}
       </div>

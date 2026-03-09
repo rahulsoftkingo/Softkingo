@@ -100,6 +100,8 @@ export default function CaseStudyEditPage() {
       {
         id: 'customer',
         name: 'Customer App',
+        layout: 'mobile',
+        categoryImage: '',
         screens: [{ name: 'Home', image: '/images/case-studies/screen1.png' }],
       },
     ],
@@ -202,11 +204,29 @@ export default function CaseStudyEditPage() {
     setLoading(false);
   }
 
+  // ✅ Helper to update nested form values (e.g., "appScreensCategories.0.categoryImage")
+  const updateFormValue = (path, value) => {
+    setForm((prev) => {
+      const parts = path.split('.');
+      if (parts.length === 1) return { ...prev, [path]: value };
+
+      if (parts[0] === 'appScreensCategories') {
+        const index = parseInt(parts[1]);
+        const field = parts[2];
+        const copy = [...prev.appScreensCategories];
+        copy[index] = { ...copy[index], [field]: value };
+        return { ...prev, appScreensCategories: copy };
+      }
+
+      return prev; // Fallback for deep paths we haven't handled specifically
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setError('');
     setSuccess('');
-    setForm((prev) => ({ ...prev, [name]: value }));
+    updateFormValue(name, value);
   };
 
   const handleFileUpload = async (e, fieldName) => {
@@ -227,7 +247,7 @@ export default function CaseStudyEditPage() {
       if (!res.ok) throw new Error('Upload failed');
 
       const data = await res.json();
-      setForm((prev) => ({ ...prev, [fieldName]: data.url }));
+      updateFormValue(fieldName, data.url);
       setSuccess(`Image uploaded!`);
       setTimeout(() => setSuccess(''), 2000);
     } catch (err) {
@@ -281,7 +301,7 @@ export default function CaseStudyEditPage() {
 
   // Select image from browser
   const selectImageFromBrowser = (imagePath) => {
-    setForm((prev) => ({ ...prev, [currentImageField]: imagePath }));
+    updateFormValue(currentImageField, imagePath);
     setShowImageBrowser(false);
     setSuccess('Image selected!');
     setTimeout(() => setSuccess(''), 2000);
@@ -323,7 +343,7 @@ export default function CaseStudyEditPage() {
       ...prev,
       appScreensCategories: [
         ...prev.appScreensCategories,
-        { id: `cat-${Date.now()}`, name: '', screens: [] },
+        { id: `cat-${Date.now()}`, name: '', layout: 'mobile', categoryImage: '', screens: [] },
       ],
     }));
 
@@ -483,7 +503,9 @@ export default function CaseStudyEditPage() {
       categories: form.appScreensCategories.map((c) => ({
         id: c.id || slugify(c.name || 'category'),
         name: c.name,
-        screens: (c.screens || []).filter((s) => s.name && s.image),
+        layout: c.layout || 'mobile',
+        categoryImage: c.categoryImage || '',
+        screens: (c.screens || []).filter((s) => s.name),
       })),
     });
   }
@@ -1575,20 +1597,50 @@ export default function CaseStudyEditPage() {
                           <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1 sm:mb-1.5">
                             Category Name
                           </label>
-                          <input
-                            value={cat.name}
-                            onChange={(e) =>
-                              updateAppCategory(catIndex, 'name', e.target.value)
-                            }
-                            placeholder="Customer App"
-                            className="w-full rounded-lg border border-slate-200 bg-white px-2 sm:px-2.5 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                          />
+                          <div className="flex flex-col sm:flex-row gap-3">
+                            <input
+                              value={cat.name}
+                              onChange={(e) =>
+                                updateAppCategory(catIndex, 'name', e.target.value)
+                              }
+                              placeholder="Customer App"
+                              className="flex-1 rounded-lg border border-slate-200 bg-white px-2 sm:px-2.5 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            />
+                            <div className="flex items-center gap-2">
+                              <label className="text-[10px] xs:text-xs font-medium text-slate-600">Layout:</label>
+                              <select
+                                value={cat.layout || 'mobile'}
+                                onChange={(e) =>
+                                  updateAppCategory(catIndex, 'layout', e.target.value)
+                                }
+                                className="rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                              >
+                                <option value="mobile">Mobile (Multiple Screens)</option>
+                                <option value="web">Web/Admin (Single + Points)</option>
+                              </select>
+                            </div>
+                          </div>
                         </div>
+
+                        {cat.layout === 'web' && (
+                          <div className="bg-white p-3 rounded-lg border border-sky-100 mb-3">
+                            <ImageUploadField
+                              label="Main Category Image (Window View)"
+                              name={`appScreensCategories.${catIndex}.categoryImage`}
+                              value={cat.categoryImage}
+                              placeholder="/images/admin-screens.png"
+                            />
+                            {/* NOTE: We handle the change manually for nested fields since handleChange is flat */}
+                            <div className="mt-1 text-[10px] text-sky-600">
+                              This image will be the primary visual for the "Window" view.
+                            </div>
+                          </div>
+                        )}
 
                         <div>
                           <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                             <label className="block text-[10px] xs:text-xs font-medium text-slate-700">
-                              Screens
+                              {cat.layout === 'web' ? 'Feature Points' : 'Screens'}
                             </label>
                             <button
                               type="button"
@@ -1618,7 +1670,7 @@ export default function CaseStudyEditPage() {
                                     <X className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                                   </button>
                                 </div>
-                                <div className="grid grid-cols-1 xs:grid-cols-2 gap-1.5 sm:gap-2">
+                                <div className={`grid grid-cols-1 ${cat.layout === 'mobile' ? 'xs:grid-cols-2' : ''} gap-1.5 sm:gap-2`}>
                                   <input
                                     value={screen.name}
                                     onChange={(e) =>
@@ -1629,23 +1681,50 @@ export default function CaseStudyEditPage() {
                                         e.target.value
                                       )
                                     }
-                                    placeholder="Home"
+                                    placeholder={cat.layout === 'web' ? "Feature/Point Title" : "Screen Name (e.g. Home)"}
                                     className="w-full rounded border border-slate-200 px-2 py-1 sm:py-1.5 text-[10px] xs:text-xs focus:outline-none focus:ring-1 focus:ring-sky-500"
                                   />
-                                  <input
-                                    value={screen.image}
-                                    onChange={(e) =>
-                                      updateAppScreen(
-                                        catIndex,
-                                        screenIndex,
-                                        'image',
-                                        e.target.value
-                                      )
-                                    }
-                                    placeholder="/images/screen.png"
-                                    className="w-full rounded border border-slate-200 px-2 py-1 sm:py-1.5 text-[10px] xs:text-xs focus:outline-none focus:ring-1 focus:ring-sky-500"
-                                  />
+                                  {cat.layout === 'mobile' && (
+                                    <div className="flex gap-1 group">
+                                      <input
+                                        value={screen.image}
+                                        onChange={(e) =>
+                                          updateAppScreen(
+                                            catIndex,
+                                            screenIndex,
+                                            'image',
+                                            e.target.value
+                                          )
+                                        }
+                                        placeholder="/images/screen.png"
+                                        className="flex-1 rounded border border-slate-200 px-2 py-1 sm:py-1.5 text-[10px] xs:text-xs focus:outline-none focus:ring-1 focus:ring-sky-500"
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          setCurrentImageField(`appScreensCategories.${catIndex}.screens.${screenIndex}.image`);
+                                          setShowImageBrowser(true);
+                                        }}
+                                        className="px-1.5 bg-slate-100 rounded border border-slate-200 hover:bg-slate-200 text-[10px]"
+                                      >
+                                        ...
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
+                                <textarea
+                                  value={screen.description || ''}
+                                  onChange={(e) =>
+                                    updateAppScreen(
+                                      catIndex,
+                                      screenIndex,
+                                      'description',
+                                      e.target.value
+                                    )
+                                  }
+                                  placeholder="Brief description (optional)..."
+                                  className="w-full rounded border border-slate-200 px-2 py-1 text-[10px] xs:text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[40px]"
+                                />
                                 {screen.image && (
                                   <div className="flex items-center gap-1.5">
                                     <div className="h-8 w-8 sm:h-10 sm:w-10 rounded border border-slate-200 overflow-hidden bg-slate-50">

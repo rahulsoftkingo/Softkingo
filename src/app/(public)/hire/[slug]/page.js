@@ -202,7 +202,7 @@ export default async function HireSlugPage({ params }) {
               <span className="text-white border-b border-sky-500 pb-0.5">{content.heroTitle}</span>
             </nav>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6 drop-shadow-lg">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6 drop-shadow-lg">
               {content.heroTitle}
             </h1>
             <p className="text-lg text-slate-300 mb-8 max-w-2xl leading-relaxed font-light">

@@ -41,7 +41,7 @@ export default function ServiceProcess({ data }) {
                                         <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-sky-600 font-bold text-lg shadow-sm">
                                             {String(idx + 1).padStart(2, '0')}
                                         </div>
-                                        <h3 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight">
+                                        <h3 className="text-xl md:text-2xl font-black text-slate-900 leading-tight">
                                             {step.title}
                                         </h3>
                                     </div>

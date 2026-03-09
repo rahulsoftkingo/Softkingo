@@ -170,6 +170,24 @@ function mapTipTapToSections(rawJson, fallbackTitle, fallbackExcerpt) {
       if (headers.length && rows.length) currentSection.blocks.push({ type: "table", headers, rows });
       continue;
     }
+
+    if (node.type === "summaryBlock") {
+      const text = node.content?.map((c) => c.text).join("").trim();
+      if (text) currentSection.blocks.push({ type: "summary", text });
+      continue;
+    }
+
+    if (node.type === "blogCTA") {
+      currentSection.blocks.push({
+        type: "cta",
+        title: node.attrs?.title,
+        description: node.attrs?.description,
+        buttonText: node.attrs?.buttonText,
+        buttonLink: node.attrs?.buttonLink,
+        image: node.attrs?.image,
+      });
+      continue;
+    }
   }
 
   pushCurrent();
@@ -257,11 +275,11 @@ export default async function PostSlugPage({ sectionKey, slug }) {
     viewCount: post.viewCount || 0,
     author: post.author
       ? {
-          name: post.author.name || "",
-          role: post.author.title || "",
-          bio: post.author.bio || "",
-          avatar: safeImg(post.author.profileImage, "/images/insights/hero-default.png"),
-        }
+        name: post.author.name || "",
+        role: post.author.title || "",
+        bio: post.author.bio || "",
+        avatar: safeImg(post.author.profileImage, "/images/insights/hero-default.png"),
+      }
       : null,
   };
 
@@ -279,10 +297,10 @@ export default async function PostSlugPage({ sectionKey, slug }) {
 
   const formattedDate = fullPost.publishedAt
     ? new Date(fullPost.publishedAt).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      })
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
     : "";
 
   const listMeta = config.newsletterList || {
@@ -370,7 +388,7 @@ export default async function PostSlugPage({ sectionKey, slug }) {
         sectionKey={sectionKey}
         newsletterList={listMeta}
       />
-       <InquirySection />
+      <InquirySection />
     </div>
   );
 }

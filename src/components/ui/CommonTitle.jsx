@@ -134,7 +134,7 @@ export default CommonTitle;
 //                 </div>
 //             )}
             
-//             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 text-sky-900 leading-tight">
+//             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-tight">
 //                 {title ? title.split(' ')[0] : 'Title'}{' '}
 //                 {gradientText && typeof gradientText === 'string' ? (
 //                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">

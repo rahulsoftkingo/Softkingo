@@ -155,10 +155,10 @@ export default async function ServicePage({ params }) {
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-800/70 to-slate-500/60 opacity-40" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20 w-full">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-24 w-full">
 
 
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+            <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
               {/* Left Content */}
               <div className="text-white space-y-6 md:space-y-8">
                 {/* Breadcrumb */}
@@ -180,7 +180,7 @@ export default async function ServicePage({ params }) {
 
                 </nav>
                 <div className="space-y-4">
-                  <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight animate-fadeInUp animation-delay-200">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight animate-fadeInUp animation-delay-200">
                     {content.heroTitle || service.title}
                   </h1>
                   <p className="text-sky-100 text-base md:text-lg lg:text-xl max-w-xl leading-relaxed animate-fadeInUp animation-delay-400">
@@ -243,7 +243,7 @@ export default async function ServicePage({ params }) {
               </div>
 
               {/* Right - Lead Form Component */}
-              <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
+              <div className="md:ml-auto w-full max-w-md mx-auto md:mx-0 animate-fadeInRight">
                 <LeadForm
                   formType="service"
                   formKey={service.slug}
@@ -413,7 +413,7 @@ function StatBox({ value, label, color }) {
     <div
       className={`bg-gradient-to-br ${color} p-4 md:p-6 text-center rounded-sm shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}
     >
-      <h3 className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-1 group-hover:scale-105 transition-transform">
+      <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1 group-hover:scale-105 transition-transform">
         {value}
       </h3>
       <p className="text-white/90 font-medium text-[10px] md:text-xs uppercase tracking-wider">{label}</p>

@@ -35,8 +35,8 @@ export default function ServicesCategoryLayout({ categories }) {
                         key={idx}
                         onClick={() => setActiveIdx(idx)}
                         className={`p-6 rounded-2xl border transition-all cursor-pointer group hover:border-sky-400 ${activeIdx === idx
-                                ? 'bg-sky-500 border-sky-500 text-white shadow-xl shadow-sky-200'
-                                : 'bg-white border-slate-100 text-slate-600'
+                            ? 'bg-sky-500 border-sky-500 text-white shadow-xl shadow-sky-200'
+                            : 'bg-white border-slate-100 text-slate-600'
                             }`}
                     >
                         <h4 className={`text-lg font-bold mb-1 ${activeIdx === idx ? 'text-white' : 'text-slate-900 group-hover:text-sky-600'}`}>
@@ -56,15 +56,15 @@ export default function ServicesCategoryLayout({ categories }) {
 
                 <div className="relative z-10 space-y-8 animate-in fade-in slide-in-from-right-4 duration-500" key={activeIdx}>
                     <div>
-                        <h3 className="text-3xl md:text-5xl font-bold mb-6 !leading-tight">{activeCat?.fullTitle}</h3>
-                        <p className="text-sky-50 text-xl leading-relaxed max-w-2xl opacity-90">{activeCat?.fullDesc}</p>
+                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 !leading-tight">{activeCat?.fullTitle}</h3>
+                        <p className="text-sky-50 text-base md:text-lg leading-relaxed max-w-2xl opacity-90">{activeCat?.fullDesc}</p>
                     </div>
 
                     <div className="space-y-4">
                         <h5 className="text-[10px] font-black uppercase tracking-widest text-sky-200 bg-sky-600 w-fit px-3 py-1 rounded-full border border-sky-400/30">
                             Certified Tech Expertise
                         </h5>
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                             {(activeCat?.expertise || []).map((exp, idx) => {
                                 const Icon = iconMap[exp.iconName] || Code;
                                 return (
@@ -93,7 +93,7 @@ export default function ServicesCategoryLayout({ categories }) {
                                             <Rocket size={20} />
                                         </div>
                                     )}
-                                    <span className="font-black text-2xl italic tracking-tighter uppercase">{prod.name}</span>
+                                    <span className="font-black text-2xl tracking-tighter uppercase">{prod.name}</span>
                                 </div>
                             ))}
                         </div>

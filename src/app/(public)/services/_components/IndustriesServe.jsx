@@ -105,7 +105,7 @@ export default function IndustriesServe({ data }) {
                                 {/* Content */}
                                 <div className="absolute inset-0 p-8 flex flex-col items-start text-white">
                                     <div className="mb-6">
-                                        <h3 className="text-2xl md:text-3xl font-bold relative inline-block">
+                                        <h3 className="text-xl md:text-2xl font-bold relative inline-block">
                                             {item.itemTitle}
                                             <span className="absolute -bottom-2 left-0 w-full h-[2px] bg-white/50" />
                                             <span className="absolute -bottom-3 left-0 w-3/4 h-[2px] bg-white/30" />

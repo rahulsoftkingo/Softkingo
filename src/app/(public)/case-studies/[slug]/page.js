@@ -324,7 +324,7 @@ function HeroSection({ data }) {
           {/* Left */}
           <div className="text-white space-y-6 md:space-y-8">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-auto sm:w-18  md:w-28 md:h-auto  rounded-2xl shadow-2xl flex items-center justify-center overflow-hidden bg-white">
+              <div className="w-14 h-auto sm:w-18  md:w-28 md:h-auto  rounded-xl shadow-2xl flex items-center justify-center overflow-hidden bg-white">
                 <Image
                   src={data.logo}
                   alt={data.title}
@@ -333,12 +333,12 @@ function HeroSection({ data }) {
                   className="h-auto w-auto object-contain"
                 />
               </div>
-              <h1 className="text-lg sm:text-2xl md:text-4xl font-bold">
+              <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold">
                 {data.title}
               </h1>
             </div>
 
-            <p className="text-md sm:text-lg md:text-2xl leading-tight">
+            <p className="text-md sm:text-lg md:text-xl lg:text-2xl leading-tight opacity-90">
               {data.subtitle}
             </p>
 
@@ -410,39 +410,39 @@ function TeamTimeline({ data }) {
   return (
     <>
       {/* cards */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 bg-gray-900">
+      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 bg-gray-900 border-y border-gray-800">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          <div className="bg-gray-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 hover-lift">
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 hover-lift border border-gray-700/50">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-gray-400 text-sm sm:text-base mb-2">
+                <p className="text-gray-400 text-sm sm:text-base mb-2 font-medium">
                   Team Size
                 </p>
-                <h3 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold mb-2">
+                <h3 className="text-white text-3xl sm:text-4xl lg:text-4xl font-bold mb-2">
                   {data.team.size}
                 </h3>
                 <p className="text-gray-400 text-xs sm:text-sm">
                   {data.team.roles}
                 </p>
               </div>
-              <Users className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 text-gray-600" />
+              <Users className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 text-sky-500/50" />
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 hover-lift">
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 hover-lift border border-gray-700/50">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-gray-400 text-sm sm:text-base mb-2">
+                <p className="text-gray-400 text-sm sm:text-base mb-2 font-medium">
                   Timeline
                 </p>
-                <h3 className="text-white text-3xl sm:text-4xl lg:text-5xl font-bold mb-2">
+                <h3 className="text-white text-3xl sm:text-4xl lg:text-4xl font-bold mb-2">
                   {data.team.timeline}
                 </h3>
                 <p className="text-gray-400 text-xs sm:text-sm">
                   {data.team.duration}
                 </p>
               </div>
-              <Clock className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 text-gray-600" />
+              <Clock className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 text-sky-500/50" />
             </div>
           </div>
         </div>
@@ -464,7 +464,7 @@ function TeamTimeline({ data }) {
                 />
               )}
             </div>
-            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+            <h3 className="text-2xl sm:text-3xl font-bold">
               About Client
             </h3>
             <p className="text-lg sm:text-xl">
@@ -507,15 +507,15 @@ function TeamTimeline({ data }) {
               </p>
             </div>
 
-            <div className="bg-black rounded-3xl lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-10">
+            <div className="bg-slate-900 rounded-2xl p-6 sm:p-8 lg:p-10">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
                 {data.branding.colors.map((color) => (
                   <div key={color.hex} className="text-center">
                     <div
-                      className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-3xl shadow-2xl mb-3 mx-auto hover-scale"
+                      className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-2xl shadow-2xl mb-3 mx-auto hover-scale"
                       style={{ backgroundColor: color.hex }}
                     />
-                    <p className="text-white text-sm sm:text-base font-bold mb-1">
+                    <p className="text-white text-sm font-bold mb-1">
                       {color.hex}
                     </p>
                     <p className="text-gray-400 text-xs sm:text-sm">
@@ -560,8 +560,8 @@ function TechnologyStack({ data }) {
         <div className="flex overflow-x-auto hide-scrollbar justify-center gap-8 sm:gap-10">
           {data.technologies.items.map((tech) => (
             <div key={tech.name} className="text-center">
-              <div className="bg-gray-800/70 backdrop-blur-sm rounded-3xl p-6 sm:p-8 hover-lift">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 relative mx-auto">
+              <div className="bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 sm:p-8 hover-lift">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 relative mx-auto">
                   <Image
                     src={tech.icon}
                     alt={tech.name}
@@ -692,8 +692,8 @@ function GoalsObjectives({ data }) {
           />
         </div>
 
-        <div className="bg-white rounded-3xl lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-xl hover-lift">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8">
+        <div className="bg-white rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl hover-lift border border-slate-100">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-slate-900">
             Goals & Objectives
           </h2>
           <ul className="space-y-4 sm:space-y-5">
@@ -735,12 +735,12 @@ function ChallengesSolutions({ data }) {
         </div>
 
         <div
-          className="rounded-3xl lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-lg hover-lift"
+          className="rounded-2xl p-6 sm:p-8 lg:p-10 shadow-lg hover-lift"
           style={{
             background: `linear-gradient(135deg, ${primaryColor}15, ${primaryColor}30)`,
           }}
         >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
             The Solution
           </h2>
           <p className="text-sm sm:text-base lg:text-lg text-gray-800 leading-relaxed">

@@ -1,5 +1,6 @@
 // app/layout.jsx - BASE SEO (All Pages Inherit)
 import "./globals.css";
+import Script from 'next/script';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -112,6 +113,19 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Google Tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-5HJYNEGH9M"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-5HJYNEGH9M');
+          `}
+        </Script>
       </head>
       <body className="antialiased">
         {children}

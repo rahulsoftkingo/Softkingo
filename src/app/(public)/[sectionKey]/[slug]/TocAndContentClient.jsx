@@ -47,10 +47,10 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
   const sectionRefs = useRef({});
   const tocItems = buildTocItems(post.sections);
 
-useEffect(() => {
-  if (!post.slug) return;
-  fetch(`/api/public/blog/${post.slug}/view`, { method: "POST" }).catch(() => {});
-}, [post.slug]);
+  useEffect(() => {
+    if (!post.slug) return;
+    fetch(`/api/public/blog/${post.slug}/view`, { method: "POST" }).catch(() => { });
+  }, [post.slug]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -87,7 +87,7 @@ useEffect(() => {
         <section className="grid grid-cols-1 lg:grid-cols-[250px_minmax(0,1.9fr)_minmax(0,260px)] gap-6 lg:gap-8 items-start mb-8 ">
           {/* LEFT: TOC + socials */}
           <aside className="hidden lg:block sticky top-24 space-y-4">
-          {/* <aside className="hidden lg:block sticky top-24 max-h-[70vh] overflow-auto space-y-4 pr-1"> */}
+            {/* <aside className="hidden lg:block sticky top-24 max-h-[70vh] overflow-auto space-y-4 pr-1"> */}
 
             <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm max-h-[70vh] overflow-auto hide-scrollbar toc-card">
               <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-[0.18em] mb-3">
@@ -99,18 +99,16 @@ useEffect(() => {
                     <button
                       type="button"
                       onClick={() => scrollToId(item.id)}
-                      className={`flex items-start gap-2 text-left leading-snug transition-colors ${
-                        activeSection === item.id
-                          ? "text-sky-700 font-semibold"
-                          : "text-slate-600 hover:text-sky-600"
-                      } text-[13px]`}
+                      className={`flex items-start gap-2 text-left leading-snug transition-colors ${activeSection === item.id
+                        ? "text-sky-700 font-semibold"
+                        : "text-slate-600 hover:text-sky-600"
+                        } text-[13px]`}
                     >
                       <span
-                        className={`mt-[5px] h-1.5 w-1.5 rounded-full ${
-                          activeSection === item.id
-                            ? "bg-sky-600"
-                            : "bg-slate-300"
-                        }`}
+                        className={`mt-[5px] h-1.5 w-1.5 rounded-full ${activeSection === item.id
+                          ? "bg-sky-600"
+                          : "bg-slate-300"
+                          }`}
                       />
                       <span>{item.label}</span>
                     </button>
@@ -121,11 +119,10 @@ useEffect(() => {
                             <button
                               type="button"
                               onClick={() => scrollToId(sub.id)}
-                              className={`block text-left text-[12px] leading-snug py-0.5 ${
-                                activeSection === sub.id
-                                  ? "text-sky-600 font-semibold"
-                                  : "text-slate-500 hover:text-sky-600"
-                              }`}
+                              className={`block text-left text-[12px] leading-snug py-0.5 ${activeSection === sub.id
+                                ? "text-sky-600 font-semibold"
+                                : "text-slate-500 hover:text-sky-600"
+                                }`}
                             >
                               {sub.label}
                             </button>
@@ -162,16 +159,14 @@ useEffect(() => {
                   ref={(el) => {
                     sectionRefs.current[sec.id] = el;
                   }}
-                  className={`scroll-mt-28 ${
-                    sec.id === "overview"
-                      ? "bg-sky-50/60 border border-sky-100 rounded-2xl px-4 sm:px-5 py-5 content-section overview-section"
-                      : "content-section"
-                  }`}
+                  className={`scroll-mt-28 ${sec.id === "overview"
+                    ? "bg-sky-50/60 border border-sky-100 rounded-2xl px-4 sm:px-5 py-5 content-section overview-section"
+                    : "content-section"
+                    }`}
                 >
                   <h2
-                    className={`section-title text-xl sm:text-2xl font-semibold mb-3 ${
-                      sec.id === "overview" ? "text-sky-800" : "text-slate-900"
-                    }`}
+                    className={`section-title text-xl sm:text-2xl font-semibold mb-3 ${sec.id === "overview" ? "text-sky-800" : "text-slate-900"
+                      }`}
                   >
                     {sec.title}
                   </h2>
@@ -238,23 +233,29 @@ useEffect(() => {
                       if (block.type === "image") {
                         return <ImageBlock key={idx} image={block} />;
                       }
+                      if (block.type === "summary") {
+                        return <SummaryBlock key={idx} text={block.text} />;
+                      }
+                      if (block.type === "cta") {
+                        return <CTABlock key={idx} cta={block} />;
+                      }
                       return null;
                     })}
                   </div>
 
-      {index === post.sections.length - 1 && (
-  <div className="mt-10 space-y-8">
-    <EngagementBar
-      slug={post.slug}
-      initialLikes={post.likeCount}
-      initialShares={post.shareCount}
-    />
-    <ArticleRating slug={post.slug} />
-    {post.author && <WriterCard author={post.author} />}
-    {/* <WriterCard author={post.author}/> */}
-    
-  </div>
-)}
+                  {index === post.sections.length - 1 && (
+                    <div className="mt-10 space-y-8">
+                      <EngagementBar
+                        slug={post.slug}
+                        initialLikes={post.likeCount}
+                        initialShares={post.shareCount}
+                      />
+                      <ArticleRating slug={post.slug} />
+                      {post.author && <WriterCard author={post.author} />}
+                      {/* <WriterCard author={post.author}/> */}
+
+                    </div>
+                  )}
 
                 </section>
               ))}
@@ -265,18 +266,18 @@ useEffect(() => {
           <aside className=" sm:grid sm:grid-cols-2 gap-8 lg:grid-cols-1 sticky top-24 space-y-4">
             <ContactSideForm />
             {/* <EGuideCard /> */}
-             <LatestEGuidePromoCardClient />
+            <LatestEGuidePromoCardClient />
           </aside>
         </section>
-{/* <NewsletterStrip /> */}
-<NewsletterStrip
-  source={`post:${sectionKey || "blog"}:${post.slug}`}
-  listSlug={newsletterList?.slug || "blog-newsletter"}
-  listName={newsletterList?.name || "Blog Newsletter"}
-  listDescription={
-    newsletterList?.description || "Main blog newsletter list"
-  }
-/>
+        {/* <NewsletterStrip /> */}
+        <NewsletterStrip
+          source={`post:${sectionKey || "blog"}:${post.slug}`}
+          listSlug={newsletterList?.slug || "blog-newsletter"}
+          listName={newsletterList?.name || "Blog Newsletter"}
+          listDescription={
+            newsletterList?.description || "Main blog newsletter list"
+          }
+        />
 
         <RelatedPosts posts={related} />
       </div>
@@ -304,7 +305,7 @@ function EnhancedTable({ table }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-sky-100 bg-sky-50/40 my-6 enhanced-table-wrap">
       <table className="min-w-full text-sm border-collapse enhanced-table">
-        <thead className="bg-sky-600/90">
+        <thead>
           <tr className="code-block">
             {table.headers.map((h) => (
               <th
@@ -325,9 +326,8 @@ function EnhancedTable({ table }) {
               {row.map((cell, cIdx) => (
                 <td
                   key={cIdx}
-                  className={`px-4 py-2 align-top text-slate-800 text-[13px] ${
-                    cIdx === 0 ? "font-semibold text-sky-900" : ""
-                  }`}
+                  className={`px-4 py-2 align-top text-slate-800 text-[13px] ${cIdx === 0 ? "font-semibold text-sky-900" : ""
+                    }`}
                 >
                   {cell}
                 </td>
@@ -516,21 +516,21 @@ function ContactSideForm() {
           {/* <p className="text-[11px] text-slate-500">
             Share your launch plan with the team.
           </p> */}
-           {status === "success" && (
-          <p className="text-[10px] text-emerald-600 mt-1">
-            Thanks! Your message has been received.
-          </p>
-        )}
-        {status === "error" && (
-          <p className="text-[10px] text-rose-600 mt-1">
-            Name, email and message are required or something went wrong. Please try again.
-          </p>
-        )}
-        {status === "idle" && (
-          <p className="text-[10px] text-slate-400 mt-1">
-            We reply within one business day. Your details are safe with us.
-          </p>
-        )}
+          {status === "success" && (
+            <p className="text-[10px] text-emerald-600 mt-1">
+              Thanks! Your message has been received.
+            </p>
+          )}
+          {status === "error" && (
+            <p className="text-[10px] text-rose-600 mt-1">
+              Name, email and message are required or something went wrong. Please try again.
+            </p>
+          )}
+          {status === "idle" && (
+            <p className="text-[10px] text-slate-400 mt-1">
+              We reply within one business day. Your details are safe with us.
+            </p>
+          )}
         </div>
       </div>
 
@@ -703,7 +703,7 @@ function RelatedPosts({ posts }) {
 
 
 
- function ArticleSmileyRating({ onRate }) {
+function ArticleSmileyRating({ onRate }) {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -888,16 +888,14 @@ function EngagementBar({ slug, initialLikes = 0, initialShares = 0 }) {
           type="button"
           onClick={handleLike}
           disabled={likePending || liked}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium border ${
-            liked
-              ? "bg-rose-500 text-white border-rose-500"
-              : "bg-white text-slate-700 border-slate-200 hover:bg-rose-50"
-          } disabled:opacity-70`}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium border ${liked
+            ? "bg-rose-500 text-white border-rose-500"
+            : "bg-white text-slate-700 border-slate-200 hover:bg-rose-50"
+            } disabled:opacity-70`}
         >
           <FaHeart
-            className={`h-3.5 w-3.5 ${
-              liked ? "text-white" : "text-rose-500"
-            }`}
+            className={`h-3.5 w-3.5 ${liked ? "text-white" : "text-rose-500"
+              }`}
           />
           <span>{likes} like{likes !== 1 ? "s" : ""}</span>
         </button>
@@ -943,6 +941,47 @@ function EngagementBar({ slug, initialLikes = 0, initialShares = 0 }) {
         <span className="ml-1 text-[10px] text-slate-500">
           {shares} share{shares !== 1 ? "s" : ""}
         </span>
+      </div>
+    </div>
+  );
+}
+
+// New Component: Summary Block (with left/right borders)
+function SummaryBlock({ text }) {
+  return (
+    <div className="my-8 px-6 py-4 border-l-4 border-r-4 border-sky-500 bg-sky-50/30 rounded-sm">
+      <p className="text-lg sm:text-xl font-medium text-slate-800 text-center leading-relaxed">
+        {text}
+      </p>
+    </div>
+  );
+}
+
+// New Component: CTA Block
+function CTABlock({ cta }) {
+  return (
+    <div className="my-10 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg flex flex-col md:flex-row items-center">
+      <div className="relative w-full md:w-1/3 h-48 md:h-auto self-stretch bg-slate-100">
+        <Image
+          src={cta.image || "/images/logo.png"}
+          alt={cta.title}
+          fill
+          className="object-contain p-6"
+        />
+      </div>
+      <div className="p-6 md:p-8 flex-1 space-y-4 text-center md:text-left">
+        <h4 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
+          {cta.title}
+        </h4>
+        <p className="text-slate-600 text-sm sm:text-base">
+          {cta.description}
+        </p>
+        <Link
+          href={cta.buttonLink || "https://softkingo.com/contact"}
+          className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-sky-600 hover:bg-sky-500 text-white font-semibold transition-all shadow-md hover:shadow-lg"
+        >
+          {cta.buttonText || "Get Started"}
+        </Link>
       </div>
     </div>
   );

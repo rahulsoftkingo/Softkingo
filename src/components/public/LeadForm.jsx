@@ -91,7 +91,7 @@ export default function LeadForm({
 
       setStatus('success');
       setStatusMessage('🎉 Thank you! We will contact you within 24 hours.');
-      
+
       setFormData({
         name: '',
         email: '',
@@ -181,13 +181,13 @@ export default function LeadForm({
   const style = variants[variant];
 
   return (
-    <div className={`${style.container} rounded-2xl p-6 md:p-8 transition-all duration-300`}>
+    <div className={`${style.container} rounded-2xl p-5 md:p-10 transition-all duration-300`}>
       {/* Header with Logo */}
       <div className="flex flex-col text-center items-center gap-3 mb-6">
         {showLogo && (
           <div className={`w-14 h-14 bg-gradient-tobr ${style.logoGradient}  rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300`}>
-            <Image 
-              src='/images/logo.png' 
+            <Image
+              src='/images/logo.png'
               alt="Softkingo Logo"
               width={40}
               height={40}
@@ -200,7 +200,7 @@ export default function LeadForm({
           <h3 className={`text-lg md:text-xl font-bold mb-1 ${style.title}`}>
             {title}
           </h3>
-          
+
           {status === 'success' && (
             <div className="flex items-center justify-center gap-1.5">
               <CheckCircle className={`w-4 h-4 ${style.subtitleSuccess}`} />
@@ -209,7 +209,7 @@ export default function LeadForm({
               </p>
             </div>
           )}
-          
+
           {status === 'error' && (
             <div className="flex items-center justify-center gap-1.5">
               <AlertCircle className={`w-4 h-4 ${style.subtitleError}`} />
@@ -218,7 +218,7 @@ export default function LeadForm({
               </p>
             </div>
           )}
-          
+
           {status === 'idle' && (
             <p className={`text-sm ${style.subtitleIdle}`}>
               {subtitle}
@@ -230,7 +230,7 @@ export default function LeadForm({
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-3">
         {/* Name & Phone Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
             name="name"
@@ -240,7 +240,7 @@ export default function LeadForm({
             required
             className={`w-full ${style.input} rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition-all duration-200`}
           />
-          
+
           <input
             type="tel"
             name="phone"
