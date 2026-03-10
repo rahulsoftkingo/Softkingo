@@ -959,27 +959,26 @@ function SummaryBlock({ text }) {
 
 // New Component: CTA Block
 function CTABlock({ cta }) {
+  const variant = cta.variant || 'standard';
+
   return (
-    <div className="my-10 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg flex flex-col md:flex-row items-center">
-      <div className="relative w-full md:w-1/3 h-48 md:h-auto self-stretch bg-slate-100">
-        <Image
-          src={cta.image || "/images/logo.png"}
-          alt={cta.title}
-          fill
-          className="object-contain p-6"
-        />
-      </div>
-      <div className="p-6 md:p-8 flex-1 space-y-4 text-center md:text-left">
-        <h4 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-          {cta.title}
-        </h4>
-        <p className="text-slate-600 text-sm sm:text-base">
-          {cta.description}
-        </p>
-        <Link
-          href={cta.buttonLink || "https://softkingo.com/contact"}
-          className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-sky-600 hover:bg-sky-500 text-white font-semibold transition-all shadow-md hover:shadow-lg"
-        >
+    <div className={`blog-cta-container variant-${variant}`}>
+      {(variant !== 'minimalist') && (
+        <div className="cta-image-wrapper">
+          <Image
+            src={cta.image || "/images/logo.png"}
+            alt={cta.title}
+            fill
+            className="object-contain"
+          />
+        </div>
+      )}
+      <div className="cta-content">
+        <h4>{cta.title}</h4>
+        {variant !== 'compact' && (
+          <p>{cta.description}</p>
+        )}
+        <Link href={cta.buttonLink || "https://softkingo.com/contact"}>
           {cta.buttonText || "Get Started"}
         </Link>
       </div>

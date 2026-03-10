@@ -67,11 +67,11 @@ export default function ServicesSection() {
                 icon: <FaAndroid />,
                 link: "/services/android-app-development",
                 technologies: [
-                  { name: "Kotlin", image: "/images/tech/kotlin.png" },
-                  { name: "Java", image: "/images/tech/java.png" },
+                  { name: "Kotlin", image: "/images/tech/Kotlin.png" },
+                  { name: "Java", image: "/images/tech/Java.png" },
                   { name: "Jetpack Compose", image: "/images/tech/jetpack-compose.png" },
-                  { name: "Android Studio", image: "/images/tech/android-studio.png" },
-                  { name: "Material Design", image: "/images/tech/material-design.png" },
+                  { name: "Android Studio", image: "/images/tech/Android-Studio.png" },
+                  { name: "Material Design", image: "/images/tech/Material-UI.png" },
                 ],
               },
               {
@@ -80,9 +80,9 @@ export default function ServicesSection() {
                 icon: <FaApple />,
                 link: "/services/ios-app-development",
                 technologies: [
-                  { name: "Swift", image: "/images/tech/swift.png" },
+                  { name: "Swift", image: "/images/tech/Swift.png" },
                   { name: "SwiftUI", image: "/images/tech/swiftui.png" },
-                  { name: "Xcode", image: "/images/tech/xcode.png" },
+                  { name: "Xcode", image: "/images/tech/Xcode.png" },
                   { name: "UIKit", image: "/images/tech/uikit.png" },
                   { name: "Core Data", image: "/images/tech/core-data.png" },
                 ],
@@ -94,8 +94,8 @@ export default function ServicesSection() {
                 link: "/services/react-native-app-development",
                 technologies: [
                   { name: "React Native", image: "/images/tech/react-native.png" },
-                  { name: "JavaScript", image: "/images/tech/javascript.png" },
-                  { name: "TypeScript", image: "/images/tech/typescript.png" },
+                  { name: "JavaScript", image: "/images/tech/JavaScript.png" },
+                  { name: "TypeScript", image: "/images/tech/TypeScript.png" },
                   { name: "Expo", image: "/images/tech/expo.png" },
                   { name: "Native Modules", image: "/images/tech/native-modules.png" },
                 ],
@@ -106,11 +106,11 @@ export default function ServicesSection() {
                 icon: <FaMobileAlt />,
                 link: "/services/hybrid-app-development",
                 technologies: [
-                  { name: "Ionic", image: "/images/tech/ionic.png" },
+                  { name: "Ionic", image: "/images/tech/Ionic.png" },
                   { name: "Cordova", image: "/images/tech/cordova.png" },
-                  { name: "Capacitor", image: "/images/tech/capacitor.png" },
-                  { name: "Angular", image: "/images/tech/angular.png" },
-                  { name: "Vue.js", image: "/images/tech/vue.png" },
+                  { name: "Capacitor", image: "/images/tech/Capacitor.png" },
+                  { name: "Angular", image: "/images/tech/Angular.png" },
+                  { name: "Vue.js", image: "/images/tech/Vue.js.png" },
                 ],
               },
               {
@@ -119,9 +119,9 @@ export default function ServicesSection() {
                 icon: <FaCode />,
                 link: "/services/flutter-native-app-development",
                 technologies: [
-                  { name: "Flutter", image: "/images/tech/flutter.png" },
-                  { name: "Dart", image: "/images/tech/dart.png" },
-                  { name: "Firebase", image: "/images/tech/firebase.png" },
+                  { name: "Flutter", image: "/images/tech/Flutter.png" },
+                  { name: "Dart", image: "/images/tech/Dart.png" },
+                  { name: "Firebase", image: "/images/tech/Firebase.png" },
                   { name: "Riverpod", image: "/images/tech/riverpod.png" },
                   { name: "BLoC", image: "/images/tech/bloc.png" },
                 ],
@@ -132,9 +132,9 @@ export default function ServicesSection() {
                 icon: <FaPaintBrush />,
                 link: "/services/app-ui-ux-design",
                 technologies: [
-                  { name: "Figma", image: "/images/tech/figma.png" },
-                  { name: "Sketch", image: "/images/tech/sketch.png" },
-                  { name: "Adobe XD", image: "/images/tech/adobe-xd.png" },
+                  { name: "Figma", image: "/images/tech/Figma.png" },
+                  { name: "Sketch", image: "/images/tech/Sketch.png" },
+                  { name: "Adobe XD", image: "/images/tech/Adobe-XD.png" },
                   { name: "Prototyping", image: "/images/tech/prototyping.png" },
                   { name: "User Testing", image: "/images/tech/user-testing.png" },
                 ],
@@ -156,11 +156,11 @@ export default function ServicesSection() {
                 icon: <FaCode />,
                 link: "/services/custom-website-development",
                 technologies: [
-                  { name: "React", image: "/images/tech/react.png" },
-                  { name: "Next.js", image: "/images/tech/nextjs.png" },
+                  { name: "React", image: "/images/tech/React.png" },
+                  { name: "Next.js", image: "/images/tech/Next.js.png" },
                   { name: "Node.js", image: "/images/tech/nodejs.png" },
-                  { name: "Tailwind CSS", image: "/images/tech/tailwind.png" },
-                  { name: "TypeScript", image: "/images/tech/typescript.png" },
+                  { name: "Tailwind CSS", image: "/images/tech/Tailwind-CSS.png" },
+                  { name: "TypeScript", image: "/images/tech/TypeScript.png" },
                 ],
               },
               {
@@ -169,10 +169,10 @@ export default function ServicesSection() {
                 icon: <FaWordpress />,
                 link: "/services/cms-development",
                 technologies: [
-                  { name: "WordPress", image: "/images/tech/wordpress.png" },
+                  { name: "WordPress", image: "/images/tech/WordPress.png" },
                   { name: "Strapi", image: "/images/tech/strapi.png" },
-                  { name: "Sanity", image: "/images/tech/sanity.png" },
-                  { name: "Contentful", image: "/images/tech/contentful.png" },
+                  { name: "Sanity", image: "/images/tech/Sanity.png" },
+                  { name: "Contentful", image: "/images/tech/Contentful.png" },
                   { name: "Headless CMS", image: "/images/tech/headless-cms.png" },
                 ],
               },
@@ -182,10 +182,10 @@ export default function ServicesSection() {
                 icon: <FaCode />,
                 link: "/services/web-application-development",
                 technologies: [
-                  { name: "Next.js", image: "/images/tech/nextjs.png" },
+                  { name: "Next.js", image: "/images/tech/Next.js.png" },
                   { name: "Node.js", image: "/images/tech/nodejs.png" },
-                  { name: "MongoDB", image: "/images/tech/mongodb.png" },
-                  { name: "Express", image: "/images/tech/express.png" },
+                  { name: "MongoDB", image: "/images/tech/MongoDB.png" },
+                  { name: "Express", image: "/images/tech/Express.png" },
                   { name: "API Development", image: "/images/tech/api.png" },
                 ],
               },
@@ -195,9 +195,9 @@ export default function ServicesSection() {
                 icon: <FaDesktop />,
                 link: "/services/enterprise-web-development",
                 technologies: [
-                  { name: "Docker", image: "/images/tech/docker.png" },
-                  { name: "Kubernetes", image: "/images/tech/kubernetes.png" },
-                  { name: "AWS", image: "/images/tech/aws.png" },
+                  { name: "Docker", image: "/images/tech/Docker.png" },
+                  { name: "Kubernetes", image: "/images/tech/Kubernetes.png" },
+                  { name: "AWS", image: "/images/tech/AWS.png" },
                   { name: "Microservices", image: "/images/tech/microservices.png" },
                   { name: "Scalability", image: "/images/tech/scalability.png" },
                 ],
@@ -219,10 +219,10 @@ export default function ServicesSection() {
                 icon: <FaShoppingCart />,
                 link: "/services/shopify-development",
                 technologies: [
-                  { name: "Shopify", image: "/images/tech/shopify.png" },
-                  { name: "Liquid", image: "/images/tech/liquid.png" },
-                  { name: "Shopify Apps", image: "/images/tech/shopify-apps.png" },
-                  { name: "Payment Gateways", image: "/images/tech/payment-gateway.png" },
+                  { name: "Shopify", image: "/images/tech/WooCommerce.png" },
+                  { name: "Liquid", image: "/images/tech/Vite.png" },
+                  { name: "Shopify Apps", image: "/images/tech/Shopware.png" },
+                  { name: "Payment Gateways", image: "/images/tech/WooCommerce.png" },
                 ],
               },
               {
@@ -231,10 +231,10 @@ export default function ServicesSection() {
                 icon: <FaWordpress />,
                 link: "/services/woocommerce-development",
                 technologies: [
-                  { name: "WooCommerce", image: "/images/tech/woocommerce.png" },
-                  { name: "WordPress", image: "/images/tech/wordpress.png" },
-                  { name: "Stripe", image: "/images/tech/stripe.png" },
-                  { name: "PayPal", image: "/images/tech/paypal.png" },
+                  { name: "WooCommerce", image: "/images/tech/WooCommerce.png" },
+                  { name: "WordPress", image: "/images/tech/WordPress.png" },
+                  { name: "Stripe", image: "/images/tech/WooCommerce.png" },
+                  { name: "PayPal", image: "/images/tech/WooCommerce.png" },
                 ],
               },
               {
@@ -243,8 +243,8 @@ export default function ServicesSection() {
                 icon: <FaShoppingCart />,
                 link: "/services/magento-development",
                 technologies: [
-                  { name: "Magento 2", image: "/images/tech/magento.png" },
-                  { name: "Adobe Commerce", image: "/images/tech/adobe-commerce.png" },
+                  { name: "Magento 2", image: "/images/tech/Adobe-Commerce-(Magneto).png" },
+                  { name: "Adobe Commerce", image: "/images/tech/Adobe-Commerce-(Magneto).png" },
                   { name: "PWA", image: "/images/tech/pwa.png" },
                   { name: "Headless Commerce", image: "/images/tech/headless-commerce.png" },
                 ],
@@ -277,11 +277,11 @@ export default function ServicesSection() {
                 icon: <FaCode />,
                 link: "/services/smart-contract-development",
                 technologies: [
-                  { name: "Solidity", image: "/images/tech/solidity.png" },
-                  { name: "Hardhat", image: "/images/tech/hardhat.png" },
-                  { name: "Truffle", image: "/images/tech/truffle.png" },
-                  { name: "Remix", image: "/images/tech/remix.png" },
-                  { name: "Rust", image: "/images/tech/rust.png" },
+                  { name: "Solidity", image: "/images/tech/Solidity.png" },
+                  { name: "Hardhat", image: "/images/tech/Hardhat.png" },
+                  { name: "Truffle", image: "/images/tech/Hardhat.png" },
+                  { name: "Remix", image: "/images/tech/Next.js.png" },
+                  { name: "Rust", image: "/images/tech/Rust.png" },
                 ],
               },
               {
@@ -290,10 +290,10 @@ export default function ServicesSection() {
                 icon: <FaBitcoin />,
                 link: "/services/crypto-wallet-development",
                 technologies: [
-                  { name: "Web3.js", image: "/images/tech/web3js.png" },
-                  { name: "Ethers.js", image: "/images/tech/ethers.png" },
-                  { name: "MetaMask", image: "/images/tech/metamask.png" },
-                  { name: "WalletConnect", image: "/images/tech/walletconnect.png" },
+                  { name: "Web3.js", image: "/images/tech/Web3js.png" },
+                  { name: "Ethers.js", image: "/images/tech/Ethers.png" },
+                  { name: "MetaMask", image: "/images/tech/MetaMask.png" },
+                  { name: "WalletConnect", image: "/images/tech/WalletConnect.png" },
                 ],
               },
               {
@@ -302,9 +302,9 @@ export default function ServicesSection() {
                 icon: <FaBitcoin />,
                 link: "/services/nft-marketplace-development",
                 technologies: [
-                  { name: "IPFS", image: "/images/tech/ipfs.png" },
-                  { name: "ERC-721", image: "/images/tech/erc-721.png" },
-                  { name: "ERC-1155", image: "/images/tech/erc-1155.png" },
+                  { name: "IPFS", image: "/images/tech/IPFS.png" },
+                  { name: "ERC-721", image: "/images/tech/ERC-721.png" },
+                  { name: "ERC-1155", image: "/images/tech/ERC-1155.png" },
                   { name: "Marketplace", image: "/images/tech/marketplace.png" },
                 ],
               },
@@ -314,10 +314,10 @@ export default function ServicesSection() {
                 icon: <FaCode />,
                 link: "/services/dapp-development",
                 technologies: [
-                  { name: "React", image: "/images/tech/react.png" },
-                  { name: "Web3", image: "/images/tech/web3.png" },
+                  { name: "React", image: "/images/tech/React.png" },
+                  { name: "Web3", image: "/images/tech/Web3.png" },
                   { name: "Moralis", image: "/images/tech/moralis.png" },
-                  { name: "The Graph", image: "/images/tech/the-graph.png" },
+                  { name: "The Graph", image: "/images/tech/The-Graph.png" },
                 ],
               },
             ]}
@@ -337,10 +337,10 @@ export default function ServicesSection() {
                 icon: <FaRobot />,
                 link: "/services/ai-development",
                 technologies: [
-                  { name: "TensorFlow", image: "/images/tech/tensorflow.png" },
-                  { name: "PyTorch", image: "/images/tech/pytorch.png" },
-                  { name: "OpenAI", image: "/images/tech/openai.png" },
-                  { name: "LangChain", image: "/images/tech/langchain.png" },
+                  { name: "TensorFlow", image: "/images/tech/TensorFlow.png" },
+                  { name: "PyTorch", image: "/images/tech/PyTorch.png" },
+                  { name: "OpenAI", image: "/images/tech/PyTorch.png" },
+                  { name: "LangChain", image: "/images/tech/Python.png" },
                 ],
               },
               {
@@ -384,10 +384,10 @@ export default function ServicesSection() {
                 icon: <FaCogs />,
                 link: "/services/cloud-migration",
                 technologies: [
-                  { name: "AWS", image: "/images/tech/aws.png" },
-                  { name: "Azure", image: "/images/tech/azure.png" },
-                  { name: "Google Cloud", image: "/images/tech/gcp.png" },
-                  { name: "Terraform", image: "/images/tech/terraform.png" },
+                  { name: "AWS", image: "/images/tech/AWS.png" },
+                  { name: "Azure", image: "/images/tech/Azure.png" },
+                  { name: "Google Cloud", image: "/images/tech/Google-Cloud.png" },
+                  { name: "Terraform", image: "/images/tech/HashiCorp-Terraform.png" },
                 ],
               },
               {
@@ -396,10 +396,10 @@ export default function ServicesSection() {
                 icon: <FaCogs />,
                 link: "/services/ci-cd-pipeline",
                 technologies: [
-                  { name: "GitHub Actions", image: "/images/tech/github-actions.png" },
-                  { name: "Jenkins", image: "/images/tech/jenkins.png" },
-                  { name: "GitLab CI", image: "/images/tech/gitlab-ci.png" },
-                  { name: "Docker", image: "/images/tech/docker.png" },
+                  { name: "GitHub Actions", image: "/images/tech/GitHub-Actions.png" },
+                  { name: "Jenkins", image: "/images/tech/Jenkins.png" },
+                  { name: "GitLab CI", image: "/images/tech/GitLab.png" },
+                  { name: "Docker", image: "/images/tech/Docker.png" },
                 ],
               },
               {
@@ -431,10 +431,10 @@ export default function ServicesSection() {
                 icon: <FaMicrochip />,
                 link: "/services/iot-app-development",
                 technologies: [
-                  { name: "MQTT", image: "/images/tech/mqtt.png" },
-                  { name: "Node.js", image: "/images/tech/nodejs.png" },
-                  { name: "AWS IoT", image: "/images/tech/aws-iot.png" },
-                  { name: "Firebase", image: "/images/tech/firebase.png" },
+                  { name: "MQTT", image: "/images/tech/Arduino.png" },
+                  { name: "Node.js", image: "/images/tech/node.png" },
+                  { name: "AWS IoT", image: "/images/tech/AWS.png" },
+                  { name: "Firebase", image: "/images/tech/Firebase.png" },
                 ],
               },
               {
@@ -443,10 +443,10 @@ export default function ServicesSection() {
                 icon: <FaCogs />,
                 link: "/services/embedded-development",
                 technologies: [
-                  { name: "C/C++", image: "/images/tech/cpp.png" },
+                  { name: "C/C++", image: "/images/tech/C++-(CPlusPlus).png" },
                   { name: "RTOS", image: "/images/tech/rtos.png" },
                   { name: "ESP32", image: "/images/tech/esp32.png" },
-                  { name: "Raspberry Pi", image: "/images/tech/raspberry-pi.png" },
+                  { name: "Raspberry Pi", image: "/images/tech/Raspberry-Pi.png" },
                 ],
               },
             ]}
@@ -492,7 +492,7 @@ function ServiceCategory({ title, categoryLink, icon, description, services }) {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "2%"]);
 
   const active = services?.[activeService];
- 
+
 
 
   return (
@@ -525,8 +525,8 @@ function ServiceCategory({ title, categoryLink, icon, description, services }) {
               key={service.title}
               onClick={() => setActiveService(index)}
               className={`px-5 py-2 rounded-full font-medium transition-all ${activeService === index
-                  ? "bg-gradient-to-l from-sky-400 via-primary to-sky-600 text-white shadow-lg shadow-sky-200 text-sm lg:text-md whitespace-nowrap"
-                  : "bg-white text-sky-600 hover:bg-gray-50 border border-primary whitespace-nowrap text-sm"
+                ? "bg-gradient-to-l from-sky-400 via-primary to-sky-600 text-white shadow-lg shadow-sky-200 text-sm lg:text-md whitespace-nowrap"
+                : "bg-white text-sky-600 hover:bg-gray-50 border border-primary whitespace-nowrap text-sm"
                 }`}
             >
               {service.title}
@@ -598,7 +598,7 @@ function ServiceCategory({ title, categoryLink, icon, description, services }) {
                     whitespace-nowrap
                   "
                 >
-                <TechIcon src={tech.image} alt={tech.name} />
+                  <TechIcon src={tech.image} alt={tech.name} />
 
                   <span className="text-xs">{tech.name}</span>
                 </div>

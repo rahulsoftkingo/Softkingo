@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaArrowRight } from 'react-icons/fa';
 import CommonTitle from '@/components/ui/CommonTitle';
@@ -10,6 +11,8 @@ import LeadForm from '@/components/public/LeadForm';
 import HireDevelopersPage from '../hire/[slug]/SelectDeveloper';
 import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
 import ConsultationCTA from '@/components/common/Consultation-Cta';
+import CoreServicesSection from '@/components/common/CoreServicesSection';
+import IndustriesSection from '@/components/common/IndustriesSection';
 
 
 export default function AIPage() {
@@ -69,188 +72,143 @@ export default function AIPage() {
         }
       `}</style>
 
-      {/* 01. Hero Section - EXACT CONTENT */}
-      <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-sky-700 via-sky-900 to-sky-600 py-20">
-        <div className="absolute inset-0">
-          <div className="absolute top-16 left-8 w-[300px] h-[300px] bg-sky-500/8 rounded-full blur-xl animate-[float-subtle_6s_ease-in-out_infinite]" style={{ animationDelay: '0s' }} />
-          <div className="absolute bottom-24 right-12 w-[250px] h-[250px] bg-sky-400/6 rounded-full blur-xl animate-[float-subtle_6s_ease-in-out_infinite]" style={{ animationDelay: '2s' }} />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-slate-900 to-slate-950" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
-        <div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center relative z-10 w-full">
-          <div className="w-full lg:flex lg:items-center lg:justify-between lg:gap-16">
-            <motion.div
-              className="lg:w-1/2 text-left lg:pr-12"
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center px-4 py-2 bg-sky-500/10 backdrop-blur-md rounded-xl border border-sky-400/30 shadow-lg mb-8 w-fit">
-                <div className="w-3 h-3 bg-gradient-to-r from-sky-400 to-sky-500 rounded-full mr-2 flex-shrink-0" />
-                <span className="font-semibold text-sky-200 text-sm">Intelligent AI Solutions</span>
-              </div>
-
-              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black leading-tight mb-6 text-white tracking-tight">
-                Intelligent AI Solutions for <br className="hidden md:block" />
-                <span className="block bg-gradient-to-r from-sky-400 via-sky-300 to-cyan-400 text-transparent bg-clip-text drop-shadow-xl">
-                  Smarter Businesses
-                </span>
-              </h1>
-
-              <p className="text-lg md:text-xl text-slate-300 mb-4 leading-relaxed max-w-xl">
-                Transforming Data Into Decisions. Automation Into Growth.
-              </p>
-              <p className="text-sm md:text-lg text-slate-300 mb-10 leading-relaxed max-w-xl">
-                Artificial Intelligence is no longer a future concept—<span className="font-semibold text-white">it is a business necessity</span>. We help organizations unlock AI power with intelligent, scalable, ethical solutions.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/contact"
-                  className="group px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex shrink-0 w-fit"
-                >
-                  Get Started
-                  <FaArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="hidden lg:block lg:w-1/2 relative mt-12 lg:mt-0"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              {/* Video Background Container */}
-              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 via-sky-400/5 to-transparent rounded-xl backdrop-blur-lg  shadow-2xl overflow-hidden">
-
-                <video
-                  className="absolute inset-0 w-full h-full object-cover rounded-2xl"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=2400&q=80"
-                >
-                  <source
-                    src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                    type="video/mp4"
-                  />
-                  {/* AI Engineering Stock Videos - FREE */}
-                  <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-neural-network-12166-large.mp4" type="video/mp4" />
-                  <source src="https://player.vimeo.com/proxy?src=https%3A//player.vimeo.com/hls/play/76979871/master.m3u8&color=ff0179&background=000000" type="video/mp4" />
-                </video>
-
-                {/* Overlay Gradient */}
-                {/* Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
-              </div>
-              {/* Content Overlay */}
-              <div className="relative z-10 h-80 lg:h-[420px] w-full flex items-center justify-center ">
-
-
-                {/* </div> */}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider" />
-
-      {/* 02. About Us */}
-      <section id="about" className="py-16 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_minmax(320px,380px)] gap-10 items-center ">
-            <div>
-              <CommonTitle
-                align="left"
-                pill={false}
-                title="About Us"
-                gradientText="Your Trusted AI Partner"
-                subtitle="Helping businesses innovate, optimize, and scale with cutting-edge AI technologies"
-              />
-
-              <motion.div
-                className="max-w-3xl mx-auto text-start mt-16 "
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-              >
-                <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-                  We are an AI solutions company combining deep technical expertise, industry knowledge, and strong focus on business outcomes. AI should be transparent, responsible, and human-centered—designed to support people, improve decision-making, and drive sustainable growth.
-                </p>
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <div className="rect-icon text-sky-900 mx-auto">AI</div>
-                </div>
-              </motion.div>
-
-            </div>
-            <div className="w-full">
-              <LeadForm
-                formType="ai"
-                formKey="ai"
-                serviceName="Ai Page"
-                title="Get In Touch"
-                subtitle="Get matched with top talent in 24 Hours! "
-                variant="solid"
-                showLogo={true}
-                showCompany={false}
-                showBudget={false}
-                showAttachment={false}
-                showNDA={false}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider" />
-
-      {/* 03. What We Do */}
-      <section id="services" className="py-20 lg:py-28 bg-gradient-to-br from-white via-sky-50 to-sky-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <CommonTitle
-            align="center"
-            title="What We Do"
-            gradientText="AI Solutions"
-            subtitle="Custom development, automation, and consulting services"
+      {/* 01. Hero Section - REDESIGNED FOR IMMERSIVE FEEL */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-24">
+        {/* Full Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/ai/ai-hero-bg.png"
+            alt="AI Hero Background"
+            fill
+            className="object-cover object-center scale-105"
+            priority
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-16 lg:mt-24">
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col items-center"
+          >
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6 text-white tracking-tight">
+              AI Development Services
+            </h1>
+
+            <div className="max-w-3xl space-y-5 mb-10">
+              <p className="text-lg md:text-xl text-slate-200 leading-relaxed font-medium">
+                At Softkingo Technologies, we design and develop intelligent AI solutions that help businesses automate processes, reduce operational costs, and unlock new growth opportunities.
+              </p>
+              <p className="text-sm md:text-base text-slate-300 leading-relaxed">
+                Our AI development services are tailored to your industry, data, and business objectives—ensuring practical implementation with measurable impact. From AI-powered applications to advanced analytics and automation systems, we help you transform ideas into scalable AI products.
+              </p>
+            </div>
+
+            <Link
+              href="/contact"
+              className="group relative px-10 py-4 bg-sky-500 hover:bg-sky-400 text-white rounded-full font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-sky-500/40 overflow-hidden flex items-center gap-3"
+            >
+              <span>Consult Our AI Experts</span>
+              <FaArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      {/* 02. We Are Section - PIXEL PERFECT MATCH */}
+      <section id="about" className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+            {/* Left: Image - Clean & Simple */}
+            <motion.div
+              className="lg:w-1/2 relative"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <div className="relative aspect-[16/9] w-full rounded-[32px] overflow-hidden shadow-2xl">
+                <Image
+                  src="/images/ai/we-are.svg"
+                  alt="Handshake - We are Softkingo"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </motion.div>
+
+            {/* Right: Content - Custom Title with Logo */}
+            <motion.div
+              className="lg:w-1/2"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <div className="mb-6 flex flex-col items-start">
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-black leading-tight">
+                    We are
+                  </h2>
+                  <Image
+                    src="/images/softkingo-logo.png"
+                    alt="Softkingo"
+                    width={150}
+                    height={35}
+                    className="h-8 md:h-10 w-auto object-contain"
+                  />
+                </div>
+                <div className="w-20 h-1.5 bg-[#0ea5e9] rounded-full" />
+              </div>
+
+              <div className="space-y-4">
+                <p className="text-base md:text-lg text-slate-800 leading-relaxed font-normal">
+                  We are a technology-driven company focused on building innovative digital products that create real business value. With strong expertise in AI, mobile apps, web development, and enterprise solutions, our team combines strategic thinking with technical excellence.
+                </p>
+                <p className="text-base md:text-lg text-slate-800 leading-relaxed font-normal">
+                  Our mission is simple: deliver scalable, secure, and performance-driven AI solutions that give our clients a competitive edge in the global market.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* 02.5 Stats Section - Pixel Perfect Mockup Layout */}
+          <div className="mt-20 lg:mt-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
             {[
-              {
-                title: 'Custom AI Development',
-                desc: 'Tailored solutions: ML/DL Models, Predictive Analytics, Recommendation Systems, NLP, Computer Vision',
-                iconText: 'AI'
-              },
-              {
-                title: 'AI Automation',
-                desc: 'Intelligent Process Automation, Chatbots & Virtual Assistants, Document Processing, Workflow Optimization',
-                iconText: 'AUTO'
-              },
-              {
-                title: 'AI Consulting',
-                desc: 'AI Readiness Assessment, Use Case Identification, Data Strategy, Ethical AI & Compliance Guidance',
-                iconText: 'CONSULT'
-              }
-            ].map((service, idx) => (
+              { icon: 'clock', value: '5+', label: 'Years Of Experience' },
+              { icon: 'users', value: '450+', label: 'Apps Developed' },
+              { icon: 'layout', value: '50+', label: 'Mobile Apps Developer' },
+              { icon: 'globe', value: '400+', label: 'Clients Worldwide' }
+            ].map((stat, idx) => (
               <motion.div
                 key={idx}
-                className="group p-8 lg:p-10 bg-white rounded-2xl border border-gray-100 hover:border-sky-300/50 hover:shadow-lg hover:shadow-sky-100/50 hover:-translate-y-2 transition-all duration-500 text-center cursor-default"
-                initial={{ opacity: 0, y: 20 }}
+                className="bg-[#f0f9ff] border border-sky-100/50 rounded-2xl p-6 lg:p-10 flex flex-col items-center justify-center text-center group hover:bg-white hover:shadow-2xl hover:shadow-sky-100/40 transition-all duration-500"
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="rect-icon text-white mb-6 group-hover:scale-110 transition-all duration-300 mx-auto">{service.iconText}</div>
-                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4 leading-tight">{service.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{service.desc}</p>
+                {/* Top Row: Icon + Value */}
+                <div className="flex items-center justify-center gap-3 mb-1">
+                  <div className="text-[#0ea5e9]">
+                    {stat.icon === 'clock' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" /></svg>}
+                    {stat.icon === 'users' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" /></svg>}
+                    {stat.icon === 'layout' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z" /></svg>}
+                    {stat.icon === 'globe' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" /></svg>}
+                  </div>
+                  <span className="text-3xl md:text-4xl font-black text-[#0ea5e9] tracking-tight">
+                    {stat.value}
+                  </span>
+                </div>
+                {/* Bottom Label */}
+                <div className="text-sky-400 font-bold text-sm md:text-base">
+                  {stat.label}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -259,6 +217,16 @@ export default function AIPage() {
 
       <div className="section-divider" />
 
+      {/* 03. Core Services Section */}
+      <CoreServicesSection
+        title="Our Core Services"
+        subtitle="End-to-end AI development services designed to solve real business problems and create measurable growth. Each solution is built with a strong focus on scalability, security, performance, and long-term business value."
+        bgClass="bg-[#f8faff]"
+        sectionId="ai-core-services"
+      />
+
+      {/* 04. Industries We Transform using Default AI Data */}
+      <IndustriesSection />
 
       <div className="section-divider" />
 

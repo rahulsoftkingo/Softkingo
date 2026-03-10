@@ -33,7 +33,7 @@ import CloneTechStack from '@/components/public/clone/CloneTechStack';
 import CloneProcess from '@/components/public/clone/CloneProcess';
 import ClonePopularSolutions from '@/components/public/clone/ClonePopularSolutions';
 import CloneFAQ from '@/components/public/clone/CloneFAQ';
-import CloneIndustries from '@/components/public/clone/CloneIndustries';
+import IndustriesSection from '@/components/common/IndustriesSection';
 import FooterForm from "@/components/footer/InquirySection";
 
 // --- SHARED COMPONENTS ---
@@ -196,7 +196,7 @@ export default async function DynamicSolutionPage(props) {
 
                 {/* 11. Industries We Serve (Tabbed UI) */}
                 {show('industries') && (
-                    <CloneIndustries data={data.sections.industries} industries={data.industryPages} />
+                    <IndustriesSection data={data.sections.industries} industries={data.industryPages} />
                 )}
 
                 {/* 12. Popular App Solutions (Grid) */}

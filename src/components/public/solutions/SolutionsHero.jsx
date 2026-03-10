@@ -42,7 +42,7 @@ export default function SolutionsHero({ data }) {
               {data.title}
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-lg animate-fadeInUp delay-200">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl animate-fadeInUp delay-200">
               {data.description}
             </p>
 

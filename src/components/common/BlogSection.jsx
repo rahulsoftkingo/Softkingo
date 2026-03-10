@@ -64,11 +64,11 @@ export default function BlogSection({
     return (
         <section className={`py-20 bg-white overflow-hidden ${className}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid lg:grid-cols-12 gap-12 items-start">
+                <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
                     {/* Left Content - Header & CTA */}
-                    <div className="lg:col-span-4 space-y-8">
-                        <div className="space-y-4">
+                    <div className="lg:col-span-4  flex items-start justify- md:justify-center md:flex-col  md:items-start  spac-8">
+                        <div className="space-y-4 max-w-xs lg:max-w-none ">
                             <CommonTitle
                                 title={title}
                                 subtitle={subtitle}
@@ -78,28 +78,28 @@ export default function BlogSection({
 
                         <Link
                             href={`/blog?category=${category}`}
-                            className="group inline-flex items-center gap-4 transition-all duration-300"
+                            className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0"
                         >
-                            <div className="relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
-                                <FaArrowRight className="text-xl text-slate-700 group-hover:text-sky-500 transition-colors duration-500 group-hover:translate-x-1" />
+                            <div className="relative flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
+                                <FaArrowRight className="text-lg md:text-xl text-slate-700 group-hover:text-sky-500 transition-colors duration-500 group-hover:translate-x-1" />
                                 <motion.div
                                     className="absolute inset-0 rounded-full border border-sky-500 opacity-0"
                                     whileHover={{ scale: 1.2, opacity: 1 }}
                                     transition={{ duration: 0.5 }}
                                 />
                             </div>
-                            <span className="text-lg font-bold text-slate-800 group-hover:text-sky-600 transition-colors duration-300">
+                            <span className="hidden lg:block text-lg font-bold text-slate-800 group-hover:text-sky-600 transition-colors duration-300">
                                 Get all insights
                             </span>
                         </Link>
                     </div>
 
                     {/* Right Content - Blog Carousel */}
-                    <div className="lg:col-span-8 relative group/carousel">
+                    <div className="lg:col-span-8 relative group/carousel overflow-hidden">
                         <div
                             ref={scrollRef}
                             onScroll={checkScroll}
-                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-8 snap-x snap-mandatory"
+                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-8 sm:snap-x sm:snap-mandatory touch-pan-x cursor-grab active:cursor-grabbing w-full"
                         >
                             {blogs.map((blog, idx) => (
                                 <div key={blog.id} className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start">
@@ -151,20 +151,18 @@ function BlogCard({ blog, priority }) {
     return (
         <div className="group bg-white rounded-sm overflow-hidden h-full flex flex-col border border-transparent hover:border-slate-100 transition-all duration-500">
             {/* Thumbnail */}
-            <div className="relative aspect-[4/3] overflow-hidden rounded-sm bg-slate-100">
+            <div className="relative aspect-[20/11] overflow-hidden rounded-sm bg-slate-100">
                 <Image
                     src={blog.thumbnail || "/images/blog/default.jpg"}
                     alt={blog.title}
-                    fill
+                    width={800}
+                    height={600}
                     priority={priority}
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                {/* Softkingo Logo Placeholder in card */}
-                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-sm">
-                    <span className="text-[10px] font-black tracking-tighter text-sky-600 leading-none">Softkingo</span>
-                </div>
+
             </div>
 
             {/* Content */}

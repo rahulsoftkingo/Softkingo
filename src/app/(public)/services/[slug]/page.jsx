@@ -44,7 +44,7 @@ import CommonTitle from "@/components/ui/CommonTitle";
 import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import FAQAccordion from "@/components/common/Faqaccordion";
-import IndustriesServe from "../_components/IndustriesServe";
+import IndustriesSection from "@/components/common/IndustriesSection";
 import Industries from "../../home/h6-industries-section/page";
 import ServicesCategoryLayout from "../_components/ServicesCategoryLayout";
 import CloneTechStack from "@/components/public/clone/CloneTechStack";
@@ -54,6 +54,7 @@ import SolutionHighlight from "../_components/SolutionHighlight";
 import IndustrySolutions from "../_components/IndustrySolutions";
 import UserGuide from "../_components/UserGuide";
 import BlogSection from "@/components/common/BlogSection";
+import CoreServicesSection from "@/components/common/CoreServicesSection";
 
 // Force SSR (no build-time DB access)
 export const dynamic = "force-dynamic";
@@ -319,25 +320,30 @@ export default async function ServicePage({ params }) {
         </section>
       )}
       <AwardsSection />
-      {/* Services Section - Revamped Category Layout */}
-      {show('services') && (
-        <section className="bg-white py-20 px-4 md:px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
+      {/* Services Section - CoreServicesSection Component */}
+      {show('services') && (() => {
+        // Map admin categories to the component's 'services' shape
+        const adminCategories = content.services?.categories || [];
+        const mappedServices = adminCategories.length > 0
+          ? adminCategories.map((cat, idx) => ({
+            id: cat.id || idx + 1,
+            title: cat.title || cat.name || `Service ${idx + 1}`,
+            description: cat.description || cat.desc || '',
+            capabilities: cat.capabilities || cat.features || [],
+            technologies: cat.technologies || cat.tech || [],
+          }))
+          : undefined; // undefined = component will use AI_SERVICES_DEFAULT
 
-              <CommonTitle
-                align="center"
-                pill={false}
-                title={content.services?.title}
-                gradientText=""
-                subtitle={content.services?.subtitle}
-              />
-            </div>
-
-            <ServicesCategoryLayout categories={content.services?.categories || []} />
-          </div>
-        </section>
-      )}
+        return (
+          <CoreServicesSection
+            title={content.services?.title || "Our Core Services"}
+            subtitle={content.services?.subtitle || "End-to-end solutions designed to solve real business problems and create measurable growth."}
+            services={mappedServices}
+            bgClass="bg-[#f8faff]"
+            sectionId="core-services"
+          />
+        );
+      })()}
 
       {/* Consultation CTA Section */}
       {show('consultation') && (
@@ -379,9 +385,9 @@ export default async function ServicePage({ params }) {
         <IndustrySolutions data={content.solutions} />
       )}
 
-      {/* Industries We ServeSection */}
+      {/* Industries Section */}
       {show('industries') && (
-        <IndustriesServe data={content.industrySection} />
+        <IndustriesSection data={content.industrySection} />
       )}
 
       {/* User Guide Section */}

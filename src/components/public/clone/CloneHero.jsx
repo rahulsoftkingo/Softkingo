@@ -63,9 +63,11 @@ export default function CloneHero({ data }) {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
         {/* Breadcrumbs: Home Page > [Slug] */}
         <nav className="flex items-center justify-center gap-2 text-[10px] md:text-xs text-sky-400 mb-4 font-medium">
-          <Link href="/" className="hover:underline transition-all">Home Page</Link>
+          <Link href="/" className="hover:underline transition-all">Home</Link>
           <ChevronRight size={12} className="text-white/40" />
-          <span className="text-sky-400 capitalize">{data?.title || "clone app development page"}</span>
+          <Link href="/solutions" className="hover:underline transition-all">Solutions</Link>
+          <ChevronRight size={12} className="text-white/40" />
+          <span className="text-white hover:text-sky-400 capitalize">{data?.title || "clone app development page"}</span>
         </nav>
 
         {/* Hero Title & Subtitle */}
@@ -73,7 +75,7 @@ export default function CloneHero({ data }) {
           <h1 className="text-3xl md:text-3xl lg:text-4xl font-black text-white mb-3 leading-tight tracking-tight">
             {data?.title || "Clone App Development Company"}
           </h1>
-          <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl mx-auto font-normal opacity-90">
+          <p className="text-slate-300 text-xs leading-relaxed max-w-3xl mx-auto font-normal opacity-90">
             {data?.subtitle || "Softkingo has the best Front end developers capable of providing the most intuitive user interfaces and interactive user experience for your project's dream architecture."}
           </p>
         </div>
@@ -134,7 +136,7 @@ export default function CloneHero({ data }) {
                       zIndex: 10 - absOffset,
                     }}
                     transition={{ type: "spring", stiffness: 120, damping: 20 }}
-                    className="absolute w-[160px] md:w-[190px] rounded-sm border-[1.5px] border-[#555] shadow-2xl bg-black group"
+                    className="absolute w-[160px] md:w-[190px] rounded-sm  shadow-2xl bg-black group"
                     style={{ transformStyle: 'preserve-3d' }}
                   >
                     <Image
@@ -164,10 +166,10 @@ export default function CloneHero({ data }) {
         {/* Trusted By Brands section - White Round Banner */}
         <div className="max-w-4xl mx-auto w-full animate-in fade-in slide-in-from-bottom duration-1000 delay-500">
           <motion.div
-            className="bg-white rounded-[2rem] md:rounded-[3rem] p-3 md:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.4)] flex flex-col md:flex-row items-center gap-4 md:gap-10 relative overflow-hidden"
+            className="bg-white rounded-[0.5rem] md:rounded-[1rem] p-3 md:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.4)] flex flex-col md:flex-row items-center gap-4 md:gap-10 relative overflow-hidden"
           >
             <div className="flex-shrink-0 px-4 md:border-r border-slate-200">
-              <h3 className="text-lg md:text-xl font-black text-[#1A2E44] tracking-tighter">
+              <h3 className="text-lg md:text-xl font-bold text-sky-900 tracking-tighter">
                 Trusted By Brands
               </h3>
             </div>

@@ -39,17 +39,17 @@ function AwardsSection() {
             and long‑term partnerships with our clients.'
           />
         </div>
-        
+
         {/* Auto-swipe Awards Carousel */}
         <div className="relative overflow-hidden mt-8">
           <div className="flex animate-marquee hover:[animation-play-state:paused]">
             {[...awards, ...awards].map((award, index) => (
-              <div key={index} className="flex-shrink-0 w-1/5 px-3">
+              <div key={index} className="flex-shrink-0 w-1/4 px-3">
                 <Image
                   src={award.image}
                   alt={award.alt}
-                  width={150}
-                  height={80}
+                  width={180}
+                  height={100}
                   className="mx-auto"
                 />
               </div>

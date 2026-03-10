@@ -63,6 +63,7 @@ const BlogCTA = Node.create({
       buttonText: { default: 'Get Started' },
       buttonLink: { default: 'https://softkingo.com/contact' },
       image: { default: '/images/logo.png' },
+      variant: { default: 'standard' },
     };
   },
   parseHTML() {
@@ -71,12 +72,19 @@ const BlogCTA = Node.create({
   renderHTML({ node, HTMLAttributes }) {
     return [
       'div',
-      mergeAttributes(HTMLAttributes, { 'data-type': 'blog-cta', class: 'blog-cta-editor-preview' }),
+      mergeAttributes(HTMLAttributes, {
+        'data-type': 'blog-cta',
+        'data-variant': node.attrs.variant || 'standard',
+        class: 'blog-cta-editor-preview'
+      }),
+      ['div', { class: 'cta-preview-image' },
+        ['img', { src: node.attrs.image || '/images/logo.png', alt: 'CTA Preview' }]
+      ],
       ['div', { class: 'cta-preview-info' },
         ['h4', {}, node.attrs.title],
         ['p', {}, node.attrs.description],
+        ['div', { class: 'cta-preview-btn' }, node.attrs.buttonText]
       ],
-      ['div', { class: 'cta-preview-btn' }, node.attrs.buttonText]
     ];
   },
   addCommands() {
@@ -121,6 +129,10 @@ import {
   Quote,
   Zap,
   Loader2,
+  Trash2,
+  Layout,
+  Columns,
+  Rows,
 } from 'lucide-react';
 
 export default function AdvancedTipTapEditor({ value, onChange }) {
@@ -689,9 +701,15 @@ function EditorToolbar({
           <ToolbarButton onClick={onImageUpload} icon={isUploading ? Loader2 : ImageIcon} title={isUploading ? 'Uploading...' : 'Upload Image'} disabled={isUploading} />
           <ToolbarButton
             active={isActive('table')}
-            onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+            onClick={() => {
+              const rows = window.prompt('Approx rows counts:', '3');
+              const cols = window.prompt('Approx columns counts:', '3');
+              if (rows && cols) {
+                editor.chain().focus().insertTable({ rows: parseInt(rows) || 3, cols: parseInt(cols) || 3, withHeaderRow: true }).run();
+              }
+            }}
             icon={TableIcon}
-            title="Insert Table"
+            title="Insert Perfect Table"
           />
         </ToolbarGroup>
 
@@ -709,12 +727,19 @@ function EditorToolbar({
             onClick={() => {
               const title = window.prompt('CTA Title:', 'Ready to Transform Your Business?');
               const link = window.prompt('CTA Button Link:', 'https://softkingo.com/contact');
+              const variants = ['standard', 'vertical', 'reversed', 'floating', 'minimalist', 'compact', 'full-bg'];
+              const variant = window.prompt(`Select Layout (${variants.join(', ')}):`, 'standard');
+
               if (title && link) {
-                editor.chain().focus().insertCTA({ title, buttonLink: link }).run();
+                editor.chain().focus().insertCTA({
+                  title,
+                  buttonLink: link,
+                  variant: variants.includes(variant) ? variant : 'standard'
+                }).run();
               }
             }}
             icon={Zap}
-            title="CTA Block"
+            title="Insert Multi-Variant CTA"
           />
         </ToolbarGroup>
 
@@ -723,10 +748,22 @@ function EditorToolbar({
           <>
             <ToolbarSeparator />
             <ToolbarGroup>
-              <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} icon={Plus} title="Add Column" />
-              <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} icon={Plus} title="Add Row" />
-              <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} icon={Minus} title="Delete Column" variant="danger" />
-              <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} icon={Minus} title="Delete Row" variant="danger" />
+              <ToolbarButton onClick={() => editor.chain().focus().addColumnBefore().run()} icon={Columns} title="Add Column Before" />
+              <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()} icon={Columns} title="Add Column After" />
+              <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()} icon={Rows} title="Add Row Before" />
+              <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()} icon={Rows} title="Add Row After" />
+            </ToolbarGroup>
+            <ToolbarSeparator />
+            <ToolbarGroup>
+              <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()} icon={Columns} title="Delete Column" variant="danger" />
+              <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()} icon={Rows} title="Delete Row" variant="danger" />
+              <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()} icon={Trash2} title="Delete Entire Table" variant="danger" />
+            </ToolbarGroup>
+            <ToolbarSeparator />
+            <ToolbarGroup>
+              <ToolbarButton onClick={() => editor.chain().focus().mergeCells().run()} icon={Plus} title="Merge Cells" />
+              <ToolbarButton onClick={() => editor.chain().focus().splitCell().run()} icon={Minus} title="Split Cell" />
+              <ToolbarButton onClick={() => editor.chain().focus().toggleHeaderRow().run()} icon={Layout} title="Toggle Header Row" />
             </ToolbarGroup>
           </>
         )}

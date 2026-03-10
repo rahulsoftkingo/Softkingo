@@ -185,6 +185,7 @@ function mapTipTapToSections(rawJson, fallbackTitle, fallbackExcerpt) {
         buttonText: node.attrs?.buttonText,
         buttonLink: node.attrs?.buttonLink,
         image: node.attrs?.image,
+        variant: node.attrs?.variant,
       });
       continue;
     }

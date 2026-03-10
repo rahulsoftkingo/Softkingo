@@ -1161,14 +1161,15 @@ body {
 /* Tables (class set on Table extension: editor-table) [file:445] */
 .editor-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse !important;
+  /* Match public table cleaner look */
   margin: 2em 0;
-  border-radius: 18px;
+  border-radius: 8px;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 1);
-  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.08);
+  border: 1px solid #cbd5e1 !important;
+  /* Visible border */
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
 }
 
 .editor-table thead th {
@@ -1185,7 +1186,8 @@ body {
 
 .editor-table tbody td {
   padding: 12px 16px;
-  border-top: 1px solid rgba(226, 232, 240, 1);
+  border: 1px solid #e2e8f0 !important;
+  /* Force borders to show */
   vertical-align: top;
   color: #0f172a;
 }
@@ -1367,123 +1369,387 @@ body {
   line-height: 1.6 !important;
 }
 
-/* Blog CTA matches editor class */
-.blog-cta-editor-preview {
-  margin: 2.5rem 0 !important;
-  background: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 16px !important;
+/* --- CTA STRUCTURAL VARIANTS (Unified for Editor & Public) --- */
+
+/* Base container for editor */
+.advanced-editor .ProseMirror .blog-cta-editor-preview {
+  margin: 3.5rem 0 !important;
+  border-radius: 20px !important;
   overflow: hidden !important;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06) !important;
   display: flex !important;
   align-items: stretch !important;
+  transition: all 0.3s ease !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* 1. Standard (Classic Horizontal) */
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="standard"],
+.blog-cta-container.variant-standard {
+  flex-direction: row !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 2. Vertical Hero (Top Image, Bottom Center Text) */
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="vertical"],
+.blog-cta-container.variant-vertical {
+  flex-direction: column !important;
+  text-align: center !important;
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="vertical"] .cta-preview-image,
+.blog-cta-container.variant-vertical .cta-image-wrapper {
+  width: 100% !important;
+  height: 260px !important;
+  border: 0 !important;
+  background: #1e293b !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="vertical"] .cta-preview-info,
+.blog-cta-container.variant-vertical .cta-content {
+  padding: 3rem 2rem !important;
+  text-align: center !important;
+}
+
+/* 3. Reversed (Text Left, Image Right) */
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="reversed"],
+.blog-cta-container.variant-reversed {
+  flex-direction: row-reverse !important;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* 4. Floating / Overlay (Glass Content over Image) */
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="floating"],
+.blog-cta-container.variant-floating {
+  position: relative !important;
+  min-height: 350px !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="floating"] .cta-preview-image,
+.blog-cta-container.variant-floating .cta-image-wrapper {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+  opacity: 0.15 !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="floating"] .cta-preview-info,
+.blog-cta-container.variant-floating .cta-content {
+  position: relative !important;
+  z-index: 2 !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  margin: 2rem !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1) !important;
+  text-align: center !important;
+}
+
+/* 5. Minimalist Accent (No Image, Left-Border Highlight) */
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="minimalist"],
+.blog-cta-container.variant-minimalist {
+  background: #ffffff !important;
+  border: 0 !important;
+  border-left: 8px solid #0ea5e9 !important;
+  box-shadow: 0 10px 30px rgba(14, 165, 233, 0.08) !important;
+  border-radius: 4px !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="minimalist"] .cta-preview-image {
+  display: none !important;
+}
+
+/* 6. Compact Bar (Single line) */
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="compact"],
+.blog-cta-container.variant-compact {
+  flex-direction: row !important;
+  align-items: center !important;
+  padding: 1rem 2rem !important;
+  gap: 2rem !important;
+  background: #f0f9ff !important;
+  border: 1px solid #bae6fd !important;
+  border-radius: 99px !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="compact"] .cta-preview-image {
+  width: 50px !important;
+  height: 50px !important;
+  min-height: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="compact"] .cta-preview-info {
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 2rem !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="compact"] h4 {
+  font-size: 1.1rem !important;
+  margin: 0 !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="compact"] p {
+  display: none !important;
+  /* Hide description in compact mode */
+}
+
+/* 7. Full Background (Immersive Overlay) */
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="full-bg"],
+.blog-cta-container.variant-full-bg {
+  position: relative !important;
+  min-height: 400px !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #000000 !important;
+  border: 0 !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="full-bg"] .cta-preview-image,
+.blog-cta-container.variant-full-bg .cta-image-wrapper {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+  opacity: 0.6 !important;
+  /* Darker for better text readability */
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="full-bg"] .cta-preview-info,
+.blog-cta-container.variant-full-bg .cta-content {
+  position: relative !important;
+  z-index: 2 !important;
+  max-width: 600px !important;
+  text-align: center !important;
+  padding: 3rem !important;
+  color: #ffffff !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="full-bg"] h4,
+.blog-cta-container.variant-full-bg h4 {
+  color: #ffffff !important;
+  font-size: 2.25rem !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="full-bg"] p,
+.blog-cta-container.variant-full-bg p {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.advanced-editor .ProseMirror .blog-cta-editor-preview[data-variant="full-bg"] .cta-preview-btn,
+.blog-cta-container.variant-full-bg a {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+/* Core Structure Overrides */
+.advanced-editor .ProseMirror .blog-cta-editor-preview,
+.blog-cta-container {
+  margin: 3.5rem 0 !important;
+  border-radius: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
 }
 
 @media (min-width: 768px) {
 
-  .blog-cta-block,
-  .blog-cta-editor-preview {
-    flex-direction: row;
-    align-items: center;
+  .advanced-editor .ProseMirror .blog-cta-editor-preview,
+  .blog-cta-container {
+    flex-direction: row !important;
+    align-items: stretch !important;
   }
 }
 
-.blog-cta-block img,
-.blog-cta-editor-preview img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  padding: 1.5rem;
-  background: #f8fafc;
+.advanced-editor .ProseMirror .cta-preview-image,
+.blog-cta-container .cta-image-wrapper {
+  width: 100% !important;
+  min-height: 200px !important;
+  background: #f8fafc !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 2rem !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  position: relative !important;
 }
 
 @media (min-width: 768px) {
 
-  .blog-cta-block img,
-  .blog-cta-editor-preview img {
-    width: 33%;
+  .advanced-editor .ProseMirror .cta-preview-image,
+  .blog-cta-container .cta-image-wrapper {
+    width: 33% !important;
+    min-height: auto !important;
+    border-bottom: 0 !important;
+    border-right: 1px solid #f1f5f9 !important;
   }
 }
 
-.cta-preview-info,
-.blog-cta-content {
-  padding: 1.5rem;
-  flex: 1;
+.advanced-editor .ProseMirror .cta-preview-image img,
+.blog-cta-container .cta-image-wrapper img {
+  width: 100% !important;
+  height: 120px !important;
+  object-fit: contain !important;
+}
+
+.advanced-editor .ProseMirror .cta-preview-info,
+.blog-cta-container .cta-content {
+  padding: 2rem !important;
+  flex: 1 !important;
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
 }
 
 @media (min-width: 768px) {
 
-  .cta-preview-info,
-  .blog-cta-content {
-    padding: 2.5rem;
+  .advanced-editor .ProseMirror .cta-preview-info,
+  .blog-cta-container .cta-content {
+    padding: 3rem !important;
+    text-align: left !important;
+    align-items: flex-start !important;
   }
 }
 
-.cta-preview-info h4,
-.blog-cta-block h4 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 0.75rem;
-  color: #0f172a;
-  line-height: 1.2;
+.advanced-editor .ProseMirror .cta-preview-info h4,
+.blog-cta-container .cta-content h4 {
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  margin: 0 0 0.75rem 0 !important;
+  color: #0f172a !important;
+  line-height: 1.2 !important;
 }
 
-.cta-preview-info p,
-.blog-cta-block p {
-  color: #64748b;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
+.advanced-editor .ProseMirror .cta-preview-info p,
+.blog-cta-container .cta-content p {
+  color: #64748b !important;
+  font-size: 1rem !important;
+  margin: 0 0 1.5rem 0 !important;
+  line-height: 1.6 !important;
 }
 
-.cta-preview-btn,
-.blog-cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 2rem;
-  background: #0ea5e9;
-  color: white;
-  font-weight: 700;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+.advanced-editor .ProseMirror .cta-preview-btn,
+.blog-cta-container .cta-content a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.75rem 2.5rem !important;
+  background: #0ea5e9 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3) !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
 }
 
-.cta-preview-btn:hover,
-.blog-cta-btn:hover {
-  background: #0284c7;
-  transform: translateY(-2px);
-  box-shadow: 0 15px 30px rgba(14, 165, 233, 0.4);
+.advanced-editor .ProseMirror .cta-preview-btn:hover,
+.blog-cta-container .cta-content a:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 15px 30px rgba(14, 165, 233, 0.4) !important;
 }
 
-/* Dark Mode Adjustments */
+/* Forced Table Visibility - Overriding EVERYTHING in editor */
+.advanced-editor .ProseMirror table {
+  border-collapse: collapse !important;
+  width: 100% !important;
+  margin: 2rem 0 !important;
+  border: 1px solid #cbd5e1 !important;
+  table-layout: fixed !important;
+}
+
+.advanced-editor .ProseMirror th,
+.advanced-editor .ProseMirror td {
+  min-width: 2em !important;
+  min-height: 2.5em !important;
+  border: 1px solid #cbd5e1 !important;
+  padding: 10px 14px !important;
+  vertical-align: top !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+.advanced-editor .ProseMirror th {
+  font-weight: bold !important;
+  text-align: left !important;
+  background-color: #f8fafc !important;
+}
+
+.advanced-editor .ProseMirror .selectedCell:after {
+  z-index: 2 !important;
+  position: absolute !important;
+  content: "" !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  background: rgba(200, 200, 255, 0.4) !important;
+  pointer-events: none !important;
+}
+
+.advanced-editor .ProseMirror .column-resize-handle {
+  position: absolute !important;
+  right: -2px !important;
+  top: 0 !important;
+  bottom: -2px !important;
+  width: 4px !important;
+  background-color: #38bdf8 !important;
+  pointer-events: none !important;
+}
+
+/* Dark Mode Adjustments - Specific */
 @media (prefers-color-scheme: dark) {
-  .blog-summary-block {
-    background-color: rgba(14, 165, 233, 0.1);
-    color: #e2e8f0;
-    border-color: #38bdf8;
+  .advanced-editor .ProseMirror .blog-cta-editor-preview {
+    background: #1e293b !important;
+    border-color: #334155 !important;
   }
 
-  .blog-cta-block,
-  .blog-cta-editor-preview {
-    background: #1e293b;
-    border-color: #334155;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  .advanced-editor .ProseMirror .cta-preview-image {
+    background: #0f172a !important;
+    border-color: #334155 !important;
   }
 
-  .blog-cta-block img,
-  .blog-cta-editor-preview img {
-    background: #0f172a;
+  .advanced-editor .ProseMirror .cta-preview-info h4 {
+    color: #f8fafc !important;
   }
 
-  .cta-preview-info h4,
-  .blog-cta-block h4 {
-    color: #f8fafc;
+  .advanced-editor .ProseMirror .cta-preview-info p {
+    color: #94a3b8 !important;
   }
 
-  .cta-preview-info p,
-  .blog-cta-block p {
-    color: #94a3b8;
+  .advanced-editor .ProseMirror table {
+    border-color: #334155 !important;
+  }
+
+  .advanced-editor .ProseMirror th {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+  }
+
+  .advanced-editor .ProseMirror td {
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
   }
 }
