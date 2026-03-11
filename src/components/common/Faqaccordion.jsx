@@ -67,6 +67,7 @@ export default function FAQAccordion({ data }) {
   const items = data?.items || defaultItems;
   const title = data?.title || "Questions? Look Here";
   const subtitle = data?.subtitle || "Find answers to frequently asked questions about our services and process.";
+  const gradientText = data?.gradientText || "";
 
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 
@@ -78,6 +79,7 @@ export default function FAQAccordion({ data }) {
         <CommonTitle 
             align="center"
             title={title}
+            gradientText={gradientText}
             subtitle={subtitle}
         />
 

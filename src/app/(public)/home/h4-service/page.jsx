@@ -487,8 +487,8 @@ function ServiceCategory({ title, categoryLink, icon, description, services }) {
     offset: ["start end", "start start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 0.95]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [0.7, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.8, 1], [0.95, 1, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "2%"]);
 
   const active = services?.[activeService];
@@ -499,7 +499,7 @@ function ServiceCategory({ title, categoryLink, icon, description, services }) {
     <motion.div
       ref={ref}
       style={{ scale, opacity, y }}
-      className="sticky top-24 backdrop-blur-lg bg-white/90 rounded-3xl border border-primary shadowxl overflow-hidden"
+      className="sticky top-24 bg-white rounded-3xl border border-primary shadow-xl overflow-hidden"
     >
       <div className="p-8">
         <div className="flex items-start gap-4 mb-8">

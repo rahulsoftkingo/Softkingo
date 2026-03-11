@@ -129,8 +129,8 @@ function StickyProjectCard({ p, index, total, onContact }) {
     offset: ["start end", "start start"],
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.96, 1, 0.97]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [0.7, 1]);
+  const scale = useTransform(scrollYProgress, [0, 0.8, 1], [0.96, 1, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
 
   const bgStyle = p.bgImage
     ? { backgroundImage: `url(${p.bgImage})`, backgroundSize: "cover", backgroundPosition: "center" }
@@ -150,7 +150,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
         {/* Color overlay */}
         <div
           className="absolute inset-0"
-          style={{ background: p.bgColor || "rgba(2,132,199,0.92)", mixBlendMode: "multiply", opacity: 0.96 }}
+          style={{ background: p.bgColor || "rgba(2,132,199,1)", mixBlendMode: "multiply", opacity: 1 }}
         />
 
         <div className="relative z-10 grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr]">
