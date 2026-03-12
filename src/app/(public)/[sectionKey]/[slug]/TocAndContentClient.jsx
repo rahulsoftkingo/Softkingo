@@ -11,7 +11,6 @@ import Link from "next/link";
 import EGuidePromoCard from "@/components/public/EGuidePromoCard";
 import { useEffect, useRef, useState } from "react";
 import {
-  FaArrowLeft,
   FaCalendarAlt,
   FaTag,
   FaFacebookF,
@@ -19,27 +18,18 @@ import {
   FaLinkedinIn,
   FaWhatsapp,
   FaLink,
-  FaStar,
   FaCode,
   FaLightbulb,
-  FaRocket,
-  FaChartLine,
-  FaMobileAlt,
   FaShieldAlt,
   FaHeart,
 } from "react-icons/fa";
 import BlogCard from "@/app/(public)/blog/BlogCard";
-
-// import { useEffect, useRef, useState } from "react";
-// import BlogCard from "@/components/public/blog/BlogCard";
 import ArticleRating from "@/app/(public)/blog/ArticleRating";
 import NewsletterStrip from "@/app/(public)/blog/NewsletterStrip";
-
 import { motion, AnimatePresence } from 'framer-motion';
 import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
 import BlogFaq from "@/components/common/BlogFaq";
-import BlogKeyTakeaways from "@/components/common/BlogKeyTakeaways"; // ✅ NEW
-import { FaCheckCircle } from "react-icons/fa";
+import BlogKeyTakeaways from "@/components/common/BlogKeyTakeaways";
 
 
 
@@ -156,9 +146,16 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
           <article className="bg-white rounded-3xl shadow-[0_18px_45px_rgba(15,23,42,0.06)] border border-slate-200 overflow-hidden prose content-card modern-prose">
             <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-10">
               {/* ✅ Key Takeaways (Summary Points) */}
-              {post.summaryPoints && (
-                <BlogKeyTakeaways points={JSON.parse(post.summaryPoints)} />
-              )}
+              {(() => {
+                if (!post.summaryPoints) return null;
+                try {
+                  const pts = typeof post.summaryPoints === 'string' ? JSON.parse(post.summaryPoints) : post.summaryPoints;
+                  return <BlogKeyTakeaways points={pts} />;
+                } catch (e) {
+                  console.error("Failed to parse summaryPoints:", e);
+                  return null;
+                }
+              })()}
 
               {post.sections.map((sec, index) => {
                 // ✅ Fix: Redundant Title Check
@@ -265,9 +262,16 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
                     {index === post.sections.length - 1 && (
                       <div className="mt-10 space-y-8">
                         {/* ✅ FAQ Component Integration */}
-                        {post.faqs && (
-                          <BlogFaq faqs={JSON.parse(post.faqs)} />
-                        )}
+                        {(() => {
+                          if (!post.faqs) return null;
+                          try {
+                            const fqs = typeof post.faqs === 'string' ? JSON.parse(post.faqs) : post.faqs;
+                            return <BlogFaq faqs={fqs} />;
+                          } catch (e) {
+                            console.error("Failed to parse FAQs:", e);
+                            return null;
+                          }
+                        })()}
 
                         <EngagementBar
                           slug={post.slug}
@@ -737,116 +741,6 @@ function RelatedPosts({ posts }) {
 
 
 
-function ArticleSmileyRating({ onRate }) {
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-  const [submitting, setSubmitting] = useState(false);
-
-  const current = faces[(hover || rating || 3) - 1]; // default = middle face
-
-  const handleClick = async (val) => {
-    setRating(val);
-    if (!onRate) return;
-    try {
-      setSubmitting(true);
-      await onRate(val);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <div
-      className={`
-        bg-gradient-to-r ${current.color} ${current.border}
-        rounded-2xl p-6 sm:p-7 text-center shadow-sm
-      `}
-    >
-      {/* Smiley row */}
-      <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
-        {faces.map((face) => {
-          const active = face.value <= (hover || rating);
-          return (
-            <motion.button
-              key={face.value}
-              type="button"
-              onMouseEnter={() => setHover(face.value)}
-              onMouseLeave={() => setHover(0)}
-              onClick={() => handleClick(face.value)}
-              whileHover={{ scale: 1.15, rotate: -5 }}
-              whileTap={{ scale: 0.9 }}
-              className={`
-                relative flex items-center justify-center
-                h-10 w-10 sm:h-11 sm:w-11 rounded-full
-                transition-colors duration-200
-                ${active ? 'bg-white shadow-md' : 'bg-white/70'}
-              `}
-            >
-              <span
-                className={`
-                  text-lg sm:text-xl
-                  ${active ? '' : 'opacity-70'}
-                `}
-              >
-                {face.emoji}
-              </span>
-              {active && (
-                <motion.span
-                  layoutId="smiley-glow"
-                  className="pointer-events-none absolute inset-0 rounded-full bg-yellow-300/20 blur-sm"
-                />
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
-
-      {/* Texts */}
-      <AnimatePresence mode="wait">
-        <motion.h3
-          key={current.label}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.18 }}
-          className="text-lg sm:text-xl font-semibold text-amber-900 mb-1"
-        >
-          Was this article helpful?
-        </motion.h3>
-      </AnimatePresence>
-
-      <p className="text-amber-700 text-xs sm:text-sm mb-4">
-        Current mood: <span className="font-semibold">{current.label}</span>
-      </p>
-
-      {/* Buttons */}
-      <div className="flex flex-wrap gap-2 justify-center">
-        <button
-          type="button"
-          disabled={!rating || submitting}
-          className={`
-            px-4 py-2 rounded-full text-xs sm:text-sm font-semibold
-            text-white bg-amber-500 hover:bg-amber-600
-            disabled:bg-amber-300 disabled:cursor-not-allowed
-            transition-colors
-          `}
-          onClick={() => rating && onRate?.(rating)}
-        >
-          {submitting ? 'Saving...' : rating ? `Submit ${rating}/5` : 'Pick a face to rate'}
-        </button>
-        {rating > 0 && (
-          <button
-            type="button"
-            onClick={() => setRating(0)}
-            className="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border border-amber-300 text-amber-700 hover:bg-amber-100 transition-colors"
-          >
-            Reset
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
 function EngagementBar({ slug, initialLikes = 0, initialShares = 0 }) {
   const [likes, setLikes] = useState(initialLikes);
   const [shares, setShares] = useState(initialShares);
