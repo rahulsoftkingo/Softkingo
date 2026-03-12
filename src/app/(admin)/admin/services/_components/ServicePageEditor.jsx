@@ -9,7 +9,12 @@ import {
     Award, MessageSquare, MousePointerClick, Layers, Save, Grid, Cpu, TrendingUp,
     Globe, BookOpen
 } from "lucide-react";
+import dynamic from 'next/dynamic';
 import ServiceEditor from "./ServiceEditor";
+
+const AdvancedTipTapEditor = dynamic(() => import('../../blog/AdvancedTipTapEditor'), {
+    ssr: false,
+});
 
 // --- 1. MEDIA INPUT COMPONENT ---
 const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
@@ -291,6 +296,7 @@ export default function ServicePageEditor({ data, onBack }) {
                         formData={formData}
                         updateField={updateField}
                         MediaInput={BoundMediaInput}
+                        TipTapEditor={AdvancedTipTapEditor}
                         activeSections={formData.activeSections}
                         portfolioCategories={portfolioCategories}
                     />

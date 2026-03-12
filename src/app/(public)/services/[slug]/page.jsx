@@ -35,7 +35,10 @@ import {
   Users,
   Search,
   Ruler,
-  Shield
+  Shield,
+  Clock,
+  Gem,
+  Globe
 } from "lucide-react";
 
 import InquirySection from "@/components/footer/InquirySection";
@@ -153,7 +156,8 @@ export default async function ServicePage({ params }) {
               className="object-cover opacity-90"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-800/70 to-slate-500/60 opacity-40" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-slate-900/40 opacity-80" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500/10 rounded-full -mr-64 -mt-64 blur-[120px] opacity-50"></div>
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-24 w-full">
@@ -180,11 +184,11 @@ export default async function ServicePage({ params }) {
                   </div>
 
                 </nav>
-                <div className="space-y-4">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight animate-fadeInUp animation-delay-200">
+                <div className="space-y-6">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter animate-fadeInUp animation-delay-200">
                     {content.heroTitle || service.title}
                   </h1>
-                  <p className="text-sky-100 text-base md:text-lg lg:text-xl max-w-xl leading-relaxed animate-fadeInUp animation-delay-400">
+                  <p className="text-sky-100/90 text-lg md:text-xl lg:text-2xl max-w-2xl leading-relaxed font-medium animate-fadeInUp animation-delay-400">
                     {content.heroSubtitle || service.excerpt}
                   </p>
                 </div>
@@ -283,37 +287,32 @@ export default async function ServicePage({ params }) {
 
       {/* Stats Section */}
       {show('stats') && (
-        <section className="bg-gradient-to-br from-white  to-white py-12 md:py-16 px-4 md:px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
+        <section className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 py-10 px-4 md:px-6 lg:px-12 border-y border-white/10 shadow-2xl">
+          {/* Decorative mesh-like blurs */}
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl -mt-32 opacity-30"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl -mb-48 opacity-20"></div>
 
-            <CommonTitle
-              align="left"
-              pill={false}
-              title='Empowering'
-              gradientText="Digital Success with Softkingo"
-              subtitle={content.statsSubtitle || content.heroSubtitle}
-            />
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              <StatBox
-                value={content.stats.years}
-                label={content.stats.yearsLabel}
-                color="from-sky-300 to-sky-600"
+          <div className="max-w-7xl mx-auto relative z-10">
+            <div className="flex flex-wrap items-center justify-around gap-10 md:gap-12 text-white">
+              <StatItem
+                icon={<Clock className="w-8 h-8 md:w-10 md:h-10" />}
+                value={content.stats?.years}
+                label={content.stats?.yearsLabel || "Years Of Experience"}
               />
-              <StatBox
-                value={content.stats.projects}
-                label={content.stats.projectsLabel}
-                color="from-sky-300 to-sky-600"
+              <StatItem
+                icon={<Globe className="w-8 h-8 md:w-10 md:h-10" />}
+                value={content.stats?.projects}
+                label={content.stats?.projectsLabel || "Countries Developed"}
               />
-              <StatBox
-                value={content.stats.team}
-                label={content.stats.teamLabel}
-                color="from-sky-300 to-sky-600"
+              <StatItem
+                icon={<Users className="w-8 h-8 md:w-10 md:h-10" />}
+                value={content.stats?.team}
+                label={content.stats?.teamLabel || "Tech Enthusiast"}
               />
-              <StatBox
-                value={content.stats.rating}
-                label={content.stats.ratingLabel}
-                color="from-sky-300 to-sky-600"
+              <StatItem
+                icon={<Gem className="w-8 h-8 md:w-10 md:h-10" />}
+                value={content.stats?.rating}
+                label={content.stats?.ratingLabel || "Products Delivered"}
               />
             </div>
           </div>
@@ -413,16 +412,21 @@ export default async function ServicePage({ params }) {
   );
 }
 
-// Stat Box Component
-function StatBox({ value, label, color }) {
+// Stat Item Component for the new bar design
+function StatItem({ icon, value, label }) {
   return (
-    <div
-      className={`bg-gradient-to-br ${color} p-4 md:p-6 text-center rounded-sm shadow hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}
-    >
-      <h3 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1 group-hover:scale-105 transition-transform">
-        {value}
-      </h3>
-      <p className="text-white/90 font-medium text-[10px] md:text-xs uppercase tracking-wider">{label}</p>
+    <div className="flex flex-col items-center text-center group cursor-default">
+      <div className="flex items-center gap-4 mb-2">
+        <span className="text-white/80 scale-90 group-hover:scale-110 group-hover:text-white transition-all duration-500 transform-gpu">
+          {icon}
+        </span>
+        <span className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter text-white drop-shadow-md">
+          {value}
+        </span>
+      </div>
+      <p className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] text-sky-100/80 group-hover:text-white transition-colors">
+        {label}
+      </p>
     </div>
   );
 }

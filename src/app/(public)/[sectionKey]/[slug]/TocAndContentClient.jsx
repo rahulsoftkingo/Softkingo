@@ -180,7 +180,7 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
                   >
                     {!isRedundantTitle && (
                       <h2
-                        className={`section-title text-xl sm:text-2xl font-semibold mb-3 ${sec.id === "overview" ? "text-sky-800" : "text-slate-900"
+                        className={`section-title text-xl sm:text-2xl font-semibold mb-3 pl-4 ${sec.id === "overview" ? "text-sky-800" : "text-slate-900"
                           }`}
                       >
                         {sec.title}
@@ -201,7 +201,7 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
                             <h3
                               key={idx}
                               id={subId}
-                              className="sub-title text-[15px] sm:text-[16px] font-semibold text-slate-900 mt-5 border-l-4 border-sky-500 pl-3"
+                              className="sub-title text-[15px] sm:text-[16px] font-semibold text-slate-900 mt-5 border-l-4 border-sky-500 pl-4"
                             >
                               {block.text}
                             </h3>

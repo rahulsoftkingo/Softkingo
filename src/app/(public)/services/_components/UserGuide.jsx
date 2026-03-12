@@ -1,183 +1,384 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CommonTitle from "@/components/ui/CommonTitle";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 const UserGuide = ({ data }) => {
+    const isRich = data?.mode === 'rich';
+    const richContent = data?.richContent;
+
+    // 1. Helper to map TipTap to Sections (copied from shared logic)
+    const mapTipTapToSections = (rawJson, fallbackTitle) => {
+        let doc;
+        try {
+            doc = typeof rawJson === "string" ? JSON.parse(rawJson) : rawJson;
+        } catch { return []; }
+        if (!doc || doc.type !== "doc" || !Array.isArray(doc.content)) return [];
+
+        const mapped = [];
+        let sectionIndex = 1;
+        let currentSection = { 
+            id: "section-1", 
+            title: fallbackTitle || "Overview", 
+            content: null, 
+            blocks: [], 
+            children: [] 
+        };
+
+        const pushCurrent = () => {
+            if (currentSection.blocks.length > 0) {
+                mapped.push({
+                    id: currentSection.id,
+                    title: currentSection.title,
+                    children: currentSection.children, // Capture children (H3s)
+                    content: (
+                        <div className="space-y-4">
+                            {currentSection.blocks.map((block, idx) => (
+                                <BlockRenderer key={idx} block={block} />
+                            ))}
+                        </div>
+                    )
+                });
+            }
+        };
+
+        for (const node of doc.content) {
+            if (node.type === "heading") {
+                const level = node.attrs?.level || 2;
+                const text = node.content?.map((c) => c.text).join("").trim();
+                const id = text?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || `section-${sectionIndex}`;
+                
+                if (level === 2) {
+                    pushCurrent();
+                    sectionIndex++;
+                    currentSection = {
+                        id,
+                        title: text || `Section ${sectionIndex}`,
+                        blocks: [],
+                        children: []
+                    };
+                    continue;
+                }
+                if (level === 3) {
+                    currentSection.blocks.push({ type: "h3", text, id });
+                    currentSection.children.push({ id, title: text }); // Add to children for ToC
+                    continue;
+                }
+            }
+            if (node.type === "paragraph") {
+                const text = node.content?.map((c) => c.text).join("").trim();
+                if (text) currentSection.blocks.push({ type: "p", text });
+            }
+            if (node.type === "bulletList") {
+                const items = node.content?.map(li => li.content?.flatMap(p => p.content || []).map(c => c.text).join("").trim()).filter(Boolean);
+                if (items?.length) currentSection.blocks.push({ type: "ul", items });
+            }
+            if (node.type === "orderedList") {
+                const items = node.content?.map(li => li.content?.flatMap(p => p.content || []).map(c => c.text).join("").trim()).filter(Boolean);
+                if (items?.length) currentSection.blocks.push({ type: "ol", items });
+            }
+        }
+        pushCurrent();
+        return mapped;
+    };
+
     const [activeTab, setActiveTab] = useState("");
+    const sectionRefs = useRef({});
 
     // Use dynamic data if available, otherwise fallback to static content
-    const rawSections = data?.sections || [
-        {
-            id: "what-is",
-            title: "What is Mobile App Development?",
-            description: "Mobile application development is the process of making software for smartphones, tablets and digital assistants, most commonly for the Android and iOS operating systems. The software can be preinstalled on the device, downloaded from a mobile app store or accessed through a mobile web browser. It involves various stages, including:",
-            subSections: [
-                {
-                    title: "Idea Generation",
-                    bullets: ["Identifying a specific need or problem that the mobile app aims to address.", "Clearly defining the app's purpose and outlining its features."]
-                },
-                {
-                    title: "App Design:",
-                    bullets: ["Conceptualizing and outlining the essential features and functionalities of the app", "Crafting detailed wireframes and designing the user interface (UI) and user experience (UX)."]
-                },
-                {
-                    title: "Development",
-                    bullets: ["Writing code to bring the app to life, utilizing programming languages such as Swift for iOS or Kotlin/Java for Android."]
-                },
-                {
-                    title: "Testing",
-                    bullets: ["Rigorously ensuring the app's functionality and performance meet established standards.", "Conducting thorough testing to identify and address any potential issues or bugs."]
-                },
-                {
-                    title: "Deployment",
-                    bullets: ["Publishing the completed app on major platforms like the Apple App Store or Google Play, making it accessible to users."]
-                },
-                {
-                    title: "Maintenance",
-                    bullets: ["On-going efforts to provide updates and support for the app.", "Addressing bugs, incorporating new features, and ensuring compatibility with the latest operating systems."]
-                }
-            ]
-        },
-        {
-            id: "key-components",
-            title: "What are the key components of a Mobile App?",
-            description: "A mobile app typically consists of several key components:",
-            subSections: [
-                {
-                    title: "User Interface (UI):",
-                    bullets: ["Components: Buttons, menus, screens, icons, and other elements users interact with.", "Purpose: Facilitate smooth navigation and usage of the app.", "Importance: A clear and intuitive UI is crucial for user satisfaction and app adoption."]
-                },
-                {
-                    title: "User Experience (UX):",
-                    bullets: ["Integrated Approach: Covers design, usability, accessibility, performance, and emotional impact, taking into account all essential elements.", "Goal: Create a seamless, enjoyable, and efficient interaction with the app.", "Impact: A positive UX can lead to increased engagement, loyalty, and brand reputation."]
-                },
-                {
-                    title: "Functionality:",
-                    bullets: ["Features: The diverse capabilities and functionalities of the app to fulfill its intended purpose.", "Examples: Booking appointments, making purchases, accessing information, sharing content, etc.", "Importance: Functionality should be relevant, reliable, and cater to user needs."]
-                },
-                {
-                    title: "Backend Services:",
-                    bullets: ["Server-side components: Oversee vital functions such as data storage, retrieval, processing, and other operations crucial to the app's functionality.", "Illustrations: Instances such as user accounts, processing payments, managing databases, and interacting with external services, among others.", "Importance: Robust backend services ensure efficient app performance and scalability."]
-                },
-                {
-                    title: "Database:",
-                    bullets: ["Secure storage: Organizes and protects app-related data like user information, content, and preferences."]
-                }
-            ]
-        },
-        {
-            id: "platforms",
-            title: "What are the different mobile platforms on which mobile apps can be built?",
-            description: "Mobile apps are primarily built for two major platforms:",
-            subSections: [
-                {
-                    title: "iOS (Apple)",
-                    bullets: ["The operating system used exclusively for Apple devices like iPhone and iPad. Development typically uses Swift or Objective-C."]
-                },
-                {
-                    title: "Android (Google)",
-                    bullets: ["An open-source operating system used by various manufacturers like Samsung, Google (Pixel), and others. Development typically uses Kotlin or Java."]
-                }
-            ]
-        },
-        {
-            id: "approaches",
-            title: "What are the different development approaches (native, hybrid, and cross-platform)?",
-            description: "",
-            subSections: [
-                {
-                    title: "Native Development",
-                    bullets: ["Building separate apps for each platform using platform-specific languages (e.g., Swift for iOS, Kotlin for Android). Offers best performance and access to all device features."]
-                },
-                {
-                    title: "Cross-Platform Development",
-                    bullets: ["Using a single codebase to create apps for multiple platforms (e.g., React Native, Flutter). Efficient for faster development and consistent UI."]
-                },
-                {
-                    title: "Hybrid Development",
-                    bullets: ["Web applications wrapped in a native container (e.g., Ionic). Essentially websites that function like apps."]
-                }
-            ]
+    const getSections = () => {
+        if (isRich && richContent) {
+            return mapTipTapToSections(richContent, data?.title);
         }
-    ];
 
-    const sections = rawSections.map((section, index) => ({
-        id: section.id || `section-${index}`,
-        title: section.title,
-        content: (
-            <div className="space-y-4">
-                {section.description && (
-                    <p className="text-gray-600 leading-relaxed">
-                        {section.description}
-                    </p>
-                )}
+        const rawSections = data?.sections || [
+            {
+                id: "what-is",
+                title: "What is Mobile App Development?",
+                description: "Mobile application development is the process of making software for smartphones, tablets and digital assistants, most commonly for the Android and iOS operating systems.",
+                subSections: [
+                    {
+                        title: "Idea Generation",
+                        bullets: ["Identifying a specific need or problem.", "Clearly defining the app's purpose."]
+                    },
+                    {
+                        title: "Development & Testing",
+                        bullets: ["Writing code using modern languages.", "Rigorously ensuring functionality."]
+                    }
+                ]
+            },
+            {
+                id: "key-components",
+                title: "Core Components",
+                description: "A successful mobile app relies on several critical architectural elements:",
+                subSections: [
+                    {
+                        title: "UI & UX",
+                        bullets: ["Intuitive buttons and menus.", "Seamless emotional impact and usability."]
+                    },
+                    {
+                        title: "Backend & DB",
+                        bullets: ["Secure data storage and retrieval.", "Scalable server-side processing."]
+                    }
+                ]
+            },
+            {
+                id: "platforms",
+                title: "Platforms & Approaches",
+                description: "Modern apps are built for specific ecosystems or via cross-platform frameworks.",
+                subSections: [
+                    {
+                        title: "iOS & Android",
+                        bullets: ["Swift/Kotlin for native power.", "Flutter/React Native for cross-platform speed."]
+                    }
+                ]
+            }
+        ];
+
+        return rawSections.map((section, index) => ({
+            id: section.id || `section-${index}`,
+            title: section.title,
+            description: section.description,
+            subSections: section.subSections,
+            content: (
                 <div className="space-y-6">
-                    {section.subSections?.map((sub, sIdx) => (
-                        <div key={sIdx}>
-                            {sub.title && <h4 className="font-bold text-gray-800 mb-2">{sub.title}</h4>}
-                            <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                                {sub.bullets?.map((bullet, bIdx) => (
-                                    <li key={bIdx}>{bullet}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
+                    {section.description && (
+                        <p className="text-slate-600 leading-relaxed text-lg font-medium">
+                            {section.description}
+                        </p>
+                    )}
+                    <div className="space-y-8">
+                        {section.subSections?.map((sub, sIdx) => (
+                            <div key={sIdx} className="bg-white/60 p-6 rounded-2xl border border-white shadow-sm">
+                                {sub.title && (
+                                    <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2 text-base md:text-lg">
+                                        <span className="w-2 h-2 rounded-full bg-sky-500 shadow-[0_0_10px_rgba(14,165,233,0.5)]"></span>
+                                        {sub.title}
+                                    </h4>
+                                )}
+                                <ul className="grid md:grid-cols-2 gap-4">
+                                    {sub.bullets?.map((bullet, bIdx) => (
+                                        <li key={bIdx} className="flex items-start gap-3 text-slate-600 text-sm leading-snug">
+                                            <div className="mt-1 w-4 h-4 rounded-full bg-sky-100 flex items-center justify-center shrink-0">
+                                                <span className="text-sky-600 text-[10px] font-black">✓</span>
+                                            </div>
+                                            {bullet}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        )
-    }));
+            )
+        }));
+    };
+
+    const sections = getSections();
 
     useEffect(() => {
-        if (sections.length > 0) {
-            setActiveTab(sections[0].id);
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observerCallback = (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveTab(entry.target.id);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        sections.forEach((section) => {
+            const el = document.getElementById(section.id);
+            if (el) observer.observe(el);
+        });
+
+        return () => observer.disconnect();
+    }, [sections]);
+
+    const scrollToId = (id) => {
+        const el = document.getElementById(id);
+        if (el) {
+            const offset = 100;
+            const elementPosition = el.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
         }
-    }, [data]);
+    };
+
+    const { scrollYProgress } = useScroll();
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
 
     if (sections.length === 0) return null;
 
-    const activeSection = sections.find((s) => s.id === activeTab) || sections[0];
-
     return (
-        <section className="bg-white py-16 px-4 md:px-6 lg:px-12" id="user-guide">
+        <section className="bg-white py-16 px-4 md:px-6 lg:px-12 relative overflow-hidden" id="user-guide">
+            {/* Reading Progress Bar */}
+            <motion.div
+                className="fixed top-0 left-0 right-0 h-1 bg-sky-500 origin-left z-[100]"
+                style={{ scaleX }}
+            />
+
             <div className="max-w-7xl mx-auto">
                 <CommonTitle
                     align="center"
                     pill={false}
                     title={data?.title || "Mobile App Development"}
                     gradientText={data?.subtitle || "User Guide"}
-                    subtitle={data?.description || "Everything you need to know about the mobile app development journey."}
+                    subtitle={data?.description || "Everything you need to know about the mobile app's core concepts and processes."}
                 />
 
-                <div className="mt-12 flex flex-col lg:flex-row gap-8 lg:gap-16">
-                    {/* Sidebar Navigation */}
-                    <aside className="lg:w-1/3 lg:sticky lg:top-24 h-fit">
-                        <nav className="space-y-1">
-                            {sections.map((section) => (
-                                <button
-                                    key={section.id}
-                                    onClick={() => setActiveTab(section.id)}
-                                    className={`w-full text-left px-4 py-4 rounded-lg text-sm font-medium transition-all duration-200 border-l-4 ${activeTab === section.id
-                                        ? "bg-sky-50 text-sky-600 border-sky-500 shadow-sm"
-                                        : "text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-800"
-                                        }`}
-                                >
-                                    {section.title}
-                                </button>
-                            ))}
-                        </nav>
+                <div className="mt-12 flex flex-col lg:flex-row gap-12 lg:gap-20">
+                    {/* Table of Contents (LEFT on Desktop, Bottom on Mobile) */}
+                    <aside className="lg:w-1/3 order-2 lg:order-1">
+                        <div className="lg:sticky lg:top-32 space-y-6">
+                            <div className="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-[0_25px_60px_rgba(15,23,42,0.08)] relative overflow-hidden group/toc">
+                                {/* Decorative Blur */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-sky-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-50 group-hover/toc:opacity-80 transition-opacity" />
+                                
+                                <div className="relative z-10">
+                                    <div className="flex items-center gap-3 mb-8 px-2">
+                                        <div className="w-1.5 h-6 bg-sky-500 rounded-full" />
+                                        <h4 className="text-[11px] font-black text-slate-900 uppercase tracking-[0.25em]">
+                                            Guide Navigation
+                                        </h4>
+                                    </div>
+
+                                    <div className="relative">
+                                        {/* Vertical Timeline line */}
+                                        <div className="absolute left-6 top-4 bottom-4 w-px bg-slate-100 hidden sm:block" />
+                                        
+                                        <nav className="space-y-4 relative">
+                                            {sections.map((section, idx) => (
+                                                <div key={section.id} className="space-y-2">
+                                                    <button
+                                                        onClick={() => scrollToId(section.id)}
+                                                        className={`group w-full text-left transition-all duration-300 flex items-center gap-5 relative group/item`}
+                                                    >
+                                                        {/* The indicator dot */}
+                                                        <div className={`relative z-20 w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-500 ${activeTab === section.id || section.children?.some(c => c.id === activeTab)
+                                                            ? "bg-sky-500 shadow-lg shadow-sky-200"
+                                                            : "bg-slate-50 text-slate-400 group-hover/item:bg-sky-50 group-hover/item:text-sky-500"
+                                                            }`}>
+                                                            <span className={`text-[10px] font-black tracking-tight transition-colors ${activeTab === section.id || section.children?.some(c => c.id === activeTab) ? "text-white" : "text-slate-400"
+                                                                }`}>
+                                                                {String(idx + 1).padStart(2, '0')}
+                                                            </span>
+
+                                                            {/* Subtle Ring for active */}
+                                                            {(activeTab === section.id || section.children?.some(c => c.id === activeTab)) && (
+                                                                <motion.div
+                                                                    layoutId="toc-pulse"
+                                                                    className="absolute -inset-1 rounded-[1.2rem] border-2 border-sky-100/50"
+                                                                    initial={{ opacity: 0 }}
+                                                                    animate={{ opacity: 1 }}
+                                                                />
+                                                            )}
+                                                        </div>
+
+                                                        <div className="flex flex-col gap-0.5">
+                                                            <span className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${activeTab === section.id || section.children?.some(c => c.id === activeTab) ? "text-sky-500" : "text-slate-400"
+                                                                }`}>
+                                                                Section {idx + 1}
+                                                            </span>
+                                                            <span className={`text-sm leading-tight transition-all duration-300 line-clamp-2 ${activeTab === section.id
+                                                                ? "text-slate-900 font-extrabold translate-x-1"
+                                                                : "text-slate-500 font-bold group-hover/item:text-sky-600"
+                                                                }`}>
+                                                                {section.title}
+                                                            </span>
+                                                        </div>
+                                                    </button>
+
+                                                    {/* Subsections (H3) */}
+                                                    {section.children?.length > 0 && (
+                                                        <div className="ml-16 pl-4 border-l border-slate-100 space-y-2 py-1">
+                                                            {section.children.map((child) => (
+                                                                <button
+                                                                    key={child.id}
+                                                                    onClick={() => scrollToId(child.id)}
+                                                                    className={`block text-xs text-left transition-all duration-300 ${activeTab === child.id
+                                                                        ? "text-sky-600 font-black"
+                                                                        : "text-slate-400 hover:text-sky-500 font-bold"
+                                                                        }`}
+                                                                >
+                                                                    {child.title}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </aside>
 
-                    {/* Main Content Area */}
-                    <main className="lg:w-2/3 min-h-[400px]">
-                        <div className="bg-gray-50/50 rounded-2xl p-6 md:p-10 border border-gray-100 shadow-sm animate-fadeIn">
-                            <h3 className="text-2xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-200">
-                                {activeSection.title}
-                            </h3>
-                            <div className="prose prose-sky max-w-none">
-                                {activeSection.content}
+                    {/* Main Content Area (RIGHT on Desktop, Top on Mobile) */}
+                    <main className="lg:w-2/3 space-y-16 order-1 lg:order-2">
+                        {sections.map((section) => (
+                            <div
+                                key={section.id}
+                                id={section.id}
+                                className="scroll-mt-24 group"
+                            >
+                                <div className="space-y-6">
+
+
+                                    <div className="bg-gradient-to-br from-white to-sky-50/30 rounded-3xl p-8 md:p-10 border border-slate-100 shadow-xl shadow-sky-100/20 group-hover:shadow-sky-100/40 transition-shadow duration-500">
+                                        {isRich ? (
+                                            <div className="prose prose-sky prose-lg max-w-none">
+                                                {section.content}
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-6">
+                                                {section.description && (
+                                                    <p className="text-slate-600 leading-relaxed text-lg font-medium">
+                                                        {section.description}
+                                                    </p>
+                                                )}
+                                                <div className="space-y-8">
+                                                    {section.subSections?.map((sub, sIdx) => (
+                                                        <div key={sIdx} className="bg-white/60 p-6 rounded-2xl border border-white shadow-sm">
+                                                            {sub.title && (
+                                                                <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                                                                    <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                                                                    {sub.title}
+                                                                </h4>
+                                                            )}
+                                                            <ul className="grid md:grid-cols-2 gap-4">
+                                                                {sub.bullets?.map((bullet, bIdx) => (
+                                                                    <li key={bIdx} className="flex items-start gap-3 text-slate-600 text-sm leading-snug">
+                                                                        <span className="mt-1 text-sky-400">✔</span>
+                                                                        {bullet}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        ))}
                     </main>
                 </div>
             </div>
@@ -193,6 +394,43 @@ const UserGuide = ({ data }) => {
       `}</style>
         </section>
     );
+};
+
+// Helper for TipTap Block rendering
+const BlockRenderer = ({ block }) => {
+    switch (block.type) {
+        case 'p':
+            return <p className="text-slate-600 leading-relaxed font-medium">{block.text}</p>;
+        case 'h3':
+            return <h4 id={block.id} className="text-xl font-black text-slate-900 mt-10 mb-4 flex items-center gap-3 scroll-mt-32">
+                <span className="w-1.5 h-6 bg-sky-500 rounded-full"></span>
+                {block.text}
+            </h4>;
+        case 'ul':
+            return (
+                <ul className="grid md:grid-cols-2 gap-x-8 gap-y-3 pl-2 py-4">
+                    {block.items.map((it, i) => (
+                        <li key={i} className="flex items-start gap-3 text-slate-600 text-sm">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-sky-400 shrink-0" />
+                            {it}
+                        </li>
+                    ))}
+                </ul>
+            );
+        case 'ol':
+            return (
+                <ol className="space-y-3 pl-2 py-4">
+                    {block.items.map((it, i) => (
+                        <li key={i} className="flex items-start gap-4 text-slate-600 text-sm italic font-medium">
+                            <span className="text-sky-500 font-black shrink-0">{String(i + 1).padStart(2, '0')}.</span>
+                            {it}
+                        </li>
+                    ))}
+                </ol>
+            );
+        default:
+            return null;
+    }
 };
 
 export default UserGuide;

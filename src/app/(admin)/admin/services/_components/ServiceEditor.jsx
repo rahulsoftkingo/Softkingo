@@ -25,7 +25,7 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
 };
 
 // --- 3. MAIN SERVICE EDITOR ---
-export default function ServiceEditor({ formData, updateField, MediaInput, activeSections, portfolioCategories }) {
+export default function ServiceEditor({ formData, updateField, MediaInput, TipTapEditor, activeSections, portfolioCategories }) {
     const content = formData?.content || {};
 
     return (
@@ -406,49 +406,77 @@ export default function ServiceEditor({ formData, updateField, MediaInput, activ
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.userGuide?.subtitle || ''} onChange={e => updateField('content.userGuide.subtitle', e.target.value)} />
                 </div>
 
-                <div className="space-y-6">
-                    {(content.userGuide?.sections || []).map((section, i) => (
-                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
-                            <button type="button" onClick={() => updateField('content.userGuide.sections', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"><X size={20} /></button>
-
-                            <div className="space-y-2">
-                                <label className={labelStyle}>Tab Title</label>
-                                <input className={inputStyle} placeholder="e.g. What is App Development?" value={section.title || ''} onChange={e => updateField(`content.userGuide.sections.${i}.title`, e.target.value)} />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className={labelStyle}>Intro Description</label>
-                                <textarea className={inputStyle} rows={3} placeholder="Intro text for this tab..." value={section.description || ''} onChange={e => updateField(`content.userGuide.sections.${i}.description`, e.target.value)} />
-                            </div>
-
-                            <div className="space-y-4 pt-4 border-t border-slate-200">
-                                <label className={labelStyle}>Sub-sections</label>
-                                {(section.subSections || []).map((sub, j) => (
-                                    <div key={j} className="bg-white p-4 rounded-xl border border-slate-100 space-y-3 relative group/sub">
-                                        <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections`, (prev) => prev.filter((_, idx) => idx !== j))} className="absolute top-2 right-2 text-slate-200 hover:text-rose-500 opacity-0 group-hover/sub:opacity-100 transition-opacity"><X size={14} /></button>
-
-                                        <input className={inputStyle} placeholder="Sub-section Title (e.g. Idea Generation)" value={sub.title || ''} onChange={e => updateField(`content.userGuide.sections.${i}.subSections.${j}.title`, e.target.value)} />
-
-                                        <div className="space-y-2">
-                                            <label className={labelStyle}>Bullet Points</label>
-                                            {(sub.bullets || []).map((bullet, k) => (
-                                                <div key={k} className="flex gap-2 items-center">
-                                                    <input className="flex-1 p-2 bg-slate-50 border border-slate-100 rounded text-xs" placeholder="Add a point..." value={bullet || ''} onChange={e => updateField(`content.userGuide.sections.${i}.subSections.${j}.bullets.${k}`, e.target.value)} />
-                                                    <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections.${j}.bullets`, (prev) => prev.filter((_, idx) => idx !== k))}><X size={14} className="text-slate-300" /></button>
-                                                </div>
-                                            ))}
-                                            <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections.${j}.bullets`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Bullet</button>
-                                        </div>
-                                    </div>
-                                ))}
-                                <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections`, (prev) => [...(prev || []), { title: "", bullets: [] }])} className="text-[10px] font-black text-sky-600 border border-dashed border-sky-200 rounded-lg p-2 w-full">+ Add Sub-section</button>
-                            </div>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.userGuide.sections', (prev) => [...(prev || []), { title: "", description: "", subSections: [] }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
-                        <Plus size={20} /> Add User Guide Tab
+                <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl border border-slate-200">
+                    <button
+                        type="button"
+                        onClick={() => updateField('content.userGuide.mode', 'structured')}
+                        className={`flex-1 py-2 px-4 rounded-lg text-xs font-bold transition-all ${content.userGuide?.mode !== 'rich' ? 'bg-white shadow-sm text-sky-600' : 'text-slate-500 hover:bg-slate-100'}`}
+                    >
+                        Structured Layout
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => updateField('content.userGuide.mode', 'rich')}
+                        className={`flex-1 py-2 px-4 rounded-lg text-xs font-bold transition-all ${content.userGuide?.mode === 'rich' ? 'bg-white shadow-sm text-sky-600' : 'text-slate-500 hover:bg-slate-100'}`}
+                    >
+                        Rich Text Editor
                     </button>
                 </div>
+
+                {content.userGuide?.mode === 'rich' ? (
+                    <div className="space-y-4">
+                        <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <TipTapEditor
+                                value={content.userGuide?.richContent || ''}
+                                onChange={(val) => updateField('content.userGuide.richContent', val)}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+                        {(content.userGuide?.sections || []).map((section, i) => (
+                            <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
+                                <button type="button" onClick={() => updateField('content.userGuide.sections', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"><X size={20} /></button>
+
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>Tab Title</label>
+                                    <input className={inputStyle} placeholder="e.g. What is App Development?" value={section.title || ''} onChange={e => updateField(`content.userGuide.sections.${i}.title`, e.target.value)} />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>Intro Description</label>
+                                    <textarea className={inputStyle} rows={3} placeholder="Intro text for this tab..." value={section.description || ''} onChange={e => updateField(`content.userGuide.sections.${i}.description`, e.target.value)} />
+                                </div>
+
+                                <div className="space-y-4 pt-4 border-t border-slate-200">
+                                    <label className={labelStyle}>Sub-sections</label>
+                                    {(section.subSections || []).map((sub, j) => (
+                                        <div key={j} className="bg-white p-4 rounded-xl border border-slate-100 space-y-3 relative group/sub">
+                                            <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections`, (prev) => prev.filter((_, idx) => idx !== j))} className="absolute top-2 right-2 text-slate-200 hover:text-rose-500 opacity-0 group-hover/sub:opacity-100 transition-opacity"><X size={14} /></button>
+
+                                            <input className={inputStyle} placeholder="Sub-section Title (e.g. Idea Generation)" value={sub.title || ''} onChange={e => updateField(`content.userGuide.sections.${i}.subSections.${j}.title`, e.target.value)} />
+
+                                            <div className="space-y-2">
+                                                <label className={labelStyle}>Bullet Points</label>
+                                                {(sub.bullets || []).map((bullet, k) => (
+                                                    <div key={k} className="flex gap-2 items-center">
+                                                        <input className="flex-1 p-2 bg-slate-50 border border-slate-100 rounded text-xs" placeholder="Add a point..." value={bullet || ''} onChange={e => updateField(`content.userGuide.sections.${i}.subSections.${j}.bullets.${k}`, e.target.value)} />
+                                                        <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections.${j}.bullets`, (prev) => prev.filter((_, idx) => idx !== k))}><X size={14} className="text-slate-300" /></button>
+                                                    </div>
+                                                ))}
+                                                <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections.${j}.bullets`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Bullet</button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <button type="button" onClick={() => updateField(`content.userGuide.sections.${i}.subSections`, (prev) => [...(prev || []), { title: "", bullets: [] }])} className="text-[10px] font-black text-sky-600 border border-dashed border-sky-200 rounded-lg p-2 w-full">+ Add Sub-section</button>
+                                </div>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => updateField('content.userGuide.sections', (prev) => [...(prev || []), { title: "", description: "", subSections: [] }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
+                            <Plus size={20} /> Add User Guide Tab
+                        </button>
+                    </div>
+                )}
             </SectionWrapper>
 
             {/* 11. BLOG SECTION */}
