@@ -25,6 +25,7 @@ import {
   Home,
   CheckCircle2,
   Loader2,
+  HelpCircle,
 } from 'lucide-react';
 
 import { BLOG_SECTIONS } from '@/app/(public)/[sectionKey]/sectionConfig';
@@ -33,7 +34,7 @@ const AdvancedTipTapEditor = dynamic(() => import('../../AdvancedTipTapEditor'),
   ssr: false,
 });
 
-const TABS = ['basics', 'content', 'seo', 'media'];
+const TABS = ['basics', 'content', 'extra', 'seo', 'media'];
 
 const IMAGE_SIZES = {
   thumbnail: { small: '1200×630', medium: '1920×1080', large: '2560×1440' },
@@ -156,6 +157,8 @@ export default function BlogEditPageClient({ idParam }) {
     seoImage: '',
     thumbnail: '',
     heroImage: '',
+    summaryPoints: '', // ✅ NEW
+    faqs: '',         // ✅ NEW
     createdAtLocal: '',
   });
 
@@ -283,6 +286,8 @@ export default function BlogEditPageClient({ idParam }) {
         seoImage: post.seoImage || '',
         thumbnail: post.thumbnail || '',
         heroImage: post.heroImage || '',
+        summaryPoints: post.summaryPoints || '', // ✅ NEW
+        faqs: post.faqs || '',                   // ✅ NEW
         createdAtLocal: toDateTimeLocalValue(post.createdAt),
       }));
 
@@ -496,6 +501,8 @@ export default function BlogEditPageClient({ idParam }) {
       seoImage: form.seoImage || null,
       categoryId: form.categoryId ? Number(form.categoryId) : null,
       contentJson: form.contentJson || null,
+      summaryPoints: form.summaryPoints || null, // ✅ NEW
+      faqs: form.faqs || null,                   // ✅ NEW
       tagIds: buildTagIds(),
       ...(form.createdAtLocal ? { createdAt: datetimeLocalToIso(form.createdAtLocal) } : {}),
     };
@@ -586,6 +593,10 @@ export default function BlogEditPageClient({ idParam }) {
 
             {activeTab === 'content' && <ContentTab form={form} onChange={handleChange} />}
 
+            {activeTab === 'extra' && (
+              <ExtraTab form={form} setForm={setForm} />
+            )}
+
             {activeTab === 'seo' && (
               <SeoTab
                 form={form}
@@ -658,13 +669,15 @@ export default function BlogEditPageClient({ idParam }) {
                     <Type className="h-4 w-4" />
                   ) : tab === 'content' ? (
                     <FileText className="h-4 w-4" />
+                  ) : tab === 'extra' ? (
+                    <HelpCircle className="h-4 w-4" />
                   ) : tab === 'seo' ? (
                     <Settings2 className="h-4 w-4" />
                   ) : (
                     <ImageIcon className="h-4 w-4" />
                   );
                 const label =
-                  tab === 'basics' ? 'Basics' : tab === 'content' ? 'Content' : tab === 'seo' ? 'SEO' : 'Media';
+                  tab === 'basics' ? 'Basics' : tab === 'content' ? 'Content' : tab === 'extra' ? 'Extra' : tab === 'seo' ? 'SEO' : 'Media';
 
                 return (
                   <button
@@ -1357,6 +1370,149 @@ function ImageSmartField({
           <p className="text-[11px] text-slate-400 truncate">{safeSrc}</p>
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function ExtraTab({ form, setForm }) {
+  // Parsing helpers
+  const getPoints = () => {
+    try {
+      const p = JSON.parse(form.summaryPoints || '[]');
+      return Array.isArray(p) ? p : [];
+    } catch { return []; }
+  };
+  const getFaqs = () => {
+    try {
+      const f = JSON.parse(form.faqs || '[]');
+      return Array.isArray(f) ? f : [];
+    } catch { return []; }
+  };
+
+  const updatePoints = (newPoints) => {
+    setForm(prev => ({ ...prev, summaryPoints: JSON.stringify(newPoints) }));
+  };
+  const updateFaqs = (newFaqs) => {
+    setForm(prev => ({ ...prev, faqs: JSON.stringify(newFaqs) }));
+  };
+
+  const addPoint = () => updatePoints([...getPoints(), '']);
+  const editPoint = (idx, val) => {
+    const p = [...getPoints()];
+    p[idx] = val;
+    updatePoints(p);
+  };
+  const removePoint = (idx) => updatePoints(getPoints().filter((_, i) => i !== idx));
+
+  const addFaq = () => updateFaqs([...getFaqs(), { q: '', a: '' }]);
+  const editFaq = (idx, field, val) => {
+    const f = [...getFaqs()];
+    f[idx][field] = val;
+    updateFaqs(f);
+  };
+  const removeFaq = (idx) => updateFaqs(getFaqs().filter((_, i) => i !== idx));
+
+  return (
+    <div className="space-y-8">
+      {/* Summary Points Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+          <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-sky-500"></span>
+            Summary Points (Key Takeaways)
+          </h3>
+          <button
+            type="button"
+            onClick={addPoint}
+            className="text-xs font-semibold text-sky-600 hover:text-sky-700 bg-sky-50 px-3 py-1.5 rounded-lg transition-colors"
+          >
+            + Add Point
+          </button>
+        </div>
+        <div className="space-y-3">
+          {getPoints().map((point, idx) => (
+            <div key={idx} className="flex gap-2 items-start">
+              <span className="text-xs font-bold text-slate-400 mt-2.5 w-4">{idx + 1}.</span>
+              <textarea
+                value={point}
+                onChange={(e) => editPoint(idx, e.target.value)}
+                className="flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+                placeholder="Enter a key takeaway point..."
+                rows={2}
+              />
+              <button
+                type="button"
+                onClick={() => removePoint(idx)}
+                className="mt-1 h-8 w-8 rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-100 flex items-center justify-center transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+          {!getPoints().length && (
+            <p className="text-xs text-slate-400 italic py-4 text-center border-2 border-dashed border-slate-100 rounded-2xl">
+              No summary points added yet.
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="space-y-4 pt-4 border-t border-slate-100">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+          <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-sky-500"></span>
+            FAQ (Questions & Answers)
+          </h3>
+          <button
+            type="button"
+            onClick={addFaq}
+            className="text-xs font-semibold text-sky-600 hover:text-sky-700 bg-sky-50 px-3 py-1.5 rounded-lg transition-colors"
+          >
+            + Add Question
+          </button>
+        </div>
+        <div className="space-y-6">
+          {getFaqs().map((faq, idx) => (
+            <div key={idx} className="relative p-4 rounded-2xl border border-slate-100 bg-slate-50/50 space-y-3 group">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">FAQ #{idx + 1}</span>
+                <button
+                  type="button"
+                  onClick={() => removeFaq(idx)}
+                  className="h-7 w-7 rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-100 flex items-center justify-center transition-colors"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[11px] font-semibold text-slate-600">Question</label>
+                <input
+                  type="text"
+                  value={faq.q}
+                  onChange={(e) => editFaq(idx, 'q', e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  placeholder="e.g. How to build an AI therapy app?"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[11px] font-semibold text-slate-600">Answer</label>
+                <textarea
+                  value={faq.a}
+                  onChange={(e) => editFaq(idx, 'a', e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 min-h-[100px]"
+                  placeholder="Enter detailed answer..."
+                />
+              </div>
+            </div>
+          ))}
+          {!getFaqs().length && (
+            <p className="text-xs text-slate-400 italic py-4 text-center border-2 border-dashed border-slate-100 rounded-2xl">
+              No FAQ items added yet.
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

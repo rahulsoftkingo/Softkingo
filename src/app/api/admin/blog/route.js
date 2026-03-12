@@ -138,6 +138,8 @@ export async function POST(request) {
       seoImage,
       categoryId,
       tagIds = [],
+      summaryPoints, // ✅ NEW
+      faqs,          // ✅ NEW
       createdAt, // ✅ NEW (admin override)
     } = body;
 
@@ -198,6 +200,8 @@ export async function POST(request) {
         thumbnail: thumbnail || null,
         thumbnailType: thumbnailType || null,
         heroImage: heroImage || null,
+        summaryPoints: summaryPoints || null, // ✅ NEW
+        faqs: faqs || null,                   // ✅ NEW
         readTimeMinutes: readTimeNum ?? null,
         seoTitle: seoTitle || null,
         seoDescription: seoDescription || null,

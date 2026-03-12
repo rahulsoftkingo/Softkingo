@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
       excerpt: true,
       thumbnail: true,
       publishedAt: true,
-      author: { select: { name: true } }
+      author: { select: { name: true, title: true, bio: true, profileImage: true } }
     }
   });
 

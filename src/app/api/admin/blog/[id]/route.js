@@ -103,6 +103,7 @@ export async function PATCH(request, { params }) {
       type, title, slug, excerpt, contentJson, status, featured, pinned,
       placements, thumbnail, heroImage, readTimeMinutes, seoTitle,
       seoDescription, seoImage, categoryId, tagIds, createdAt, thumbnailType,
+      summaryPoints, faqs, // ✅ NEW
     } = body;
 
     // ✅ BYTES LOGIC COMPLETELY DELETED!
@@ -148,6 +149,8 @@ export async function PATCH(request, { params }) {
         thumbnailType: thumbnailType === undefined ? undefined : (thumbnailType || null),
         
         heroImage: heroImage === undefined ? undefined : (heroImage || null),
+        summaryPoints: summaryPoints === undefined ? undefined : (summaryPoints || null), // ✅ NEW
+        faqs: faqs === undefined ? undefined : (faqs || null),                             // ✅ NEW
 
         readTimeMinutes: readTimeNum === undefined ? undefined : readTimeNum,
         seoTitle: seoTitle === undefined ? undefined : (seoTitle || null),

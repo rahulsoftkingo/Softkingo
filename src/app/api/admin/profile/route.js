@@ -44,29 +44,40 @@ export async function PUT(req) {
     const userId = Number(session.user.id);
     const body = await req.json();
 
-    // ✅ Bytes handling - Base64 to Buffer
-    let profileImageData = null;
-    let profileImageType = null;
+    // Fetch existing user to preserve values if needed
+    const currentUser = await prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    if (!currentUser) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    // ✅ Handle Profile Image
+    // If base64 is provided (from some previous/other implementation), use it
+    // Otherwise use body.profileImage (which is a URL uploaded via media API)
+    let profileImageValue = body.profileImage;
+    let profileImageType = currentUser.profileImageType;
 
     if (body.profileImageBase64) {
       const base64Data = body.profileImageBase64.replace(/^data:image\/[a-z]+;base64,/, '');
-      profileImageData = Buffer.from(base64Data, 'base64');
+      profileImageValue = base64Data; // Store as base64 string or whatever is expected
       profileImageType = body.profileImageType || 'image/jpeg';
     }
 
     const user = await prisma.user.update({
       where: { id: userId },
       data: {
-        name: body.name || null,
-        email: body.email || null,
-        username: body.username || null,
-        phone: body.phone || null,
-        whatsapp: body.whatsapp || null,
-        title: body.title || null,
-        department: body.department || null,
-        bio: body.bio || null,
-        profileImage: profileImageData,     // ✅ Prisma Bytes
-        profileImageType: profileImageType, // ✅ MIME type
+        name: body.name !== undefined ? body.name : currentUser.name,
+        email: body.email !== undefined ? body.email : currentUser.email,
+        username: body.username !== undefined ? body.username : currentUser.username,
+        phone: body.phone !== undefined ? body.phone : currentUser.phone,
+        whatsapp: body.whatsapp !== undefined ? body.whatsapp : currentUser.whatsapp,
+        title: body.title !== undefined ? body.title : currentUser.title,
+        department: body.department !== undefined ? body.department : currentUser.department,
+        bio: body.bio !== undefined ? body.bio : currentUser.bio,
+        profileImage: profileImageValue,
+        profileImageType: profileImageType,
       },
       select: {
         id: true, name: true, email: true, username: true, phone: true,

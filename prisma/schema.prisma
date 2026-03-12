@@ -197,6 +197,8 @@ model BlogPost {
   shareCount      Int            @default(0)
   viewCount       Int            @default(0)
   thumbnailType   String?
+  summaryPoints   String?        @db.LongText
+  faqs            String?        @db.LongText
   feedbacks       BlogFeedback[]
   author          User?          @relation(fields: [authorId], references: [id], map: "BlogPost_authorId_fkey")
   category        BlogCategory?  @relation(fields: [categoryId], references: [id], map: "BlogPost_categoryId_fkey")

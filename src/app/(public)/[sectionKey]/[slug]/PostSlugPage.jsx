@@ -274,12 +274,14 @@ export default async function PostSlugPage({ sectionKey, slug }) {
     likeCount: post.likeCount || 0,
     shareCount: post.shareCount || 0,
     viewCount: post.viewCount || 0,
+    summaryPoints: post.summaryPoints,
+    faqs: post.faqs,
     author: post.author
       ? {
         name: post.author.name || "",
-        role: post.author.title || "",
+        title: post.author.title || "",
         bio: post.author.bio || "",
-        avatar: safeImg(post.author.profileImage, "/images/insights/hero-default.png"),
+        profileImage: safeImg(post.author.profileImage, "/images/insights/hero-default.png"),
       }
       : null,
   };

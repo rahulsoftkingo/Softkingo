@@ -37,6 +37,9 @@ import NewsletterStrip from "@/app/(public)/blog/NewsletterStrip";
 
 import { motion, AnimatePresence } from 'framer-motion';
 import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
+import BlogFaq from "@/components/common/BlogFaq";
+import BlogKeyTakeaways from "@/components/common/BlogKeyTakeaways"; // ✅ NEW
+import { FaCheckCircle } from "react-icons/fa";
 
 
 
@@ -152,113 +155,136 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
           {/* CENTER: article */}
           <article className="bg-white rounded-3xl shadow-[0_18px_45px_rgba(15,23,42,0.06)] border border-slate-200 overflow-hidden prose content-card modern-prose">
             <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-10">
-              {post.sections.map((sec, index) => (
-                <section
-                  key={sec.id}
-                  id={sec.id}
-                  ref={(el) => {
-                    sectionRefs.current[sec.id] = el;
-                  }}
-                  className={`scroll-mt-28 ${sec.id === "overview"
-                    ? "bg-sky-50/60 border border-sky-100 rounded-2xl px-4 sm:px-5 py-5 content-section overview-section"
-                    : "content-section"
-                    }`}
-                >
-                  <h2
-                    className={`section-title text-xl sm:text-2xl font-semibold mb-3 ${sec.id === "overview" ? "text-sky-800" : "text-slate-900"
+              {/* ✅ Key Takeaways (Summary Points) */}
+              {post.summaryPoints && (
+                <BlogKeyTakeaways points={JSON.parse(post.summaryPoints)} />
+              )}
+
+              {post.sections.map((sec, index) => {
+                // ✅ Fix: Redundant Title Check
+                // If section title matches post title exactly, and it's the first section, skip the title
+                const isRedundantTitle = index === 0 && (
+                  sec.title?.toLowerCase() === post.title?.toLowerCase() ||
+                  sec.title?.toLowerCase() === "overview" ||
+                  sec.title?.toLowerCase() === "introduction"
+                );
+
+                return (
+                  <section
+                    key={sec.id}
+                    id={sec.id}
+                    ref={(el) => {
+                      sectionRefs.current[sec.id] = el;
+                    }}
+                    className={`scroll-mt-28 ${sec.id === "overview"
+                      ? "bg-sky-50/60 border border-sky-100 rounded-2xl px-4 sm:px-5 py-5 content-section overview-section"
+                      : "content-section"
                       }`}
                   >
-                    {sec.title}
-                  </h2>
-                  <div className="space-y-3 text-[13px] sm:text-[15px] text-slate-700 leading-relaxed  content-body">
-                    {sec.blocks.map((block, idx) => {
-                      if (block.type === "p") {
-                        return (
-                          <p key={idx} className="text-slate-700">
-                            {block.text}
-                          </p>
-                        );
-                      }
-                      if (block.type === "h3") {
-                        const subId = `${sec.id}-sub-${idx}`;
-                        return (
-                          <h3
-                            key={idx}
-                            id={subId}
-                            className="sub-title text-[15px] sm:text-[16px] font-semibold text-slate-900 mt-5 border-l-4 border-sky-500 pl-3"
-                          >
-                            {block.text}
-                          </h3>
-                        );
-                      }
-                      if (block.type === "ul") {
-                        return (
-                          <ul
-                            key={idx}
-                            className="content-ul list-disc pl-5 space-y-1.5 marker:text-sky-500"
-                          >
-                            {block.items.map((it, i) => (
-                              <li key={i}>{it}</li>
-                            ))}
-                          </ul>
-                        );
-                      }
-                      if (block.type === "ol") {
-                        return (
-                          <ol
-                            key={idx}
-                            className="content-ol list-decimal pl-5 space-y-1.5 marker:text-sky-500"
-                          >
-                            {block.items.map((it, i) => (
-                              <li key={i}>{it}</li>
-                            ))}
-                          </ol>
-                        );
-                      }
-                      if (block.type === "table") {
-                        return <EnhancedTable key={idx} table={block} />;
-                      }
-                      if (block.type === "code") {
-                        return <CodeBlock key={idx} code={block} />;
-                      }
-                      if (block.type === "tip") {
-                        return <TipBlock key={idx} tip={block} />;
-                      }
-                      if (block.type === "warning") {
-                        return <WarningBlock key={idx} warning={block} />;
-                      }
-                      if (block.type === "stats") {
-                        return <StatsBlock key={idx} stats={block} />;
-                      }
-                      if (block.type === "image") {
-                        return <ImageBlock key={idx} image={block} />;
-                      }
-                      if (block.type === "summary") {
-                        return <SummaryBlock key={idx} text={block.text} />;
-                      }
-                      if (block.type === "cta") {
-                        return <CTABlock key={idx} cta={block} />;
-                      }
-                      return null;
-                    })}
-                  </div>
-
-                  {index === post.sections.length - 1 && (
-                    <div className="mt-10 space-y-8">
-                      <EngagementBar
-                        slug={post.slug}
-                        initialLikes={post.likeCount}
-                        initialShares={post.shareCount}
-                      />
-                      <ArticleRating slug={post.slug} />
-                      {post.author && <WriterCard author={post.author} />}
-                      {/* <WriterCard author={post.author}/> */}
-
+                    {!isRedundantTitle && (
+                      <h2
+                        className={`section-title text-xl sm:text-2xl font-semibold mb-3 ${sec.id === "overview" ? "text-sky-800" : "text-slate-900"
+                          }`}
+                      >
+                        {sec.title}
+                      </h2>
+                    )}
+                    <div className="space-y-3 text-[13px] sm:text-[15px] text-slate-700 leading-relaxed  content-body">
+                      {sec.blocks.map((block, idx) => {
+                        if (block.type === "p") {
+                          return (
+                            <p key={idx} className="text-slate-700">
+                              {block.text}
+                            </p>
+                          );
+                        }
+                        if (block.type === "h3") {
+                          const subId = `${sec.id}-sub-${idx}`;
+                          return (
+                            <h3
+                              key={idx}
+                              id={subId}
+                              className="sub-title text-[15px] sm:text-[16px] font-semibold text-slate-900 mt-5 border-l-4 border-sky-500 pl-3"
+                            >
+                              {block.text}
+                            </h3>
+                          );
+                        }
+                        if (block.type === "ul") {
+                          return (
+                            <ul
+                              key={idx}
+                              className="content-ul list-disc pl-5 space-y-1.5 marker:text-sky-500"
+                            >
+                              {block.items.map((it, i) => (
+                                <li key={i}>{it}</li>
+                              ))}
+                            </ul>
+                          );
+                        }
+                        if (block.type === "ol") {
+                          return (
+                            <ol
+                              key={idx}
+                              className="content-ol list-decimal pl-5 space-y-1.5 marker:text-sky-500"
+                            >
+                              {block.items.map((it, i) => (
+                                <li key={i}>{it}</li>
+                              ))}
+                            </ol>
+                          );
+                        }
+                        if (block.type === "table") {
+                          return <EnhancedTable key={idx} table={block} />;
+                        }
+                        if (block.type === "code") {
+                          return <CodeBlock key={idx} code={block} />;
+                        }
+                        if (block.type === "tip") {
+                          return <TipBlock key={idx} tip={block} />;
+                        }
+                        if (block.type === "warning") {
+                          return <WarningBlock key={idx} warning={block} />;
+                        }
+                        if (block.type === "stats") {
+                          return <StatsBlock key={idx} stats={block} />;
+                        }
+                        if (block.type === "image") {
+                          return <ImageBlock key={idx} image={block} />;
+                        }
+                        if (block.type === "summary") {
+                          return <SummaryBlock key={idx} text={block.text} />;
+                        }
+                        if (block.type === "cta") {
+                          return <CTABlock key={idx} cta={block} />;
+                        }
+                        return null;
+                      })}
                     </div>
-                  )}
 
-                </section>
-              ))}
+                    {index === post.sections.length - 1 && (
+                      <div className="mt-10 space-y-8">
+                        {/* ✅ FAQ Component Integration */}
+                        {post.faqs && (
+                          <BlogFaq faqs={JSON.parse(post.faqs)} />
+                        )}
+
+                        <EngagementBar
+                          slug={post.slug}
+                          initialLikes={post.likeCount}
+                          initialShares={post.shareCount}
+                        />
+                        <ArticleRating slug={post.slug} />
+                        {post.author && <WriterCard author={post.author} />}
+
+
+
+                      </div>
+                    )}
+
+                  </section>
+                );
+              })}
             </div>
           </article>
 
@@ -658,23 +684,31 @@ function NewsletterCard() {
 
 function WriterCard({ author }) {
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 flex items-start gap-3 sm:gap-4">
-      <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-slate-200 overflow-hidden relative">
+    <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 transition-all duration-300 hover:shadow-md writer-card">
+      <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl bg-sky-50 overflow-hidden relative border-2 border-white shadow-sm ring-1 ring-slate-100 flex-shrink-0">
         {author.profileImage && (
           <Image
             src={author.profileImage}
             alt={author.name}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-500 hover:scale-110"
           />
         )}
       </div>
-      <div className="space-y-1">
-        <p className="text-sm font-semibold text-slate-900">
-          Written by {author.name}
+      <div className="flex-1 text-center sm:text-left space-y-3">
+        <div>
+          <p className="text-[11px] font-bold text-sky-600  mb-1">
+            About the Author
+          </p>
+          <h4 className="text-lg font-semibold text-slate-900 leading-none">
+            {author.name}
+          </h4>
+          <p className="text-sm text-slate-500 mt-1.5 font-medium">{author.title}</p>
+        </div>
+        <p className="text-sm  text-slate-600 leading-relaxed max-w-2xl">
+          {author.bio}
         </p>
-        <p className="text-[11px] text-slate-500">{author.role}</p>
-        <p className="text-[12px] text-slate-600">{author.bio}</p>
+
       </div>
     </div>
   );
