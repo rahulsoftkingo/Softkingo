@@ -3,8 +3,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { testimonials } from "@/data/testimonials";
-export default function TestimonialCarousel({ 
-  autoPlay = true, 
+export default function TestimonialCarousel({
+  autoPlay = true,
   interval = 5000,
   columns = 'auto'
 }) {
@@ -14,30 +14,30 @@ export default function TestimonialCarousel({
   const [imageErrors, setImageErrors] = useState({});
   const containerRef = useRef(null);
 
-useEffect(() => {
-  if (typeof columns === 'object') {
-    // Responsive breakpoints set karo
-    setCalculatedColumns(columns.lg || columns.md || 1);
-    return;
-  }
-  
-  if (columns !== 'auto') {
-    setCalculatedColumns(columns);
-    return;
-  }
-  
-  // Auto responsive logic (tumhara existing code)
-  const observer = new ResizeObserver((entries) => {
-    const width = entries[0].contentRect.width;
-    if (width < 400) setCalculatedColumns(1);
-    else if (width < 900) setCalculatedColumns(2);  // Tablet
-    else if (width < 1200) setCalculatedColumns(3); // Laptop
-    else setCalculatedColumns(3); // Large desktop
-  });
-  
-  if (containerRef.current) observer.observe(containerRef.current);
-  return () => observer.disconnect();
-}, [columns]);
+  useEffect(() => {
+    if (typeof columns === 'object') {
+      // Responsive breakpoints set karo
+      setCalculatedColumns(columns.lg || columns.md || 1);
+      return;
+    }
+
+    if (columns !== 'auto') {
+      setCalculatedColumns(columns);
+      return;
+    }
+
+    // Auto responsive logic (tumhara existing code)
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0].contentRect.width;
+      if (width < 400) setCalculatedColumns(1);
+      else if (width < 900) setCalculatedColumns(2);  // Tablet
+      else if (width < 1200) setCalculatedColumns(3); // Laptop
+      else setCalculatedColumns(3); // Large desktop
+    });
+
+    if (containerRef.current) observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [columns]);
 
   useEffect(() => {
     if (!autoPlay || isHovered) return;
@@ -54,15 +54,15 @@ useEffect(() => {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="w-full relative"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div 
+      <div
         className="grid gap-5 pr-6"
-        style={{ 
+        style={{
           gridTemplateColumns: `repeat(${calculatedColumns}, minmax(0, 1fr))`
         }}
       >
@@ -70,9 +70,9 @@ useEffect(() => {
           const testimonialIndex = (currentIndex + index) % testimonials.length;
           const testimonial = testimonials[testimonialIndex];
           const hasImageError = imageErrors[testimonialIndex];
-          
+
           return (
-            <div 
+            <div
               key={index}
               className="relative pt-8"
             >
@@ -106,9 +106,9 @@ useEffect(() => {
                       </div>
                     )}
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xl font-bold text-gray-900 leading-tight mb-1">
+                    <h3 className="text-xl font-bold text-gray-900 leading-normal mb-1">
                       {testimonial.name}
                     </h3>
                     <p className="text-sm text-gray-600 font-medium">
@@ -128,7 +128,7 @@ useEffect(() => {
       </div>
 
       {/* Right Arrow Button */}
-      <button 
+      <button
         onClick={next}
         className="absolute right-0 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-white border-2 border-gray-200 hover:border-sky-400 hover:bg-sky-50 flex items-center justify-center transition-all hover:scale-110 shadow-lg z-20"
         aria-label="Next testimonial"

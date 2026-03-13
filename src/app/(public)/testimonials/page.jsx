@@ -91,12 +91,12 @@ export default function TestimonialsPage() {
             </div>
           </div> */}
 
-          <TestimonialCarousel
-            testimonials={testimonials}
-            autoPlay={true}
-            interval={5000}
-            columns="auto"
-          />
+        <TestimonialCarousel
+          testimonials={testimonials}
+          autoPlay={true}
+          interval={5000}
+          columns="auto"
+        />
         {/* </div> */}
 
         {/* List View (enhanced UI) */}
@@ -127,7 +127,7 @@ export default function TestimonialsPage() {
                     </div>
 
                     <div>
-                      <h3 className="text-base md:text-lg font-bold text-slate-900 leading-tight">
+                      <h3 className="text-base md:text-lg font-bold text-slate-900 leading-normal">
                         {t.name}
                       </h3>
                       <p className="text-xs md:text-sm text-slate-600">
@@ -191,7 +191,7 @@ export default function TestimonialsPage() {
                 href="/portfolio"
                 className="px-8 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 font-semibold transition-colors"
               >
-               Portfolio
+                Portfolio
               </Link>
             </div>
           </div>

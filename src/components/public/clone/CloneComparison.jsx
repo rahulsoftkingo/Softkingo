@@ -88,7 +88,7 @@ export default function CloneComparison({ data }) {
                                                     <div className="w-11 h-11 rounded-xl bg-[#DFF7FF] flex items-center justify-center border border-sky-100 transition-transform group-hover:scale-110">
                                                         <IconComponent size={22} className="text-[#1EAEDB]" />
                                                     </div>
-                                                    <span className="text-lg font-bold text-slate-800 leading-tight">{row.feature}</span>
+                                                    <span className="text-lg font-bold text-slate-800 leading-normal">{row.feature}</span>
                                                 </div>
                                             </td>
                                             <td className={`relative py-6 px-6 text-center border-b border-slate-100 bg-[#DFF7FF] ${i === rows.length - 1 ? 'rounded-b-2xl shadow-[0_10px_30px_rgba(30,174,219,0.1)]' : ''}`}>

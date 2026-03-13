@@ -170,7 +170,7 @@ export default async function AboutUs() {
 
               {/* Heading */}
               <div className="space-y-4">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight animate-fadeInUp text-white">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal animate-fadeInUp text-white">
                   We Transform Brands Through{' '}
                   <span className="text-cyan-400">Elevated Digital Experiences</span>
                 </h1>
@@ -411,7 +411,7 @@ export default async function AboutUs() {
                 gradientText='Success Our Mission'
                 subtitle={false}
               />
-              <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-sky-950 leading-tight">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-sky-950 leading-normal">
                 We Are Committed to Your Business Success Through Our Expert IT Services
               </h3>
 

@@ -29,7 +29,7 @@ const Footer = () => {
   const companyLinks = [
     { label: "About Us", href: "/about" },
     { label: "Our Team", href: "/our-team" },
-     { label: "Testimonials", href: "/testimonials" },
+    { label: "Testimonials", href: "/testimonials" },
     { label: "Contact Us", href: "/contact" },
     { label: "Solutions", href: "/solutions" },
     { label: "Industries", href: "/industries" },
@@ -96,7 +96,7 @@ const Footer = () => {
                   height={49}
                   className="w-40 md:w-44"
                 />
-                <div className="bg-sky-50 border border-sky-100 rounded-xl px-3 py-2 flex flex-col items-center justify-center text-[10px] font-semibold tracking-wide text-sky-700 uppercase leading-tight shadow-[0_10px_25px_rgba(15,23,42,0.06)] hidden">
+                <div className="bg-sky-50 border border-sky-100 rounded-xl px-3 py-2 flex flex-col items-center justify-center text-[10px] font-semibold tracking-wide text-sky-700 uppercase leading-normal shadow-[0_10px_25px_rgba(15,23,42,0.06)] hidden">
                   <span>Great</span>
                   <span>Place</span>
                   <span>To</span>

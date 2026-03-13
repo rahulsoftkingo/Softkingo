@@ -312,9 +312,8 @@ export default function ServicesSection() {
         return (
           <section
             key={section.id}
-            className={`${
-              layoutLeft ? "bg-white" : "bg-sky-50"
-            } py-12 md:py-20 px-4 md:px-8 lg:px-20 animate-section`}
+            className={`${layoutLeft ? "bg-white" : "bg-sky-50"
+              } py-12 md:py-20 px-4 md:px-8 lg:px-20 animate-section`}
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             <div className="max-w-7xl mx-auto">
@@ -427,11 +426,10 @@ function ServiceContent({ section, layout, index }) {
 
       {/* Desktop icon strip – same UI, sirf link/data dropdown se */}
       <div
-        className={`hidden lg:block absolute bottom-0 ${
-          layout === "left"
+        className={`hidden lg:block absolute bottom-0 ${layout === "left"
             ? "left-0 -right-48 bg-white rounded-tr-[3rem] pr-10"
             : "right-0 -left-48 bg-sky-50 rounded-tl-[3rem] pl-10"
-        } py-6 md:py-8 z-10 m-0`}
+          } py-6 md:py-8 z-10 m-0`}
       >
         <div className="flex items-center justify-between bg-gray-100 p-4 md:p-6 rounded-2xl gap-4 md:gap-6">
           <div className="flex items-center gap-4 md:gap-8 overflow-x-auto pb-2 scrollbar-hide">
@@ -446,7 +444,7 @@ function ServiceContent({ section, layout, index }) {
                   <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mb-2 md:mb-3 bg-white rounded-xl md:rounded-2xl transition-all">
                     <Icon className="w-6 h-6 md:w-8 md:h-8 text-gray-700" />
                   </div>
-                  <span className="text-xs md:text-sm font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-xs md:text-sm font-semibold text-gray-700 text-center leading-normal">
                     {item.title.replace("Development", "").trim()}
                   </span>
                 </a>
@@ -485,7 +483,7 @@ function ServiceContent({ section, layout, index }) {
                   <div className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center mb-2 bg-white rounded-xl transition-all">
                     <Icon className="w-5 h-5 md:w-6 md:h-6 text-gray-700" />
                   </div>
-                  <span className="text-[10px] md:text-xs font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-[10px] md:text-xs font-semibold text-gray-700 text-center leading-normal">
                     {item.title.replace("Development", "").trim()}
                   </span>
                 </a>
@@ -556,11 +554,10 @@ function CaseStudyCard({ caseStudy, position }) {
       <div
         className={`lg:absolute bg-white p-4 md:p-6 shadow-2xl border border-gray-100 
         lg:max-w-md xl:max-w-lg rounded-2xl lg:rounded-none
-        ${
-          position === "right"
+        ${position === "right"
             ? "lg:-right-16 xl:-right-24 lg:-bottom-12 xl:-bottom-14"
             : "lg:-left-16 xl:-left-24 lg:-bottom-12 xl:-bottom-14"
-        }`}
+          }`}
       >
         <p className="text-gray-600 text-xs md:text-sm leading-relaxed">
           {clientNote}

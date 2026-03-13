@@ -56,7 +56,7 @@ export default function ServicesCategoryLayout({ categories }) {
 
                 <div className="relative z-10 space-y-8 animate-in fade-in slide-in-from-right-4 duration-500" key={activeIdx}>
                     <div>
-                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 !leading-tight">{activeCat?.fullTitle}</h3>
+                        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 !leading-normal">{activeCat?.fullTitle}</h3>
                         <p className="text-sky-50 text-base md:text-lg leading-relaxed max-w-2xl opacity-90">{activeCat?.fullDesc}</p>
                     </div>
 
@@ -72,7 +72,7 @@ export default function ServicesCategoryLayout({ categories }) {
                                         <div className="text-sky-500 text-3xl group-hover:scale-110 transition-transform">
                                             <Icon />
                                         </div>
-                                        <span className="text-[11px] font-black text-slate-800 leading-tight uppercase tracking-tight">{exp.label}</span>
+                                        <span className="text-[11px] font-black text-slate-800 leading-normal uppercase tracking-tight">{exp.label}</span>
                                     </div>
                                 );
                             })}

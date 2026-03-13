@@ -87,7 +87,7 @@ export default function FoodMethodology() {
                                             <div className="flex items-center gap-4">
                                                 <div className="flex-shrink-0 text-center w-16">
                                                     <span className="text-blue-200 text-xs font-bold">STEP</span>
-                                                    <p className="text-white text-2xl font-bold leading-tight">
+                                                    <p className="text-white text-2xl font-bold leading-normal">
                                                         {String(step.id).padStart(2, '0')}
                                                     </p>
                                                 </div>

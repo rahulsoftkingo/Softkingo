@@ -86,7 +86,7 @@ export default function SolutionHighlight({ data }) {
                                 {/* Active Heading */}
                                 <div className="flex items-center gap-4 mb-10">
                                     <span className="text-white/50 text-2xl font-light">→</span>
-                                    <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight tracking-tight">
+                                    <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold leading-normal tracking-tight">
                                         {activeTab.fullTitle || activeTab.label}
                                     </h3>
                                 </div>

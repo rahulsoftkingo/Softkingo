@@ -23,7 +23,7 @@ function safeImg(src, fallback = "/images/insights/hero-default.png") {
 
 export default async function SectionPage({ sectionKey, searchParams }) {
   const config = BLOG_SECTIONS[sectionKey];
-  const resolvedSearchParams  = await searchParams;
+  const resolvedSearchParams = await searchParams;
   if (!config) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -165,7 +165,7 @@ export default async function SectionPage({ sectionKey, searchParams }) {
                 {config.heroLabel}
               </p>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-normal">
                 {config.heroHeading}
               </h1>
 
@@ -194,8 +194,8 @@ export default async function SectionPage({ sectionKey, searchParams }) {
                 <Link
                   href={buildUrl(q, "", 1)}
                   className={`px-3 py-1 rounded-full border ${!category
-                      ? "bg-sky-500 text-slate-900 border-sky-300"
-                      : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
+                    ? "bg-sky-500 text-slate-900 border-sky-300"
+                    : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
                     } text-[11px] font-medium transition-colors shrink-0`}
                 >
                   All
@@ -206,8 +206,8 @@ export default async function SectionPage({ sectionKey, searchParams }) {
                     key={t}
                     href={buildUrl(q, t, 1)}
                     className={`px-3 py-1 rounded-full border shrink-0 ${category === t
-                        ? "bg-sky-500 text-slate-900 border-sky-300"
-                        : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
+                      ? "bg-sky-500 text-slate-900 border-sky-300"
+                      : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
                       } text-[11px] font-medium transition-colors`}
                   >
                     {t}
@@ -284,8 +284,8 @@ export default async function SectionPage({ sectionKey, searchParams }) {
                     aria-disabled={!hasPrev}
                     href={hasPrev ? buildUrl(q, category, page - 1) : "#"}
                     className={`px-3 py-2 rounded-lg border text-sm ${hasPrev
-                        ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
-                        : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
+                      ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                      : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
                       }`}
                   >
                     Prev
@@ -314,8 +314,8 @@ export default async function SectionPage({ sectionKey, searchParams }) {
                           href={buildUrl(q, category, p)}
                           aria-current={active ? "page" : undefined}
                           className={`min-w-9 text-center px-3 py-2 rounded-lg border text-sm ${active
-                              ? "bg-sky-600 border-sky-600 text-white"
-                              : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                            ? "bg-sky-600 border-sky-600 text-white"
+                            : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
                             }`}
                         >
                           {p}
@@ -329,8 +329,8 @@ export default async function SectionPage({ sectionKey, searchParams }) {
                     aria-disabled={!hasNext}
                     href={hasNext ? buildUrl(q, category, page + 1) : "#"}
                     className={`px-3 py-2 rounded-lg border text-sm ${hasNext
-                        ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
-                        : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
+                      ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                      : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
                       }`}
                   >
                     Next
@@ -358,20 +358,20 @@ export default async function SectionPage({ sectionKey, searchParams }) {
             </aside>
           </section>
 
-          
-               
+
+
         </div>
         <section className="my-10 sm:my-12 max-w-6xl mx-auto">
-            <NewsletterStrip
-              source={`${sectionKey}-listing`}
-              listSlug={config.newsletterList?.slug || "blog-newsletter"}
-              listName={config.newsletterList?.name || "Blog Newsletter"}
-              listDescription={config.newsletterList?.description || "Main blog newsletter list"}
-            />
-          </section>
+          <NewsletterStrip
+            source={`${sectionKey}-listing`}
+            listSlug={config.newsletterList?.slug || "blog-newsletter"}
+            listName={config.newsletterList?.name || "Blog Newsletter"}
+            listDescription={config.newsletterList?.description || "Main blog newsletter list"}
+          />
+        </section>
 
-     
-                 <InquirySection />
+
+        <InquirySection />
       </main>
     </div>
   );

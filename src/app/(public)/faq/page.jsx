@@ -287,7 +287,7 @@ export default function FAQPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
         <div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
-        
+
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
 
@@ -330,11 +330,10 @@ export default function FAQPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 min-w-[160px] py-4 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 rounded-2xl ${
-                activeTab === tab.id
+              className={`flex-1 min-w-[160px] py-4 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 rounded-2xl ${activeTab === tab.id
                   ? 'bg-gradient-to-r from-sky-600 to-sky-600 text-white shadow-lg shadow-sky-500/25 scale-105'
                   : 'text-slate-600 hover:text-sky-600 hover:bg-white/50'
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -350,13 +349,13 @@ export default function FAQPage() {
             >
               {/* Animated background shine */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              
+
               <div className="relative flex items-start gap-4">
                 <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg mt-1">
                   Q{index + 1}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-slate-900 group-hover:text-sky-900 mb-3 md:mb-4 leading-tight">
+                  <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-slate-900 group-hover:text-sky-900 mb-3 md:mb-4 leading-normal">
                     {faq.q}
                   </h3>
                   <div className="text-gray-700 text-sm md:text-base lg:text-lg leading-relaxed whitespace-pre-line">

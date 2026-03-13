@@ -179,7 +179,7 @@ function StickyServiceCard({ service, index }) {
                     <div className="w-14 h-14  flex items-center justify-center text-white font-black text-xl shrink-0  ">
                         {String(index + 1).padStart(2, "0")}
                     </div>
-                    <h3 className="text-white font-black text-2xl md:text-3xl lg:text-4xl leading-tight tracking-tighter">
+                    <h3 className="text-white font-black text-2xl md:text-3xl lg:text-4xl leading-normal tracking-tighter">
                         {service?.title || service?.name || "Service"}
                     </h3>
                 </div>
@@ -322,7 +322,7 @@ export default function CoreServicesSection({
                     <div className="hidden lg:block w-80 shrink-0 sticky top-32 self-start bg-white rounded-3xl p-3 shadow-2xl shadow-sky-200/50 border border-sky-100 z-10">
                         {/* <div className="bg-sky-500 rounded-2xl p-6 mb-2">
                             <h4 className="text-[10px] font-black text-white/80 uppercase tracking-[0.2em]">Solution Navigator</h4>
-                            <p className="text-white text-lg font-bold leading-tight mt-1">Explore Core Expertise</p>
+                            <p className="text-white text-lg font-bold leading-normal mt-1">Explore Core Expertise</p>
                         </div> */}
                         <div className="space-y-1 p-2">
                             {services.map((s, idx) => (
@@ -340,7 +340,7 @@ export default function CoreServicesSection({
                                         }`}>
                                         {String(idx + 1).padStart(2, '0')}
                                     </span>
-                                    <span className="leading-tight overflow-hidden text-ellipsis whitespace-nowrap uppercase tracking-wider">
+                                    <span className="leading-normal overflow-hidden text-ellipsis whitespace-nowrap uppercase tracking-wider">
                                         {s?.title || s?.name || `Service ${idx + 1}`}
                                     </span>
                                 </button>

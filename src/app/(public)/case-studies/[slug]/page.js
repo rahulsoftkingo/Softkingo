@@ -1,18 +1,25 @@
 // app/(public)/case-studies/[slug]/page.jsx
-import Image from 'next/image';
-import { Users, Clock } from 'lucide-react';
 import prisma from '@/lib/prisma';
-import { AppScreensCarousel } from './AppScreensCarousel';
 import BlogSection from '@/components/common/BlogSection';
 import InquirySection from '@/components/footer/InquirySection';
 
-
+// Modular Components
+import Hero from './_components/Hero';
+import Stats from './_components/Stats';
+import Branding from './_components/Branding';
+import TechStack from './_components/TechStack';
+import FeatureSection from './_components/FeatureSection';
+import Results from './_components/Results';
+import FindYourApp from './_components/FindYourApp';
+import AppScreensShowcase from './_components/AppScreensShowcase';
+import ChallengesSolutions from './_components/ChallengesSolutions';
+import TestimonialSection from './_components/TestimonialSection';
 
 // ---------- helpers ----------
 function parseJson(value, fallback) {
   if (!value) return fallback;
   try {
-    return JSON.parse(value);
+    return typeof value === 'string' ? JSON.parse(value) : value;
   } catch {
     return fallback;
   }
@@ -54,11 +61,14 @@ async function getCaseStudy(slug) {
   const client = parseJson(
     row.clientJson,
     {
-      name: 'Client name',
-      subtitle: 'is an entrepreneur',
+      name: 'Client Name',
+      subtitle: 'Entrepreneur',
       location: 'City, Country',
       industry: 'Industry',
       avatar: '/images/client-avatar.png',
+      review: 'Working with Softkingo was an incredible experience. They transformed our vision into a high-performing reality with exceptional attention to detail.',
+      rating: 5,
+      designation: 'CEO & Founder'
     }
   );
 
@@ -117,7 +127,11 @@ async function getCaseStudy(slug) {
     {
       title: 'Want to build an app like this?',
       description: '',
-      mockup: '/images/case-studies/find-app-phone.png',
+      mockup: null,
+      ctaText: 'Get Started Now',
+      ctaUrl: '/contact',
+      clientCountText: 'Join 100+ Happy Clients',
+      showClientStats: true,
       blogTitle: 'Our Latest Blogs',
       blogSubtitle: 'Explore our latest insights, product lessons, and engineering best practices.',
       blogCategory: '',
@@ -168,7 +182,7 @@ async function getCaseStudy(slug) {
 
 // =================== PAGE ===================
 export default async function CaseStudyPage({ params }) {
-  const { slug } = await params; // NOTE: params is a Promise in Next 15
+  const { slug } = await params;
 
   if (!slug || typeof slug !== 'string') {
     return (
@@ -187,68 +201,73 @@ export default async function CaseStudyPage({ params }) {
     );
   }
 
-  const { primaryColor, secondaryColor, accentColor, primaryFont } =
-    data.branding;
+  const { branding } = data;
 
   return (
     <>
       <style global>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap');
-
-        * {
-          font-family: '${primaryFont}', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-
-        :root {
-          --primary-color: ${primaryColor};
-          --secondary-color: ${secondaryColor};
-          --accent-color: ${accentColor};
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-12px); }
-        }
-
-        .animate-float { animation: float 3s ease-in-out infinite; }
-
-        .hover-lift {
-          transition: all .3s cubic-bezier(0.4,0,0.2,1);
-        }
-        .hover-lift:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 18px 40px rgba(15,23,42,0.25);
-        }
-
-        .hover-scale {
-          transition: transform .25s ease;
-        }
-        .hover-scale:hover {
-          transform: scale(1.05);
-        }
-
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        * { font-family: '${branding.primaryFont}', system-ui, sans-serif; }
       `}</style>
 
       <main className="w-full bg-white overflow-hidden">
-        <HeroSection data={data} />
-        <TeamTimeline data={data} />
-        <TechnologyStack data={data} />
-        <ProjectOverview data={data} />
-        <ProjectRequirements data={data} />
-        <GoalsObjectives data={data} />
-        <ChallengesSolutions data={data} />
-        <AppScreensShowcase data={data} />
-        <ResultsDelivered data={data} />
-        <FindYourApp data={data} />
+        <Hero data={data} />
+        
+        <Stats data={data} />
+        
+        <Branding data={data} />
+        
+        <TechStack data={data} />
+        
+        <FeatureSection 
+            title="Project Overview"
+            description={data.overview.description}
+            mockup={data.overview.mockup}
+            branding={branding}
+            imagePosition="right"
+        />
+
+        <FeatureSection 
+            title="Project Requirements"
+            description="The client approached Softkingo with the following key goals:"
+            listItems={data.requirements.items}
+            mockup={data.requirements.mockup}
+            branding={branding}
+            imagePosition="left"
+            isDark={false}
+        />
+
+        <FeatureSection 
+            title="Goals & Objectives"
+            listItems={data.goals.items}
+            bgImage={data.goals.backgroundImage}
+            branding={branding}
+            imagePosition="right"
+            isDark={false}
+        />
+
+        <ChallengesSolutions 
+            data={data.challenges}
+            branding={branding}
+        />
+
+        <AppScreensShowcase data={data.appScreens} branding={branding} />
+
+        <Results results={data.results} branding={branding} />
+
+        <FindYourApp data={data} branding={branding} />
+
+        <TestimonialSection 
+          data={data.client} 
+          branding={branding} 
+        />
+
         <BlogSection
           category={data.findYourApp.blogCategory || ""}
           title={data.findYourApp.blogTitle || "Our Latest Blogs"}
           subtitle={data.findYourApp.blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
         />
         <InquirySection />
-
       </main>
     </>
   );
@@ -282,616 +301,3 @@ export async function generateMetadata({ params }) {
     },
   };
 }
-
-// =================== HERO ===================
-function HeroSection({ data }) {
-  const { primaryColor, secondaryColor } = data.branding;
-
-  return (
-    <section
-      className="relative overflow-hidden py-16 md:py-20 lg:py-24 "
-      style={{
-        background: `linear-gradient(135deg, ${primaryColor} 0%, ${adjustColor(
-          secondaryColor,
-          -25
-        )} 100%)`,
-      }}
-    >
-      {/* BG */}
-      <div className="absolute inset-0">
-        <Image
-          src={data.hero.backgroundImage}
-          alt="Hero BG"
-          fill
-          className="object-cover opacity-90"
-          priority
-        />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/80 via-[#001322]/75 to-[#001322]/30" />
-
-      {/* Circle */}
-      {/* <div className="absolute right-[-120px] top-1/2 -translate-y-1/2 w-[340px] h-[340px] md:w-[460px] md:h-[460px] opacity-10">
-        <Image
-          src={data.hero.circleImage}
-          alt="Circle"
-          fill
-          className="object-contain animate-float"
-        />
-      </div> */}
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Left */}
-          <div className="text-white space-y-6 md:space-y-8">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-auto sm:w-18  md:w-28 md:h-auto  rounded-xl shadow-2xl flex items-center justify-center overflow-hidden bg-white">
-                <Image
-                  src={data.logo}
-                  alt={data.title}
-                  width={80}
-                  height={80}
-                  className="h-auto w-auto object-contain"
-                />
-              </div>
-              <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold">
-                {data.title}
-              </h1>
-            </div>
-
-            <p className="text-md sm:text-lg md:text-xl lg:text-2xl leading-tight opacity-90">
-              {data.subtitle}
-            </p>
-
-
-
-            <div className="hidden flex-wrap gap-3 pt-3">
-              <a href={data.downloads.googlePlay.url} className="hover-scale">
-                <Image
-                  src={data.downloads.googlePlay.image}
-                  alt="Google Play"
-                  width={170}
-                  height={54}
-                  className="h-6 md:h-12 w-auto"
-                />
-              </a>
-              <a href={data.downloads.appStore.url} className="hover-scale">
-                <Image
-                  src={data.downloads.appStore.image}
-                  alt="App Store"
-                  width={170}
-                  height={54}
-                  className="h-6 md:h-12 w-auto"
-                />
-              </a>
-              <a href={data.downloads.web.url} className="hover-scale">
-                <Image
-                  src={data.downloads.web.image}
-                  alt="Web"
-                  width={160}
-                  height={50}
-                  className="h-6 md:h-12 w-auto"
-                />
-              </a>
-            </div>
-          </div>
-
-          {/* Right mockups */}
-          <div className="relative  justify-center gap-6 md:gap-8 mt-2 lg:mt-0 hidden md:flex">
-            <div className="relative w-32 h-64 sm:w-40 sm:h-80 md:w-48 md:h-[420px] lg:w-[25rem] lg:h-[26rem] animate-float">
-              <Image
-                src={data.hero.mockups[0]}
-                alt="Screen 1"
-                fill
-                className="object-contain drop-shadow-2xl"
-              />
-            </div>
-            {/* <div
-              className="relative w-28 h-56 sm:w-36 sm:h-72 md:w-44 md:h-[380px] lg:w-52 lg:h-[440px] hidden sm:block animate-float"
-              style={{ animationDelay: "0.5s" }}
-            >
-              <Image
-                src={data.hero.mockups[1]}
-                alt="Screen 2"
-                fill
-                className="object-contain drop-shadow-2xl"
-              />
-            </div> */}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =================== TEAM & CLIENT / COLORS ===================
-function TeamTimeline({ data }) {
-  const { primaryColor, primaryFont } = data.branding;
-
-  return (
-    <>
-      {/* cards */}
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-12 bg-gray-900 border-y border-gray-800">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 hover-lift border border-gray-700/50">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-gray-400 text-sm sm:text-base mb-2 font-medium">
-                  Team Size
-                </p>
-                <h3 className="text-white text-3xl sm:text-4xl lg:text-4xl font-bold mb-2">
-                  {data.team.size}
-                </h3>
-                <p className="text-gray-400 text-xs sm:text-sm">
-                  {data.team.roles}
-                </p>
-              </div>
-              <Users className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 text-sky-500/50" />
-            </div>
-          </div>
-
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 hover-lift border border-gray-700/50">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-gray-400 text-sm sm:text-base mb-2 font-medium">
-                  Timeline
-                </p>
-                <h3 className="text-white text-3xl sm:text-4xl lg:text-4xl font-bold mb-2">
-                  {data.team.timeline}
-                </h3>
-                <p className="text-gray-400 text-xs sm:text-sm">
-                  {data.team.duration}
-                </p>
-              </div>
-              <Clock className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 text-sky-500/50" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* about + colors */}
-      <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* client */}
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-5">
-            <div className="w-28 h-28 sm:w-32 sm:h-32 lg:w-40 lg:h-40 bg-gray-200 rounded-full mb-2 overflow-hidden">
-              {data.client.avatar && (
-                <Image
-                  src={data.client.avatar}
-                  alt={data.client.name}
-                  width={160}
-                  height={160}
-                  className="w-full h-full object-cover"
-                />
-              )}
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-bold">
-              About Client
-            </h3>
-            <p className="text-lg sm:text-xl">
-              <span className="font-bold">{data.client.name}</span>{" "}
-              {data.client.subtitle}
-            </p>
-            <p className="text-base sm:text-lg text-gray-600">
-              from {data.client.location}
-            </p>
-            <div className="bg-gray-100 px-6 py-3 rounded-full mt-2">
-              <span className="text-gray-700 text-sm sm:text-base">
-                Industry :{" "}
-                <span className="font-bold">{data.client.industry}</span>
-              </span>
-            </div>
-          </div>
-
-          {/* colors / font */}
-          <div className="space-y-10">
-            <div className="text-center mb-4">
-              <div className="flex justify-center items-baseline mb-6 sm:mb-8">
-                <span
-                  className="font-bold leading-none text-7xl sm:text-[6rem] lg:text-[7rem]"
-                  style={{ color: primaryColor, fontFamily: primaryFont }}
-                >
-                  A
-                </span>
-                <span
-                  className="font-light leading-none opacity-30 text-6xl sm:text-[5rem] lg:text-[6rem]"
-                  style={{ color: primaryColor, fontFamily: primaryFont }}
-                >
-                  a
-                </span>
-              </div>
-              <p
-                className="text-2xl sm:text-3xl lg:text-4xl font-bold"
-                style={{ color: primaryColor }}
-              >
-                {primaryFont.toUpperCase()}
-              </p>
-            </div>
-
-            <div className="bg-slate-900 rounded-2xl p-6 sm:p-8 lg:p-10">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10">
-                {data.branding.colors.map((color) => (
-                  <div key={color.hex} className="text-center">
-                    <div
-                      className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-2xl shadow-2xl mb-3 mx-auto hover-scale"
-                      style={{ backgroundColor: color.hex }}
-                    />
-                    <p className="text-white text-sm font-bold mb-1">
-                      {color.hex}
-                    </p>
-                    <p className="text-gray-400 text-xs sm:text-sm">
-                      {color.name}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-// =================== TECHNOLOGY ===================
-function TechnologyStack({ data }) {
-  const { primaryColor } = data.branding;
-
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-gray-900 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10">
-        <Image
-          src={data.technologies.backgroundImage}
-          alt="Tech BG"
-          fill
-          className="object-cover"
-        />
-      </div>
-
-      <div
-        className="absolute top-0 left-0 w-[420px] h-[420px] rounded-full blur-3xl opacity-25 animate-float"
-        style={{ backgroundColor: primaryColor }}
-      />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white text-center mb-10 sm:mb-14">
-          Technology & Tools
-        </h2>
-
-        <div className="flex overflow-x-auto hide-scrollbar justify-center gap-8 sm:gap-10">
-          {data.technologies.items.map((tech) => (
-            <div key={tech.name} className="text-center">
-              <div className="bg-gray-800/70 backdrop-blur-sm rounded-2xl p-6 sm:p-8 hover-lift">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 relative mx-auto">
-                  <Image
-                    src={tech.icon}
-                    alt={tech.name}
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-              <p className="text-white font-semibold text-sm sm:text-base mt-3">
-                {tech.name}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =================== OVERVIEW ===================
-function ProjectOverview({ data }) {
-  const { primaryColor } = data.branding;
-
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-gray-50">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div className="space-y-6 sm:space-y-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-            Project Overview
-          </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-            {data.overview.description}
-          </p>
-        </div>
-
-        <div className="relative flex justify-center mt-6 lg:mt-0">
-          <div
-            className="absolute inset-0 rounded-full blur-3xl opacity-30 scale-75 animate-float"
-            style={{
-              background: `radial-gradient(circle, ${primaryColor}60, transparent)`,
-            }}
-          />
-          <div className="relative w-40 h-80 sm:w-52 sm:h-[380px] md:w-64 md:h-[440px] lg:w-72 lg:h-[520px]">
-            <Image
-              src={data.overview.mockup}
-              alt="Overview"
-              fill
-              className="object-contain drop-shadow-2xl"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =================== REQUIREMENTS ===================
-function ProjectRequirements({ data }) {
-  const { primaryColor } = data.branding;
-
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-white">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-        <div className="order-2 lg:order-1 relative flex justify-center">
-          <div
-            className="absolute inset-0 rounded-full blur-3xl opacity-30 scale-75 animate-float"
-            style={{
-              background: `radial-gradient(circle, ${primaryColor}60, transparent)`,
-            }}
-          />
-          <div className="relative w-40 h-80 sm:w-52 sm:h-[380px] md:w-64 md:h-[440px] lg:w-72 lg:h-[520px]">
-            <Image
-              src={data.requirements.mockup}
-              alt="Requirements"
-              fill
-              className="object-contain drop-shadow-2xl"
-            />
-          </div>
-        </div>
-
-        <div className="order-1 lg:order-2 space-y-6 sm:space-y-8">
-          <div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3">
-              Project Requirements
-            </h2>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600">
-              The client approached Softkingo with the following key goals:
-            </p>
-          </div>
-
-          <div className="space-y-5 sm:space-y-6">
-            {data.requirements.items.map((item) => (
-              <div key={item.title} className="space-y-2">
-                <h3 className="text-base sm:text-lg lg:text-xl font-semibold flex items-start gap-2">
-                  <span
-                    className="text-xl sm:text-2xl"
-                    style={{ color: primaryColor }}
-                  >
-                    ▸
-                  </span>
-                  {item.title}
-                </h3>
-                <p className="text-sm sm:text-base text-gray-600 pl-6 sm:pl-8">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =================== GOALS ===================
-function GoalsObjectives({ data }) {
-  const { primaryColor } = data.branding;
-
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-gray-50">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div className="relative h-64 sm:h-80 md:h-[420px] lg:h-[460px] rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl">
-          <Image
-            src={data.goals.backgroundImage}
-            alt="Goals"
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        <div className="bg-white rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl hover-lift border border-slate-100">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-slate-900">
-            Goals & Objectives
-          </h2>
-          <ul className="space-y-4 sm:space-y-5">
-            {data.goals.items.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-3 text-sm sm:text-base lg:text-lg text-gray-700"
-              >
-                <span
-                  className="text-xl sm:text-2xl flex-shrink-0 mt-0.5"
-                  style={{ color: primaryColor }}
-                >
-                  ▸
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =================== CHALLENGES ===================
-function ChallengesSolutions({ data }) {
-  const { primaryColor } = data.branding;
-
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-sky-50">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12">
-        <div className="bg-white rounded-3xl lg:rounded-[2.5rem] p-6 sm:p-8 lg:p-10 shadow-lg hover-lift">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-            The Challenges
-          </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">
-            {data.challenges.challenge}
-          </p>
-        </div>
-
-        <div
-          className="rounded-2xl p-6 sm:p-8 lg:p-10 shadow-lg hover-lift"
-          style={{
-            background: `linear-gradient(135deg, ${primaryColor}15, ${primaryColor}30)`,
-          }}
-        >
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
-            The Solution
-          </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-gray-800 leading-relaxed">
-            {data.challenges.solution}
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =================== APP SCREENS SHOWCASE ===================
-function AppScreensShowcase({ data }) {
-  const { primaryColor } = data.branding;
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 px-0 bg-sky-50">
-      <AppScreensCarousel data={data.appScreens} primaryColor={primaryColor} />
-    </section>
-  );
-}
-
-// =================== RESULTS ===================
-function ResultsDelivered({ data }) {
-  const { primaryColor } = data.branding;
-
-  return (
-    <>
-      {data.results.map((result, index) => (
-        <section
-          key={index}
-          className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-white relative overflow-hidden"
-        >
-          <div
-            className="absolute top-0 left-0 w-[320px] h-[320px] rounded-full blur-3xl opacity-25"
-            style={{ backgroundColor: `${primaryColor}40` }}
-          />
-          <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* image */}
-            <div
-              className={`relative flex justify-center ${result.position === "right" ? "lg:order-2" : ""
-                }`}
-            >
-              <div
-                className="absolute inset-0 rounded-full blur-3xl opacity-30 animate-float"
-                style={{
-                  background: `radial-gradient(circle, ${primaryColor}60, transparent)`,
-                  animationDelay: `${index * 0.5}s`,
-                }}
-              />
-              <div className="relative w-40 h-80 sm:w-52 sm:h-[380px] md:w-64 md:h-[440px] lg:w-72 lg:h-[520px]">
-                <Image
-                  src={result.mockup}
-                  alt="Results"
-                  fill
-                  className="object-contain drop-shadow-2xl"
-                />
-              </div>
-            </div>
-
-            {/* text */}
-            <div
-              className={`space-y-4 sm:space-y-5 lg:space-y-6 ${result.position === "right" ? "lg:order-1" : ""
-                }`}
-            >
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                Results Delivered
-              </h2>
-              <ul className="space-y-3 sm:space-y-4">
-                {result.items.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-sm sm:text-base lg:text-lg text-gray-700"
-                  >
-                    <span
-                      className="text-xl sm:text-2xl flex-shrink-0 mt-0.5"
-                      style={{ color: primaryColor }}
-                    >
-                      ▸
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-      ))}
-    </>
-  );
-}
-
-// =================== FIND YOUR APP ===================
-function FindYourApp({ data }) {
-  const { primaryColor } = data.branding;
-
-  return (
-    <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-12 bg-black text-white relative overflow-hidden">
-      <div
-        className="absolute top-0 right-0 w-[360px] h-[360px] rounded-full blur-3xl opacity-25"
-        style={{ backgroundColor: primaryColor }}
-      />
-
-      <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div className="space-y-5 sm:space-y-6">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
-            {data.findYourApp.title}
-          </h2>
-          <p className="text-sm sm:text-base lg:text-lg text-gray-200 leading-relaxed">
-            {data.findYourApp.description}
-          </p>
-        </div>
-
-        <div className="relative flex justify-center mt-6 lg:mt-0">
-          <div className="relative w-20 h-40 sm:w-35 sm:h-52 md:w-35 md:h-52 lg:w-42 lg:h-75 -rotate-3 hover:rotate-0 transition-transform duration-500">
-            <Image
-              src={data.findYourApp.mockup}
-              alt="Find your app"
-              fill
-              className="object-contain drop-shadow-2xl"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =================== HELPER ===================
-function adjustColor(color, amount) {
-  const clamp = (n) => Math.min(255, Math.max(0, n));
-  const hex = color.replace("#", "");
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-  return `#${clamp(r + amount)
-    .toString(16)
-    .padStart(2, "0")}${clamp(g + amount)
-      .toString(16)
-      .padStart(2, "0")}${clamp(b + amount).toString(16).padStart(2, "0")}`;
-}
-
-// =================== SEO ===================
-// export async function generateMetadata({ params }) {
-//   const data = await getCaseStudy(params.slug);
-//   return {
-//     title: `${data.title} - Case Study | Softkingo`,
-//     description: data.subtitle,
-//     openGraph: {
-//       title: data.title,
-//       description: data.subtitle,
-//       images: [data.hero.backgroundImage],
-//     },
-//   };
-// }

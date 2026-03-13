@@ -413,7 +413,7 @@
 //                   }`}
 //                 >
 //                   <div className={`text-xl md:text-2xl transition-transform group-hover:scale-110`}>{item.icon}</div>
-//                   <span className="text-[9px] md:text-[10px] font-black tracking-widest text-center leading-tight w-20">
+//                   <span className="text-[9px] md:text-[10px] font-black tracking-widest text-center leading-normal w-20">
 //                     {item.title.split(' / ')[0]}
 //                   </span>
 //                 </button>

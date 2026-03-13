@@ -242,8 +242,8 @@ export default function AdminMediaPage() {
                     {/* Badge */}
                     <div className="absolute top-4 left-4">
                       <div className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider backdrop-blur-md shadow-lg ${item.type === 'image'
-                          ? 'bg-sky-500/90 text-white'
-                          : 'bg-purple-500/90 text-white'
+                        ? 'bg-sky-500/90 text-white'
+                        : 'bg-purple-500/90 text-white'
                         }`}>
                         {item.type}
                       </div>
@@ -254,7 +254,7 @@ export default function AdminMediaPage() {
                       <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1">
                         {item.category || 'Asset'}
                       </p>
-                      <h3 className="text-white font-bold text-sm line-clamp-1 leading-tight">
+                      <h3 className="text-white font-bold text-sm line-clamp-1 leading-normal">
                         {item.title || 'Untitled Archive'}
                       </h3>
                     </div>

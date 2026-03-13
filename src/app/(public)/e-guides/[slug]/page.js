@@ -171,7 +171,7 @@ function HeroDetail({ guide }) {
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold leading-normal">
               {guide.title}
             </h1>
 

@@ -10,7 +10,7 @@ export const metadata = {
   title: "E-Books | Softkingo",
   description:
     "Download expert-crafted E-Books by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
-    alternates: { canonical: "/e-books" }
+  alternates: { canonical: "/e-books" }
 };
 
 export default async function EGuidesPage(props) {
@@ -22,13 +22,13 @@ export default async function EGuidesPage(props) {
       status: "published",
       ...(q
         ? {
-            OR: [
-              { title: { contains: q, mode: 'insensitive' } },
-              { category: { contains: q, mode: 'insensitive' } },
-              { description: { contains: q, mode: 'insensitive' } },
-              { summary: { contains: q, mode: 'insensitive' } },
-            ],
-          }
+          OR: [
+            { title: { contains: q, mode: 'insensitive' } },
+            { category: { contains: q, mode: 'insensitive' } },
+            { description: { contains: q, mode: 'insensitive' } },
+            { summary: { contains: q, mode: 'insensitive' } },
+          ],
+        }
         : {}),
     },
     orderBy: { publishedAt: "desc" },
@@ -36,11 +36,11 @@ export default async function EGuidesPage(props) {
 
   return (
     <>
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
-      <HeroSection q={q} total={guides.length} />
-      <GuidesSection guides={guides} />
-    </main>
-     <InquirySection />
+      <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+        <HeroSection q={q} total={guides.length} />
+        <GuidesSection guides={guides} />
+      </main>
+      <InquirySection />
     </>
   );
 }
@@ -53,15 +53,15 @@ function HeroSection({ q, total }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
       <div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
-      
+
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-24 lg:pb-20">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-sky-200/80 mb-8">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="hover:text-cyan-300 transition-colors duration-200 flex items-center gap-2"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,11 +80,11 @@ function HeroSection({ q, total }) {
               <p className="text-sm tracking-[0.25em] uppercase text-cyan-400 font-semibold">
                 Expert Resources
               </p>
-              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-normal">
                 Softkingo <span className="bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">E‑Guides</span>
               </h1>
               <p className="text-xl text-sky-100/80 leading-relaxed max-w-2xl">
-                Carefully prepared guides to help founders and product teams plan, 
+                Carefully prepared guides to help founders and product teams plan,
                 design and launch digital products faster — without guessing.
               </p>
             </div>
@@ -127,28 +127,28 @@ function HeroSection({ q, total }) {
               <div className="relative transform hover:scale-105 transition-transform duration-500">
                 {/* Glow effect */}
                 <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/20 to-sky-500/20 rounded-3xl blur-xl" />
-                
+
                 {/* Stacked book effect */}
                 <div className="relative">
                   <div className="absolute -bottom-6 -right-6 w-full h-full bg-slate-800 rounded-3xl transform rotate-3" />
                   <div className="absolute -bottom-3 -right-3 w-full h-full bg-slate-700 rounded-3xl transform rotate-2" />
-                  
+
                   {/* Main book */}
                   <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden aspect-[3/4] p-4">
-                  <div className="">
-                    <Image
-                      src="/images/black book.png"
-                      alt="Softkingo E‑Guides Collection"
-                      fill
-                      className="object-cover p-4"
-                      priority
-                    />
-                    
-                  </div>
-                    
+                    <div className="">
+                      <Image
+                        src="/images/black book.png"
+                        alt="Softkingo E‑Guides Collection"
+                        fill
+                        className="object-cover p-4"
+                        priority
+                      />
+
+                    </div>
+
                     {/* Overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                    
+
                     {/* Corner accents */}
                     <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-br-2xl" />
                     <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-sky-500/20 to-transparent rounded-tl-2xl" />
@@ -207,15 +207,15 @@ function GuidesSection({ guides }) {
           </div>
         )}
       </div>
-       
+
     </section>
-    
+
   );
 }
 
 export function EGuidesCard({ guide, index }) {
   return (
-    <article 
+    <article
       className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/10"
       style={{
         animationDelay: `${index * 100}ms`,
@@ -224,10 +224,10 @@ export function EGuidesCard({ guide, index }) {
     >
       {/* Animated background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-sky-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
+
       {/* Shine effect on hover */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-      
+
       <div className="relative p-6">
         {/* Header with cover image and category */}
         <div className="flex items-start justify-between mb-4">
@@ -236,7 +236,7 @@ export function EGuidesCard({ guide, index }) {
               {guide.category || "E‑Guide"}
             </span>
           </div>
-          
+
           {/* Read time */}
           <div className="flex items-center gap-1 text-xs text-slate-400 bg-slate-800/50 rounded-full px-2 py-1">
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -249,7 +249,7 @@ export function EGuidesCard({ guide, index }) {
         {/* Cover image with floating animation */}
         <div className="relative mb-6 transform group-hover:-translate-y-2 transition-transform duration-500">
           <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 to-sky-500/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          
+
           <div className="relative w-full max-w-42 h-62 mx-auto overflow-hidden">
             <Image
               src={guide.coverImage || "/images/eguides/default.png"}
@@ -257,7 +257,7 @@ export function EGuidesCard({ guide, index }) {
               fill
               className="object-cover transform group-hover:scale-105 transition-transform duration-500 p-2"
             />
-            
+
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
           </div>
@@ -276,7 +276,7 @@ export function EGuidesCard({ guide, index }) {
           </div>
 
           {/* Title */}
-          <h3 className="text-xl font-bold text-white leading-tight group-hover:text-cyan-300 transition-colors duration-300 line-clamp-2">
+          <h3 className="text-xl font-bold text-white leading-normal group-hover:text-cyan-300 transition-colors duration-300 line-clamp-2">
             {guide.title}
           </h3>
 
@@ -292,24 +292,24 @@ export function EGuidesCard({ guide, index }) {
               className="inline-flex items-center justify-between w-full px-4 py-3 bg-slate-800/50 hover:bg-slate-700/50 text-white font-semibold rounded-xl transition-all duration-300 border border-slate-700/50 hover:border-cyan-500/30 group/btn overflow-hidden"
             >
               <span className="text-sm">Read Guide</span>
-              
+
               {/* Animated arrow */}
               <div className="flex items-center">
                 <span className="text-xs text-slate-400 group-hover/btn:text-cyan-300 mr-2 transition-colors duration-300">
                   Explore
                 </span>
                 <div className="w-6 h-6 rounded-full bg-gradient-to-r from-cyan-500 to-sky-600 flex items-center justify-center transform group-hover/btn:translate-x-1 transition-transform duration-300">
-                  <svg 
-                    className="w-3 h-3 text-white transform -rotate-45 group-hover/btn:rotate-0 transition-transform duration-300" 
-                    fill="none" 
-                    stroke="currentColor" 
+                  <svg
+                    className="w-3 h-3 text-white transform -rotate-45 group-hover/btn:rotate-0 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </div>
               </div>
-              
+
               {/* Button shine effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
             </Link>

@@ -358,7 +358,7 @@ export default async function PostSlugPage({ sectionKey, slug }) {
                 {fullPost.category}
               </span>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white leading-normal">
                 {fullPost.title}
               </h1>
 

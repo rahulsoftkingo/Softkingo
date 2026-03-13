@@ -297,7 +297,7 @@ function ProjectCard({ p }) {
             </div>
 
             <div className="flex-1">
-              <h3 className="text-xl md:text-3xl font-extrabold text-white leading-tight">
+              <h3 className="text-xl md:text-3xl font-extrabold text-white leading-normal">
                 {p.title}
               </h3>
             </div>

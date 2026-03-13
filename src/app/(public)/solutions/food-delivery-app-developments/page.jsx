@@ -222,7 +222,7 @@ export default function FoodDeliveryHero() {
             <section className="sm:flex max-w-7xl mx-auto h-[400px]  md:flex-row  ">
                 {/* Left Half - Text Only */}
                 <div className="flex-1 bg-sky-400  p-8 lg:p-12 flex items-center justify-center">
-                    <h2 className=" text-2xl lg:text-4xl font-bold leading-tight text-white">
+                    <h2 className=" text-2xl lg:text-4xl font-bold leading-normal text-white">
                         Mobile Apps <br />Developed By Softkingo Have Been Featured In
                     </h2>
                 </div>
@@ -333,7 +333,7 @@ export default function FoodDeliveryHero() {
                                     {/* Tech Stack */}
                                     <div>
                                         <div className="text-xs font-medium text-gray-600 mb-1">Techstack</div>
-                                        <div className="font-semibold text-gray-900 text-xs leading-tight">
+                                        <div className="font-semibold text-gray-900 text-xs leading-normal">
                                             Hybrid(Flutter), Mongo DB, Node JS
                                         </div>
                                     </div>

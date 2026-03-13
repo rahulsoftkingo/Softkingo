@@ -176,7 +176,7 @@ function BlogCard({ blog, priority }) {
                 {/* Title */}
                 <div className="space-y-3">
                     <Link href={`/blog/${blog.slug}`}>
-                        <h3 className="text-lg font-extrabold text-slate-900 leading-tight line-clamp-2 hover:text-sky-600 transition-colors h-[3.5rem]">
+                        <h3 className="text-lg font-extrabold text-slate-900 leading-normal line-clamp-2 hover:text-sky-600 transition-colors h-[3.5rem]">
                             {blog.title}
                         </h3>
                     </Link>

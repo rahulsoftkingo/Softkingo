@@ -166,7 +166,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
                   <span className="text-2xl font-bold text-slate-800">{p.title?.[0]}</span>
                 )}
               </div>
-              <h3 className="text-xl md:text-3xl font-extrabold text-white leading-tight">{p.title}</h3>
+              <h3 className="text-xl md:text-3xl font-extrabold text-white leading-normal">{p.title}</h3>
             </div>
 
             {/* Description */}

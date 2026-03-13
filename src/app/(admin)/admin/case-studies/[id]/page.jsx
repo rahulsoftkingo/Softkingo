@@ -18,6 +18,7 @@ const TABS = [
   { id: 'content', label: 'Content', icon: Layout, mobileLabel: 'Content' },
   { id: 'screens', label: 'Screens', icon: ImageIcon, mobileLabel: 'Screens' },
   { id: 'results', label: 'Results', icon: TrendingUp, mobileLabel: 'Results' },
+  { id: 'testimonial', label: 'Testimonial', icon: CheckCircle2, mobileLabel: 'Review' },
   { id: 'blogs', label: 'Blog Section', icon: FileText, mobileLabel: 'Blogs' },
   { id: 'seo', label: 'SEO', icon: SearchIcon, mobileLabel: 'SEO' },
 ];
@@ -85,6 +86,8 @@ export default function CaseStudyEditPage() {
     clientLocation: '',
     clientIndustry: '',
     clientAvatar: '',
+    clientReview: '',
+    testimonials: [],
     techBackgroundImage: '/images/tech-bg.jpg',
     techItems: [{ name: 'React JS', icon: '/images/tech/react-js.png' }],
     overviewDescription: '',
@@ -174,6 +177,13 @@ export default function CaseStudyEditPage() {
         clientLocation: client.location || '',
         clientIndustry: client.industry || '',
         clientAvatar: client.avatar || '',
+        clientReview: client.review || '',
+        testimonials: client.testimonials || (client.review ? [{
+          name: client.name || '',
+          designation: client.subtitle || '',
+          avatar: client.avatar || '',
+          review: client.review || ''
+        }] : []),
         techBackgroundImage: technologies.backgroundImage || prev.techBackgroundImage,
         techItems: technologies.items?.length ? technologies.items : prev.techItems,
         overviewDescription: overview.description || '',
@@ -210,15 +220,18 @@ export default function CaseStudyEditPage() {
       const parts = path.split('.');
       if (parts.length === 1) return { ...prev, [path]: value };
 
-      if (parts[0] === 'appScreensCategories') {
-        const index = parseInt(parts[1]);
-        const field = parts[2];
-        const copy = [...prev.appScreensCategories];
-        copy[index] = { ...copy[index], [field]: value };
-        return { ...prev, appScreensCategories: copy };
+      // Generic array update e.g. "testimonials.0.avatar" or "appScreensCategories.1.name"
+      if (parts.length === 3) {
+        const [arrayField, indexStr, subField] = parts;
+        const index = parseInt(indexStr);
+        if (!isNaN(index) && Array.isArray(prev[arrayField])) {
+          const copy = [...prev[arrayField]];
+          copy[index] = { ...copy[index], [subField]: value };
+          return { ...prev, [arrayField]: copy };
+        }
       }
 
-      return prev; // Fallback for deep paths we haven't handled specifically
+      return prev;
     });
   };
 
@@ -419,6 +432,26 @@ export default function CaseStudyEditPage() {
       resultsBlocks: prev.resultsBlocks.filter((_, i) => i !== index),
     }));
 
+  // Testimonials
+  const addTestimonial = () =>
+    setForm((prev) => ({
+      ...prev,
+      testimonials: [...(prev.testimonials || []), { name: '', designation: '', avatar: '', review: '' }],
+    }));
+
+  const updateTestimonial = (index, field, value) =>
+    setForm((prev) => {
+      const copy = [...(prev.testimonials || [])];
+      copy[index] = { ...copy[index], [field]: value };
+      return { ...prev, testimonials: copy };
+    });
+
+  const removeTestimonial = (index) =>
+    setForm((prev) => ({
+      ...prev,
+      testimonials: (prev.testimonials || []).filter((_, i) => i !== index),
+    }));
+
   // Build JSON helpers
   function buildBrandingJson() {
     return JSON.stringify({
@@ -452,6 +485,8 @@ export default function CaseStudyEditPage() {
       location: form.clientLocation,
       industry: form.clientIndustry,
       avatar: form.clientAvatar,
+      review: form.clientReview, // Owner's review for Branding popup
+      testimonials: form.testimonials || [], // End user reviews for Voices of Trust
     });
   }
 
@@ -1307,16 +1342,124 @@ export default function CaseStudyEditPage() {
                         />
                       </div>
 
-                      <div className="sm:col-span-2">
+                      <div className="sm:col-span-2 space-y-4">
                         <ImageUploadField
                           label="Client Avatar"
                           name="clientAvatar"
                           value={form.clientAvatar}
                           placeholder="/images/clients/avatar.jpg"
                         />
+                        
+                        <div className="space-y-2 pt-2">
+                          <label className="block text-[10px] xs:text-xs font-bold text-slate-700 uppercase tracking-widest">
+                            Client Review (About Softkingo) - Pop-up Content
+                          </label>
+                          <textarea
+                            name="clientReview"
+                            value={form.clientReview}
+                            onChange={handleChange}
+                            rows={4}
+                            placeholder="Working with Softkingo was an incredible experience..."
+                            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-purple-500 outline-none italic"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Testimonial Tab */}
+            {activeTab === 'testimonial' && (
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-slate-900 mb-1">
+                      End User Testimonials (Voices Of Trust)
+                    </h3>
+                    <p className="text-[10px] xs:text-xs sm:text-sm text-slate-500">
+                      Manage reviews from the users of this product
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={addTestimonial}
+                    className="inline-flex items-center gap-1 sm:gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 text-xs font-medium transition-colors"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span>Add Testimonial</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:gap-6">
+                  {(form.testimonials || []).map((t, idx) => (
+                    <div key={idx} className="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200 relative group">
+                      <button
+                        type="button"
+                        onClick={() => removeTestimonial(idx)}
+                        className="absolute top-4 right-4 text-slate-400 hover:text-rose-600 transition-colors p-1"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                              Client Name
+                            </label>
+                            <input
+                              name={`testimonials.${idx}.name`}
+                              value={t.name}
+                              onChange={handleChange}
+                              placeholder="e.g. John Doe"
+                              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                              Designation
+                            </label>
+                            <input
+                              name={`testimonials.${idx}.designation`}
+                              value={t.designation}
+                              onChange={handleChange}
+                              placeholder="e.g. CEO at TechCorp"
+                              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
+                            />
+                          </div>
+                          <ImageUploadField
+                            label="Client Avatar"
+                            name={`testimonials.${idx}.avatar`}
+                            value={t.avatar}
+                            placeholder="/images/client.jpg"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="block text-[10px] uppercase tracking-wider font-bold text-slate-500">
+                            The Review
+                          </label>
+                          <textarea
+                            name={`testimonials.${idx}.review`}
+                            value={t.review}
+                            onChange={handleChange}
+                            rows={6}
+                            placeholder="A wonderful review of your partnership..."
+                            className="w-full h-full min-h-[120px] rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none italic"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {form.testimonials?.length === 0 && (
+                    <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50">
+                      <Users className="h-10 w-10 text-slate-300 mx-auto mb-3" />
+                      <p className="text-slate-500 text-sm">No testimonials added yet. Click "Add Testimonial" to start.</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

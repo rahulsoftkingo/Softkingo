@@ -72,7 +72,7 @@ export default function CloneHero({ data }) {
 
         {/* Hero Title & Subtitle */}
         <div className="max-w-5xl mx-auto mb-4 animate-in fade-in slide-in-from-top duration-1000">
-          <h1 className="text-3xl md:text-3xl lg:text-4xl font-black text-white mb-3 leading-tight tracking-tight">
+          <h1 className="text-3xl md:text-3xl lg:text-4xl font-black text-white mb-3 leading-normal tracking-tight">
             {data?.title || "Clone App Development Company"}
           </h1>
           <p className="text-slate-300 text-xs leading-relaxed max-w-3xl mx-auto font-normal opacity-90">

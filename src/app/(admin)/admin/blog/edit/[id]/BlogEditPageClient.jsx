@@ -575,7 +575,7 @@ export default function BlogEditPageClient({ idParam }) {
             <ArrowLeft className="h-5 w-5" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-slate-900 leading-tight">
+            <h1 className="text-xl font-bold text-slate-900 leading-normal">
               {isNew ? 'Create post' : 'Edit post'}
             </h1>
             <p className="text-xs text-slate-500 font-medium">Design & Content Studio</p>

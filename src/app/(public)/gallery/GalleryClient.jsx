@@ -49,7 +49,7 @@ export default function GalleryClient({ sections }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6"
+              className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-normal mb-6"
             >
               Inside{' '}
               <span className="bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">
@@ -161,7 +161,7 @@ export default function GalleryClient({ sections }) {
                         <figcaption className="absolute inset-x-0 bottom-0 p-4 lg:p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                           <div className="flex justify-between items-end">
                             <div className="flex-1">
-                              <p className="text-white font-bold text-sm lg:text-base leading-tight">
+                              <p className="text-white font-bold text-sm lg:text-base leading-normal">
                                 {img.alt}
                               </p>
                               <div className="flex items-center gap-2 mt-2">

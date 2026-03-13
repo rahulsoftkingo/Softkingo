@@ -17,7 +17,7 @@ export default function SolutionsAppModule({ data, reverse = false, bg = "white"
                         <div className="inline-block px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
                             {data.tag}
                         </div>
-                        <h2 className="text-3xl lg:text-4xl font-black text-slate-900 leading-tight">
+                        <h2 className="text-3xl lg:text-4xl font-black text-slate-900 leading-normal">
                             {data.title}
                         </h2>
                         <p className="text-slate-600 text-lg">{data.description}</p>

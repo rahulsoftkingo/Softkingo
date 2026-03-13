@@ -46,15 +46,15 @@ export default function EventPopup() {
           if (alreadyShown) return;
           alreadyShown = true;
           setOpen(true);
-          
+
           // Smooth entrance with delay
           setTimeout(() => {
             setIsVisible(true);
             setShowConfetti(true);
           }, 50);
-          
+
           setTimeout(() => setShowConfetti(false), 3500);
-          
+
           const updated = {
             ...counts,
             [ev.id]: currentCount + 1,
@@ -115,7 +115,7 @@ export default function EventPopup() {
         onClick={onClose}
         aria-label="Close"
       />
-      
+
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
           {Array.from({ length: confettiCount }).map((_, i) => {
@@ -126,7 +126,7 @@ export default function EventPopup() {
             const randomDelay = Math.random() * 0.4;
             const randomDuration = 1.5 + Math.random() * 1.5;
             const randomSize = 8 + Math.random() * 10;
-            
+
             return (
               <div
                 key={i}
@@ -150,7 +150,7 @@ export default function EventPopup() {
           })}
         </div>
       )}
-      
+
       <div className={`relative w-full max-w-4xl bg-slate-950borderborder-sky-900/60rounded-3xlshadow-[0_18px_50px_rgba(15,23,42,0.9)] overflow-hidden max-h-[90vh] transition-all duration-700 ${isVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-90 opacity-0 translate-y-8'}`}>
         <div className="relative w-full">
           {event.imageUrl ? (
@@ -187,18 +187,18 @@ export default function EventPopup() {
 
           <div className="absolute inset-0 flex flex-col justify-between p-3 sm:p-4 md:p-6 lg:p-8">
             <div className={`flex justify-start transition-all duration-700 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-            {event.theme && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-white">
-                  {event.theme }
-                </span>
-              </div>
-            )}
+              {event.theme && (
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-white">
+                    {event.theme}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className={`flex-1 flex hidden flex-col justify-center items-center text-center max-w-3xl mx-auto space-y-4 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-2xl">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-normal drop-shadow-2xl">
                 {event.title}
               </h2>
               <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed drop-shadow-lg">

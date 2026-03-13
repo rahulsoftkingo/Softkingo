@@ -1,96 +1,133 @@
-// "use client";
-// import React from 'react';
-// import CommonTitle from '@/components/ui/CommonTitle';
-// import { TrendingUp, Users, Shield, Zap } from 'lucide-react';
-
-// export default function SolutionsWhyNeed({ data }) {
-//   if (!data) return null;
-
-//   const icons = { TrendingUp, Users, Shield, Zap };
-
-//   return (
-//     <section className="py-20 bg-slate-50">
-//       <div className="container mx-auto px-6 lg:px-12">
-//         <CommonTitle 
-//             align="center"
-//             title={data.title}
-//             subtitle={data.subtitle}
-//         />
-//         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-//             {data.items?.map((item, idx) => {
-//                 const Icon = icons[item.icon] || Zap;
-//                 return (
-//                     <div key={idx} className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-//                         <div className="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center text-sky-600 mb-6">
-//                             <Icon size={28} />
-//                         </div>
-//                         <h4 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h4>
-//                         <p className="text-slate-600 text-sm leading-relaxed">{item.description}</p>
-//                     </div>
-//                 )
-//             })}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
 "use client";
-import React from 'react';
+
+import React, { useState } from 'react';
 import CommonTitle from '@/components/ui/CommonTitle';
-import * as LucideIcons from 'lucide-react'; // Dynamic Icons for flexibility
+import * as LucideIcons from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SolutionsWhyNeed({ data }) {
-  if (!data) return null;
+    const [activeIndex, setActiveIndex] = useState(0);
 
-  // Helper to render dynamic icon
-  const renderIcon = (iconName) => {
-    const IconComponent = LucideIcons[iconName] || LucideIcons.Zap;
-    return <IconComponent size={40} />; // Thoda bada icon square card ke liye
-  };
+    if (!data || !data.items || data.items.length === 0) return null;
 
-  return (
-    <section className="py-20 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6">
-        
-        <CommonTitle 
-            align="center"
-            title={data.title}
-            subtitle={data.subtitle}
-        />
+    const items = data.items;
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            {data.items?.map((item, idx) => (
-                // 1. Perspective Container (Depth effect ke liye)
-                <div key={idx} className="group perspective-1000 h-full">
-                    
-                    {/* 2. The Card (Jo Rotate karega) */}
-                    <div className="relative w-full aspect-square transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] cursor-pointer">
-                        
-                        {/* --- FRONT SIDE (Icon + Title) --- */}
-                        <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center justify-center text-center p-6">
-                            <div className="w-20 h-20 bg-sky-50 rounded-2xl flex items-center justify-center text-sky-600 mb-6 group-hover:scale-110 transition-transform duration-500">
-                                {renderIcon(item.icon)}
-                            </div>
-                            <h4 className="text-xl font-bold text-slate-900">{item.title}</h4>
-                            <p className="text-xs text-slate-400 mt-2 font-medium uppercase tracking-wider">Hover to learn more</p>
-                        </div>
+    // Helper to render dynamic icon
+    const renderIcon = (iconName, color = "currentColor", size = 24) => {
+        const IconComponent = LucideIcons[iconName] || LucideIcons.Zap;
+        return <IconComponent size={size} style={{ color }} />;
+    };
 
-                        {/* --- BACK SIDE (Description) --- */}
-                        {/* Note: rotateY(180deg) zaroori h taaki ye flip hone ke baad seedha dikhe */}
-                        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-sky-600 to-blue-700 rounded-3xl shadow-xl flex flex-col items-center justify-center text-center p-8">
-                            <h4 className="text-xl font-bold text-white mb-4">{item.title}</h4>
-                            <div className="w-12 h-1 bg-white/30 rounded-full mb-4"></div>
-                            <p className="text-white/90 text-base leading-relaxed font-medium">
-                                {item.description}
-                            </p>
-                        </div>
+    return (
+        <section className="py-24 sm:py-32 bg-white overflow-hidden">
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+                <CommonTitle
+                    align="center"
+                    title={data.title || "Key Reasons For Development"}
+                    subtitle={data.subtitle || "Exploring the critical advantages and strategic value for your business."}
+                />
 
-                    </div>
+                <div className="mt-16 flex flex-row gap-4 h-[420px] overflow-x-auto no-scrollbar pb-4">
+                    {items.map((item, idx) => {
+                        const isActive = activeIndex === idx;
+
+                        return (
+                            <motion.div
+                                key={idx}
+                                layout
+                                onMouseEnter={() => setActiveIndex(idx)}
+                                className={`
+                                    relative cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group
+                                    flex-shrink-0 overflow-hidden rounded-[2.5rem] border
+                                    ${isActive 
+                                        ? 'w-[300px] sm:w-[500px] md:w-[850px] bg-sky-50 border-sky-100 shadow-[0_40px_80px_-15px_rgba(14,165,233,0.1)]' 
+                                        : 'w-[80px] sm:w-[120px] md:w-[320px] bg-slate-50 border-slate-100 hover:bg-white hover:border-sky-100 hover:shadow-xl'}
+                                `}
+                            >
+                                {/* Background Decorative Element for Active Card */}
+                                <AnimatePresence>
+                                    {isActive && (
+                                        <motion.div 
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.8 }}
+                                            className="absolute -top-24 -right-24 w-64 h-64 bg-sky-400/10 blur-[100px] rounded-full pointer-events-none"
+                                        />
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Active State Content */}
+                                <div className={`h-full flex flex-col p-8 md:p-12 transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                                    <div className="flex items-center gap-6 mb-8 whitespace-nowrap">
+                                        <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-sm">
+                                            {renderIcon(item.icon, "#0EA5E9", 32)}
+                                        </div>
+                                        <div className="space-y-1">
+                                            <span className="text-[10px] uppercase font-black tracking-[0.3em] text-sky-500/60 leading-none">
+                                                Reason {String(idx + 1).padStart(2, '0')}
+                                            </span>
+                                            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 leading-tight">
+                                                {item.title}
+                                            </h3>
+                                        </div>
+                                    </div>
+
+                                    {/* Description */}
+                                    <div className={`space-y-8 flex-grow transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                                        <p className="text-slate-600 font-bold text-lg md:text-xl leading-relaxed max-w-2xl">
+                                            {item.description}
+                                        </p>
+
+                                        {/* Dynamic Features/Bullets if available */}
+                                        <div className="grid grid-cols-1 gap-4 mt-auto">
+                                            {(item.bullets || ['Strategic Growth', 'Scalable Architecture', 'Premium Design', '24/7 Support']).map((tag, tIdx) => (
+                                                <div key={tIdx} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white border border-sky-100/50 shadow-sm group/tag transition-transform hover:scale-105">
+                                                    <div className="w-2 h-2 rounded-full bg-sky-500 flex-shrink-0" />
+                                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover/tag:text-sky-600 transition-colors">{tag}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Collapsed State Content (Desktop) */}
+                                <div className={`absolute inset-0 flex flex-col items-center justify-between py-10 px-4 transition-all duration-500 ${isActive ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+                                    <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm transition-transform group-hover:rotate-12">
+                                        {renderIcon(item.icon, "#94A3B8", 24)}
+                                    </div>
+                                    <div className="w-full text-center">
+                                        <h3 className="text-sm font-bold text-slate-400 uppercase tracking-tighter group-hover:text-sky-500 transition-colors line-clamp-2 px-2">
+                                            {item.title}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
                 </div>
-            ))}
-        </div>
 
-      </div>
-    </section>
-  );
+                {/* Pagination Dots */}
+                <div className="mt-12 flex justify-center gap-2">
+                    {items.map((_, i) => (
+                        <div
+                            key={i}
+                            className={`h-1.5 rounded-full transition-all duration-500 ${
+                                activeIndex === i ? 'w-8 bg-sky-500' : 'w-2 bg-slate-200'
+                            }`}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <style jsx>{`
+                .no-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .no-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            `}</style>
+        </section>
+    );
 }

@@ -31,12 +31,12 @@ export default function SolutionsPage() {
             <span className="text-sky-300 font-semibold">Solutions</span>
           </nav>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight max-w-3xl text-white">
-            End-to-End Software <span className="text-sky-500">Solutions</span>  for Global Growth 
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-normal max-w-3xl text-white">
+            End-to-End Software <span className="text-sky-500">Solutions</span>  for Global Growth
           </h1>
 
           <p className="mt-6 max-w-xl text-lg text-gray-300 leading-relaxed">
-           From disruptive startups to enterprise leaders, we provide the tech foundation your business needs. Explore our ready-to-deploy clones, custom SaaS architectures, and specialized domain solutions designed for speed and scale.
+            From disruptive startups to enterprise leaders, we provide the tech foundation your business needs. Explore our ready-to-deploy clones, custom SaaS architectures, and specialized domain solutions designed for speed and scale.
           </p>
         </div>
       </section>
@@ -72,7 +72,7 @@ export default function SolutionsPage() {
           box-shadow: 0 25px 45px -10px rgb(0 0 0 / 0.35);
         }
       `}</style>
-            <InquirySection />
+      <InquirySection />
 
     </div>
   );

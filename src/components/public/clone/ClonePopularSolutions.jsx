@@ -33,7 +33,7 @@ export default function ClonePopularSolutions({ data }) {
                             viewport={{ once: true }}
                             className="bg-[#DFF7FF] rounded-2xl p-8 pt-10 flex flex-col items-center min-h-[420px] group hover:bg-[#B5EDFF] transition-all duration-500 overflow-hidden relative"
                         >
-                            <h3 className="text-2xl font-black text-slate-900 text-center mb-8 px-4 leading-tight">
+                            <h3 className="text-2xl font-black text-slate-900 text-center mb-8 px-4 leading-normal">
                                 {item.title}
                             </h3>
 

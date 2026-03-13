@@ -54,7 +54,7 @@ export default function CloneRevenue({ data }) {
             <h4 className="text-[#2FB3E0] font-black text-3xl lg:text-4xl  tracking-tighter">
               {data?.title || defaultTitle}
             </h4>
-            <h2 className="text-3xl lg:text-4xl  font-black text-slate-900 leading-tight whitespace-pre-line">
+            <h2 className="text-3xl lg:text-4xl  font-black text-slate-900 leading-normal whitespace-pre-line">
               {data?.highlight || defaultHighlight}
             </h2>
           </div>
@@ -98,7 +98,7 @@ export default function CloneRevenue({ data }) {
               className="grid lg:grid-cols-2 gap-16 items-center"
             >
               <div className="space-y-8">
-                <h3 className="text-4xl lg:text-5xl font-black text-slate-900 leading-tight ">
+                <h3 className="text-4xl lg:text-5xl font-black text-slate-900 leading-normal ">
                   {tabs[activeTab].title}
                 </h3>
                 <p className="text-slate-500 text-lg leading-relaxed font-medium">

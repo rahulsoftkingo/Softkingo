@@ -157,7 +157,7 @@ const HomePortfolio = () => {
                                                         </div>
                                                         <div className="col-span-2 sm:col-span-1 min-w-0">
                                                             <p className="text-[10px] md:text-xs uppercase tracking-widest text-white/70 mb-1 font-bold">Techstack</p>
-                                                            <p className="text-[10px] md:text-xs font-bold leading-tight truncate text-white" title={project.stats.techStack}>{project.stats.techStack}</p>
+                                                            <p className="text-[10px] md:text-xs font-bold leading-normal truncate text-white" title={project.stats.techStack}>{project.stats.techStack}</p>
                                                         </div>
                                                     </div>
                                                 </div>

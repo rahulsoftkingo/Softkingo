@@ -94,20 +94,20 @@ export default function SolutionsSection() {
       ]
     }
   ];
-return (
+  return (
     <div className="w-full">
       {solutions.map((section, index) => (
         <section key={section.id} className={`${section.bgColor} py-16 md:py-24 px-6 md:px-12 lg:px-16 overflow-hidden`}>
           <div className="max-w-7xl mx-auto">
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${section.imagePosition === "left" ? "lg:flex-row-reverse" : ""}`}>
-              
+
               <div className={section.imagePosition === "left" ? "lg:order-1" : "lg:order-2"}>
-                 <CaseStudyCard caseStudy={section.caseStudy} />
+                <CaseStudyCard caseStudy={section.caseStudy} />
               </div>
 
               <div className={`space-y-8 ${section.imagePosition === "right" ? "lg:order-1" : "lg:order-2"}`}>
                 <div className="z-10 relative">
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight flex items-center gap-4">
+                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-normal flex items-center gap-4">
                     {section.title} <ArrowRight className="w-8 h-8 text-sky-500 shrink-0" />
                   </h2>
                   <p className="mt-4 text-lg text-gray-600 leading-relaxed">{section.subtitle}</p>
@@ -116,16 +116,16 @@ return (
                 {/* --- Fix: Scrollable Carousel with Hover Pause --- */}
                 <div className="relative py-4 overflow-visible">
                   <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                    <motion.div 
+                    <motion.div
                       className="flex gap-4 cursor-grab active:cursor-grabbing"
                       drag="x"
                       dragConstraints={{ left: -1500, right: 0 }}
                       // Animation logic
                       animate={{ x: [0, -1000] }}
-                      transition={{ 
+                      transition={{
                         x: {
-                          repeat: Infinity, 
-                          duration: 30, 
+                          repeat: Infinity,
+                          duration: 30,
                           ease: "linear",
                           pauseOnHover: true // Ye property hover pe animation rok degi
                         }
@@ -168,17 +168,17 @@ function CaseStudyCard({ caseStudy }) {
   return (
     <div className="relative group z-0">
       <div className="overflow-hidden rounded-3xl shadow-xl transition-all duration-500 group-hover:shadow-sky-200">
-        <Image 
-          src={caseStudy.image} 
-          alt={caseStudy.title} 
-          width={800} 
-          height={550} 
-          className="object-cover transition-transform duration-700 group-hover:scale-105" 
-          priority 
+        <Image
+          src={caseStudy.image}
+          alt={caseStudy.title}
+          width={800}
+          height={550}
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          priority
         />
       </div>
       <div className="mt-6">
-         <Link href="/contact" className="inline-flex items-center gap-2 bg-sky-600 text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-sky-500 transition-colors shadow-lg shadow-sky-600/20">
+        <Link href="/contact" className="inline-flex items-center gap-2 bg-sky-600 text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-sky-500 transition-colors shadow-lg shadow-sky-600/20">
           {caseStudy.buttonText} <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

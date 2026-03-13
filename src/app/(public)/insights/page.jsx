@@ -62,13 +62,13 @@ export default async function InsightsPage(props) {
         status: "published",
         ...(q
           ? {
-              OR: [
-                { title: { contains: q, mode: "insensitive" } },
-                { category: { contains: q, mode: "insensitive" } },
-                { description: { contains: q, mode: "insensitive" } },
-                { summary: { contains: q, mode: "insensitive" } },
-              ],
-            }
+            OR: [
+              { title: { contains: q, mode: "insensitive" } },
+              { category: { contains: q, mode: "insensitive" } },
+              { description: { contains: q, mode: "insensitive" } },
+              { summary: { contains: q, mode: "insensitive" } },
+            ],
+          }
           : {}),
       },
       orderBy: { publishedAt: "desc" },
@@ -108,7 +108,7 @@ export default async function InsightsPage(props) {
             <p className="text-[11px] sm:text-xs tracking-[0.24em] uppercase text-sky-300">
               Insights hub
             </p>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-normal">
               Explore everything we publish.
             </h1>
             <p className="text-sm sm:text-base text-white/85">
@@ -187,7 +187,7 @@ export default async function InsightsPage(props) {
           );
         })}
       </main>
-              <InquirySection />
+      <InquirySection />
 
     </div>
   );

@@ -100,7 +100,7 @@ export default function CloneAbout({ data }) {
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-2xl font-bold text-slate-800 group-hover:text-sky-600 transition-colors leading-tight">
+                      <h4 className="text-2xl font-bold text-slate-800 group-hover:text-sky-600 transition-colors leading-normal">
                         {reason.title}
                       </h4>
                       <p className="text-slate-600 font-medium leading-relaxed text-sm md:text-base max-w-sm">

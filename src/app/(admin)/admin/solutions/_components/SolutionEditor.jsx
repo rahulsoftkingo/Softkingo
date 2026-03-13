@@ -117,13 +117,28 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     {(content.whyNeed?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
                             <div className="flex-1 space-y-2">
-                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Reason Title" value={item.title || ''} onChange={e => updateField(`content.whyNeed.items.${i}.title`, e.target.value)} />
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Reason Title" value={item.title || ''} onChange={e => updateField(`content.whyNeed.items.${i}.title`, e.target.value)} />
+                                    <input className="w-full p-2 bg-white border rounded text-sm font-mono text-sky-600" placeholder="Lucide Icon (e.g. Zap)" value={item.icon || ''} onChange={e => updateField(`content.whyNeed.items.${i}.icon`, e.target.value)} />
+                                </div>
                                 <textarea className="w-full p-2 bg-white border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.whyNeed.items.${i}.description`, e.target.value)} />
+                                
+                                {/* Bullets */}
+                                <div className="p-2 bg-white rounded border border-slate-100">
+                                    <label className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block mb-1">Bullets (Optional Tags)</label>
+                                    {(item.bullets || []).map((bullet, bi) => (
+                                        <div key={bi} className="flex gap-2 mb-1">
+                                            <input className="flex-1 p-1.5 bg-slate-50 border rounded text-[11px]" value={bullet || ''} onChange={e => updateField(`content.whyNeed.items.${i}.bullets.${bi}`, e.target.value)} />
+                                            <button type="button" onClick={() => updateField(`content.whyNeed.items.${i}.bullets`, (prev) => (prev || []).filter((_, bidx) => bidx !== bi))} className="text-slate-300 hover:text-rose-500"><X size={12} /></button>
+                                        </div>
+                                    ))}
+                                    <button type="button" onClick={() => updateField(`content.whyNeed.items.${i}.bullets`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Bullet</button>
+                                </div>
                             </div>
                             <button type="button" onClick={() => updateField('content.whyNeed.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
                         </div>
                     ))}
-                    <button type="button" onClick={() => updateField('content.whyNeed.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-xs font-bold text-sky-600 p-1">+ Add New Reason</button>
+                    <button type="button" onClick={() => updateField('content.whyNeed.items', (prev) => [...(prev || []), { title: "", description: "", icon: "Zap", bullets: [] }])} className="text-xs font-bold text-sky-600 p-1">+ Add New Reason</button>
                 </div>
             </SectionWrapper>
 

@@ -27,7 +27,7 @@ export default function HirePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-            
+
             {/* Left Content */}
             <div className="text-white space-y-8 animate-fadeInLeft">
               {/* Breadcrumb */}
@@ -41,14 +41,14 @@ export default function HirePage() {
 
               {/* Heading */}
               <div className="space-y-4">
-                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight animate-fadeInUp">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal animate-fadeInUp">
                   Hire World-Class{' '}
                   <span className="text-cyan-400">Developers & Tech Experts</span>
                 </h1>
 
                 <p className="text-gray-300 text-md leading-relaxed animate-fadeInUp animation-delay-200">
-                  Build your dream team with top 1% tech talent. Access pre-vetted developers, 
-                  designers, QA engineers, and project managers who can seamlessly integrate 
+                  Build your dream team with top 1% tech talent. Access pre-vetted developers,
+                  designers, QA engineers, and project managers who can seamlessly integrate
                   with your existing team and deliver exceptional results.
                 </p>
               </div>
@@ -76,24 +76,24 @@ export default function HirePage() {
             </div>
 
             {/* Right Form */}
-           
+
             <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
-                                        <LeadForm
-                                          formType="hire"
-                                          formKey='hire'
-                                          serviceName='Hire Developers'
-                                          title="Find Your Perfect Developer
+              <LeadForm
+                formType="hire"
+                formKey='hire'
+                serviceName='Hire Developers'
+                title="Find Your Perfect Developer
 "
-                                          subtitle="Get matched with top talent in 24 Hours! "
-                                          variant="hero"
-                                          showLogo={true}
-                                          showCompany={false}
-                                          showBudget={false}
-                                          showAttachment={false}
-                                          showNDA={false}
-                                        />
-                                        
-                                    </div>
+                subtitle="Get matched with top talent in 24 Hours! "
+                variant="hero"
+                showLogo={true}
+                showCompany={false}
+                showBudget={false}
+                showAttachment={false}
+                showNDA={false}
+              />
+
+            </div>
           </div>
         </div>
 
@@ -120,7 +120,7 @@ export default function HirePage() {
       </section>
 
       <HireSection />
-            <InquirySection />
+      <InquirySection />
 
     </div>
   );

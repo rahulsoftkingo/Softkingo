@@ -58,7 +58,7 @@ export default function ProfessionalCardStack() {
                 <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
                   <FaChartLine className="text-white text-sm" />
                 </div>
-                <div className="leading-tight">
+                <div className="leading-normal">
                   <h3 className="text-white font-semibold text-sm">Analytics Dashboard</h3>
                   <p className="text-white/80 text-[11px]">Softkingo • Live metrics</p>
                 </div>
@@ -197,7 +197,7 @@ export default function ProfessionalCardStack() {
 
                     <div className="space-y-2">
                       {[
-                        
+
                         { txt: "Paramhansh Singh updated roadmap", time: "5h ago" },
                         { txt: "Prashant kumar fixed payment flow edge case", time: "1d ago" },
                         { txt: "Ansh Raj Singh deployed new build", time: "2h ago" },
@@ -236,7 +236,7 @@ export default function ProfessionalCardStack() {
               <div className="w-9 h-9 bg-gradient-to-br from-sky-500 to-sky-500 rounded-2xl flex items-center justify-center mr-3 shadow-md">
                 <FaMobileAlt className="text-white text-base" />
               </div>
-              <div className="leading-tight">
+              <div className="leading-normal">
                 <h4 className="font-semibold text-slate-900 text-sm">Softkingo App</h4>
                 <p className="text-slate-500 text-[11px]">Mobile • UI Preview</p>
               </div>
@@ -364,7 +364,7 @@ export default function ProfessionalCardStack() {
               <div className="w-7 h-7 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
                 <FaBolt className="text-emerald-700 text-xs" />
               </div>
-              <div className="leading-tight">
+              <div className="leading-normal">
                 <p className="text-[11px] font-semibold text-slate-800">Build Status</p>
                 <p className="text-[10px] text-slate-500">Passing • Nitin</p>
               </div>

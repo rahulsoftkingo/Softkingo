@@ -102,7 +102,7 @@ export default async function IndustryPage(props) {
                             {/* Left Side: Content & List */}
                             <div className="order-2 lg:order-1">
                                 <div className="mb-8">
-                                    <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight">
+                                    <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-normal">
                                         {challenges?.title || "Challenges We Solve"}
                                     </h2>
                                     {/* ✅ FIX 1: whitespace-pre-line added for line breaks */}

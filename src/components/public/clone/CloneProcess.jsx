@@ -65,7 +65,7 @@ export default function CloneProcess({ data }) {
                         <div className={`w-5 h-5 rounded-md ${activeIndex === i ? 'bg-white' : 'bg-sky-500'} opacity-50`}></div>
                       )}
                     </div>
-                    <span className="text-xs md:text-sm font-bold leading-tight uppercase tracking-wide">
+                    <span className="text-xs md:text-sm font-bold leading-normal uppercase tracking-wide">
                       {step.title}
                     </span>
                   </div>
@@ -107,7 +107,7 @@ export default function CloneProcess({ data }) {
                   <div className="absolute right-[-20px] top-[-20px] text-[180px] font-black text-white/10 leading-none select-none">
                     {String(activeIndex + 1).padStart(2, '0')}
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-tight relative z-10 max-w-[80%]">
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-normal relative z-10 max-w-[80%]">
                     {currentStep.title}
                   </h3>
                 </div>

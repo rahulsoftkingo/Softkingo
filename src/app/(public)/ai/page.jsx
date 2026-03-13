@@ -102,7 +102,7 @@ export default function AIPage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-normal mb-6 text-white tracking-tight">
               AI Development Services
             </h1>
 
@@ -167,7 +167,7 @@ export default function AIPage() {
               /> */}
               <div className="mb-6 flex flex-col items-start">
                 <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-sky-900 leading-tight">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-sky-900 leading-normal">
                     We are
                   </h2>
                   <Image
@@ -476,7 +476,7 @@ export default function AIPage() {
             >
               <div className="bg-[#38bdf8] rounded-[32px] p-8 lg:p-16 lg:pl-24 h-full min-h-[400px] lg:min-h-[450px] flex flex-col justify-center text-white shadow-2xl shadow-sky-200/50">
                 <motion.h3
-                  className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 leading-tight"
+                  className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 leading-normal"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -524,62 +524,63 @@ export default function AIPage() {
           <div className="mt-16 lg:mt-24 flex flex-col xl:flex-row gap-12 items-top">
             {/* Left: Project Details */}
             <div className="flex-1 space-y-8">
-              {/* Challenge Card */}
-              <motion.div
-                className="bg-[#38bdf8] rounded-[24px] p-8 lg:p-10 text-white shadow-xl shadow-sky-100"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-2xl font-bold mb-4">Challenge</h3>
-                <p className="text-sm lg:text-md font-medium leading-relaxed opacity-95">
-                  With a talented team, Softkingo has the best Front end developers capable of providing the most intuitive user interfaces and interactive user experience.
-                </p>
-              </motion.div>
-
-              {/* Agile & Impact Grid */}
-              <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              <div className='p-3 bg-sky-50 rounded-[24px] space-y-8'>
+                {/* Challenge Card */}
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  className="bg-[#38bdf8] rounded-[24px] p-8 lg:p-10 text-white shadow-xl shadow-sky-100"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                 >
-                  <h4 className="text-xl font-bold text-black mb-6">Agile Approach</h4>
-                  <ul className="space-y-4">
-                    {[
-                      "Agile development methodology",
-                      "Scalable architecture",
-                      "Secure data handling"
-                    ].map((item, idx) => (
-                      <li key={idx} className="flex font-bold items-center gap-3 text-slate-700">
-                        <span className="text-sky-500 text-sm">0{idx + 1}</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  <h3 className="text-2xl font-bold mb-4">Challenge</h3>
+                  <p className="text-sm lg:text-md font-medium leading-relaxed opacity-95">
+                    With a talented team, Softkingo has the best Front end developers capable of providing the most intuitive user interfaces and interactive user experience.
+                  </p>
                 </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <h4 className="text-xl font-bold text-black mb-6">Impact/Outcome</h4>
-                  <ul className="space-y-4">
-                    {[
-                      "Improved operational efficiency",
-                      "Enhanced user engagement",
-                      "Data-driven decision making"
-                    ].map((item, idx) => (
-                      <li key={idx} className="flex font-bold items-center gap-3 text-slate-700">
-                        <span className="text-sky-500 text-sm">0{idx + 1}</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
+                {/* Agile & Impact Grid */}
+                <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    <h4 className="text-xl font-bold text-black mb-6">Agile Approach</h4>
+                    <ul className="space-y-4">
+                      {[
+                        "Agile development methodology",
+                        "Scalable architecture",
+                        "Secure data handling"
+                      ].map((item, idx) => (
+                        <li key={idx} className="flex font-bold items-center gap-3 text-slate-700">
+                          <span className="text-sky-500 text-sm">0{idx + 1}</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    <h4 className="text-xl font-bold text-black mb-6">Impact/Outcome</h4>
+                    <ul className="space-y-4">
+                      {[
+                        "Improved operational efficiency",
+                        "Enhanced user engagement",
+                        "Data-driven decision making"
+                      ].map((item, idx) => (
+                        <li key={idx} className="flex font-bold items-center gap-3 text-slate-700">
+                          <span className="text-sky-500 text-sm">0{idx + 1}</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                </div>
               </div>
-
               {/* View Case Study Button */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -706,7 +707,7 @@ export default function AIPage() {
                 const data = solutionsData[activeAiSolution] || solutionsData[0];
                 return (
                   <div>
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 leading-tight text-black">
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 leading-normal text-black">
                       {data?.title}
                     </h3>
                     <p className="text-base md:text-lg lg:text-xl font-medium text-slate-700 mb-12 leading-relaxed">
@@ -807,7 +808,7 @@ export default function AIPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 text-white">
                       <div className="w-2 h-2 rounded-full bg-sky-400 group-hover:scale-150 transition-transform duration-300" />
-                      <h3 className="text-xl md:text-2xl font-bold leading-tight group-hover:text-sky-300 transition-colors">
+                      <h3 className="text-xl md:text-2xl font-bold leading-normal group-hover:text-sky-300 transition-colors">
                         {item.title}
                       </h3>
                     </div>
@@ -896,12 +897,12 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 13. Latest App Projects */}
-      <DynamicPortfolioCard
+      {/* <DynamicPortfolioCard
         category="Fitnes app"
         portfolioType="app"
         title="Latest App Projects"
         subtitle="Our newest mobile applications"
-      />
+      /> */}
       <div className="section-divider" />
 
 
@@ -1020,7 +1021,7 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 15. AI FAQ Section */}
-      <FAQAccordion 
+      <FAQAccordion
         data={{
           title: "AI Development",
           gradientText: "FAQ",

@@ -38,7 +38,7 @@ export default function CloneInvestment({ data }) {
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl lg:text-5xl font-black text-slate-900 leading-tight"
+                        className="text-4xl lg:text-5xl font-black text-slate-900 leading-normal"
                     >
                         <span className="text-[#2FB3E0]">Why to invest</span> in <br />
                         Clone App Development?

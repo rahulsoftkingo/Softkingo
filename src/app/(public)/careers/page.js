@@ -261,7 +261,7 @@ const WhyJoinUs = () => {
                                                             <FaClock className="text-[10px]" /> {job.type}
                                                         </span>
                                                     </div>
-                                                    <h3 className="text-2xl md:text-3xl font-bold text-slate-800 mb-6 group-hover:text-sky-600 transition-colors leading-tight">{job.title}</h3>
+                                                    <h3 className="text-2xl md:text-3xl font-bold text-slate-800 mb-6 group-hover:text-sky-600 transition-colors leading-normal">{job.title}</h3>
                                                     <div className="flex flex-wrap gap-x-8 gap-y-4 text-slate-500">
                                                         <div className="flex items-center gap-3">
                                                             <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-sky-50 transition-colors"><FaMapMarkerAlt className="text-sky-500 text-sm" /></div>
@@ -404,7 +404,7 @@ const WhyJoinUs = () => {
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                         <div className="text-black space-y-6 lg:space-y-8">
                             <div className="text-left md:pl-8 lg:pl-12 mb-8 sm:mb-12">
-                                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-tight">
+                                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal">
                                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
                                         Start your career at Softkingo, Let&apos;s create a better digital future together.
                                     </span>

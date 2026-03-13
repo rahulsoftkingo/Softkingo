@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  FaHeartbeat, FaGraduationCap, FaBuilding, FaPlane, FaUtensils, 
-  FaDumbbell, FaStore, FaTruck, FaFilm, FaUsers, FaDollarSign, 
-  FaCar, FaHammer, FaIndustry as FaFactory, FaCalendarAlt, FaChevronRight 
+import {
+  FaHeartbeat, FaGraduationCap, FaBuilding, FaPlane, FaUtensils,
+  FaDumbbell, FaStore, FaTruck, FaFilm, FaUsers, FaDollarSign,
+  FaCar, FaHammer, FaIndustry as FaFactory, FaCalendarAlt, FaChevronRight
 } from 'react-icons/fa';
 import InquirySection from '@/components/footer/InquirySection';
 
@@ -44,7 +44,7 @@ export default function IndustriesPage() {
           priority
         />
         <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-[2px]" />
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-sky-500/20 border border-sky-400/30 px-4 py-2 rounded-full mb-6">
             <span className="text-xs font-bold text-sky-300 uppercase tracking-widest">Global Expertise</span>
@@ -62,25 +62,24 @@ export default function IndustriesPage() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6">
           {industries.map((industry, index) => (
-            <div 
+            <div
               key={industry.title}
-              className={`flex flex-col lg:flex-row items-center gap-12 mb-24 last:mb-0 ${
-                index % 2 !== 0 ? 'lg:flex-row-reverse' : ''
-              }`}
+              className={`flex flex-col lg:flex-row items-center gap-12 mb-24 last:mb-0 ${index % 2 !== 0 ? 'lg:flex-row-reverse' : ''
+                }`}
             >
               {/* Content Side */}
               <div className="flex-1 space-y-6">
                 <div className={`inline-flex items-center gap-3 p-3 rounded-2xl bg-gradient-to-br ${industry.color}`}>
-                   <span className={`text-2xl ${industry.iconColor}`}>{industry.icon}</span>
-                   <span className="font-bold text-slate-900">{industry.title}</span>
+                  <span className={`text-2xl ${industry.iconColor}`}>{industry.icon}</span>
+                  <span className="font-bold text-slate-900">{industry.title}</span>
                 </div>
-                
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
+
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-normal">
                   Driving Digital Innovation in {industry.title}
                 </h2>
-                
+
                 <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
-                  Specialized software solutions designed to streamline {industry.title.toLowerCase()} operations. 
+                  Specialized software solutions designed to streamline {industry.title.toLowerCase()} operations.
                   From compliance-ready architectures to real-time analytics, we cover it all.
                 </p>
 

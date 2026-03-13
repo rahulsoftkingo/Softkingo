@@ -146,7 +146,7 @@ const OurTeamClient = ({
                                             </div>
                                         </div>
                                         <div className="text-center bg-sky-400 text-amber-50 px-6 py-2 relative -top-10 rounded-tr-full rounded-bl-full w-full max-w-[220px]">
-                                            <h4 className="font-bold text-md leading-tight whitespace-nowrap">{member.name}</h4>
+                                            <h4 className="font-bold text-md leading-normal whitespace-nowrap">{member.name}</h4>
                                             <span className="inline-block text-[10px] font-bold uppercase">{member.role}</span>
                                         </div>
                                     </div>

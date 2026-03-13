@@ -75,7 +75,7 @@ export default function ApplicationForm() {
                             <div className="flex items-center gap-4">
                                 <div className="flex-shrink-0 text-right">
                                     <span className="text-blue-200 text-xs font-bold">STEP</span>
-                                    <p className="text-white text-2xl font-bold leading-tight">01</p>
+                                    <p className="text-white text-2xl font-bold leading-normal">01</p>
                                 </div>
 
                                 <div className="flex justify-between w-full items-center bg-blue-50/20 backdrop-blur-sm rounded-3xl px-4 py-3">
@@ -95,7 +95,7 @@ export default function ApplicationForm() {
                             <div className="flex items-center gap-4">
                                 <div className="flex-shrink-0 text-right">
                                     <span className="text-blue-200 text-xs font-bold">STEP</span>
-                                    <p className="text-white text-2xl font-bold leading-tight">02</p>
+                                    <p className="text-white text-2xl font-bold leading-normal">02</p>
                                 </div>
 
                                 <div className="flex justify-between w-full items-center bg-blue-50/20 backdrop-blur-sm rounded-3xl px-4 py-3">
@@ -115,7 +115,7 @@ export default function ApplicationForm() {
                             <div className="flex items-center gap-4">
                                 <div className="flex-shrink-0 text-right">
                                     <span className="text-blue-200 text-xs font-bold">STEP</span>
-                                    <p className="text-white text-2xl font-bold leading-tight">03</p>
+                                    <p className="text-white text-2xl font-bold leading-normal">03</p>
                                 </div>
 
                                 <div className="flex justify-between w-full items-center bg-blue-50/20 backdrop-blur-sm rounded-3xl px-4 py-3">
@@ -135,7 +135,7 @@ export default function ApplicationForm() {
                             <div className="flex items-center gap-4">
                                 <div className="flex-shrink-0 text-right">
                                     <span className="text-blue-200 text-xs font-bold">STEP</span>
-                                    <p className="text-white text-2xl font-bold leading-tight">04</p>
+                                    <p className="text-white text-2xl font-bold leading-normal">04</p>
                                 </div>
 
                                 <div className="flex justify-between w-full items-center bg-blue-50/20 backdrop-blur-sm rounded-3xl px-4 py-3">
@@ -155,7 +155,7 @@ export default function ApplicationForm() {
                             <div className="flex items-center gap-4">
                                 <div className="flex-shrink-0 text-right">
                                     <span className="text-blue-200 text-xs font-bold">STEP</span>
-                                    <p className="text-white text-2xl font-bold leading-tight">05</p>
+                                    <p className="text-white text-2xl font-bold leading-normal">05</p>
                                 </div>
 
                                 <div className="flex justify-between w-full items-center bg-blue-50/20 backdrop-blur-sm rounded-3xl px-4 py-3">

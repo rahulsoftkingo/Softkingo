@@ -40,7 +40,7 @@ export default function TechAheadSection({
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               {tagline}
             </span>
-            <h2 className="text-2xl lg:text-3xl font-bold text-sky-900  leading-tight bg-gradient-to-r from-sky-900 via-sky-800 to-sky-700 bg-clip-text">
+            <h2 className="text-2xl lg:text-3xl font-bold text-sky-900  leading-normal bg-gradient-to-r from-sky-900 via-sky-800 to-sky-700 bg-clip-text">
               {title}
             </h2>
 

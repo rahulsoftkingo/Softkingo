@@ -87,7 +87,7 @@ export default function CloneAISolutions({ data }) {
                                     </div>
 
                                     <div className="relative z-10">
-                                        <h3 className="text-4xl lg:text-5xl font-black text-slate-900 mb-8 leading-tight">
+                                        <h3 className="text-4xl lg:text-5xl font-black text-slate-900 mb-8 leading-normal">
                                             {items[activeIndex].title}
                                         </h3>
                                         <p className="text-slate-600 text-lg lg:text-xl font-medium leading-relaxed max-w-2xl">

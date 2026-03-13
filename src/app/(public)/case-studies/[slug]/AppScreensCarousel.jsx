@@ -9,15 +9,34 @@ export function AppScreensCarousel({ data, primaryColor }) {
   const carouselRef = useRef(null);
   const [centerIndex, setCenterIndex] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
+  const [carouselTab, setCarouselTab] = useState(() => {
+    const firstMobile = data.categories.findIndex(c => c.layout !== 'web' && c.screens?.length > 1);
+    return firstMobile !== -1 ? firstMobile : 0;
+  });
 
   // Safety: categories must exist
   if (!data || !Array.isArray(data.categories) || data.categories.length === 0) {
     return null;
   }
 
+  // Recursive fallback logic for images
+  const getEffectiveImage = (screens, index, categoryImage) => {
+    // If we have an image at this index, return it
+    if (screens[index]?.image) return screens[index].image;
+
+    // Look backwards for the first available image
+    for (let i = index - 1; i >= 0; i--) {
+      if (screens[i]?.image) return screens[i].image;
+    }
+
+    // Fallback to category hero image or placeholder
+    return categoryImage || '/images/placeholder.png';
+  };
+
   const currentCategory = data.categories[activeTab] || data.categories[0];
-  const baseScreens = Array.isArray(currentCategory?.screens)
-    ? currentCategory.screens
+  const currentCarouselCategory = data.categories[carouselTab] || data.categories[0];
+  const baseScreens = Array.isArray(currentCarouselCategory?.screens)
+    ? currentCarouselCategory.screens
     : [];
 
   if (baseScreens.length === 0) {
@@ -91,19 +110,22 @@ export function AppScreensCarousel({ data, primaryColor }) {
       carousel.removeEventListener("scroll", handleScroll);
       clearTimeout(scrollTimeout);
     };
-  }, [baseScreens.length, activeTab]);
+  }, [baseScreens.length, carouselTab]);
 
   const handleTabChange = (tabIndex) => {
     setActiveTab(tabIndex);
-    setCenterIndex(0);
+
+    // Logic: Only change the top carousel if the new tab actually has its own screen group.
+    // If it's a "Feature Only" or "Web Layout" with single point, we keep the previous screens sliding.
+    const newCategory = data.categories[tabIndex];
+    if (newCategory?.screens && newCategory.screens.length > 1 && newCategory.layout !== 'web') {
+      setCarouselTab(tabIndex);
+      setCenterIndex(0);
+    }
   };
 
   return (
     <div className="max-w-7xl mx-auto space-y-12 sm:space-y-16">
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center px-4">
-        {data.title}
-      </h2>
-
       {/* Infinite carousel */}
       <div className="relative">
         <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-sky-50 via-sky-50 to-transparent z-10 pointer-events-none" />
@@ -147,9 +169,9 @@ export function AppScreensCarousel({ data, primaryColor }) {
                   }}
                 >
                   <div className="relative">
-                    <div className="w-32 h-64 sm:w-40 sm:h-80 md:w-48 md:h-[420px]">
+                    <div className="w-28 h-56 sm:w-32 sm:h-64 md:w-40 md:h-[350px]">
                       <Image
-                        src={screen.image || '/images/placeholder.png'}
+                        src={getEffectiveImage(baseScreens, i % baseScreens.length, currentCarouselCategory.categoryImage)}
                         alt={screen.name || 'App Screen'}
                         fill
                         className="object-contain drop-shadow-2xl pointer-events-none rounded-sm"
@@ -231,33 +253,32 @@ function CategoryTabs({ categories, primaryColor, activeTab, onTabChange }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 px-4 sm:px-6 lg:px-12">
         {/* Image */}
         <div className="relative flex justify-center">
-          <div
-            className="absolute inset-0 rounded-full blur-3xl opacity-40 animate-float"
-            style={{
-              background: `radial-gradient(circle, ${primaryColor}60, transparent)`,
-            }}
-          />
-          <div className={`relative ${currentCategory.layout === 'web' ? 'w-full lg:w-[125%] -ml-[5%] lg:-ml-[12%]' : 'w-40 h-80 sm:w-52 sm:h-[380px] md:w-64 md:h-[440px] lg:w-72 lg:h-[520px]'}`}>
+          <div className={`relative ${currentCategory.layout === 'web' ? 'w-full lg:w-[125%] -ml-[5%] lg:-ml-[12%]' : 'w-32 h-64 sm:w-44 sm:h-[340px] md:w-56 md:h-[400px] lg:w-64 lg:h-[480px]'}`}>
+            {/* Primary Shadow Glow for Preview */}
+            <div
+              className="absolute inset-[10%] blur-[80px] opacity-20 -z-10"
+              style={{ backgroundColor: primaryColor }}
+            />
             <Image
               key={`${activeTab}-${selectedScreen}`}
-              src={(currentCategory.layout === 'web' ? currentCategory.categoryImage : screens[selectedScreen].image) || '/images/placeholder.png'}
+              src={(currentCategory.layout === 'web' ? currentCategory.categoryImage : (screens[selectedScreen]?.image || (selectedScreen > 0 ? screens[selectedScreen - 1]?.image : null) || currentCategory.categoryImage)) || '/images/placeholder.png'}
               alt={screens[selectedScreen]?.name || 'App Preview'}
               fill={currentCategory.layout !== 'web'}
               width={currentCategory.layout === 'web' ? 1200 : undefined}
               height={currentCategory.layout === 'web' ? 800 : undefined}
-              className={`object-contain drop-shadow-2xl rounded-sm ${currentCategory.layout === 'web' ? 'w-full h-auto max-h-[600px] border border-slate-200/50 bg-white p-2' : ''}`}
+              className={`object-contain  ${currentCategory.layout === 'web' ? 'w-full h-auto max-h-[600px]  p-2' : ''}`}
             />
           </div>
         </div>
 
         {/* List */}
         <div className="space-y-3 sm:space-y-4">
-          <h3
-            className="text-lg sm:text-xl lg:text-2xl font-bold mb-2"
-            style={{ color: primaryColor }}
-          >
-            {currentCategory.name} Features
-          </h3>
+          <div className="space-y-4 mb-6">
+            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {currentCategory.name} Features
+            </h3>
+            <div className="w-16 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
+          </div>
           {screens.map((screen, i) => {
             const active = i === selectedScreen;
             return (

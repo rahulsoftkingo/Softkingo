@@ -301,7 +301,7 @@ export default async function CompleteEnterpriseDashboard() {
 
   const profileImage =
     session?.user?.profileImage ?? session?.user?.image ?? null;
-const avatarSrc = getProfileImage(user) || profileImage;
+  const avatarSrc = getProfileImage(user) || profileImage;
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50to-slate-100">
 
@@ -377,12 +377,12 @@ const avatarSrc = getProfileImage(user) || profileImage;
                     {user?.department || 'Operations'}
                   </div>
 
-                   <StatusBadge status={isClockedIn ? 'clocked_in' : 'clocked_out'} size="sm" />
+                  <StatusBadge status={isClockedIn ? 'clocked_in' : 'clocked_out'} size="sm" />
                 </div>
 
                 {/* ✅ WORKING CLOCK BUTTON */}
                 <div className="flex items-center gap-2 flex-shrink-0">
-                 
+
                   <form action={toggleClockInOut}>
                     <input type="hidden" name="userId" value={session?.user?.id || ''} />
                     <button
@@ -504,7 +504,7 @@ function KPICard({ title, value, change, icon: Icon, color, href }) {
         </div>
         <div>
           <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 opacity-90">{title}</h3>
-          <div className="text-4xl font-black text-slate-900 mb-3 leading-tight">{value}</div>
+          <div className="text-4xl font-black text-slate-900 mb-3 leading-normal">{value}</div>
           <div className={`text-lg font-bold ${isPositive ? 'text-emerald-600' : 'text-orange-600'}`}>
             {change}
           </div>

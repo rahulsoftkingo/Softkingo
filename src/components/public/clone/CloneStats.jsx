@@ -32,7 +32,7 @@ export default function CloneStats({ data }) {
                                     {stat.number}
                                 </h3>
                             </div>
-                            <p className="text-sm md:text-md font-bold text-slate-500 uppercase tracking-wide leading-tight">
+                            <p className="text-sm md:text-md font-bold text-slate-500 uppercase tracking-wide leading-normal">
                                 {stat.label}
                             </p>
                         </div>
