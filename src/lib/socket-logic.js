@@ -44,14 +44,17 @@ function initSocket(io) {
 
             try {
                 if (!apiKey) {
+                    console.error('[Socket] GEMINI_API_KEY is missing!');
                     throw new Error('GEMINI_API_KEY is missing from environment.');
                 }
+                console.log('[Socket] Using GEMINI_API_KEY (last 4):', apiKey.slice(-4));
 
                 // 1. Fetch Bot Policy & Knowledge
                 const policy = await prisma.botPolicy.findFirst({
                     orderBy: { updatedAt: 'desc' }
                 });
                 const policyText = policy ? policy.content : "";
+                console.log('[Socket] Policy fetched:', policy ? 'Yes' : 'No');
 
                 // 2. Enriched System Instruction (Portfolio Knowledge)
                 const systemInstruction = `
@@ -80,6 +83,7 @@ function initSocket(io) {
                 let promptParts = [systemInstruction, `User: ${message}`];
 
                 if (image && image.base64) {
+                    console.log('[Socket] Image attached, adding to prompt...');
                     promptParts.push({
                         inlineData: {
                             data: image.base64.split(',')[1] || image.base64,
@@ -90,24 +94,29 @@ function initSocket(io) {
 
                 // 3. Gemini Processing with Multi-Model Fallback
                 const genAI = new GoogleGenerativeAI(apiKey);
-                const modelNames = ["gemini-flash-latest", "gemini-1.5-flash", "gemini-2.0-flash", "gemini-pro"];
+                const modelNames = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
 
                 let responseText = "";
                 let failureCount = 0;
 
                 for (const modelName of modelNames) {
                     try {
+                        console.log(`[Socket] Attempting model: ${modelName}`);
                         const model = genAI.getGenerativeModel({ model: modelName });
                         const result = await model.generateContent(promptParts);
                         responseText = result.response.text();
-                        if (responseText) break;
+                        if (responseText) {
+                            console.log(`[Socket] Success with ${modelName}`);
+                            break;
+                        }
                     } catch (err) {
                         failureCount++;
-                        console.error(`[Socket] Fallback: ${modelName} failed: ${err.message}`);
+                        console.error(`[Socket] Model ${modelName} failed: ${err.message}`);
                     }
                 }
 
                 if (!responseText) {
+                    console.error("[Socket] All Gemini models failed!");
                     throw new Error("AI engine exhausted all fallbacks.");
                 }
 

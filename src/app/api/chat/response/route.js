@@ -28,18 +28,22 @@ export async function POST(req) {
     let response = '';
 
     try {
-      // Tier 2: AI API Call (Simulated/Placeholder for now)
-      // If OPENAI_API_KEY is missing or API fails, it will catch.
-      if (!process.env.OPENAI_API_KEY && !process.env.GEMINI_API_KEY) {
-        throw new Error('No AI API Key configured');
+      // Tier 2: AI API Call
+      if (!process.env.GEMINI_API_KEY) {
+        throw new Error('GEMINI_API_KEY is missing');
       }
 
-      // TODO: Actual AI implementation goes here
-      // For testing fallback, this block should fail if keys are invalid.
-      throw new Error('Simulating AI failure for fallback verification');
+      // We'll primarily use the Socket logic for real-time, 
+      // but this API route should also be functional.
+      const { GoogleGenerativeAI } = require('@google/generative-ai');
+      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      
+      const result = await model.generateContent(message);
+      response = result.response.text();
       
     } catch (aiError) {
-      console.error("AI API failed or skipped, using static fallback:", aiError.message);
+      console.error("AI API failed, using static fallback:", aiError.message);
       
       // Tier 3: Static Fallback (Script/Pattern Matching)
       response = getFallbackResponse(message);
