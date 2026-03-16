@@ -185,7 +185,7 @@ export default function LeadForm({
       {/* Header with Logo */}
       <div className="flex flex-col text-center items-center gap-3 mb-6">
         {showLogo && (
-          <div className={`w-14 h-14 bg-gradient-tobr ${style.logoGradient}  rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300`}>
+          <div className={`w-14 h-14 bg-gradient-to-br ${style.logoGradient}  rounded-2xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300`}>
             <Image
               src='/images/logo.png'
               alt="Softkingo Logo"

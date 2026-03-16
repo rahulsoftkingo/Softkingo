@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { validateAndProcessUpload } from '@/lib/secure-upload';
 
 // Polyfill DOMMatrix for pdf-parse/pdfjs
 if (typeof global.DOMMatrix === 'undefined') {
@@ -17,12 +18,28 @@ export async function POST(req) {
         const formData = await req.formData();
         const file = formData.get('file');
 
-        if (!file) {
-            return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+        // ✅ Secure Validation and Processing
+        let result;
+        try {
+            result = await validateAndProcessUpload(file, {
+                maxSize: 5 * 1024 * 1024, // 5MB limit
+                subFolder: 'admin/ai-assistance'
+            });
+
+            if (result.mimeType !== 'application/pdf') {
+                throw new Error('Only PDF files are allowed for AI assistance');
+            }
+        } catch (validationError) {
+            return NextResponse.json(
+                { error: validationError.message },
+                { status: 400 }
+            );
         }
 
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
+        // Use buffer from result if needed or read it back
+        const { url } = result;
+        const fs = require('fs');
+        const buffer = fs.readFileSync(require('path').join(process.cwd(), 'public/uploads', 'admin/ai-assistance', result.fileName));
 
         // Extract text from PDF
         const data = await pdf(buffer);

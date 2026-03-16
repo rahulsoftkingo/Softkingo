@@ -252,6 +252,7 @@ export default function CaseStudyEditPage() {
     try {
       const fd = new FormData();
       fd.append('file', file);
+      fd.append('folder', 'case-studies');
       const res = await fetch('/api/admin/media/upload', {
         method: 'POST',
         body: fd,

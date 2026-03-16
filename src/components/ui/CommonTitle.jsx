@@ -13,7 +13,7 @@ const CommonTitle = ({
     }[align] || "text-center";
 
       const containerClass = {
-        left: "pl-4sm:pl-8lg:pl-12",
+        left: "pl-4 sm:pl-8 lg:pl-12",
         center: "px-4 sm:px-6 lg:px-8 mx-auto",
         right: "pr-4 sm:pr-8 lg:pr-12 flex justify-end"
     }[align] || "px-4 sm:px-6 lg:px-8 mx-auto";
@@ -35,7 +35,7 @@ const CommonTitle = ({
     return (
         <div className={`${textAlignClass} ${containerClass} mb-8 sm:mb-12`}>
             {/* Pill with alignment */}
-            {pill && typeof pill === '' && (
+            {pill && (typeof pill === 'string' || typeof pill === 'number') && (
                 <div className={`inline-flex items-center gap-2 px-4 py-2 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium border border-cyan-200 mb-4 ${pillAlignClass} max-w-max`}>
                     {pill}
                 </div>

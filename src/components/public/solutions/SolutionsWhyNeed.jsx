@@ -14,7 +14,14 @@ export default function SolutionsWhyNeed({ data }) {
 
     // Helper to render dynamic icon
     const renderIcon = (iconName, color = "currentColor", size = 24) => {
-        const IconComponent = LucideIcons[iconName] || LucideIcons.Zap;
+        let IconComponent = LucideIcons[iconName];
+        
+        // Ensure IconComponent is a valid React element type (string or function/object)
+        // If not found or if it's the module object itself, fallback to Zap
+        if (!IconComponent || typeof IconComponent === 'object' && !IconComponent.$$typeof && !IconComponent.render) {
+            IconComponent = LucideIcons.Zap;
+        }
+        
         return <IconComponent size={size} style={{ color }} />;
     };
 

@@ -34,6 +34,7 @@ export default function AiAssistancePage() {
 
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('folder', 'ai-assistance');
 
         try {
             const res = await fetch('/api/admin/ai-assistance/upload', {

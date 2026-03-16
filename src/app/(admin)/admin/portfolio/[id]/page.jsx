@@ -143,6 +143,7 @@ export default function PortfolioProjectEditPage() {
     try {
       const fd = new FormData();
       fd.append("file", file);
+      fd.append("folder", "portfolio");
 
       // Same upload endpoint used in case-studies page [file:617]
       const res = await fetch("/api/admin/media/upload", { method: "POST", body: fd });

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { validateAndProcessUpload } from '@/lib/secure-upload';
 import { writeFile } from 'fs/promises';
 import path from 'path';
 
@@ -42,23 +43,19 @@ export async function POST(request) {
     let resumeName = null;
     
     if (resume && resume.size > 0) {
-      const bytes = await resume.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      
-      // Create unique filename
-      const timestamp = Date.now();
-      const originalName = resume.name;
-      const extension = path.extname(originalName);
-      const filename = `resume_${timestamp}${extension}`;
-      
-      // Save to public/uploads/resumes
-      const uploadPath = path.join(process.cwd(), 'public', 'uploads', 'resumes');
-      const filePath = path.join(uploadPath, filename);
-      
-      await writeFile(filePath, buffer);
-      
-      resumeUrl = `/uploads/resumes/${filename}`;
-      resumeName = originalName;
+      try {
+        const result = await validateAndProcessUpload(resume, {
+          maxSize: 5 * 1024 * 1024, // 5MB limit
+          subFolder: 'public/careers'
+        });
+        resumeUrl = result.url;
+        resumeName = resume.name; // Keep original name for record
+      } catch (uploadError) {
+        return NextResponse.json(
+          { error: uploadError.message || 'Resume upload failed' },
+          { status: 400 }
+        );
+      }
     }
     
     // Validate required fields
