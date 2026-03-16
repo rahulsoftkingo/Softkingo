@@ -42,7 +42,7 @@ export async function GET(request) {
 
   // Scope: MY leads by default
   if (scope === 'mine') {
-    const userId = session.user?.id;
+    const userId = session.user?.id ? parseInt(session.user.id, 10) : null;
     if (userId) {
       where.OR = (where.OR || []).concat([
         { ownerId: userId },

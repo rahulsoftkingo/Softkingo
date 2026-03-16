@@ -50,6 +50,7 @@ const sections = [
     title: 'Operations', key: 'operations', items: [
       { label: 'Leads', href: '/admin/leads', icon: Inbox },
       { label: 'Support Tickets', href: '/admin/tickets', icon: MessageCircle },
+      { label: 'Daily Reports', href: '/admin/daily-reports', icon: FileBarChart },
       { label: 'Career Applications', href: '/admin/career', icon: UserCheck, badge: 'new' },
     ]
   },

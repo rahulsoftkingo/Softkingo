@@ -3,6 +3,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import {
   Search,
   Filter,
@@ -15,7 +16,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import LeadDrawer from './LeadDrawer';
+import Link from 'next/link';
+import LeadEditModal from './LeadEditModal';
 
 function StatusBadge({ status }) {
   const base =
@@ -34,6 +36,7 @@ function StatusBadge({ status }) {
 }
 
 export default function LeadsPage() {
+  const router = useRouter();
   const { data: session } = useSession();
   const roles = session?.user?.roles || [];
   const isAdminOrManager = roles.some((r) => ['admin', 'manager'].includes(r));
@@ -48,8 +51,8 @@ export default function LeadsPage() {
   const [scope, setScope] = useState('mine');
   const [loading, setLoading] = useState(true);
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [editingLead, setEditingLead] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedLead, setSelectedLead] = useState(null);
 
   const [selectedIds, setSelectedIds] = useState([]);
   const [bulkMode, setBulkMode] = useState(null); // 'assign' | 'status' | 'delete'
@@ -135,17 +138,17 @@ export default function LeadsPage() {
   };
 
   const openCreate = () => {
-    setEditingLead(null);
-    setDrawerOpen(true);
+    setSelectedLead(null);
+    setModalOpen(true);
   };
 
   const openEdit = (lead) => {
-    setEditingLead(lead);
-    setDrawerOpen(true);
+    setSelectedLead(lead);
+    setModalOpen(true);
   };
 
   const onSaved = () => {
-    setDrawerOpen(false);
+    setModalOpen(false);
     fetchLeads();
   };
 
@@ -778,12 +781,12 @@ export default function LeadsPage() {
         </div>
       )}
 
-      {drawerOpen && (
-        <LeadDrawer
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
+      {modalOpen && (
+        <LeadEditModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
           onSaved={onSaved}
-          lead={editingLead}
+          lead={selectedLead}
           users={users}
         />
       )}

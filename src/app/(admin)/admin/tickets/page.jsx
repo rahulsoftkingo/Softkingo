@@ -16,7 +16,7 @@ import {
     ChevronLeft,
     ChevronRight,
 } from 'lucide-react';
-import TicketDrawer from './TicketDrawer';
+import TicketEditModal from './TicketEditModal';
 
 function StatusBadge({ status }) {
     const map = {
@@ -81,7 +81,7 @@ export default function TicketsPage() {
     const [scope, setScope] = useState('mine');
     const [loading, setLoading] = useState(true);
 
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const [editingTicket, setEditingTicket] = useState(null);
 
     const [selectedIds, setSelectedIds] = useState([]);
@@ -138,7 +138,7 @@ export default function TicketsPage() {
                 title: titleParam || '',
             });
             setEditingTicket(null);
-            setDrawerOpen(true);
+            setModalOpen(true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -182,16 +182,16 @@ export default function TicketsPage() {
 
     const openCreate = () => {
         setEditingTicket(null);
-        setDrawerOpen(true);
+        setModalOpen(true);
     };
 
     const openEdit = (ticket) => {
         setEditingTicket(ticket);
-        setDrawerOpen(true);
+        setModalOpen(true);
     };
 
     const onSaved = () => {
-        setDrawerOpen(false);
+        setModalOpen(false);
         fetchTickets();
     };
 
@@ -794,15 +794,14 @@ export default function TicketsPage() {
                 </div>
             )}
 
-            {drawerOpen && (
-                <TicketDrawer
-                    open={drawerOpen}
-                    onClose={() => setDrawerOpen(false)}
+            {modalOpen && (
+                <TicketEditModal
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
                     onSaved={onSaved}
                     ticket={editingTicket}
                     users={users}
-                    prefillFromLead={prefillFromLead}   // NEW
-
+                    prefillFromLead={prefillFromLead}
                 />
             )}
         </div>

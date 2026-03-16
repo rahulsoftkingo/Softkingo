@@ -83,6 +83,7 @@ model User {
   ticketsRequested Ticket[]           @relation("TicketRequester")
   ticketComments   TicketComment[]
   roles            UserRole[]
+  workLogs         WorkLog[]
 
   @@map("user")
 }
@@ -452,6 +453,7 @@ model Lead {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   ownerId        Int?
+  nextFollowUp   DateTime?
   formKey        String?
   formType       String?
   utmCampaign    String?
@@ -502,11 +504,32 @@ model Ticket {
   owner       User?           @relation("TicketOwner", fields: [ownerId], references: [id], map: "Ticket_ownerId_fkey")
   requester   User?           @relation("TicketRequester", fields: [requesterId], references: [id], map: "Ticket_requesterId_fkey")
   comments    TicketComment[]
+  workLogs    WorkLog[]
 
   @@index([leadId], map: "Ticket_leadId_fkey")
   @@index([ownerId], map: "Ticket_ownerId_fkey")
   @@index([requesterId], map: "Ticket_requesterId_fkey")
   @@map("ticket")
+}
+
+model WorkLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  ticketId    Int?
+  description String   @db.Text
+  startTime   String?  // HH:mm
+  endTime     String?  // HH:mm
+  duration    Int      @default(0) // Duration in minutes
+  date        DateTime @db.Date
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticket      Ticket?  @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([ticketId])
+  @@index([date])
+  @@map("worklog")
 }
 
 model TicketComment {

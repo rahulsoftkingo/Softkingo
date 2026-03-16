@@ -22,7 +22,7 @@ export async function POST(request, { params }) {
     return NextResponse.json({ message: 'Invalid lead id' }, { status: 400 });
   }
 
-  const userId = session.user?.id || null;
+  const userId = session.user?.id ? parseInt(session.user.id, 10) : null;
 
   const body = await request.json();
   const { type, content } = body;

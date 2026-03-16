@@ -75,6 +75,7 @@ export async function PATCH(request, { params }) {
     budgetLabel,
     ndaAccepted,
     attachmentName,
+    nextFollowUp,
   } = body;
 
   const lead = await prisma.lead.update({
@@ -89,11 +90,14 @@ export async function PATCH(request, { params }) {
       message,
       status,
       tags,
-      ownerId: ownerId ? Number(ownerId) : null,
+      owner: ownerId 
+        ? { connect: { id: Number(ownerId) } } 
+        : { disconnect: true },
       budgetLabel,
       ndaAccepted:
         typeof ndaAccepted === 'boolean' ? ndaAccepted : undefined,
       attachmentName,
+      nextFollowUp: nextFollowUp ? new Date(nextFollowUp) : null,
     },
     include: {
       owner: {
