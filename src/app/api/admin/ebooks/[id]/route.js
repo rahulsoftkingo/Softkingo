@@ -49,7 +49,7 @@ export async function PUT(req, { params }) {
     if (!isNaN(d.getTime())) parsedPublishedAt = d;
   }
 
-  await prisma.eGuide.update({
+  await prisma.ebook.update({
     where: { id },
     data: {
       title,

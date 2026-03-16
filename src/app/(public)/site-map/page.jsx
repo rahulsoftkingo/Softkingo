@@ -27,7 +27,7 @@
 //     select: { slug: true, updatedAt: true }
 //   });
 
-//   const eGuides = await prisma.eGuide.findMany({
+//   const ebooks = await prisma.ebook.findMany({
 //     where: { status: 'published' },
 //     select: { slug: true, updatedAt: true }
 //   });
@@ -174,8 +174,8 @@
 //     changeFrequency: 'monthly', priority: 0.7
 //   }));
 
-//   const eGuideRoutes = eGuides.filter(g => g.slug).map(g => ({
-//     url: `${baseUrl}/e-guides/${g.slug}`,
+//   const ebookRoutes = ebooks.filter(g => g.slug).map(g => ({
+//     url: `${baseUrl}/ebooks/${g.slug}`,
 //     lastModified: g.updatedAt ?? new Date(),
 //     changeFrequency: 'monthly', priority: 0.6
 //   }));
@@ -186,7 +186,7 @@
 //     changeFrequency: 'monthly', priority: 0.65
 //   }));
 
-//   const allRoutes = [...staticRoutes, ...blogRoutes, ...categoryRoutes, ...caseStudyRoutes, ...eGuideRoutes, ...pageRoutes];
+//   const allRoutes = [...staticRoutes, ...blogRoutes, ...categoryRoutes, ...caseStudyRoutes, ...ebookRoutes, ...pageRoutes];
 
 //   return (
 //     <>
@@ -307,17 +307,17 @@
 //             </div>
 //           </div>
 
-//           {/* E-GUIDES - AMBER - ALL PAGES */}
+//           {/* E-BOOKS - AMBER - ALL PAGES */}
 //           <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl p-6 border border-amber-200 hover:border-amber-300 transition-all shadow-sm hover:shadow-md ">
 //             <h2 className="text-xl font-bold text-amber-900 mb-4 border-b-2 border-amber-200 pb-3">
-//               E-Guides ({eGuideRoutes.length})
+//               E-Books ({ebookRoutes.length})
 //             </h2>
 //             <div className="space-y-2 max-h-96 overflow-y-auto pr-1 text-sm">
-//               {eGuideRoutes.map((route, idx) => (
+//               {ebookRoutes.map((route, idx) => (
 //                 <Link key={idx} href={route.url.replace(baseUrl, '')}
 //                   className="block p-2.5 rounded-lg hover:bg-white/70 hover:text-amber-900 transition-all truncate border-l-3 border-transparent hover:border-amber-400 pl-3 hover:shadow-sm"
 //                 >
-//                   e-guides/{route.url.split('/').pop()}
+//                   ebooks/{route.url.split('/').pop()}
 //                 </Link>
 //               ))}
 //             </div>
@@ -576,7 +576,7 @@ export default async function SiteMapPage() {
     select: { title: true, slug: true }
   });
 
-  const eGuides = await prisma.eGuide.findMany({
+  const ebooks = await prisma.ebook.findMany({
     where: { status: 'published' },
     select: { title: true, slug: true }
   });
@@ -659,7 +659,7 @@ export default async function SiteMapPage() {
   // 3. PROCESS DYNAMIC DATA
   const blogList = posts.map(p => ({ url: `/blog/${p.slug}`, title: p.title, type: p.type }));
   const caseStudyList = caseStudies.map(c => ({ url: `/case-studies/${c.slug}`, title: c.title }));
-  const eGuideList = eGuides.map(g => ({ url: `/e-guides/${g.slug}`, title: g.title }));
+  const ebookList = ebooks.map(g => ({ url: `/ebooks/${g.slug}`, title: g.title }));
 
   // Group Insights (Blog + Guides + Articles etc)
   // Mapping your section keys to readable titles
@@ -683,7 +683,7 @@ export default async function SiteMapPage() {
 
   const totalCount = staticPages.length + servicePages.length + industryPages.length +
     solutionPages.length + hirePages.length + blogList.length +
-    caseStudyList.length + eGuideList.length;
+    caseStudyList.length + ebookList.length;
 
   return (
     <>
@@ -759,9 +759,9 @@ export default async function SiteMapPage() {
             <BookOpen className="text-emerald-500" size={28} /> Insights & Resources
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 ">
-            {/* E-Guides */}
-            {eGuideList.length > 0 && (
-              <MiniSection title="E-Guides" items={eGuideList} color="emerald" />
+            {/* E-books */}
+            {ebookList.length > 0 && (
+              <MiniSection title="E-books" items={ebookList} color="emerald" />
             )}
             {/* Dynamic Blog Categories */}
             {Object.entries(insightsGrouped).map(([type, items]) => (

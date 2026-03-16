@@ -24,7 +24,7 @@ function safeImg(src, fallback = FALLBACK_THUMB) {
 }
 
 function groupTypesFromSections() {
-  // E‑guide intentionally excluded (separate model)
+  // E‑book intentionally excluded (separate model)
   return Object.entries(BLOG_SECTIONS)
     .flatMap(([sectionKey, cfg]) => (cfg.types || []).map((type) => ({ type, sectionKey, cfg })));
 }
@@ -56,8 +56,8 @@ export default async function InsightsPage(props) {
   // Fetch top posts for every type row in parallel
   const postsByTypePromises = typeRows.map(({ type }) => fetchTopPostsByType(type, 6));
 
-  const [eguideTop, ...postsByType] = await Promise.all([
-    prisma.eGuide.findMany({
+  const [ebookTop, ...postsByType] = await Promise.all([
+    prisma.ebook.findMany({
       where: {
         status: "published",
         ...(q
@@ -142,23 +142,23 @@ export default async function InsightsPage(props) {
 
       {/* BODY */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-10">
-        {/* E‑Guides special row */}
+        {/* E‑books special row */}
         <ContentRow
-          title="E‑Guides"
+          title="E‑books"
           subtitle="Downloadable playbooks"
-          viewAllHref="/e-guides"
+          viewAllHref="/ebooks"
         >
-          {eguideTop.map((g) => (
-            <EGuideCard
+          {ebookTop.map((g) => (
+            <EbookCard
               key={g.id}
-              href={`/e-guides/${g.slug}`}
+              href={`/ebooks/${g.slug}`}
               title={g.title}
               excerpt={g.description || g.summary || ""}
               thumbnail={safeImg(g.coverImage)}
               publishedAt={g.publishedAt?.toISOString() || ""}
             />
           ))}
-          {!eguideTop.length ? <EmptyRowText text="No e‑guides yet." /> : null}
+          {!ebookTop.length ? <EmptyRowText text="No e‑books yet." /> : null}
         </ContentRow>
 
         {/* Rows for every BlogPost.type (blog/featured/press-release/...) */}
@@ -257,7 +257,7 @@ function PostCard({ href, title, excerpt, thumbnail, badge, publishedAt }) {
   );
 }
 
-function EGuideCard({ href, title, excerpt, thumbnail, publishedAt }) {
+function EbookCard({ href, title, excerpt, thumbnail, publishedAt }) {
   return (
     <Link
       href={href}
@@ -271,7 +271,7 @@ function EGuideCard({ href, title, excerpt, thumbnail, publishedAt }) {
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-200 text-[10px] font-semibold">
-              E‑Guide
+              E‑book
             </span>
             <span className="text-[11px] text-slate-500">
               {publishedAt ? new Date(publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}

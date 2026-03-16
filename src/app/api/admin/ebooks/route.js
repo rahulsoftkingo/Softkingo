@@ -41,7 +41,7 @@ export async function POST(req) {
     if (!isNaN(d.getTime())) parsedPublishedAt = d;
   }
 
-  await prisma.eGuide.create({
+  await prisma.ebook.create({
     data: {
       title,
       slug,

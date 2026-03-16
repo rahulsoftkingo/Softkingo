@@ -64,7 +64,7 @@ export default async function AdminEbooksListPage() {
               </div>
             </div>
             <Link
-              href="/admin/e-guides/new"
+              href="/admin/ebooks/new"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-blue-500/25"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -261,7 +261,7 @@ export default async function AdminEbooksListPage() {
               Get started by creating your first E‑book to share expert knowledge with your audience.
             </p>
             <Link
-              href="/admin/e-guides/new"
+              href="/admin/ebooks/new"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold rounded-xl transition-all duration-200"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

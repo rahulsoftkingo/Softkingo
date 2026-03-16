@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 import BlogCard from "@/app/(public)/blog/BlogCard";
 import { BLOG_SECTIONS } from "@/app/(public)/[sectionKey]/sectionConfig";
 import NewsletterStrip from "@/app/(public)/blog/NewsletterStrip";
-import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
+import LatestEbookPromoCardClient from "@/components/public/LatestEbookPromoCardClient";
 import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import InquirySection from "@/components/footer/InquirySection";
@@ -354,7 +354,7 @@ export default async function SectionPage({ sectionKey, searchParams }) {
                 </div>
               )}
 
-              <LatestEGuidePromoCardClient />
+              <LatestEbookPromoCardClient />
             </aside>
           </section>
 

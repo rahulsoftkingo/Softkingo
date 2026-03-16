@@ -1,8 +1,8 @@
 // src/app/(admin)/e-guides/new/page.jsx
-import EGuideForm from "../shared/EGuideForm";
+import EbookForm from "../shared/EbookForm";
 
 export const dynamic = "force-dynamic";
 
-export default function NewEGuidesPage() {
-  return <EGuideForm mode="create" />;
+export default function NewEbooksPage() {
+  return <EbookForm mode="create" />;
 }

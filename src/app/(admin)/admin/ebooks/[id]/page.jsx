@@ -1,31 +1,31 @@
 // src/app/(admin)/e-guides/[id]/page.jsx
 import prisma from "@/lib/prisma";
-import EGuideForm from "../shared/EGuideForm";
+import EbookForm from "../shared/EbookForm";
 
 export const dynamic = "force-dynamic";
 
-export default async function EditEGuidesPage(props) {
+export default async function EditEbooksPage(props) {
   const params = await props.params;
   const id = Number(params.id);
   if (!id || Number.isNaN(id)) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-slate-600">
-        Invalid E‑Guide ID.
+        Invalid E‑book ID.
       </div>
     );
   }
 
-  const guide = await prisma.eGuide.findUnique({
+  const guide = await prisma.ebook.findUnique({
     where: { id },
   });
 
   if (!guide) {
     return (
       <div className="min-h-screen flex items-center justify-center text-sm text-slate-600">
-        E‑Guide not found.
+        E‑book not found.
       </div>
     );
   }
 
-  return <EGuideForm mode="edit" guide={guide} />;
+  return <EbookForm mode="edit" guide={guide} />;
 }
