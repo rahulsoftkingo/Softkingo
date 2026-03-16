@@ -476,12 +476,12 @@ export default function LeadForm({
 //   showBudget={false}
 // />
 
-// // E-Guide download
+// // Ebook download
 // <LeadForm
-//   formType="eguide"
+//   formType="ebook"
 //   formKey="ai-ml-guide"
 //   serviceName="AI & ML Solutions Guide"
-//   title="Get this E-Guide"
+//   title="Get this Ebook"
 //   subtitle="Share details and download instantly"
 //   variant="light"
 //   showLogo={true}

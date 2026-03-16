@@ -178,7 +178,7 @@ async function getCompleteEnterpriseData(session) {
       prisma.blogPost.count(),
       prisma.blogPost.count({ where: { status: 'published' } }),
       prisma.blogCategory.count(),
-      prisma.eGuide.count(),
+      prisma.ebook.count(),
 
       // Marketing (11-13)
       prisma.newsletterList.count(),
@@ -254,7 +254,7 @@ async function getCompleteEnterpriseData(session) {
           payrollEmployees: payrollData._count || 0
         },
         users: { total: totalUsers, admins: adminUsers },
-        content: { blogPosts: totalBlogPosts, publishedPosts, blogCategories, eguides: totalEGuides },
+        content: { blogPosts: totalBlogPosts, publishedPosts, blogCategories, ebooks: totalEGuides },
         marketing: { newsletters: newsletterLists, subscribers: newsletterSubs, campaigns: emailCampaigns },
         crm: { leads: totalLeads, openTickets },
         media: { files: totalMedia, portfolio: totalPortfolio },

@@ -104,10 +104,10 @@ const Footer = () => {
                 </div>
               </div>
               <Link
-                href="/e-guides"
+                href="/ebooks"
                 className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-sky-00  border border-sky-400 text-sky-400 text-xs font-semibold hover:shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:text-white  hover:bg-sky-500 transition-colors w-fit"
               >
-                Download E‑Guides
+                Download Ebooks
                 <FaArrowRight className="text-[0.75rem]" />
               </Link>
 

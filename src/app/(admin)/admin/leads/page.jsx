@@ -373,7 +373,7 @@ export default function LeadsPage() {
               <option value="all">All</option>
               <option value="inquiry">Inquiry</option>
               <option value="service">Service</option>
-              <option value="eguide">E‑guide</option>
+              <option value="ebook">Ebook</option>
               <option value="hire">Hire</option>
               <option value="popup">Popup</option>
               <option value="contact">Contact</option>

@@ -17,7 +17,7 @@ const IMAGE_FIELDS = [
   { model: "siteEvent", table: "siteevent", id: "id", fields: ["imageUrl"] },
   { model: "chatMessage", table: "chatmessage", id: "id", fields: ["fileUrl"] },
   { model: "page", table: "page", id: "id", fields: ["seoImage"] },
-  { model: "eGuide", table: "eguide", id: "id", fields: ["coverImage"] },
+  { model: "ebook", table: "ebook", id: "id", fields: ["coverImage"] },
 ];
 
 function normalizeToPublicRel(value) {

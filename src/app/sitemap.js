@@ -138,7 +138,7 @@ export default async function sitemap() {
         select: { slug: true, updatedAt: true }
       }),
 
-      // E-Guides
+      // Ebooks
       prisma.ebook.findMany({
         where: { status: "published" },
         select: { slug: true, updatedAt: true }

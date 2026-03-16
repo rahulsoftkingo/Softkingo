@@ -20,7 +20,7 @@ const sections = [
     title: 'Content Management', key: 'content', items: [
       { label: 'Blog Posts', href: '/admin/blog', icon: FileText },
       { label: 'Categories', href: '/admin/categories', icon: Layers3 },
-      { label: 'E-Guides', href: '/admin/e-guides', icon: BookOpenText },
+      { label: 'Ebooks', href: '/admin/ebooks', icon: BookOpenText },
       { label: 'Blog Analytics', href: '/admin/blog-analytics', icon: Lightbulb },
     ]
   },

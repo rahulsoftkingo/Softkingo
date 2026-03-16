@@ -292,7 +292,7 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
             </div>
           </article>
 
-          {/* RIGHT: form + e-guide */}
+          {/* RIGHT: form + ebook */}
           <aside className=" sm:grid sm:grid-cols-2 gap-8 lg:grid-cols-1 sticky top-24 space-y-4">
             <ContactSideForm />
             {/* <EbookCard /> */}
@@ -625,7 +625,7 @@ function EbookCard() {
   return (
     <div className="bg-gradient-to-b from-sky-50 via-white to-sky-50 border border-sky-100 rounded-2xl p-4 sm:p-5 shadow-sm">
       <p className="text-[11px] tracking-[0.24em] uppercase text-sky-500 mb-1">
-        E‑book
+        Ebook
       </p>
       <h3 className="text-sm font-semibold text-slate-900">
         Resource Guide: Launching PSA‑style Apps
@@ -643,7 +643,7 @@ function EbookCard() {
         />
       </div>
       <button className="w-full inline-flex items-center justify-center px-3 py-2 rounded-full bg-sky-600 hover:bg-sky-500 text-[13px] font-semibold text-white shadow-[0_10px_25px_rgba(56,189,248,0.45)] transition-colors">
-        Download e‑book
+        Download ebook
       </button>
       <p className="mt-1 text-[10px] text-slate-400 text-center">
         PDF · Sent instantly to your inbox

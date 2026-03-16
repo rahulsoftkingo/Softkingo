@@ -439,7 +439,7 @@ export default function EventEditPage() {
                     name="showOnSlugs"
                     value={form.showOnSlugs}
                     onChange={onChange}
-                    placeholder="/,/e-guides,/blog"
+                    placeholder="/,/ebooks,/blog"
                     className="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
                   />
                   <p className="text-xs text-slate-500 mt-1.5">Leave empty to show on all pages</p>

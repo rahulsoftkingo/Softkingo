@@ -764,7 +764,7 @@ const ServicesMenu = () => {
               <div className="h-[7rem] w-full hidden" />
             </div>
 
-            {/* Right E‑Guide Section – light Softkingo style */}
+            {/* Right Ebook Section – light Softkingo style */}
             <div className="hidden xl:block w-1/4 h-full bg-white">
               <div className="h-full w-full border-l border-sky-100 bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 px-6 py-8 flex items-center">
      <LatestEbookPromoCardClient />
@@ -772,7 +772,7 @@ const ServicesMenu = () => {
                 {/* <div className="bg-white/90 border border-sky-100 rounded-3xl p-5 flex flex-col justify-between h-full max-h-[500px] w-full shadow-[0_18px_40px_rgba(15,23,42,0.12)]">
                   <div>
                     <p className="text-[11px] tracking-[0.24em] uppercase text-sky-500">
-                      E‑book
+                      Ebook
                     </p>
 
                     <div className="bg-gradient-to-tl from-sky-600 via-sky-700 to-sky-900 rounded-2xl my-5 mr-10 flex items-center justify-center">

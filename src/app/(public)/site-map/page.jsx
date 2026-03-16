@@ -42,7 +42,7 @@
 //   const staticPages = [
 //     // Main pages
 //     "", "/about", "/services", "/case-studies", "/blog", "/blog/category",
-//     "/careers", "/contact", "/e-guides", "/featured", "/gallery", "/hire",
+//     "/careers", "/contact", "/ebooks", "/featured", "/gallery", "/hire",
 //     "/insights", "/portfolio",
 
 //     // Hire pages (from HireMenuItems)
@@ -121,7 +121,7 @@
 //     '/solutions/olx-clone-app-development',
 
 //     // Insights (from insightItems)
-//     // "/blog", "/featured", "/e-guides", "/press-releases", "/guides",
+//     // "/blog", "/featured", "/ebooks", "/press-releases", "/guides",
 //     // "/media-coverage", "/articles", "/whitepapers", "/podcasts",
 
 //     // Legal & Misc
@@ -310,7 +310,7 @@
 //           {/* E-BOOKS - AMBER - ALL PAGES */}
 //           <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl p-6 border border-amber-200 hover:border-amber-300 transition-all shadow-sm hover:shadow-md ">
 //             <h2 className="text-xl font-bold text-amber-900 mb-4 border-b-2 border-amber-200 pb-3">
-//               E-Books ({ebookRoutes.length})
+//               E-books ({ebookRoutes.length})
 //             </h2>
 //             <div className="space-y-2 max-h-96 overflow-y-auto pr-1 text-sm">
 //               {ebookRoutes.map((route, idx) => (

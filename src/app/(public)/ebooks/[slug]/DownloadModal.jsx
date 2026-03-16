@@ -1,4 +1,4 @@
-// src/app/(public)/e-guides/[slug]/DownloadModal.jsx
+// src/app/(public)/ebooks/[slug]/DownloadModal.jsx
 "use client";
 
 import { useState, useCallback } from "react";
@@ -66,7 +66,7 @@ export default function EbookDownloadModal({
         </div>
         <div>
           <h3 className="text-lg font-bold text-white mb-1">
-            Get this E‑book
+            Get this Ebook
           </h3>
           {status === "success" && (
             <p className="text-sm text-emerald-400">
@@ -162,7 +162,7 @@ export default function EbookDownloadModal({
           </button>
           
           <p className="text-xs text-slate-400 text-center">
-            E-book sent to your email address. Please check your Gmail inbox (and spam folder).
+            Ebook sent to your email address. Please check your Gmail inbox (and spam folder).
           </p>
         </div>
       )}

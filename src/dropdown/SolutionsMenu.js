@@ -311,8 +311,8 @@ const SolutionsMenu = () => {
                         Talk to a solutions expert <FaArrowRight className="text-[0.6rem]" />
                       </Link>
                       <span className="h-3 w-px bg-sky-300/60" />
-                      <Link href="/e-guides" className="inline-flex items-center gap-1 hover:text-white">
-                        Download solution guides <FaArrowRight className="text-[0.6rem]" />
+                      <Link href="/ebooks" className="inline-flex items-center gap-1 hover:text-white">
+                        Download ebooks <FaArrowRight className="text-[0.6rem]" />
                       </Link>
                     </div>
                   </div>

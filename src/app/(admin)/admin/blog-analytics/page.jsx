@@ -50,7 +50,7 @@ export default async function AdminBlogAnalyticsPage(ctx) {
 
   const range = (resolved?.range || "30d").toString();
   const sort = (resolved?.sort || "views").toString();
-  const view = (resolved?.view || "blog").toString(); // blog | eguide | categories | tags
+  const view = (resolved?.view || "blog").toString(); // blog | ebook | categories | tags
 
   const fromDate = getDateRange(range);
 
@@ -123,14 +123,14 @@ export default async function AdminBlogAnalyticsPage(ctx) {
     ? (enrichedPosts.reduce((sum, p) => sum + p.engagementScore, 0) / totalPosts).toFixed(2)
     : 0;
 
-  // ==================== EGUIDES ====================
-  const eGuideWhere = {
+  // ==================== EBOOKS ====================
+  const ebookWhere = {
     status: "published",
     ...(fromDate ? { publishedAt: { gte: fromDate } } : {}),
   };
 
-  const eGuides = await prisma.eGuide.findMany({
-    where: eGuideWhere,
+  const ebooks = await prisma.ebook.findMany({
+    where: ebookWhere,
     orderBy: sort === "downloads" ? { downloadCount: "desc" } : { createdAt: "desc" },
     select: {
       id: true,
@@ -143,11 +143,11 @@ export default async function AdminBlogAnalyticsPage(ctx) {
     },
   });
 
-  const totalEGuides = eGuides.length;
-  const totalEGuideDownloads = eGuides.reduce((sum, g) => sum + g.downloadCount, 0);
+  const totalEbooks = ebooks.length;
+  const totalEbookDownloads = ebooks.reduce((sum, g) => sum + g.downloadCount, 0);
 
-  // Top eGuides
-  const topEGuides = [...eGuides]
+  // Top Ebooks
+  const topEbooks = [...ebooks]
     .sort((a, b) => b.downloadCount - a.downloadCount)
     .slice(0, 5);
 
@@ -275,7 +275,7 @@ export default async function AdminBlogAnalyticsPage(ctx) {
               Content Analytics
             </h1>
             <p className="text-sm lg:text-base text-slate-600 mt-1">
-              Track blog, eGuides, categories & tags performance
+              Track blog, Ebooks, categories & tags performance
             </p>
           </div>
         </div>
@@ -303,7 +303,7 @@ export default async function AdminBlogAnalyticsPage(ctx) {
           <div className="inline-flex items-center gap-1 rounded-2xl border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
             <Filter className="h-3.5 w-3.5 text-slate-500" />
             <span className="text-xs font-semibold text-slate-600">Sort:</span>
-            {["views", "likes", "engagement", view === "eguide" ? "downloads" : "recent"].map((s) => (
+            {["views", "likes", "engagement", view === "ebook" ? "downloads" : "recent"].map((s) => (
               <Link
                 key={s}
                 href={buildUrl({ range, sort: s, view })}
@@ -324,7 +324,7 @@ export default async function AdminBlogAnalyticsPage(ctx) {
       <nav className="flex gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
         {[
           { key: "blog", label: "Blog Posts", icon: <FileText className="h-4 w-4" />, count: totalPosts },
-          { key: "eguide", label: "eGuides", icon: <BookOpen className="h-4 w-4" />, count: totalEGuides },
+          { key: "ebook", label: "Ebooks", icon: <BookOpen className="h-4 w-4" />, count: totalEbooks },
           { key: "categories", label: "Categories", icon: <Layers className="h-4 w-4" />, count: categoryStats.length },
           { key: "tags", label: "Tags", icon: <Tag className="h-4 w-4" />, count: tagStats.length },
         ].map((tab) => (
@@ -426,23 +426,23 @@ export default async function AdminBlogAnalyticsPage(ctx) {
         </>
       )}
 
-      {/* EGUIDE VIEW */}
-      {view === "eguide" && (
+      {/* EBOOK VIEW */}
+      {view === "ebook" && (
         <>
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <StatCard icon={<BookOpen className="h-5 w-5" />} label="eGuides" value={totalEGuides.toLocaleString()} color="from-blue-500 to-cyan-500" />
-            <StatCard icon={<Download className="h-5 w-5" />} label="Total Downloads" value={totalEGuideDownloads.toLocaleString()} color="from-purple-500 to-pink-500" />
-            <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Avg Downloads" value={totalEGuides > 0 ? Math.round(totalEGuideDownloads / totalEGuides) : 0} color="from-emerald-500 to-green-500" />
+            <StatCard icon={<BookOpen className="h-5 w-5" />} label="Ebooks" value={totalEbooks.toLocaleString()} color="from-blue-500 to-cyan-500" />
+            <StatCard icon={<Download className="h-5 w-5" />} label="Total Downloads" value={totalEbookDownloads.toLocaleString()} color="from-purple-500 to-pink-500" />
+            <StatCard icon={<TrendingUp className="h-5 w-5" />} label="Avg Downloads" value={totalEbooks > 0 ? Math.round(totalEbookDownloads / totalEbooks) : 0} color="from-emerald-500 to-green-500" />
           </section>
 
-          {/* Top eGuides */}
+          {/* Top Ebooks */}
           <section className="rounded-3xl bg-white/80 backdrop-blur-xl shadow-xl border border-purple-100/50 p-6">
             <h2 className="text-sm font-semibold text-slate-800 mb-4 flex items-center gap-2">
               <Download className="h-4 w-4 text-purple-600" />
-              Top eGuides by Downloads
+              Top Ebooks by Downloads
             </h2>
             <div className="space-y-2">
-              {topEGuides.map((guide, idx) => (
+              {topEbooks.map((guide, idx) => (
                 <div key={guide.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-purple-200 hover:bg-purple-50/30 transition-all">
                   <div className="flex items-center gap-3">
                     <span className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
@@ -467,8 +467,8 @@ export default async function AdminBlogAnalyticsPage(ctx) {
             </div>
           </section>
 
-          {/* All eGuides Table */}
-          <EGuidesTable eGuides={eGuides} />
+          {/* All Ebooks Table */}
+          <EbooksTable ebooks={ebooks} />
         </>
       )}
 
@@ -612,27 +612,27 @@ function BlogPostsTable({ posts }) {
   );
 }
 
-function EGuidesTable({ eGuides }) {
+function EbooksTable({ ebooks }) {
   return (
     <section className="rounded-3xl bg-white/80 backdrop-blur-xl shadow-xl border border-slate-100/50 overflow-hidden">
       <div className="p-6 border-b border-slate-100">
         <h2 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-slate-600" />
-          All eGuides Performance
+          All Ebooks Performance
         </h2>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase">eGuide</th>
+              <th className="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Ebook</th>
               <th className="px-4 py-3 text-center text-xs font-semibold text-slate-600 uppercase">Category</th>
               <th className="px-4 py-3 text-center text-xs font-semibold text-slate-600 uppercase"><Download className="h-3.5 w-3.5 inline" /> Downloads</th>
               <th className="px-4 py-3 text-center text-xs font-semibold text-slate-600 uppercase"><Calendar className="h-3.5 w-3.5 inline" /> Published</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {eGuides.map((guide) => (
+            {ebooks.map((guide) => (
               <tr key={guide.id} className="hover:bg-purple-50/30 transition-colors">
                 <td className="px-4 py-3">
                   <p className="text-sm font-semibold text-slate-900">{guide.title}</p>
@@ -653,11 +653,11 @@ function EGuidesTable({ eGuides }) {
                 </td>
               </tr>
             ))}
-            {eGuides.length === 0 && (
+            {ebooks.length === 0 && (
               <tr>
                 <td colSpan={4} className="px-4 py-12 text-center">
                   <BookOpen className="h-12 w-12 text-slate-400 mx-auto mb-3" />
-                  <p className="text-sm text-slate-600 font-medium">No published eGuides found</p>
+                  <p className="text-sm text-slate-600 font-medium">No published Ebooks found</p>
                 </td>
               </tr>
             )}

@@ -18,7 +18,7 @@ export async function POST(request) {
     source,
 
     // form routing
-    formType,   // 'inquiry' | 'service' | 'eguide' | 'hire' | ...
+    formType,   // 'inquiry' | 'service' | 'ebook' | 'hire' | ...
     formKey,    // e.g. 'home-inquiry', 'service-web-dev', 'eguide-ai'
 
     // marketing

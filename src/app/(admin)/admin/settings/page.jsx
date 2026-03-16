@@ -31,7 +31,7 @@ export default function AdvancedSiteHealth() {
   const ALL_ROUTES = [
     '/', '/about', '/services', '/blog', '/contact', '/privacy', '/terms',
     '/ai', '/insights', '/portfolio', '/solutions', '/hire', '/careers',
-    '/case-studies', '/e-guides', '/gallery', '/whitepapers', '/articles',
+    '/case-studies', '/ebooks', '/gallery', '/whitepapers', '/articles',
     '/media-coverage', '/podcasts', '/press-releases', '/robots.txt', '/sitemap.xml'
   ];
 

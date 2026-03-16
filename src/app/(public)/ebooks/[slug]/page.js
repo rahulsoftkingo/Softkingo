@@ -28,13 +28,13 @@ export async function generateMetadata(props) {
 
   if (!guide) {
     return {
-      title: "E‑book not found | Softkingo",
+      title: "Ebook not found | Softkingo",
       description: "The requested guide is not available.",
     };
   }
 
   return {
-    title: `${guide.title} | E‑book | Softkingo`,
+    title: `${guide.title} | Ebook | Softkingo`,
     description:
       guide.summary ||
       guide.description ||
@@ -61,7 +61,7 @@ export default async function EbookDetailPage(props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-white">E‑book Not Found</h1>
+          <h1 className="text-2xl font-bold text-white">Ebook Not Found</h1>
           <p className="text-slate-400 max-w-sm">
             The guide you're looking for is no longer available or has been moved.
           </p>
@@ -143,10 +143,10 @@ function HeroDetail({ guide }) {
           </Link>
           <span className="text-sky-400">›</span>
           <Link
-            href="/e-guides"
+            href="/ebooks"
             className="hover:text-cyan-300 transition-colors duration-200"
           >
-            E‑books
+            Ebooks
           </Link>
           <span className="text-sky-400">›</span>
           <span className="text-cyan-300 font-medium truncate max-w-[200px] lg:max-w-none">
@@ -160,7 +160,7 @@ function HeroDetail({ guide }) {
             {/* Category and read time */}
             <div className="flex items-center gap-4">
               <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full text-sm font-medium border border-cyan-500/30">
-                {guide.category || "E‑book"}
+                {guide.category || "Ebook"}
               </span>
               {/* <span className="text-sky-200/70 text-sm flex items-center gap-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,7 +210,7 @@ function HeroDetail({ guide }) {
                 Read Now
               </a>
 
-              <EGuideDownloadModal
+              <EbookDownloadModal
                 guideId={guide.id}
                 guideSlug={guide.slug}
                 pdfUrl={guide.pdfUrl}
@@ -348,7 +348,7 @@ function MainTwoColumn({ guide }) {
                 </p>
               </div>
 
-              <EGuideDownloadModal
+              <EbookDownloadModal
                 guideId={guide.id}
                 guideSlug={guide.slug}
                 pdfUrl={guide.pdfUrl}
@@ -429,13 +429,13 @@ function RelatedSection({ related }) {
 
         <div className="text-center mt-12">
           <Link
-            href="/e-guides"
+            href="/ebooks"
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white font-semibold rounded-xl transition-all duration-200 border border-slate-700 hover:border-slate-600"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
-            View All E‑books
+            View All Ebooks
           </Link>
         </div>
       </div>

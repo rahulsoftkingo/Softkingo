@@ -922,8 +922,8 @@ const SideBar = () => {
     },
     {
       key: "ebooks",
-      href: "/e-guides",
-      title: "E‑Guides",
+      href: "/ebooks",
+      title: "Ebooks",
       description:
         "Step‑by‑step playbooks to plan, build and scale web and mobile products.",
       meta: "Downloadable PDFs · Frameworks & checklists",

@@ -190,7 +190,7 @@ const ResourcesMenu = () => {
               </div>
             </div>
 
-            {/* Right E‑Guide card */}
+            {/* Right Ebook card */}
             <div className="hidden xl:block w-full h-full bg-white">
               <div className="h-full w-full border-l border-sky-100 bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 px-6 py-8 flex items-center">
                <LatestEbookPromoCardClient />
