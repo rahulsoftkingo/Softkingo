@@ -22,7 +22,7 @@ export default async function sitemap() {
   const staticRoutes = [
     // Main pages
     "", "/about", "/services", "/case-studies", "/blog", "/blog/category",
-    "/careers", "/contact", "/e-guides", "/featured", "/gallery", "/hire",
+    "/careers", "/contact", "/ebooks", "/featured", "/gallery", "/hire",
     "/insights", "/portfolio",
 
     // Hire pages (from HireMenuItems)
@@ -101,7 +101,7 @@ export default async function sitemap() {
     // '/solutions/olx-clone-app-development',
 
     // Insights (from insightItems)
-    // "/blog", "/featured", "/e-guides", "/press-releases", "/guides",
+    // "/blog", "/featured", "/ebooks", "/press-releases", "/guides",
     // "/media-coverage", "/articles", "/whitepapers", "/podcasts",
 
     // Legal & Misc
@@ -119,7 +119,7 @@ export default async function sitemap() {
       posts,
       categories,
       caseStudies,
-      eGuides,
+      ebooks,
       pages
     ] = await Promise.all([
       // All published blog posts with type
@@ -139,7 +139,7 @@ export default async function sitemap() {
       }),
 
       // E-Guides
-      prisma.eGuide.findMany({
+      prisma.ebook.findMany({
         where: { status: "published" },
         select: { slug: true, updatedAt: true }
       }),
@@ -187,16 +187,16 @@ export default async function sitemap() {
       }));
     dynamicRoutes.push(...caseStudyRoutes);
 
-    // 4. E-Guides
-    const eGuideRoutes = eGuides
+    // 4. Ebooks
+    const ebookRoutes = ebooks
       .filter(guide => guide.slug)
       .map(guide => ({
-        url: `${baseUrl}/e-guides/${guide.slug}`,
+        url: `${baseUrl}/ebooks/${guide.slug}`,
         lastModified: guide.updatedAt ?? new Date(),
         // changeFrequency: "monthly",
         priority: 0.8
       }));
-    dynamicRoutes.push(...eGuideRoutes);
+    dynamicRoutes.push(...ebookRoutes);
 
     // 5. Pages (services, hire, solutions, industries)
     const pageRoutes = pages

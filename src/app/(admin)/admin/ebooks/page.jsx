@@ -1,12 +1,12 @@
-// src/app/(admin)/e-guides/page.jsx
+// src/app/(admin)/ebooks/page.jsx
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminEGuidesListPage() {
-  const guides = await prisma.eGuide.findMany({
+export default async function AdminEbooksListPage() {
+  const guides = await prisma.ebook.findMany({
     orderBy: { createdAt: "desc" },
   });
 
@@ -57,9 +57,9 @@ export default async function AdminEGuidesListPage() {
                 </svg>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">E‑Guides Management</h1>
+                <h1 className="text-2xl font-bold text-slate-900">E‑books Management</h1>
                 <p className="text-slate-600 mt-1">
-                  Manage all downloadable guides and track their performance
+                  Manage all downloadable ebooks and track their performance
                 </p>
               </div>
             </div>
@@ -70,7 +70,7 @@ export default async function AdminEGuidesListPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              New E‑Guide
+              New E‑book
             </Link>
           </div>
 
@@ -79,7 +79,7 @@ export default async function AdminEGuidesListPage() {
             <div className="bg-white rounded-xl border border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Total Guides</p>
+                  <p className="text-sm font-medium text-slate-600">Total Ebooks</p>
                   <p className="text-2xl font-bold text-slate-900 mt-1">{guides.length}</p>
                 </div>
                 <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
@@ -224,7 +224,7 @@ export default async function AdminEGuidesListPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Link
-                        href={`/e-guides/${guide.slug}`}
+                        href={`/ebooks/${guide.slug}`}
                         target="_blank"
                         className="p-2 text-slate-400 hover:text-slate-600 transition-colors duration-200"
                         title="Preview"
@@ -235,7 +235,7 @@ export default async function AdminEGuidesListPage() {
                         </svg>
                       </Link>
                       <Link
-                        href={`/admin/e-guides/${guide.id}`}
+                        href={`/admin/ebooks/${guide.id}`}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors duration-200"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -256,9 +256,9 @@ export default async function AdminEGuidesListPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">No E‑Guides Yet</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">No E‑books Yet</h3>
             <p className="text-slate-600 mb-6 max-w-sm mx-auto">
-              Get started by creating your first E‑Guide to share expert knowledge with your audience.
+              Get started by creating your first E‑book to share expert knowledge with your audience.
             </p>
             <Link
               href="/admin/e-guides/new"

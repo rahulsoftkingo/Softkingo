@@ -15,21 +15,21 @@ export async function POST(req) {
   const name = body.name?.trim();
   const email = body.email?.trim();
   const company = body.company?.trim() || null;
-  const guideId = body.guideId;
-  const guideSlug = body.guideSlug;
+  const ebookId = body.ebookId || body.guideId;
+  const ebookSlug = body.ebookSlug || body.guideSlug;
 
-  if (!name || !email || !guideId) {
+  if (!name || !email || !ebookId) {
     return NextResponse.json(
       { error: "Missing fields" },
       { status: 400 }
     );
   }
 
-  const eguide = await prisma.eGuide.findFirst({
+  const ebook = await prisma.ebook.findFirst({
     where: {
       OR: [
-        { id: Number.isNaN(Number(guideId)) ? -1 : Number(guideId) },
-        { slug: guideSlug || "" },
+        { id: Number.isNaN(Number(ebookId)) ? -1 : Number(ebookId) },
+        { slug: ebookSlug || "" },
       ],
     },
   });
@@ -38,19 +38,19 @@ export async function POST(req) {
     data: {
       name,
       email,
-      message: `E‑Guide download: ${eguide?.title || guideSlug || guideId}`,
+      message: `Ebook download: ${ebook?.title || ebookSlug || ebookId}`,
       status: "new",
-      source: "eguide",
-      campaign: "eguide-download",
-      formType: "eguide",
-      formKey: "eguide-download",
-      tags: "eguide,download",
+      source: "ebook",
+      campaign: "ebook-download",
+      formType: "ebook",
+      formKey: "ebook-download",
+      tags: "ebook,download",
     },
   });
 
-  if (eguide) {
-    await prisma.eGuide.update({
-      where: { id: eguide.id },
+  if (ebook) {
+    await prisma.ebook.update({
+      where: { id: ebook.id },
       data: { downloadCount: { increment: 1 } },
     });
   }

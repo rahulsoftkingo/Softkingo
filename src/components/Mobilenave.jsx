@@ -207,16 +207,16 @@ export default function MobileNav() {
               />
             </button>
 
-            {/* Contact */}
+            {/* Ebooks */}
             <Link
-              href="/e-guides"
-              className={`flex flex-col items-center text-xs ${isActive("/e-guides")
+              href="/ebooks"
+              className={`flex flex-col items-center text-xs ${isActive("/ebooks")
                 ? "text-sky-600"
                 : "text-gray-500 hover:text-sky-600"
                 } transition`}
             >
               <FaBook className="text-lg" />
-              <span className="mt-1">Eguides</span>
+              <span className="mt-1">Ebooks</span>
             </Link>
 
             {/* Sidebar menu */}

@@ -1,12 +1,12 @@
-// src/components/public/EGuidePromoCard.jsx
+// src/components/public/EbookPromoCard.jsx
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 
-export default function EGuidePromoCard({
-  eyebrow = "EGuide",
+export default function EbookPromoCard({
+  eyebrow = "Ebook",
   badge = "Resource Guide",
   title,
   meta,
@@ -14,7 +14,7 @@ export default function EGuidePromoCard({
   slug,                 // <-- new
   ctaLabel = "Download Now",
 }) {
-  const href = slug ? `/e-guides/${slug}` : "/e-guides";
+  const href = slug ? `/ebooks/${slug}` : "/ebooks";
 
   return (
     <div className="bg-gradient-to-b from-sky-50 via-white to-sky-50 border border-sky-100 rounded-2xl p-4 sm:p-5 shadow-sm">
@@ -22,7 +22,7 @@ export default function EGuidePromoCard({
 
       <div className="bg-gradient-to-tr from-sky-400 via-sky-600 to-slate-700 rounded-2xl my-3 overflow-hidden">
         <div className="relative h-68">
-          <Image src={coverImage} alt={title || "EGuide"} fill className="object-contain p-4" />
+          <Image src={coverImage} alt={title || "Ebook"} fill className="object-contain p-4" />
         </div>
       </div>
 

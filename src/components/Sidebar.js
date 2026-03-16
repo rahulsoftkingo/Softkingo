@@ -921,7 +921,7 @@ const SideBar = () => {
       meta: "Curated picks · Long reads",
     },
     {
-      key: "eguides",
+      key: "ebooks",
       href: "/e-guides",
       title: "E‑Guides",
       description:

@@ -3,7 +3,7 @@
 
 import { useState, useCallback } from "react";
 
-export default function EGuideDownloadModal({
+export default function EbookDownloadModal({
   guideId,
   guideSlug,
   pdfUrl,
@@ -37,7 +37,7 @@ export default function EGuideDownloadModal({
 
     setStatus("loading");
     try {
-      const res = await fetch("/api/public/e-guides/lead", {
+      const res = await fetch("/api/public/ebooks/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -66,7 +66,7 @@ export default function EGuideDownloadModal({
         </div>
         <div>
           <h3 className="text-lg font-bold text-white mb-1">
-            Get this E‑Guide
+            Get this E‑book
           </h3>
           {status === "success" && (
             <p className="text-sm text-emerald-400">
@@ -162,7 +162,7 @@ export default function EGuideDownloadModal({
           </button>
           
           <p className="text-xs text-slate-400 text-center">
-            E-Guide sent to your email address. Please check your Gmail inbox (and spam folder).
+            E-book sent to your email address. Please check your Gmail inbox (and spam folder).
           </p>
         </div>
       )}

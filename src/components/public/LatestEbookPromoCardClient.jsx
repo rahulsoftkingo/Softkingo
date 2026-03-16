@@ -1,14 +1,14 @@
-// src/components/public/LatestEGuidePromoCardClient.jsx
+// src/components/public/LatestEbookPromoCardClient.jsx
 "use client";
 
 import { useEffect, useState } from "react";
-import EGuidePromoCard from "@/components/public/EGuidePromoCard";
+import EbookPromoCard from "@/components/public/EbookPromoCard";
 
-export default function LatestEGuidePromoCardClient() {
+export default function LatestEbookPromoCardClient() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("/api/public/e-guides/latest")
+    fetch("/api/public/ebooks/latest")
       .then((r) => r.json())
       .then((j) => setData(j.latest))
       .catch(() => {});
@@ -17,7 +17,7 @@ export default function LatestEGuidePromoCardClient() {
   if (!data) return null;
 
   return (
-    <EGuidePromoCard
+    <EbookPromoCard
       title={data.title}
       meta={data.readTimeText || ""}
       coverImage={data.coverImage || "/images/black book.png"}

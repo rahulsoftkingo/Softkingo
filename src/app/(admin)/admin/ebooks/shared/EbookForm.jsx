@@ -756,8 +756,8 @@ export default function EGuideForm({ mode, guide }) {
     try {
       const res = await fetch(
         isEdit
-          ? `/api/admin/e-guides/${guide.id}`
-          : "/api/admin/e-guides",
+          ? `/api/admin/ebooks/${guide.id}`
+          : "/api/admin/ebooks",
         {
           method: isEdit ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
@@ -849,7 +849,7 @@ export default function EGuideForm({ mode, guide }) {
               </button>
               <div>
                 <h1 className="text-2xl font-bold text-slate-900">
-                  {isEdit ? "Edit E‑Guide" : "Create New E‑Guide"}
+                  {isEdit ? "Edit E‑book" : "Create New E‑book"}
                 </h1>
                 <p className="text-slate-600 mt-1">
                   {isEdit 
@@ -1173,7 +1173,7 @@ export default function EGuideForm({ mode, guide }) {
                     name="coverImage"
                     value={form.coverImage}
                     onChange={onChange}
-                    placeholder="/images/eguides/guide-cover.png"
+                    placeholder="/images/ebooks/guide-cover.png"
                     className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
@@ -1240,7 +1240,7 @@ export default function EGuideForm({ mode, guide }) {
                     name="pdfUrl"
                     value={form.pdfUrl}
                     onChange={onChange}
-                    placeholder="/pdf/e-guides/guide-name.pdf"
+                    placeholder="/pdf/ebooks/guide-name.pdf"
                     className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
@@ -1287,7 +1287,7 @@ export default function EGuideForm({ mode, guide }) {
               <div className="flex gap-3">
                 <button
                   type="button"
-                  onClick={() => router.push("/admin/e-guides")}
+                  onClick={() => router.push("/admin/ebooks")}
                   className="flex-1 px-6 py-3 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50 transition-colors duration-200 font-medium"
                 >
                   Cancel

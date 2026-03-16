@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
 
-import LatestEGuidePromoCardClient from "@/components/public/LatestEGuidePromoCardClient";
+import LatestEbookPromoCardClient from "@/components/public/LatestEbookPromoCardClient";
 
 export const ResourceItem = ({
   href,
@@ -56,9 +56,9 @@ const insightItems = [
     meta: "Curated picks · Long reads",
   },
   {
-    key: "eguides",
-    href: "/e-guides",
-    title: "E‑Guides",
+    key: "ebooks",
+    href: "/ebooks",
+    title: "E‑books",
     description:
       "Step‑by‑step playbooks to plan, build and scale web and mobile products.",
     meta: "Downloadable PDFs · Frameworks & checklists",
@@ -136,8 +136,8 @@ const ResourcesMenu = () => {
                     </Link>
                     <FaArrowRight className="text-sky-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-sm" />
                   </div>
-                  {/* <p className="text-[15px] leading-[26px] text-sky-900">
-                    Discover blogs, featured stories, e‑guides, whitepapers and
+                {/* <p className="text-[15px] leading-[26px] text-sky-900">
+                    Discover blogs, featured stories, e‑books, whitepapers and
                     more to plan your next digital initiative with confidence.
                   </p> */}
                 </div>
@@ -193,11 +193,11 @@ const ResourcesMenu = () => {
             {/* Right E‑Guide card */}
             <div className="hidden xl:block w-full h-full bg-white">
               <div className="h-full w-full border-l border-sky-100 bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 px-6 py-8 flex items-center">
-               <LatestEGuidePromoCardClient />
+               <LatestEbookPromoCardClient />
                 {/* <div className="bg-white/90 border border-sky-100 rounded-3xl p-5 flex flex-col justify-between h-full max-h-[500px] w-full shadow-[0_18px_40px_rgba(15,23,42,0.12)]">
                   <div>
                     <p className="text-[11px] tracking-[0.24em] uppercase text-sky-500">
-                      E‑Guide
+                      E‑book
                     </p>
 
                     <div className="bg-gradient-to-tl from-sky-600 via-sky-700 to-sky-900 rounded-2xl my-5 mr-10 flex items-center justify-center">
@@ -225,7 +225,7 @@ const ResourcesMenu = () => {
                   </div>
 
                   <Link
-                    href="/e-guides/psa-software-guide"
+                    href="/ebooks/psa-software-guide"
                     className="mt-4 px-4 md:px-6 py-2 rounded-full bg-sky-600 text-white text-xs md:text-sm font-semibold shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:bg-sky-500 transition-colors flex items-center gap-2 w-fit"
                   >
                     Download Now

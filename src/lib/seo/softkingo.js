@@ -103,9 +103,9 @@ export async function getCaseStudySeo(slug) {
   };
 }
 
-// EGuide SEO
-export async function getEguideSeo(slug) {
-  const eg = await prisma.eGuide.findUnique({
+// Ebook SEO
+export async function getEbookSeo(slug) {
+  const eg = await prisma.ebook.findUnique({
     where: { slug },
     select: {
       seoTitle: true,
@@ -122,6 +122,6 @@ export async function getEguideSeo(slug) {
     title: eg.seoTitle || eg.title,
     description: eg.seoDescription || SOFTKINGO.defaultDescription,
     image: eg.coverImage || SOFTKINGO.defaultImage,
-    url: `/e-guides/${slug}`,
+    url: `/ebooks/${slug}`,
   };
 }

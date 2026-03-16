@@ -1,4 +1,4 @@
-// app/(public)/e-guides/page.jsx
+// app/(public)/ebooks/page.jsx
 import Image from "next/image";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
@@ -7,17 +7,17 @@ import InquirySection from "@/components/footer/InquirySection";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "E-Books | Softkingo",
+  title: "E-books | Softkingo",
   description:
-    "Download expert-crafted E-Books by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
-  alternates: { canonical: "/e-books" }
+    "Download expert-crafted E-books by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
+  alternates: { canonical: "/ebooks" }
 };
 
-export default async function EGuidesPage(props) {
+export default async function EbooksPage(props) {
   const searchParams = await props.searchParams;
   const q = (searchParams?.q || "").toString().trim();
 
-  const guides = await prisma.eGuide.findMany({
+  const guides = await prisma.ebook.findMany({
     where: {
       status: "published",
       ...(q
@@ -70,7 +70,7 @@ function HeroSection({ q, total }) {
             Home
           </Link>
           <span className="text-sky-400">›</span>
-          <span className="text-cyan-300 font-medium">E‑Guides</span>
+          <span className="text-cyan-300 font-medium">E‑books</span>
         </nav>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -81,7 +81,7 @@ function HeroSection({ q, total }) {
                 Expert Resources
               </p>
               <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-normal">
-                Softkingo <span className="bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">E‑Guides</span>
+                Softkingo <span className="bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">E‑books</span>
               </h1>
               <p className="text-xl text-sky-100/80 leading-relaxed max-w-2xl">
                 Carefully prepared guides to help founders and product teams plan,
@@ -90,7 +90,7 @@ function HeroSection({ q, total }) {
             </div>
 
             {/* Search form */}
-            <form action="/e-books" className="space-y-3">
+            <form action="/ebooks" className="space-y-3">
               <div className="relative max-w-xl">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-sky-500/20 rounded-2xl blur-sm" />
                 <div className="relative">
@@ -98,7 +98,7 @@ function HeroSection({ q, total }) {
                     type="text"
                     name="q"
                     defaultValue={q}
-                    placeholder="Search E‑Guides by title, category, or topic..."
+                    placeholder="Search E‑books by title, category, or topic..."
                     className="w-full rounded-2xl bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 text-white placeholder-slate-400 text-base pl-6 pr-12 py-4 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                   />
                   <button
@@ -138,7 +138,7 @@ function HeroSection({ q, total }) {
                     <div className="">
                       <Image
                         src="/images/black book.png"
-                        alt="Softkingo E‑Guides Collection"
+                        alt="Softkingo E‑books Collection"
                         fill
                         className="object-cover p-4"
                         priority
@@ -170,7 +170,7 @@ function GuidesSection({ guides }) {
         {/* Section header */}
         <div className="text-center mb-12 lg:mb-16">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-            Latest <span className="bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">E‑Guides</span>
+            Latest <span className="bg-gradient-to-r from-cyan-400 to-sky-400 bg-clip-text text-transparent">E‑books</span>
           </h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
             Dive into our collection of expert-curated guides covering the latest in technology and product development
@@ -181,7 +181,7 @@ function GuidesSection({ guides }) {
         {guides.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {guides.map((guide, index) => (
-              <EGuidesCard key={guide.slug} guide={guide} index={index} />
+              <EbooksCard key={guide.slug} guide={guide} index={index} />
             ))}
           </div>
         ) : (
@@ -191,18 +191,18 @@ function GuidesSection({ guides }) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3">No Guides Found</h3>
+            <h3 className="text-2xl font-bold text-white mb-3">No Ebooks Found</h3>
             <p className="text-slate-400 mb-8 max-w-md mx-auto">
-              We couldn't find any E‑Guides matching your search. Try different keywords or browse all guides.
+              We couldn't find any E‑books matching your search. Try different keywords or browse all ebooks.
             </p>
             <Link
-              href="/e-guides"
+              href="/ebooks"
               className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl transition-all duration-200 border border-slate-700 hover:border-slate-600"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-              View All Guides
+              View All Ebooks
             </Link>
           </div>
         )}
@@ -213,7 +213,7 @@ function GuidesSection({ guides }) {
   );
 }
 
-export function EGuidesCard({ guide, index }) {
+export function EbooksCard({ guide, index }) {
   return (
     <article
       className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-500/10"
@@ -233,7 +233,7 @@ export function EGuidesCard({ guide, index }) {
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1 min-w-0">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 mb-3">
-              {guide.category || "E‑Guide"}
+              {guide.category || "E‑book"}
             </span>
           </div>
 
@@ -288,10 +288,10 @@ export function EGuidesCard({ guide, index }) {
           {/* Animated CTA button */}
           <div className="pt-4">
             <Link
-              href={`/e-guides/${guide.slug}`}
+              href={`/ebooks/${guide.slug}`}
               className="inline-flex items-center justify-between w-full px-4 py-3 bg-slate-800/50 hover:bg-slate-700/50 text-white font-semibold rounded-xl transition-all duration-300 border border-slate-700/50 hover:border-cyan-500/30 group/btn overflow-hidden"
             >
-              <span className="text-sm">Read Guide</span>
+              <span className="text-sm">Read Ebook</span>
 
               {/* Animated arrow */}
               <div className="flex items-center">

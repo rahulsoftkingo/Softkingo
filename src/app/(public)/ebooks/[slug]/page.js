@@ -1,9 +1,9 @@
-// src/app/(public)/e-guides/[slug]/page.jsx
+// src/app/(public)/ebooks/[slug]/page.jsx
 import Image from "next/image";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import EGuideDownloadModal from "./DownloadModal";
-import { EGuidesCard } from "../page";
+import EbookDownloadModal from "./DownloadModal";
+import { EbooksCard } from "../page";
 import InquirySection from "@/components/footer/InquirySection";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 async function getGuide(slug) {
   if (!slug || typeof slug !== "string") return null;
 
-  const guide = await prisma.eGuide.findUnique({
+  const guide = await prisma.ebook.findUnique({
     where: { slug },
   });
 
@@ -28,25 +28,25 @@ export async function generateMetadata(props) {
 
   if (!guide) {
     return {
-      title: "E‑Guide not found | Softkingo",
+      title: "E‑book not found | Softkingo",
       description: "The requested guide is not available.",
     };
   }
 
   return {
-    title: `${guide.title} | E‑Guide | Softkingo`,
+    title: `${guide.title} | E‑book | Softkingo`,
     description:
       guide.summary ||
       guide.description ||
       guide.title,
     alternates: {
-      canonical: `/e-guides/${guide.slug}`,
+      canonical: `/ebooks/${guide.slug}`,
     },
 
   };
 }
 
-export default async function EGuideDetailPage(props) {
+export default async function EbookDetailPage(props) {
   const params = await props.params;
   const slug = params.slug;
 
@@ -61,7 +61,7 @@ export default async function EGuideDetailPage(props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-white">E‑Guide Not Found</h1>
+          <h1 className="text-2xl font-bold text-white">E‑book Not Found</h1>
           <p className="text-slate-400 max-w-sm">
             The guide you're looking for is no longer available or has been moved.
           </p>
@@ -72,7 +72,7 @@ export default async function EGuideDetailPage(props) {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
-            Browse All Guides
+            Browse All Ebooks
           </Link>
         </div>
       </main>
@@ -80,7 +80,7 @@ export default async function EGuideDetailPage(props) {
     );
   }
 
-  const related = await prisma.eGuide.findMany({
+  const related = await prisma.ebook.findMany({
     where: {
       status: "published",
       slug: { not: guide.slug },
@@ -146,7 +146,7 @@ function HeroDetail({ guide }) {
             href="/e-guides"
             className="hover:text-cyan-300 transition-colors duration-200"
           >
-            E‑Guides
+            E‑books
           </Link>
           <span className="text-sky-400">›</span>
           <span className="text-cyan-300 font-medium truncate max-w-[200px] lg:max-w-none">
@@ -160,7 +160,7 @@ function HeroDetail({ guide }) {
             {/* Category and read time */}
             <div className="flex items-center gap-4">
               <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full text-sm font-medium border border-cyan-500/30">
-                {guide.category || "E‑Guide"}
+                {guide.category || "E‑book"}
               </span>
               {/* <span className="text-sky-200/70 text-sm flex items-center gap-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,7 +207,7 @@ function HeroDetail({ guide }) {
                 <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
-                Start Reading
+                Read Now
               </a>
 
               <EGuideDownloadModal
@@ -281,7 +281,7 @@ function MainTwoColumn({ guide }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h2 className="text-2xl font-bold text-white mb-3">
-                    About This Guide
+                    About This Ebook
                   </h2>
                   {guide.summary && (
                     <p className="text-slate-300 leading-relaxed mb-4">
@@ -341,7 +341,7 @@ function MainTwoColumn({ guide }) {
                   </svg>
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">
-                  Download Guide
+                  Download Ebook
                 </h3>
                 <p className="text-slate-400 text-sm">
                   Get the PDF version to read offline
@@ -362,7 +362,7 @@ function MainTwoColumn({ guide }) {
                   <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Guide Details
+                  Ebook Details
                 </h3>
 
                 <div className="space-y-4">
@@ -414,7 +414,7 @@ function RelatedSection({ related }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-            More E‑Guides You Might Like
+            More E‑books You Might Like
           </h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
             Explore our collection of expertly crafted guides to enhance your knowledge
@@ -423,7 +423,7 @@ function RelatedSection({ related }) {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {related.map((g, index) => (
-            <EGuidesCard key={g.slug} guide={g} index={index} />
+            <EbooksCard key={g.slug} guide={g} index={index} />
           ))}
         </div>
 
@@ -435,7 +435,7 @@ function RelatedSection({ related }) {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
-            View All E‑Guides
+            View All E‑books
           </Link>
         </div>
       </div>
