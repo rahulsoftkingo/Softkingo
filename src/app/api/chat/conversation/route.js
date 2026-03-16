@@ -11,6 +11,23 @@ export async function POST(req) {
     const body = await req.json();
     const { name, email, phone } = body;
 
+    // Check if an active conversation already exists for this email
+    const existingActive = await prisma.chatConversation.findFirst({
+      where: {
+        visitorEmail: email,
+        status: 'active'
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (existingActive) {
+      return NextResponse.json({
+        conversationId: existingActive.id,
+        visitorId: existingActive.visitorId,
+        resumed: true
+      });
+    }
+
     // Generate unique visitor ID
     const visitorId = `visitor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 

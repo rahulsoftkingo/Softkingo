@@ -15,6 +15,11 @@ function initSocket(io) {
     io.on('connection', (socket) => {
         console.log('[Socket] New connection:', socket.id);
 
+        // Global Event Logger
+        socket.onAny((eventName, ...args) => {
+            console.log(`[Socket] Received Event: "${eventName}" from ${socket.id}`, args);
+        });
+
         /**
          * ADMIN ROOM LOGIC
          * Admins should join the 'admin-room' to receive real-time visitor alerts

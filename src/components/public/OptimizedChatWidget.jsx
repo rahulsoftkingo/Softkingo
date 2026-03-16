@@ -115,6 +115,12 @@ export default function OptimizedChatWidget() {
         localStorage.setItem('chatConversation', JSON.stringify(data));
         localStorage.setItem('chatVisitorInfo', JSON.stringify(visitorInfo));
 
+        if (data.resumed) {
+          fetchMessages(data.conversationId);
+        } else {
+          setMessages([]);
+        }
+
         if (socketRef.current) {
           socketRef.current.emit('join-conversation', data.conversationId);
         }
@@ -136,6 +142,38 @@ export default function OptimizedChatWidget() {
         });
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const resetChat = async () => {
+    if (window.confirm('Are you sure you want to end this chat and start a new one?')) {
+      // 1. If we have a conversationId, mark it as closed on the server
+      if (conversationId) {
+        try {
+          await fetch('/api/chat/conversation', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ conversationId, status: 'closed' }),
+          });
+        } catch (e) {
+          console.error('Failed to close conversation:', e);
+        }
+      }
+
+      // 2. Clear local storage
+      localStorage.removeItem('chatConversation');
+      // We keep visitorInfo (name/email) for convenience, 
+      // but clear conversation specific data.
+      
+      // 3. Reset state
+      setConversationId(null);
+      setMessages([]);
+      setShowInfoForm(true);
+      
+      // 4. Leave the old room
+      if (socketRef.current && conversationId) {
+        socketRef.current.emit('leave-conversation', conversationId);
+      }
     }
   };
 
@@ -234,12 +272,25 @@ export default function OptimizedChatWidget() {
                 </span>
               </div>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-2 hover:bg-white/10 rounded-full transition-colors"
-            >
-              <X className="w-5 h-5 text-white" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={resetChat}
+                title="New Chat"
+                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+              >
+                <div className="flex flex-col items-center">
+                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                   </svg>
+                </div>
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+            </div>
           </div>
 
           {/* Messages Area */}

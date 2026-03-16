@@ -19,12 +19,14 @@ app.prepare().then(() => {
     });
 
     // Initialize Socket.io
+    console.log('[Server] Initializing Socket.io...');
     const io = new Server(httpServer, {
         cors: {
             origin: "*",
             methods: ["GET", "POST"]
         }
     });
+    console.log('[Server] Socket.io initialized.');
 
     // Import socket logic
     // We'll use a dynamic import or require here
