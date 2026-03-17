@@ -133,15 +133,13 @@ function initSocket(io) {
                     } catch (err) {
                         failureCount++;
                         console.error(`[Socket] Model ${modelName} failed: ${err.message}`);
-                        fs.appendFileSync(path.join(process.cwd(), 'tmp', 'crash.log'), `[AI Error] ${modelName}: ${err.message}\n`);
                     }
                 }
 
                 if (!responseText) {
                     console.error("[Socket] All Gemini models failed! Using script fallback.");
                     try {
-                        const matcherPath = path.join(process.cwd(), 'src', 'lib', 'chatMatcher');
-                        const { getFallbackResponse } = require(matcherPath);
+                        const { getFallbackResponse } = require('./chatMatcher');
                         responseText = getFallbackResponse(message);
                     } catch (fallbackErr) {
                         console.error("[Socket] Script fallback failed:", fallbackErr.message);

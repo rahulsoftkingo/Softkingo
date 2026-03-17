@@ -4,16 +4,12 @@ const path = require('path');
 
 // Process-level Error Handler
 process.on('uncaughtException', (err) => {
-    const errorLog = `[${new Date().toISOString()}] UNCAUGHT EXCEPTION: ${err.stack}\n`;
-    fs.appendFileSync(path.join(__dirname, 'tmp', 'crash.log'), errorLog);
-    console.error(errorLog);
+    console.error(`[${new Date().toISOString()}] UNCAUGHT EXCEPTION:`, err.stack);
     process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-    const errorLog = `[${new Date().toISOString()}] UNHANDLED REJECTION at: ${promise}, reason: ${reason}\n`;
-    fs.appendFileSync(path.join(__dirname, 'tmp', 'crash.log'), errorLog);
-    console.error(errorLog);
+    console.error(`[${new Date().toISOString()}] UNHANDLED REJECTION at:`, promise, 'reason:', reason);
 });
 
 const { createServer } = require('http');
