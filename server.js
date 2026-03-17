@@ -5,7 +5,6 @@ const path = require('path');
 // Process-level Error Handler
 process.on('uncaughtException', (err) => {
     console.error(`[${new Date().toISOString()}] UNCAUGHT EXCEPTION:`, err.stack);
-    process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {

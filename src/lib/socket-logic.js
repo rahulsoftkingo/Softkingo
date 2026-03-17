@@ -104,7 +104,7 @@ function initSocket(io) {
                 if (!apiKey) throw new Error("GEMINI_API_KEY is missing in worker");
                 
                 const genAI = new GoogleGenerativeAI(apiKey);
-                const modelNames = ["gemini-1.5-flash-latest", "gemini-1.5-pro-latest", "gemini-pro"];
+                const modelNames = ["gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-1.5-pro"];
 
                 let responseText = "";
                 let failureCount = 0;
