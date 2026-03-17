@@ -156,17 +156,20 @@ function initSocket(io) {
                 console.log('[Socket] Persisting message to DB...');
                 if (conversationId && !isNaN(parseInt(conversationId))) {
                     try {
+                        const safeContent = (responseText || "No response received.").substring(0, 60000); // Prevent MySQL Text column overflow
                         await prisma.chatMessage.create({
                             data: {
                                 conversationId: parseInt(conversationId),
-                                content: responseText || "No response received.",
+                                content: safeContent,
                                 sender: 'bot',
                                 type: 'text',
                                 isRead: false,
                             },
                         });
+                        console.log('[Socket] DB Persistence successful');
                     } catch (dbErr) {
-                        console.error("[Socket] DB Persistence failed:", dbErr.message);
+                        console.error("[Socket] DB Persistence failed (Non-fatal):", dbErr.message);
+                        // Do not throw here, we still want to send the message to the client
                     }
                 }
 
