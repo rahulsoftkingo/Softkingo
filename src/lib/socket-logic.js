@@ -1,5 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { PrismaClient } = require('@prisma/client');
+const fs = require('fs');
+const path = require('path');
 const prisma = new PrismaClient();
 
 /**
@@ -98,6 +100,9 @@ function initSocket(io) {
                 }
 
                 // 3. Gemini Processing with Multi-Model Fallback
+                console.log('[Socket] Initializing GenAI SDK...');
+                if (!apiKey) throw new Error("GEMINI_API_KEY is missing in worker");
+                
                 const genAI = new GoogleGenerativeAI(apiKey);
                 const modelNames = ["gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-3-flash-preview"];
 
@@ -108,8 +113,16 @@ function initSocket(io) {
                     try {
                         console.log(`[Socket] Attempting model: ${modelName}`);
                         const model = genAI.getGenerativeModel({ model: modelName });
+                        
+                        // Ultra-defensive generateContent
+                        if (!promptParts || promptParts.length === 0) throw new Error("Empty promptParts");
+                        
                         const result = await model.generateContent(promptParts);
-                        responseText = result.response.text();
+                        
+                        if (result && result.response) {
+                            responseText = result.response.text();
+                        }
+                        
                         if (responseText) {
                             console.log(`[Socket] Success with ${modelName}`);
                             break;
@@ -117,26 +130,38 @@ function initSocket(io) {
                     } catch (err) {
                         failureCount++;
                         console.error(`[Socket] Model ${modelName} failed: ${err.message}`);
+                        fs.appendFileSync(path.join(process.cwd(), 'tmp', 'crash.log'), `[AI Error] ${modelName}: ${err.message}\n`);
                     }
                 }
 
                 if (!responseText) {
                     console.error("[Socket] All Gemini models failed! Using script fallback.");
-                    const { getFallbackResponse } = require('./chatMatcher');
-                    responseText = getFallbackResponse(message);
+                    try {
+                        const matcherPath = path.join(process.cwd(), 'src', 'lib', 'chatMatcher');
+                        const { getFallbackResponse } = require(matcherPath);
+                        responseText = getFallbackResponse(message);
+                    } catch (fallbackErr) {
+                        console.error("[Socket] Script fallback failed:", fallbackErr.message);
+                        responseText = "I'm sorry, I'm currently having technical difficulties. Please contact our support.";
+                    }
                 }
 
                 // 4. Persistence
+                console.log('[Socket] Persisting message to DB...');
                 if (conversationId && !isNaN(parseInt(conversationId))) {
-                    await prisma.chatMessage.create({
-                        data: {
-                            conversationId: parseInt(conversationId),
-                            content: responseText,
-                            sender: 'bot',
-                            type: 'text',
-                            isRead: false,
-                        },
-                    });
+                    try {
+                        await prisma.chatMessage.create({
+                            data: {
+                                conversationId: parseInt(conversationId),
+                                content: responseText || "No response received.",
+                                sender: 'bot',
+                                type: 'text',
+                                isRead: false,
+                            },
+                        });
+                    } catch (dbErr) {
+                        console.error("[Socket] DB Persistence failed:", dbErr.message);
+                    }
                 }
 
                 // 5. Response to Client & Admin

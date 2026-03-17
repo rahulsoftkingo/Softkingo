@@ -1,4 +1,21 @@
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+
+// Process-level Error Handler
+process.on('uncaughtException', (err) => {
+    const errorLog = `[${new Date().toISOString()}] UNCAUGHT EXCEPTION: ${err.stack}\n`;
+    fs.appendFileSync(path.join(__dirname, 'tmp', 'crash.log'), errorLog);
+    console.error(errorLog);
+    process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    const errorLog = `[${new Date().toISOString()}] UNHANDLED REJECTION at: ${promise}, reason: ${reason}\n`;
+    fs.appendFileSync(path.join(__dirname, 'tmp', 'crash.log'), errorLog);
+    console.error(errorLog);
+});
+
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
