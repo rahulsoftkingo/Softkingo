@@ -2,7 +2,47 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { PrismaClient } = require('@prisma/client');
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 const prisma = new PrismaClient();
+
+function generateContentViaREST(apiKey, modelName, parts) {
+    return new Promise((resolve, reject) => {
+        const data = JSON.stringify({ contents: [{ parts: parts }] });
+        const options = {
+            hostname: 'generativelanguage.googleapis.com',
+            port: 443,
+            path: `/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(data)
+            }
+        };
+        const req = https.request(options, (res) => {
+            let responseBody = '';
+            res.on('data', chunk => responseBody += chunk);
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    try {
+                        const parsed = JSON.parse(responseBody);
+                        if (parsed.candidates && parsed.candidates.length > 0) {
+                            resolve(parsed.candidates[0].content.parts[0].text);
+                        } else {
+                            resolve(""); // Empty response handled downstream
+                        }
+                    } catch (e) {
+                        reject(new Error("Failed to parse Gemini JSON"));
+                    }
+                } else {
+                    reject(new Error(`API Error ${res.statusCode}: ${responseBody.substring(0, 200)}`));
+                }
+            });
+        });
+        req.on('error', e => reject(e));
+        req.write(data);
+        req.end();
+    });
+}
 
 /**
  * Professional Socket Logic for Softkingo AI Assistance
@@ -100,10 +140,9 @@ function initSocket(io) {
                 }
 
                 // 3. Gemini Processing with Multi-Model Fallback
-                console.log('[Socket] Initializing GenAI SDK...');
+                console.log('[Socket] Initializing Native REST Request...');
                 if (!apiKey) throw new Error("GEMINI_API_KEY is missing in worker");
                 
-                const genAI = new GoogleGenerativeAI(apiKey);
                 const modelNames = ["gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-1.5-pro"];
 
                 let responseText = "";
@@ -111,8 +150,7 @@ function initSocket(io) {
 
                 for (const modelName of modelNames) {
                     try {
-                        console.log(`[Socket] Probing model: ${modelName}`);
-                        const model = genAI.getGenerativeModel({ model: modelName });
+                        console.log(`[Socket] Probing model (REST): ${modelName}`);
                         
                         // Ultra-defensive generateContent
                         if (!promptParts || promptParts.length === 0) throw new Error("Empty promptParts");
@@ -126,15 +164,13 @@ function initSocket(io) {
                             }
                         }
                         
-                        console.log(`[Socket] Requesting AI Content from ${modelName}...`);
-                        const result = await model.generateContent(structuredParts);
+                        console.log(`[Socket] Requesting AI Content from ${modelName} via HTTPS...`);
+                        responseText = await generateContentViaREST(apiKey, modelName, structuredParts);
                         
-                        if (result && result.response) {
-                            responseText = result.response.text();
+                        if (responseText) {
                             console.log(`[Socket] AI Response fetched successfully (${modelName})`);
+                            break;
                         }
-                        
-                        if (responseText) break;
                     } catch (err) {
                         failureCount++;
                         console.error(`[Socket] ${modelName} attempt failed: ${err.message}`);
