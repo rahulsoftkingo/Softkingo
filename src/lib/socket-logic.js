@@ -117,7 +117,10 @@ function initSocket(io) {
                         // Ultra-defensive generateContent
                         if (!promptParts || promptParts.length === 0) throw new Error("Empty promptParts");
                         
-                        const result = await model.generateContent(promptParts);
+                        // Standardize prompt format to Part[] to avoid SDK mapping issues
+                        const structuredParts = promptParts.map(p => typeof p === 'string' ? { text: p } : p);
+                        console.log(`[Socket] Sending request to ${modelName}...`);
+                        const result = await model.generateContent(structuredParts);
                         
                         if (result && result.response) {
                             responseText = result.response.text();
