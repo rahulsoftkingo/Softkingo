@@ -24,7 +24,9 @@ export default function OptimizedChatWidget() {
   useEffect(() => {
     // Only initialize socket in browser
     if (typeof window !== 'undefined') {
-      socketRef.current = io();
+      socketRef.current = io({
+        transports: ['websocket']
+      });
 
       socketRef.current.on('connect', () => {
         console.log('Socket connected');

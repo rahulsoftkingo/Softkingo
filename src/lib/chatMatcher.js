@@ -1,7 +1,7 @@
 // src/lib/chatMatcher.js
-import { responsePatterns, genericFallbackResponse } from '@/data/chatPatterns';
+const { responsePatterns, genericFallbackResponse } = require('../data/chatPatterns');
 
-export function getFallbackResponse(userMessage) {
+function getFallbackResponse(userMessage) {
   if (!userMessage || typeof userMessage !== 'string') return genericFallbackResponse;
   
   const lowerMessage = userMessage.toLowerCase().trim();
@@ -20,3 +20,5 @@ export function getFallbackResponse(userMessage) {
   
   return genericFallbackResponse;
 }
+
+module.exports = { getFallbackResponse };

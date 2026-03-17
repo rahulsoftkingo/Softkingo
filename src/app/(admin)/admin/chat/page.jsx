@@ -42,7 +42,9 @@ export default function AdminChatPage() {
 
   // Handle Socket Connection
   useEffect(() => {
-    socketRef.current = io();
+    socketRef.current = io({
+      transports: ['websocket']
+    });
 
     socketRef.current.on('connect', () => {
       console.log('Admin Socket Connected');

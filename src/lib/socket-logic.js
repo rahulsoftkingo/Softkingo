@@ -99,7 +99,7 @@ function initSocket(io) {
 
                 // 3. Gemini Processing with Multi-Model Fallback
                 const genAI = new GoogleGenerativeAI(apiKey);
-                const modelNames = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
+                const modelNames = ["gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-3-flash-preview"];
 
                 let responseText = "";
                 let failureCount = 0;
@@ -121,8 +121,9 @@ function initSocket(io) {
                 }
 
                 if (!responseText) {
-                    console.error("[Socket] All Gemini models failed!");
-                    throw new Error("AI engine exhausted all fallbacks.");
+                    console.error("[Socket] All Gemini models failed! Using script fallback.");
+                    const { getFallbackResponse } = require('./chatMatcher');
+                    responseText = getFallbackResponse(message);
                 }
 
                 // 4. Persistence

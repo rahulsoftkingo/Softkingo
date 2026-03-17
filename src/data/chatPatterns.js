@@ -1,12 +1,5 @@
-// src/data/chatPatterns.js
-
-/**
- * Hyper-specific Softkingo Chat Patterns.
- * Grounded in real data from public pages: About, Services, Portfolio, and Contact.
- * Includes a strict domain boundary to pivot out-of-scope queries back to Softkingo.
- */
-
-export const responsePatterns = [
+const responsePatterns = [
+  // ... (content remains same, just replacing export with const)
   {
     category: 'Greetings',
     keywords: [
@@ -106,7 +99,12 @@ export const responsePatterns = [
       "We sign NDAs upfront and provide a clear, no-obligation proposal. To get started, just tell me a bit about your idea or your technical challenge. Or, leave your number for a quick callback!",
       "Onboarding is seamless! Once we align on the scope, you get a dedicated team of experts. Ready to elevate your digital presence? Tell me your name and email to begin."
     ],
-  }
+  },
 ];
 
-export const genericFallbackResponse = "I want to make sure I give you the best answer for that, as it sounds like a very specific requirement! While I'm a specialist in Softkingo's software services, I might need a bit more detail. Could you tell me more about your project? Or better yet, drop your email/phone and our senior technical consultant from our Noida office will reach out within the next hour!";
+const genericFallbackResponse = "I want to make sure I give you the best answer for that, as it sounds like a very specific requirement! While I'm a specialist in Softkingo's software services, I might need a bit more detail. Could you tell me more about your project? Or better yet, drop your email/phone and our senior technical consultant from our Noida office will reach out within the next hour!";
+
+module.exports = {
+  responsePatterns,
+  genericFallbackResponse
+};
