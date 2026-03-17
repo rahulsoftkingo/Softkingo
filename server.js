@@ -22,7 +22,13 @@ const hostname = 'localhost';
 const port = process.env.PORT || 3000;
 
 // Initialize Next.js
-const app = next({ dev, hostname, port });
+// Use absolute path for dir to avoid 'production build not found' logic issues on Linux
+const app = next({ 
+    dev, 
+    hostname, 
+    port, 
+    dir: path.resolve(__dirname) 
+});
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
@@ -43,19 +49,20 @@ app.prepare().then(() => {
         allowEIO3: true
     });
 
-    // PM2 / Cluster Mode Support (without Redis)
-    // Check if running in a cluster environment
-    const cluster = require('cluster');
-    if (!cluster.isMaster || process.env.pm_id !== undefined) {
+    // PM2 / Cluster Mode Support
+    // Use the specific PM2 adapter for better stability in clustered environments
+    if (process.env.pm_id !== undefined) {
         try {
-            const { createAdapter } = require("@socket.io/cluster-adapter");
+            // Check if pm2-adapter is installed
+            const { createAdapter } = require("@socket.io/pm2-adapter");
             io.adapter(createAdapter());
-            console.log(`[Server] Applied Cluster/PM2 Adapter (Instance: ${process.env.pm_id || 'Worker'})`);
+            console.log(`[Server] Applied PM2 Cluster Adapter (ID: ${process.env.pm_id})`);
         } catch (e) {
-            console.warn('[Server] Cluster adapter not available, using default.', e.message);
+            console.warn('[Server] PM2 adapter not found. For better scaling, run: npm install @socket.io/pm2-adapter');
+            // Falling back to internal IPC check or default
         }
     } else {
-        console.log('[Server] Single-core mode. Default adapter in use.');
+        console.log('[Server] Single-core/Standard mode. Default adapter active.');
     }
 
     console.log('[Server] Socket.io initialized.');

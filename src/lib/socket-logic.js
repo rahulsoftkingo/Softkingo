@@ -104,20 +104,19 @@ function initSocket(io) {
                 if (!apiKey) throw new Error("GEMINI_API_KEY is missing in worker");
                 
                 const genAI = new GoogleGenerativeAI(apiKey);
-                const modelNames = ["gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-3-flash-preview"];
+                const modelNames = ["gemini-1.5-flash-latest", "gemini-1.5-pro-latest", "gemini-pro"];
 
                 let responseText = "";
                 let failureCount = 0;
 
                 for (const modelName of modelNames) {
                     try {
-                        console.log(`[Socket] Attempting model: ${modelName}`);
+                        console.log(`[Socket] Probing model: ${modelName}`);
                         const model = genAI.getGenerativeModel({ model: modelName });
                         
                         // Ultra-defensive generateContent
                         if (!promptParts || promptParts.length === 0) throw new Error("Empty promptParts");
                         
-                        // Standardize prompt format to Part[]
                         const structuredParts = [];
                         for (const p of promptParts) {
                             if (typeof p === 'string') {
@@ -127,20 +126,18 @@ function initSocket(io) {
                             }
                         }
                         
-                        console.log(`[Socket] Sending request to ${modelName}...`);
+                        console.log(`[Socket] Requesting AI Content from ${modelName}...`);
                         const result = await model.generateContent(structuredParts);
                         
                         if (result && result.response) {
                             responseText = result.response.text();
+                            console.log(`[Socket] AI Response fetched successfully (${modelName})`);
                         }
                         
-                        if (responseText) {
-                            console.log(`[Socket] Success with ${modelName}`);
-                            break;
-                        }
+                        if (responseText) break;
                     } catch (err) {
                         failureCount++;
-                        console.error(`[Socket] Model ${modelName} failed: ${err.message}`);
+                        console.error(`[Socket] ${modelName} attempt failed: ${err.message}`);
                     }
                 }
 
