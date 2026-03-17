@@ -43,17 +43,39 @@ app.prepare().then(() => {
         allowEIO3: true
     });
 
-    // PM2 / Cluster Mode Support (without Redis)
-    if (process.env.pm_id !== undefined) {
+    // Redis Adapter for Cluster Mode (PM2 support)
+    const redisUrl = process.env.REDIS_URL;
+    if (redisUrl) {
+        try {
+            const { createAdapter } = require("@socket.io/redis-adapter");
+            const { createClient } = require("redis");
+            
+            const pubClient = createClient({ url: redisUrl });
+            const subClient = pubClient.duplicate();
+
+            pubClient.on('error', (err) => console.error('[Redis] Pub Client Error:', err));
+            subClient.on('error', (err) => console.error('[Redis] Sub Client Error:', err));
+
+            Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+                io.adapter(createAdapter(pubClient, subClient));
+                console.log(`[Server] Applied Redis Adapter (ID: ${process.env.pm_id || 'solo'})`);
+            }).catch(err => {
+                console.error('[Server] Redis connection failed:', err);
+            });
+        } catch (e) {
+            console.error('[Server] Redis adapter initialization error:', e.message);
+        }
+    } else if (process.env.pm_id !== undefined) {
+        // Fallback to local cluster adapter if Redis URL is missing but PM2 is detected
         try {
             const { createAdapter } = require("@socket.io/cluster-adapter");
             io.adapter(createAdapter());
-            console.log(`[Server] Applied Cluster Adapter (ID: ${process.env.pm_id})`);
+            console.log(`[Server] Applied Local Cluster Adapter (ID: ${process.env.pm_id})`);
         } catch (e) {
-            console.warn('[Server] Cluster adapter not available:', e.message);
+            console.warn('[Server] Local Cluster adapter not available:', e.message);
         }
     } else {
-        console.log('[Server] Single-core mode active.');
+        console.log('[Server] Single-core mode active (No Redis/Cluster).');
     }
 
     console.log('[Server] Socket.io initialized.');
