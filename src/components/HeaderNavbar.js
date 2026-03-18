@@ -249,8 +249,8 @@ const Navbar = () => {
                         onMouseLeave={() => setShowResourceDropdown(false)}
                       >
 
-                        <Link href='/insights'
-                          className={linkClass("/insights")}>
+                        <Link href='/blog'
+                          className={linkClass("/blog")}>
                           Insights
 
                         </Link>

@@ -18,7 +18,7 @@ export const BLOG_SECTIONS = {
   //   },
   // },
   blog: {
-    title: "Blog",
+    title: "Insights",
     slugBase: "/blog",
     types: ["blog"],
     heroBg: "/images/insights/hero-blog.jpg",

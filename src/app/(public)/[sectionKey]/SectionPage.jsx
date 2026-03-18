@@ -58,6 +58,14 @@ export default async function SectionPage({ sectionKey, searchParams }) {
     ],
   };
 
+  const categoryData = category
+    ? await prisma.blogCategory.findUnique({ where: { slug: category } })
+    : null;
+
+  const displayHeading = categoryData ? categoryData.name : config.heroHeading;
+  const displayLabel = categoryData ? "Blog Category" : config.heroLabel;
+  const displaySub = categoryData ? `Explore all articles related to ${categoryData.name}.` : config.heroSub;
+
   // Total count for pagination
   const totalCount = await prisma.blogPost.count({ where }); // [web:584]
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
@@ -151,25 +159,35 @@ export default async function SectionPage({ sectionKey, searchParams }) {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pt-8 sm:pb-14 text-slate-50">
-          <nav className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-200 mb-4">
-            <Link href="/" className="hover:text-sky-300">
-              Home
-            </Link>
-            <span>/</span>
-            <span className="text-sky-300 font-medium">{config.title}</span>
-          </nav>
+            <nav className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-200 mb-4">
+              <Link href="/" className="hover:text-sky-300">
+                Home
+              </Link>
+              <span>/</span>
+              {categoryData ? (
+                <>
+                  <Link href={config.slugBase} className="hover:text-sky-300">
+                    Blog
+                  </Link>
+                  <span>/</span>
+                  <span className="text-sky-300 font-medium">{categoryData.name}</span>
+                </>
+              ) : (
+                <span className="text-sky-300 font-medium">{config.title}</span>
+              )}
+            </nav>
 
           <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1.2fr)] gap-8 items-start">
             <div className="space-y-4 sm:space-y-5">
               <p className="text-[11px] sm:text-xs tracking-[0.24em] uppercase text-sky-300">
-                {config.heroLabel}
+                {displayLabel}
               </p>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-normal">
-                {config.heroHeading}
+                {displayHeading}
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-100/90 max-w-xl">{config.heroSub}</p>
+              <p className="text-sm sm:text-base text-slate-100/90 max-w-xl">{displaySub}</p>
 
               <form action={config.slugBase} className="max-w-md">
                 <div className="relative">

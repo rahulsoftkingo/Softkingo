@@ -329,14 +329,14 @@ export default async function PostSlugPage({ sectionKey, slug }) {
                 className="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-200 hover:text-sky-300"
               >
                 <FaArrowLeft className="h-3 w-3" />
-                Back to {config.title.toLowerCase()}
+                Back to blog
               </Link>
 
               <nav className="flex flex-wrap items-center gap-2 text-[11px] sm:text-xs text-slate-200">
                 <Link href="/" className="hover:text-sky-300">Home</Link>
                 <span>/</span>
                 <Link href={config.slugBase} className="hover:text-sky-300">
-                  {config.title}
+                  Blog
                 </Link>
                 <span>/</span>
                 <span className="text-sky-300 font-medium line-clamp-1">

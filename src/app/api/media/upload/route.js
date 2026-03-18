@@ -13,7 +13,7 @@ export async function POST(req) {
     let rawFolder = (form.get("folder") || "general").toString();
 
     // Clean folder name
-    const subFolder = `public/${rawFolder.replace(/^uploads[\/\\]?/, "").replace(/^[\/\\]+/, "").replace(/^public\//, "")}`;
+    const subFolder = rawFolder.replace(/^uploads[\/\\]?/, "").replace(/^[\/\\]+/, "").replace(/^public[\/\\]?/, "");
 
     // ✅ Use centralized secure utility
     const result = await validateAndProcessUpload(file, {

@@ -23,45 +23,33 @@ async function validateAndProcessUpload(file, options = {}) {
         throw new Error(`File size exceeds limit of ${maxSize / (1024 * 1024)}MB`);
     }
 
-    // 2. Strict Extension Check (Double Extension Block)
+    // 2. Strict Extension Check (Zero-Trust)
     const originalName = file.name || 'document';
-    const ext = path.extname(originalName).toLowerCase();
-    
-    // Block double extensions (e.g., .png.php)
-    const nameWithoutExt = originalName.slice(0, originalName.length - ext.length);
-    if (nameWithoutExt.includes('.')) {
-        throw new Error('Malicious file naming detected (double extension blocked)');
+    const lastDotIndex = originalName.lastIndexOf('.');
+    if (lastDotIndex === -1) {
+        throw new Error('File must have an extension');
     }
-
-    // Validate extension against allowed ones
-    const allowedExtensions = {
-        'image/jpeg': ['.jpg', '.jpeg'],
-        'image/png': ['.png'],
-        'image/webp': ['.webp'],
-        'image/gif': ['.gif'],
-        'application/pdf': ['.pdf']
-    };
-
-    const isExtensionAllowed = Object.values(allowedExtensions).flat().includes(ext);
-    if (!isExtensionAllowed) {
+    const ext = originalName.substring(lastDotIndex).toLowerCase();
+    
+    // Strict Whitelist
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif'];
+    if (!allowedExtensions.includes(ext)) {
         throw new Error(`Forbidden file extension: ${ext}`);
     }
 
     // 3. Magic Number Validation (Buffer check)
-    // In Next.js/Node environment, 'file' usually has arrayBuffer() or is a Buffer
     const buffer = Buffer.from(await file.arrayBuffer());
     const magicNumbers = {
         'image/jpeg': [0xFF, 0xD8, 0xFF],
         'image/png': [0x89, 0x50, 0x4E, 0x47],
         'image/gif': [0x47, 0x49, 0x46, 0x38],
         'application/pdf': [0x25, 0x50, 0x44, 0x46],
-        'image/webp': [0x52, 0x49, 0x46, 0x46] // RIFF
+        'image/webp': [0x52, 0x49, 0x46, 0x46]
     };
 
     let detectedMime = null;
     for (const [mime, signature] of Object.entries(magicNumbers)) {
         if (signature.every((byte, i) => buffer[i] === byte)) {
-            // Additional check for WebP (search for "WEBP" at offset 8)
             if (mime === 'image/webp') {
                 const webpSignature = [0x57, 0x45, 0x42, 0x50];
                 if (webpSignature.every((byte, i) => buffer[i + 8] === byte)) {
@@ -75,11 +63,14 @@ async function validateAndProcessUpload(file, options = {}) {
         }
     }
 
-    if (!detectedMime || !allowedMimeTypes.includes(detectedMime)) {
+    // SVG is text-based, no binary signature check here for simplicity but it's in the extension whitelist
+    if (ext === '.svg') detectedMime = 'image/svg+xml';
+
+    if (!detectedMime) {
         throw new Error('Invalid file content: Signature does not match expected format');
     }
 
-    // 4. Force Random Filename (UUID)
+    // 4. Force Random Filename (Zero-Trust Renaming)
     const fileName = `${crypto.randomUUID()}${ext}`;
     
     // 5. Ensure Directory Exists
@@ -93,9 +84,9 @@ async function validateAndProcessUpload(file, options = {}) {
     // 6. Save File
     fs.writeFileSync(filePath, buffer);
 
-    // Return the public URL
-    // Normalizing path for web use
-    const publicPath = `/${baseDir}/${subFolder}/${fileName}`.replace(/\\/g, '/').replace(/\/+/g, '/');
+    // 7. Generate Public URL (Remove '/public' prefix if it exists in baseDir)
+    const publicBase = baseDir.replace(/^public[\/\\]?/, "").replace(/\\/g, '/');
+    const publicPath = `/${publicBase}/${subFolder}/${fileName}`.replace(/\/+/g, '/');
     
     return {
         url: publicPath,

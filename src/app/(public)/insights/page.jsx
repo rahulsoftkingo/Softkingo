@@ -1,4 +1,12 @@
-// src/app/(public)/insights/page.jsx
+import { redirect } from "next/navigation";
+
+export default function InsightsPage() {
+  redirect("/blog");
+}
+
+/*
+ORIGINAL INSIGHTS PAGE CODE ARCHIVED FOR FUTURE USE:
+
 import Link from "next/link";
 import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
@@ -142,9 +150,9 @@ export default async function InsightsPage(props) {
 
       {/* BODY */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-10">
-        {/* E‑books special row */}
+        {}
         <ContentRow
-          title="E‑books"
+          title="E-books"
           subtitle="Downloadable playbooks"
           viewAllHref="/ebooks"
         >
@@ -158,10 +166,10 @@ export default async function InsightsPage(props) {
               publishedAt={g.publishedAt?.toISOString() || ""}
             />
           ))}
-          {!ebookTop.length ? <EmptyRowText text="No e‑books yet." /> : null}
+          {!ebookTop.length ? <EmptyRowText text="No e-books yet." /> : null}
         </ContentRow>
 
-        {/* Rows for every BlogPost.type (blog/featured/press-release/...) */}
+        {}
         {typeRows.map(({ type, sectionKey, cfg }, idx) => {
           const posts = filteredPostsByType[idx] || [];
           return (
@@ -192,8 +200,6 @@ export default async function InsightsPage(props) {
     </div>
   );
 }
-
-/* ---------- UI components (server-safe) ---------- */
 
 function ContentRow({ title, subtitle, viewAllHref, children }) {
   return (
@@ -271,7 +277,7 @@ function EbookCard({ href, title, excerpt, thumbnail, publishedAt }) {
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-200 text-[10px] font-semibold">
-              E‑book
+              E-book
             </span>
             <span className="text-[11px] text-slate-500">
               {publishedAt ? new Date(publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}
@@ -294,3 +300,4 @@ function EbookCard({ href, title, excerpt, thumbnail, publishedAt }) {
     </Link>
   );
 }
+*/

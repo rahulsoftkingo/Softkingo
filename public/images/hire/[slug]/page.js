@@ -262,7 +262,7 @@ export default function HireDevelopers() {
             <section className="max-w-7xl bg-gradient-to-r from-white to-sky-200 mx-auto relative">
                 <div className="relative opacity-90 bg-[url(/images/hire/hire1.png)] bg-center bg-no-repeat bg-cover px-4 md:px-10 py-10 md:py-32 pb-20 md:pb-40">
                     <div className="mb-16">
-                        <h1 className="text-3xl md:text-5xl text-white font-bold mb-5 leading-tight">
+                        <h1 className="text-3xl md:text-5xl text-white font-bold mb-5 leading-normal">
                             Hire Front-End Developers
                         </h1>
                         <p className="text-base md:text-xl text-white mb-8 max-w-2xl">
@@ -721,7 +721,7 @@ export default function HireDevelopers() {
 
                     {/* Plan 1: Part-time Developer */}
                     <div className="bg-purple-500 rounded-3xl p-4 md:p-8 text-white text-center flex flex-col h-full shadow-xl hover:scale-105 transition-transform duration-300">
-                        <h3 className="text-3xl font-bold mb-2 leading-tight">Part-time<br />Developer</h3>
+                        <h3 className="text-3xl font-bold mb-2 leading-normal">Part-time<br />Developer</h3>
                         <p className="text-purple-100 text-sm mb-8 leading-relaxed px-2">
                             Receive a few hours of assistance from our dedicated engineers to develop your tailored solution.
                         </p>
@@ -750,7 +750,7 @@ export default function HireDevelopers() {
                         </div>
 
                         <div className="mt-12">
-                            <h3 className="text-3xl font-bold mb-2 leading-tight">Full-time<br />Developer</h3>
+                            <h3 className="text-3xl font-bold mb-2 leading-normal">Full-time<br />Developer</h3>
                             <p className="text-emerald-100 text-sm mb-8 leading-relaxed px-2">
                                 Harness the expertise of our dedicated engineers, who will dedicate themselves to your project.
                             </p>
@@ -775,7 +775,7 @@ export default function HireDevelopers() {
 
                     {/* Plan 3: Hourly Developer */}
                     <div className="bg-teal-400 rounded-3xl  p-4 md:p-8 text-white text-center flex flex-col h-full shadow-xl hover:scale-105 transition-transform duration-300">
-                        <h3 className="text-3xl font-bold mb-2 leading-tight">Hire Hourly<br />Developer</h3>
+                        <h3 className="text-3xl font-bold mb-2 leading-normal">Hire Hourly<br />Developer</h3>
                         <p className="text-teal-100 text-sm mb-8 leading-relaxed px-2">
                             Engage Dedicated engineers on an hourly basis for swift deadlines, brief tasks, and maintenance needs.
                         </p>

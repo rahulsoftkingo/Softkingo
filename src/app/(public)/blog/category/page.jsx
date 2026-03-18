@@ -94,7 +94,7 @@ export default function BlogPage() {
     <div className="bg-white min-h-screen">
       <header className="bg-gradient-to-r from-sky-600 to-sky-400 text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold">Blog</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">Insights</h1>
           <p className="mt-2 text-sky-100 max-w-2xl">Latest articles, tutorials and updates from our team.</p>
         </div>
       </header>

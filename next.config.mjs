@@ -190,6 +190,7 @@ async redirects() {
 
 
 
+      { source: '/insights', destination: '/blog', permanent: true },
       { source: '/contact-us', destination: '/contact', permanent: true },
     
       { source: '/our-portfolio', destination: '/portfolio', permanent: true },

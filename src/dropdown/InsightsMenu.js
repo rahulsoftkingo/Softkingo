@@ -129,7 +129,7 @@ const ResourcesMenu = () => {
                 <div className="px-9 pt-9 pb-4">
                   <div className="flex items-center gap-2 mb-2 group">
                     <Link
-                      href="/insights"
+                      href="/blog"
                       className="font-semibold text-xl md:text-2xl text-sky-900 group-hover:text-sky-700 transition-colors"
                     >
                       Explore Insights

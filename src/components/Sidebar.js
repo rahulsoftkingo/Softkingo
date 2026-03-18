@@ -1039,7 +1039,7 @@ const SideBar = () => {
                 <Link href="/careers">Career</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/insights">Insights</Link>
+                <Link href="/blog">Insights</Link>
               </li>
               <li className="submenu-item">
                 <Link href="/portfolio">Portfolio</Link>
