@@ -53,6 +53,7 @@ export default async function SectionPage({ sectionKey, searchParams }) {
           ...(config.types?.length ? [{ placements: null, type: { in: config.types } }] : []),
         ],
       },
+      ...(sectionKey === "blog" ? [{ type: "blog" }] : []),
       ...(q ? [{ OR: [{ title: { contains: q } }, { excerpt: { contains: q } }] }] : []),
       ...(category ? [{ category: { slug: category } }] : []),
     ],

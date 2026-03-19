@@ -13,7 +13,7 @@ const CommonTitle = ({
     }[align] || "text-center";
 
       const containerClass = {
-        left: "pl-4 sm:pl-8 lg:pl-12",
+        left: "pl-4sm:pl-8lg:pl-12",
         center: "px-4 sm:px-6 lg:px-8 mx-auto",
         right: "pr-4 sm:pr-8 lg:pr-12 flex justify-end"
     }[align] || "px-4 sm:px-6 lg:px-8 mx-auto";
@@ -113,7 +113,7 @@ export default CommonTitle;
 
    
 //     const containerClass = {
-//         left: "pl-4 sm:pl-8 lg:pl-12",
+//         left: "pl-4sm:pl-8lg:pl-12",
 //         center: "px-4 sm:px-6 lg:px-8 mx-auto",
 //         right: "pr-4 sm:pr-8 lg:pr-12 flex justify-end"
 //     }[align] || "px-4 sm:px-6 lg:px-8 mx-auto";

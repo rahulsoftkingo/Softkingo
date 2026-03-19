@@ -56,9 +56,21 @@ export default function CloneHero({ data }) {
   };
 
   return (
-    <section className="relative min-h-screen md:h-screen py-4 md:py-6 bg-[#1A1A1A] overflow-hidden flex flex-col items-center justify-center select-none">
-      {/* Background Subtle Gradient Top-Bottom */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#111111] to-[#1A1A1A] pointer-events-none"></div>
+    <section className="relative min-h-screen h-full py-4 md:py-6 bg-[#1A1A1A] overflow-hidden flex flex-col items-center justify-center select-none">
+      {/* Background Banner Image with Overlap/Overlay */}
+      {data?.image && (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={data.image}
+            alt="Hero Background"
+            fill
+            className="object-cover opacity-30 mix-blend-overlay"
+            priority
+          />
+        </div>
+      )}
+      {/* Background Subtle Gradient Top-Bottom overlay */}
+      <div className={`absolute inset-0 pointer-events-none ${data?.image ? 'bg-gradient-to-b from-[#111111]/80 to-[#1A1A1A]/95' : 'bg-gradient-to-b from-[#111111] to-[#1A1A1A]'}`}></div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 text-center flex flex-col items-center">
         {/* Breadcrumbs: Home Page > [Slug] */}

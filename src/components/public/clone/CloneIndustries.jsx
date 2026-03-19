@@ -108,20 +108,22 @@ export default function CloneIndustries({ data, industries = [] }) {
                             >
                                 <div className="space-y-6">
                                     <h3 className="text-4xl md:text-5xl font-black text-[#1A1A1A] tracking-tight">
-                                        {activeIndustry.title}
+                                        {customSelection?.title || activeIndustry.title}
                                     </h3>
                                     <p className="text-[#333] text-sm md:text-lg leading-relaxed font-medium max-w-xl opacity-90">
-                                        {content.hero?.description || activeIndustry.excerpt || "We build affordable platforms tailored to your business. Our expert developers create secure, scalable solutions that elevate patient care, streamline workflows, and boost growth."}
+                                        {customSelection?.description || content.hero?.description || activeIndustry.excerpt || "We build affordable platforms tailored to your business. Our expert developers create secure, scalable solutions that elevate patient care, streamline workflows, and boost growth."}
                                     </p>
                                 </div>
 
                                 {/* Feature Bullets */}
                                 <div className="space-y-4 pt-2">
-                                    {(content.challenges?.items || [
+                                    {((customSelection?.points && customSelection.points.length > 0) ? 
+                                        customSelection.points.map(p => ({ title: p })) 
+                                    : (content.challenges?.items || [
                                         { title: "First product search tools" },
                                         { title: "Secure checkout flow setup" },
                                         { title: "Personalized buyer experience path" }
-                                    ]).slice(0, 3).map((item, i) => (
+                                    ])).slice(0, 3).map((item, i) => (
                                         <div key={i} className="flex items-center gap-3">
                                             <Check size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
                                             <span className="text-[#1A1A1A] font-bold text-sm md:text-lg">
@@ -142,7 +144,7 @@ export default function CloneIndustries({ data, industries = [] }) {
                                             href={`/industries/${activeIndustry.slug}`}
                                             className="px-10 py-4 rounded-full bg-[#1EAEDB] text-white font-bold text-base md:text-lg transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] capitalize"
                                         >
-                                            {activeIndustry.title} case studies
+                                            {customSelection?.buttonLabel || `${activeIndustry.title} case studies`}
                                         </Link>
                                     </motion.div>
                                 </div>

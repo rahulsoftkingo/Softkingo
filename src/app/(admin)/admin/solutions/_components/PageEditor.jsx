@@ -101,7 +101,7 @@ export default function PageEditor({ data, type, onBack }) {
             sections: [
                 { id: 'hero', label: '1. Hero Section', icon: Smartphone },
                 { id: 'about', label: '2. About Product', icon: Layout },
-                { id: 'verticalSuite', label: '3. Tech Suite (Why)', icon: Layers },
+                { id: 'verticalSuite', label: '3. Features List', icon: Layers },
                 { id: 'aiFeatures', label: '4. Advanced Features', icon: Zap },
                 { id: 'aiSolutions', label: '5. Ai Feature Solutions', icon: Cpu },
                 { id: 'investment', label: '6. Why to Invest', icon: TrendingUp },

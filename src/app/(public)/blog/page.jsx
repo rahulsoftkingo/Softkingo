@@ -29,6 +29,7 @@ async function fetchPostsByCategory(categorySlug, take = 4) {
   return prisma.blogPost.findMany({
     where: {
       status: "published",
+      type: "blog",
       category: { slug: categorySlug }
     },
     orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
@@ -54,13 +55,13 @@ export default async function BlogListPage(props) {
       take: 6,
     }),
     prisma.blogPost.findMany({
-      where: { status: "published", featured: true },
+      where: { status: "published", featured: true, type: "blog" },
       orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
       take: 4,
       include: { category: true, tags: { include: { tag: true } } },
     }),
     prisma.blogPost.findMany({
-      where: { status: "published" },
+      where: { status: "published", type: "blog" },
       orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
       take: 10,
       include: { category: true, tags: { include: { tag: true } } },
@@ -68,11 +69,21 @@ export default async function BlogListPage(props) {
     prisma.blogCategory.findMany({
       include: {
         _count: {
-          select: { posts: { where: { status: "published" } } }
+          select: { posts: { where: { status: "published", type: "blog" } } }
         }
       }
     }),
-    prisma.blogCategory.findMany({ take: 15 })
+    prisma.blogCategory.findMany({
+      where: {
+        posts: {
+          some: {
+            status: "published",
+            type: "blog",
+          },
+        },
+      },
+      take: 15,
+    })
   ]);
 
   // Sort categories by post count desc
@@ -85,7 +96,7 @@ export default async function BlogListPage(props) {
   const categoriesWithPosts = await Promise.all(
     sortedCategories.map(async (cat) => {
       const posts = await prisma.blogPost.findMany({
-        where: { status: "published", categoryId: cat.id },
+        where: { status: "published", categoryId: cat.id, type: "blog" },
         orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
         take: 4,
         include: { category: true }

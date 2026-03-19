@@ -1,4 +1,5 @@
 import React from 'react';
+import { COMMON_TECH } from './TechConstants';
 import {
     Smartphone, Layout, Database, Code, Settings, Zap, Cpu, Bot,
     BarChart3, ShieldCheck, DollarSign, Plus, X, Trash2,
@@ -143,37 +144,60 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                 </div>
             </SectionWrapper>
 
-            {/* 3. TECH SUITE */}
-            <SectionWrapper id="verticalSuite" icon={Layers} title="3. Tech Suite (Why)" activeSections={activeSections}>
+            {/* 3. FEATURES LIST */}
+            <SectionWrapper id="verticalSuite" icon={Layers} title="3. Features List" activeSections={activeSections}>
                 <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Main Section Title" value={content.verticalSuite?.title || ''} onChange={e => updateField('content.verticalSuite.title', e.target.value)} />
                         <input className={inputStyle} placeholder="Main Section Subtitle" value={content.verticalSuite?.subtitle || ''} onChange={e => updateField('content.verticalSuite.subtitle', e.target.value)} />
                     </div>
 
-                    {['user', 'admin', 'advanced'].map(tab => (
-                        <div key={tab} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4">
-                            <div className="flex items-center gap-2 border-b border-slate-200 pb-2 capitalize font-bold text-orange-600 text-sm">
-                                <Layers size={14} /> {tab === 'user' ? 'User Panel' : tab === 'admin' ? 'Admin Panel' : 'Advanced Features'}
-                            </div>
-                            <input className={inputStyle} placeholder="Tab Description (Small intro)" value={content.verticalSuite?.[tab]?.description || ''} onChange={e => updateField(`content.verticalSuite.${tab}.description`, e.target.value)} />
-                            <MediaInput label="Tab Showcase Image" value={content.verticalSuite?.[tab]?.image} path={`content.verticalSuite.${tab}.image`} />
-
-                            <div className="space-y-3 pt-2">
-                                <label className={labelStyle}>Features (Title & Description)</label>
-                                {(content.verticalSuite?.[tab]?.items || []).map((item, i) => (
-                                    <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 relative group">
-                                        <button type="button" onClick={() => updateField(`content.verticalSuite.${tab}.items`, (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity"><X size={16} /></button>
-                                        <div className="grid gap-2">
-                                            <input className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs font-bold" placeholder="Feature Title" value={item.title || ''} onChange={e => updateField(`content.verticalSuite.${tab}.items.${i}.title`, e.target.value)} />
-                                            <textarea className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs" rows={2} placeholder="Feature Description" value={item.description || ''} onChange={e => updateField(`content.verticalSuite.${tab}.items.${i}.description`, e.target.value)} />
-                                        </div>
+                    <div className="space-y-6">
+                        <label className={labelStyle}>Feature Tabs (Add/Remove as needed)</label>
+                        {(content.verticalSuite?.tabs || []).map((tab, i) => (
+                            <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4 relative group">
+                                <button type="button" onClick={() => updateField('content.verticalSuite.tabs', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-slate-300 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100 z-20"><Trash2 size={18} /></button>
+                                
+                                <div className="space-y-1 border-b border-slate-200 pb-3">
+                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tab Navigation Name</label>
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-1.5 bg-orange-100 text-orange-600 rounded-md"><Layers size={14} /></div>
+                                        <input 
+                                            className="flex-1 bg-white border border-slate-200 p-2 rounded-lg text-sm font-bold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none transition-all" 
+                                            placeholder="e.g. User Panel, Admin Dashboard, etc." 
+                                            value={tab.label || ''} 
+                                            onChange={e => updateField(`content.verticalSuite.tabs.${i}.label`, e.target.value)} 
+                                        />
                                     </div>
-                                ))}
-                                <button type="button" onClick={() => updateField(`content.verticalSuite.${tab}.items`, (prev) => [...(prev || []), { title: "", description: "" }])} className="text-[10px] font-bold text-orange-600 uppercase">+ Add Detailed Feature</button>
+                                </div>
+
+                                <input className={inputStyle} placeholder="Tab Description (Small intro)" value={tab.description || ''} onChange={e => updateField(`content.verticalSuite.tabs.${i}.description`, e.target.value)} />
+                                <MediaInput label="Tab Showcase Image" value={tab.image} path={`content.verticalSuite.tabs.${i}.image`} />
+
+                                <div className="space-y-3 pt-2">
+                                    <label className={labelStyle}>Features (Title & Description)</label>
+                                    {(tab.items || []).map((item, j) => (
+                                        <div key={j} className="bg-white p-4 rounded-xl border border-slate-200 relative group/feature">
+                                            <button type="button" onClick={() => updateField(`content.verticalSuite.tabs.${i}.items`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="absolute top-2 right-2 text-slate-200 hover:text-rose-500 opacity-0 group-hover/feature:opacity-100 transition-opacity"><X size={16} /></button>
+                                            <div className="grid gap-2">
+                                                <input className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs font-bold" placeholder="Feature Title" value={item.title || ''} onChange={e => updateField(`content.verticalSuite.tabs.${i}.items.${j}.title`, e.target.value)} />
+                                                <textarea className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs" rows={2} placeholder="Feature Description" value={item.description || ''} onChange={e => updateField(`content.verticalSuite.tabs.${i}.items.${j}.description`, e.target.value)} />
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <button type="button" onClick={() => updateField(`content.verticalSuite.tabs.${i}.items`, (prev) => [...(prev || []), { title: "", description: "" }])} className="text-[10px] font-bold text-orange-600 uppercase transition-colors hover:text-orange-700">+ Add Detailed Feature</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                        
+                        <button 
+                            type="button" 
+                            onClick={() => updateField('content.verticalSuite.tabs', (prev) => [...(prev || []), { label: "", description: "", image: "", items: [] }])} 
+                            className="w-full py-4 border-2 border-dashed border-orange-200 rounded-2xl text-orange-600 font-bold hover:bg-orange-50 hover:border-orange-400 transition-all flex items-center justify-center gap-2"
+                        >
+                            <Plus size={18} /> Add New Feature Tab
+                        </button>
+                    </div>
                 </div>
             </SectionWrapper>
 
@@ -302,17 +326,40 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
 
                                     <div className="space-y-3">
                                         <label className={labelStyle}>Technologies in this Category</label>
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            {(tab.items || []).map((item, j) => (
-                                                <div key={j} className="bg-white p-3 rounded-lg border border-slate-200 relative group/tech">
-                                                    <input className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs font-bold mb-2" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.techStack.tabs.${i}.items.${j}.name`, e.target.value)} />
-                                                    <MediaInput label="Icon" value={item.image} path={`content.techStack.tabs.${i}.items.${j}.image`} />
-                                                    <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="absolute top-1 right-1 text-slate-200 hover:text-rose-500 opacity-0 group-hover/tech:opacity-100 transition-opacity"><X size={14} /></button>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-orange-600 uppercase">+ Add Tech Item</button>
+                                    <div className="space-y-4 pt-2">
+                                    <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
+                                        <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
+                                        {COMMON_TECH.map((tech) => (
+                                            <button 
+                                                key={tech.name} 
+                                                type="button" 
+                                                onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { ...tech }])}
+                                                className="p-1 px-2 bg-slate-50 hover:bg-orange-50 hover:text-orange-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
+                                            >
+                                                <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                                {tech.name}
+                                            </button>
+                                        ))}
                                     </div>
+                                    <label className={labelStyle}>Selected Tech Stack</label>
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                        {(tab.items || []).map((item, j) => (
+                                            <div key={j} className="bg-white p-3 rounded-xl border border-slate-200 relative group/tech">
+                                                <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
+                                                <div className="flex gap-2 items-center">
+                                                    <div className="flex-1">
+                                                        <input className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.techStack.tabs.${i}.items.${j}.name`, e.target.value)} />
+                                                    </div>
+                                                    <div className="w-16">
+                                                        <MediaInput label="Icon" value={item.image} path={`content.techStack.tabs.${i}.items.${j}.image`} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-orange-600 uppercase transition-colors hover:text-orange-700">+ Add Custom Tech</button>
+                                </div>
+                                </div>
                                 </div>
                             ))}
                         </div>
@@ -389,23 +436,41 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                                 <label className={labelStyle}>Industry Visuals (Combined Image)</label>
                                 <div className="grid gap-4">
                                     {content.industries.items.map((item, i) => (
-                                        <div key={item.slug} className="bg-white p-4 rounded-xl border border-slate-200 flex flex-col md:flex-row md:items-center gap-4 group hover:border-orange-200 transition-all">
-                                            <div className="flex-1">
-                                                <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                        <div key={item.slug} className="bg-white p-5 rounded-2xl border border-slate-200 flex flex-col md:items-start gap-5 group hover:border-orange-300 transition-all shadow-sm">
+                                            <div className="flex-1 w-full space-y-4">
+                                                <div className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 border-b border-slate-100 pb-2">
                                                     <span className="w-5 h-5 bg-orange-600 text-white flex items-center justify-center rounded-full text-[8px]">{i + 1}</span>
                                                     {item.slug.replace(/-/g, ' ')}
                                                 </div>
-                                                <MediaInput
-                                                    label="Canva Combined Image (Laptop + Mobile)"
-                                                    value={item.image}
-                                                    path={`content.industries.items.${i}.image`}
-                                                />
-                                            </div>
-                                            {item.image && (
-                                                <div className="w-32 h-20 bg-slate-50 rounded-lg border border-slate-100 overflow-hidden flex-shrink-0">
-                                                    <img src={item.image} className="w-full h-full object-contain" alt="preview" />
+                                                
+                                                <div className="flex flex-col md:flex-row gap-4 items-start">
+                                                    <div className="flex-1 w-full">
+                                                        <MediaInput
+                                                            label="Left Image (Laptop + Mobile)"
+                                                            value={item.image}
+                                                            path={`content.industries.items.${i}.image`}
+                                                        />
+                                                    </div>
+                                                    {item.image && (
+                                                        <div className="w-32 h-20 bg-slate-50 rounded-lg border border-slate-100 overflow-hidden flex-shrink-0 mt-6 md:mt-0">
+                                                            <img src={item.image} className="w-full h-full object-contain" alt="preview" />
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            )}
+
+                                                <div className="space-y-3 pt-3">
+                                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Right Side Content (Overrides Default)</label>
+                                                    <div className="grid md:grid-cols-2 gap-3">
+                                                        <input className={inputStyle} placeholder="Custom Title" value={item.title || ''} onChange={e => updateField(`content.industries.items.${i}.title`, e.target.value)} />
+                                                        <input className={inputStyle} placeholder="Button Label" value={item.buttonLabel || ''} onChange={e => updateField(`content.industries.items.${i}.buttonLabel`, e.target.value)} />
+                                                    </div>
+                                                    <textarea className={inputStyle} rows={2} placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.industries.items.${i}.description`, e.target.value)} />
+                                                    <div className="space-y-1">
+                                                        <label className="text-[10px] text-slate-400">Feature Points (Comma separated)</label>
+                                                        <input className={inputStyle} placeholder="Point 1, Point 2, Point 3" value={item.points?.join(', ') || ''} onChange={e => updateField(`content.industries.items.${i}.points`, e.target.value.split(',').map(s => s.trim()).filter(Boolean))} />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>

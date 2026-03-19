@@ -1,4 +1,5 @@
 import React from 'react';
+import { COMMON_TECH } from './TechConstants';
 import {
     Smartphone, Layout, Code, Settings, Zap,
     Plus, X, HelpCircle, Briefcase, MessageSquare,
@@ -89,23 +90,39 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                 </div>
             </SectionWrapper>
 
-            {/* 4. ADVANCED TECHNOLOGIES */}
             <SectionWrapper id="technologies" icon={Code} title="4. Advanced Technologies We Use" activeSections={activeSections}>
                 <input className={inputStyle} placeholder="Title" value={content.technologies?.title || ''} onChange={e => updateField('content.technologies.title', e.target.value)} />
                 <div className="space-y-4">
-                    <label className={labelStyle}>Technologies List</label>
-                    {(content.technologies?.items || []).map((item, i) => (
-                        <div key={i} className="flex gap-4 items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
-                            <div className="flex-1">
-                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.technologies.items.${i}.name`, e.target.value)} />
+                    <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
+                        <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
+                        {COMMON_TECH.map((tech) => (
+                            <button 
+                                key={tech.name} 
+                                type="button" 
+                                onClick={() => updateField(`content.technologies.items`, (prev) => [...(prev || []), { ...tech }])}
+                                className="p-1 px-2 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
+                            >
+                                <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                {tech.name}
+                            </button>
+                        ))}
+                    </div>
+
+                    <label className={labelStyle}>Selected Technologies</label>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        {(content.technologies?.items || []).map((item, i) => (
+                            <div key={i} className="flex gap-4 items-center bg-slate-50 p-3 rounded-lg border border-slate-100 relative group/tech">
+                                <button type="button" onClick={() => updateField('content.technologies.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
+                                <div className="flex-1">
+                                    <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.technologies.items.${i}.name`, e.target.value)} />
+                                </div>
+                                <div className="w-1/2">
+                                    <MediaInput label="Icon" value={item.image} path={`content.technologies.items.${i}.image`} />
+                                </div>
                             </div>
-                            <div className="w-1/2">
-                                <MediaInput label="Icon" value={item.image} path={`content.technologies.items.${i}.image`} />
-                            </div>
-                            <button type="button" onClick={() => updateField('content.technologies.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.technologies.items', (prev) => [...(prev || []), { name: "", image: "" }])} className="text-xs font-bold text-emerald-600 p-1">+ Add Tech</button>
+                        ))}
+                    </div>
+                    <button type="button" onClick={() => updateField('content.technologies.items', (prev) => [...(prev || []), { name: "", image: "" }])} className="text-xs font-bold text-emerald-600 p-1">+ Add Custom Tech</button>
                 </div>
             </SectionWrapper>
 

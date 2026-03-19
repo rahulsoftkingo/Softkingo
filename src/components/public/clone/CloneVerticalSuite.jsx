@@ -7,16 +7,22 @@ import { Heart, MessageCircle, Navigation, UserPlus, Share2, UserCheck, ShieldCh
 import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function CloneVerticalSuite({ data }) {
-    const [activeTab, setActiveTab] = useState('user');
+    // 1. Determine Tabs (Dynamic from data.tabs OR Legacy hardcoded)
+    const rawTabs = data?.tabs && data.tabs.length > 0 
+        ? data.tabs.map((t, idx) => ({ id: `tab-${idx}`, label: t.label, ...t }))
+        : [
+            { id: 'user', label: 'User Panel', ...data?.user },
+            { id: 'admin', label: 'Admin Panel', ...data?.admin },
+            { id: 'advanced', label: 'Advanced Features', ...data?.advanced },
+        ];
+
+    // Filter out tabs that have no content (for legacy compatibility if some keys are missing)
+    const tabs = rawTabs.filter(t => t.label && (t.description || (t.items && t.items.length > 0)));
+
+    const [activeTabId, setActiveTabId] = useState(tabs[0]?.id || 'user');
     const [activeFeature, setActiveFeature] = useState(0);
 
-    const tabs = [
-        { id: 'user', label: 'User Panel' },
-        { id: 'admin', label: 'Admin Panel' },
-        { id: 'advanced', label: 'Advanced Features' },
-    ];
-
-    const currentTabContent = data?.[activeTab] || {
+    const currentTabContent = tabs.find(t => t.id === activeTabId) || tabs[0] || {
         description: "Dive into the realm of custom development, where panels are designed for simplicity and enjoyment.",
         image: "/images/solutions/tablet-mockup.png",
         items: []
@@ -45,10 +51,10 @@ export default function CloneVerticalSuite({ data }) {
                         <button
                             key={tab.id}
                             onClick={() => {
-                                setActiveTab(tab.id);
+                                setActiveTabId(tab.id);
                                 setActiveFeature(0); // Reset active feature when tab changes
                             }}
-                            className={`px-8 md:px-12 py-3.5 rounded-xl font-bold text-sm md:text-base transition-all duration-300 ${activeTab === tab.id
+                            className={`px-8 md:px-12 py-3.5 rounded-xl font-bold text-sm md:text-base transition-all duration-300 ${activeTabId === tab.id
                                 ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/20'
                                 : 'text-slate-600 hover:bg-slate-50'
                                 }`}
@@ -72,7 +78,7 @@ export default function CloneVerticalSuite({ data }) {
                         <AnimatePresence mode="wait">
                             {(currentTabContent.items || []).map((feature, idx) => (
                                 <motion.div
-                                    key={`${activeTab}-${idx}`}
+                                    key={`${activeTabId}-${idx}`}
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: idx * 0.05 }}
@@ -115,7 +121,7 @@ export default function CloneVerticalSuite({ data }) {
                         <div className="absolute inset-0 bg-sky-100 rounded-[2.5rem] transform -rotate-2 scale-90 opacity-30"></div>
 
                         <motion.div
-                            key={activeTab}
+                            key={activeTabId}
                             initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
                             animate={{ opacity: 1, scale: 1, rotate: 0 }}
                             transition={{ duration: 0.5 }}
@@ -124,7 +130,7 @@ export default function CloneVerticalSuite({ data }) {
                             <div className="relative w-full flex justify-center">
                                 <Image
                                     src={currentTabContent.image || "/images/solutions/tablet-mockup.png"}
-                                    alt={tabs.find(t => t.id === activeTab)?.label}
+                                    alt={tabs.find(t => t.id === activeTabId)?.label}
                                     width={800}
                                     height={800}
                                     className="w-full h-auto max-h-[600px] object-contain rounded-md"
