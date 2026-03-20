@@ -54,6 +54,18 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close all dropdowns and mobile menu on route change
+  useEffect(() => {
+    setShowAboutUsDropdown(false);
+    setShowServiceDropdown(false);
+    setShowHireDropdown(false);
+    setIndustriesDropdown(false);
+    setShowSolutionsDropdown(false);
+    setShowResourceDropdown(false);
+    setIsMenuOpen(false);
+    setShowModal(false);
+  }, [pathname]);
+
   const isActive = (path) => {
     if (path === "/") return pathname === "/";
     return pathname?.startsWith(path);

@@ -129,7 +129,7 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 02. We Are Section - PIXEL PERFECT MATCH */}
-      <section id="about" className="py-24 bg-white overflow-hidden">
+      <section id="about" className="pt-24 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             {/* Left: Image - Clean & Simple */}
@@ -191,7 +191,7 @@ export default function AIPage() {
           </div>
 
           {/* 02.5 Stats Section - Pixel Perfect Mockup Layout */}
-          <div className="mt-20 lg:mt-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
+          <div className="mt-16 lg:mt-22 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
             {[
               { icon: 'clock', value: '5+', label: 'Years Of Experience' },
               { icon: 'users', value: '450+', label: 'Apps Developed' },

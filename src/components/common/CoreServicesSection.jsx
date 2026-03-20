@@ -168,23 +168,23 @@ function StickyServiceCard({ service, index }) {
         <motion.div
             ref={ref}
             style={{ scale, opacity }}
-            className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl border border-white/20 shadow-2xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative"
+            className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl borderborder-white/20shadow2xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative"
         >
             {/* Decorative Background Elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl opacity-30 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-300/10 rounded-full -ml-32 -mb-32 blur-3xl opacity-20 pointer-events-none"></div>
 
-            <div className="p-8 md:p-14 space-y-10 flex-1 relative z-10">
+            <div className="p-6 md:p-10 space-y-4 flex-1 relative z-10">
                 <div className="flex items-center gap-5">
-                    <div className="w-14 h-14  flex items-center justify-center text-white font-black text-xl shrink-0  ">
+                    <div className="w-14 h-14  flex items-center justify-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl shrink-0  ">
                         {String(index + 1).padStart(2, "0")}
                     </div>
-                    <h3 className="text-white font-black text-2xl md:text-3xl lg:text-4xl leading-normal tracking-tighter">
+                    <h3 className="text-white font-semibold text-2xl md:text-3xl lg:text-4xl ">
                         {service?.title || service?.name || "Service"}
                     </h3>
                 </div>
 
-                <p className="text-lg md:text-xl text-sky-50 leading-relaxed font-medium max-w-4xl opacity-90">
+                <p className="text-sm md:text-md text-sky-50  max-w-4xl opacity-90">
                     {service?.description || service?.desc || ""}
                 </p>
 
@@ -193,8 +193,8 @@ function StickyServiceCard({ service, index }) {
                     <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Key Capabilities</h4>
                     <ul className="space-y-3">
                         {(service?.capabilities || []).map((cap, i) => (
-                            <li key={i} className="flex items-start gap-3 text-base text-white font-medium">
-                                <span className="mt-2.5 w-1.5 h-1.5 rounded-full bg-white shrink-0" />
+                            <li key={i} className="flex items-start gap-3 text-base text-white opacity-90">
+                                <span className="p-1 border border-white rounded-full shrink-0" > <FaArrowRight className="h-2 w-2" /> </span>
                                 {cap}
                             </li>
                         ))}
@@ -206,7 +206,7 @@ function StickyServiceCard({ service, index }) {
                     <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Technologies We Use</h4>
                     <div className="flex flex-row gap-4 overflow-x-auto hide-scrollbar whitespace-nowrap pb-4 px-1">
                         {(service?.tech || service?.technologies || []).map((t, idx) => (
-                            <div key={idx} className="group/tech relative w-14 h-14 bg-white rounded-xl p-2.5 shadow-lg shadow-sky-900/10 transition-all duration-300 flex items-center justify-center hover:scale-110 shrink-0">
+                            <div key={idx} className="group/tech relative w-20 h-20 bg-white rounded-xl p-2.5 shadow-lg shadow-sky-900/10 transition-all duration-300 flex items-center justify-center hover:scale-110 shrink-0">
                                 <div className="relative w-full h-full">
                                     <Image
                                         src={typeof t === 'string' ? `/images/tech/${t}.png` : (t.img || t.image)}
@@ -224,14 +224,14 @@ function StickyServiceCard({ service, index }) {
                 </div>
 
                 {/* Footer Link */}
-                <div className="pt-8 border-t border-white/10 mt-auto">
+                {/* <div className="pt-8 border-t border-white/10 mt-auto">
                     <Link
                         href={service?.link || "/contact"}
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-white text-sky-600 rounded-full font-black text-sm uppercase tracking-widest hover:bg-sky-50 hover:gap-5 transition-all duration-300 group/link shadow-xl shadow-sky-900/20 active:scale-95"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-white text-sky-600 rounded-full font-semibold text-sm uppercase tracking-widest hover:bg-sky-50 hover:gap-5 transition-all duration-300 group/link shadow-xl shadow-sky-900/20 active:scale-95"
                     >
                         Consult Our Experts <FaArrowRight className="group-hover/link:translate-x-1 transition-transform" />
                     </Link>
-                </div>
+                </div> */}
             </div>
         </motion.div>
     );
@@ -321,7 +321,7 @@ export default function CoreServicesSection({
                     {/* Dashboard Navigation Sidebar (Left Side Sticky) */}
                     <div className="hidden lg:block w-80 shrink-0 sticky top-32 self-start bg-white rounded-3xl p-3 shadow-2xl shadow-sky-200/50 border border-sky-100 z-10">
                         {/* <div className="bg-sky-500 rounded-2xl p-6 mb-2">
-                            <h4 className="text-[10px] font-black text-white/80 uppercase tracking-[0.2em]">Solution Navigator</h4>
+                            <h4 className="text-[10px] font-semibold text-white/80 uppercase tracking-[0.2em]">Solution Navigator</h4>
                             <p className="text-white text-lg font-bold leading-normal mt-1">Explore Core Expertise</p>
                         </div> */}
                         <div className="space-y-1 p-2">
@@ -329,18 +329,18 @@ export default function CoreServicesSection({
                                 <button
                                     key={idx}
                                     onClick={() => scrollToService(idx)}
-                                    className={`w-full text-left px-5 py-4 rounded-xl text-[13px] font-black transition-all duration-300 flex items-center gap-4 group active:scale-[0.98] ${activeIndex === idx
+                                    className={`w-full text-left px-5 py-4 rounded-xl text-[13px] font-semibold transition-all duration-300 flex items-center gap-4 group active:scale-[0.98] ${activeIndex === idx
                                         ? "bg-sky-50 text-sky-600 shadow-sm"
                                         : "text-slate-500 hover:bg-slate-50 hover:text-sky-500"
                                         }`}
                                 >
-                                    <span className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-black transition-all shrink-0 ${activeIndex === idx
+                                    <span className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all shrink-0 ${activeIndex === idx
                                         ? "bg-sky-500 text-white shadow-lg shadow-sky-200"
                                         : "bg-slate-100 text-slate-400 group-hover:bg-sky-100 group-hover:text-sky-500"
                                         }`}>
                                         {String(idx + 1).padStart(2, '0')}
                                     </span>
-                                    <span className="leading-normal overflow-hidden text-ellipsis whitespace-nowrap uppercase tracking-wider">
+                                    <span className="leading-normal overflow-hidden text-ellipsis whitespace-nowrap  tracking-wider">
                                         {s?.title || s?.name || `Service ${idx + 1}`}
                                     </span>
                                 </button>
@@ -349,7 +349,7 @@ export default function CoreServicesSection({
                     </div>
 
                     {/* Cards Stack (Right Side) */}
-                    <div className="flex-1 w-full space-y-24">
+                    <div className="flex-1 w-full space-y-8">
                         {services.map((service, index) => (
                             <div
                                 key={index}

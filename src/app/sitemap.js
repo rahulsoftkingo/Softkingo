@@ -21,16 +21,13 @@ export default async function sitemap() {
   // Static routes
   const staticRoutes = [
     // Main pages
-    "", "/about", "/services", "/case-studies", "/blog", "/blog/category",
+    "", "/about", "/services", "/case-studies", "/blog", 
+    "/solutions", "/industries",
     "/careers", "/contact", "/ebooks", "/featured", "/gallery", "/hire",
-    "/portfolio",
+    "/portfolio", "/our-team", "/testimonials",
 
-    // Hire pages (from HireMenuItems)
-    // "/hire/app-developers", ...
-    
-    // Insights (from insightItems)
-    // "/blog", "/featured", "/ebooks", "/press-releases", "/guides",
-    // "/media-coverage", "/articles", "/whitepapers", "/podcasts",
+    // Insights (from sectionConfig.jsx)
+    "/press-releases", "/guides", "/media-coverage", "/articles", "/whitepapers", "/podcasts",
 
     // Legal & Misc
     "/privacy-policy", "/terms-conditions", "/faq", "/site-map", "/ai", "/login"
@@ -38,7 +35,7 @@ export default async function sitemap() {
     url: `${baseUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: path === "" ? "daily" : "weekly",
-    priority: path === "" ? 1.0 : path.includes('/industries/') || path.includes('/solutions/') ? 0.8 : 0.8
+    priority: path === "" ? 1.0 : 0.8
   }));
 
   try {

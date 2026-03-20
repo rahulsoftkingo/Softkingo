@@ -76,15 +76,50 @@ export default function TestimonialCarousel({
               key={index}
               className="relative pt-8"
             >
-              {/* Clutch Badge */}
+              {/* Platform Badge */}
               <div className="absolute top-3 left-8 z-10">
-                <div className="bg-white rounded-sm shadow-sm px-5 py-2  flex items-center gap-2">
-                  <span className="text-sm font-bold text-gray-900">{testimonial.source}</span>
-                  <div className="flex items-center gap-0.5 bg-orange-50 px-1.5 py-0.5 rounded">
-                    <span className="text-orange-500 text-xs">★</span>
-                    <span className="text-xs font-bold">5.0</span>
+                <div className="bg-white rounded-sm shadow-sm px-4 py-2 flex items-center gap-3">
+                  {/* Platform Logo Mapping */}
+                  {(() => {
+                    const logos = {
+                      "Clutch review": "/images/award/clutch.png",
+                      "DesignRush": "/images/award/designrush.png",
+                      "Goodfirms": "/images/award/goodfirm.png",
+                      "TechBehemoths": "/images/award/techbeheb.png",
+                      "Trustpilot": "trustpilot-svg",
+                      "Review": "/images/award/goodfirm.png"
+                    };
+                    const logoSrc = logos[testimonial.source] || null;
+
+                    if (logoSrc === "trustpilot-svg") {
+                      return (
+                        <div className="h-5 flex items-center">
+                          <svg viewBox="0 0 100 100" className="h-full w-auto" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 38.5H61.8L50 2L38.2 38.5H0L30.9 61L19.1 97.5L50 75L80.9 97.5L69.1 61L100 38.5Z" fill="#00b67a" />
+                          </svg>
+                          <span className="ml-1 text-[10px] font-bold text-[#191919]">Trustpilot</span>
+                        </div>
+                      );
+                    }
+
+                    if (logoSrc) {
+                      return (
+                        <div className="h-5 flex items-center">
+                          <img
+                            src={logoSrc}
+                            alt={testimonial.source}
+                            className="h-full object-contain"
+                          />
+                        </div>
+                      );
+                    }
+                    return <span className="text-xs font-bold text-gray-900 uppercase tracking-tight">{testimonial.source}</span>;
+                  })()}
+
+                  <div className="flex items-center gap-0.5 bg-orange-50 px-1.5 py-0.5 rounded ml-auto">
+                    <span className="text-orange-500 text-[10px]">★</span>
+                    <span className="text-[10px] font-extrabold text-[#0B3250]">5.0</span>
                   </div>
-                  <span className="text-[9px] font-bold text-gray-500 uppercase">100+</span>
                 </div>
               </div>
 

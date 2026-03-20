@@ -287,7 +287,7 @@ export default async function ServicePage({ params }) {
 
       {/* Stats Section */}
       {show('stats') && (
-        <section className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 py-10 px-4 md:px-6 lg:px-12 border-y border-white/10 shadow-2xl">
+        <section className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 py-10 px-4 md:px-6 lg:px-12 ">
           {/* Decorative mesh-like blurs */}
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl -mt-32 opacity-30"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl -mb-48 opacity-20"></div>
@@ -318,7 +318,7 @@ export default async function ServicePage({ params }) {
           </div>
         </section>
       )}
-      <AwardsSection />
+      <AwardsSection variant="service" />
       {/* Services Section - CoreServicesSection Component */}
       {show('services') && (() => {
         // Map admin categories to the component's 'services' shape
@@ -417,14 +417,14 @@ function StatItem({ icon, value, label }) {
   return (
     <div className="flex flex-col items-center text-center group cursor-default">
       <div className="flex items-center gap-4 mb-2">
-        <span className="text-white/80 scale-90 group-hover:scale-110 group-hover:text-white transition-all duration-500 transform-gpu">
+        {/* <span className="text-white/80 scale-90 group-hover:scale-110 group-hover:text-white transition-all duration-500 transform-gpu">
           {icon}
-        </span>
-        <span className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter text-white drop-shadow-md">
+        </span> */}
+        <span className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter text-white drop-shadow-md">
           {value}
         </span>
       </div>
-      <p className="text-[10px] md:text-[12px] font-black uppercase tracking-[0.2em] text-sky-100/80 group-hover:text-white transition-colors">
+      <p className="text-[10px] md:text-[12px] font-bold   text-sky-100/80 group-hover:text-white transition-colors">
         {label}
       </p>
     </div>

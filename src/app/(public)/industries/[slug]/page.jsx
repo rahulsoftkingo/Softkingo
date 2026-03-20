@@ -15,6 +15,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import IndustryTechCarousel from '@/components/public/industries/IndustryTechCarousel';
 import IndustryCoversTabs from '@/components/public/industries/IndustryCoversTabs';
 import IndustryWhyChooseCarousel from '@/components/public/industries/IndustryWhyChooseCarousel';
+import IndustryProcess from '@/components/public/industries/IndustryProcess';
 import BlogSection from '@/components/common/BlogSection';
 // --- 1. FETCH DATA HELPER ---
 async function getIndustryPage(slug) {
@@ -192,62 +193,69 @@ export default async function IndustryPage(props) {
                             {/* LEFT COLUMN (Items 0-2) - Align Right */}
                             <div className="space-y-12">
                                 {otherIndustries?.items?.slice(0, 3).map((item, i) => (
-                                    <div key={i} className="flex items-center justify-end group gap-6">
+                                    <div key={i} className="flex items-center justify-end group gap-6 cursor-pointer">
 
                                         {/* Text Content (Aligned Right) */}
                                         <div className="flex-1 flex flex-col items-end text-right">
-                                            <h4 className="text-xl font-bold text-slate-800 mb-2">{item.title}</h4>
-                                            {/* Line starts from right and grows to left */}
-                                            <div className="h-0.5 w-24 bg-slate-200 group-hover:bg-sky-500 transition-all duration-500 origin-right group-hover:w-full"></div>
+                                            <h4 className="text-xl font-black text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            {/* Advanced Line Hover */}
+                                            <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
+                                                <div className="absolute top-0 right-0 h-full w-0 bg-sky-500 group-hover:w-full transition-all duration-500 origin-right"></div>
+                                            </div>
                                         </div>
 
-                                        {/* Icon (Fixed Size) */}
-                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                        {/* Icon (With Premium Container) */}
+                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30px_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300">
                                             {item.icon && item.icon.includes('/') ? (
-                                                <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain" />
+                                                <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
                                             ) : (
-                                                <span className="text-3xl">{item.icon || "🏢"}</span>
+                                                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🏢"}</span>
                                             )}
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
-                            {/* CENTER COLUMN (Image) */}
+                            {/* CENTER COLUMN (Image with Premium Frame) */}
                             <div className="relative flex justify-center py-10 lg:py-0 col-span-3">
-                                {/* Decorative Ring */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square border border-dashed border-slate-300 rounded-full animate-spin-slow opacity-30"></div>
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] aspect-square bg-sky-100/50 rounded-full blur-3xl -z-10"></div>
+                                {/* Decorative Pulsing Rings */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] aspect-square border border-sky-200/50 rounded-full animate-pulse"></div>
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] aspect-square border border-dashed border-slate-200 rounded-full animate-spin-slow opacity-40"></div>
+                                
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] aspect-square bg-gradient-to-br from-sky-400/10 to-transparent rounded-full blur-3xl -z-10 animate-pulse"></div>
 
-                                <div className="relative w-full max-w-[350px] aspect-[3/4] overflow-hidden ">
+                                <div className="relative w-full max-w-[340px] aspect-[3.5/4] overflow-hidden rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-4 border-white group">
                                     <Image
                                         src={otherIndustries?.image || "/images/industry-center.jpg"}
                                         alt="Industries Center"
                                         fill
-                                        className="object-cover hover:scale-105 transition-transform duration-700"
+                                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
                                     />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                 </div>
                             </div>
 
                             {/* RIGHT COLUMN (Items 3-5) - Align Left */}
                             <div className="space-y-12">
                                 {otherIndustries?.items?.slice(3, 6).map((item, i) => (
-                                    <div key={i} className="flex items-center justify-start group gap-6">
+                                    <div key={i} className="flex items-center justify-start group gap-6 cursor-pointer">
 
-                                        {/* Icon (Fixed Size) */}
-                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                        {/* Icon (With Premium Container) */}
+                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30px_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300">
                                             {item.icon && item.icon.includes('/') ? (
-                                                <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain" />
+                                                <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
                                             ) : (
-                                                <span className="text-3xl">{item.icon || "🚀"}</span>
+                                                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🚀"}</span>
                                             )}
                                         </div>
 
                                         {/* Text Content (Aligned Left) */}
                                         <div className="flex-1 flex flex-col items-start text-left">
-                                            <h4 className="text-xl font-bold text-slate-800 mb-2">{item.title}</h4>
-                                            {/* Line starts from left and grows to right */}
-                                            <div className="h-0.5 w-24 bg-slate-200 group-hover:bg-sky-500 transition-all duration-500 origin-left group-hover:w-full"></div>
+                                            <h4 className="text-xl font-black text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            {/* Advanced Line Hover */}
+                                            <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
+                                                <div className="absolute top-0 left-0 h-full w-0 bg-sky-500 group-hover:w-full transition-all duration-500 origin-left"></div>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -290,23 +298,7 @@ export default async function IndustryPage(props) {
             )}
             {/* 8. PROCESS */}
             {show('process') && (
-                <section className="py-20 px-6 max-w-5xl mx-auto">
-                    <h2 className="text-3xl font-bold mb-16 text-center">Our Development Process</h2>
-                    <div className="space-y-8 relative before:absolute before:left-4 md:before:left-1/2 before:top-0 before:h-full before:w-0.5 before:bg-slate-200">
-                        {process?.steps?.map((step, i) => (
-                            <div key={i} className={`relative flex flex-col md:flex-row gap-8 items-center ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-                                <div className="flex-1 md:text-right p-6 bg-white rounded-xl border border-slate-200 shadow-sm w-full z-10">
-                                    <h4 className="font-bold text-lg mb-1">{step.title}</h4>
-                                    <p className="text-slate-500 text-sm">{step.description}</p>
-                                </div>
-                                <div className="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 z-20 border-4 border-white shadow-md">
-                                    {i + 1}
-                                </div>
-                                <div className="flex-1 hidden md:block"></div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                <IndustryProcess data={process} />
             )}
 
             {/* 9. FAQ */}
