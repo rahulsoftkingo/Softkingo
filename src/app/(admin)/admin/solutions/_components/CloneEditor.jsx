@@ -1,4 +1,5 @@
 import React from 'react';
+import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
 import { COMMON_TECH } from './TechConstants';
 import {
     Smartphone, Layout, Database, Code, Settings, Zap, Cpu, Bot,
@@ -76,7 +77,10 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
             <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={activeSections}>
                 <div className="space-y-4">
                     <input className={inputStyle} placeholder="Page Title (e.g. Build Your Own Uber Clone)" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
-                    <textarea className={inputStyle} rows={3} placeholder="Hero Subtitle / Description" value={content.hero?.subtitle || ''} onChange={e => updateField('content.hero.subtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Hero Subtitle / Description (Rich Text)</label>
+                        <MiniRichTextEditor value={content.hero?.subtitle || ''} onChange={val => updateField('content.hero.subtitle', val)} />
+                    </div>
                     <MediaInput label="Hero Banner Image" value={content.hero?.image} path="content.hero.image" />
 
                     <div className="pt-4 border-t border-slate-100">
@@ -562,7 +566,10 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                                     <button type="button" onClick={() => updateField('content.faq.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all"><X size={18} /></button>
                                     <div className="space-y-3">
                                         <input className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-sm font-bold pr-12 outline-none" placeholder="Question Text" value={item.q || ''} onChange={e => updateField(`content.faq.items.${i}.q`, e.target.value)} />
-                                        <textarea className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-sm outline-none" rows={3} placeholder="Answer Content" value={item.a || ''} onChange={e => updateField(`content.faq.items.${i}.a`, e.target.value)} />
+                                        <div className="space-y-1">
+                                            <label className={labelStyle}>Answer (Rich Text)</label>
+                                            <MiniRichTextEditor value={item.a || ''} onChange={val => updateField(`content.faq.items.${i}.a`, val)} />
+                                        </div>
                                     </div>
                                 </div>
                             ))}

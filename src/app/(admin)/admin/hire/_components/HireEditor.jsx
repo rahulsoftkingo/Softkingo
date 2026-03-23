@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
 import {
     ArrowLeft, Save, Eye, Image as ImageIcon, Plus, X,
-    Smartphone, Layout, Database, Settings, Briefcase, Users, Zap, CheckCircle2, Layers, DollarSign, BarChart3, MousePointerClick, FolderOpen, Loader2,
+    Smartphone, Layout, Database, Settings, Briefcase, Users, Zap, CheckCircle2, Layers, DollarSign, BarChart3, MousePointerClick, FolderOpen, Loader2, MessageSquare
 } from 'lucide-react';
 
 // --- STYLES ---
@@ -71,6 +72,8 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
         : allSectionIds;
 
     const [formData, setFormData] = useState({
+        title: '',
+        slug: '',
         ...data,
         activeSections: mergedSections,
         content: data?.content || {}
@@ -96,15 +99,16 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
     // --- Helper: Update Fields ---
     const updateField = (path, value) => {
         setFormData(prev => {
-            const copy = JSON.parse(JSON.stringify(prev));
-            if (!copy.content) copy.content = {};
-
             const keys = path.split('.');
+            const copy = { ...prev };
             let current = copy;
+
             for (let i = 0; i < keys.length - 1; i++) {
-                if (!current[keys[i]]) current[keys[i]] = {};
-                current = current[keys[i]];
+                const key = keys[i];
+                current[key] = Array.isArray(current[key]) ? [...current[key]] : { ...current[key] };
+                current = current[key];
             }
+
             current[keys[keys.length - 1]] = value;
             return copy;
         });
@@ -134,11 +138,20 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                     {/* Basic Settings */}
                     <div className="space-y-3">
                         <label className="text-[10px] font-bold text-slate-400 block">PAGE INFO</label>
-                        <input className={inputStyle} value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="Page Title" />
+                        <input className={inputStyle} value={formData.title || ''} onChange={e => {
+                            const val = e.target.value;
+                            setFormData(prev => {
+                                const newContent = { ...(prev.content || {}) };
+                                if (!newContent.heroTitle || newContent.heroTitle === prev.title) {
+                                    newContent.heroTitle = val;
+                                }
+                                return { ...prev, title: val, content: newContent };
+                            });
+                        }} placeholder="Page Title" />
 
                         <div className="flex items-center bg-white rounded-lg border border-slate-200 px-2">
                             <span className="text-slate-400 text-xs">/hire/</span>
-                            <input className="w-full p-2 bg-transparent border-none text-sm font-mono text-slate-600 outline-none" value={formData.slug} onChange={e => setFormData({ ...formData, slug: e.target.value })} placeholder="slug" />
+                            <input className="w-full p-2 bg-transparent border-none text-sm font-mono text-slate-600 outline-none" value={formData.slug || ''} onChange={e => setFormData({ ...formData, slug: e.target.value })} placeholder="slug" />
                         </div>
 
                         <input className={inputStyle} value={formData.key} onChange={e => setFormData({ ...formData, key: e.target.value })} placeholder="Page Key (e.g. hire-android)" />
@@ -184,7 +197,10 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                     {/* 1. HERO */}
                     <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={formData.activeSections}>
                         <input className={inputStyle} placeholder="Hero Title" value={formData.content.heroTitle || ''} onChange={e => updateField('content.heroTitle', e.target.value)} />
-                        <textarea className={inputStyle} rows={2} placeholder="Hero Subtitle" value={formData.content.heroSubtitle || ''} onChange={e => updateField('content.heroSubtitle', e.target.value)} />
+                        <div className="space-y-1">
+                            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Hero Subtitle (Rich Text)</label>
+                            <MiniRichTextEditor value={formData.content.heroSubtitle || ''} onChange={val => updateField('content.heroSubtitle', val)} />
+                        </div>
                         <input className={inputStyle} placeholder="Badge Text" value={formData.content.badgeText || ''} onChange={e => updateField('content.badgeText', e.target.value)} />
 
                         <div className="grid grid-cols-3 gap-2">
@@ -198,7 +214,10 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                     {/* 2. ABOUT */}
                     <SectionWrapper id="about" icon={Layout} title="2. About Section" activeSections={formData.activeSections}>
                         <input className={inputStyle} placeholder="About Title" value={formData.content.aboutTitle || ''} onChange={e => updateField('content.aboutTitle', e.target.value)} />
-                        <textarea className={inputStyle} rows={3} placeholder="About Subtitle" value={formData.content.aboutSubtitle || ''} onChange={e => updateField('content.aboutSubtitle', e.target.value)} />
+                        <div className="space-y-1">
+                            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">About Subtitle (Rich Text)</label>
+                            <MiniRichTextEditor value={formData.content.aboutSubtitle || ''} onChange={val => updateField('content.aboutSubtitle', val)} />
+                        </div>
                         <div className="border-t pt-4">
                             <label className="text-xs font-bold text-slate-400 mb-2 block">BENEFITS LIST</label>
                             <ArrayField path="content.benefits" items={formData.content.benefits} updateField={updateField} defaultItem=""
@@ -217,7 +236,10 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                             renderItem={(item, i) => (
                                 <div className="space-y-2">
                                     <input className={inputStyle} placeholder="Title" value={item.title || ''} onChange={e => updateArrayObject('content.features', i, 'title', e.target.value)} />
-                                    <textarea className={inputStyle} rows={2} placeholder="Description" value={item.description || ''} onChange={e => updateArrayObject('content.features', i, 'description', e.target.value)} />
+                                    <div className="space-y-1">
+                                        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Description (Rich Text)</label>
+                                        <MiniRichTextEditor value={item.description || ''} onChange={val => updateArrayObject('content.features', i, 'description', val)} />
+                                    </div>
                                     <input className={inputStyle} placeholder="Icon Key (e.g. FaUser)" value={item.iconKey || ''} onChange={e => updateArrayObject('content.features', i, 'iconKey', e.target.value)} />
                                 </div>
                             )}

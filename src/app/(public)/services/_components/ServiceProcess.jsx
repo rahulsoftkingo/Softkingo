@@ -50,9 +50,10 @@ export default function ServiceProcess({ data }) {
 
                                     {/* Description */}
                                     <div className={`space-y-8 flex-grow transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                                        <p className="text-slate-600 font-bold text-lg md:text-xl leading-relaxed max-w-2xl">
-                                            {step.description}
-                                        </p>
+                                        <p 
+                                            className="text-slate-600 font-bold text-lg md:text-xl leading-relaxed max-w-2xl"
+                                            dangerouslySetInnerHTML={{ __html: step.description }}
+                                        />
 
                                         {/* Bullets */}
                                         <div className="grid grid-cols-1 gap-4 mt-auto">

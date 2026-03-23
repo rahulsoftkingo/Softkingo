@@ -65,13 +65,14 @@ export default function SolutionsAICapabilities({ data }) {
                             
                             {/* Main Title */}
                             <h3 className="text-xl md:text-3xl font-black text-slate-900 mb-6">
-                                {data.items[activeTab]?.title}
+                                {data?.items?.[activeTab]?.title}
                             </h3>
                             
                             {/* Description */}
-                            <p className="text-slate-600 text-md leading-relaxed mb-8 max-w-lg">
-                                {data.items[activeTab]?.description}
-                            </p>
+                            <p 
+                                className="text-slate-600 text-md leading-relaxed mb-8 max-w-lg"
+                                dangerouslySetInnerHTML={{ __html: data?.items?.[activeTab]?.description }}
+                            />
 
                             {/* Points List */}
                             <div className="">

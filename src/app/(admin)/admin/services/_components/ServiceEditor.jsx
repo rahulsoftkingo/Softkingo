@@ -1,4 +1,5 @@
 import React from 'react';
+import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
 import {
     Smartphone, Layout, Database, Code, Settings, Zap,
     BarChart3, ShieldCheck, DollarSign, Plus, X, Trash2,
@@ -35,7 +36,10 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Hero Title" value={content.heroTitle || ''} onChange={e => updateField('content.heroTitle', e.target.value)} />
-                    <input className={inputStyle} placeholder="Hero Subtitle" value={content.heroSubtitle || ''} onChange={e => updateField('content.heroSubtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Hero Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.heroSubtitle || ''} onChange={val => updateField('content.heroSubtitle', val)} />
+                    </div>
                 </div>
                 <MediaInput label="Hero Background Image" value={content.heroBg} path="content.heroBg" />
             </SectionWrapper>
@@ -509,7 +513,10 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
                             <div className="flex-1 space-y-2">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateField(`content.faq.items.${i}.q`, e.target.value)} />
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Answer" value={item.a || ''} onChange={e => updateField(`content.faq.items.${i}.a`, e.target.value)} />
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Answer (Rich Text)</label>
+                                    <MiniRichTextEditor value={item.a || ''} onChange={val => updateField(`content.faq.items.${i}.a`, val)} />
+                                </div>
                             </div>
                             <button type="button" onClick={() => updateField('content.faq.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
                         </div>

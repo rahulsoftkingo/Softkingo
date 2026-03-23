@@ -136,8 +136,28 @@ export default async function DynamicSolutionPage(props) {
             investment, revenue, techStack, portfolio, process, faq
         } = data.sections;
 
+        // --- FAQ SCHEMA ---
+        const faqSchema = show('faq') && faq?.items?.length > 0 ? {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faq.items.map(item => ({
+                "@type": "Question",
+                "name": item.q,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": (item.a || '').replace(/<[^>]*>?/gm, '') // Strip HTML for schema text
+                }
+            }))
+        } : null;
+
         return (
             <main className="min-h-screen bg-white">
+                {faqSchema && (
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                    />
+                )}
 
                 {/* 1. Hero – Build Your Own clone app */}
                 {show('hero') && (
@@ -247,8 +267,28 @@ export default async function DynamicSolutionPage(props) {
         blogTitle, blogSubtitle, blogCategory
     } = data.sections;
 
+    // --- FAQ SCHEMA ---
+    const faqSchema = show('faq') && faq?.items?.length > 0 ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq.items.map(item => ({
+            "@type": "Question",
+            "name": item.q,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": (item.a || '').replace(/<[^>]*>?/gm, '') // Strip HTML for schema text
+            }
+        }))
+    } : null;
+
     return (
         <main className="min-h-screen bg-white">
+            {faqSchema && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                />
+            )}
             {show('hero') && <section className='bg-sky-50'><SolutionsHero data={hero} /></section>}
             {show('stats') && <SolutionsStats data={stats} />}
             {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}

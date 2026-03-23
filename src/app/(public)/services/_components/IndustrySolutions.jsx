@@ -86,9 +86,10 @@ export default function IndustrySolutions({ data }) {
                                         <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-normal">
                                             {item.itemTitle}
                                         </h3>
-                                        <p className="text-sm md:text-base font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300">
-                                            {item.itemDesc}
-                                        </p>
+                                        <p 
+                                            className="text-sm md:text-base font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300"
+                                            dangerouslySetInnerHTML={{ __html: item.itemDesc }}
+                                        />
                                     </div>
                                 </div>
 

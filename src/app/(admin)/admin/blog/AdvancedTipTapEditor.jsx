@@ -136,6 +136,7 @@ import {
 } from 'lucide-react';
 
 export default function AdvancedTipTapEditor({ value, onChange }) {
+  const [mounted, setMounted] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [wordCount, setWordCount] = useState(0);
 
@@ -166,17 +167,11 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
       FontFamily.configure({ types: ['textStyle'] }),
 
       StarterKit.configure({
-        // Keep table OFF here since we add Table extension separately
-        table: false,
-        horizontalRule: true,
-        heading: {
-          // ✅ REMOVE H1 => allow only 2..6
-          levels: [2, 3, 4, 5, 6],
-        },
-        history: {
-          depth: 100,
-          newGroupDelay: 500,
-        },
+        heading: { levels: [2, 3, 4] },
+        bulletList: { keepMarks: true, keepAttributes: false },
+        orderedList: { keepMarks: true, keepAttributes: false },
+        history: false, // Using our own or keeping it simple
+        dropcursor: false, // Already in StarterKit or we configure below
       }),
 
       Underline,
@@ -310,6 +305,10 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     return () => document.removeEventListener('mousedown', onDown);
   }, []);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleImageUpload = async (file) => {
     setIsUploading(true);
     try {
@@ -371,8 +370,10 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     );
   }
 
+  if (!mounted) return <div className="min-h-[200px] bg-slate-50 rounded-xl" />;
+
   return (
-    <div className="advanced-editor" ref={editorRef}>
+    <div className="advanced-editor group" ref={editorRef}>
       <EditorToolbar
         editor={editor}
         onImageUpload={() => fileInputRef.current?.click()}

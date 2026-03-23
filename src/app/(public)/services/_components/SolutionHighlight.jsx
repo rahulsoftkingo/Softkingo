@@ -104,9 +104,10 @@ export default function SolutionHighlight({ data }) {
                                             <div className="mt-1 flex-shrink-0">
                                                 <Check size={20} strokeWidth={3} className="text-white" />
                                             </div>
-                                            <p className="text-base md:text-lg font-semibold text-white/90 leading-snug">
-                                                {feature}
-                                            </p>
+                                            <p 
+                                                className="text-base md:text-lg font-semibold text-white/90 leading-snug"
+                                                dangerouslySetInnerHTML={{ __html: feature }}
+                                            />
                                         </motion.div>
                                     ))}
                                 </div>

@@ -121,9 +121,10 @@ export default function FAQAccordion({ data }) {
                     }`}
                   >
                     <div className="overflow-hidden">
-                        <p className="px-6 pb-6 pl-[4.5rem] text-sm md:text-base text-slate-600 leading-relaxed">
-                            {it.a}
-                        </p>
+                        <div 
+                            className="px-6 pb-6 pl-[4.5rem] text-sm md:text-base text-slate-600 leading-relaxed prose prose-sm max-w-none"
+                            dangerouslySetInnerHTML={{ __html: it.a }}
+                        />
                     </div>
                   </div>
                 </div>

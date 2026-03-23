@@ -84,9 +84,10 @@ const IndustryProcess = ({ data }) => {
                         </h4>
                       </div>
                       
-                      <p className="text-slate-500 leading-relaxed text-base md:text-lg">
-                        {step.description}
-                      </p>
+                      <p 
+                        className="text-slate-500 leading-relaxed text-base md:text-lg"
+                        dangerouslySetInnerHTML={{ __html: step.description }}
+                      />
 
                       {/* Animated bottom bar */}
                       <div className={`absolute bottom-0 h-1 bg-gradient-to-r from-sky-500 to-blue-600 transition-all duration-500 ${

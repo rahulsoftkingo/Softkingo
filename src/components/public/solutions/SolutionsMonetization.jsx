@@ -78,9 +78,10 @@ export default function SolutionsMonetization({ data }) {
                     <h4 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors">
                         {item.title}
                     </h4>
-                    <p className="text-slate-600 leading-relaxed mb-8">
-                        {item.description}
-                    </p>
+                    <p 
+                        className="text-slate-600 leading-relaxed mb-8"
+                        dangerouslySetInnerHTML={{ __html: item.description }}
+                    />
 
                     {/* Points List */}
                     <div className="mt-auto pt-6 border-t border-slate-50">

@@ -1,17 +1,23 @@
 // components/admin/AdminHeaderClient.jsx
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Menu, Bell, User, Settings, LogOut } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import Image from 'next/image';
-import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 
 export default function AdminHeaderClient({ session }) {
+  const [mounted, setMounted] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const primaryRole =
-    session?.user?.roles?.[0] || session?.user?.role || 'admin';
+    session?.user?.id === 'super-admin' ? 'Super Admin' : (session?.user?.roles?.[0] || session?.user?.role || 'Admin');
 
   const handleLogout = () => {
     signOut({ callbackUrl: '/login' });
@@ -94,10 +100,10 @@ export default function AdminHeaderClient({ session }) {
             
             <div className="hidden sm:flex flex-col items-start text-sm">
               <span className="font-semibold text-slate-900">
-                {session?.user?.name || session?.user?.username || 'User'}
+                {mounted && (session?.user?.name || session?.user?.username || 'User')}
               </span>
               <span className="text-sky-600 capitalize font-medium">
-                {primaryRole}
+                {mounted && primaryRole}
               </span>
             </div>
             <svg

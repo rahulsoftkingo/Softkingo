@@ -86,7 +86,7 @@ export default function IndustryCoversTabs({ data }) {
                             </div>
 
                             <div className="prose prose-lg text-slate-600 leading-relaxed">
-                                <p>{activeItem.description}</p>
+                                <p dangerouslySetInnerHTML={{ __html: activeItem.description }} />
                             </div>
 
                             <div className="mt-10 pt-8 border-t border-slate-100 flex gap-4">

@@ -51,9 +51,10 @@ const CommonTitle = ({
             
 
             {subtitle && (
-                <p className="text-sm sm:text-base md:text-lg text-gray-600">
-                    {subtitle}
-                </p>
+                <p 
+                    className="text-sm sm:text-base md:text-lg text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: subtitle }}
+                />
             )}
         </div>
     );

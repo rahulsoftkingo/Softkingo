@@ -82,6 +82,8 @@ export default function ServicePageEditor({ data, onBack }) {
 
     // --- STATE ---
     const [formData, setFormData] = useState({
+        title: '',
+        slug: '',
         ...data,
         activeSections: data?.activeSections || config.sections.map(s => s.id),
         content: data?.content || { hero: {} }
@@ -188,10 +190,11 @@ export default function ServicePageEditor({ data, onBack }) {
                     alert("❌ Error: " + (result.message || "Failed to save"));
                 }
             } else {
-                alert("✅ Saved Successfully!");
-                if (result.data && result.data.id) {
-                    setFormData(prev => ({ ...prev, id: result.data.id }));
+                const savedData = result.data || result.page || result.service;
+                if (savedData && savedData.id) {
+                    setFormData(prev => ({ ...prev, id: savedData.id }));
                 }
+                alert("✅ Saved Successfully!");
             }
         } catch (e) {
             console.error(e);
@@ -254,10 +257,19 @@ export default function ServicePageEditor({ data, onBack }) {
                 <div className="flex-1 overflow-y-auto p-5 space-y-6">
                     <div className="space-y-3">
                         <label className="text-[10px] font-bold text-slate-400 block">PAGE SETTINGS</label>
-                        <input className="w-full p-2.5 bg-white rounded-lg border border-slate-200 text-sm font-bold" value={formData.title} onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))} placeholder="Page Title" />
+                        <input className="w-full p-2.5 bg-white rounded-lg border border-slate-200 text-sm font-bold" value={formData.title || ''} onChange={e => {
+                            const val = e.target.value;
+                            setFormData(prev => {
+                                const newContent = { ...(prev.content || {}) };
+                                if (!newContent.heroTitle || newContent.heroTitle === prev.title) {
+                                    newContent.heroTitle = val;
+                                }
+                                return { ...prev, title: val, content: newContent };
+                            });
+                        }} placeholder="Page Title" />
                         <div className="flex items-center bg-white rounded-lg border border-slate-200 px-2">
                             <span className="text-slate-400 text-xs">/</span>
-                            <input className="w-full p-2 bg-transparent border-none text-sm font-mono text-slate-600 outline-none" value={formData.slug} onChange={e => setFormData(prev => ({ ...prev, slug: e.target.value }))} placeholder="slug-url" />
+                            <input className="w-full p-2 bg-transparent border-none text-sm font-mono text-slate-600 outline-none" value={formData.slug || ''} onChange={e => setFormData(prev => ({ ...prev, slug: e.target.value }))} placeholder="slug-url" />
                         </div>
                     </div>
                     <div className="space-y-2">

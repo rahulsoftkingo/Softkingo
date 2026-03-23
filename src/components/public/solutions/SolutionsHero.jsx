@@ -42,9 +42,10 @@ export default function SolutionsHero({ data }) {
               {data.title}
             </h1>
 
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl animate-fadeInUp delay-200">
-              {data.description}
-            </p>
+            <p 
+                className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl animate-fadeInUp delay-200"
+                dangerouslySetInnerHTML={{ __html: data.description }}
+            />
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
               <buttom

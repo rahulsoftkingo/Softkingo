@@ -1,4 +1,5 @@
 import React from 'react';
+import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
 import { COMMON_TECH } from './TechConstants';
 import {
     Smartphone, Layout, Database, Code, Settings, Zap,
@@ -38,7 +39,10 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     <input className={inputStyle} placeholder="Main Title (Line 1)" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
                     <input className={`${inputStyle} text-sky-600 font-semibold`} placeholder="Highlight Text (Line 2)" value={content.hero?.highlight || ''} onChange={e => updateField('content.hero.highlight', e.target.value)} />
                 </div>
-                <textarea className={inputStyle} rows={3} placeholder="Description" value={content.hero?.description || ''} onChange={e => updateField('content.hero.description', e.target.value)} />
+                <div className="space-y-1">
+                    <label className={labelStyle}>Hero Description</label>
+                    <MiniRichTextEditor value={content.hero?.description || ''} onChange={val => updateField('content.hero.description', val)} />
+                </div>
                 <MediaInput label="Hero Image" value={content.hero?.image} path="content.hero.image" />
             </SectionWrapper>
 
@@ -60,7 +64,10 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             {/* 3. INTRODUCTION */}
             <SectionWrapper id="intro" icon={Layout} title="3. Introduction Section" activeSections={activeSections}>
                 <input className={inputStyle} placeholder="Section Title" value={content.intro?.title || ''} onChange={e => updateField('content.intro.title', e.target.value)} />
-                <textarea className={inputStyle} rows={3} placeholder="Intro Description" value={content.intro?.description || ''} onChange={e => updateField('content.intro.description', e.target.value)} />
+                <div className="space-y-1">
+                    <label className={labelStyle}>Intro Description</label>
+                    <MiniRichTextEditor value={content.intro?.description || ''} onChange={val => updateField('content.intro.description', val)} />
+                </div>
                 <div className="grid md:grid-cols-2 gap-4">
                     <MediaInput label="Intro Highlight Image" value={content.intro?.image} path="content.intro.image" />
                     <div>
@@ -323,7 +330,10 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
                             <div className="flex-1 space-y-2">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateField(`content.faq.items.${i}.q`, e.target.value)} />
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Answer" value={item.a || ''} onChange={e => updateField(`content.faq.items.${i}.a`, e.target.value)} />
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Answer (Rich Text)</label>
+                                    <MiniRichTextEditor value={item.a || ''} onChange={val => updateField(`content.faq.items.${i}.a`, val)} />
+                                </div>
                             </div>
                             <button type="button" onClick={() => updateField('content.faq.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
                         </div>

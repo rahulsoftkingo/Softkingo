@@ -59,9 +59,10 @@ export default function IndustriesHero({ data }) {
                 
                 {/* Description */}
                 {description && (
-                    <p className="text-lg md:text-xl text-slate-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-fadeInUp delay-100">
-                        {description}
-                    </p>
+                    <p 
+                        className="text-lg md:text-xl text-slate-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-fadeInUp delay-100"
+                        dangerouslySetInnerHTML={{ __html: description }}
+                    />
                 )}
 
                 {/* CTA Buttons */}

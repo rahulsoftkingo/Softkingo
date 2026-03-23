@@ -40,13 +40,14 @@ export default function SolutionsProcess({ data }) {
                             <h4 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-sky-700 transition-colors">
                                 {step.title}
                             </h4>
-                            <p className="text-sm text-slate-500 leading-relaxed">
-                                {step.description}
-                            </p>
+                            <p 
+                                className="text-slate-600 text-lg leading-relaxed max-w-2xl"
+                                dangerouslySetInnerHTML={{ __html: step.description }}
+                            />
                         </div>
 
                         {/* Mobile Vertical Line (Connector) */}
-                        {idx !== data.steps.length - 1 && (
+                        {idx !== (data.steps?.length - 1) && (
                             <div className="lg:hidden absolute bottom-[-32px] left-1/2 -translate-x-1/2 w-0.5 h-8 bg-sky-200 border-l border-dashed border-slate-300"></div>
                         )}
                     </div>
