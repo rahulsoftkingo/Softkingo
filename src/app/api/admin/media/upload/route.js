@@ -1,22 +1,24 @@
 // src/app/api/admin/media/upload/route.js
 import { NextResponse } from 'next/server';
-import path from 'path';
-import fs from 'fs/promises';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { validateAndProcessUpload } from '@/lib/secure-upload';
 
-const UPLOAD_ROOT = path.join(process.cwd(), 'public', 'uploads');
-
-async function ensureDir(dir) {
-  try {
-    await fs.mkdir(dir, { recursive: true });
-  } catch { }
+function isAdminOrManager(session) {
+  const roles = session?.user?.roles || [];
+  return roles.includes('admin') || roles.includes('manager');
 }
 
 export async function POST(req) {
+  const session = await getServerSession(authOptions);
+  if (!session || !isAdminOrManager(session)) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
     const formData = await req.formData();
     const file = formData.get('file');
-    const folder = (formData.get('folder') || 'general').toString();
+    const folder = (formData.get('folder') || 'uncategorized').toString();
 
     // ✅ Use centralized secure utility
     const result = await validateAndProcessUpload(file, {

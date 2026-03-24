@@ -1,16 +1,20 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
-import { toAbsPublic, sanitizeRel, toPublicUrl } from "../_utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { validateAndProcessUpload } from "@/lib/secure-upload";
 
 export const runtime = 'nodejs'; // Ensure Node runtime for FS
 
 export async function POST(req) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const form = await req.formData();
     const file = form.get("file");
-    let rawFolder = (form.get("folder") || "general").toString();
+    let rawFolder = (form.get("folder") || "uncategorized").toString();
 
     // Clean folder name
     const subFolder = rawFolder.replace(/^uploads[\/\\]?/, "").replace(/^[\/\\]+/, "").replace(/^public[\/\\]?/, "");

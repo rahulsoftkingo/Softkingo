@@ -11,7 +11,7 @@ async function validateAndProcessUpload(file, options = {}) {
         allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'],
         maxSize = 10 * 1024 * 1024, // 10MB default
         baseDir = 'public/uploads',
-        subFolder = 'general'
+        subFolder = 'uncategorized'
     } = options;
 
     if (!file) {
@@ -25,6 +25,19 @@ async function validateAndProcessUpload(file, options = {}) {
 
     // 2. Strict Extension Check (Zero-Trust)
     const originalName = file.name || 'document';
+    
+    // Check for double extensions (e.g., test.png.php)
+    const parts = originalName.split('.');
+    if (parts.length > 2) {
+        // More than one dot - check all parts for dangerous extensions
+        const dangerousExtensions = ['php', 'php3', 'php4', 'php5', 'phtml', 'exe', 'sh', 'js', 'jsp', 'asp', 'aspx'];
+        for (let i = 1; i < parts.length; i++) {
+            if (dangerousExtensions.includes(parts[i].toLowerCase())) {
+                throw new Error(`Potentially malicious multi-extension file detected: ${originalName}`);
+            }
+        }
+    }
+
     const lastDotIndex = originalName.lastIndexOf('.');
     if (lastDotIndex === -1) {
         throw new Error('File must have an extension');
@@ -32,7 +45,7 @@ async function validateAndProcessUpload(file, options = {}) {
     const ext = originalName.substring(lastDotIndex).toLowerCase();
     
     // Strict Whitelist
-    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif', '.pdf'];
     if (!allowedExtensions.includes(ext)) {
         throw new Error(`Forbidden file extension: ${ext}`);
     }
@@ -63,14 +76,25 @@ async function validateAndProcessUpload(file, options = {}) {
         }
     }
 
-    // SVG is text-based, no binary signature check here for simplicity but it's in the extension whitelist
-    if (ext === '.svg') detectedMime = 'image/svg+xml';
+    // SVG is text-based, we check for basic SVG tag
+    if (ext === '.svg') {
+        const content = buffer.toString('utf8').trim();
+        if (content.includes('<svg') && content.includes('http://www.w3.org/2000/svg')) {
+            detectedMime = 'image/svg+xml';
+        }
+    }
 
     if (!detectedMime) {
         throw new Error('Invalid file content: Signature does not match expected format');
     }
 
+    // Verify detected MIME is in the allowed list
+    if (!allowedMimeTypes.includes(detectedMime)) {
+        throw new Error(`MIME type ${detectedMime} is not allowed for this upload`);
+    }
+
     // 4. Force Random Filename (Zero-Trust Renaming)
+    // We strictly use a UUID to prevent path traversal or overwriting via filename
     const fileName = `${crypto.randomUUID()}${ext}`;
     
     // 5. Ensure Directory Exists

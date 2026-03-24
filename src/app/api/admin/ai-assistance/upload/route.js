@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import prisma from '@/lib/prisma';
 import { validateAndProcessUpload } from '@/lib/secure-upload';
+
+function isAdminOrManager(session) {
+    const roles = session?.user?.roles || [];
+    return roles.includes('admin') || roles.includes('manager');
+}
 
 // Polyfill DOMMatrix for pdf-parse/pdfjs
 if (typeof global.DOMMatrix === 'undefined') {
@@ -14,6 +21,11 @@ if (typeof global.DOMMatrix === 'undefined') {
 const pdf = require('pdf-parse');
 
 export async function POST(req) {
+    const session = await getServerSession(authOptions);
+    if (!session || !isAdminOrManager(session)) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     try {
         const formData = await req.formData();
         const file = formData.get('file');
