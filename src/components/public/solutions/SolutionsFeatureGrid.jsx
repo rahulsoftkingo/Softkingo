@@ -53,7 +53,7 @@ export default function SolutionsFeatureGrid({ data }) {
 
                   <div className="w-16 h-1 bg-white/30 rounded-full mb-6"></div>
 
-                  <div 
+                  <div
                     className="text-sky-50 text-base leading-relaxed font-medium"
                     dangerouslySetInnerHTML={{ __html: item.description || "We provide top-notch development services tailored to your business needs." }}
                   />

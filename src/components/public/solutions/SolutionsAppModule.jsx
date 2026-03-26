@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import Image from 'next/image';
-import CommonTitle from '@/components/ui/CommonTitle';
 import { Check } from 'lucide-react';
 
 export default function SolutionsAppModule({ data, reverse = false, bg = "white" }) {
@@ -13,32 +12,38 @@ export default function SolutionsAppModule({ data, reverse = false, bg = "white"
                 <div className={`flex flex-col lg:flex-row items-center gap-16 ${reverse ? 'lg:flex-row-reverse' : ''}`}>
 
                     {/* Content Side */}
-                    <div className="flex-1 space-y-8">
+                    <div className="flex-1 space-y-8 w-full">
                         <div className="inline-block px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
                             {data.tag}
                         </div>
                         <h2 className="text-3xl lg:text-4xl font-black text-slate-900 leading-normal">
                             {data.title}
                         </h2>
-                        <div 
+                        <div
                             className="text-slate-600 text-lg"
                             dangerouslySetInnerHTML={{ __html: data.description }}
                         />
 
-                        <div className="grid sm:grid-cols-2 gap-4 pt-4">
+                        {/* Features Row - Horizontal Scroll added here */}
+                        <div className="flex overflow-x-auto gap-4 pt-4 pb-2 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                             {data.features?.map((feat, i) => (
-                                <div key={i} className="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                                <div
+                                    key={i}
+                                    className="flex-shrink-0 snap-start flex items-center gap-3 p-3 pr-5 bg-white rounded-xl border border-slate-100 shadow-sm"
+                                >
                                     <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0">
                                         <Check size={14} strokeWidth={3} />
                                     </div>
-                                    <span className="font-semibold text-slate-700 text-sm">{feat}</span>
+                                    <span className="font-semibold text-slate-700 text-sm whitespace-nowrap">
+                                        {feat}
+                                    </span>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* Image Side */}
-                    <div className="flex-1 relative">
+                    <div className="flex-1 relative w-full">
                         <div className={`relative z-10 w-full flex justify-center ${data.isWeb ? '' : 'max-w-sm mx-auto'}`}>
                             <Image
                                 src={data.image || "/images/placeholder.png"}

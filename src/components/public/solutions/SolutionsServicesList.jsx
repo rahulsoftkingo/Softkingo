@@ -28,13 +28,14 @@ export default function SolutionsServicesList({ data }) {
                     subtitle={data.subtitle}
                 />
 
-                {/* 2. Dynamic Tabs (Center) */}
-                <div className="flex flex-wrap justify-center gap-4 mb-16 ">
+                {/* 2. Dynamic Tabs (Mobile: Horizontal Scroll, Desktop: Center Wrap) */}
+                <div className="flex overflow-x-auto lg:flex-wrap justify-start lg:justify-center gap-4 mb-16 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     {data.tabs.map((tab, idx) => (
                         <button
                             key={idx}
                             onClick={() => setActiveTab(idx)}
-                            className={`px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 border ${activeTab === idx
+                            // flex-shrink-0 aur snap-start lagaya taaki button dab na jaye aur smooth scroll ho
+                            className={`flex-shrink-0 snap-start px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 border ${activeTab === idx
                                     ? "bg-sky-600 text-white border-sky-600 shadow-lg shadow-sky-200"
                                     : "bg-white text-slate-600 border-slate-200 hover:border-sky-400 hover:text-sky-500"
                                 }`}
@@ -51,7 +52,6 @@ export default function SolutionsServicesList({ data }) {
                     <div className="relative col-span-3 ">
                         {/* Tab Title & Description */}
                         <div className="mb-12 sticky top-24 z-10 bg-slate-50">
-
                             <CommonTitle
                                 align="left"
                                 title={currentTab.heading}
@@ -97,14 +97,12 @@ export default function SolutionsServicesList({ data }) {
                                         src={currentTab.image || "/images/placeholder.png"}
                                         alt={currentTab.heading}
                                         fill
-                                        className=" animate-scaleIn"
+                                        // object-contain add kiya taaki notch wali image kate nahi
+                                        className="object-contain animate-scaleIn"
                                     />
                                 </div>
 
-                                {/* Mobile Notch / Web Bar Decor */}
-                                {!currentTab.isWeb && (
-                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-xl z-20"></div>
-                                )}
+                                {/* Notch code here was completely REMOVED as per your request */}
                             </div>
 
                             {/* Decorative background blob behind image */}

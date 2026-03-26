@@ -22,12 +22,12 @@ export default function SolutionsTechStack({ data }) {
 
                 {/* 2. Category Tabs */}
                 {data?.tabs?.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-3 md:gap-4 mt-10 mb-16">
+                    <div className="flex overflow-x-auto justify-start md:justify-center gap-3 md:gap-4 mt-10 mb-16 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                         {data.tabs.map((tab, idx) => (
                             <button
                                 key={idx}
                                 onClick={() => setActiveTab(idx)}
-                                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${activeTab === idx
+                                className={`flex-shrink-0 snap-start whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${activeTab === idx
                                         ? "bg-sky-600 text-white border-sky-600 shadow-md transform scale-105"
                                         : "bg-slate-50 text-slate-600 border-slate-200 hover:border-sky-300 hover:text-sky-600"
                                     }`}
@@ -55,7 +55,7 @@ export default function SolutionsTechStack({ data }) {
                                         className="object-contain"
                                     />
                                 </div>
-                                <span className="text-sm font-semibold text-slate-500 group-hover:text-sky-700 transition-colors">
+                                <span className="text-sm font-semibold text-slate-500 group-hover:text-sky-700 transition-colors text-center">
                                     {tech.name}
                                 </span>
                             </div>

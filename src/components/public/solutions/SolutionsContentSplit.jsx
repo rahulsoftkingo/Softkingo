@@ -11,7 +11,7 @@ export default function SolutionsContentSplit({ data, reverse = false }) {
 
     return (
         <section className="pb-20 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-3  gap-16 items-center">
+            <div className="max-w-7xl mx-auto  px-6 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16 items-center">
 
                 {/* Text Side */}
                 <div className={`col-span-2 space-y-8 ${reverse ? 'lg:order-2' : ''}`}>

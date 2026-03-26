@@ -28,18 +28,21 @@ export default function ConsultationCTA({
           : "bg-gradient-to-br from-[#28AFDF] to-[#06465D]"
           }`}>
           <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-6 p-8 md:p-12">
+
             {/* Left image - overlaps a bit */}
             <div className={`md:col-span-1 flex items-center ${isWhite ? "justify-center" : "justify-start"} -ml-4 md:-ml-0`}>
               <div className="hidden md:block md:mr-4" />
-              <div className=" h-full w-full max-h-18 md:max-h-2">
+              {/* Added 'relative' to the wrapper to fix positioning context */}
+              <div className="relative h-full w-full max-h-18 md:max-h-2">
                 <Image
                   src={imageSrc}
                   alt="consultant"
                   width={500}
                   height={500}
-                  className={`relative object-contain ${isWhite
-                    ? "-top-30 h-50 md:-top-62  md:h-98 scale-110"
-                    : "relative -bottom-4 md:absolute md:-bottom-8 md:left-0 md:w-80 md:h-98  scale-110 md:scale-125"
+                  // Added w-auto to satisfy Next.js aspect ratio rules
+                  className={`relative object-contain w-auto ${isWhite
+                    ? "-top-30 h-50 md:-top-62 md:h-92 scale-110"
+                    : "relative -top-30 md:absolute md:-top-62 h-50 md:h-92 scale-110 md:scale-110"
                     }`}
                 />
               </div>
@@ -56,7 +59,7 @@ export default function ConsultationCTA({
               <div className="mt-8">
                 <button
                   onClick={() => setShowModal(true)}
-                  className={`inline-flex items-center gap-4 px-8 py-4 rounded-full font-bold shadow-2xl transition-all hover:-translate-y-1 active:scale-95 cursor-pointer z-20 ${isWhite
+                  className={`inline-flex items-center gap-4 px-8 py-3 rounded-full font-bold shadow-2xl transition-all hover:-translate-y-1 active:scale-95 cursor-pointer z-20 ${isWhite
                     ? "bg-sky-600 text-white shadow-sky-200 hover:bg-sky-700"
                     : "bg-gradient-to-r from-sky-600 via-sky-600 to-sky-400 text-white shadow-sky-800"
                     }`}

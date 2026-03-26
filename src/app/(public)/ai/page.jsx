@@ -394,8 +394,8 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 08. AI Development Process */}
-      <section id="process" className="py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="process" className="py-20 lg:py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <CommonTitle
             align="center"
             title="AI Development"
@@ -403,16 +403,18 @@ export default function AIPage() {
             subtitle="We follow a structured, transparent, and results-driven AI development approach:"
           />
 
-          <div className="flex flex-col lg:flex-row mt-16 lg:mt-24 items-center">
+          <div className="flex flex-col lg:flex-row mt-10 md:mt-16 lg:mt-24 items-center w-full">
             {/* Left: Steps Selection Panel */}
             <motion.div
-              className="lg:w-[450px] bg-[#e3f6fe] rounded-[32px] p-6 lg:p-10 relative shadow-xl border border-sky-100 z-10 lg:-mr-20"
+              className="w-full lg:w-[450px] bg-[#e3f6fe] rounded-[24px] lg:rounded-[32px] p-4 sm:p-6 lg:p-10 relative shadow-xl border border-sky-100 z-10 lg:-mr-20 mb-6 lg:mb-0"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <div className="space-y-4">
+
+              {/* Responsive Tabs: Horizontal Scroll on Mobile, Vertical on Desktop */}
+              <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-3 lg:gap-4 pb-2 lg:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-full">
                 {[
                   "Discovery & Consultation",
                   "Data Strategy & Preparation",
@@ -423,13 +425,14 @@ export default function AIPage() {
                   <button
                     key={idx}
                     onMouseEnter={() => setActiveProcess(idx)}
-                    className={`w-full text-left px-6 py-4 rounded-xl transition-all duration-300 font-bold flex items-center gap-3 ${activeProcess === idx
+                    onClick={() => setActiveProcess(idx)} // Mobile fallback
+                    className={`flex-shrink-0 snap-start w-[260px] sm:w-[300px] lg:w-full text-left px-5 lg:px-6 py-4 rounded-xl transition-all duration-300 font-bold flex items-center gap-3 ${activeProcess === idx
                       ? "bg-[#38bdf8] text-white shadow-lg shadow-sky-200"
-                      : "text-[#1e293b] hover:bg-white/50"
+                      : "text-[#1e293b] hover:bg-white/50 bg-white/40 lg:bg-transparent"
                       }`}
                   >
                     <span className="opacity-70 text-sm">{idx + 1 < 10 ? `0${idx + 1}` : idx + 1}</span>
-                    <span className="text-sm md:text-base leading-snug">{step}</span>
+                    <span className="text-sm md:text-base leading-snug whitespace-normal">{step}</span>
                   </button>
                 ))}
               </div>
@@ -446,9 +449,9 @@ export default function AIPage() {
               transition={{ duration: 0.5 }}
               key={activeProcess}
             >
-              <div className="bg-[#38bdf8] rounded-[32px] p-8 lg:p-16 lg:pl-24 h-full min-h-[400px] lg:min-h-[450px] flex flex-col justify-center text-white shadow-2xl shadow-sky-200/50">
+              <div className="bg-[#38bdf8] rounded-[24px] lg:rounded-[32px] p-6 sm:p-8 lg:p-16 lg:pl-24 h-full min-h-[280px] md:min-h-[350px] lg:min-h-[450px] flex flex-col justify-center text-white shadow-2xl shadow-sky-200/50">
                 <motion.h3
-                  className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 leading-normal"
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 lg:mb-6 leading-normal"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -462,7 +465,7 @@ export default function AIPage() {
                   ][activeProcess]}
                 </motion.h3>
                 <motion.p
-                  className="text-base md:text-lg lg:text-xl font-medium leading-relaxed opacity-95"
+                  className="text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed opacity-95"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
@@ -590,8 +593,8 @@ export default function AIPage() {
       </section>
 
       {/* 10. Ai Powered Solutions */}
-      <section id="solutions" className="py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm text-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="solutions" className="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm text-black overflow-hidden w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <CommonTitle
             align="center"
             title="Ai Powered Solutions"
@@ -599,9 +602,10 @@ export default function AIPage() {
             subtitle="Intelligent mobile and web applications powered by AI help businesses improve efficiency, enhance customer experience, and accelerate growth"
           />
 
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-stretch">
-            {/* Left: Solutions Grid */}
-            <div className="lg:w-1/2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-20 items-stretch mt-10 md:mt-16 w-full">
+
+            {/* Left: Solutions Grid (Mobile: Horizontal Scroll, Desktop: 2-Col Grid) */}
+            <div className="lg:w-1/2 flex overflow-x-auto md:grid md:grid-cols-2 gap-3 sm:gap-4 pb-4 md:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-full">
               {[
                 { title: "AI Chatbot & Virtual Assistant Development", icon: <FaRobot /> },
                 { title: "AI-Based Recommendation System", icon: <FaBrain /> },
@@ -613,8 +617,9 @@ export default function AIPage() {
                 <motion.div
                   key={idx}
                   onMouseEnter={() => setActiveAiSolution(idx)}
-                  className={`p-6 md:p-8 rounded-[24px] transition-all duration-300 cursor-pointer flex flex-col gap-4 border border-sky-100/50 ${activeAiSolution === idx
-                    ? "bg-white text-black shadow-2xl shadow-sky-200/50 border-sky-300"
+                  onClick={() => setActiveAiSolution(idx)} // Mobile touch support
+                  className={`flex-shrink-0 snap-start w-[240px] sm:w-[280px] md:w-auto p-4 md:p-6 lg:p-8 rounded-[20px] md:rounded-[24px] transition-all duration-300 cursor-pointer flex flex-col gap-3 md:gap-4 border border-sky-100/50 ${activeAiSolution === idx
+                    ? "bg-white text-black shadow-xl shadow-sky-200/50 border-sky-300"
                     : "bg-white/40 backdrop-blur-md text-slate-600 hover:bg-white/60"
                     }`}
                   initial={{ opacity: 0, scale: 0.8, y: 40 }}
@@ -622,22 +627,22 @@ export default function AIPage() {
                   transition={{ duration: 0.6, delay: idx * 0.08 }}
                   viewport={{ once: true }}
                 >
-                  <div className={`text-2xl ${activeAiSolution === idx ? "text-[#38bdf8]" : "text-slate-400 opacity-80"}`}>
+                  <div className={`text-xl md:text-2xl ${activeAiSolution === idx ? "text-[#38bdf8]" : "text-slate-400 opacity-80"}`}>
                     {item.icon}
                   </div>
-                  <h3 className={`text-sm md:text-base font-bold leading-snug ${activeAiSolution === idx ? "text-black" : "text-slate-600"}`}>
+                  <h3 className={`text-xs sm:text-sm md:text-base font-bold leading-snug whitespace-normal ${activeAiSolution === idx ? "text-black" : "text-slate-600"}`}>
                     {item.title}
                   </h3>
                 </motion.div>
               ))}
             </div>
 
-            {/* Middle: Vertical Divider */}
+            {/* Middle: Vertical Divider (Hidden on Mobile/Tablet) */}
             <div className="hidden lg:block w-px bg-slate-200 self-stretch my-4" />
 
             {/* Right: Detail Panel */}
             <motion.div
-              className="lg:w-1/2 flex flex-col justify-center"
+              className="lg:w-1/2 flex flex-col justify-center w-full mt-4 lg:mt-0"
               key={activeAiSolution}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -648,7 +653,7 @@ export default function AIPage() {
                   {
                     title: "AI App Development",
                     desc: "Smart conversational systems that handle customer queries, provide instant responses, and improve engagement",
-                    features: ["24/7 support", "multilingual capability", "CRM integration", "context-aware responses"]
+                    features: ["24/7 support", "Multilingual capability", "CRM integration", "Context-aware responses"]
                   },
                   {
                     title: "Custom Recommendations",
@@ -678,18 +683,19 @@ export default function AIPage() {
                 ];
                 const data = solutionsData[activeAiSolution] || solutionsData[0];
                 return (
-                  <div>
-                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-8 leading-normal text-black">
+                  <div className="bg-white/50 lg:bg-transparent p-5 sm:p-6 lg:p-0 rounded-[20px] border border-sky-50 lg:border-transparent">
+                    {/* Responsive Fonts: Smaller on mobile, larger on desktop */}
+                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black mb-4 lg:mb-8 leading-snug md:leading-normal text-black break-words">
                       {data?.title}
                     </h3>
-                    <p className="text-base md:text-lg lg:text-xl font-medium text-slate-700 mb-12 leading-relaxed">
+                    <p className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-slate-700 mb-6 lg:mb-12 leading-relaxed break-words">
                       {data?.desc}
                     </p>
-                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                       {(data?.features || []).map((feat, fIdx) => (
-                        <li key={fIdx} className="flex items-center gap-2 text-base md:text-lg font-bold text-slate-800">
-                          <FaCheck className="text-sky-500 text-sm" />
-                          <span>{feat}</span>
+                        <li key={fIdx} className="flex items-start gap-2 text-sm sm:text-base md:text-lg font-bold text-slate-800">
+                          <FaCheck className="text-sky-500 text-xs sm:text-sm mt-1 sm:mt-1.5 flex-shrink-0" />
+                          <span className="leading-snug">{feat}</span>
                         </li>
                       ))}
                     </ul>
@@ -697,6 +703,7 @@ export default function AIPage() {
                 );
               })()}
             </motion.div>
+
           </div>
         </div>
       </section>
@@ -866,7 +873,7 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+      {/* <div className="section-divider" /> */}
 
       {/* 13. Latest App Projects */}
       {/* <DynamicPortfolioCard
@@ -875,7 +882,7 @@ export default function AIPage() {
         title="Latest App Projects"
         subtitle="Our newest mobile applications"
       /> */}
-      <div className="section-divider" />
+      {/* <div className="section-divider" /> */}
 
 
 

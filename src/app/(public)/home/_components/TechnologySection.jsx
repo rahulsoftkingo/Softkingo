@@ -94,33 +94,33 @@ export default function TechView() {
     const [selectedTech, setSelectedTech] = useState('Frontend');
 
     return (
-        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-12 md:py-16 px-4 md:px-6">
+        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-12 md:py-16 px-4 md:px-6 overflow-hidden">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8 md:mb-12 text-center max-w-2xl mx-auto">
-                   
-                     <CommonTitle
-            align="center"
-            pill={false}
-            title="Our "
-            gradientText="Technology"
-            subtitle="A practical, production-focused stack used across mobile, web, cloud, AI, blockchain and IoT."
-          />
+
+                    <CommonTitle
+                        align="center"
+                        pill={false}
+                        title="Our "
+                        gradientText="Technology"
+                        subtitle="A practical, production-focused stack used across mobile, web, cloud, AI, blockchain and IoT."
+                    />
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
-                    {/* Sidebar */}
-                    <aside className="w-full lg:w-64 bg-gradient-to-tl from-sky-300 via-sky-600 to-sky-400 rounded-xl p-4 lg:p-6 lg:sticky lg:top-4 h-fit">
-                        <ul className="space-y-1">
+                    {/* Sidebar / Top Navigation */}
+                    <aside className="w-full lg:w-64 bg-gradient-to-tl from-sky-300 via-sky-600 to-sky-400 rounded-xl p-2 md:p-4 lg:p-6 lg:sticky lg:top-4 h-fit">
+                        <ul className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 lg:gap-1 lg:space-y-1 pb-2 lg:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                             {sidebarItems.map((item) => (
                                 <li
                                     key={item}
+                                    onMouseEnter={() => setSelectedTech(item)} // Hover lag gaya yahan!
                                     onClick={() => setSelectedTech(item)}
-                                    className={`px-4 py-3 rounded-lg cursor-pointer transition-all text-sm md:text-base ${
-                                        selectedTech === item
+                                    className={`px-4 py-3 rounded-lg cursor-pointer transition-all text-sm md:text-base whitespace-nowrap flex-shrink-0 snap-start ${selectedTech === item
                                             ? 'bg-white shadow-md font-semibold text-sky-800'
                                             : 'text-sky-50 hover:bg-white/20'
-                                    }`}
+                                        }`}
                                 >
                                     {item}
                                 </li>
@@ -130,18 +130,18 @@ export default function TechView() {
 
                     {/* Tech Grid */}
                     <div className="flex-1">
-                        <h3 className="text-2xl md:text-3xl font-bold py-4 md:py-5 text-gray-800">{selectedTech}</h3>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold pb-4 md:py-5 text-gray-800">{selectedTech}</h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 animate-fadeIn">
                             {technologiesData[selectedTech]?.map((tech, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white hover:bg-sky-50 rounded-xl p-4 md:p-6 flex flex-col items-center justify-center shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group hover:-translate-y-1"
+                                    className="bg-white hover:bg-sky-50 rounded-xl p-4 md:p-6 flex flex-col items-center justify-center shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group hover:-translate-y-1 border border-slate-100"
                                 >
                                     <tech.icon
-                                        className="w-12 h-12 md:w-16 md:h-16 mb-3 transition-transform group-hover:scale-110 duration-300"
+                                        className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 mb-3 transition-transform group-hover:scale-110 duration-300"
                                         style={{ color: tech.color }}
                                     />
-                                    <span className="text-xs md:text-sm font-medium text-gray-700 text-center">
+                                    <span className="text-xs md:text-sm font-medium text-gray-700 text-center line-clamp-1">
                                         {tech.name}
                                     </span>
                                 </div>
