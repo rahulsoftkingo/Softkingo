@@ -169,32 +169,62 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             <SectionWrapper id="appModules" icon={Smartphone} title="8. App Modules (Tab Style)" activeSections={activeSections}>
                 <div className="space-y-6">
                     {(content.appModules?.tabs || []).map((tab, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative space-y-3">
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative space-y-4">
                             <button type="button" onClick={() => updateField('content.appModules.tabs', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
-                            <input className="w-1/2 p-2 bg-white border rounded text-sm font-bold" placeholder="Tab Name (e.g. Student App)" value={tab.name || ''} onChange={e => updateField(`content.appModules.tabs.${i}.name`, e.target.value)} />
-                            <textarea className="w-full p-2 bg-white border rounded text-sm" placeholder="Tab Description" value={tab.description || ''} onChange={e => updateField(`content.appModules.tabs.${i}.description`, e.target.value)} />
+                            
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Module Title (e.g. User App)</label>
+                                    <input className={inputStyle} placeholder="Title" value={tab.title || ''} onChange={e => updateField(`content.appModules.tabs.${i}.title`, e.target.value)} />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Tag (e.g. CUSTOMER / VENDOR)</label>
+                                    <input className={inputStyle} placeholder="Tag" value={tab.tag || ''} onChange={e => updateField(`content.appModules.tabs.${i}.tag`, e.target.value)} />
+                                </div>
+                            </div>
 
-                            <div className="p-3 bg-white rounded-lg border border-slate-100">
-                                <label className="text-[10px] font-black text-slate-400 block mb-2 uppercase">Tab Features</label>
-                                {(tab.features || []).map((feat, fi) => (
-                                    <div key={fi} className="flex gap-2 mb-2">
-                                        <input className="flex-1 p-2 bg-slate-50 border rounded text-xs" value={feat || ''} onChange={e => updateField(`content.appModules.tabs.${i}.features.${fi}`, e.target.value)} />
-                                        <button type="button" onClick={() => updateField('content.appModules.tabs', (prev) => {
-                                            const newTabs = [...(prev || [])];
-                                            newTabs[i] = { ...newTabs[i], features: newTabs[i].features.filter((_, idx) => idx !== fi) };
-                                            return newTabs;
-                                        })} className="text-slate-300"><X size={14} /></button>
+                            <div className="space-y-1">
+                                <label className={labelStyle}>Description</label>
+                                <textarea className={inputStyle} rows={2} placeholder="Description" value={tab.description || ''} onChange={e => updateField(`content.appModules.tabs.${i}.description`, e.target.value)} />
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6 items-start">
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3 bg-white p-3 rounded-lg border border-slate-100">
+                                        <input 
+                                            type="checkbox" 
+                                            id={`isWeb-${i}`}
+                                            className="w-4 h-4 text-sky-600 rounded"
+                                            checked={!!tab.isWeb}
+                                            onChange={e => updateField(`content.appModules.tabs.${i}.isWeb`, e.target.checked)}
+                                        />
+                                        <label htmlFor={`isWeb-${i}`} className="text-sm font-bold text-slate-700 cursor-pointer">Is Web Panel / Dashboard?</label>
                                     </div>
-                                ))}
-                                <button type="button" onClick={() => updateField('content.appModules.tabs', (prev) => {
-                                    const newTabs = [...(prev || [])];
-                                    newTabs[i] = { ...newTabs[i], features: [...(newTabs[i].features || []), ""] };
-                                    return newTabs;
-                                })} className="text-[10px] text-sky-600 font-bold">+ Add Feature to Tab</button>
+                                    <MediaInput label="Module Preview Image" value={tab.image} path={`content.appModules.tabs.${i}.image`} />
+                                </div>
+
+                                <div className="p-3 bg-white rounded-lg border border-slate-100">
+                                    <label className="text-[10px] font-black text-slate-400 block mb-2 uppercase">Key Features</label>
+                                    {(tab.features || []).map((feat, fi) => (
+                                        <div key={fi} className="flex gap-2 mb-2">
+                                            <input className="flex-1 p-2 bg-slate-50 border rounded text-xs" value={feat || ''} onChange={e => updateField(`content.appModules.tabs.${i}.features.${fi}`, e.target.value)} />
+                                            <button type="button" onClick={() => updateField('content.appModules.tabs', (prev) => {
+                                                const newTabs = [...(prev || [])];
+                                                newTabs[i] = { ...newTabs[i], features: newTabs[i].features.filter((_, idx) => idx !== fi) };
+                                                return newTabs;
+                                            })} className="text-slate-300"><X size={14} /></button>
+                                        </div>
+                                    ))}
+                                    <button type="button" onClick={() => updateField('content.appModules.tabs', (prev) => {
+                                        const newTabs = [...(prev || [])];
+                                        newTabs[i] = { ...newTabs[i], features: [...(newTabs[i].features || []), ""] };
+                                        return newTabs;
+                                    })} className="text-[10px] text-sky-600 font-bold">+ Add Feature</button>
+                                </div>
                             </div>
                         </div>
                     ))}
-                    <button type="button" onClick={() => updateField('content.appModules.tabs', (prev) => [...(prev || []), { name: "", description: "", features: [] }])} className="text-sm font-bold text-sky-600">+ Add New Module Tab</button>
+                    <button type="button" onClick={() => updateField('content.appModules.tabs', (prev) => [...(prev || []), { title: "", tag: "", description: "", image: "", isWeb: false, features: [] }])} className="text-sm font-bold text-sky-600">+ Add New Module</button>
                 </div>
             </SectionWrapper>
 
@@ -258,38 +288,60 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            <SectionWrapper id="techStack" icon={Code} title="12. Technology Stack" activeSections={activeSections}>
-                <div className="space-y-4">
-                    <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
-                        <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
-                        {COMMON_TECH.map((tech) => (
-                            <button 
-                                key={tech.name} 
-                                type="button" 
-                                onClick={() => updateField(`content.techStack.items`, (prev) => [...(prev || []), { ...tech }])}
-                                className="p-1 px-2 bg-slate-50 hover:bg-sky-50 hover:text-sky-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
-                            >
-                                <img src={tech.image} className="w-3.5 h-3.5" alt="" />
-                                {tech.name}
-                            </button>
-                        ))}
-                    </div>
-                    
-                    <label className={labelStyle}>Selected Tech Stack</label>
+            <SectionWrapper id="techStack" icon={Code} title="12. Technology Stack (Tabbed)" activeSections={activeSections}>
+                <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
-                        {(content.techStack?.items || []).map((item, i) => (
-                            <div key={i} className="flex gap-4 items-center bg-slate-50 p-3 rounded-lg border border-slate-100 relative group/tech">
-                                <button type="button" onClick={() => updateField('content.techStack.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
-                                <div className="flex-1">
-                                    <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.techStack.items.${i}.name`, e.target.value)} />
-                                </div>
-                                <div className="w-1/2">
-                                    <MediaInput label="Tech Logo" value={item.image} path={`content.techStack.items.${i}.image`} />
+                        <input className={inputStyle} placeholder="Section Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
+                        <input className={inputStyle} placeholder="Highlight Text" value={content.techStack?.highlight || ''} onChange={e => updateField('content.techStack.highlight', e.target.value)} />
+                    </div>
+                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.techStack?.subtitle || ''} onChange={e => updateField('content.techStack.subtitle', e.target.value)} />
+
+                    <div className="space-y-6 pt-4 border-t border-slate-100">
+                        <label className={labelStyle}>Categories (Tabs)</label>
+                        {(content.techStack?.tabs || []).map((tab, i) => (
+                            <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative group space-y-4">
+                                <button type="button" onClick={() => updateField('content.techStack.tabs', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-slate-300 hover:text-rose-500"><X size={18} /></button>
+                                <input className={inputStyle} placeholder="Category Label (e.g. Frontend)" value={tab.label || ''} onChange={e => updateField(`content.techStack.tabs.${i}.label`, e.target.value)} />
+
+                                <div className="space-y-4">
+                                    <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
+                                        <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
+                                        {COMMON_TECH.map((tech) => (
+                                            <button 
+                                                key={tech.name} 
+                                                type="button" 
+                                                onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { ...tech }])}
+                                                className="p-1 px-2 bg-slate-50 hover:bg-sky-50 hover:text-sky-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
+                                            >
+                                                <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                                {tech.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                        {(tab.items || []).map((item, j) => (
+                                            <div key={j} className="bg-white p-3 rounded-xl border border-slate-200 relative group/tech">
+                                                <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
+                                                <div className="flex gap-2 items-center">
+                                                    <div className="flex-1">
+                                                        <input className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.techStack.tabs.${i}.items.${j}.name`, e.target.value)} />
+                                                    </div>
+                                                    <div className="w-12 h-10">
+                                                        <MediaInput label="Icon" value={item.image} path={`content.techStack.tabs.${i}.items.${j}.image`} />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-sky-600 uppercase">+ Add Custom Tech</button>
                                 </div>
                             </div>
                         ))}
+                        <button type="button" onClick={() => updateField('content.techStack.tabs', (prev) => [...(prev || []), { label: "", items: [] }])} className="w-full py-4 border-2 border-dashed border-sky-200 rounded-2xl text-sky-600 font-bold hover:bg-sky-50 transition-all flex items-center justify-center gap-2">
+                            <Plus size={18} /> Add Tech Category
+                        </button>
                     </div>
-                    <button type="button" onClick={() => updateField('content.techStack.items', (prev) => [...(prev || []), { name: "", image: "" }])} className="text-xs font-bold text-sky-600 p-1">+ Add Custom Tech</button>
                 </div>
             </SectionWrapper>
 
@@ -323,22 +375,25 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            {/* 15. FAQ */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="15. FAQ" activeSections={activeSections}>
-                <div className="space-y-4">
-                    {(content.faq?.items || []).map((item, i) => (
-                        <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                            <div className="flex-1 space-y-2">
-                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateField(`content.faq.items.${i}.q`, e.target.value)} />
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Answer (Rich Text)</label>
-                                    <MiniRichTextEditor value={item.a || ''} onChange={val => updateField(`content.faq.items.${i}.a`, val)} />
-                                </div>
-                            </div>
-                            <button type="button" onClick={() => updateField('content.faq.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.faq.items', (prev) => [...(prev || []), { q: "", a: "" }])} className="text-xs font-bold text-sky-600 p-1">+ Add FAQ Item</button>
+            {/* 15. CONSULTATION CTA */}
+            <SectionWrapper id="consultation" icon={MessageSquare} title="15. Consultation CTA" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Button Label" value={content.consultation?.buttonLabel || ''} onChange={e => updateField('content.consultation.buttonLabel', e.target.value)} />
+                </div>
+                <div className="space-y-1">
+                    <label className={labelStyle}>Subtitle (HTML Support)</label>
+                    <MiniRichTextEditor value={content.consultation?.subtitle || ''} onChange={val => updateField('content.consultation.subtitle', val)} />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <MediaInput label="Consultant Image" value={content.consultation?.imageSrc} path="content.consultation.imageSrc" />
+                    <div className="space-y-1">
+                         <label className={labelStyle}>Theme</label>
+                         <select className={inputStyle} value={content.consultation?.theme || 'dark'} onChange={e => updateField('content.consultation.theme', e.target.value)}>
+                            <option value="dark">Dark (Blue Gradient)</option>
+                            <option value="white">White (Clean)</option>
+                         </select>
+                    </div>
                 </div>
             </SectionWrapper>
 
@@ -358,6 +413,67 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     <label className={labelStyle}>Blog Category (Slug)</label>
                     <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
                     <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
+                </div>
+            </SectionWrapper>
+
+            {/* 17. FAQ */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="17. FAQ" activeSections={activeSections}>
+                <div className="space-y-4">
+                    {(content.faq?.items || []).map((item, i) => (
+                        <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
+                            <div className="flex-1 space-y-2">
+                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateField(`content.faq.items.${i}.q`, e.target.value)} />
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Answer (Rich Text)</label>
+                                    <MiniRichTextEditor value={item.a || ''} onChange={val => updateField(`content.faq.items.${i}.a`, val)} />
+                                </div>
+                            </div>
+                            <button type="button" onClick={() => updateField('content.faq.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.faq.items', (prev) => [...(prev || []), { q: "", a: "" }])} className="text-xs font-bold text-sky-600 p-1">+ Add FAQ Item</button>
+                </div>
+            </SectionWrapper>
+
+            {/* 18. BOTTOM CTA */}
+            <SectionWrapper id="cta" icon={MousePointerClick} title="18. Bottom CTA" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="CTA Title" value={content.cta?.title || ''} onChange={e => updateField('content.cta.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Button Text" value={content.cta?.btnText || ''} onChange={e => updateField('content.cta.btnText', e.target.value)} />
+                </div>
+                <div className="space-y-1">
+                    <label className={labelStyle}>Subtitle</label>
+                    <input className={inputStyle} placeholder="CTA Subtitle" value={content.cta?.subtitle || ''} onChange={e => updateField('content.cta.subtitle', e.target.value)} />
+                </div>
+            </SectionWrapper>
+
+            {/* 19. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="19. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
+                <div className="space-y-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>SEO Title</label>
+                        <input className={inputStyle} placeholder="Meta Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>SEO Description</label>
+                        <textarea className={inputStyle} rows={3} placeholder="Meta Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
+                    </div>
+                    <MediaInput label="OG Image" value={formData.seoImage} path="seoImage" />
+                </div>
+            </SectionWrapper>
+
+            {/* 20. INQUIRY SECTION */}
+            <SectionWrapper id="inquiry" icon={MessageSquare} title="20. Inquiry Section" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Tagline (e.g. GET IN TOUCH)" value={content.inquiry?.tagline || ''} onChange={e => updateField('content.inquiry.tagline', e.target.value)} />
+                    <input className={inputStyle} placeholder="Title Prefix (e.g. Let's )" value={content.inquiry?.titlePrefix || ''} onChange={e => updateField('content.inquiry.titlePrefix', e.target.value)} />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Title (e.g. Connect)" value={content.inquiry?.title || ''} onChange={e => updateField('content.inquiry.title', e.target.value)} />
+                </div>
+                <div className="space-y-1">
+                    <label className={labelStyle}>Subtitle (HTML Support)</label>
+                    <MiniRichTextEditor value={content.inquiry?.subtitle || ''} onChange={val => updateField('content.inquiry.subtitle', val)} />
                 </div>
             </SectionWrapper>
 

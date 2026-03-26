@@ -157,15 +157,6 @@ export default function CloneIndustries({ data, industries = [] }) {
             {/* Custom Background Circle for texture if needed */}
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-sky-100 rounded-full opacity-30 blur-[100px] pointer-events-none"></div>
 
-            <style jsx>{`
-                .no-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                .no-scrollbar {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-            `}</style>
         </section>
     );
 }

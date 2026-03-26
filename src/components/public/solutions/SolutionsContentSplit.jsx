@@ -20,7 +20,6 @@ export default function SolutionsContentSplit({ data, reverse = false }) {
                             align="left"
                             title={data.title}
                             subtitle={data.description}
-                            pill={data.pill}
                         />
                     </div>
 

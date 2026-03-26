@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import CommonTitle from "@/components/ui/CommonTitle";
+import Link from "next/link";
 
 export default function IndustrySolutions({ data }) {
     const scrollRef = useRef(null);
@@ -82,22 +83,37 @@ export default function IndustrySolutions({ data }) {
 
                                 {/* Content */}
                                 <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
-                                    <div className="space-y-3">
+                                    <div className="space-y-4">
                                         <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-normal">
                                             {item.itemTitle}
                                         </h3>
-                                        <p 
-                                            className="text-sm md:text-base font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300"
+                                        <div
+                                            className="text-sm md:text-base font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300 rich-text"
                                             dangerouslySetInnerHTML={{ __html: item.itemDesc }}
                                         />
+
+                                        {/* Dynamic Points */}
+                                        {item.points && item.points.length > 0 && (
+                                            <div className="pt-2 space-y-2 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500">
+                                                {item.points.map((point, pIdx) => (
+                                                    <div key={pIdx} className="flex items-center gap-2 text-xs md:text-sm font-semibold">
+                                                        <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                                                        {point}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
-                                {/* Arrow Button */}
+                                {/* Dynamic Button */}
                                 <div className="absolute bottom-8 right-8 z-10">
-                                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-xl transition-all duration-300 hover:scale-110">
+                                    <Link
+                                        href={item.buttonLink || "#"}
+                                        className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-xl transition-all duration-300 hover:scale-110 hover:bg-blue-600 hover:text-white"
+                                    >
                                         <ArrowUpRight size={24} strokeWidth={2.5} />
-                                    </div>
+                                    </Link>
                                 </div>
                             </div>
                         ))}
@@ -123,11 +139,6 @@ export default function IndustrySolutions({ data }) {
                 </div>
             </div>
 
-            <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
         </section>
     );
 }

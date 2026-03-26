@@ -39,8 +39,8 @@ function Crafting() {
   
   return (
     <div className="bg-gradient-to-br from-white via-sky-50 to-sky-200 text-black  lg:h- flex justify-center  py-10 sm:py-12 px-4 sm:px-6">
-      {/* <div className='m-[60px] pt-[60px]  w-[1315px] max-h-[749px] '> */}
       <div className='max-w-7xl mx-auto '>
+
         <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-[700px] mb-1 leading-normal pt-8 text-center lg:hidden text-sky-900">
           Crafting  
           Digital <span className='bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 font-bold'>

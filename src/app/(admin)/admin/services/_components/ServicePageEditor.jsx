@@ -63,18 +63,20 @@ export default function ServicePageEditor({ data, onBack }) {
         sections: [
             { id: 'hero', label: '1. Hero Section', icon: Smartphone },
             { id: 'stats', label: '2. Stats Section', icon: BarChart3 },
-            { id: 'services', label: '3. Service Cards', icon: Layout },
-            { id: 'tech', label: '4. Tech Stack', icon: Code },
-            { id: 'process', label: '5. Our Process', icon: Settings },
-            { id: 'highlight', label: '6. Solution Highlight', icon: Zap },
-            { id: 'portfolio', label: '7. Portfolio', icon: Globe },
-            { id: 'solutions', label: '8. Industry Solutions', icon: Grid },
-            { id: 'industries', label: '9. Industries We Serve', icon: Layers },
-            { id: 'user-guide', label: '10. User Guide', icon: BookOpen },
-            { id: 'blogs', label: '11. Blog Section', icon: MessageSquare },
-            { id: 'faq', label: '12. FAQ', icon: HelpCircle },
-            { id: 'consultation', label: '13. Consultation CTA', icon: TrendingUp },
-            { id: 'seo', label: '14. SEO Settings', icon: Search }
+            { id: 'awards', label: '3. Awards Section', icon: Award },
+            { id: 'services', label: '4. Service Categories', icon: Layout },
+            { id: 'consultation', label: '5. Consultation CTA', icon: TrendingUp },
+            { id: 'tech', label: '6. Tech Stack', icon: Code },
+            { id: 'process', label: '7. Our Process', icon: Settings },
+            { id: 'highlight', label: '8. Solution Highlight', icon: Zap },
+            { id: 'portfolio', label: '9. Portfolio', icon: Globe },
+            { id: 'solutions', label: '10. Industry Solutions', icon: Grid },
+            { id: 'industries', label: '11. Industries We Serve', icon: Layers },
+            { id: 'user-guide', label: '12. User Guide', icon: BookOpen },
+            { id: 'faq', label: '13. FAQ Section', icon: HelpCircle },
+            { id: 'blogs', label: '14. Blog Section', icon: MessageSquare },
+            { id: 'inquiry', label: '15. Inquiry Section', icon: MessageSquare },
+            { id: 'seo', label: '16. SEO Settings', icon: Search }
         ]
     };
 

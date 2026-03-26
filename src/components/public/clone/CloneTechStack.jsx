@@ -48,16 +48,6 @@ export default function CloneTechStack({ data }) {
           </div>
         </div>
 
-        <style jsx>{`
-                    .scrollbar-hide::-webkit-scrollbar {
-                        display: none;
-                    }
-                    .scrollbar-hide {
-                        -ms-overflow-style: none;
-                        scrollbar-width: none;
-                    }
-                `}</style>
-
         {/* Tech Grid Display */}
         <div className="min-h-[200px]">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-center">

@@ -262,9 +262,9 @@ export default function TechStack({ data }) {
     // For now, assuming you might just pass custom categories or just rely on default.
     // If you plan to make individual items dynamic, you'd need a map of icon strings to components.
     
-    const displayData = data || DEFAULT_TECH_DATA;
+    const displayData = (data && Object.keys(data).length > 0) ? data : DEFAULT_TECH_DATA;
     const categories = Object.keys(displayData);
-    const [activeTab, setActiveTab] = useState(categories[0]);
+    const [activeTab, setActiveTab] = useState(categories[0] || 'Mobile App');
 
     return (
         <section className="py-24 bg-white px-6 border-t border-slate-100">

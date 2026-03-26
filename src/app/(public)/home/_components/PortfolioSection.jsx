@@ -1,4 +1,5 @@
-// src/app/(public)/home/h5-portfolio-section/page.jsx
+// src/app/(public)/home/_components/PortfolioSection.jsx
+
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
@@ -167,29 +168,10 @@ export default function PortfolioSlider() {
       clients: '350+',
       countries: '50+',
     },
-    // {
-    //   id: 2,
-    //   type: 'web',
-    //   title: 'Web Development & Design',
-    //   description:
-    //     'Create stunning, high-performance web applications that drive results. We specialize in Next.js, React, and modern frameworks to build lightning-fast websites with pixel-perfect design and seamless user experiences.',
-    //   color: 'from-sky-600 to-sky-400',
-    //   project: '280+',
-    //   clients: '200+',
-    //   countries: '50+',
-    // },
-    // {
-    //   id: 3,
-    //   type: 'digital',
-    //   title: 'Digital Marketing & Strategy',
-    //   description:
-    //     "Amplify your brand's online presence with data-driven marketing strategies. We deliver comprehensive SEO, social media campaigns, and conversion-optimized designs that accelerate your business growth.",
-    //   color: 'from-sky-600 to-sky-400',
-    //   project: '250+',
-    //   clients: '180',
-    //   countries: '50+',
-    // },
   ];
+
+
+
 
   useEffect(() => {
     let alive = true;
@@ -274,27 +256,8 @@ export default function PortfolioSlider() {
           </motion.p>
         </div>
 
-        {/* Navigation Buttons */}
-        {/* <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 sm:mb-8">
-          {slides.map((slide, index) => (
-            <motion.button
-              key={slide.id}
-              onClick={() => setActiveSlide(index)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 md:px-6 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
-                activeSlide === index
-                  ? `bg-gradient-to-r ${slide.color} text-white shadow-lg shadow-sky-900/30`
-                  : 'bg-white text-sky-700 shadow-md hover:bg-gray-50'
-              }`}
-            >
-              <span className="inline md:hidden">{slide.title.split(' ')[0]}</span>
-              <span className="hidden md:inline">{slide.title}</span>
-            </motion.button>
-          ))}
-        </div> */}
-
         {/* MAIN CARD */}
+
         <AnimatePresence mode="wait">
           <motion.div
             key={activeSlide}

@@ -20,7 +20,7 @@ export default function SolutionsAppModule({ data, reverse = false, bg = "white"
                         <h2 className="text-3xl lg:text-4xl font-black text-slate-900 leading-normal">
                             {data.title}
                         </h2>
-                        <p 
+                        <div 
                             className="text-slate-600 text-lg"
                             dangerouslySetInnerHTML={{ __html: data.description }}
                         />

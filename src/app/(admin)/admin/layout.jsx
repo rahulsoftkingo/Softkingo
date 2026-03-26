@@ -21,14 +21,14 @@ export default async function AdminLayout({ children }) {
 
   return (
     <AdminSessionProvider session={session}>
-      <div className="min-h-screen flex bg-sky-50 text-slate-900 font-sans antialiased">
+      <div className="min-h-screen flex bg-sky-50 text-slate-900 font-sans antialiased overflow-x-hidden">
         <aside className="hidden md:block w-64 bg-white fixed left-0 top-0 h-screen overflow-y-auto custom-scrollbar">
           <AdminSidebar />
         </aside>
 
         <div className="flex-1 md:ml-64 min-h-screen flex flex-col">
           <AdminHeaderClient session={session} />
-          <main className="flex-1 p-4 lg:p-6 overflow-y-auto">{children}</main>
+          <main className="flex-1 p-3 md:p-6 overflow-y-auto">{children}</main>
         </div>
       </div>
 

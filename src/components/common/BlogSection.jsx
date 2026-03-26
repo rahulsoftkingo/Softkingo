@@ -129,15 +129,6 @@ export default function BlogSection({
                 </div>
             </div>
 
-            <style jsx global>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none; /* IE and Edge */
-          scrollbar-width: none; /* Firefox */
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none; /* Chrome, Safari and Opera */
-        }
-      `}</style>
         </section>
     );
 }

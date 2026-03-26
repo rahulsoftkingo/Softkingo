@@ -12,12 +12,19 @@ import { FaShieldAlt } from 'react-icons/fa';
 import { FaDollarSign } from 'react-icons/fa';
 import { FaGlobe } from 'react-icons/fa';
 import { FaHeartbeat, FaGraduationCap, FaPlane, FaUtensils, FaDumbbell, FaStore, FaFilm, FaUsers, FaCar, FaHammer, FaCalendarAlt } from 'react-icons/fa';
+import * as Icons from 'react-icons/fa';
+import * as BsIcons from 'react-icons/bs';
+
+const getIcon = (iconName, size = 24, className = "") => {
+    const IconComponent = Icons[iconName] || BsIcons[iconName];
+    if (!IconComponent) return <FaIndustry size={size} className={className} />;
+    return <IconComponent size={size} className={className} />;
+};
 
 
-export default function HireDevelopersPage() {
-    const [selectedIndustry, setSelectedIndustry] = useState('Healthcare');
-
-    const industries = [
+export default function HireDevelopersPage({ data }) {
+    // FALLBACK DATA
+    const fallbackIndustries = [
         { name: 'Healthcare', icon: <FaStethoscope />, href: "/industries/healthcare" },
         { name: 'Banking & Finance', icon: <FaDollarSign />, href: "/industries/fintech-software-development" },
         { name: 'Insurance', icon: <FaShieldAlt />, href: "/industries/insurance" },
@@ -29,13 +36,13 @@ export default function HireDevelopersPage() {
         { name: 'Marketing & Advertising', icon: <FaChartLine />, href: "/industries/marketing" },
         { name: 'Telecommunications', icon: <FaGlobe />, href: "/industries/telecom" },
     ];
-    const industryContent = {
 
+    const fallbackIndustryContent = {
         Healthcare: {
             title: 'Healthcare',
             description: 'AI improves patient care by enabling faster diagnosis, predictive analytics, and intelligent automation while maintaining data privacy and compliance.'
         },
-        Finance: {
+        'Banking & Finance': {
             title: 'Banking & Finance',
             description: 'We help financial institutions reduce risk, detect fraud, and make smarter decisions using AI-driven analytics and automation.'
         },
@@ -71,10 +78,13 @@ export default function HireDevelopersPage() {
             title: 'Telecommunications',
             description: 'AI enhances network optimization, customer support automation, and predictive maintenance.'
         }
-
-
-        // Add other industry descriptions here...
     };
+
+    // DYNAMIC DATA MERGE
+    const title = data?.title || 'Hire Developers in India for Your Specific Industry';
+    const subtitle = data?.subtitle || "Whether you are in healthcare or the restaurant industry, from e-commerce to fintech, our developers look into your startup's prospects and cater to your requirements. Get a tailor-made app!";
+    const industries = Array.isArray(data?.items) && data.items.length > 0 ? data.items : fallbackIndustries;
+    const [selectedIndustry, setSelectedIndustry] = useState(industries[0]?.name || 'Healthcare');
 
     return (
         <>
@@ -85,14 +95,14 @@ export default function HireDevelopersPage() {
 
                     {/* Title */}
                     <div className='flex flex-col items-center mb-10 text-center'>
-                        <h1 className="text-white text-3xl md:text-4xl font-bold">
-                            Hire Android App Developers in India for Your Specific Industry
+                        <h1 className="text-white text-3xl md:text-4xl font-black leading-tight max-w-5xl">
+                            {title}
                         </h1>
                         <hr className='w-24 border-2 border-white mt-4' />
                     </div>
 
-                    <p className="text-white/90 text-center text-base md:text-lg mb-12 max-w-4xl mx-auto">
-                        Whether you are in healthcare or the restaurant industry, from e-commerce to fintech, our developers look into your startup's prospects and cater to your requirements. Get a tailor-made app!
+                    <p className="text-white/90 text-center text-base md:text-lg mb-12 max-w-4xl mx-auto font-medium">
+                        {subtitle}
                     </p>
 
                     {/* Main Responsive Container */}
@@ -107,11 +117,11 @@ export default function HireDevelopersPage() {
                                     className={` flex items-center justify-start gap-3 p-4 rounded-lg
                                      border border-white/30 transition-all duration-300
                                         ${selectedIndustry === industry.name
-                                            ? 'bg-white  scale-105 shadow-lg text-sky-900'
+                                            ? 'bg-white  scale-105 shadow-lg text-sky-900 border-white'
                                             : 'bg-black/20 backdrop-blur-sm hover:bg-white/20 text-sky-50'
                                         }`}
                                 >
-                                    <div className="text-2xl">{industry.icon}</div>
+                                    <div className="text-2xl">{getIcon(industry.iconKey || industry.icon, 28)}</div>
                                     <div className="text-sm md:text-base font-bold text-left">{industry.name}</div>
                                 </button>
                             ))}
@@ -119,29 +129,26 @@ export default function HireDevelopersPage() {
 
                         {/* Industry Info Card */}
                         {selectedIndustry && (
-                            <div className="w-full lg:w-1/3 mt-6 lg:mt-0 bg-white p-8 shadow-2xl rounded-lg">
-                                <h3 className="text-2xl font-bold text-black mb-4">
-                                    {industryContent[selectedIndustry]?.title || selectedIndustry}
+                            <div className="w-full lg:w-1/3 mt-6 lg:mt-0 bg-white p-8 shadow-2xl rounded-2xl border border-white/20">
+                                <h3 className="text-2xl font-black text-slate-900 mb-4">
+                                    {industries.find(ind => ind.name === selectedIndustry)?.title || selectedIndustry}
                                 </h3>
-                                <p className="text-gray-600 mb-6 leading-relaxed">
-                                    {industryContent[selectedIndustry]?.description ||
-                                        'Custom solutions tailored for your industry needs.'}
+                                <p className="text-slate-600 mb-8 leading-relaxed font-medium">
+                                    {industries.find(ind => ind.name === selectedIndustry)?.description || 
+                                     fallbackIndustryContent[selectedIndustry]?.description ||
+                                     'Custom solutions tailored for your industry needs.'}
                                 </p>
 
-                                <buttom
-
+                                <button
                                     onClick={() => {
-
                                         window.open(
                                             industries.find(ind => ind.name === selectedIndustry)?.href || '/industries',
                                             '_self'
                                         );
                                     }}
-                                    className="inline-flex items-center px-6 lg:px-10 py-2.5 lg:py-3 bg-gradient-to-br from-sky-500 via-sky-600 to-sky-800 text-white  font-semibold text-xs lg:text-sm rounded-full shadow-xl hover:shadow-sky-500/40 hover:shadow-2xl hover:-translate-y-1.5 hover:scale-[1.02] transition-all duration-400  backdrop-blur-sm tracking-wide cursor-pointer">
+                                    className="w-full inline-flex justify-center items-center px-6 lg:px-10 py-3 lg:py-4 bg-slate-900 text-white font-bold text-sm rounded-xl shadow-xl hover:bg-sky-600 transition-all duration-300">
                                     Know More →
-                                </buttom>
-
-
+                                </button>
                             </div>
                         )}
                     </div>

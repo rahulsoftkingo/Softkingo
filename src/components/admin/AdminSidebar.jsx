@@ -55,17 +55,6 @@ const sections = [
     ]
   },
   {
-    title: 'HRMS (Enterprise)',
-    key: 'hrms',
-    items: [
-      { label: 'Attendance', href: '/admin/hrms/attendance', icon: Clock, badge: 'live' },
-      { label: 'Leaves', href: '/admin/hrms/leaves', icon: FileCheck, badge: 'live' },
-      { label: 'Employees', href: '/admin/hrms/employees', icon: Users2, badge: 'live' },
-      { label: 'Payroll', href: '/admin/hrms/payroll', icon: DollarSign, badge: 'live' },
-      { label: 'Reports', href: '/admin/hrms/reports', icon: FileBarChart },
-    ]
-  },
-  {
     title: 'People & Media', key: 'people', items: [
       { label: 'User Management', href: '/admin/users', icon: UserCog, },
       { label: 'Team Members', href: '/admin/team', icon: Users },

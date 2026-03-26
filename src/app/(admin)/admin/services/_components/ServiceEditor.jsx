@@ -41,12 +41,35 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                         <MiniRichTextEditor value={content.heroSubtitle || ''} onChange={val => updateField('content.heroSubtitle', val)} />
                     </div>
                 </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Hero Button Text</label>
+                        <input className={inputStyle} placeholder="Let’s Work Together" value={content.heroButtonText || ''} onChange={e => updateField('content.heroButtonText', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Hero Button Link</label>
+                        <input className={inputStyle} placeholder="/contact" value={content.heroButtonLink || ''} onChange={e => updateField('content.heroButtonLink', e.target.value)} />
+                    </div>
+                </div>
+                <div className="space-y-1">
+                    <label className={labelStyle}>Trusted By Text</label>
+                    <input className={inputStyle} placeholder="Trusted By Leading Brands" value={content.trustedByText || ''} onChange={e => updateField('content.trustedByText', e.target.value)} />
+                </div>
                 <MediaInput label="Hero Background Image" value={content.heroBg} path="content.heroBg" />
             </SectionWrapper>
 
             {/* 2. STATISTICS */}
             <SectionWrapper id="stats" icon={BarChart3} title="2. Statistics Section" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Stats Section Subtitle" value={content.statsSubtitle || ''} onChange={e => updateField('content.statsSubtitle', e.target.value)} />
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Stats Section Title (Internal/Admin Only)</label>
+                        <input className={inputStyle} placeholder="Stats Section Title" value={content.statsTitle || ''} onChange={e => updateField('content.statsTitle', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Stats Section Subtitle (Internal/Admin Only)</label>
+                        <input className={inputStyle} placeholder="Stats Section Subtitle" value={content.statsSubtitle || ''} onChange={e => updateField('content.statsSubtitle', e.target.value)} />
+                    </div>
+                </div>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <label className={labelStyle}>Primary Metrics</label>
@@ -97,8 +120,33 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 3. SERVICE CATEGORIES */}
-            <SectionWrapper id="services" icon={Layout} title="3. Service Categories (Tabs Layout)" activeSections={activeSections}>
+            {/* 3. AWARDS SECTION */}
+            <SectionWrapper id="awards" icon={Award} title="3. Awards Section" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title (e.g. Our)" value={content.awards?.title || ''} onChange={e => updateField('content.awards.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Gradient Text (e.g. Awards & Recognitions)" value={content.awards?.gradientText || ''} onChange={e => updateField('content.awards.gradientText', e.target.value)} />
+                </div>
+                <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.awards?.subtitle || ''} onChange={e => updateField('content.awards.subtitle', e.target.value)} />
+                
+                <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <label className={labelStyle}>Award Items</label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {(content.awards?.items || []).map((award, i) => (
+                            <div key={i} className="bg-slate-50 p-3 rounded-xl border border-slate-200 relative">
+                                <button type="button" onClick={() => updateField('content.awards.items', (prev) => prev.filter((_, idx) => idx !== i))} className="absolute top-1 right-1 text-rose-500 hover:bg-rose-50 p-1 rounded-lg"><X size={14} /></button>
+                                <MediaInput label="Award Image" value={award.image} path={`content.awards.items.${i}.image`} />
+                                <input className={inputStyle} placeholder="Alt Text" value={award.alt || ''} onChange={e => updateField(`content.awards.items.${i}.alt`, e.target.value)} />
+                            </div>
+                        ))}
+                    </div>
+                    <button type="button" onClick={() => updateField('content.awards.items', (prev) => [...(prev || []), { image: "", alt: "" }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
+                        <Plus size={20} /> Add Award
+                    </button>
+                </div>
+            </SectionWrapper>
+
+            {/* 4. SERVICE CATEGORIES */}
+            <SectionWrapper id="services" icon={Layout} title="4. Service Categories (Tabs Layout)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.services?.title || ''} onChange={e => updateField('content.services.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.services?.subtitle || ''} onChange={e => updateField('content.services.subtitle', e.target.value)} />
@@ -168,8 +216,22 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 4. TECH STACK (TABBED) */}
-            <SectionWrapper id="tech" icon={Code} title="4. Tech Stack (Tabbed)" activeSections={activeSections}>
+            {/* 5. CONSULTATION CTA */}
+            <SectionWrapper id="consultation" icon={TrendingUp} title="5. Consultation CTA" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
+                        <input className={inputStyle} placeholder="CTA Subtitle" value={content.consultation?.subtitle || ''} onChange={e => updateField('content.consultation.subtitle', e.target.value)} />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Button Label" value={content.consultation?.buttonLabel || ''} onChange={e => updateField('content.consultation.buttonLabel', e.target.value)} />
+                        <MediaInput label="Consultant Image" value={content.consultation?.imageSrc} path="content.consultation.imageSrc" />
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 6. TECH STACK (TABBED) */}
+            <SectionWrapper id="tech" icon={Code} title="6. Tech Stack (Tabbed)" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
@@ -206,8 +268,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 5. PROCESS */}
-            <SectionWrapper id="process" icon={Settings} title="5. Our Process" activeSections={activeSections}>
+            {/* 7. PROCESS */}
+            <SectionWrapper id="process" icon={Settings} title="7. Our Process" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.process?.title || ''} onChange={e => updateField('content.process.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.process?.subtitle || ''} onChange={e => updateField('content.process.subtitle', e.target.value)} />
@@ -243,8 +305,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 6. SOLUTION HIGHLIGHT */}
-            <SectionWrapper id="highlight" icon={Zap} title="6. Solution Highlight (Mockup Design)" activeSections={activeSections}>
+            {/* 8. SOLUTION HIGHLIGHT */}
+            <SectionWrapper id="highlight" icon={Zap} title="8. Solution Highlight (Mockup Design)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.highlight?.title || ''} onChange={e => updateField('content.highlight.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.highlight?.subtitle || ''} onChange={e => updateField('content.highlight.subtitle', e.target.value)} />
@@ -308,8 +370,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 7. PORTFOLIO */}
-            <SectionWrapper id="portfolio" icon={Globe} title="7. Portfolio Section" activeSections={activeSections}>
+            {/* 9. PORTFOLIO */}
+            <SectionWrapper id="portfolio" icon={Globe} title="9. Portfolio Section" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.portfolioTitle || ''} onChange={e => updateField('content.portfolioTitle', e.target.value)} />
@@ -332,8 +394,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 8. INDUSTRY SOLUTIONS */}
-            <SectionWrapper id="solutions" icon={Zap} title="8. Industry Solutions (Grid)" activeSections={activeSections}>
+            {/* 10. INDUSTRY SOLUTIONS */}
+            <SectionWrapper id="solutions" icon={Zap} title="10. Industry Solutions (Grid)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.solutions?.title || ''} onChange={e => updateField('content.solutions.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.solutions?.subtitle || ''} onChange={e => updateField('content.solutions.subtitle', e.target.value)} />
@@ -354,6 +416,22 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                         <label className={labelStyle}>Item Description</label>
                                         <textarea className={inputStyle} rows={3} placeholder="Describe the solution..." value={item.itemDesc || ''} onChange={e => updateField(`content.solutions.items.${i}.itemDesc`, e.target.value)} />
                                     </div>
+                                    
+                                    {/* Sub-points for this solution */}
+                                    <div className="bg-white p-3 rounded-lg border border-slate-100 space-y-2">
+                                        <label className={labelStyle}>Success Points / Features</label>
+                                        {(item.points || []).map((point, j) => (
+                                            <div key={j} className="flex gap-2">
+                                                <input className="flex-1 p-1.5 bg-slate-50 border rounded text-[10px]" placeholder="Feature point..." value={point || ''} onChange={e => updateField(`content.solutions.items.${i}.points.${j}`, e.target.value)} />
+                                                <button type="button" onClick={() => updateField(`content.solutions.items.${i}.points`, (prev) => prev.filter((_, idx) => idx !== j))}><X size={12} className="text-slate-300" /></button>
+                                            </div>
+                                        ))}
+                                        <button type="button" onClick={() => updateField(`content.solutions.items.${i}.points`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Point</button>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className={labelStyle}>Button Link</label>
+                                        <input className={inputStyle} placeholder="/contact or url" value={item.buttonLink || ''} onChange={e => updateField(`content.solutions.items.${i}.buttonLink`, e.target.value)} />
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
                                     <MediaInput label="Background Image" value={item.itemImage} path={`content.solutions.items.${i}.itemImage`} />
@@ -361,15 +439,14 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                             </div>
                         </div>
                     ))}
-                    <button type="button" onClick={() => updateField('content.solutions.items', (prev) => [...(prev || []), { itemTitle: "", itemDesc: "", itemImage: "" }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
+                    <button type="button" onClick={() => updateField('content.solutions.items', (prev) => [...(prev || []), { itemTitle: "", itemDesc: "", itemImage: "", points: [], buttonLink: "" }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
                         <Plus size={20} /> Add Solution Card
                     </button>
                 </div>
             </SectionWrapper>
 
-            {/* 9. INDUSTRIES WE SERVE */}
-            <SectionWrapper id="industries" icon={Layers} title="9. Industries We Serve (Slider)" activeSections={activeSections}>
-                <div className="bg-sky-50 p-2 rounded text-[10px] font-bold text-sky-600 mb-4 uppercase tracking-widest">DEBUG: SECTION 9 RENDERED</div>
+            {/* 11. INDUSTRIES WE SERVE */}
+            <SectionWrapper id="industries" icon={Layers} title="11. Industries We Serve (Slider)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.industrySection?.title || ''} onChange={e => updateField('content.industrySection.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.industrySection?.subtitle || ''} onChange={e => updateField('content.industrySection.subtitle', e.target.value)} />
@@ -387,8 +464,20 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                         <input className={inputStyle} placeholder="e.g. Healthcare" value={item.itemTitle || ''} onChange={e => updateField(`content.industrySection.items.${i}.itemTitle`, e.target.value)} />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className={labelStyle}>Features (One per line)</label>
-                                        <textarea className={inputStyle} rows={3} placeholder="Feature 1&#10;Feature 2..." value={item.itemDesc || ''} onChange={e => updateField(`content.industrySection.items.${i}.itemDesc`, e.target.value)} />
+                                        <label className={labelStyle}>Industry Description</label>
+                                        <textarea className={inputStyle} rows={2} placeholder="Description text..." value={item.itemDesc || ''} onChange={e => updateField(`content.industrySection.items.${i}.itemDesc`, e.target.value)} />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className={labelStyle}>Industry Features (Points)</label>
+                                        <div className="space-y-2">
+                                            {(item.itemPoints || []).map((point, j) => (
+                                                <div key={j} className="flex gap-2">
+                                                    <input className="flex-1 p-2 bg-white border rounded text-xs" value={point || ''} onChange={e => updateField(`content.industrySection.items.${i}.itemPoints.${j}`, e.target.value)} />
+                                                    <button type="button" onClick={() => updateField(`content.industrySection.items.${i}.itemPoints`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="text-rose-500 hover:bg-rose-50 p-1 rounded"><X size={14} /></button>
+                                                </div>
+                                            ))}
+                                            <button type="button" onClick={() => updateField(`content.industrySection.items.${i}.itemPoints`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600 p-1">+ Add Point</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="space-y-2">
@@ -403,8 +492,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 10. USER GUIDE */}
-            <SectionWrapper id="user-guide" icon={BookOpen} title="10. User Guide" activeSections={activeSections}>
+            {/* 12. USER GUIDE */}
+            <SectionWrapper id="user-guide" icon={BookOpen} title="12. User Guide" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Main Title" value={content.userGuide?.title || ''} onChange={e => updateField('content.userGuide.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.userGuide?.subtitle || ''} onChange={e => updateField('content.userGuide.subtitle', e.target.value)} />
@@ -483,27 +572,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 )}
             </SectionWrapper>
 
-            {/* 11. BLOG SECTION */}
-            <SectionWrapper id="blogs" icon={MessageSquare} title="11. Blog Section" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Blog Section Title</label>
-                        <input className={inputStyle} placeholder="e.g. Latest Blogs" value={content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
-                    </div>
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Blog Section Subtitle</label>
-                        <input className={inputStyle} placeholder="Subtitle text..." value={content.blogSubtitle || ''} onChange={e => updateField('content.blogSubtitle', e.target.value)} />
-                    </div>
-                </div>
-                <div className="space-y-2">
-                    <label className={labelStyle}>Blog Category (Slug)</label>
-                    <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
-                    <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
-                </div>
-            </SectionWrapper>
-
-            {/* 11. FAQ Section */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="11. FAQ Section" activeSections={activeSections}>
+            {/* 13. FAQ Section */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="13. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.faq?.subtitle || ''} onChange={e => updateField('content.faq.subtitle', e.target.value)} />
@@ -525,22 +595,41 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 11. CONSULTATION CTA */}
-            <SectionWrapper id="consultation" icon={TrendingUp} title="11. Consultation CTA" activeSections={activeSections}>
-                <div className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
-                        <input className={inputStyle} placeholder="CTA Subtitle" value={content.consultation?.subtitle || ''} onChange={e => updateField('content.consultation.subtitle', e.target.value)} />
+            {/* 14. BLOG SECTION */}
+            <SectionWrapper id="blogs" icon={MessageSquare} title="14. Blog Section" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Title</label>
+                        <input className={inputStyle} placeholder="e.g. Latest Blogs" value={content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
                     </div>
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <input className={inputStyle} placeholder="Button Label" value={content.consultation?.buttonLabel || ''} onChange={e => updateField('content.consultation.buttonLabel', e.target.value)} />
-                        <MediaInput label="Consultant Image" value={content.consultation?.imageSrc} path="content.consultation.imageSrc" />
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Subtitle</label>
+                        <input className={inputStyle} placeholder="Subtitle text..." value={content.blogSubtitle || ''} onChange={e => updateField('content.blogSubtitle', e.target.value)} />
                     </div>
+                </div>
+                <div className="space-y-2">
+                    <label className={labelStyle}>Blog Category (Slug)</label>
+                    <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
+                    <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
                 </div>
             </SectionWrapper>
 
-            {/* 12. SEO */}
-            <SectionWrapper id="seo" icon={Search} title="12. SEO Settings" activeSections={activeSections}>
+
+            
+            {/* 15. INQUIRY SECTION */}
+            <SectionWrapper id="inquiry" icon={MessageSquare} title="15. Inquiry Section" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Tagline (e.g. GET IN TOUCH)" value={content.inquiry?.tagline || ''} onChange={e => updateField('content.inquiry.tagline', e.target.value)} />
+                    <input className={inputStyle} placeholder="Title Prefix (e.g. Let's )" value={content.inquiry?.titlePrefix || ''} onChange={e => updateField('content.inquiry.titlePrefix', e.target.value)} />
+                </div>
+                <div className="grid md:grid-cols-2 gap-4 mt-4">
+                    <input className={inputStyle} placeholder="Main Title (e.g. Connect)" value={content.inquiry?.title || ''} onChange={e => updateField('content.inquiry.title', e.target.value)} />
+                    <textarea className={inputStyle} rows={2} placeholder="Description/Subtitle" value={content.inquiry?.subtitle || ''} onChange={e => updateField('content.inquiry.subtitle', e.target.value)} />
+                </div>
+            </SectionWrapper>
+
+            {/* 16. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="16. SEO Settings" activeSections={activeSections}>
                 <div className="space-y-4">
                     <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
                     <textarea className={inputStyle} rows={3} placeholder="SEO Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />

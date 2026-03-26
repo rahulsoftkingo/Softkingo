@@ -2,8 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 import CommonTitle from '@/components/ui/CommonTitle';
 
-function AwardsSection({ variant = "default" }) {
-  const awards = [
+function AwardsSection({ 
+  variant = "default",
+  title = "Our",
+  gradientText = "Awards & Recognitions",
+  subtitle = "These recognitions reflect our commitment to quality, innovation, and long-term partnerships with our clients.",
+  awards: customAwards
+}) {
+  const defaultAwards = [
     {
       image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (1).png",
       alt: "award1"
@@ -26,6 +32,8 @@ function AwardsSection({ variant = "default" }) {
     }
   ];
 
+  const awards = (customAwards && customAwards.length > 0) ? customAwards : defaultAwards;
+
   if (variant === "service") {
     return (
       <section className="bg-white py-12 lg:py-16 border-t border-slate-100">
@@ -37,9 +45,9 @@ function AwardsSection({ variant = "default" }) {
                 <CommonTitle
                   align="left"
                   pill={false}
-                  title='Our'
-                  gradientText='Awards & Recognitions'
-                  subtitle='These recognitions reflect our commitment to quality, innovation, and long-term partnerships with our clients.'
+                  title={title}
+                  gradientText={gradientText}
+                  subtitle={subtitle}
                 />
               </div>
             </div>
@@ -77,10 +85,9 @@ function AwardsSection({ variant = "default" }) {
           <CommonTitle
             align="center"
             pill={false}
-            title='Our'
-            gradientText='Awards & Recognitions'
-            subtitle='These recognitions reflect our commitment to quality, innovation,
-            and long‑term partnerships with our clients.'
+            title={title}
+            gradientText={gradientText}
+            subtitle={subtitle}
           />
         </div>
 

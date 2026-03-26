@@ -16,8 +16,9 @@ import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
 import CoreServicesSection from '@/components/common/CoreServicesSection';
 import { useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-
-
+import PopupQuoteModal from '@/components/PopupQuoteModal';
+import { Calendar } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function AIPage() {
   const [inView, setInView] = useState({});
@@ -26,6 +27,7 @@ export default function AIPage() {
   const [activeAiSolution, setActiveAiSolution] = useState(0);
   const [activeSolution, setActiveSolution] = useState('Frameworks');
   const techNavRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -42,47 +44,9 @@ export default function AIPage() {
 
   return (
     <>
-      <style jsx>{`
-        @keyframes float-subtle {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-6px) scale(1.01); }
-        }
-        @keyframes metric-rise {
-          from { opacity: 0; transform: translateY(30px) scale(0.95); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        .metric-container.animate {
-          animation: metric-rise 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        .section-divider {
-          background: linear-gradient(135deg, transparent 0%, #0ea5e9 40%, #0284c7 60%, transparent 100%);
-          height: 2px;
-          width: 120px;
-          margin: 4rem auto;
-          border-radius: 1px;
-          box-shadow: 0 1px 4px rgba(14, 165, 233, 0.3);
-        }
-        .rect-icon {
-          width: 64px;
-          height: 64px;
-          background: linear-gradient(135deg, #0ea5e9, #0284c7);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
-          font-weight: bold;
-          box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
-          transition: all 0.3s ease;
-        }
-        .rect-icon:hover {
-          transform: translateY(-4px) scale(1.05);
-          box-shadow: 0 12px 35px rgba(14, 165, 233, 0.4);
-        }
-      `}</style>
 
       {/* 01. Hero Section - REDESIGNED FOR IMMERSIVE FEEL */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-24">
+      <section className="relative min-h-[50vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden py-24">
         {/* Full Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -102,26 +66,34 @@ export default function AIPage() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center"
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-normal mb-6 text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-normal mb-6 text-white tracking-tight">
               AI Development Services
             </h1>
 
             <div className="max-w-3xl space-y-5 mb-10">
-              <p className="text-lg md:text-xl text-slate-200 leading-relaxed font-medium">
+              <p className="text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-medium">
                 At Softkingo Technologies, we design and develop intelligent AI solutions that help businesses automate processes, reduce operational costs, and unlock new growth opportunities.
               </p>
-              <p className="text-sm md:text-base text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed">
                 Our AI development services are tailored to your industry, data, and business objectives—ensuring practical implementation with measurable impact. From AI-powered applications to advanced analytics and automation systems, we help you transform ideas into scalable AI products.
               </p>
             </div>
 
-            <Link
-              href="/contact"
-              className="group relative px-10 py-4 bg-sky-500 hover:bg-sky-400 text-white rounded-full font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-sky-500/40 overflow-hidden flex items-center gap-3"
-            >
-              <span>Consult Our AI Experts</span>
-              <FaArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-            </Link>
+
+            <div className="flex  sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
+              <buttom
+                onClick={() => setShowModal(true)}
+                // href="/contact"
+                className="w-fit px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2">
+                Consult Our AI Experts <ArrowRight size={18} />
+              </buttom>
+              <Link href="https://calendly.com/paramhans-softkingo/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center gap-2">
+                <Calendar size={18} /> Schedule Meeting
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -129,7 +101,7 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 02. We Are Section - PIXEL PERFECT MATCH */}
-      <section id="about" className="pt-24 bg-white overflow-hidden">
+      <section id="about" className=" bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             {/* Left: Image - Clean & Simple */}
@@ -140,7 +112,7 @@ export default function AIPage() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="relative aspect-[18/12] w-full rounded-[32px]  shadow-2xl">
+              <div className="relative lg:aspect-[18/12] w-full rounded-[32px]  shadow-2xl">
                 <Image
                   src="/images/ai/we-are.svg"
                   alt="Handshake - We are Softkingo"
@@ -191,7 +163,7 @@ export default function AIPage() {
           </div>
 
           {/* 02.5 Stats Section - Pixel Perfect Mockup Layout */}
-          <div className="mt-16 lg:mt-22 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
+          <div className="mt-16 lg:mt-22 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
             {[
               { icon: 'clock', value: '5+', label: 'Years Of Experience' },
               { icon: 'users', value: '450+', label: 'Apps Developed' },
@@ -209,17 +181,17 @@ export default function AIPage() {
                 {/* Top Row: Icon + Value */}
                 <div className="flex items-center justify-center gap-3 mb-1">
                   <div className="text-[#0ea5e9]">
-                    {stat.icon === 'clock' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" /></svg>}
-                    {stat.icon === 'users' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" /></svg>}
-                    {stat.icon === 'layout' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z" /></svg>}
-                    {stat.icon === 'globe' && <svg className="w-7 h-7 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" /></svg>}
+                    {stat.icon === 'clock' && <svg className="w-5 h-5 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z" /></svg>}
+                    {stat.icon === 'users' && <svg className="w-5 h-5 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" /></svg>}
+                    {stat.icon === 'layout' && <svg className="w-5 h-5 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8v-10h-8v10zm0-18v6h8V3h-8z" /></svg>}
+                    {stat.icon === 'globe' && <svg className="w-5 h-5 md:w-9 md:h-9" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" /></svg>}
                   </div>
-                  <span className="text-3xl md:text-4xl font-bold text-[#0ea5e9] tracking-tight">
+                  <span className="text-2xl md:text-4xl font-bold text-[#0ea5e9] tracking-tight">
                     {stat.value}
                   </span>
                 </div>
                 {/* Bottom Label */}
-                <div className="text-sky-400 font-bold text-sm md:text-base">
+                <div className="text-sky-400 font-semibold text-xs md:text-base">
                   {stat.label}
                 </div>
               </motion.div>
@@ -239,7 +211,7 @@ export default function AIPage() {
       {/* 04. Industries We Transform */}
       <IndustriesSection />
 
-      <div className="section-divider" />
+      {/* <div className="section-divider" /> */}
 
       {/* 05. Consultation CTA */}
       <ConsultationCTA
@@ -1067,6 +1039,7 @@ export default function AIPage() {
         subtitle="Fresh perspectives from our AI engineering team"
       />
       <InquirySection />
+      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </>
   );
 }

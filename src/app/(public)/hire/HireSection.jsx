@@ -270,7 +270,7 @@ export default async function HireSection() {
   };
 
   const ContentBlock = ({ section, iconMap }) => (
-    <div className="space-y-8 animate-fade-left lg:animate-fade-right">
+    <div className="space-y-8 animate-fadeLeft lg:animate-fadeRight">
       <div className="space-y-4">
         <div className="inline-block bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
           <span className="text-sm font-semibold text-sky-600">
@@ -322,7 +322,7 @@ export default async function HireSection() {
       {sections.slice(0, 7).map((section, index) => (
         <section 
           key={section.id} 
-          className={`${section.bgColor} py-16 md:py-24 px-4 md:px-8 lg:px-20 animate-section`}
+          className={`${section.bgColor} py-16 md:py-24 px-4 md:px-8 lg:px-20 animate-fadeInUp`}
           style={{animationDelay: `${index * 0.15}s`}}
         >
           <div className="max-w-7xl mx-auto">
@@ -343,52 +343,6 @@ export default async function HireSection() {
         </section>
       ))}
 
-      <style global>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeLeft {
-          from { opacity: 0; transform: translateX(-30px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fadeRight {
-          from { opacity: 0; transform: translateX(30px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        .animate-section {
-          animation: fadeInUp 0.8s ease-out;
-          animation-fill-mode: both;
-        }
-        .animate-fade-left {
-          animation: fadeLeft 0.8s ease-out;
-        }
-        .animate-fade-right {
-          animation: fadeRight 0.8s ease-out;
-        }
-        
-        .hover-lift {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .hover-lift:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-        .hover-scale {
-          transition: all 0.3s ease;
-        }
-        .hover-scale:hover {
-          transform: scale(1.05);
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 }
@@ -445,15 +399,6 @@ function DeveloperCard({ caseStudy }) {
         <p className="text-sm font-bold">Top Rated</p>
       </div>
 
-      <style >{`
-        @keyframes scaleIn {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-scale-in {
-          animation: scaleIn 0.6s ease-out;
-        }
-      `}</style>
     </div>
   );
 }

@@ -16,6 +16,7 @@ import SolutionsProcess from '@/components/public/solutions/SolutionsProcess';
 import SolutionsTechStack from '@/components/public/solutions/SolutionsTechStack';
 import SolutionsMonetization from '@/components/public/solutions/SolutionsMonetization';
 import SolutionsSecurity from '@/components/public/solutions/SolutionsSecurity';
+import SolutionsCTA from '@/components/public/solutions/SolutionsCTA';
 
 // --- CLONE COMPONENTS (NEW) ---
 import CloneHero from '@/components/public/clone/CloneHero';
@@ -261,11 +262,41 @@ export default async function DynamicSolutionPage(props) {
     // =========================================================
     const {
         hero, stats, intro, features, awards, whyNeed,
-        servicesList, userApp, vendorApp, adminPanel,
+        servicesList, appModules,
         aiCapabilities, portfolio, process, techStack,
         monetization, whyChoose, consultation, faq,
-        blogTitle, blogSubtitle, blogCategory
+        blogTitle, blogSubtitle, blogCategory,
+        cta, inquiry,
+        userApp, vendorApp, adminPanel // Legacy fields as siblings
     } = data.sections;
+
+    // --- LEGACY SUPPORT: appModules ---
+    let finalModules = appModules?.tabs || [];
+    if (finalModules.length === 0) {
+        if (userApp) finalModules.push({ ...userApp, tag: userApp.tag || "User App" });
+        if (vendorApp) finalModules.push({ ...vendorApp, tag: vendorApp.tag || "Vendor App" });
+        if (adminPanel) finalModules.push({ ...adminPanel, tag: adminPanel.tag || "Admin Panel" });
+    }
+
+    // --- LEGACY SUPPORT: techStack ---
+    let finalTechStack = techStack;
+    if (techStack && !techStack.tabs) {
+        if (techStack.items) {
+            finalTechStack = {
+                title: techStack.title || "Technology Stack",
+                subtitle: techStack.subtitle,
+                tabs: [{ label: "Technologies", items: techStack.items }]
+            };
+        } else if (techStack.Frontend || techStack.Backend || techStack.Mobile) {
+            finalTechStack = {
+                title: techStack.title || "Technology Stack",
+                subtitle: techStack.subtitle,
+                tabs: Object.keys(techStack)
+                    .filter(k => k !== 'title' && k !== 'subtitle' && typeof techStack[k] === 'object')
+                    .map(k => ({ label: k, ...techStack[k] }))
+            };
+        }
+    }
 
     // --- FAQ SCHEMA ---
     const faqSchema = show('faq') && faq?.items?.length > 0 ? {
@@ -293,27 +324,31 @@ export default async function DynamicSolutionPage(props) {
             {show('stats') && <SolutionsStats data={stats} />}
             {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}
-            {show('awards') && <AwardsSection />}
+            {show('awards') && <AwardsSection awards={awards?.items} />}
             {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
             {show('servicesList') && <SolutionsServicesList data={servicesList} />}
-            {show('appModules') && (
-                <>
-                    {userApp?.title && <SolutionsAppModule data={userApp} reverse={true} bg="white" />}
-                    {vendorApp?.title && <SolutionsAppModule data={vendorApp} reverse={false} bg="slate-50" />}
-                    {adminPanel?.title && <SolutionsAppModule data={adminPanel} reverse={true} bg="white" />}
-                </>
-            )}
+            {show('appModules') && finalModules.map((tab, idx) => (
+                <SolutionsAppModule 
+                    key={idx} 
+                    data={tab} 
+                    reverse={idx % 2 === 0} 
+                    bg={idx % 2 === 0 ? "white" : "slate-50"} 
+                />
+            ))}
             {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
             {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title={portfolio?.title} subtitle={portfolio?.subtitle} />}
             {show('process') && <SolutionsProcess data={process} />}
-            {show('techStack') && <SolutionsTechStack data={techStack} />}
+            {show('techStack') && <SolutionsTechStack data={finalTechStack} />}
             {show('monetization') && <SolutionsMonetization data={monetization} />}
             {show('whyChoose') && <SolutionsSecurity data={whyChoose} />}
             {show('consultation') && (
                 <ConsultationCTA
                     title={consultation?.title || "Book A FREE Consultation"}
                     subtitle={consultation?.subtitle || "Share your project idea."}
-                    href="/contact"
+                    buttonLabel={consultation?.buttonLabel}
+                    imageSrc={consultation?.imageSrc}
+                    href={consultation?.href || "/contact"}
+                    theme={consultation?.theme || "dark"}
                 />
             )}
             {show('faq') && <FAQAccordion data={faq} />}
@@ -323,6 +358,23 @@ export default async function DynamicSolutionPage(props) {
                     category={blogCategory || ""}
                     title={blogTitle || "Our Latest Blogs"}
                     subtitle={blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
+                />
+            )}
+
+            {show('cta') && (
+                <SolutionsCTA 
+                    title={cta?.title}
+                    subtitle={cta?.subtitle}
+                    btnText={cta?.btnText}
+                />
+            )}
+
+            {show('inquiry') && (
+                <FooterForm 
+                    tagline={inquiry?.tagline}
+                    title={inquiry?.title}
+                    subtitle={inquiry?.subtitle}
+                    titlePrefix={inquiry?.titlePrefix}
                 />
             )}
         </main>

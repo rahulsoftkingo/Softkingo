@@ -96,9 +96,10 @@ export default function SolutionsWhyChoose({ data }) {
                         </h3>
 
                         {/* Description */}
-                        <p className="text-slate-600 text-lg leading-relaxed mb-10 max-w-lg">
-                            {data.items[activeTab]?.description}
-                        </p>
+                        <div 
+                            className="text-slate-600 text-lg leading-relaxed mb-10 max-w-lg rich-text"
+                            dangerouslySetInnerHTML={{ __html: data.items[activeTab]?.description }}
+                        />
 
                         {/* Points Grid */}
                         <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-white/50 shadow-sm">

@@ -734,7 +734,6 @@ const ServicesMenu = () => {
                   {currentService.links.map((link, index) => (
                     <div 
                       key={index}
-                      href={link.href}
                       className="group flex items-center gap-3 p-3 rounded-xl border border-sky-100 bg-white hover:bg-sky-50 hover:border-sky-200 transition shadow-lg hover:shadow-md flex-col"
                     >
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-600/90 text-white text-sm shadow-sm">
@@ -809,26 +808,7 @@ const ServicesMenu = () => {
           </div>
         </div>
       </div>
-            <style>{`.header_menu_tab_ic {
-    border-radius: 8px;
-    background: linear-gradient(180deg, #cedbdf 0%, #f0f4f4 100%), #d9d9d9;
-    flex: 0 0 45px;
-    height: 42px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    /* color: rgb(95, 162, 188); */
-}
-.max_height{
-    height: calc(100% - 7rem);
-    max-height: calc(100% - 7rem);
-}
-
-.bg_gradent_l
-{
-    background: linear-gradient(305deg, #c6e7f3ed, transparent);
-}`}</style>
-    </div>
+          </div>
   );
 };
 

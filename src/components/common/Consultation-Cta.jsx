@@ -23,7 +23,7 @@ export default function ConsultationCTA({
   return (
     <section className="py-12">
       <div className="max-w-7xl mx-auto px-6 pt-24">
-        <div className={`relative rounded-[28px] overflow-hidden ${isWhite
+        <div className={`relative rounded-[28px]  ${isWhite
           ? "bg-white border border-slate-100 shadow-xl shadow-slate-200/50"
           : "bg-gradient-to-br from-[#28AFDF] to-[#06465D]"
           }`}>
@@ -38,8 +38,8 @@ export default function ConsultationCTA({
                   width={500}
                   height={500}
                   className={`relative object-contain ${isWhite
-                    ? "-top-10 md:-top-20 scale-110"
-                    : "relative -bottom-4 md:absolute md:-bottom-8 md:left-0 md:w-80 md:h-auto scale-110 md:scale-125"
+                    ? "-top-30 h-50 md:-top-62  md:h-98 scale-110"
+                    : "relative -bottom-4 md:absolute md:-bottom-8 md:left-0 md:w-80 md:h-98  scale-110 md:scale-125"
                     }`}
                 />
               </div>
@@ -48,7 +48,10 @@ export default function ConsultationCTA({
             {/* Content */}
             <div className={`md:col-span-2 ${isWhite ? "text-slate-900" : "text-white"}`}>
               <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight">{title}</h2>
-              <p className={`mt-3 text-sm md:text-base max-w-2xl leading-relaxed ${isWhite ? "text-slate-500" : "text-white/90"}`}>{subtitle}</p>
+              <div
+                className={`mt-3 text-sm md:text-base max-w-2xl leading-relaxed rich-text ${isWhite ? "text-slate-500" : "text-white/90"}`}
+                dangerouslySetInnerHTML={{ __html: subtitle }}
+              />
 
               <div className="mt-8">
                 <button

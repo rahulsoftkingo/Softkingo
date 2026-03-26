@@ -74,7 +74,8 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'blogs', label: '16. Blog Section', icon: MessageSquare },
                 { id: 'faq', label: '17. FAQ', icon: HelpCircle },
                 { id: 'cta', label: '18. Bottom CTA', icon: MousePointerClick },
-                { id: 'seo', label: '19. SEO Settings', icon: Search }
+                { id: 'seo', label: '19. SEO Settings', icon: Search },
+                { id: 'inquiry', label: '20. Inquiry Section', icon: MessageSquare }
             ]
         },
         industry: {

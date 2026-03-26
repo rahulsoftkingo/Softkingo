@@ -19,7 +19,12 @@ import { MdPhone, MdLocationOn, MdAccessTime } from "react-icons/md";
 import { HiGlobeAlt } from "react-icons/hi";
 import InquiryForm from "../public/InquiryForm";
 
-const InquirySection = () => {
+const InquirySection = ({
+  tagline = "GET IN TOUCH",
+  title = "Connect",
+  subtitle = "Reach out to us from anywhere in the world. We're here to turn your ideas into reality.",
+  titlePrefix = "Let's "
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -190,19 +195,20 @@ const InquirySection = () => {
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg">
                 <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                GET IN TOUCH
+                {tagline}
               </div>
 
               <h2 className="text-3xl md:text-4xl font-extrabold">
-                <span className="text-gray-900">Let's </span>
+                <span className="text-gray-900">{titlePrefix}</span>
                 <span className="bg-gradient-to-r from-sky-600 via-sky-600 to-cyan-600 bg-clip-text text-transparent">
-                  Connect
+                  {title}
                 </span>
               </h2>
 
-              <p className="text-lg text-gray-600 leading-relaxed max-w-lg">
-                Reach out to us from anywhere in the world. We're here to turn your ideas into reality.
-              </p>
+              <p 
+                className="text-lg text-gray-600 leading-relaxed max-w-lg rich-text"
+                dangerouslySetInnerHTML={{ __html: subtitle }}
+              />
             </div>
 
             <div className="flex flex-wrap gap-4">

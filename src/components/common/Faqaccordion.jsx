@@ -64,9 +64,9 @@ export default function FAQAccordion({ data }) {
 ];
 
   // Use props data if available, otherwise default
-  const items = data?.items || defaultItems;
-  const title = data?.title || "Questions? Look Here";
-  const subtitle = data?.subtitle || "Find answers to frequently asked questions about our services and process.";
+  const items = data?.items || [];
+  const title = data?.title;
+  const subtitle = data?.subtitle;
   const gradientText = data?.gradientText || "";
 
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
@@ -122,7 +122,7 @@ export default function FAQAccordion({ data }) {
                   >
                     <div className="overflow-hidden">
                         <div 
-                            className="px-6 pb-6 pl-[4.5rem] text-sm md:text-base text-slate-600 leading-relaxed prose prose-sm max-w-none"
+                            className="px-6 pb-6 pl-[4.5rem] text-sm md:text-base text-slate-600 leading-relaxed prose prose-sm max-w-none rich-text"
                             dangerouslySetInnerHTML={{ __html: it.a }}
                         />
                     </div>

@@ -1,10 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import Lottie from "lottie-react";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import arrowAnimation from "@/components/logo/wired-outline-221-arrow-10-hover-streach.json";
-import { FaArrowRight } from "react-icons/fa";
 
 function Process() {
   const [current, setCurrent] = useState(1);
@@ -15,7 +14,7 @@ function Process() {
       setIsMobile(window.innerWidth < 768);
     };
 
-    handleResize(); // Initial check
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -30,31 +29,21 @@ function Process() {
 
   const handleCardInteraction = (id) => {
     if (isMobile) {
-      // Toggle on mobile: close if already open, else open
       setCurrent(current === id ? 1 : id);
     } else {
-      // Hover effect on desktop
       setCurrent(id);
     }
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-white  to-white py-10 sm:py-12 px-4 sm:px-6">
+    <div className="h-full bg-gradient-to-br from-white to-white py-10 sm:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        {/* <div className="pt-[35px] text-3xl md:text-4xl lg:text-[50px] flex justify-center gap-1">
-          <p>Our</p>
-          <p className="text-[#28AFDF] font-bold">Process</p>
-        </div>
-        <div className="mt-[30px] text-center text-black mb-[41px]">
-          <p className="text-xs md:text-lg lg:text-[20px]">
-            Explore our recent projects showcasing our expertise across different industries and technologies
-          </p>
-        </div> */}
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.5 }}
             className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900"
           >
@@ -66,7 +55,8 @@ function Process() {
 
           <motion.p
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto"
           >
@@ -82,16 +72,12 @@ function Process() {
               return (
                 <div
                   key={item.id}
-                  onMouseEnter={() => setCurrent(item.id)}
+                  onMouseEnter={() => handleCardInteraction(item.id)}
                   onMouseLeave={() => setCurrent(1)}
-                  className={`relative overflow-hidden border-4border-white transition-all duration-500 flex ${isActive ? 'flex-[3]' : 'flex-[1]'
-                    }`}
+                  className={`relative overflow-hidden transition-all duration-500 flex ${isActive ? 'flex-[3]' : 'flex-[1]'}`}
                 >
                   {/* Arrow overlay: show only if NOT active */}
-                  <div
-                    className={`absolute inset-0 flex items-start justify-center transition-opacity duration-500 z-10 ${isActive ? 'opacity-0' : 'opacity-100'
-                      }`}
-                  >
+                  <div className={`absolute inset-0 flex items-start justify-center transition-opacity duration-500 z-10 ${isActive ? 'opacity-0' : 'opacity-100'}`}>
                     <Lottie
                       animationData={arrowAnimation}
                       loop
@@ -100,51 +86,18 @@ function Process() {
                   </div>
 
                   {/* Rotated title: hide when active */}
-                  <p
-                    className={`-rotate-90 font-bold text-white text-[20px] absolute left-1/2 top-1/2 transform transition-all duration-700 ease-in-out z-10 whitespace-nowrap ${isActive ? 'opacity-0 translate-x-full' : '-translate-x-1/2 -translate-y-1/2 opacity-100'
-                      }`}
-                  >
+                  <p className={`-rotate-90 font-bold text-white text-[20px] absolute left-1/2 top-1/2 transform transition-all duration-700 ease-in-out z-10 whitespace-nowrap ${isActive ? 'opacity-0 translate-x-full' : '-translate-x-1/2 -translate-y-1/2 opacity-100'}`}>
                     {item.title}
                   </p>
 
                   {/* Detail panel: show when active */}
-                  {/* <div
-                    className={`absolute bottom-4 left-4 p- transform transition-all duration-500 ease-in-out text-white whitespace-normal z-10   ${
-                      isActive ? 'opacity-100 translate-x-0  ' : 'opacity-0 -translate-x-full'
-                    }`}
-                    style={{ width: '400px' }}
-                  >
-                    <p className="font-semibold text-[30px]">{item.title}</p>
-                    <p className="text-[16px] font-light mt-3">{item.description}</p>
-                    <span className="flex flex-row items-center gap-2 mt-4">view more <FaArrowRight/></span>
-                  </div> */}
                   <div
-                    className={`
-    absolute bottom-4 left-4 p-6
-    transform transition-all duration-500 ease-in-out
-    text-white whitespace-normal z-10
-    rounded2xl
-
-    bg-white/20 backdrop-blur-md
-    borderborder-white/30
-group inline-block
-    ${isActive
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-full'
-                      }
-  `}
+                    className={`absolute bottom-4 left-4 p-6 transform transition-all duration-500 ease-in-out text-white whitespace-normal z-10 bg-white/20 backdrop-blur-md rounded-2xl ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}`}
                     style={{ width: '400px' }}
                   >
-                    <p className=" font-semibold text-2xl
-      transform origin-left
-      transition-transform duration-500 ease-out
-      group-hover:scale-x-110">{item.title}</p>
+                    <p className="font-semibold text-2xl">{item.title}</p>
                     <p className="text-[16px] font-light mt-3">{item.description}</p>
-                    {/* <span className="flex flex-row items-center gap-2 mt-4">
-    view more <FaArrowRight />
-  </span> */}
                   </div>
-
 
                   {/* Background image */}
                   <img
@@ -166,14 +119,10 @@ group inline-block
               <div
                 key={item.id}
                 onClick={() => handleCardInteraction(item.id)}
-                className={`relative overflow-hidden border-4border-white transition-all duration-500 w-full ${isActive ? 'h-[300px]' : 'h-[80px]'
-                  }`}
+                className={`relative overflow-hidden transition-all duration-500 w-full ${isActive ? 'h-[300px]' : 'h-[80px]'}`}
               >
-                {/* Arrow overlay: show only if NOT active */}
-                <div
-                  className={`absolute inset-0 flex items-start justify-end transition-opacity duration-500 z-10 ${isActive ? 'opacity-0' : 'opacity-100'
-                    }`}
-                >
+                {/* Arrow overlay */}
+                <div className={`absolute inset-0 flex items-start justify-end transition-opacity duration-500 z-10 ${isActive ? 'opacity-0' : 'opacity-100'}`}>
                   <Lottie
                     animationData={arrowAnimation}
                     loop
@@ -181,32 +130,19 @@ group inline-block
                       width: 60,
                       height: 60,
                       filter: 'brightness(0) invert(1)',
-                      transform: 'rotate(90deg)' // Rotate arrow for vertical layout
+                      transform: 'rotate(90deg)'
                     }}
                   />
                 </div>
 
-                {/* Title always visible */}
                 <p className="font-bold text-white text-[18px] absolute top-4 left-4 z-10">
                   {item.title}
                 </p>
 
-                {/* Detail panel: show when active */}
-                <div
-                  className={`   absolute bottom-4 left-4 right-4 p-4
-
-    rounded2xl
-    bg-white/20 backdrop-blur-md
-    borderborder-white/30 w- transform transition-all duration-500 ease-in-out text-white whitespace-normal z-10 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
-                    }`}
-                >
+                <div className={`absolute bottom-4 left-4 right-4 p-4 rounded-2xl bg-white/20 backdrop-blur-md text-white whitespace-normal z-10 transition-all duration-500 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'}`}>
                   <p className="text-[12px] font-light mt-3">{item.description}</p>
-                  <span className="flex flex-row items-center gap-2 mt-4 text-xs">
-                    view more <FaArrowRight />
-                  </span>
                 </div>
 
-                {/* Background image */}
                 <img
                   src={item.image}
                   alt={item.title}
@@ -222,37 +158,3 @@ group inline-block
 }
 
 export default Process;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// nami@gmail.com
-// nami@12345
-
-
-
-
-

@@ -102,22 +102,6 @@ export default function WhatsAppButton() {
         </div>
       </a>
 
-      <style jsx>{`
-        @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px) scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-
-        .animate-slideIn {
-          animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-      `}</style>
     </div>
   );
 }

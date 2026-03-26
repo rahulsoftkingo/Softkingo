@@ -97,7 +97,7 @@ export default function AdminHeaderClient({ session }) {
               )} */}
 
             </div>
-            
+
             <div className="hidden sm:flex flex-col items-start text-sm">
               <span className="font-semibold text-slate-900">
                 {mounted && (session?.user?.name || session?.user?.username || 'User')}
@@ -124,31 +124,31 @@ export default function AdminHeaderClient({ session }) {
 
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-64 origin-top-right bg-white rounded-xl shadow-xl borderborder-sky-200 py-2 z-50">
-            <div className='flex justify-start pl-2 items-center'>
-              {profileImage ? (
-                <Image
-                  src={
-                    profileImage.startsWith('/')
-                      ? profileImage
-                      : `/${profileImage}`
-                  }
-                  alt="Profile"
-                  width={36}
-                  height={36}
-                  className="h-8 w-8 rounded-full object-cover"
-                />
-              ) : (
-                <User className="h-5 w-5 text-white" />
-              )}
-              <div className="px-4 py-3 border-b border-sky-100">
-                <p className="text-sm font-semibold text-sky-950">
-                  {session?.user?.name || session?.user?.username}
-                </p>
-                <p className="text-sm text-sky-600 capitalize font-medium">
-                  {primaryRole}
-                </p>
+              <div className='flex justify-start pl-2 items-center'>
+                {profileImage ? (
+                  <Image
+                    src={
+                      profileImage.startsWith('/')
+                        ? profileImage
+                        : `/${profileImage}`
+                    }
+                    alt="Profile"
+                    width={36}
+                    height={36}
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <User className="h-5 w-5 text-white" />
+                )}
+                <div className="px-4 py-3 border-b border-sky-100">
+                  <p className="text-sm font-semibold text-sky-950">
+                    {session?.user?.name || session?.user?.username}
+                  </p>
+                  <p className="text-sm text-sky-600 capitalize font-medium">
+                    {primaryRole}
+                  </p>
+                </div>
               </div>
- </div>
               <div className="py-2">
                 <a
                   href="/admin/account/profile"

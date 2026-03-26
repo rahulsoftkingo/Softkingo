@@ -12,7 +12,7 @@ const CommonTitle = ({
         right: "text-right"
     }[align] || "text-center";
 
-      const containerClass = {
+    const containerClass = {
         left: "pl-4sm:pl-8lg:pl-12",
         center: "px-4 sm:px-6 lg:px-8 mx-auto",
         right: "pr-4 sm:pr-8 lg:pr-12 flex justify-end"
@@ -23,14 +23,11 @@ const CommonTitle = ({
         center: "mx-auto",
         right: "ml-auto"
     }[align] || "mx-auto";
-// Logic to separate first word and the rest
-    const titleWords = title ? title.split(' ') : [];
-    const firstWord = titleWords[0] || '';
-    const remainingTitle = titleWords.slice(1).join(' ');
-
-    // Determine what goes into the gradient span
-    // Priority: Explicit gradientText > Remaining words of title > Nothing
-    const contentForGradient = gradientText || remainingTitle;
+    // If gradientText is provided separately, we treat the entire 'title' as plain
+    // If not, we split the 'title' into plain (first word) and gradient (rest)
+    const hasExplicitGradient = !!gradientText;
+    const plainText = hasExplicitGradient ? title : (title ? title.split(' ')[0] : '');
+    const gradientPart = gradientText || (title ? title.split(' ').slice(1).join(' ') : '');
 
     return (
         <div className={`${textAlignClass} ${containerClass} mb-8 sm:mb-12`}>
@@ -40,19 +37,19 @@ const CommonTitle = ({
                     {pill}
                 </div>
             )}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal">
-                {firstWord}{' '}
-                {contentForGradient && (
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
-                        {contentForGradient}
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal py-1">
+                {plainText}{' '}
+                {gradientPart && (
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 py-1">
+                        {gradientPart}
                     </span>
                 )}
             </h2>
             
 
             {subtitle && (
-                <p 
-                    className="text-sm sm:text-base md:text-lg text-gray-600"
+                <div 
+                    className="text-sm sm:text-base md:text-lg text-gray-600 rich-text"
                     dangerouslySetInnerHTML={{ __html: subtitle }}
                 />
             )}
@@ -135,10 +132,10 @@ export default CommonTitle;
 //                 </div>
 //             )}
             
-//             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal">
+//             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal py-1">
 //                 {title ? title.split(' ')[0] : 'Title'}{' '}
 //                 {gradientText && typeof gradientText === 'string' ? (
-//                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500">
+//                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 py-1">
 //                         {gradientText}
 //                     </span>
 //                 ) : title ? (

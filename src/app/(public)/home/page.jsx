@@ -1,19 +1,17 @@
 // src/app/(public)/home/page.jsx
-import HeroSection from "./h1-hero-section/page";
-import Feature from "./h2-feature-section/page";
-import Crafting from "./h3-crafting/page";
-import Service from "./h4-service/page";
-import Portfolio from "./h5-portfolio-section/page";
-import HomePortfolio from "./HomePortfolio";
-import Industries from "./h6-industries-section/page";
-import Process from "./h7-process/page";
-import Strengths_Scroll from "./h8-strengths-scroll/page";
-import ReviewSection from "./h9-clients-review/page";
-import Tech from "@/app/(public)/home/h10-technology/page";
+import HeroSection from "./_components/HeroSection";
+import Feature from "./_components/FeatureSection";
+import Crafting from "./_components/CraftingSection";
+import Service from "./_components/ServiceSection";
+import HomePortfolio from "./_components/HomePortfolio";
+import IndustryTabsSection from "./_components/IndustryTabsSection";
+import Tech from "./_components/TechnologySection";
+import Process from "./_components/ProcessSection";
+import Strengths_Scroll from "./_components/StrengthsScroll";
+import ReviewSection from "./_components/ClientsReview";
 import FooterForm from "@/components/footer/InquirySection";
 import BlogSection from "@/components/common/BlogSection";
-import TechView from "@/components/common/TechView";
-import IndustryTabsSection from "./IndustryTabsSection";
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -25,11 +23,8 @@ export default function Home() {
       <Crafting />
       <Service />
       <HomePortfolio />
-      {/* <Portfolio /> */}
       <IndustryTabsSection />
-      {/* <Industries /> */}
       <Tech />
-      {/* <TechView/> */}
       <Process />
       <Strengths_Scroll />
 
@@ -44,3 +39,4 @@ export default function Home() {
     </div>
   );
 }
+

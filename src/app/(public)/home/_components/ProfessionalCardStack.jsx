@@ -109,27 +109,6 @@ export default function ProfessionalCardStack() {
                       ))}
                     </div>
                   </div>
-
-                  {/* team strip */}
-                  {/* <div className="mt-4 rounded-2xl bg-white border border-slate-200 p-3">
-                    <p className="text-[11px] text-slate-600 font-medium mb-2">Our Team</p>
-                    <div className="flex -space-x-2">
-                      {TEAM.map((m) => (
-                        <div
-                          key={m.name}
-                          title={m.name}
-                          className={`w-9 h-9 rounded-full border-2 border-white shadow-sm bg-gradient-to-br ${m.color} flex items-center justify-center`}
-                        >
-                          <span className="text-white text-[11px] font-bold">
-                            {m.name.split(" ").map((x) => x[0]).slice(0, 2).join("")}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-2 text-[10px] text-slate-500">
-                      Ansh Rajput • Paramhansh • Prashant • Nitin
-                    </div>
-                  </div> */}
                 </div>
 
                 {/* Main content */}
@@ -156,38 +135,6 @@ export default function ProfessionalCardStack() {
                     />
                   </div>
 
-                  {/* Performance strip */}
-                  {/* <div className="rounded-2xl bg-gradient-to-br from-sky-600 to-sky-500 p-4 text-white border border-white/10 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-[11px] text-white/80">Performance</p>
-                        <p className="font-semibold text-sm">Realtime Platform Health</p>
-                      </div>
-                      <div className="flex items-center gap-2 text-[11px]">
-                        <span className="px-2 py-1 rounded-full bg-white/15">Trending</span>
-                        <span className="font-semibold">↑24%</span>
-                      </div>
-                    </div>
-
-                    <div className="mt-3 flex items-end gap-1 h-16">
-                      {[35, 52, 48, 66, 74, 58, 80, 62, 70, 76, 64, 78].map((h, i) => (
-                        <div key={i} className="flex-1">
-                          <div
-                            className="w-full rounded-t bg-gradient-to-t from-white/10 to-white/60"
-                            style={{ height: `${h}%` }}
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-2 flex items-center justify-between text-[10px] text-white/75">
-                      <span>Last 30 days</span>
-                      <span className="inline-flex items-center gap-1">
-                        <FaBolt /> Optimized
-                      </span>
-                    </div>
-                  </div> */}
-
                   {/* Recent activity */}
                   <div className="mt-4">
                     <div className="flex justify-between items-center mb-2">
@@ -197,7 +144,6 @@ export default function ProfessionalCardStack() {
 
                     <div className="space-y-2">
                       {[
-
                         { txt: "Paramhansh Singh updated roadmap", time: "5h ago" },
                         { txt: "Prashant kumar fixed payment flow edge case", time: "1d ago" },
                         { txt: "Ansh Raj Singh deployed new build", time: "2h ago" },
@@ -332,7 +278,6 @@ export default function ProfessionalCardStack() {
                 <div className="w-1/4 bg-slate-50 rounded-lg p-2">
                   <div className="h-1.5 bg-slate-200 rounded-full mb-2 w-3/4" />
                   <div className="h-1.5 bg-slate-200 rounded-full mb-2 w-1/2" />
-                  {/* <div className="h-1.5 bg-slate-200 rounded-full w-5/6" /> */}
                 </div>
 
                 <div className="w-3/4 rounded-lg bg-slate-50 p-2 relative">
@@ -343,8 +288,6 @@ export default function ProfessionalCardStack() {
                     <div className="text-[11px] text-slate-700 font-medium">Dashboard</div>
                   </div>
                   <div className="h-1.5 bg-slate-200 rounded-full mb-2 w-3/4" />
-                  {/* <div className="h-1.5 bg-slate-200 rounded-full mb-2 w-1/2" /> */}
-                  {/* <div className="h-1.5 bg-slate-200 rounded-full w-5/6" /> */}
 
                   <div className="absolute bottom-2 right-2 w-7 h-7 bg-sky-600 rounded-full flex items-center justify-center shadow-md">
                     <FaPlus className="text-white text-[10px]" />

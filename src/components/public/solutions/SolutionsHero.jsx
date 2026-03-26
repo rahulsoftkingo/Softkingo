@@ -38,22 +38,22 @@ export default function SolutionsHero({ data }) {
               <span className="text-sky-400 font-medium">{data.title}</span>
             </nav>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-sky-950 leading-[1.1] animate-fadeInUp tracking-tight delay-100">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-sky-950 leading-[1.1] animate-fadeInUp tracking-tight delay-100">
               {data.title}
             </h1>
 
-            <p 
-                className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl animate-fadeInUp delay-200"
-                dangerouslySetInnerHTML={{ __html: data.description }}
+            <div
+              className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed max-w-xl animate-fadeInUp delay-200"
+              dangerouslySetInnerHTML={{ __html: data.description }}
             />
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
-              <buttom
+            <div className="flex  sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
+              <button
                 onClick={() => setShowModal(true)}
                 // href="/contact"
-                className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2">
+                className="w-fit px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2">
                 Let's Work Together <ArrowRight size={18} />
-              </buttom>
+              </button>
               <Link href="https://calendly.com/paramhans-softkingo/30min"
                 target="_blank"
                 rel="noopener noreferrer"

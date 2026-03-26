@@ -156,8 +156,8 @@ const InquiryForm = ({
         {showHeader && (
           <div className="px-5 pt-4 pb-3 border-b border-slate-100 text-center space-y-1">
             {tagline && <p className="text-[11px] uppercase tracking-[0.14em] text-slate-400">{tagline}</p>}
-            <h3 className="text-xl md:text-2xl font-semibold text-sky-700">{title}</h3>
-            {subtitle && <p className="text-xs md:text-sm text-slate-500 max-w-sm mx-auto">{subtitle}</p>}
+            <h3 className="text-xl md:text-2xl font-semibold text-sky-700 rich-text" dangerouslySetInnerHTML={{ __html: title }} />
+            {subtitle && <div className="text-xs md:text-sm text-slate-500 max-w-sm mx-auto rich-text" dangerouslySetInnerHTML={{ __html: subtitle }} />}
           </div>
         )}
 

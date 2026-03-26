@@ -38,8 +38,9 @@ export default function EditServicePage() {
           seoTitle: data.service.seoTitle || '',
           seoDescription: data.service.seoDescription || '',
           seoImage: data.service.seoImage || '',
-          activeSections: activeSections.length > 0 ? activeSections : null, // Pass null if empty to allow editor defaults
+          activeSections: activeSections.length > 0 ? activeSections : null,
           content: {
+            ...content, // Preserve all fields
             heroTitle: content.heroTitle || data.service.title,
             heroSubtitle: content.heroSubtitle || '',
             heroBg: content.heroBg || '/images/services/default-bg.png',
@@ -53,9 +54,6 @@ export default function EditServicePage() {
               rating: "5.0",
               ratingLabel: "Client Rating"
             },
-            mainImage: content.mainImage || '/images/about/r1.png',
-            extraImages: content.extraImages || [],
-            statsSubtitle: content.statsSubtitle || '',
             portfolioTitle: content.portfolioTitle || 'Our Portfolio',
             portfolioSubtitle: content.portfolioSubtitle || '',
             portfolioCategory: content.portfolioCategory || '',
@@ -74,16 +72,42 @@ export default function EditServicePage() {
               subtitle: 'Streamlined development methodology',
               items: []
             },
+            solutions: content.solutions || {
+              title: 'Industry Solutions',
+              subtitle: 'Customized for your needs',
+              items: []
+            },
+            industrySection: content.industrySection || {
+              title: 'Industries We Serve',
+              subtitle: 'Tailored for every sector',
+              items: []
+            },
+            highlight: content.highlight || {
+              title: 'Solution Highlights',
+              subtitle: 'What makes us stand out',
+              tabs: []
+            },
             faq: content.faq || {
               title: 'Frequently Asked Questions',
               subtitle: 'Everything you need to know',
               items: []
             },
             userGuide: content.userGuide || {
-              title: 'Mobile App Development',
-              subtitle: 'User Guide',
-              description: 'Everything you need to know about the mobile app development journey.',
+              title: 'User Guide',
+              subtitle: 'Technical Documentation',
               sections: []
+            },
+            awards: content.awards || {
+              title: 'Our',
+              gradientText: 'Awards & Recognitions',
+              subtitle: 'Our commitment to excellence.',
+              items: []
+            },
+            inquiry: content.inquiry || {
+              tagline: 'GET IN TOUCH',
+              titlePrefix: "Let's ",
+              title: 'Connect',
+              subtitle: "Reach out to us from anywhere in the world."
             },
           }
         });

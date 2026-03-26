@@ -28,7 +28,7 @@ export default function EditHirePage() {
             key: page.key || '',
             excerpt: page.excerpt || '',
             status: page.status || 'draft',
-            activeSections: page.activeSections || ['hero', 'about', 'features', 'steps', 'services', 'portfolio', 'cta'],
+            activeSections: content.activeSections || page.activeSections || ['hero', 'stats', 'about', 'process', 'services', 'industries', 'solutionList', 'profile', 'portfolio', 'techStack', 'models', 'whyHire', 'businessTypes', 'pricing', 'faq', 'inquiry', 'ctaBanner'],
             content: content
           });
         } else {
@@ -56,7 +56,10 @@ export default function EditHirePage() {
         status: formData.status,
         type: 'hire',
         activeSections: formData.activeSections,
-        contentJson: JSON.stringify(formData.content || {}),
+        contentJson: JSON.stringify({
+          ...(formData.content || {}),
+          activeSections: formData.activeSections
+        }),
         seoTitle: formData.title,
         seoDescription: formData.excerpt,
       };
@@ -68,7 +71,7 @@ export default function EditHirePage() {
       });
 
       if (res.ok) {
-        router.push('/admin/hire');
+        alert('Page updated successfully!');
         return;
       }
 

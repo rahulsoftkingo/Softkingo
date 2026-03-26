@@ -48,7 +48,6 @@ import DynamicPortfolioCard from "@/components/ui/DynamicPortfolioCard";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import FAQAccordion from "@/components/common/Faqaccordion";
 import IndustriesSection from "@/components/common/IndustriesSection";
-import Industries from "../../home/h6-industries-section/page";
 import ServicesCategoryLayout from "../_components/ServicesCategoryLayout";
 import CloneTechStack from "@/components/public/clone/CloneTechStack";
 import ServiceProcess from "../_components/ServiceProcess";
@@ -185,21 +184,21 @@ export default async function ServicePage({ params }) {
 
                 </nav>
                 <div className="space-y-6">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tighter animate-fadeInUp animation-delay-200">
-                    {content.heroTitle || service.title}
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] animate-fadeInUp animation-delay-200">
+                    {content.heroTitle}
                   </h1>
-                  <p className="text-sky-100/90 text-lg md:text-xl lg:text-2xl max-w-2xl leading-relaxed font-medium animate-fadeInUp animation-delay-400">
-                    {content.heroSubtitle || service.excerpt}
-                  </p>
+                  <div
+                    className="text-sky-100/90 text-base md:text-lg lg:text-xl max-w-3xl leading-relaxed font-medium animate-fadeInUp animation-delay-400 rich-text"
+                    dangerouslySetInnerHTML={{ __html: content.heroSubtitle }}
+                  />
                 </div>
 
                 <div className="flex gap-4 animate-fadeInUp animation-delay-600">
                   <Link
-                    href="/contact"
+                    href={content.heroButtonLink || "/contact"}
                     className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
-                  // className="px-4 md:px-6 py-2 rounded-full bg-white  text-sky-400 border border-sky-400 bg-gradient-to-rfrom-sky-600via-sky-500to-sky-400 hover:text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 hover:shadow-lg shadow-sky-900/30 transition-all duration-300  items-center cursor-pointer inline-flex"
                   >
-                    Let’s Work Together <FaArrowRight className="ml-2" />
+                    {content.heroButtonText || "Let’s Work Together"} <FaArrowRight className="ml-2" />
                   </Link>
                 </div>
 
@@ -208,7 +207,7 @@ export default async function ServicePage({ params }) {
                   <div className="flex items-center gap-2 mb-4">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
                     <h3 className="text-sky-200 text-sm md:text-base font-semibold">
-                      Trusted By Leading Brands
+                      {content.trustedByText || "Trusted By Leading Brands"}
                     </h3>
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
                   </div>
@@ -292,51 +291,63 @@ export default async function ServicePage({ params }) {
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl -mt-32 opacity-30"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl -mb-48 opacity-20"></div>
 
-          <div className="max-w-7xl mx-auto relative z-10">
+          <div className="max-w-7xl mx-auto relative z-10 px-6">
             <div className="flex flex-wrap items-center justify-around gap-10 md:gap-12 text-white">
               <StatItem
                 icon={<Clock className="w-8 h-8 md:w-10 md:h-10" />}
                 value={content.stats?.years}
-                label={content.stats?.yearsLabel || "Years Of Experience"}
+                label={content.stats?.yearsLabel}
               />
               <StatItem
                 icon={<Globe className="w-8 h-8 md:w-10 md:h-10" />}
                 value={content.stats?.projects}
-                label={content.stats?.projectsLabel || "Countries Developed"}
+                label={content.stats?.projectsLabel}
               />
               <StatItem
                 icon={<Users className="w-8 h-8 md:w-10 md:h-10" />}
                 value={content.stats?.team}
-                label={content.stats?.teamLabel || "Tech Enthusiast"}
+                label={content.stats?.teamLabel}
               />
               <StatItem
                 icon={<Gem className="w-8 h-8 md:w-10 md:h-10" />}
                 value={content.stats?.rating}
-                label={content.stats?.ratingLabel || "Products Delivered"}
+                label={content.stats?.ratingLabel}
               />
             </div>
           </div>
         </section>
       )}
-      <AwardsSection variant="service" />
+      {show("awards") && (
+        <AwardsSection
+          variant="service"
+          title={content.awards?.title}
+          gradientText={content.awards?.gradientText}
+          subtitle={content.awards?.subtitle}
+          awards={content.awards?.items}
+        />
+      )}
       {/* Services Section - CoreServicesSection Component */}
       {show('services') && (() => {
         // Map admin categories to the component's 'services' shape
+        // Admin uses 'expertise' for capabilities and 'products' for technologies
         const adminCategories = content.services?.categories || [];
         const mappedServices = adminCategories.length > 0
           ? adminCategories.map((cat, idx) => ({
             id: cat.id || idx + 1,
-            title: cat.title || cat.name || `Service ${idx + 1}`,
-            description: cat.description || cat.desc || '',
-            capabilities: cat.capabilities || cat.features || [],
-            technologies: cat.technologies || cat.tech || [],
+            title: cat.fullTitle || cat.title || cat.name || `Service ${idx + 1}`,
+            description: cat.fullDesc || cat.description || cat.desc || '',
+            capabilities: (cat.expertise || []).map(exp => exp.label),
+            technologies: (cat.products || []).map(prod => ({
+              name: prod.name,
+              img: prod.image || "/images/placeholder.jpg"
+            })),
           }))
           : undefined; // undefined = component will use AI_SERVICES_DEFAULT
 
         return (
           <CoreServicesSection
-            title={content.services?.title || "Our Core Services"}
-            subtitle={content.services?.subtitle || "End-to-end solutions designed to solve real business problems and create measurable growth."}
+            title={content.services?.title}
+            subtitle={content.services?.subtitle}
             services={mappedServices}
             bgClass="bg-[#f8faff]"
             sectionId="core-services"
@@ -374,7 +385,7 @@ export default async function ServicePage({ params }) {
         <DynamicPortfolioCard
           category={content.portfolioCategory || service.slug}
           portfolioType="app"
-          title={content.portfolioTitle || "Our Portfolio"}
+          title={content.portfolioTitle}
           subtitle={content.portfolioSubtitle}
         />
       )}
@@ -398,16 +409,20 @@ export default async function ServicePage({ params }) {
       {show('faq') && (
         <FAQAccordion data={content.faq} />
       )}
-      {/* <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100">
-        <Industries />
-      </section> */}
 
       <BlogSection
         category={content.blogCategory || ""}
-        title={content.blogTitle || "Our Latest Blogs"}
-        subtitle={content.blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
+        title={content.blogTitle}
+        subtitle={content.blogSubtitle}
       />
-      <InquirySection />
+      {show("inquiry") && (
+        <InquirySection
+          tagline={content.inquiry?.tagline}
+          titlePrefix={content.inquiry?.titlePrefix}
+          title={content.inquiry?.title}
+          subtitle={content.inquiry?.subtitle}
+        />
+      )}
     </main>
   );
 }

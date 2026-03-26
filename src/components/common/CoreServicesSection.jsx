@@ -184,9 +184,10 @@ function StickyServiceCard({ service, index }) {
                     </h3>
                 </div>
 
-                <p className="text-sm md:text-md text-sky-50  max-w-4xl opacity-90">
-                    {service?.description || service?.desc || ""}
-                </p>
+                <div 
+                    className="text-sm md:text-md text-sky-50 max-w-4xl opacity-90 rich-text"
+                    dangerouslySetInnerHTML={{ __html: service?.description || service?.desc || "" }}
+                />
 
                 {/* Capabilities */}
                 <div className="space-y-4">

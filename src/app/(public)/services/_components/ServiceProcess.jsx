@@ -99,15 +99,6 @@ export default function ServiceProcess({ data }) {
                 </div>
             </div>
 
-            <style jsx>{`
-                .no-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                .no-scrollbar {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-            `}</style>
         </section>
     );
 }

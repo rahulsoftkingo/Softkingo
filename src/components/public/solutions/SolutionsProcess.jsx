@@ -40,7 +40,7 @@ export default function SolutionsProcess({ data }) {
                             <h4 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-sky-700 transition-colors">
                                 {step.title}
                             </h4>
-                            <p 
+                            <div 
                                 className="text-slate-600 text-lg leading-relaxed max-w-2xl"
                                 dangerouslySetInnerHTML={{ __html: step.description }}
                             />

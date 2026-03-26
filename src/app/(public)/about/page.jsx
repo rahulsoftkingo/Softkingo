@@ -305,8 +305,8 @@ export default async function AboutUs() {
                 key={index}
                 className="text-center p-4 md:p-6 border-r last:border-r-0"
               >
-                <p className="text-2xl md:text-3xl font-bold">{stat.number}</p>
-                <p className="text-xs md:text-sm font-bold mt-1">{stat.label}</p>
+                <p className="text-lg md:text-3xl font-bold">{stat.number}</p>
+                <p className="text-[8px] md:text-sm font-bold mt-1">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -353,16 +353,16 @@ export default async function AboutUs() {
           gradientText='Core Values At SoftKingo'
           subtitle='Our focus is not just on delivering innovative solutions to our clients. We emphasize quality and our core values help in its propulsion.'
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto ">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto ">
           {coreValues.map((value, index) => {
             const IconComponent = value.icon;
             return (
               <div key={index} className=" flex flex-col items-center text-center p-6 md:p-8 rounded-xl bg-gray-50 shadow-lg hover:shadow-xl transition">
-                <div className="p-3 md:p-4 bg-cyan-100 rounded-full mb-3 md:mb-4">
-                  <IconComponent className="text-2xl md:text-3xl text-cyan-500" />
+                <div className="p-2 md:p-4 bg-cyan-100 rounded-full mb-3 md:mb-4">
+                  <IconComponent className="text-xl md:text-3xl text-cyan-500" />
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">{value.title}</h3>
-                <p className="text-gray-600 text-sm">{value.description}</p>
+                <h3 className="text-md md:text-xl font-bold text-gray-900 mb-2">{value.title}</h3>
+                <p className="text-gray-600 text-xs md:text-sm">{value.description}</p>
               </div>
             );
           })}

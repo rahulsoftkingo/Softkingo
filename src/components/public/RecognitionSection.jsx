@@ -6,38 +6,38 @@ export default function RecognitionSection() {
     {
       image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (2).png",
       year: "2025",
-      country: "UNITED ARAB EMIRATES",
-      category: "MOBILE APP DEVELOPMENT",
-      title: "TOP COMPANIES",
-      subtitle: "ITFirms",
-      description: "World's Top Mobile App Development Companies 2025"
+      country: "GLOBAL",
+      category: "IT SERVICES",
+      title: "TOP RATED",
+      subtitle: "GoodFirms",
+      description: "Top-Rated IT Services Company 2025"
     },
     {
       image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (4).png",
       year: "2025",
-      country: "UNITED STATES",
-      category: "WEB DEVELOPMENT",
-      title: "TOP AGENCIES",
-      subtitle: "TechAwards",
-      description: "Quality You Can Trust – ISO Certified"
+      country: "GLOBAL",
+      category: "QUALITY STANDARDS",
+      title: "ISO CERTIFIED",
+      subtitle: "ISO 9001:2015",
+      description: "Quality Certified IT Solutions Provider"
     },
     {
       image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (1).png",
-      year: "2020",
-      country: "UNITED KINGDOM",
-      category: "UI/UX DESIGN",
-      title: "INNOVATION LEADERS",
-      subtitle: "DesignReview",
-      description: "Recognized as a Top Developer in India"
+      year: "2024",
+      country: "INDIA",
+      category: "MOBILE APPS",
+      title: "B2B LEADERS",
+      subtitle: "Clutch",
+      description: "Top 100 Mobile App Developers 2025"
     },
     {
       image: "/images/award/techbeheb.png",
-      year: "2023",
-      country: "CANADA",
+      year: "2025",
+      country: "INDIA",
       category: "APP DEVELOPMENT",
-      title: "TECH PIONEERS",
-      subtitle: "FutureTech",
-      description: "Top Developers Out 100 Companies in India"
+      title: "TECH EXCELLENCE",
+      subtitle: "TechBehemoths",
+      description: "Top App Development Company India 2025"
     }
   ];
 
@@ -125,10 +125,10 @@ export default function RecognitionSection() {
             <div
               key={index}
               className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${index === currentIndex
-                  ? 'opacity-100 translate-x-0 z-10'
-                  : index < currentIndex
-                    ? 'opacity-0 -translate-x-full'
-                    : 'opacity-0 translate-x-full'
+                ? 'opacity-100 translate-x-0 z-10'
+                : index < currentIndex
+                  ? 'opacity-0 -translate-x-full'
+                  : 'opacity-0 translate-x-full'
                 }`}
             >
               <div className="relative w-full h-full bg-gradient-to-br from-gray-100 to-sky-50 rounded-2xl overflow-hidden bordeborder-sky-0">

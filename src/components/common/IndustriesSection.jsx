@@ -137,12 +137,14 @@ export default function IndustriesSection({ data, industries }) {
 
     // Safely extract content blocks (handles both Prisma nested JSON structure and direct objects)
     const contentObj = activeIndustry.content || activeIndustry;
-    const heroDesc = contentObj.hero?.description || activeIndustry.excerpt || activeIndustry.description || "We build intelligent, scalable solutions tailored to your industry to elevate performance and accelerate growth.";
+    const heroDesc = contentObj.hero?.description || activeIndustry.excerpt || activeIndustry.description || activeIndustry.itemDesc || "We build intelligent, scalable solutions tailored to your industry to elevate performance and accelerate growth.";
 
     // Safely extract feature bullets
     let featuresList = [];
     if (contentObj.challenges?.items) {
         featuresList = contentObj.challenges.items;
+    } else if (activeIndustry.itemPoints && Array.isArray(activeIndustry.itemPoints)) {
+        featuresList = activeIndustry.itemPoints.map(p => ({ title: p }));
     } else if (activeIndustry.capabilities) {
         featuresList = activeIndustry.capabilities.map(c => ({ title: c }));
     } else {
@@ -165,6 +167,7 @@ export default function IndustriesSection({ data, industries }) {
                 <CommonTitle
                     align="center"
                     title={sectionTitle}
+                    subtitle={data?.subtitle}
                 />
 
                 {/* Tabs: Separated Underlined style */}
@@ -236,9 +239,10 @@ export default function IndustriesSection({ data, industries }) {
                                     <h3 className="text-4xl md:text-5xl font-black text-[#1A1A1A] tracking-tight">
                                         {activeIndustry.title || activeIndustry.itemTitle}
                                     </h3>
-                                    <p className="text-[#333] text-sm md:text-lg leading-relaxed font-medium max-w-xl opacity-90">
-                                        {heroDesc}
-                                    </p>
+                                    <div
+                                        className="text-[#333] text-sm md:text-lg leading-relaxed font-medium max-w-xl opacity-90 rich-text"
+                                        dangerouslySetInnerHTML={{ __html: heroDesc }}
+                                    />
                                 </div>
 
                                 {/* Feature Bullets */}
@@ -246,9 +250,10 @@ export default function IndustriesSection({ data, industries }) {
                                     {featuresList.slice(0, 3).map((item, i) => (
                                         <div key={i} className="flex items-center gap-3">
                                             <Check size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
-                                            <span className="text-[#1A1A1A] font-bold text-sm md:text-lg">
-                                                {item.title}
-                                            </span>
+                                            <span
+                                                className="text-[#1A1A1A] font-bold text-sm md:text-lg rich-text"
+                                                dangerouslySetInnerHTML={{ __html: item.title }}
+                                            />
                                         </div>
                                     ))}
                                 </div>
@@ -264,7 +269,7 @@ export default function IndustriesSection({ data, industries }) {
                                             href={`/industries/${activeIndustry.slug || 'it-consulting'}`}
                                             className="px-8 py-3.5 rounded-full bg-[#1EAEDB] text-white font-bold text-base md:text-lg transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] flex items-center gap-2"
                                         >
-                                            Explore {activeIndustry.title || activeIndustry.itemTitle} Solutions
+                                            {activeIndustry.title || activeIndustry.itemTitle}
                                         </Link>
                                     </motion.div>
                                 </div>
@@ -277,15 +282,6 @@ export default function IndustriesSection({ data, industries }) {
             {/* Custom Background Circle for texture */}
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-sky-100 rounded-full opacity-30 blur-[100px] pointer-events-none"></div>
 
-            <style jsx>{`
-                .no-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                .no-scrollbar {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-            `}</style>
         </section>
     );
 }

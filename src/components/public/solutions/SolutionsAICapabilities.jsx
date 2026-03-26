@@ -69,7 +69,7 @@ export default function SolutionsAICapabilities({ data }) {
                             </h3>
                             
                             {/* Description */}
-                            <p 
+                            <div 
                                 className="text-slate-600 text-md leading-relaxed mb-8 max-w-lg"
                                 dangerouslySetInnerHTML={{ __html: data?.items?.[activeTab]?.description }}
                             />

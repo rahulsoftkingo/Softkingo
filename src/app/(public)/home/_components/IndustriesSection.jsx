@@ -216,26 +216,12 @@ export default function Industries() {
       logo: "/images/industries/logo/retail.png",
       image: "/images/industries/retail.jpg",
     },
-    // {
-    //   title: "AR/VR",
-    //   href: "/industries/ar-vr",
-    //   points: {
-    //     1: "Immersive product demos",
-    //     2: "Training simulations",
-    //     3: "3D experiences",
-    //     4: "AR overlays",
-    //     5: "VR walkthroughs",
-    //     6: "Device integrations",
-    //   },
-    //   logo: "/images/industries/logo/education.png",
-    //   image: "/images/industries/education.webp",
-    // },
   ]);
 
   const [current, setCurrent] = useState("Healthcare");
   const activeIndustry = industries.find((i) => i.title === current) || industries[0];
-const leftSidebarWidth = "w-full md:w-[300px]"; 
-// const rightContentWidth = "flex-1 md:min-w-[calc(100%-300px)]";
+  const leftSidebarWidth = "w-full md:w-[300px]";
+
   return (
     <div className="bg-gradient-to-br from-white to-white w-full h-auto py-16 px-4 sm:px-6">
       <div className="flex justify-center items-center max-w-7xl mx-auto">

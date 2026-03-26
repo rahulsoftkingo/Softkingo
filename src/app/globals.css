@@ -60,13 +60,15 @@ body {
   scroll-behavior: smooth;
 }
 
-.hide-scrollbar {
+.hide-scrollbar,
+.no-scrollbar {
   /* for Firefox */
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.hide-scrollbar::-webkit-scrollbar {
+.hide-scrollbar::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
@@ -93,6 +95,116 @@ body {
   .scrollbar-track-gray-50::-webkit-scrollbar-track {
     background-color: rgb(249 250 251);
   }
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.01); }
+}
+
+@keyframes metric-rise {
+  from { opacity: 0; transform: translateY(30px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Animation Classes */
+.animate-fadeInUp { animation: fadeInUp 0.8s ease-out both; }
+.animate-fadeLeft { animation: fadeLeft 0.8s ease-out both; }
+.animate-fadeRight { animation: fadeRight 0.8s ease-out both; }
+.animate-scale-in { animation: scaleIn 0.6s ease-out both; }
+.animate-gradient-x { animation: gradient-x 3s ease infinite; }
+.animate-shimmer { animation: shimmer 2s ease-in-out infinite; }
+.animate-spin-slow { animation: spin 2s linear infinite; }
+.animate-slideIn { animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) both; }
+.animate-float-subtle { animation: float-subtle 3s ease-in-out infinite; }
+.animate-metric-rise { animation: metric-rise 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+
+/* AI Page Helpers */
+.section-divider {
+  background: linear-gradient(135deg, transparent 0%, #0ea5e9 40%, #0284c7 60%, transparent 100%);
+  height: 2px;
+  width: 120px;
+  margin: 4rem auto;
+  border-radius: 1px;
+  box-shadow: 0 1px 4px rgba(14, 165, 233, 0.3);
+}
+.rect-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  box-shadow: 0 8px 25px rgba(14, 165, 233, 0.3);
+  transition: all 0.3s ease;
+}
+.rect-icon:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 35px rgba(14, 165, 233, 0.4);
+}
+
+/* Megamenu Helpers */
+.header_menu_tab_ic {
+  @apply w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-all duration-300;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+.max_height {
+  height: calc(100% - 7rem);
+  max-height: calc(100% - 7rem);
+}
+.bg_gradent_l {
+  background: linear-gradient(305deg, #c6e7f3ed, transparent);
 }
 
 .slick-dots li.slick-active div.dot {
@@ -1752,4 +1864,47 @@ body {
     border-color: #334155 !important;
     color: #cbd5e1 !important;
   }
+}
+
+/* ================================
+   RICH TEXT RENDERING
+   For dynamic HTML content (Services/Solutions)
+================================ */
+.rich-text b,
+.rich-text strong {
+  font-weight: 700 !important;
+}
+
+.rich-text i,
+.rich-text em {
+  font-style: italic !important;
+}
+
+.rich-text ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  display: block !important;
+}
+
+.rich-text ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  display: block !important;
+}
+
+.rich-text li {
+  margin-bottom: 0.25rem !important;
+  display: list-item !important;
+}
+
+.rich-text a {
+  color: #0ea5e9 !important;
+  text-decoration: underline !important;
+  transition: opacity 0.2s !important;
+}
+
+.rich-text a:hover {
+  opacity: 0.8 !important;
 }

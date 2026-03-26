@@ -116,18 +116,7 @@ const Navbar = () => {
                       <li className="relative group">
                         <Link
                           href="/ai"
-                          className="relative flex items-center gap-2 px-4 py-2 rounded-full 
-    bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 
-    bg-[length:200%_200%] 
-    animate-gradient-x 
-    text-white text-sm font-medium 
-    shadow-[0_4px_20px_rgba(168,85,247,0.4)]
-    hover:shadow-[0_6px_30px_rgba(168,85,247,0.6)] 
-    hover:scale-105 
-    transition-all duration-300 ease-out
-    overflow-hidden border border-purple-500/50
-    group-hover:bg-gradient-to-l
-    before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer before:pointer-events-none"
+                          className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-[length:200%_200%] animate-gradient-x text-white text-sm font-medium shadow-[0_4px_20px_rgba(168,85,247,0.4)] hover:shadow-[0_6px_30px_rgba(168,85,247,0.6)] hover:scale-105 transition-all duration-300 ease-out overflow-hidden border border-purple-500/50 group-hover:bg-gradient-to-l before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer before:pointer-events-none"
                         >
                           {/* Sparkle icon with pulse */}
                           <div className="relative">
@@ -352,18 +341,7 @@ const Navbar = () => {
                 <span className="relative group lg:hidden">
                   <Link
                     href="/ai"
-                    className="relative flex items-center gap-2 px-4 py-2 rounded-full 
-    bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 
-    bg-[length:200%_200%] 
-    animate-gradient-x 
-    text-white text-sm font-medium 
-    shadow-[0_4px_20px_rgba(168,85,247,0.4)]
-    hover:shadow-[0_6px_30px_rgba(168,85,247,0.6)] 
-    hover:scale-105 
-    transition-all duration-300 ease-out
-    overflow-hidden border border-purple-500/50
-    group-hover:bg-gradient-to-l
-    before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer before:pointer-events-none"
+                    className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-[length:200%_200%] animate-gradient-x text-white text-sm font-medium shadow-[0_4px_20px_rgba(168,85,247,0.4)] hover:shadow-[0_6px_30px_rgba(168,85,247,0.6)] hover:scale-105 transition-all duration-300 ease-out overflow-hidden border border-purple-500/50 group-hover:bg-gradient-to-l before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:animate-shimmer before:pointer-events-none"
                   >
                     {/* Sparkle icon with pulse */}
                     <div className="relative">
@@ -385,43 +363,6 @@ const Navbar = () => {
                   </div>
                 </span>
 
-                <style>
-                  {
-                    `
-  @keyframes gradient-x {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.animate-gradient-x {
-  animation: gradient-x 3s ease infinite;
-}
-
-.animate-shimmer {
-  animation: shimmer 2s ease-in-out infinite;
-}
-
-/* Particles ping delay */
-.delay-150 {
-  animation-delay: 0.15s;
-}
-.delay-300 {
-  animation-delay: 0.3s;
-}
-
-  `
-                  }
-                </style>
 
                 <div className="hidden md:flex lg:hidden w-12 ml-2" />
               </div>

@@ -9,7 +9,6 @@ import {
   AlertCircle, FileText, Image, Mail, Zap, Folder, LayoutDashboard, Ticket
 } from 'lucide-react';
 import { Buffer } from 'buffer';
-import AttendanceTimer from "./AttendanceTimer";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -22,51 +21,7 @@ export async function generateMetadata() {
   };
 }
 
-// Replace toggleClockInOut function (line 25-60):
-
-async function toggleClockInOut(formData) {
-  'use server';
-  try {
-    const userId = formData.get('userId');
-
-    const currentAttendance = await prisma.attendance.findFirst({
-      where: {
-        userId: Number(userId),
-        clockOut: null
-      },
-      orderBy: { clockIn: 'desc' }
-    });
-
-    if (currentAttendance) {
-      // ✅ FIXED: Clock Out - Use 'duration' not 'totalHours'
-      const durationMinutes = Math.round((new Date() - new Date(currentAttendance.clockIn)) / (1000 * 60));
-
-      await prisma.attendance.update({
-        where: { id: currentAttendance.id },
-        data: {
-          clockOut: new Date(),
-          duration: durationMinutes,  // ✅ Changed from totalHours
-          status: 'completed'
-        }
-      });
-    } else {
-      // ✅ Clock In
-      await prisma.attendance.create({
-        data: {
-          userId: Number(userId),
-          clockIn: new Date(),
-          status: 'active'
-        }
-      });
-    }
-
-    revalidatePath('/admin/dashboard');
-    return { success: true };
-  } catch (error) {
-    console.error('Clock error:', error);
-    return { success: false };
-  }
-}
+// Removed toggleClockInOut
 
 
 function formatNumber(n, compact = true) {
@@ -130,62 +85,39 @@ function getProfileImage(user) {
 // Replace getCompleteEnterpriseData function COMPLETELY:
 
 async function getCompleteEnterpriseData(session) {
-  const now = new Date();
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-  const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-
   try {
     const [
-      // Existing queries (0-25)
-      totalEmployees, clockedInCount, pendingLeaves, payrollData,
       totalUsers, adminUsers, userProfile,
-      totalBlogPosts, publishedPosts, blogCategories, totalEGuides,
+      totalBlogPosts, publishedPosts, blogCategories, totalEbooks,
       newsletterLists, newsletterSubs, emailCampaigns,
       totalLeads, recentLeads, openTickets, recentTickets,
       totalMedia, totalPortfolio, activeChats,
       totalPages, publishedPages,
-      recentAttendances, recentLeaves, recentBlogPosts,
-
-      // ✅ NEW: TODAY'S STATS (index 26)
-      todayCompletedSessions
+      recentBlogPosts
     ] = await Promise.all([
-      // HRMS (0-3)
-      prisma.user.count({ where: { department: { not: null } } }),
-      prisma.attendance.count({ where: { clockIn: { gte: todayStart }, clockOut: null } }),
-      prisma.leaveRequest.count({ where: { status: 'pending' } }),
-      prisma.employeeSalary.aggregate({
-        where: { status: 'paid' },
-        _sum: { netSalary: true }, _count: true
-      }),
-
-      // Users (4-6)
+      // Users (0-2)
       prisma.user.count(),
       prisma.userRole.count({ where: { role: { name: 'admin' } } }),
       prisma.user.findFirst({
         where: { id: Number(session?.user?.id || 0) },
         select: {
           id: true, name: true, email: true, title: true, department: true,
-          profileImage: true, profileImageType: true,
-          attendances: {
-            take: 1,
-            orderBy: { clockIn: 'desc' },
-            select: { id: true, clockIn: true, clockOut: true }
-          }
+          profileImage: true, profileImageType: true
         }
       }),
 
-      // Content (7-10)
+      // Content (3-6)
       prisma.blogPost.count(),
       prisma.blogPost.count({ where: { status: 'published' } }),
       prisma.blogCategory.count(),
       prisma.ebook.count(),
 
-      // Marketing (11-13)
+      // Marketing (7-9)
       prisma.newsletterList.count(),
       prisma.newsletterSubscription.count({ where: { status: 'active' } }),
       prisma.emailCampaign.count(),
 
-      // CRM (14-17)
+      // CRM (10-13)
       prisma.lead.count(),
       prisma.lead.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
       prisma.ticket.count({ where: { status: { in: ['open', 'in-progress'] } } }),
@@ -194,97 +126,46 @@ async function getCompleteEnterpriseData(session) {
         orderBy: { createdAt: 'desc' }, take: 5
       }),
 
-      // Media + Operations (18-22)
+      // Media + Operations (14-18)
       prisma.mediaItem.count(),
       prisma.portfolioProject.count(),
       prisma.chatConversation.count({ where: { status: 'active' } }),
       prisma.page.count(),
       prisma.page.count({ where: { status: 'published' } }),
 
-      // Recent (23-25)
-      prisma.attendance.findMany({
-        where: { clockIn: { gte: todayStart } },
-        include: { user: { select: { name: true, department: true } } },
-        orderBy: { clockIn: 'desc' }, take: 5
-      }),
-      prisma.leaveRequest.findMany({
-        where: { status: 'pending' },
-        include: { user: { select: { name: true } } },
-        orderBy: { createdAt: 'desc' }, take: 5
-      }),
+      // Recent (19)
       prisma.blogPost.findMany({
         where: { status: 'published' },
         orderBy: { publishedAt: 'desc' },
-        take: 6,
+        take: 8,
         select: { id: true, title: true, slug: true, publishedAt: true }
-      }),
-
-      // ✅ TODAY'S COMPLETED SESSIONS (NEW - index 26)
-      prisma.attendance.findMany({
-        where: {
-          userId: Number(session?.user?.id || 0),
-          clockOut: { not: null },
-          clockIn: { gte: todayStart, lte: todayEnd }
-        },
-        select: { duration: true }
       })
     ]);
-
-    // ✅ TODAY'S STATS CALCULATION
-    const completedMinutes = todayCompletedSessions.reduce((sum, att) => sum + (att.duration || 0), 0);
-    const completedHours = completedMinutes / 60;
-
-    // Categories
-    const regularHours = Math.min(completedHours, 8);
-    const overtimeHours = Math.max(0, completedHours - 8);
-    const restHours = Math.max(0, 8 - completedHours);
-
-    // ✅ Clock status
-    const latestAttendance = userProfile?.attendances?.[0];
-    const isClockedIn = latestAttendance?.clockIn && !latestAttendance?.clockOut;
 
     return {
       session,
       metrics: {
-        hrms: {
-          employees: totalEmployees,
-          clockedIn: clockedInCount,
-          pendingLeaves,
-          payrollAmount: Number(payrollData._sum?.netSalary || 0),
-          payrollEmployees: payrollData._count || 0
-        },
         users: { total: totalUsers, admins: adminUsers },
-        content: { blogPosts: totalBlogPosts, publishedPosts, blogCategories, ebooks: totalEGuides },
+        content: { blogPosts: totalBlogPosts, publishedPosts, blogCategories, ebooks: totalEbooks },
         marketing: { newsletters: newsletterLists, subscribers: newsletterSubs, campaigns: emailCampaigns },
         crm: { leads: totalLeads, openTickets },
         media: { files: totalMedia, portfolio: totalPortfolio },
         operations: { chats: activeChats, pages: totalPages, publishedPages }
       },
       recent: {
-        attendances: Array.isArray(recentAttendances) ? recentAttendances : [],
-        leaves: Array.isArray(recentLeaves) ? recentLeaves : [],
         blogPosts: Array.isArray(recentBlogPosts) ? recentBlogPosts : [],
         leads: Array.isArray(recentLeads) ? recentLeads : [],
         tickets: Array.isArray(recentTickets) ? recentTickets : []
       },
-      user: {
-        ...userProfile,
-        isClockedIn,
-        latestAttendance,
-        clockInTime: latestAttendance?.clockIn,
-        todayStats: {
-          regularHours,
-          overtimeHours,
-          restHours,
-          totalHours: completedHours,
-          sessions: todayCompletedSessions.length
-        }
-      },
-      session
+      user: userProfile
     };
   } catch (error) {
     console.error('Dashboard error:', error);
-    return { /* error fallback */ };
+    return {
+      metrics: { users: {}, content: {}, marketing: {}, crm: {}, media: {}, operations: {} },
+      recent: { blogPosts: [], leads: [], tickets: [] },
+      user: null
+    };
   }
 }
 
@@ -303,129 +184,35 @@ export default async function CompleteEnterpriseDashboard() {
     session?.user?.profileImage ?? session?.user?.image ?? null;
   const avatarSrc = getProfileImage(user) || profileImage;
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50to-slate-100">
+    <>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
+            Welcome back, <span className="text-sky-600">{user?.name?.split(' ')[0] || 'Admin'}</span>!
+          </h1>
+          <p className="text-slate-500 font-medium">Here's what's happening with your enterprise today.</p>
+        </div>
 
-
-      {/* ✅ PERFECT WORKING HEADER - SINGLE PROFILE */}
-      {/* <header className="bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-lg  top-0z-10"> */}
-      <div className=" mx-autopx-6py-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-
-
-
-          {/* Profile + Stats */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between flex-1 gap-6">
-            <div className=" flex flex-col gap-6">
-              {/* ✅ SINGLE WORKING PROFILE CARD */}
-              <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-white to-white rounded-xl borderborder-slate-200/50 shadow-md flex-shrink-0">
-                <div className="relative group">
-                  <div className="w-24 h-24 rounded-2xl ring-4 ring-white/50 shadow-lg overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300">
-                    {/* {getProfileImage(user) ? (
-                      <img
-                        src={getProfileImage(user)}
-                        alt={user?.name || 'Profile'}
-                        className="w-full h-full object-cover"
-                      /> */}
-                    {/* {profileImage ? (
-                                      <Image
-                                        src={
-                                          profileImage.startsWith('/')
-                                            ? profileImage
-                                            : `/${profileImage}`
-                                        }
-                                        alt="Profile"
-                                        width={36}
-                                        height={36}
-                                        className="h-9 w-9 rounded-full object-cover"
-                                      /> */}
-                    {avatarSrc ? (
-                      <img
-                        src={avatarSrc}
-                        alt={user?.name || 'Profile'}
-                        className="w-full h-full object-cover rounded-xl"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-400 to-blue-500 text-white">
-                        <span className="text-2xl font-black">
-                          {user?.name?.[0]?.toUpperCase() || session?.user?.name?.[0]?.toUpperCase() || 'U'}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* ✅ LIVE CLOCK STATUS */}
-                  <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-full shadow-lg border-4 border-white flex items-center justify-center transition-all duration-300 ${isClockedIn
-                    ? 'bg-emerald-500 shadow-emerald-400/50 animate-pulse ring-4 ring-emerald-200/70 scale-110'
-                    : 'bg-slate-400 shadow-slate-300/50 ring-2 ring-slate-200/50'
-                    }`}>
-                    {isClockedIn ? (
-                      <Clock className="h-3 w-3 text-white" />
-                    ) : (
-                      <div className="w-2 h-2 bg-white rounded-full shadow-inner" />
-                    )}
-                  </div>
-                </div>
-
-                <div className="min-w-0 flex-1 max-w-xs">
-                  <div className="font-bold text-sky-900 text-base truncate lg:text-lg">
-                    {user?.name || session?.user?.name || 'Admin User'}
-                  </div>
-                  <div className="text-slate-600 text-sm truncate">
-                    {user?.title || user?.email || session?.user?.email || 'admin@softkingo.com'}
-                  </div>
-                  <div className="text-xs text-slate-500 font-mono capitalize mb-2">
-                    {user?.department || 'Operations'}
-                  </div>
-
-                  <StatusBadge status={isClockedIn ? 'clocked_in' : 'clocked_out'} size="sm" />
-                </div>
-
-                {/* ✅ WORKING CLOCK BUTTON */}
-                <div className="flex items-center gap-2 flex-shrink-0">
-
-                  <form action={toggleClockInOut}>
-                    <input type="hidden" name="userId" value={session?.user?.id || ''} />
-                    <button
-                      type="submit"
-                      className={`px-4 py-2 text-xs font-bold rounded-md border shadow-sm hover:shadow-md transition-all whitespace-nowrap h-10 ${isClockedIn
-                        ? 'bg-red-500 hover:bg-red-600 text-white border-red-400 shadow-red-300/50'
-                        : 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-400 shadow-emerald-300/50'
-                        }`}
-                    >
-                      {isClockedIn ? 'Clock Out' : 'Clock In'}
-                    </button>
-                  </form>
-                </div>
-              </div>
-
-              <AttendanceTimer
-                isClockedIn={isClockedIn}
-                clockInTime={user?.clockInTime}
-                todayStats={user?.todayStats || {}}
-                userId={session?.user?.id}
-              />
-            </div>
-            {/* Live Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 lg:gap-6 wfull lg:w-auto">
-              <LiveStatCard title="Total Users" value={formatNumber(metrics.users.total)} icon={Users} />
-              <LiveStatCard title="Active Sessions" value={formatNumber(metrics.hrms.clockedIn)} icon={Clock} />
-              <LiveStatCard title="Open Tickets" value={formatNumber(metrics.crm.openTickets)} icon={AlertCircle} />
-              <LiveStatCard title="Published Content" value={formatNumber(metrics.content.publishedPosts)} icon={FileText} />
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex flex-col items-end text-right">
+            <span className="text-xs font-black text-slate-400 uppercase tracking-widest leading-none">Server Status</span>
+            <span className="text-sm font-bold text-emerald-600">Optimal Performance</span>
+          </div>
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-inner">
+            <div className="w-3 h-3 bg-emerald-500 rounded-full animate-ping" />
           </div>
         </div>
       </div>
-      {/* </header> */}
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <LiveStatCard title="Total Users" value={formatNumber(metrics.users.total)} icon={Users} />
+        <LiveStatCard title="Open Tickets" value={formatNumber(metrics.crm.openTickets)} icon={AlertCircle} />
+        <LiveStatCard title="Published Content" value={formatNumber(metrics.content.publishedPosts)} icon={FileText} />
+      </div>
 
-
-      <main className=" mx-autopx-6 py-12 space-y-12">
+      <div className="space-y-12">
         {/* PRIMARY KPI DASHBOARD */}
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 gap-8">
-          <KPICard title="Workforce" value={formatNumber(metrics.hrms.employees)} change="+2.3%" icon={Users} color="emerald" href="/admin/hrms/employees" />
-          <KPICard title="Clocked In" value={formatNumber(metrics.hrms.clockedIn)} change="↑ 15%" icon={Clock} color="green" href="/admin/hrms/attendance" />
-          <KPICard title="Pending Leaves" value={formatNumber(metrics.hrms.pendingLeaves)} change="-1" icon={Calendar} color="amber" href="/admin/hrms/leaves" />
-          <KPICard title="Payroll" value={formatCurrency(metrics.hrms.payrollAmount)} change="+8.2%" icon={DollarSign} color="indigo" href="/admin/hrms/payroll" />
+        <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           <KPICard title="Blog Posts" value={formatNumber(metrics.content.blogPosts)} change="+12" icon={FileText} color="blue" href="/admin/blog" />
           <KPICard title="Published" value={formatNumber(metrics.content.publishedPosts)} change="+3" icon={TrendingUp} color="purple" href="/admin/blog" />
           <KPICard title="Categories" value={formatNumber(metrics.content.blogCategories)} change="+1" icon={Folder} color="violet" href="/admin/blog/categories" />
@@ -433,8 +220,7 @@ export default async function CompleteEnterpriseDashboard() {
         </section>
 
         {/* MODULE WIDGETS */}
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-          <ModuleCard title="HRMS Operations" metrics={metrics.hrms} href="/admin/hrms" />
+        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           <ModuleCard
             title="Content Management"
             metrics={{
@@ -464,27 +250,21 @@ export default async function CompleteEnterpriseDashboard() {
           />
         </section>
 
-        {/* RECENT ACTIVITY FEEDS */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-2 gap-8">
-
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <ActivityFeed title="New Leads" data={recent.leads.slice(0, 6)} type="lead" />
           <ActivityFeed title="Open Tickets" data={recent.tickets.slice(0, 6)} type="ticket" />
         </section>
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-2 gap-8">
-          <ActivityFeed title="Live Attendance" data={recent.attendances.slice(0, 8)} type="attendance" />
-          <ActivityFeed title="Pending Leaves" data={recent.leaves.slice(0, 6)} type="leave" />
-
-        </section>
+        
         <ActivityFeed title="Recent Posts" data={recent.blogPosts.slice(0, 8)} type="blog" />
-        {/* EXECUTIVE INTELLIGENCE */}
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
 
+        <section className="grid grid-cols-1 xl:grid-cols-2 gap-8">
           <PriorityActions roles={roles} />
           <QuickStatsPanel metrics={metrics} />
         </section>
+
         <IntelligencePanel title="System Health" metrics={metrics} />
-      </main>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -607,9 +387,6 @@ function IntelligencePanel({ title, metrics }) {
         Executive Intelligence
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-        <MetricRow label="Employee Utilization" value="92.7%" change="+1.8%" />
-        <MetricRow label="Leave Approval Rate" value="94%" change="+2.1%" />
-        <MetricRow label="Payroll Compliance" value="100%" change="🟢" />
         <MetricRow label="Content Velocity" value="8/wk" change="+3" />
         <MetricRow label="Lead Conversion" value="23%" change="+4.2%" />
         <MetricRow label="Ticket Resolution" value="87%" change="-1.3%" />
@@ -620,9 +397,6 @@ function IntelligencePanel({ title, metrics }) {
 
 function PriorityActions({ roles }) {
   const actions = [
-    { href: "/admin/hrms", label: "HRMS Dashboard", icon: LayoutDashboard, priority: "high" },
-    { href: "/admin/hrms/attendance", label: "Live Attendance", icon: Clock, priority: "urgent" },
-    { href: "/admin/hrms/leaves", label: "Leave Approvals", icon: Calendar, priority: "high" },
     { href: "/admin/blog", label: "Content Studio", icon: FileText, priority: "medium" },
     { href: "/admin/leads", label: "Lead Pipeline", icon: TrendingUp, priority: "medium" },
     { href: "/admin/tickets", label: "Support Queue", icon: AlertCircle, priority: "high" },

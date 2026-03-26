@@ -158,9 +158,9 @@ const UserGuide = ({ data }) => {
                 <CommonTitle
                     align="center"
                     pill={false}
-                    title={data?.title || "Mobile App Development"}
-                    gradientText={data?.subtitle || "User Guide"}
-                    subtitle={data?.description || "Everything you need to know about the mobile app's core concepts and processes."}
+                    title={data?.title}
+                    gradientText={data?.subtitle}
+                    subtitle={data?.description}
                 />
 
                 {/* Mobile Sticky ToC Bar */}
@@ -281,7 +281,7 @@ const UserGuide = ({ data }) => {
                                     {(data?.sections || []).map((section, idx) => (
                                         <div key={idx} className="space-y-6">
                                             {section.title && <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter" id={`section-${idx}`}>{section.title}</h3>}
-                                            {section.description && <p className="text-slate-600 text-lg leading-relaxed font-medium" dangerouslySetInnerHTML={{ __html: section.description }} />}
+                                            {section.description && <div className="text-slate-600 text-lg leading-relaxed font-medium rich-text" dangerouslySetInnerHTML={{ __html: section.description }} />}
                                             <div className="grid md:grid-cols-2 gap-6">
                                                 {section.subSections?.map((sub, sIdx) => (
                                                     <div key={sIdx} className="p-6 bg-white border border-slate-100 rounded-xl shadow-sm">

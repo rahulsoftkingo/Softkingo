@@ -1,149 +1,82 @@
-// src/components/AttendanceTimer.jsx - COMPLETE VERSION
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Clock, Zap, Coffee } from 'lucide-react';
+import { Clock, Zap, TrendingUp, HelpCircle } from 'lucide-react';
 
-export default function AttendanceTimer({ 
-  isClockedIn, 
-  clockInTime, 
-  todayStats = {},
-  userId,
-  onAutoLogout 
-}) {
-  const [liveTime, setLiveTime] = useState({ hours: 0, minutes: 0, seconds: 0 });
-  const [todayTotal, setTodayTotal] = useState(todayStats);
+export default function AttendanceTimer({ isClockedIn, clockInTime, todayStats, userId }) {
+  const [elapsed, setElapsed] = useState('00:00:00');
 
-  // ✅ LIVE TIMER CALCULATION
   useEffect(() => {
-    if (!isClockedIn || !clockInTime) return;
-
-    const updateTimer = () => {
-      const startTime = new Date(clockInTime);
-      const now = new Date();
-      const diffMs = now - startTime;
-
-      const hours = Math.floor(diffMs / (1000 * 60 * 60));
-      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
-
-      setLiveTime({ hours, minutes, seconds });
-
-      // ✅ AUTO LOGOUT AFTER 10 HOURS
-      if (hours >= 10) {
-        if (onAutoLogout) {
-          onAutoLogout();
-        } else {
-          const form = document.querySelector('form[action*="toggleClockInOut"]');
-          if (form) form.requestSubmit();
-        }
-      }
-    };
-
-    const interval = setInterval(updateTimer, 1000);
-    updateTimer();
-
+    let interval;
+    if (isClockedIn && clockInTime) {
+      interval = setInterval(() => {
+        const diff = new Date() - new Date(clockInTime);
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        setElapsed(
+          `${hours.toString().padStart(2, '0')}:${minutes
+            .toString()
+            .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+        );
+      }, 1000);
+    } else {
+      setElapsed('00:00:00');
+    }
     return () => clearInterval(interval);
-  }, [isClockedIn, clockInTime, onAutoLogout]);
+  }, [isClockedIn, clockInTime]);
 
-  // ✅ CALCULATE CATEGORIES
-  const currentSessionHours = liveTime.hours + (liveTime.minutes / 60);
-  const totalWorkedToday = (todayTotal.regularHours || 0) + currentSessionHours;
-  
-  const regularHours = Math.min(totalWorkedToday, 8);
-  const overtimeHours = Math.max(0, totalWorkedToday - 8);
-  const restHours = Math.max(0, 8 - totalWorkedToday);
-
-  if (!isClockedIn) {
-    return (
-      <div className="space-y-2">
-        <div className="text-xs text-slate-500 font-mono flex items-center gap-2">
-          <Coffee className="h-3 w-3" />
-          Not Active - On Break
-        </div>
-        
-        {/* TODAY'S SUMMARY */}
-        <div className="grid grid-cols-3 gap-2 text-xs">
-          <div className="bg-emerald-50/50 px-2 py-1 rounded-lg border border-emerald-200/30">
-            <div className="text-emerald-800 font-bold">{todayTotal.regularHours?.toFixed(1) || '0.0'}h</div>
-            <div className="text-emerald-600 text-[10px]">Regular</div>
-          </div>
-          <div className="bg-amber-50/50 px-2 py-1 rounded-lg border border-amber-200/30">
-            <div className="text-amber-800 font-bold">{todayTotal.overtimeHours?.toFixed(1) || '0.0'}h</div>
-            <div className="text-amber-600 text-[10px]">Overtime</div>
-          </div>
-          <div className="bg-slate-50/50 px-2 py-1 rounded-lg border border-slate-200/30">
-            <div className="text-slate-800 font-bold">{todayTotal.restHours?.toFixed(1) || '8.0'}h</div>
-            <div className="text-slate-600 text-[10px]">Rest</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const { regularHours = 0, overtimeHours = 0, restHours = 0, totalHours = 0 } = todayStats;
 
   return (
-    <div className="space-y-2">
-      {/* ✅ LIVE SESSION TIMER */}
-      <div className="flex items-center gap-2 text-xs font-mono bg-emerald-50/80 px-3 py-1.5 rounded-full border border-emerald-200/50">
-        <div className="w-2 h-2 bg-emerald-400 rounded-full animate-ping" />
-        <Clock className="h-3 w-3 text-emerald-600" />
-        <span className="font-bold text-emerald-800">
-          {liveTime.hours.toString().padStart(2, '0')}:
-          {liveTime.minutes.toString().padStart(2, '0')}:
-          {liveTime.seconds.toString().padStart(2, '0')}
-        </span>
-      </div>
-      
-      {/* ✅ TODAY'S BREAKDOWN */}
-      <div className="grid grid-cols-3 gap-2 text-xs">
-        {/* Regular Hours (0-8h) */}
-        <div className="bg-emerald-50/80 px-2 py-1 rounded-lg border border-emerald-200/50">
-          <div className="text-emerald-900 font-bold">{regularHours.toFixed(1)}h</div>
-          <div className="text-emerald-600 text-[10px]">Regular</div>
-        </div>
-        
-        {/* Overtime (8+h) */}
-        <div className={`px-2 py-1 rounded-lg border ${
-          overtimeHours > 0 
-            ? 'bg-amber-50/80 border-amber-200/50' 
-            : 'bg-slate-50/50 border-slate-200/30'
-        }`}>
-          <div className={`font-bold ${
-            overtimeHours > 0 ? 'text-amber-900' : 'text-slate-600'
-          }`}>
-            {overtimeHours > 0 ? (
-              <span className="flex items-center gap-1">
-                <Zap className="h-3 w-3" />
-                {overtimeHours.toFixed(1)}h
-              </span>
-            ) : '0.0h'}
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 w-full">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+        <div className="flex items-center gap-3">
+          <div className={`p-2 rounded-lg ${isClockedIn ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-50 text-slate-400'}`}>
+            <Clock className="w-5 h-5" />
           </div>
-          <div className={overtimeHours > 0 ? 'text-amber-600 text-[10px]' : 'text-slate-500 text-[10px]'}>
-            Overtime
+          <div>
+            <div className="text-sm font-semibold text-slate-900">Current Session</div>
+            <div className={`text-xl font-black font-mono ${isClockedIn ? 'text-emerald-600' : 'text-slate-400'}`}>
+              {elapsed}
+            </div>
           </div>
         </div>
         
-        {/* Rest Hours */}
-        <div className="bg-slate-50/50 px-2 py-1 rounded-lg border border-slate-200/30">
-          <div className="text-slate-800 font-bold">{Math.max(0, restHours).toFixed(1)}h</div>
-          <div className="text-slate-600 text-[10px]">Rest</div>
+        <div className="text-right hidden xs:block">
+          <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Today's Total</div>
+          <div className="text-lg font-bold text-slate-900">{totalHours.toFixed(1)} hrs</div>
         </div>
       </div>
 
-      {/* ✅ OVERTIME ALERT */}
-      {overtimeHours > 0 && (
-        <div className="text-[10px] text-amber-700 font-semibold flex items-center gap-1 bg-amber-50/50 px-2 py-1 rounded-lg">
-          <Zap className="h-3 w-3 animate-pulse" />
-          Extra work time! {overtimeHours.toFixed(1)}h overtime
+      <div className="grid grid-cols-3 gap-2">
+        <StatBox label="Regular" value={`${regularHours.toFixed(1)}h`} color="sky" />
+        <StatBox label="Overtime" value={`${overtimeHours.toFixed(1)}h`} color="indigo" />
+        <StatBox label="Balance" value={`${restHours.toFixed(1)}h`} color="emerald" />
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+        <span>Worker Mode</span>
+        <div className="flex items-center gap-1 text-emerald-500">
+          <Zap className="w-3 h-3" />
+          <span>Active</span>
         </div>
-      )}
-      
-      {/* ✅ AUTO LOGOUT WARNING */}
-      {liveTime.hours >= 9 && (
-        <div className="text-[10px] text-red-700 font-semibold flex items-center gap-1 bg-red-50/50 px-2 py-1 rounded-lg animate-pulse">
-          ⚠️ Auto logout in {10 - liveTime.hours} hour
-        </div>
-      )}
+      </div>
+    </div>
+  );
+}
+
+function StatBox({ label, value, color }) {
+  const colors = {
+    sky: 'bg-sky-50 text-sky-700 border-sky-100',
+    indigo: 'bg-indigo-50 text-indigo-700 border-indigo-100',
+    emerald: 'bg-emerald-50 text-emerald-700 border-emerald-100'
+  };
+
+  return (
+    <div className={`p-2 rounded-lg border ${colors[color]} text-center`}>
+      <div className="text-[9px] uppercase font-black opacity-60 mb-1">{label}</div>
+      <div className="text-xs font-bold leading-none">{value}</div>
     </div>
   );
 }

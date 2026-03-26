@@ -1,15 +1,3 @@
-// File cleaned up part 2
-// Cleanup finished
-
-
-
-
-
-
-
-
-
-
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
@@ -19,11 +7,13 @@ import Link from 'next/link';
 // --- COMPONENTS ---
 import LeadForm from '@/components/public/LeadForm';
 import FooterForm from '@/components/footer/InquirySection';
-import HireDevelopersPage from './SelectDeveloper';
-import BlogSection from '@/components/common/BlogSection';
-import TechStack from './TechStack';
-import CommonTitle from '@/components/ui/CommonTitle';
 import DynamicPortfolioCard from '@/components/ui/DynamicPortfolioCard';
+import FAQAccordion from '@/components/common/Faqaccordion';
+import InquirySection from '@/components/footer/InquirySection';
+import CommonTitle from '@/components/ui/CommonTitle';
+import BlogSection from '@/components/common/BlogSection';
+import HireDevelopersPage from './SelectDeveloper';
+import CloneTechStack from '@/components/public/clone/CloneTechStack';
 
 // --- ICONS ---
 import { BsCheckCircle, BsTransparency, BsFileEarmarkBarGraph } from 'react-icons/bs';
@@ -76,79 +66,96 @@ function normalizeHireContent(page) {
   const c = parseJsonSafe(page?.contentJson);
 
   return {
-    heroBg: c.heroBg || '/images/hire/hire1.png',
-    heroTitle: c.heroTitle || page?.title || 'Hire Developers',
-    heroSubtitle: c.heroSubtitle || 'Build your dream team with top 1% tech talent perfectly aligned to your business needs.',
-    badgeText: c.badgeText || 'Hire Page',
+    heroBg: c.heroBg || '',
+    heroTitle: c.heroTitle || page?.title || '',
+    heroSubtitle: c.heroSubtitle || '',
+    badgeText: c.badgeText || '',
     metrics: {
-      avgTime: c.metrics?.avgTime || '48 Hours',
-      network: c.metrics?.network || '100+ Experts',
-      rating: c.metrics?.rating || '4.9/5',
+      avgTime: c.metrics?.avgTime || '',
+      network: c.metrics?.network || '',
+      rating: c.metrics?.rating || '',
     },
 
-    aboutTitle: c.aboutTitle || 'Front-End Developers by Softkingo',
-    aboutSubtitle: c.aboutSubtitle || 'Softkingo has a pool of top Front-end developers who can deliver an extraordinary user experience.',
+    aboutTitle: c.aboutTitle || '',
+    aboutSubtitle: c.aboutSubtitle || '',
     features: Array.isArray(c.features) ? c.features : [],
     benefits: Array.isArray(c.benefits) ? c.benefits : [],
     steps: Array.isArray(c.steps) ? c.steps : [],
     services: Array.isArray(c.services) ? c.services : [],
     moreServices: Array.isArray(c.moreServices) ? c.moreServices : [],
-    portfolioCategory: c.portfolioCategory || "", // from select dropdown in editor
+    portfolioCategory: c.portfolioCategory || "", 
     portfolioTitle: c.portfolioTitle || "",
     portfolioSubtitle: c.portfolioSubtitle || "",
 
     profileSection: {
-      enabled: c.profileSection?.enabled ?? true,
-      title: c.profileSection?.title || 'Detailed profile for Confident Hiring Decisions',
-      subtitle: c.profileSection?.subtitle || 'Each candidate profile includes comprehensive details to ensure you make the right choice.',
+      enabled: c.profileSection?.enabled ?? false,
+      title: c.profileSection?.title || '',
+      subtitle: c.profileSection?.subtitle || '',
       profileFeatures: c.profileSection?.profileFeatures || [],
       images: c.profileSection?.images || {
-        leftTop: '/images/hire/h7.png',
-        rightTop: '/images/hire/h6.png',
-        rightBottom: '/images/hire/h5.png',
+        leftTop: '',
+        rightTop: '',
+        rightBottom: '',
       },
     },
 
     ctaBanner: {
-      enabled: c.ctaBanner?.enabled ?? true,
-      title: c.ctaBanner?.title || 'Book A FREE Consultation With Us',
-      subtitle: c.ctaBanner?.subtitle || "Share your project idea and we'll provide a free consultation.",
-      buttonText: c.ctaBanner?.buttonText || 'Book a Free Demo',
-      buttonHref: c.ctaBanner?.buttonHref || '#lead-form',
-      image: c.ctaBanner?.image || '/images/consultant.png',
+      enabled: c.ctaBanner?.enabled ?? false,
+      title: c.ctaBanner?.title || '',
+      subtitle: c.ctaBanner?.subtitle || "",
+      buttonText: c.ctaBanner?.buttonText || '',
+      buttonHref: c.ctaBanner?.buttonHref || '',
+      image: c.ctaBanner?.image || '',
     },
     comparisonSection: {
-      enabled: c.comparisonSection?.enabled ?? true,
-      title: c.comparisonSection?.title || 'Why Softkingo is the better choice for Tech companies',
-      columns: c.comparisonSection?.columns || [
-        { label: 'Softkingo' }, { label: 'Recruiting Agencies' }, { label: 'Outsourcing' }
-      ],
+      enabled: c.comparisonSection?.enabled ?? false,
+      title: c.comparisonSection?.title || '',
+      columns: c.comparisonSection?.columns || [],
       rows: c.comparisonSection?.rows || []
     },
     modelsSection: {
-      enabled: c.modelsSection?.enabled ?? true,
-      title: c.modelsSection?.title || 'Our Flexible Working Model',
-      subtitle: c.modelsSection?.subtitle || 'We make hiring dedicated developers easy with flexible models tailored to your needs.',
+      enabled: c.modelsSection?.enabled ?? false,
+      title: c.modelsSection?.title || '',
+      subtitle: c.modelsSection?.subtitle || '',
       models: c.modelsSection?.models || []
     },
     whyHireSection: {
-      enabled: c.whyHireSection?.enabled ?? true,
-      title: c.whyHireSection?.title || 'Why You Should Hire From Us',
+      enabled: c.whyHireSection?.enabled ?? false,
+      title: c.whyHireSection?.title || '',
       items: c.whyHireSection?.items || []
     },
     businessTypesSection: {
-      enabled: c.businessTypesSection?.enabled ?? true,
-      title: c.businessTypesSection?.title || 'Hire Developers For Any Business',
-      subtitle: c.businessTypesSection?.subtitle || 'Access Our Technical Proficiency.',
+      enabled: c.businessTypesSection?.enabled ?? false,
+      title: c.businessTypesSection?.title || '',
+      subtitle: c.businessTypesSection?.subtitle || '',
       items: c.businessTypesSection?.items || []
     },
     pricingSection: {
-      enabled: c.pricingSection?.enabled ?? true,
-      title: c.pricingSection?.title || 'Pricing Plans',
-      subtitle: c.pricingSection?.subtitle || 'Our pricing plans, along with a free trial of 2 weeks',
+      enabled: c.pricingSection?.enabled ?? false,
+      title: c.pricingSection?.title || '',
+      subtitle: c.pricingSection?.subtitle || '',
       plans: c.pricingSection?.plans || []
     },
-    footerFormSection: c.footerFormSection || { enabled: true },
+    inquiry: {
+      tagline: c.inquiry?.tagline || '',
+      title: c.inquiry?.title || '',
+      subtitle: c.inquiry?.subtitle || ''
+    },
+    faq: {
+      title: c.faq?.title || '',
+      subtitle: c.faq?.subtitle || '',
+      items: (c.faq?.items || []).map(it => ({
+        id: it.id,
+        q: it.question || it.q || '',
+        a: it.answer || it.a || ''
+      }))
+    },
+    techStack: c.techStack || null,
+    industryHire: c.industryHire || {},
+    blogTitle: c.blogTitle || '',
+    blogSubtitle: c.blogSubtitle || '',
+    blogCategory: c.blogCategory || '',
+    activeSections: c.activeSections || []
   };
 }
 
@@ -179,64 +186,67 @@ export default async function HireSlugPage({ params }) {
     <main className="relative bg-white overflow-x-hidden">
 
       {/* 1. HERO SECTION */}
-      <section className="relative h-[450px] lg:h-[550px] flex items-center bg-slate-900 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={content.heroBg}
-            alt="Hero Background"
-            fill
-            className="object-cover opacity-70"
-            priority
-          />
-          {/* Dark Overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-slate-900/40 opacity-20"></div>
-        </div>
+      {content.activeSections?.includes('hero') && (
+        <section className="relative h-[450px] lg:h-[550px] flex items-center bg-slate-900 overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={content.heroBg}
+              alt="Hero Background"
+              fill
+              className="object-cover opacity-70"
+              priority
+            />
+            {/* Dark Overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-slate-900/40 opacity-20"></div>
+          </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
-          <div className="max-w-3xl animate-in slide-in-from-left-10 duration-700 fade-in">
-            <nav className="flex items-center gap-2 text-xs md:text-sm text-sky-200/80 mb-6 font-medium tracking-wide ">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-              <span>/</span>
-              <Link href="/hire" className="hover:text-white transition-colors">Hire</Link>
-              <span>/</span>
-              <span className="text-white border-b border-sky-500 pb-0.5">{content.heroTitle}</span>
-            </nav>
+          <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+            <div className="max-w-3xl animate-in slide-in-from-left-10 duration-700 fade-in">
+              <nav className="flex items-center gap-2 text-xs md:text-sm text-sky-200/80 mb-6 font-medium tracking-wide ">
+                <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                <span>/</span>
+                <Link href="/hire" className="hover:text-white transition-colors">Hire</Link>
+                <span>/</span>
+                <span className="text-white border-b border-sky-500 pb-0.5">{content.heroTitle}</span>
+              </nav>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-normal mb-6 drop-shadow-lg">
-              {content.heroTitle}
-            </h1>
-            <p className="text-lg text-slate-300 mb-8 max-w-2xl leading-relaxed font-light">
-              {content.heroSubtitle}
-            </p>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-normal mb-6 drop-shadow-lg">
+                {content.heroTitle}
+              </h1>
+              <div
+                className="text-lg text-slate-300 mb-8 max-w-2xl leading-relaxed font-light rich-text"
+                dangerouslySetInnerHTML={{ __html: content.heroSubtitle }}
+              />
 
-            <div className="flex flex-wrap gap-4 items-center ">
-              <div className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
-                <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                </span>
-                <span className="text-sm font-bold text-white tracking-wide">{content.badgeText}</span>
-              </div>
-
-              <div className="hidden md:flex gap-6 text-sm text-slate-300 border-l border-white/20 pl-6 ml-2 ">
-                <div>
-                  <span className="block font-bold text-white text-lg">{content.metrics.avgTime}</span>
-                  <span className="text-xs uppercase tracking-wider">Avg Hiring</span>
-                </div>
-                <div>
-                  <span className="block font-bold text-white text-lg">{content.metrics.network}</span>
-                  <span className="text-xs uppercase tracking-wider">Talent Pool</span>
-                </div>
-                <div>
-                  <span className="block font-bold text-white text-lg flex flex-row items-center ">{content.metrics.rating} <ThumbsUp className='text-[9px] ml-2' /></span>
-                  <span className="text-xs uppercase tracking-wider">Rating
+              <div className="flex flex-wrap gap-4 items-center ">
+                <div className="flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                   </span>
+                  <span className="text-sm font-bold text-white tracking-wide">{content.badgeText}</span>
+                </div>
+
+                <div className="hidden md:flex gap-6 text-sm text-slate-300 border-l border-white/20 pl-6 ml-2 ">
+                  <div>
+                    <span className="block font-bold text-white text-lg">{content.metrics.avgTime}</span>
+                    <span className="text-xs uppercase tracking-wider">Avg Hiring</span>
+                  </div>
+                  <div>
+                    <span className="block font-bold text-white text-lg">{content.metrics.network}</span>
+                    <span className="text-xs uppercase tracking-wider">Talent Pool</span>
+                  </div>
+                  <div>
+                    <span className="block font-bold text-white text-lg flex flex-row items-center ">{content.metrics.rating} <ThumbsUp className='text-[9px] ml-2' /></span>
+                    <span className="text-xs uppercase tracking-wider">Rating
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 2. FEATURES GRID (Floating) */}
       {/* {content.features.length > 0 && (
@@ -254,8 +264,8 @@ export default async function HireSlugPage({ params }) {
             </div>
         </section>
       )} */}
-      {/* FEATURES */}
-      {!!content.features?.length && (
+      {/* 2. FEATURES */}
+      {content.activeSections?.includes('features') && !!content.features?.length && (
         <section className="w-full">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 md:-mt-10 relative z-10">
             <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 overflow-hidden">
@@ -270,9 +280,10 @@ export default async function HireSlugPage({ params }) {
                   </div>
                   <div>
                     <h3 className="text-sm font-semibold text-slate-900">{f.title}</h3>
-                    <p className="text-xs text-slate-600 mt-1 leading-relaxed">
-                      {f.description}
-                    </p>
+                    <div
+                      className="text-xs text-slate-600 mt-1 leading-relaxed rich-text"
+                      dangerouslySetInnerHTML={{ __html: f.description }}
+                    />
                   </div>
                 </div>
               ))}
@@ -281,79 +292,48 @@ export default async function HireSlugPage({ params }) {
         </section>
       )}
       {/* 3. ABOUT + FORM */}
-      <section className="py-24 px-6 max-w-7xl mx-auto" id="lead-form">
-        <div className="grid lg:grid-cols-5 gap-16 items-start">
-          <div className="space-y-8 col-span-3">
-            <CommonTitle
-              align="left"
-              title={content.aboutTitle}
-              subtitle={content.aboutSubtitle}
-            />
+      {content.activeSections?.includes('about') && (
+        <section className="py-24 px-6 max-w-7xl mx-auto" id="lead-form">
+          <div className="grid grid-cols-1 lg:grid-cols-5 lg:gap-16 items-start">
+            <div className="space-y-8 col-span-3">
+              <CommonTitle
+                align="left"
+                title={content.aboutTitle}
+              />
+              <div
+                className="rich-text -mt-6 mb-6"
+                dangerouslySetInnerHTML={{ __html: content.aboutSubtitle }}
+              />
 
-            <div className="space-y-4">
-              {content.benefits.map((b, i) => (
-                <div key={i} className="flex gap-4 items-start">
-                  <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
-                    <BsCheckCircle className="text-emerald-600 w-3.5 h-3.5" />
+              <div className="space-y-4">
+                {content.benefits.map((b, i) => (
+                  <div key={i} className="flex gap-4 items-start">
+                    <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center">
+                      <BsCheckCircle className="text-emerald-600 w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-slate-700 font-medium">{b}</span>
                   </div>
-                  <span className="text-slate-700 font-medium">{b}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden sticky top-24 col-span-2">
-            {/* <div className="bg-sky-600 p-4 text-center">
-                    <p className="text-white font-bold text-sm uppercase tracking-widest">Quick Inquiry</p>
-                </div> */}
-            <LeadForm
-              formType="hire"
-              formKey="hire"
-              serviceName="Hire Developers"
-              title={content.heroTitle}
-              subtitle="Get matched with top talent in 24 Hours!"
-              variant="solid"
-              showLogo={true}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* 4. HIRING STEPS */}
-      {content.steps.length > 0 && (
-        <section className="py-24 bg-gradient-to-br from-white via-sky-50 to-sky-200 relative overflow-hidden hidden">
-          {/* Abstract BG Shape */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-300 rounded-full blur-[100px] opacity-20 -z-10"></div>
-
-          <div className="max-w-7xl mx-auto px-6 relative z-10">
-            <CommonTitle
-              title="How To Hire From Softkingo"
-              subtitle="Simple 4-step process to onboard your dream team."
-              gradientText="Hire Process"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
-              {content.steps.map((step, i) => (
-                <div key={i} className="relative group text-center bg-white p-8 rounded-3xl shadow-lg border border-slate-100 hover:shadow-xl transition-all">
-                  {/* Connector Line (Desktop) */}
-                  {i !== content.steps.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-6 w-12 h-1 border-t-2 border-dashed border-sky-200 z-0"></div>
-                  )}
-
-                  <div className="w-20 h-20 mx-auto bg-sky-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform z-10 relative border-4 border-white shadow-md">
-                    <span className="text-3xl font-black text-sky-500">{step.number || i + 1}</span>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-slate-900 mb-3">{step.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">{step.description}</p>
-                </div>
-              ))}
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden sticky top-24 mt-4 lg:mt-0 lg:col-span-2">
+              <LeadForm
+                formType="hire"
+                formKey="hire"
+                serviceName="Hire Developers"
+                title={content.heroTitle}
+                subtitle="Get matched with top talent in 24 Hours!"
+                variant="solid"
+                showLogo={true}
+              />
             </div>
           </div>
         </section>
       )}
-      {/* STEPS */}
-      {!!content.steps?.length && (
+
+      {/* 4. HIRING STEPS */}
+      {content.activeSections?.includes('steps') && !!content.steps?.length && (
         <section className="py-24 bg-gradient-to-br from-white via-sky-50 to-sky-200 ">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
             <CommonTitle
@@ -365,8 +345,7 @@ export default async function HireSlugPage({ params }) {
               {content.steps.map((step, index) => (
                 <div
                   key={index}
-                  className={`px-4 py-6 text-center ${index < content.steps.length - 1 ? 'md:border-r text-sky-900/30' : ''
-                    }`}
+                  className={`px-4 py-6 text-center ${index < content.steps.length - 1 ? 'md:border-r text-sky-900/30' : ''}`}
                 >
                   <div className="flex items-center justify-center mb-3">
                     <span className="text-5xl font-bold text-slate-900/90 mr-2">
@@ -383,9 +362,10 @@ export default async function HireSlugPage({ params }) {
                   <h3 className="text-slate-900 text-base md:text-lg font-semibold mb-2">
                     {step.title}
                   </h3>
-                  <p className="text-slate-900/90 text-xs md:text-sm leading-relaxed">
-                    {step.description}
-                  </p>
+                  <div
+                    className="text-slate-900/90 text-xs md:text-sm leading-relaxed rich-text"
+                    dangerouslySetInnerHTML={{ __html: step.description }}
+                  />
                 </div>
               ))}
             </div>
@@ -393,132 +373,114 @@ export default async function HireSlugPage({ params }) {
         </section>
       )}
 
-      {/* 5. SERVICES CARDS */}
-      {content.services.length > 0 && (
+      {/* 5. OUR SERVICES */}
+      {content.activeSections?.includes('services') && content.services.length > 0 && (
         <section className="py-24 px-6 max-w-7xl mx-auto bg-white">
           <CommonTitle
-            title="Developers As A Service"
-            subtitle="Flexible engagement models for every need."
+            title={content.servicesTitle || "Developers As A Service"}
+            subtitle={content.servicesSubtitle || "Flexible engagement models for every need."}
           />
           <div className="grid md:grid-cols-3 gap-8 mt-12">
             {content.services.map((s, i) => (
               <div key={i} className={`p-8 rounded-3xl text-white shadow-xl relative overflow-hidden bg-gradient-to-br ${s.bg || 'from-sky-500 to-blue-600'} hover:scale-105 transition-transform duration-300`}>
-                {/* Abstract Circle */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-
                 <div className="mb-6 bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/10">
                   {getIcon(s.iconKey, 32, "text-white")}
                 </div>
                 <h3 className={`text-2xl font-bold mb-4 ${s.textDark ? 'text-slate-800' : 'text-white'}`}>{s.title}</h3>
-                <p className={`text-sm leading-relaxed opacity-90 ${s.textDark ? 'text-slate-800' : 'text-white'}`}>
-                  {s.description}
-                </p>
+                <div
+                  className={`text-sm leading-relaxed opacity-90 ${s.textDark ? 'text-slate-800' : 'text-white'} rich-text`}
+                  dangerouslySetInnerHTML={{ __html: s.description }}
+                />
               </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* 6. SELECT DEVELOPER COMPONENT (Already built) */}
-      <HireDevelopersPage />
+      {/* 6. INDUSTRY SPECIFIC SOLUTIONS */}
+      {content.activeSections?.includes('industryHire') && (
+        <HireDevelopersPage data={content.industryHire} />
+      )}
 
-      {/* 7. MORE SERVICES (Stacking Cards + Sticky Right Content) */}
-      {content.moreServices.length > 0 && (
+      {/* 7. MORE SERVICES (Stacking Cards - Swapped Orientation) */}
+      {content.activeSections?.includes('moreServices') && content.moreServices.length > 0 && (
         <section className="py-24 bg-gradient-to-br from-white via-sky-50 to-sky-200 px-6">
           <div className="max-w-7xl mx-auto">
-
             <div className="flex flex-col lg:flex-row gap-16 items-start">
 
-              {/* LEFT SIDE: SCROLLABLE STACKING CARDS */}
-              <div className="w-full lg:w-1/2">
-                <div className="mb-12">
-                  <CommonTitle
-                    align="left"
-                    title="Services Provided"
-                    subtitle="Comprehensive tech solutions for your business growth."
-                  />
-                </div>
-
-                <div className="flex flex-col pb-24 max-h-[90vh] overflow-auto">
-                  {content.moreServices.map((s, i) => (
-                    <div
-                      key={i}
-                      // STICKY MAGIC: Har card thoda niche stick hoga
-                      className="sticky bg-white rounded-3xl p-8 border border-slate-200 mb-6 transition-all"
-                      style={{
-                        top: `${100 + (i * 20)}px`, // 100px base + 20px increment per card
-                        zIndex: i + 1
-                      }}
-                    >
-                      <div className="flex gap-6 items-start">
-                        <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600">
-                          {getIcon(s.iconKey, 30)}
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-slate-900 mb-3 text-xl">{s.title}</h4>
-                          <p className="text-slate-600 leading-relaxed text-base">
-                            {s.description}
-                          </p>
-
-                          {/* Optional: Add small tags or bullet points if available in data */}
-                          <div className="mt-4 flex flex-wrap gap-2">
-                            <span className="text-[10px] uppercase font-bold text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-100">
-                              Professional
-                            </span>
-                            <span className="text-[10px] uppercase font-bold text-slate-500 bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-                              Reliable
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* RIGHT SIDE: STATIC CONTENT (Sticky) */}
-              <div className="hidden lg:block w-1/2 sticky top-32 h-fit">
-                <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white relative overflow-hidden border border-slate-800">
+              {/* LEFT SIDE: STATIC CONTENT (Sticky) */}
+              <div className="w-full lg:w-1/2 sticky top-40 h-fit">
+                <div className="bg-gradient-to-br from-white to-sky-100 rounded-xl p-10 text-white relative overflow-hidden  shadow-2xl">
                   {/* Decorative Background */}
                   <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500 rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
                   <div className="absolute bottom-0 left-0 w-40 h-40 bg-emerald-500 rounded-full blur-[60px] opacity-10 pointer-events-none"></div>
 
                   <div className="relative z-10">
-                    <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 border border-white/10">
-                      <BsFileEarmarkBarGraph className="w-8 h-8 text-sky-400" />
+                    <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-8 border border-white/10 shadow-inner">
+                      <BsFileEarmarkBarGraph className="w-8 h-8 text-sky-800" />
                     </div>
 
-                    <h3 className="text-3xl font-bold mb-6 leading-normal">
-                      Why Choose Our <br /> <span className="text-sky-400">Development Services?</span>
+                    <h3 className="text-3xl md:text-4xl font-bold mb-6 text-sky-900">
+                      {content.moreServicesTitle || "Services Provided"}
                     </h3>
 
-                    <p className="text-slate-300 leading-relaxed mb-8 text-lg">
-                      We don't just write code; we build future-proof solutions. Our experts ensure every deliverable meets the highest standards of quality, security, and performance.
+                    <p className="text-slate-600 leading-relaxed mb-8 text-lg font-light">
+                      {content.moreServicesSubtitle || "We deliver future-proof solutions with quality, security, and performance."}
                     </p>
 
                     <div className="space-y-4">
-                      <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                        <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
-                        <span className="font-medium">100% Source Code Ownership</span>
-                      </div>
-                      <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                        <div className="w-2 h-2 rounded-full bg-sky-400"></div>
-                        <span className="font-medium">Agile Methodology</span>
-                      </div>
-                      <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/5">
-                        <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                        <span className="font-medium">Dedicated Support Team</span>
-                      </div>
+                      {["100% Source Code Ownership", "Agile Methodology", "Dedicated Support Team"].map((feat, fi) => (
+                        <div key={fi} className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors">
+                          <div className="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.5)]"></div>
+                          <span className="font-medium text-slate-500">{feat}</span>
+                        </div>
+                      ))}
                     </div>
 
                     <div className="mt-10 pt-8 border-t border-white/10">
-                      <p className="text-sm text-slate-400 mb-2">Need a custom package?</p>
-                      <Link href="/contact" className="inline-flex items-center gap-2 text-sky-400 font-bold hover:text-sky-300 transition-colors">
-                        Talk to an Expert <span>→</span>
+                      <p className="text-sm text-slate-400 mb-4 italic">Ready to transform your vision into reality?</p>
+                      <Link href="/contact" className="inline-flex items-center gap-3 bg-white text-slate-900 px-6 py-3 rounded-xl font-bold hover:bg-sky-500 hover:text-white transition-all shadow-lg group">
+                        Talk to an Expert <span className="group-hover:translate-x-1 transition-transform">→</span>
                       </Link>
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* RIGHT SIDE: SCROLLABLE STACKING CARDS */}
+              <div className="w-full lg:w-1/2 flex flex-col gap-8 pb-24">
+                {content.moreServices.map((s, i) => (
+                  <div
+                    key={i}
+                    className="sticky bg-white rounded-[1.5rem] p-8 border border-slate-200 shadow-xl transition-all duration-500 hover:scale-[1.02] transform-gpu"
+                    style={{
+                      top: `${120 + (i * 20)}px`,
+                      zIndex: i + 1
+                    }}
+                  >
+                    <div className="flex flex-col sm:flex-row gap-6 items-start">
+                      <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600 shadow-inner">
+                        {getIcon(s.iconKey, 32)}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-900 mb-3 text-xl text-sky-900">{s.title}</h4>
+                        <div
+                          className="text-slate-600 leading-relaxed text-sm md:text-base font-medium rich-text"
+                          dangerouslySetInnerHTML={{ __html: s.description }}
+                        />
+
+                        <div className="mt-6 flex flex-wrap gap-2">
+                          {["Scalable", "Enterprise-Ready", "Secure"].map((tag, ti) => (
+                            <span key={ti} className="text-[10px] uppercase font-bold text-sky-600 bg-sky-50/50 px-3 py-1 rounded-full border border-sky-100/50">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
 
             </div>
@@ -526,7 +488,7 @@ export default async function HireSlugPage({ params }) {
         </section>
       )}
       {/* 8. PROFILE SECTION */}
-      {content.profileSection.enabled && (
+      {content.activeSections?.includes('profile') && content.profileSection.enabled && (
         <section className="py-24 bg-white text-slate-900 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -565,19 +527,23 @@ export default async function HireSlugPage({ params }) {
         </section>
       )}
 
-      {/* 8.5 PORTFOLIO SECTION */}
-      <DynamicPortfolioCard
-        category={content.portfolioCategory || ""}
-        portfolioType="app"
-        title={content.portfolioTitle}
-        subtitle={content.portfolioSubtitle}
-      />
+      {/* 9 PORTFOLIO SECTION */}
+      {content.activeSections?.includes('portfolio') && (
+        <DynamicPortfolioCard
+          category={content.portfolioCategory || ""}
+          portfolioType="app"
+          title={content.portfolioTitle}
+          subtitle={content.portfolioSubtitle}
+        />
+      )}
 
-      {/* 9. TECH STACK */}
-      <TechStack />
+      {/* 10 TECH STACK */}
+      {content.activeSections?.includes('techStack') && (
+        <CloneTechStack data={content.techStack} />
+      )}
 
-      {/* 10. WORKING MODELS */}
-      {content.modelsSection.enabled && (
+      {/* 11. WORKING MODELS */}
+      {content.activeSections?.includes('models') && content.modelsSection.enabled && (
         <section className="py-24 px-6 bg-gradient-to-br from-white via-sky-50 to-sky-200">
           <div className="max-w-7xl mx-auto">
             <CommonTitle
@@ -595,7 +561,10 @@ export default async function HireSlugPage({ params }) {
                   </div>
 
                   <h3 className="text-2xl font-bold text-slate-900 mb-3 relative z-10">{m.title}</h3>
-                  <p className="text-sm text-slate-600 mb-8 min-h-[60px] relative z-10 leading-relaxed">{m.description}</p>
+                  <div
+                    className="text-sm text-slate-600 mb-8 min-h-[60px] relative z-10 leading-relaxed rich-text"
+                    dangerouslySetInnerHTML={{ __html: m.description }}
+                  />
 
                   <ul className="space-y-4 mb-8 relative z-10">
                     {(m.features || []).map((f, fi) => (
@@ -616,8 +585,8 @@ export default async function HireSlugPage({ params }) {
         </section>
       )}
 
-      {/* 11. PRICING PLANS */}
-      {content.pricingSection.enabled && (
+      {/* 12 PRICING PLANS */}
+      {content.activeSections?.includes('pricing') && content.pricingSection.enabled && (
         <section className="py-24 bg-white px-6">
           <div className="max-w-7xl mx-auto">
             <CommonTitle
@@ -658,8 +627,8 @@ export default async function HireSlugPage({ params }) {
         </section>
       )}
 
-      {/* 12. COMPARISON TABLE */}
-      {content.comparisonSection.enabled && (
+      {/* 13 COMPARISON TABLE */}
+      {content.activeSections?.includes('comparison') && content.comparisonSection.enabled && (
         <section className="py-24 px-6 bg-gradient-to-br from-white via-sky-50 to-sky-200">
           <div className="max-w-6xl mx-auto overflow-x-auto">
             <CommonTitle title={content.comparisonSection.title} />
@@ -704,8 +673,17 @@ export default async function HireSlugPage({ params }) {
           </div>
         </section>
       )}
-
-      {/* 12.5 BLOG SECTION */}
+      {/* 14 FOOTER CTA */}
+      {content.activeSections?.includes('ctaBanner') && (
+        <ConsultationCTA
+          title={content.ctaBanner?.title}
+          subtitle={content.ctaBanner?.subtitle}
+          buttonLabel={content.ctaBanner?.buttonText}
+          imageSrc={content.ctaBanner?.image}
+          href={content.ctaBanner?.buttonHref}
+        />
+      )}
+      {/* 15 BLOG SECTION */}
       {content.activeSections?.includes('blogs') && (
         <BlogSection
           category={content.blogCategory || ""}
@@ -714,17 +692,19 @@ export default async function HireSlugPage({ params }) {
         />
       )}
 
-      {/* 13. FOOTER CTA */}
-      {content.footerFormSection.enabled && (
-        <ConsultationCTA
-          title="Ready to Build Your Team?"
-          subtitle="Let's discuss your project requirements and find the perfect match."
-          href="/contact"
-        />
+      {/* 16 FAQ SECTION */}
+      {content.activeSections?.includes('faq') && (
+        <FAQAccordion data={content.faq} />
       )}
 
-      {/* 14. FOOTER FORM */}
-      <FooterForm />
+      {/* 17 INQUIRY SECTION */}
+      {content.activeSections?.includes('inquiry') && (
+        <InquirySection
+          tagline={content.inquiry?.tagline}
+          title={content.inquiry?.title}
+          subtitle={content.inquiry?.subtitle}
+        />
+      )}
 
     </main>
   );
