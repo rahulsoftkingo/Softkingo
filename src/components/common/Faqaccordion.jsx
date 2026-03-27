@@ -92,7 +92,7 @@ export default function FAQAccordion({ data }) {
               return (
                 <div
                   key={it.id || i}
-                  className={`border border-slate-200 rounded-xl overflow-hidden shadow-sm transition-all duration-300 ${
+                  className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${
                     isOpen ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100" : "bg-white"
                   }`}
                 >
@@ -109,7 +109,7 @@ export default function FAQAccordion({ data }) {
                       {isOpen ? <Minus size={16} /> : <Plus size={16} />}
                     </div>
 
-                    <h3 className={`text-lg font-semibold flex-1 ${isOpen ? "text-sky-900" : "text-slate-900"}`}>
+                    <h3 className={`text-lg font-bold flex-1 ${isOpen ? "text-sky-900" : "text-slate-900"}`}>
                         {it.q}
                     </h3>
                   </button>

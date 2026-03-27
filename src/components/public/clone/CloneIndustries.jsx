@@ -34,10 +34,10 @@ export default function CloneIndustries({ data, industries = [] }) {
     const displayImage = customSelection?.image || content.hero?.image || defaultIndustryImages[activeIndustry.slug] || '/images/industries/clone/149.png';
 
     return (
-        <section className="py-20 bg-[#EFF9FF] relative overflow-hidden">
+        <section className="py-20 bg-[#EFF9FF] relative overflow-clip">
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="mb-8">
-                    <h2 className="text-4xl md:text-5xl font-black text-[#1A1A1A] text-center mb-12 tracking-tight">
+                    <h2 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] text-center mb-12 tracking-tight">
                         {data?.title || "Industries"}
                     </h2>
                 </div>
@@ -49,6 +49,7 @@ export default function CloneIndustries({ data, industries = [] }) {
                             <button
                                 key={ind.slug}
                                 onClick={() => setActiveIndex(i)}
+                                onMouseEnter={() => setActiveIndex(i)}
                                 className={`
                                     relative py-3 px-4 text-sm md:text-xl font-bold transition-all duration-300 whitespace-nowrap flex flex-col items-center group
                                     ${activeIndex === i ? 'text-[#1EAEDB]' : 'text-slate-400 hover:text-slate-600'}
@@ -107,30 +108,30 @@ export default function CloneIndustries({ data, industries = [] }) {
                                 className="space-y-8"
                             >
                                 <div className="space-y-6">
-                                    <h3 className="text-4xl md:text-5xl font-black text-[#1A1A1A] tracking-tight">
+                                    <h3 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] tracking-tight">
                                         {customSelection?.title || activeIndustry.title}
                                     </h3>
-                                    <p className="text-[#333] text-sm md:text-lg leading-relaxed font-medium max-w-xl opacity-90">
+                                    <p className="text-slate-600 text-sm md:text-lg leading-relaxed font-medium max-w-xl opacity-90">
                                         {customSelection?.description || content.hero?.description || activeIndustry.excerpt || "We build affordable platforms tailored to your business. Our expert developers create secure, scalable solutions that elevate patient care, streamline workflows, and boost growth."}
                                     </p>
                                 </div>
 
                                 {/* Feature Bullets */}
                                 <div className="space-y-4 pt-2">
-                                    {((customSelection?.points && customSelection.points.length > 0) ? 
-                                        customSelection.points.map(p => ({ title: p })) 
-                                    : (content.challenges?.items || [
-                                        { title: "First product search tools" },
-                                        { title: "Secure checkout flow setup" },
-                                        { title: "Personalized buyer experience path" }
-                                    ])).slice(0, 3).map((item, i) => (
-                                        <div key={i} className="flex items-center gap-3">
-                                            <Check size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
-                                            <span className="text-[#1A1A1A] font-bold text-sm md:text-lg">
-                                                {item.title}
-                                            </span>
-                                        </div>
-                                    ))}
+                                    {((customSelection?.points && customSelection.points.length > 0) ?
+                                        customSelection.points.map(p => ({ title: p }))
+                                        : (content.challenges?.items || [
+                                            { title: "First product search tools" },
+                                            { title: "Secure checkout flow setup" },
+                                            { title: "Personalized buyer experience path" }
+                                        ])).slice(0, 3).map((item, i) => (
+                                            <div key={i} className="flex items-center gap-3">
+                                                <Check size={20} className="text-[#1A1A1A]" strokeWidth={2} />
+                                                <span className="text-[#1A1A1A] font-semibold text-sm md:text-lg">
+                                                    {item.title}
+                                                </span>
+                                            </div>
+                                        ))}
                                 </div>
 
                                 {/* Custom CTA Button */}

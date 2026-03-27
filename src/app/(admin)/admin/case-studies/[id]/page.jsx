@@ -9,6 +9,7 @@ import {
   CheckCircle2, AlertCircle, Loader2, X, Plus, Trash2, Eye,
   Link2, Folder, FolderOpen, ZoomIn, ChevronRight, Home,
 } from 'lucide-react';
+import BlogCategorySelector from '@/components/admin/BlogCategorySelector';
 
 const TABS = [
   { id: 'basic', label: 'Basic Info', icon: FileText, mobileLabel: 'Basic' },
@@ -2086,15 +2087,14 @@ export default function CaseStudyEditPage() {
                       </div>
                       <div>
                         <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
-                          Blog Category Slug
+                          Blog Category
                         </label>
-                        <input
-                          name="blogCategory"
-                          value={form.blogCategory}
-                          onChange={handleChange}
-                          placeholder="e.g. mobile-apps (leave empty for all)"
+                        <BlogCategorySelector
+                          value={form.blogCategory || ''}
+                          onChange={val => setForm(prev => ({ ...prev, blogCategory: val }))}
                           className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                         />
+                        <p className="text-[10px] text-slate-400 italic mt-1">Select specific category or leave for latest blogs.</p>
                       </div>
                     </div>
                   </div>

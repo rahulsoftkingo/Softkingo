@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import CommonTitle from '@/components/ui/CommonTitle';
 
-export default function IndustryTechCarousel({ title, description, items }) {
+export default function IndustryTechCarousel({ title, description, items, gradientText }) {
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {
@@ -28,7 +28,7 @@ export default function IndustryTechCarousel({ title, description, items }) {
                             subtitle={description}
                             pill={true}
                             align="left"
-
+                            gradientText={gradientText || "Tech"}
                         />
                     </div>
 
@@ -55,7 +55,7 @@ export default function IndustryTechCarousel({ title, description, items }) {
                             key={i}
                             className="relative flex-shrink-0 w-[85%] md:w-[40%] lg:w-[28%] snap-start group cursor-pointer"
                         >
-                            <div className="relative aspect-[3/3] w-full rounded-3xl overflow-hidden shadow-lg border border-slate-100">
+                            <div className="relative aspect-[3/3] w-full rounded-2xl overflow-hidden shadow-lg border border-slate-100">
                                 {/* Background Image */}
                                 <Image
                                     src={item.image || "/images/placeholder-tech.jpg"}

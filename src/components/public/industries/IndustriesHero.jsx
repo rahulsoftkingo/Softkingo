@@ -53,14 +53,21 @@ export default function IndustriesHero({ data }) {
                 </nav>
                 
                 {/* Title */}
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight drop-shadow-lg max-w-4xl animate-fadeInUp">
-                    {title}
+                <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 tracking-tight drop-shadow-lg max-w-5xl animate-fadeInUp py-2">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-white/80">
+                        {title}
+                    </span>
+                    {data.gradientText && (
+                        <span className="ml-3 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-sky-300">
+                            {data.gradientText}
+                        </span>
+                    )}
                 </h1>
                 
                 {/* Description */}
                 {description && (
-                    <p 
-                        className="text-lg md:text-xl text-slate-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-fadeInUp delay-100"
+                    <div 
+                        className="text-lg md:text-xl text-slate-100 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-fadeInUp delay-100 font-medium prose prose-invert prose-lg"
                         dangerouslySetInnerHTML={{ __html: description }}
                     />
                 )}

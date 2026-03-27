@@ -50,7 +50,7 @@ export default function SolutionHighlight({ data }) {
                             return (
                                 <motion.div
                                     key={idx}
-                                    onClick={() => setActiveIdx(idx)}
+                                    onMouseEnter={() => setActiveIdx(idx)}
                                     whileHover={{ x: isActive ? 0 : 5 }}
                                     className={`p-5 rounded-2xl transition-all duration-300 cursor-pointer flex items-center gap-5 border-2 ${isActive
                                         ? "bg-white border-sky-100 shadow-[0_15px_35px_rgba(14,165,233,0.1)] scale-105"

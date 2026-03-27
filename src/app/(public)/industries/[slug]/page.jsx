@@ -17,6 +17,8 @@ import IndustryCoversTabs from '@/components/public/industries/IndustryCoversTab
 import IndustryWhyChooseCarousel from '@/components/public/industries/IndustryWhyChooseCarousel';
 import IndustryProcess from '@/components/public/industries/IndustryProcess';
 import BlogSection from '@/components/common/BlogSection';
+import TestimonialsCarousel from '@/components/public/TestimonialCarousel2';
+import FooterForm from "@/components/footer/InquirySection";
 // --- 1. FETCH DATA HELPER ---
 async function getIndustryPage(slug) {
     try {
@@ -102,14 +104,14 @@ export default async function IndustryPage(props) {
 
                             {/* Left Side: Content & List */}
                             <div className="order-2 lg:order-1">
-                                <div className="mb-8">
-                                    <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-normal">
-                                        {challenges?.title || "Challenges We Solve"}
-                                    </h2>
-                                    {/* ✅ FIX 1: whitespace-pre-line added for line breaks */}
-                                    <p className="text-lg text-slate-600 leading-relaxed mb-8 whitespace-pre-line">
-                                        {challenges?.subtitle || "We address the most critical hurdles in your industry with precision engineering."}
-                                    </p>
+                                <div className="mb-0">
+                                    <CommonTitle
+                                        align="left"
+                                        title={challenges?.title || "Challenges We Solve"}
+                                        subtitle={challenges?.subtitle || "We address the most critical hurdles in your industry with precision engineering."}
+                                        pill={true}
+                                        gradientText={challenges?.gradientText || "Expertise"}
+                                    />
                                 </div>
 
                                 <div className="space-y-6">
@@ -120,7 +122,6 @@ export default async function IndustryPage(props) {
                                             </div>
                                             <div>
                                                 <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
-
                                             </div>
                                         </div>
                                     ))}
@@ -128,18 +129,17 @@ export default async function IndustryPage(props) {
                             </div>
 
                             {/* Right Side: Image & Floating Stats */}
-
                             <div className="order-1 lg:order-2 relative">
-                                <div className="relative z-10 -mt-[5%] overflow-hidden shadow-2xl">
+                                <div className="relative z-10 -mt-[5%] overflow-hidden shadow-2xl rounded-2xl">
                                     <div className="relative aspect-[4/3] w-full bg-slate-200">
                                         <Image src={challenges?.image || "/images/industry-challenge.jpg"} alt="Challenge" fill className="object-cover" />
                                     </div>
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
                                 </div>
-                                <div className="absolute bottom-0 left-0 w-full bg-white p-6 z-20 flex justify-between items-center text-center border-t border-slate-100">
-                                    <div className="px-2 w-1/3 border-r"><div className="text-2xl font-black text-sky-600">{challenges?.stats?.[0]?.value}</div><div className="text-[10px] font-bold text-slate-400">{challenges?.stats?.[0]?.label}</div></div>
-                                    <div className="px-2 w-1/3 border-r"><div className="text-2xl font-black text-sky-600">{challenges?.stats?.[1]?.value}</div><div className="text-[10px] font-bold text-slate-400">{challenges?.stats?.[1]?.label}</div></div>
-                                    <div className="px-2 w-1/3"><div className="text-2xl font-black text-orange-500">{challenges?.stats?.[2]?.value}</div><div className="text-[10px] font-bold text-slate-400">{challenges?.stats?.[2]?.label}</div></div>
+                                <div className="absolute bottom-0 left-0 w-full bg-white p-6 z-20 flex justify-between items-center text-center border-t border-slate-100 rounded-b-2xl">
+                                    <div className="px-2 w-1/3 border-r"><div className="text-2xl font-bold text-sky-600">{challenges?.stats?.[0]?.value}</div><div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{challenges?.stats?.[0]?.label}</div></div>
+                                    <div className="px-2 w-1/3 border-r"><div className="text-2xl font-bold text-sky-600">{challenges?.stats?.[1]?.value}</div><div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{challenges?.stats?.[1]?.label}</div></div>
+                                    <div className="px-2 w-1/3"><div className="text-2xl font-bold text-[#E67E22]">{challenges?.stats?.[2]?.value}</div><div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{challenges?.stats?.[2]?.label}</div></div>
                                 </div>
                             </div>
 
@@ -158,18 +158,20 @@ export default async function IndustryPage(props) {
                 {show('technologies') && (
                     <IndustryTechCarousel
                         title={technologies?.title || "Advanced Technologies We Use"}
-                        description="We leverage cutting-edge tech stacks to build robust solutions."
+                        description={technologies?.subtitle || "We leverage cutting-edge tech stacks to build robust solutions."}
                         items={technologies?.items}
+                        gradientText={technologies?.gradientText || "Tech"}
                     />
                 )}
             </div>
             {/* 5. PORTFOLIO (Dynamic Card) */}
             {show('portfolio') && (
                 <DynamicPortfolioCard
-                    category={portfolio?.category || data.slug}
-                    portfolioType=""
-                    title={portfolio?.title}
-                    subtitle={portfolio?.subtitle}
+                    category={portfolio?.category || ""}
+                    portfolioType="app"
+                    title={portfolio?.title || "Industry Showcase"}
+                    subtitle={portfolio?.subtitle || "Recent projects that highlight our domain mastery."}
+                    gradientText={portfolio?.gradientText || "Portfolio"}
                 />
             )}
 
@@ -184,20 +186,19 @@ export default async function IndustryPage(props) {
                             title={otherIndustries?.title || "Industries We Serve"}
                             subtitle={otherIndustries?.subtitle || "Explore our expertise across diverse sectors."}
                             pill={true}
-                            gradientText="Sectors"
+                            gradientText={otherIndustries?.gradientText || "Sectors"}
                         />
 
                         {/* 3-Column Layout */}
-                        <div className="grid lg:grid-cols-5 gap-12 items-center mt-16">
+                        <div className="grid lg:grid-cols-3 gap-12 items-center mt-16">
 
                             {/* LEFT COLUMN (Items 0-2) - Align Right */}
                             <div className="space-y-12">
                                 {otherIndustries?.items?.slice(0, 3).map((item, i) => (
                                     <div key={i} className="flex items-center justify-end group gap-6 cursor-pointer">
 
-                                        {/* Text Content (Aligned Right) */}
-                                        <div className="flex-1 flex flex-col items-end text-right">
-                                            <h4 className="text-xl font-black text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                        {/* Text Content (Aligned Right) */}                                        <div className="flex-1 flex flex-col items-end text-right">
+                                            <h4 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
                                                 <div className="absolute top-0 right-0 h-full w-0 bg-sky-500 group-hover:w-full transition-all duration-500 origin-right"></div>
@@ -209,7 +210,7 @@ export default async function IndustryPage(props) {
                                             {item.icon && item.icon.includes('/') ? (
                                                 <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
                                             ) : (
-                                                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🏢"}</span>
+                                                <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🏢"}</span>
                                             )}
                                         </div>
                                     </div>
@@ -217,21 +218,21 @@ export default async function IndustryPage(props) {
                             </div>
 
                             {/* CENTER COLUMN (Image with Premium Frame) */}
-                            <div className="relative flex justify-center py-10 lg:py-0 col-span-3">
+                            <div className="relative flex justify-center py-10 lg:py-0 col-span-1">
                                 {/* Decorative Pulsing Rings */}
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] aspect-square border border-sky-200/50 rounded-full animate-pulse"></div>
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] aspect-square border border-dashed border-slate-200 rounded-full animate-spin-slow opacity-40"></div>
-                                
+
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] aspect-square bg-gradient-to-br from-sky-400/10 to-transparent rounded-full blur-3xl -z-10 animate-pulse"></div>
 
-                                <div className="relative w-full max-w-[340px] aspect-[3.5/4] overflow-hidden rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-4 border-white group">
+                                <div className="relative w-full max-w-[340px] aspect-[3.5/4] overflow-hidden  group">
                                     <Image
                                         src={otherIndustries?.image || "/images/industry-center.jpg"}
                                         alt="Industries Center"
                                         fill
-                                        className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        className="object-cover"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                    {/* <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> */}
                                 </div>
                             </div>
 
@@ -245,19 +246,18 @@ export default async function IndustryPage(props) {
                                             {item.icon && item.icon.includes('/') ? (
                                                 <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
                                             ) : (
-                                                <span className="text-3xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🚀"}</span>
+                                                <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🚀"}</span>
                                             )}
                                         </div>
 
                                         {/* Text Content (Aligned Left) */}
                                         <div className="flex-1 flex flex-col items-start text-left">
-                                            <h4 className="text-xl font-black text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            <h4 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
                                                 <div className="absolute top-0 left-0 h-full w-0 bg-sky-500 group-hover:w-full transition-all duration-500 origin-left"></div>
                                             </div>
                                         </div>
-
                                     </div>
                                 ))}
                             </div>
@@ -276,9 +276,9 @@ export default async function IndustryPage(props) {
                         {/* Common Title */}
                         <CommonTitle
                             title={whyChoose?.title || "Why Partner With Softkingo?"}
-                            subtitle="We combine domain expertise with technical excellence to deliver solutions that drive real growth."
+                            subtitle={whyChoose?.subtitle || "We combine domain expertise with technical excellence to deliver solutions that drive real growth."}
                             pill={true}
-
+                            gradientText={whyChoose?.gradientText || "Partnership"}
                         />
 
                         {/* Carousel Component */}
@@ -305,54 +305,52 @@ export default async function IndustryPage(props) {
             {show('faq') && <FAQAccordion data={faq} />}
 
             {/* 10. TESTIMONIALS */}
-            {/* {show('testimonials') && (
-                <section className="py-24 bg-slate-50 px-6 text-center">
-                    <h2 className="text-3xl font-bold mb-12">Trusted by Industry Leaders</h2>
-                    <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                        {testimonials?.items?.map((t, i) => (
-                            <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center">
-                                <div className="mb-6">
-                                    {[1, 2, 3, 4, 5].map(star => <span key={star} className="text-amber-400">★</span>)}
-                                </div>
-                                <p className="text-slate-600 italic mb-8 flex-1">"{t.feedback}"</p>
-                                <div className="flex items-center gap-4 mt-auto">
-                                    <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-200 relative">
-                                        {t.image ? (
-                                            <Image src={t.image} alt={t.name} fill className="object-cover" />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-bold text-xs">
-                                                {t.name?.charAt(0)}
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="text-left">
-                                        <div className="font-bold text-sm text-slate-900">{t.name}</div>
-                                        <div className="text-xs text-slate-500">{t.role}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+            {show('testimonials') && (
+                <section className="py-24 bg-white px-6">
+                    <div className="max-w-7xl mx-auto">
+                        <CommonTitle
+                            title={testimonials?.title || "What Our Clients Say"}
+                            subtitle={testimonials?.subtitle || "Success stories from industry leaders who trust our expertise."}
+                            pill={true}
+                            gradientText={testimonials?.gradientText || "Feedback"}
+                        />
+                        <div className="mt-16">
+                            <TestimonialsCarousel data={testimonials?.items || []} />
+                        </div>
                     </div>
                 </section>
-            )} */}
+            )}
 
-            {/* 10. BLOG SECTION */}
+            {/* 11. Call To Action */}
+            {show('consultation') && (
+                <ConsultationCTA
+                    title={data.sections.consultation?.title || "Ready to Transform Your Business?"}
+                    subtitle={data.sections.consultation?.subtitle || "Let's build a solution tailored to your industry needs."}
+                    buttonLabel={data.sections.consultation?.buttonLabel || "Get a Free Consultation"}
+                    href={data.sections.consultation?.href || "/contact"}
+                    theme="white"
+                />
+            )}
+            {/* 11. BLOG SECTION */}
             {show('blogs') && (
                 <BlogSection
                     category={data.sections.blogCategory || ""}
                     title={data.sections.blogTitle || "Our Latest Blogs"}
                     subtitle={data.sections.blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
+                    gradientText={data.sections.blogGradientText || "Insights"}
                 />
             )}
 
-            {/* Call To Action */}
-            <ConsultationCTA
-                title="Ready to Transform Your Business?"
-                subtitle="Let's build a solution tailored to your industry needs."
-                buttonLabel="Get a Free Consultation"
-                href="/contact"
-                theme="white"
-            />
+            {/* 12. INQUIRY SECTION */}
+            {show('inquiry') && (
+                <FooterForm
+                    tagline={data.sections.inquiry?.tagline}
+                    title={data.sections.inquiry?.title}
+                    subtitle={data.sections.inquiry?.subtitle}
+                    titlePrefix={data.sections.inquiry?.titlePrefix}
+                />
+            )}
+
         </main>
     );
 }

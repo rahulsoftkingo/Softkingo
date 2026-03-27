@@ -26,6 +26,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Global Cursor Pointer Fix */
+button, 
+[role="button"],
+.cursor-pointer,
+a,
+input[type="submit"],
+input[type="button"],
+input[type="reset"],
+label[for],
+select,
+summary,
+[tabindex]:not([tabindex="-1"]) {
+  cursor: pointer !important;
+}
+
 .animate-scroll {
   display: flex;
   gap: 2rem;
@@ -1903,6 +1918,7 @@ body {
   color: #0ea5e9 !important;
   text-decoration: underline !important;
   transition: opacity 0.2s !important;
+  cursor: pointer !important;
 }
 
 .rich-text a:hover {

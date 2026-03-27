@@ -37,7 +37,7 @@ export default function CloneAISolutions({ data }) {
     const [activeIndex, setActiveIndex] = useState(0);
 
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section className="py-24 bg-white overflow-clip">
             <div className="max-w-7xl mx-auto px-6">
 
                 <CommonTitle
@@ -54,12 +54,12 @@ export default function CloneAISolutions({ data }) {
                             <div
                                 key={index}
                                 onMouseEnter={() => setActiveIndex(index)}
-                                className={`group flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${activeIndex === index
+                                className={`group flex items-center justify-between p-5 rounded-xl cursor-pointer transition-all duration-300 ${activeIndex === index
                                     ? 'bg-white/20 backdrop-blur-md shadow-none hover:shadow-xl hover:bg-white/25'
                                     : 'hover:bg-white/10 hover:shadow-xl'
                                     }`}
                             >
-                                <span className={`text-lg font-bold transition-colors ${activeIndex === index ? 'text-white' : 'text-sky-100 group-hover:text-white'
+                                <span className={`text-lg font-semibold transition-colors ${activeIndex === index ? 'text-white' : 'text-sky-100 group-hover:text-white'
                                     }`}>
                                     {item.title}
                                 </span>
@@ -71,7 +71,7 @@ export default function CloneAISolutions({ data }) {
 
                     {/* Right Side: Content Display (Slightly shorter) */}
                     <div className="w-full lg:w-[60%] bg-[#F9FBFC]/10 py-4 lg:py-8 flex flex-col justify-center">
-                        <div className="bg-slate-100 rounded[2.5rem] p-6 lg:p-14 flex flex-col justify-center relative h-full r border border-white/20">
+                        <div className="bg-slate-100 rounded-3xl p-6 lg:p-14 flex flex-col justify-center relative h-full border border-white/20">
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={activeIndex}
@@ -87,7 +87,7 @@ export default function CloneAISolutions({ data }) {
                                     </div>
 
                                     <div className="relative z-10">
-                                        <h3 className="text-4xl lg:text-5xl font-black text-slate-900 mb-8 leading-normal">
+                                        <h3 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-8 leading-normal">
                                             {items[activeIndex].title}
                                         </h3>
                                         <p className="text-slate-600 text-lg lg:text-xl font-medium leading-relaxed max-w-2xl">

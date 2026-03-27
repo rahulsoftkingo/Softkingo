@@ -1,5 +1,6 @@
 import React from 'react';
 import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
+import BlogCategorySelector from '@/components/admin/BlogCategorySelector';
 import { COMMON_TECH } from './TechConstants';
 import {
     Smartphone, Layout, Database, Code, Settings, Zap, Cpu, Bot,
@@ -81,6 +82,10 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                         <label className={labelStyle}>Hero Subtitle / Description (Rich Text)</label>
                         <MiniRichTextEditor value={content.hero?.subtitle || ''} onChange={val => updateField('content.hero.subtitle', val)} />
                     </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Button Label (e.g. Request A Quote)" value={content.hero?.buttonLabel || ''} onChange={e => updateField('content.hero.buttonLabel', e.target.value)} />
+                        <input className={inputStyle} placeholder="Button Href (e.g. /contact)" value={content.hero?.buttonHref || ''} onChange={e => updateField('content.hero.buttonHref', e.target.value)} />
+                    </div>
                     <MediaInput label="Hero Banner Image" value={content.hero?.image} path="content.hero.image" />
 
                     <div className="pt-4 border-t border-slate-100">
@@ -143,6 +148,10 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                                 </div>
                             ))}
                         </div>
+                        <div className="pt-4 border-t border-slate-100 grid md:grid-cols-2 gap-4">
+                            <input className={inputStyle} placeholder="Main CTA Button Label" value={content.about?.buttonLabel || ''} onChange={e => updateField('content.about.buttonLabel', e.target.value)} />
+                            <input className={inputStyle} placeholder="Main CTA Button Href" value={content.about?.buttonHref || ''} onChange={e => updateField('content.about.buttonHref', e.target.value)} />
+                        </div>
                         <button type="button" onClick={() => updateField('content.about.reasons', (prev) => [...(prev || []), { title: "", description: "" }])} className="mt-2 text-[10px] font-bold text-orange-600 uppercase">+ Add Reason</button>
                     </div>
                 </div>
@@ -161,16 +170,16 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                         {(content.verticalSuite?.tabs || []).map((tab, i) => (
                             <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-4 relative group">
                                 <button type="button" onClick={() => updateField('content.verticalSuite.tabs', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-slate-300 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100 z-20"><Trash2 size={18} /></button>
-                                
+
                                 <div className="space-y-1 border-b border-slate-200 pb-3">
                                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tab Navigation Name</label>
                                     <div className="flex items-center gap-2">
                                         <div className="p-1.5 bg-orange-100 text-orange-600 rounded-md"><Layers size={14} /></div>
-                                        <input 
-                                            className="flex-1 bg-white border border-slate-200 p-2 rounded-lg text-sm font-bold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none transition-all" 
-                                            placeholder="e.g. User Panel, Admin Dashboard, etc." 
-                                            value={tab.label || ''} 
-                                            onChange={e => updateField(`content.verticalSuite.tabs.${i}.label`, e.target.value)} 
+                                        <input
+                                            className="flex-1 bg-white border border-slate-200 p-2 rounded-lg text-sm font-bold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none transition-all"
+                                            placeholder="e.g. User Panel, Admin Dashboard, etc."
+                                            value={tab.label || ''}
+                                            onChange={e => updateField(`content.verticalSuite.tabs.${i}.label`, e.target.value)}
                                         />
                                     </div>
                                 </div>
@@ -193,10 +202,10 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                                 </div>
                             </div>
                         ))}
-                        
-                        <button 
-                            type="button" 
-                            onClick={() => updateField('content.verticalSuite.tabs', (prev) => [...(prev || []), { label: "", description: "", image: "", items: [] }])} 
+
+                        <button
+                            type="button"
+                            onClick={() => updateField('content.verticalSuite.tabs', (prev) => [...(prev || []), { label: "", description: "", image: "", items: [] }])}
                             className="w-full py-4 border-2 border-dashed border-orange-200 rounded-2xl text-orange-600 font-bold hover:bg-orange-50 hover:border-orange-400 transition-all flex items-center justify-center gap-2"
                         >
                             <Plus size={18} /> Add New Feature Tab
@@ -248,7 +257,7 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                             </div>
                         ))}
                     </div>
-                    <button type="button" onClick={() => updateField('content.aiSolutions.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl text-slate-500 hover:border-sky-500 hover:text-sky-500 transition-all flex items-center justify-center gap-2 font-bold"><Plus size={18} /> Add New Tab</button>
+                    <button type="button" onClick={() => updateField('content.aiSolutions.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl text-slate-500 hover:border-orange-500 hover:text-orange-500 transition-all flex items-center justify-center gap-2 font-bold"><Plus size={18} /> Add New Tab</button>
                 </div>
             </SectionWrapper>
 
@@ -330,40 +339,40 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
 
                                     <div className="space-y-3">
                                         <label className={labelStyle}>Technologies in this Category</label>
-                                    <div className="space-y-4 pt-2">
-                                    <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
-                                        <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
-                                        {COMMON_TECH.map((tech) => (
-                                            <button 
-                                                key={tech.name} 
-                                                type="button" 
-                                                onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { ...tech }])}
-                                                className="p-1 px-2 bg-slate-50 hover:bg-orange-50 hover:text-orange-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
-                                            >
-                                                <img src={tech.image} className="w-3.5 h-3.5" alt="" />
-                                                {tech.name}
-                                            </button>
-                                        ))}
-                                    </div>
-                                    <label className={labelStyle}>Selected Tech Stack</label>
-                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                                        {(tab.items || []).map((item, j) => (
-                                            <div key={j} className="bg-white p-3 rounded-xl border border-slate-200 relative group/tech">
-                                                <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
-                                                <div className="flex gap-2 items-center">
-                                                    <div className="flex-1">
-                                                        <input className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.techStack.tabs.${i}.items.${j}.name`, e.target.value)} />
-                                                    </div>
-                                                    <div className="w-16">
-                                                        <MediaInput label="Icon" value={item.image} path={`content.techStack.tabs.${i}.items.${j}.image`} />
-                                                    </div>
-                                                </div>
+                                        <div className="space-y-4 pt-2">
+                                            <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
+                                                <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
+                                                {COMMON_TECH.map((tech) => (
+                                                    <button
+                                                        key={tech.name}
+                                                        type="button"
+                                                        onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { ...tech }])}
+                                                        className="p-1 px-2 bg-slate-50 hover:bg-orange-50 hover:text-orange-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
+                                                    >
+                                                        <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                                        {tech.name}
+                                                    </button>
+                                                ))}
                                             </div>
-                                        ))}
+                                            <label className={labelStyle}>Selected Tech Stack</label>
+                                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                                {(tab.items || []).map((item, j) => (
+                                                    <div key={j} className="bg-white p-3 rounded-xl border border-slate-200 relative group/tech">
+                                                        <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
+                                                        <div className="flex gap-2 items-center">
+                                                            <div className="flex-1">
+                                                                <input className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.techStack.tabs.${i}.items.${j}.name`, e.target.value)} />
+                                                            </div>
+                                                            <div className="w-16">
+                                                                <MediaInput label="Icon" value={item.image} path={`content.techStack.tabs.${i}.items.${j}.image`} />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-orange-600 uppercase transition-colors hover:text-orange-700">+ Add Custom Tech</button>
+                                        </div>
                                     </div>
-                                    <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-orange-600 uppercase transition-colors hover:text-orange-700">+ Add Custom Tech</button>
-                                </div>
-                                </div>
                                 </div>
                             ))}
                         </div>
@@ -446,7 +455,7 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                                                     <span className="w-5 h-5 bg-orange-600 text-white flex items-center justify-center rounded-full text-[8px]">{i + 1}</span>
                                                     {item.slug.replace(/-/g, ' ')}
                                                 </div>
-                                                
+
                                                 <div className="flex flex-col md:flex-row gap-4 items-start">
                                                     <div className="flex-1 w-full">
                                                         <MediaInput
@@ -558,6 +567,17 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                         <input className={inputStyle} placeholder="FAQ Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
                         <input className={inputStyle} placeholder="FAQ Subtitle" value={content.faq?.subtitle || ''} onChange={e => updateField('content.faq.subtitle', e.target.value)} />
                     </div>
+                    <div className="pt-4 border-t border-slate-100 space-y-4">
+                        <label className={labelStyle}>FAQ Bottom CTA</label>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <input className={inputStyle} placeholder="CTA Title (e.g. Still Have Questions?)" value={content.faq?.ctaTitle || ''} onChange={e => updateField('content.faq.ctaTitle', e.target.value)} />
+                            <input className={inputStyle} placeholder="CTA Subtitle" value={content.faq?.ctaSubtitle || ''} onChange={e => updateField('content.faq.ctaSubtitle', e.target.value)} />
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                            <input className={inputStyle} placeholder="Button 1 Label" value={content.faq?.ctaBtn1 || ''} onChange={e => updateField('content.faq.ctaBtn1', e.target.value)} />
+                            <input className={inputStyle} placeholder="Button 2 Label" value={content.faq?.ctaBtn2 || ''} onChange={e => updateField('content.faq.ctaBtn2', e.target.value)} />
+                        </div>
+                    </div>
                     <div className="space-y-4">
                         <label className={labelStyle}>Individual Questions</label>
                         <div className="space-y-3">
@@ -592,9 +612,13 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <label className={labelStyle}>Blog Category (Slug)</label>
-                    <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
-                    <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
+                    <label className={labelStyle}>Blog Category</label>
+                    <BlogCategorySelector 
+                        value={content.blogCategory || ''} 
+                        onChange={val => updateField('content.blogCategory', val)}
+                        className={inputStyle}
+                    />
+                    <p className="text-[10px] text-slate-400 italic">Select specific category or leave for latest blogs.</p>
                 </div>
             </SectionWrapper>
 

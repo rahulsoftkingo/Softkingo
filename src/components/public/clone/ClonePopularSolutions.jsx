@@ -15,7 +15,7 @@ export default function ClonePopularSolutions({ data }) {
     const items = data?.items?.length > 0 ? data.items : defaultItems;
 
     return (
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-[#F8FAFC] relative overflow-clip">
             <div className="max-w-7xl mx-auto px-6">
                 <CommonTitle
                     title={data?.title || "Our Other Similar Clone App"}

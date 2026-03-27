@@ -12,6 +12,7 @@ export default function BlogSection({
     type = "blog",
     title = "Latest Blogs",
     subtitle = "Browse through The tchnical knowledge about latest trends and technologies our experienced team would like to share with you",
+    gradientText = "",
     limit = 6,
     className = ""
 }) {
@@ -73,6 +74,7 @@ export default function BlogSection({
                                 title={title}
                                 subtitle={subtitle}
                                 align="left"
+                                gradientText={gradientText}
                             />
                         </div>
 
@@ -175,9 +177,7 @@ function BlogCard({ blog, priority }) {
                 </div>
 
                 {/* Excerpt */}
-                <p className="text-sm text-slate-500 leading-relaxed line-clamp-3">
-                    {blog.excerpt || blog.description || "No description available for this post."}
-                </p>
+                <p className="text-sm text-slate-500 leading-relaxed line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.excerpt || blog.description || "No description available for this post." }} />
 
                 {/* Footer */}
                 <div className="mt-auto pt-4 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-50">

@@ -1,12 +1,64 @@
-"use client";
-import React, { useState } from 'react';
-import CommonTitle from '@/components/ui/CommonTitle';
-import Image from 'next/image';
+
+const defaultTechStackData = {
+    title: "Our Cutting-Edge Technology Stack",
+    highlight: "Modern. Scalable. Future-Ready.",
+    subtitle: "We leverage the latest frameworks and tools to build robust, high-performance digital solutions that scale with your business.",
+    tabs: [
+        {
+            label: "Frontend",
+            items: [
+                { name: "React.js", image: "/images/tech/React.png" },
+                { name: "Next.js", image: "/images/tech/Next.js.png" },
+                { name: "TypeScript", image: "/images/tech/TypeScript.png" },
+                { name: "Tailwind CSS", image: "/images/tech/Tailwind-CSS.png" },
+                { name: "Redux", image: "/images/tech/Redux.png" },
+                { name: "Three.js", image: "/images/tech/Three.js.png" }
+            ]
+        },
+        {
+            label: "Backend",
+            items: [
+                { name: "Node.js", image: "/images/tech/node.png" },
+                { name: "Python", image: "/images/tech/Python.png" },
+                { name: "Go Lang", image: "/images/tech/Go.png" },
+                { name: "PHP/Laravel", image: "/images/tech/Laravel.png" },
+                { name: "Nest.js", image: "/images/tech/Nest.js.png" }
+            ]
+        },
+        {
+            label: "Mobile",
+            items: [
+                { name: "React Native", image: "/images/tech/react-native.png" },
+                { name: "Flutter", image: "/images/tech/Flutter.png" },
+                { name: "Swift", image: "/images/tech/Swift.png" },
+                { name: "Kotlin", image: "/images/tech/Kotlin.png" }
+            ]
+        },
+        {
+            label: "Database",
+            items: [
+                { name: "PostgreSQL", image: "/images/tech/PostgresSQL.png" },
+                { name: "MongoDB", image: "/images/tech/MongoDB.png" },
+                { name: "Redis", image: "/images/tech/Redis.png" },
+                { name: "Firebase", image: "/images/tech/Firebase.png" }
+            ]
+        },
+        {
+            label: "Cloud/DevOps",
+            items: [
+                { name: "AWS", image: "/images/tech/AWS.png" },
+                { name: "Google Cloud", image: "/images/tech/Google-Cloud.png" },
+                { name: "Docker", image: "/images/tech/Docker.png" },
+                { name: "Kubernetes", image: "/images/tech/Kubernetes.png" }
+            ]
+        }
+    ]
+};
 
 export default function SolutionsTechStack({ data }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    if (!data) return null;
+    const techData = data?.tabs?.length > 0 ? data : defaultTechStackData;
 
     return (
         <section className="py-24 bg-white">
@@ -15,21 +67,21 @@ export default function SolutionsTechStack({ data }) {
                 {/* 1. Common Title via Props */}
                 <CommonTitle
                     align="center"
-                    title={data?.title}
-                    gradientText={data?.highlight}
-                    subtitle={data?.subtitle}
+                    title={techData?.title}
+                    gradientText={techData?.highlight}
+                    subtitle={techData?.subtitle}
                 />
 
                 {/* 2. Category Tabs */}
-                {data?.tabs?.length > 0 && (
+                {techData?.tabs?.length > 0 && (
                     <div className="flex overflow-x-auto justify-start md:justify-center gap-3 md:gap-4 mt-10 mb-16 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                        {data.tabs.map((tab, idx) => (
+                        {techData.tabs.map((tab, idx) => (
                             <button
                                 key={idx}
-                                onClick={() => setActiveTab(idx)}
-                                className={`flex-shrink-0 snap-start whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 border ${activeTab === idx
-                                        ? "bg-sky-600 text-white border-sky-600 shadow-md transform scale-105"
-                                        : "bg-slate-50 text-slate-600 border-slate-200 hover:border-sky-300 hover:text-sky-600"
+                                onMouseEnter={() => setActiveTab(idx)}
+                                className={`px-8 py-3 rounded-full text-sm font-extrabold transition-all duration-300 border whitespace-nowrap snap-center ${activeTab === idx
+                                        ? "bg-sky-500 text-white border-sky-500 shadow-lg shadow-sky-200 transform scale-105"
+                                        : "bg-slate-50 text-slate-500 border-slate-200 hover:border-sky-200 hover:text-sky-600 hover:bg-sky-50"
                                     }`}
                             >
                                 {tab.label}
@@ -39,23 +91,22 @@ export default function SolutionsTechStack({ data }) {
                 )}
 
                 {/* 3. Tech Grid Display */}
-                <div className="min-h-[200px]">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 items-center justify-center animate-fadeIn">
-                        {data?.tabs?.[activeTab]?.items?.map((tech, idx) => (
-                            <div
+                <div className="min-h-[200px] flex justify-center">
+                    <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-6xl animate-fadeIn">
+                        {techData?.tabs?.[activeTab]?.items?.map((tech, idx) => (
+                             <div
                                 key={idx}
-                                className="group flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-lg hover:border-sky-100 transition-all duration-300 hover:-translate-y-1"
+                                className="group flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-sky-500/10 hover:border-sky-200 transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
                             >
-                                <div className="relative w-12 h-12 md:w-16 md:h-16  group-hover:grayscale-0 transition-all duration-300 opacity-80 group-hover:opacity-100 group-hover:scale-110">
-                                    {/* Tech Logo */}
+                                <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
                                     <Image
-                                        src={tech.image || "/images/placeholder-icon.png"}
+                                        src={tech.image}
                                         alt={tech.name}
                                         fill
-                                        className="object-contain"
+                                        className="object-contain transition-all duration-500"
                                     />
                                 </div>
-                                <span className="text-sm font-semibold text-slate-500 group-hover:text-sky-700 transition-colors text-center">
+                                <span className="text-xs md:text-sm font-bold text-slate-800 tracking-tight text-center">
                                     {tech.name}
                                 </span>
                             </div>

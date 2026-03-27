@@ -34,6 +34,7 @@ import CloneTechStack from '@/components/public/clone/CloneTechStack';
 import CloneProcess from '@/components/public/clone/CloneProcess';
 import ClonePopularSolutions from '@/components/public/clone/ClonePopularSolutions';
 import CloneFAQ from '@/components/public/clone/CloneFAQ';
+import CloneIndustries from '@/components/public/clone/CloneIndustries';
 import IndustriesSection from '@/components/common/IndustriesSection';
 import FooterForm from "@/components/footer/InquirySection";
 
@@ -152,7 +153,7 @@ export default async function DynamicSolutionPage(props) {
         } : null;
 
         return (
-            <main className="min-h-screen bg-white">
+            <main className="min-h-screen bg-white overflow-x-clip">
                 {faqSchema && (
                     <script
                         type="application/ld+json"
@@ -217,7 +218,7 @@ export default async function DynamicSolutionPage(props) {
 
                 {/* 11. Industries We Serve (Tabbed UI) */}
                 {show('industries') && (
-                    <IndustriesSection data={data.sections.industries} industries={data.industryPages} />
+                    <CloneIndustries data={data.sections.industries} industries={data.industryPages} />
                 )}
 
                 {/* 12. Popular App Solutions (Grid) */}
@@ -313,7 +314,7 @@ export default async function DynamicSolutionPage(props) {
     } : null;
 
     return (
-        <main className="min-h-screen bg-white">
+        <main className="min-h-screen bg-white overflow-x-clip">
             {faqSchema && (
                 <script
                     type="application/ld+json"
@@ -328,11 +329,11 @@ export default async function DynamicSolutionPage(props) {
             {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
             {show('servicesList') && <SolutionsServicesList data={servicesList} />}
             {show('appModules') && finalModules.map((tab, idx) => (
-                <SolutionsAppModule 
-                    key={idx} 
-                    data={tab} 
-                    reverse={idx % 2 === 0} 
-                    bg={idx % 2 === 0 ? "white" : "slate-50"} 
+                <SolutionsAppModule
+                    key={idx}
+                    data={tab}
+                    reverse={idx % 2 === 0}
+                    bg={idx % 2 === 0 ? "white" : "slate-50"}
                 />
             ))}
             {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
@@ -362,7 +363,7 @@ export default async function DynamicSolutionPage(props) {
             )}
 
             {show('cta') && (
-                <SolutionsCTA 
+                <SolutionsCTA
                     title={cta?.title}
                     subtitle={cta?.subtitle}
                     btnText={cta?.btnText}
@@ -370,7 +371,7 @@ export default async function DynamicSolutionPage(props) {
             )}
 
             {show('inquiry') && (
-                <FooterForm 
+                <FooterForm
                     tagline={inquiry?.tagline}
                     title={inquiry?.title}
                     subtitle={inquiry?.subtitle}

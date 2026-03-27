@@ -20,14 +20,13 @@ export default function IndustryCoversTabs({ data }) {
                     
                     <CommonTitle 
                             title= {data.title || "What We Cover"} 
-                            subtitle="Explore our comprehensive services tailored for the industry.
-"
+                            subtitle={data.subtitle || "Explore our comprehensive services tailored for the industry."}
                             pill={true}
-                           
+                            gradientText={data.gradientText || "Coverage"}
                         />
                 </div>
 
-                <div className="flex flex-col lg:flex-row rounded-3xl overflow-hidden  min-h-[500px] ">
+                <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-[500px] border border-slate-100 shadow-2xl">
                     
                     {/* LEFT SIDE: TABS (Sky Background) */}
                     <div className="w-full lg:min-w-[40%] lg:w-fit bg-sky-500 p-8 flex flex-col">
@@ -40,14 +39,14 @@ export default function IndustryCoversTabs({ data }) {
                             {data.items.map((item, index) => (
                                 <button
                                     key={index}
-                                    onClick={() => setActiveTab(index)}
+                                    onMouseEnter={() => setActiveTab(index)}
                                     className={`text-left px-6 py-3 rounded-xl transition-all duration-300 flex items-center justify-between group ${
                                         activeTab === index 
                                         ? "bg-white text-sky-700 shadow-lg translate-x-2 max-w-fit" 
                                         : "hover:bg-sky-500/50 text-sky-50 border border-transparent hover:border-sky-400 max-w-fit "
                                     }`}
                                 >
-                                    <span className="font-bold text-lg">{item.title}</span>
+                                    <span className="font-bold text-base md:text-lg">{item.title}</span>
                                     {activeTab === index && (
                                         <ChevronRight size={20} className="animate-in fade-in slide-in-from-left-2" />
                                     )}

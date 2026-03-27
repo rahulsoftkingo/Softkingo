@@ -188,7 +188,7 @@ export default async function ServicePage({ params }) {
                     {content.heroTitle}
                   </h1>
                   <div
-                    className="text-sky-100/90 text-base md:text-lg lg:text-xl max-w-3xl leading-relaxed font-medium animate-fadeInUp animation-delay-400 rich-text"
+                    className="text-sky-100/90 text-base md:text-lg lg:text-xl max-w-3xl leading-[1.8] font-medium animate-fadeInUp animation-delay-400 rich-text mb-10"
                     dangerouslySetInnerHTML={{ __html: content.heroSubtitle }}
                   />
                 </div>
@@ -362,7 +362,7 @@ export default async function ServicePage({ params }) {
           subtitle={content.consultation?.subtitle}
           buttonLabel={content.consultation?.buttonLabel}
           imageSrc={content.consultation?.imageSrc}
-          theme="white"
+          theme="dark"
         />
       )}
 

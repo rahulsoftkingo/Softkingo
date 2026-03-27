@@ -198,7 +198,7 @@ const InquirySection = ({
                 {tagline}
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-extrabold">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-normal">
                 <span className="text-gray-900">{titlePrefix}</span>
                 <span className="bg-gradient-to-r from-sky-600 via-sky-600 to-cyan-600 bg-clip-text text-transparent">
                   {title}

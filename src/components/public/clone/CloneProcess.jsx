@@ -20,7 +20,7 @@ export default function CloneProcess({ data }) {
   const currentStep = steps[activeIndex] || steps[0];
 
   return (
-    <section className="py-24 bg-[#F8FAFC] relative overflow-hidden">
+    <section className="py-24 bg-[#F8FAFC] relative overflow-clip">
       {/* Background Grid Accent */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2FB3E0 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 
@@ -44,12 +44,12 @@ export default function CloneProcess({ data }) {
               {steps.map((step, i) => (
                 <div
                   key={i}
-                  onClick={() => setActiveIndex(i)}
+                  onMouseEnter={() => setActiveIndex(i)}
                   className="flex items-center justify-end gap-0 group cursor-pointer"
                 >
                   {/* Item Capsule */}
                   <div className={`
-                                        flex-1 max-w-[340px] flex items-center gap-4 px-6 py-4 rounded-2xl border transition-all duration-500
+                                        flex-1 max-w-[340px] flex items-center gap-4 px-6 py-4 rounded-xl border transition-all duration-500
                                         ${activeIndex === i
                       ? 'bg-gradient-to-r from-sky-500 to-sky-400 border-sky-400 shadow-lg shadow-sky-500/20 text-white'
                       : 'bg-white border-slate-100 text-slate-600 hover:border-sky-200 hover:bg-sky-50/50'
@@ -65,7 +65,7 @@ export default function CloneProcess({ data }) {
                         <div className={`w-5 h-5 rounded-md ${activeIndex === i ? 'bg-white' : 'bg-sky-500'} opacity-50`}></div>
                       )}
                     </div>
-                    <span className="text-xs md:text-sm font-bold leading-normal uppercase tracking-wide">
+                    <span className="text-xs md:text-sm font-semibold leading-normal uppercase tracking-wide">
                       {step.title}
                     </span>
                   </div>
@@ -78,7 +78,7 @@ export default function CloneProcess({ data }) {
 
                   {/* Step Number Circle */}
                   <div className={`
-                                        w-10 h-10 rounded-full flex items-center justify-center font-black text-xs z-10 transition-all duration-500 hidden md:flex
+                                        w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-xs z-10 transition-all duration-500 hidden md:flex
                                         ${activeIndex === i
                       ? 'bg-white border-4 border-sky-500 text-sky-600 scale-110 shadow-lg'
                       : 'bg-white border-2 border-slate-100 text-slate-300'
@@ -100,11 +100,11 @@ export default function CloneProcess({ data }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="bg-white rounded-2xl overflow-hidden shadow-2xl shadow-sky-900/5 border border-slate-50 h-full flex flex-col"
+                className="bg-white rounded-xl overflow-hidden shadow-2xl shadow-sky-900/5 border border-slate-50 h-full flex flex-col"
               >
                 {/* Card Header */}
                 <div className="bg-gradient-to-r from-[#2FB3E0] to-[#2FB3E0]/80 p-6 md:p-8 relative overflow-hidden">
-                  <div className="absolute right-[-20px] top-[-20px] text-[180px] font-black text-white/10 leading-none select-none">
+                  <div className="absolute right-[-20px] top-[-20px] text-[180px] font-extrabold text-white/10 leading-none select-none">
                     {String(activeIndex + 1).padStart(2, '0')}
                   </div>
                   <h3 className="text-2xl md:text-3xl font-extrabold text-white leading-normal relative z-10 max-w-[80%]">

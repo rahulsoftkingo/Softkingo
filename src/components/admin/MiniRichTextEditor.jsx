@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
@@ -88,6 +89,12 @@ const MenuBar = ({ editor }) => {
 };
 
 export default function MiniRichTextEditor({ value, onChange, placeholder = "Start typing..." }) {
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -95,7 +102,7 @@ export default function MiniRichTextEditor({ value, onChange, placeholder = "Sta
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-cyan-600 underline pointer-events-none',
+          class: 'text-sky-600 underline cursor-pointer',
         },
       }),
       Placeholder.configure({
@@ -114,11 +121,10 @@ export default function MiniRichTextEditor({ value, onChange, placeholder = "Sta
     immediatelyRender: false,
   });
 
-  // Keep editor content in sync with external value if needed
-  // (Avoid loop if possible, usually onUpdate covers it)
+  if (!isMounted) return <div className="border border-slate-200 rounded-lg min-h-[140px] bg-slate-50 animate-pulse" />;
 
   return (
-    <div className="border border-slate-200 rounded-lg bg-white overflow-hidden focus-within:ring-2 focus-within:ring-cyan-500/20 transition-all">
+    <div className="border border-slate-200 rounded-lg bg-white overflow-hidden focus-within:ring-2 focus-within:ring-sky-500/20 transition-all">
       <MenuBar editor={editor} />
       <EditorContent editor={editor} />
     </div>

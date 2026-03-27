@@ -8,7 +8,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function CloneVerticalSuite({ data }) {
     // 1. Determine Tabs (Dynamic from data.tabs OR Legacy hardcoded)
-    const rawTabs = data?.tabs && data.tabs.length > 0 
+    const rawTabs = data?.tabs && data.tabs.length > 0
         ? data.tabs.map((t, idx) => ({ id: `tab-${idx}`, label: t.label, ...t }))
         : [
             { id: 'user', label: 'User Panel', ...data?.user },
@@ -36,7 +36,7 @@ export default function CloneVerticalSuite({ data }) {
     };
 
     return (
-        <section className="py-24 bg-[#E6F7FF]">
+        <section className="py-20 lg:py-28 px-6 bg-slate-50 relative overflow-clip">
             <div className="max-w-7xl mx-auto px-6 text-center">
 
                 <CommonTitle
@@ -46,13 +46,17 @@ export default function CloneVerticalSuite({ data }) {
                 />
 
                 {/* Tab Navigation */}
-                <div className="inline-flex flex-wrap items-center justify-center p-2 bg-white rounded-2xl shadow-xl shadow-sky-900/5 mb-12 mt-8">
+                <div className="inline-flex flex-wrap items-center justify-center p-2 bg-white rounded-xl shadow-xl shadow-sky-900/5 mb-12 mt-8">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => {
                                 setActiveTabId(tab.id);
-                                setActiveFeature(0); // Reset active feature when tab changes
+                                setActiveFeature(0);
+                            }}
+                            onMouseEnter={() => {
+                                setActiveTabId(tab.id);
+                                setActiveFeature(0);
                             }}
                             className={`px-8 md:px-12 py-3.5 rounded-xl font-bold text-sm md:text-base transition-all duration-300 ${activeTabId === tab.id
                                 ? 'bg-sky-500 text-white shadow-lg shadow-sky-500/20'
@@ -75,26 +79,26 @@ export default function CloneVerticalSuite({ data }) {
                 <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 text-left">
                     {/* Features List */}
                     <div className="w-full lg:w-[45%] space-y-4">
-                        <AnimatePresence mode="wait">
+                        <div className="space-y-4">
                             {(currentTabContent.items || []).map((feature, idx) => (
                                 <motion.div
                                     key={`${activeTabId}-${idx}`}
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: idx * 0.05 }}
-                                    onClick={() => setActiveFeature(idx)}
+                                    onMouseEnter={() => setActiveFeature(idx)}
                                     className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 border-2 ${activeFeature === idx
                                         ? 'bg-white border-white shadow-2xl shadow-sky-900/10 scale-[1.02]'
                                         : 'bg-white/40 border-transparent hover:bg-white/60'
                                         }`}
                                 >
                                     <div className="flex items-start gap-4">
-                                        <div className={`p-3 rounded-xl transition-colors duration-300 ${activeFeature === idx ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-500'
+                                        <div className={`p-3 rounded-lg transition-colors duration-300 ${activeFeature === idx ? 'bg-sky-500 text-white' : 'bg-sky-100 text-sky-500'
                                             }`}>
                                             {getIcon(idx)}
                                         </div>
                                         <div className="flex-1">
-                                            <h4 className={`text-lg font-black mb-2 transition-colors ${activeFeature === idx ? 'text-slate-900' : 'text-slate-700'
+                                            <h4 className={`text-lg font-extrabold mb-2 transition-colors ${activeFeature === idx ? 'text-slate-900' : 'text-slate-700'
                                                 }`}>
                                                 {feature.title}
                                             </h4>
@@ -111,14 +115,14 @@ export default function CloneVerticalSuite({ data }) {
                                     </div>
                                 </motion.div>
                             ))}
-                        </AnimatePresence>
+                        </div>
                     </div>
 
                     {/* Image / Mockup Area */}
                     <div className="w-full lg:w-[55%] relative">
                         {/* Decorative Background for Image */}
-                        <div className="absolute inset-0 bg-[#DDF3FF] rounded-[2.5rem] transform rotate-3 scale-95 opacity-50"></div>
-                        <div className="absolute inset-0 bg-sky-100 rounded-[2.5rem] transform -rotate-2 scale-90 opacity-30"></div>
+                        <div className="absolute inset-0 bg-[#DDF3FF] rounded-3xl transform rotate-3 scale-95 opacity-50"></div>
+                        <div className="absolute inset-0 bg-sky-100 rounded-3xl transform -rotate-2 scale-90 opacity-30"></div>
 
                         <motion.div
                             key={activeTabId}

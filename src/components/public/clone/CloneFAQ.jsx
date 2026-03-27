@@ -8,7 +8,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 export default function CloneFAQ({ data }) {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const defaultFaqs= [
+  const defaultFaqs = [
     {
       q: "How long does it take to develop a clone app?",
       a: "Typically, a basic clone app takes 4-8 weeks for development, while more complex platforms with custom features can take 3-6 months. The timeline depends on the scope of features and customization required."
@@ -40,12 +40,12 @@ export default function CloneFAQ({ data }) {
     if (typeof faq === 'string') return { q: faq, a: '' };
     if (typeof faq === 'object' && faq !== null) {
       return {
-        q: typeof faq.q === 'string' ? faq.q : 
-           typeof faq.question === 'string' ? faq.question : 
-           typeof faq.title === 'string' ? faq.title : 'Question?',
-        a: typeof faq.a === 'string' ? faq.a : 
-           typeof faq.answer === 'string' ? faq.answer : 
-           typeof faq.description === 'string' ? faq.description : 'Answer not available'
+        q: typeof faq.q === 'string' ? faq.q :
+          typeof faq.question === 'string' ? faq.question :
+            typeof faq.title === 'string' ? faq.title : 'Question?',
+        a: typeof faq.a === 'string' ? faq.a :
+          typeof faq.answer === 'string' ? faq.answer :
+            typeof faq.description === 'string' ? faq.description : 'Answer not available'
       };
     }
     return { q: 'Question?', a: 'Answer not available' };
@@ -58,29 +58,28 @@ export default function CloneFAQ({ data }) {
   };
 
   return (
-    <section className="py-20 lg:py-28 px-6 bg-slate-50">
-      <div className="max-w-4xl mx-auto">
-        
+    <section className="py-20 lg:py-28 px-6 bg-slate-50 relative overflow-clip">
+      <div className="max-w-7xl mx-auto px-6 relative overflow-clip pb-12">
         {/* Header */}
-        <CommonTitle 
-            title={data?.title || "Frequently Asked Questions"}
-            subtitle={data?.subtitle || "Everything you need to know about clone app development"}
-            pill={true}
+        <CommonTitle
+          title={data?.title || "Frequently Asked Questions"}
+          subtitle={data?.subtitle || "Everything you need to know about clone app development"}
+          pill={true}
         />
 
         {/* FAQ Items */}
         <div className="space-y-4">
           {faqs.map((faq, i) => (
-            <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:border-sky-200 transition-all duration-300">
+            <div key={i} className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:border-sky-200 transition-all duration-300">
               <button
                 onClick={() => toggleFAQ(i)}
                 className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-sky-50 transition-colors group"
               >
                 <div className="flex items-center gap-4 flex-1">
-                  <div className="w-10 h-10 bg-sky-100 rounded-xl flex items-center justify-center group-hover:bg-sky-200 transition-colors flex-shrink-0">
+                  <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center group-hover:bg-sky-200 transition-colors flex-shrink-0">
                     <HelpCircle className="text-sky-500" size={20} />
                   </div>
-                  <h3 className="font-bold text-slate-900 text-lg group-hover:text-sky-600 transition-colors">
+                  <h3 className="font-semibold text-slate-900 text-lg group-hover:text-sky-600 transition-colors">
                     {faq.q}
                   </h3>
                 </div>
@@ -92,7 +91,7 @@ export default function CloneFAQ({ data }) {
                   )}
                 </div>
               </button>
-              
+
               {/* Answer */}
               <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? 'max-h-96' : 'max-h-0'}`}>
                 <div className="px-8 pb-6 pt-2">
@@ -108,17 +107,17 @@ export default function CloneFAQ({ data }) {
         </div>
 
         {/* Additional Help */}
-        <div className="mt-16 bg-gradient-to-r from-sky-600 to-slate-800 rounded-2xl p-8 text-white text-center">
-          <h3 className="text-2xl font-bold mb-4">Still Have Questions?</h3>
+        <div className="mt-16 bg-gradient-to-r from-sky-600 to-slate-800 rounded-xl p-8 text-white text-center">
+          <h3 className="text-2xl font-bold mb-4">{data?.ctaTitle || "Still Have Questions?"}</h3>
           <p className="text-sky-100 mb-8 max-w-2xl mx-auto">
-            Our team is here to help you understand every aspect of clone app development
+            {data?.ctaSubtitle || "Our team is here to help you understand every aspect of clone app development"}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <button className="bg-white text-sky-600 px-6 py-3 rounded-full font-bold hover:bg-sky-50 transition-colors">
-              Schedule a Consultation
+              {data?.ctaBtn1 || "Schedule a Consultation"}
             </button>
             <button className="bg-sky-500 text-white px-6 py-3 rounded-full font-bold hover:bg-sky-600 transition-colors border border-sky-400">
-              View Portfolio
+              {data?.ctaBtn2 || "View Portfolio"}
             </button>
           </div>
         </div>

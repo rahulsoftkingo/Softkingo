@@ -36,7 +36,7 @@ export default function CloneComparison({ data }) {
     };
 
     return (
-        <section className="py-24 bg-white overflow-hidden">
+        <section className="py-24 bg-white overflow-clip">
             <div className="max-w-7xl mx-auto px-6">
                 <CommonTitle
                     title={title}
@@ -49,23 +49,23 @@ export default function CloneComparison({ data }) {
                     <div className="overflow-x-auto pb-10 scrollbar-hide">
                         <table className="w-full border-separate border-spacing-0 min-w-[800px]">
                             <thead>
-                                <tr>
+                                <tr className="group">
                                     <th className="py-8 px-6 text-left border-b border-slate-100 pb-10">
-                                        <span className="text-xl font-black text-slate-900">Features</span>
+                                        <span className="text-xl font-extrabold text-slate-900">Features</span>
                                     </th>
-                                    <th className="relative py-8 px-6 text-center border-b border-slate-100 bg-[#DFF7FF] rounded-t-2xl">
+                                    <th className="relative py-8 px-6 text-center border-b border-slate-100 bg-[#DFF7FF] rounded-t-xl">
                                         <div className="flex flex-col items-center gap-2 relative z-10">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img src="/images/softkingo-logo.png" alt="Softkingo" className="h-7 object-contain" />
                                         </div>
                                         {/* Vertical Highlight Overlay for Header */}
-                                        <div className="absolute inset-0 bg-[#DFF7FF] rounded-t-2xl -z-10 shadow-[0_-10px_30px_rgba(30,174,219,0.1)]"></div>
+                                        <div className="absolute inset-0 bg-[#DFF7FF] rounded-t-xl -z-10 shadow-[0_-10px_30px_rgba(30,174,219,0.1)]"></div>
                                     </th>
                                     <th className="py-8 px-6 text-center border-b border-slate-100 pb-10">
-                                        <span className="text-xl font-black text-slate-900 opacity-80">Company 1</span>
+                                        <span className="text-xl font-extrabold text-slate-900 opacity-80">Company 1</span>
                                     </th>
                                     <th className="py-8 px-6 text-center border-b border-slate-100 pb-10">
-                                        <span className="text-xl font-black text-slate-900 opacity-80">Company 2</span>
+                                        <span className="text-xl font-extrabold text-slate-900 opacity-80">Company 2</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -88,14 +88,14 @@ export default function CloneComparison({ data }) {
                                                     <div className="w-11 h-11 rounded-xl bg-[#DFF7FF] flex items-center justify-center border border-sky-100 transition-transform group-hover:scale-110">
                                                         <IconComponent size={22} className="text-[#1EAEDB]" />
                                                     </div>
-                                                    <span className="text-lg font-bold text-slate-800 leading-normal">{row.feature}</span>
+                                                    <span className="text-lg font-semibold text-slate-800 leading-normal">{row.feature}</span>
                                                 </div>
                                             </td>
-                                            <td className={`relative py-6 px-6 text-center border-b border-slate-100 bg-[#DFF7FF] ${i === rows.length - 1 ? 'rounded-b-2xl shadow-[0_10px_30px_rgba(30,174,219,0.1)]' : ''}`}>
+                                            <td className={`relative py-6 px-6 text-center border-b border-slate-100 bg-[#DFF7FF] ${i === rows.length - 1 ? 'rounded-b-xl shadow-[0_10px_30px_rgba(30,174,219,0.1)]' : ''}`}>
                                                 {/* Softkingo Value Cell */}
                                                 <div className="flex flex-col items-center justify-center relative z-10">
                                                     {row.sk === "100%" ? (
-                                                        <span className="text-3xl font-black text-[#1EAEDB] mb-2">100%</span>
+                                                        <span className="text-3xl font-extrabold text-[#1EAEDB] mb-2">100%</span>
                                                     ) : (
                                                         <StatusIcon value={row.sk} isSK={true} />
                                                     )}

@@ -4,14 +4,14 @@ import { COMMON_TECH } from './TechConstants';
 import {
     Smartphone, Layout, Code, Settings, Zap,
     Plus, X, HelpCircle, Briefcase, MessageSquare,
-    Users, Layers, Target, CheckCircle2, Search
+    Users, Layers, Target, CheckCircle2, Search, TrendingUp
 } from "lucide-react";
+import BlogCategorySelector from '@/components/admin/BlogCategorySelector';
 
 // --- 1. GLOBAL STYLES ---
 const inputStyle = "w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none transition-all placeholder:text-slate-400";
+// --- 2. HELPERS ---
 const labelStyle = "text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block";
-
-// --- 2. SECTION WRAPPER ---
 const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => {
     if (!activeSections?.includes(id)) return null;
     return (
@@ -25,6 +25,27 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
     );
 };
 
+const TitleInputs = ({ section, content, updateField, showSubtitle = true, showGradient = true }) => (
+    <div className="grid md:grid-cols-2 gap-4 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+        <div className="space-y-1">
+            <label className={labelStyle}>Section Title</label>
+            <input className={inputStyle} placeholder="e.g. Challenges We Solve" value={content[section]?.title || ''} onChange={e => updateField(`content.${section}.title`, e.target.value)} />
+        </div>
+        {showGradient && (
+            <div className="space-y-1">
+                <label className={labelStyle}>Gradient Highlight</label>
+                <input className={inputStyle} placeholder="e.g. Solutions" value={content[section]?.gradientText || ''} onChange={e => updateField(`content.${section}.gradientText`, e.target.value)} />
+            </div>
+        )}
+        {showSubtitle && (
+            <div className="col-span-full space-y-1">
+                <label className={labelStyle}>Subtitle / Description (Rich Text)</label>
+                <MiniRichTextEditor value={content[section]?.subtitle || ''} onChange={val => updateField(`content.${section}.subtitle`, val)} />
+            </div>
+        )}
+    </div>
+);
+
 // --- 3. MAIN INDUSTRY EDITOR ---
 export default function IndustryEditor({ formData, updateField, MediaInput, activeSections }) {
     const content = formData?.content || {};
@@ -34,9 +55,9 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 1. HERO SECTION */}
             <SectionWrapper id="hero" icon={Smartphone} title="1. Industry Hero Section" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Title" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
+                <TitleInputs section="hero" content={content} updateField={updateField} showSubtitle={false} />
                 <div className="space-y-1">
-                    <label className={labelStyle}>Hero Description</label>
+                    <label className={labelStyle}>Hero Detailed Description (Rich Text)</label>
                     <MiniRichTextEditor value={content.hero?.description || ''} onChange={val => updateField('content.hero.description', val)} />
                 </div>
                 <MediaInput label="Hero Background Image" value={content.hero?.image} path="content.hero.image" />
@@ -44,8 +65,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 2. CHALLENGES WE SOLVE */}
             <SectionWrapper id="challenges" icon={Target} title="2. Industry Challenges We Solve" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Section Title" value={content.challenges?.title || ''} onChange={e => updateField('content.challenges.title', e.target.value)} />
-                <textarea className={inputStyle} rows={2} placeholder="Subtitle" value={content.challenges?.subtitle || ''} onChange={e => updateField('content.challenges.subtitle', e.target.value)} />
+                <TitleInputs section="challenges" content={content} updateField={updateField} />
 
                 <div className="border-t border-slate-100 pt-4 mt-2">
                     <MediaInput label="Side Image" value={content.challenges?.image} path="content.challenges.image" />
@@ -77,7 +97,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 3. WHAT WE COVER */}
             <SectionWrapper id="covers" icon={Layers} title="3. What Softkingo Covers" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Section Title" value={content.covers?.title || ''} onChange={e => updateField('content.covers.title', e.target.value)} />
+                <TitleInputs section="covers" content={content} updateField={updateField} />
                 <div className="space-y-4">
                     <label className={labelStyle}>Service Areas</label>
                     {(content.covers?.items || []).map((item, i) => (
@@ -85,7 +105,8 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                             <div className="flex-1 space-y-2">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Service Title" value={item.title || ''} onChange={e => updateField(`content.covers.items.${i}.title`, e.target.value)} />
                                 <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Icon Name / URL" value={item.icon || ''} onChange={e => updateField(`content.covers.items.${i}.icon`, e.target.value)} />
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.covers.items.${i}.description`, e.target.value)} />
+                                <label className={labelStyle}>Description (Rich Text)</label>
+                                <MiniRichTextEditor value={item.description || ''} onChange={val => updateField(`content.covers.items.${i}.description`, val)} />
                             </div>
                             <button type="button" onClick={() => updateField('content.covers.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
                         </div>
@@ -95,7 +116,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
             </SectionWrapper>
 
             <SectionWrapper id="technologies" icon={Code} title="4. Advanced Technologies We Use" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Title" value={content.technologies?.title || ''} onChange={e => updateField('content.technologies.title', e.target.value)} />
+                <TitleInputs section="technologies" content={content} updateField={updateField} />
                 <div className="space-y-4">
                     <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
                         <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
@@ -133,35 +154,22 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
             {/* 5. PORTFOLIO */}
             <SectionWrapper id="portfolio" icon={Layout} title="5. Industry Portfolio" activeSections={activeSections}>
                 <div className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
-                        <div className="space-y-1">
-                            <label className={labelStyle}>Category Filter</label>
-                            <select className={inputStyle} value={content.portfolio?.category || ''} onChange={e => updateField('content.portfolio.category', e.target.value)}>
-                                <option value="">Select Category...</option>
-                                <option value="dating">Dating Apps</option>
-                                <option value="ecommerce">E-commerce</option>
-                                <option value="delivery">Delivery Apps</option>
-                                <option value="taxi">Taxi / Ride Sharing</option>
-                                <option value="education">E-Learning</option>
-                                <option value="fitness">Health & Fitness</option>
-                                <option value="healthcare">Healthcare / Medical</option>
-                                <option value="fintech">Fintech / Banking</option>
-                                <option value="realestate">Real Estate / Property</option>
-                                <option value="booking">Travel & Booking</option>
-                                <option value="social">Social Media</option>
-                            </select>
-                        </div>
+                    <TitleInputs section="portfolio" content={content} updateField={updateField} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Category Filter</label>
+                        <BlogCategorySelector 
+                            value={content.portfolio?.category || ''} 
+                            onChange={val => updateField('content.portfolio.category', val)}
+                            className={inputStyle}
+                        />
+                        <p className="text-[10px] text-slate-400 px-1 mt-1">Leave blank to show top 7 projects across all categories.</p>
                     </div>
-                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
-                    <p className="text-[10px] text-slate-400">Leave category blank → shows top 7 projects by default.</p>
                 </div>
             </SectionWrapper>
 
             {/* 6. OTHER INDUSTRIES */}
             <SectionWrapper id="otherIndustries" icon={Briefcase} title="6. Other Industries / Sectors" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Section Title" value={content.otherIndustries?.title || ''} onChange={e => updateField('content.otherIndustries.title', e.target.value)} />
-                <input className={inputStyle} placeholder="Subtitle" value={content.otherIndustries?.subtitle || ''} onChange={e => updateField('content.otherIndustries.subtitle', e.target.value)} />
+                <TitleInputs section="otherIndustries" content={content} updateField={updateField} />
                 <div className="my-4 pt-4 border-t border-slate-100">
                     <MediaInput label="Center Image" value={content.otherIndustries?.image} path="content.otherIndustries.image" />
                 </div>
@@ -180,13 +188,14 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 7. WHY CHOOSE */}
             <SectionWrapper id="whyChoose" icon={Target} title="7. Why Choose Softkingo" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Title" value={content.whyChoose?.title || ''} onChange={e => updateField('content.whyChoose.title', e.target.value)} />
+                <TitleInputs section="whyChoose" content={content} updateField={updateField} />
                 <div className="space-y-4">
                     {(content.whyChoose?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
                             <div className="flex-1 space-y-2">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Reason Title" value={item.title || ''} onChange={e => updateField(`content.whyChoose.items.${i}.title`, e.target.value)} />
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.whyChoose.items.${i}.description`, e.target.value)} />
+                                <label className={labelStyle}>Description (Rich Text)</label>
+                                <MiniRichTextEditor value={item.description || ''} onChange={val => updateField(`content.whyChoose.items.${i}.description`, val)} />
                             </div>
                             <button type="button" onClick={() => updateField('content.whyChoose.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
                         </div>
@@ -197,12 +206,14 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 8. PROCESS */}
             <SectionWrapper id="process" icon={Settings} title="8. Our Development Process" activeSections={activeSections}>
+                <TitleInputs section="process" content={content} updateField={updateField} />
                 <div className="space-y-4">
                     {(content.process?.steps || []).map((step, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
                             <div className="flex-1 space-y-2">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Step Title" value={step.title || ''} onChange={e => updateField(`content.process.steps.${i}.title`, e.target.value)} />
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" placeholder="Description" value={step.description || ''} onChange={e => updateField(`content.process.steps.${i}.description`, e.target.value)} />
+                                <label className={labelStyle}>Description (Rich Text)</label>
+                                <MiniRichTextEditor value={step.description || ''} onChange={val => updateField(`content.process.steps.${i}.description`, val)} />
                             </div>
                             <button type="button" onClick={() => updateField('content.process.steps', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
                         </div>
@@ -213,6 +224,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 9. FAQ */}
             <SectionWrapper id="faq" icon={HelpCircle} title="9. FAQ" activeSections={activeSections}>
+                <TitleInputs section="faq" content={content} updateField={updateField} />
                 <div className="space-y-4">
                     {(content.faq?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -232,6 +244,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 10. TESTIMONIALS */}
             <SectionWrapper id="testimonials" icon={MessageSquare} title="10. Client Testimonials" activeSections={activeSections}>
+                <TitleInputs section="testimonials" content={content} updateField={updateField} />
                 <div className="space-y-4">
                     {(content.testimonials?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -240,7 +253,8 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                                     <input className="flex-1 p-2 bg-white border rounded text-sm font-bold" placeholder="Client Name" value={item.name || ''} onChange={e => updateField(`content.testimonials.items.${i}.name`, e.target.value)} />
                                     <input className="flex-1 p-2 bg-white border rounded text-sm" placeholder="Role/Company" value={item.role || ''} onChange={e => updateField(`content.testimonials.items.${i}.role`, e.target.value)} />
                                 </div>
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Feedback" value={item.feedback || ''} onChange={e => updateField(`content.testimonials.items.${i}.feedback`, e.target.value)} />
+                                <label className={labelStyle}>Feedback (Rich Text)</label>
+                                <MiniRichTextEditor value={item.feedback || ''} onChange={val => updateField(`content.testimonials.items.${i}.feedback`, val)} />
                                 <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Client Image URL" value={item.image || ''} onChange={e => updateField(`content.testimonials.items.${i}.image`, e.target.value)} />
                             </div>
                             <button type="button" onClick={() => updateField('content.testimonials.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
@@ -250,8 +264,67 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                 </div>
             </SectionWrapper>
 
-            {/* 11. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="11. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
+            {/* 11. CONSULTATION CTA */}
+            <SectionWrapper id="consultation" icon={TrendingUp} title="11. Consultation CTA" activeSections={activeSections}>
+                <TitleInputs section="consultation" content={content} updateField={updateField} />
+                <div className="grid md:grid-cols-2 gap-4 mt-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Button Label</label>
+                        <input className={inputStyle} placeholder="Get Started Now" value={content.consultation?.buttonLabel || ''} onChange={e => updateField('content.consultation.buttonLabel', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Button Href</label>
+                        <input className={inputStyle} placeholder="/contact" value={content.consultation?.href || ''} onChange={e => updateField('content.consultation.href', e.target.value)} />
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 12. BLOG SECTION */}
+            <SectionWrapper id="blogs" icon={MessageSquare} title="12. Blog Section" activeSections={activeSections}>
+                <div className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-4 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Section Title</label>
+                            <input className={inputStyle} placeholder="Latest Blogs" value={content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
+                        </div>
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Gradient Highlight</label>
+                            <input className={inputStyle} placeholder="Insights" value={content.blogGradientText || ''} onChange={e => updateField('content.blogGradientText', e.target.value)} />
+                        </div>
+                        <div className="col-span-full space-y-1">
+                            <label className={labelStyle}>Subtitle (Rich Text)</label>
+                            <MiniRichTextEditor value={content.blogSubtitle || ''} onChange={val => updateField('content.blogSubtitle', val)} />
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Category Filter</label>
+                        <BlogCategorySelector 
+                            value={content.blogCategory || ''} 
+                            onChange={val => updateField('content.blogCategory', val)}
+                            className={inputStyle}
+                        />
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 13. INQUIRY SECTION */}
+            <SectionWrapper id="inquiry" icon={MessageSquare} title="13. Inquiry Section" activeSections={activeSections}>
+                <TitleInputs section="inquiry" content={content} updateField={updateField} showGradient={false} />
+                <div className="grid md:grid-cols-2 gap-4 mt-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Tagline</label>
+                        <input className={inputStyle} placeholder="e.g. GET IN TOUCH" value={content.inquiry?.tagline || ''} onChange={e => updateField('content.inquiry.tagline', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Prefix</label>
+                        <input className={inputStyle} placeholder="e.g. Let's " value={content.inquiry?.titlePrefix || ''} onChange={e => updateField('content.inquiry.titlePrefix', e.target.value)} />
+                    </div>
+                </div>
+            </SectionWrapper>
+
+            {/* 14. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="14. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
                 <div className="space-y-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>SEO Title</label>

@@ -1,5 +1,6 @@
 import React from 'react';
 import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
+import BlogCategorySelector from '@/components/admin/BlogCategorySelector';
 import { COMMON_TECH } from './TechConstants';
 import {
     Smartphone, Layout, Database, Code, Settings, Zap,
@@ -96,7 +97,10 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                             <button type="button" onClick={() => updateField('content.features.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
                             <div className="grid gap-3">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Feature Title" value={item.title || ''} onChange={e => updateField(`content.features.items.${i}.title`, e.target.value)} />
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Feature Description" value={item.description || ''} onChange={e => updateField(`content.features.items.${i}.description`, e.target.value)} />
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Feature Description</label>
+                                    <MiniRichTextEditor value={item.description || ''} onChange={val => updateField(`content.features.items.${i}.description`, val)} />
+                                </div>
                                 <input className="w-full p-2 bg-white border rounded text-xs" placeholder="Icon URL" value={item.image || ''} onChange={e => updateField(`content.features.items.${i}.image`, e.target.value)} />
                             </div>
                         </div>
@@ -410,9 +414,13 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <label className={labelStyle}>Blog Category (Slug)</label>
-                    <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
-                    <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
+                    <label className={labelStyle}>Blog Category</label>
+                    <BlogCategorySelector 
+                        value={content.blogCategory || ''} 
+                        onChange={val => updateField('content.blogCategory', val)}
+                        className={inputStyle}
+                    />
+                    <p className="text-[10px] text-slate-400 italic">Select specific category or leave for latest blogs.</p>
                 </div>
             </SectionWrapper>
 

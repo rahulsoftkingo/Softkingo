@@ -91,8 +91,10 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'process', label: '8. Development Process', icon: Settings },
                 { id: 'faq', label: '9. FAQ', icon: HelpCircle },
                 { id: 'testimonials', label: '10. Client Testimonials', icon: MessageSquare },
-                { id: 'blogs', label: '11. Blog Section', icon: MessageSquare },
-                { id: 'seo', label: '12. SEO Settings', icon: Search }
+                { id: 'consultation', label: '11. Consult CTA', icon: TrendingUp },
+                { id: 'blogs', label: '12. Blog Section', icon: MessageSquare },
+                { id: 'inquiry', label: '13. Inquiry Section', icon: MessageSquare },
+                { id: 'seo', label: '14. SEO Settings', icon: Search }
             ]
         },
         clone: {

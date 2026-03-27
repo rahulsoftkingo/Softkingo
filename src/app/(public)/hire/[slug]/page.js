@@ -83,7 +83,7 @@ function normalizeHireContent(page) {
     steps: Array.isArray(c.steps) ? c.steps : [],
     services: Array.isArray(c.services) ? c.services : [],
     moreServices: Array.isArray(c.moreServices) ? c.moreServices : [],
-    portfolioCategory: c.portfolioCategory || "", 
+    portfolioCategory: c.portfolioCategory || "",
     portfolioTitle: c.portfolioTitle || "",
     portfolioSubtitle: c.portfolioSubtitle || "",
 
@@ -183,7 +183,7 @@ export default async function HireSlugPage({ params }) {
   const content = normalizeHireContent(page);
 
   return (
-    <main className="relative bg-white overflow-x-hidden">
+    <main className="relative bg-white ">
 
       {/* 1. HERO SECTION */}
       {content.activeSections?.includes('hero') && (

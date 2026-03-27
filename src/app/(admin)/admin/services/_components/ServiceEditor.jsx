@@ -1,5 +1,6 @@
 import React from 'react';
 import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
+import BlogCategorySelector from '@/components/admin/BlogCategorySelector';
 import {
     Smartphone, Layout, Database, Code, Settings, Zap,
     BarChart3, ShieldCheck, DollarSign, Plus, X, Trash2,
@@ -60,16 +61,6 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
 
             {/* 2. STATISTICS */}
             <SectionWrapper id="stats" icon={BarChart3} title="2. Statistics Section" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Stats Section Title (Internal/Admin Only)</label>
-                        <input className={inputStyle} placeholder="Stats Section Title" value={content.statsTitle || ''} onChange={e => updateField('content.statsTitle', e.target.value)} />
-                    </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Stats Section Subtitle (Internal/Admin Only)</label>
-                        <input className={inputStyle} placeholder="Stats Section Subtitle" value={content.statsSubtitle || ''} onChange={e => updateField('content.statsSubtitle', e.target.value)} />
-                    </div>
-                </div>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <label className={labelStyle}>Primary Metrics</label>
@@ -174,8 +165,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                             </div>
 
                             <div className="space-y-2">
-                                <label className={labelStyle}>Full Content Description</label>
-                                <textarea className={inputStyle} rows={3} placeholder="Full description for this category..." value={cat.fullDesc || ''} onChange={e => updateField(`content.services.categories.${i}.fullDesc`, e.target.value)} />
+                                <label className={labelStyle}>Full Content Description (Rich Text)</label>
+                                <MiniRichTextEditor value={cat.fullDesc || ''} onChange={val => updateField(`content.services.categories.${i}.fullDesc`, val)} />
                             </div>
 
                             {/* Expertise Nested List */}
@@ -608,9 +599,13 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <label className={labelStyle}>Blog Category (Slug)</label>
-                    <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
-                    <p className="text-[10px] text-slate-400 italic">Tip: Use the category slug from the Blog categories section.</p>
+                    <label className={labelStyle}>Blog Category</label>
+                    <BlogCategorySelector 
+                        value={content.blogCategory || ''} 
+                        onChange={val => updateField('content.blogCategory', val)}
+                        className={inputStyle}
+                    />
+                    <p className="text-[10px] text-slate-400 italic">Select specific category or leave for latest blogs.</p>
                 </div>
             </SectionWrapper>
 

@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import CommonTitle from '@/components/ui/CommonTitle';
+import Link from 'next/link';
 
 export default function CloneAbout({ data }) {
   const defaultStats = [
@@ -21,7 +22,7 @@ export default function CloneAbout({ data }) {
   ];
 
   return (
-    <section className="py-24 bg-white overflow-hidden">
+    <section className="py-24 bg-white overflow-clip">
       <div className="max-w-7xl mx-auto px-6">
 
         <div className="grid lg:grid-cols-3 gap-16 items-start">
@@ -35,28 +36,21 @@ export default function CloneAbout({ data }) {
             />
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-6 relative">
               {/* Decorative Blur Background for Stats */}
               <div className="absolute -inset-10 bg-sky-50/50 blur-3xl -z-10 rounded-[3rem]"></div>
 
               {stats.map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="bg-white p-8 rounded-3xl shadow-xl shadow-sky-900/5 border border-slate-50 group hover:border-sky-100 transition-all duration-300"
-                >
-                  <div className="space-y-3 text-center">
-                    <h3 className="text-4xl md:text-5xl font-black text-[#2FB3E0] group-hover:scale-110 transition-transform">
+                <div key={i} className="bg-white p-6 md:p-8 rounded-2xl shadow-lg shadow-sky-900/5 border border-slate-100 group hover:border-sky-200 transition-all duration-300">
+                  <div className="space-y-2 text-center">
+                    <h3 className="text-2xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-[#2FB3E0] to-[#1EAEDB] group-hover:scale-110 transition-transform">
                       {stat.number}
                     </h3>
-                    <p className="text-sky-400 font-bold text-sm md:text-base tracking-tight">
+                    <p className="text-slate-500 font-semibold text-xs md:text-sm uppercase tracking-wider">
                       {stat.label}
                     </p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
@@ -67,9 +61,11 @@ export default function CloneAbout({ data }) {
               viewport={{ once: true }}
               className="pt-4"
             >
-              <button className="px-10 py-4 rounded-2xl bg-[#2FB3E0] text-white font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-sky-400/20">
-                Let's Discuss Your Project
-              </button>
+              <Link href={data?.buttonHref || "/contact"}>
+                <button className="px-10 py-4 rounded-xl bg-[#2FB3E0] text-white font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-sky-400/20">
+                  {data?.buttonLabel || "Let's Discuss Your Project"}
+                </button>
+              </Link>
             </motion.div>
           </div>
 
@@ -80,7 +76,7 @@ export default function CloneAbout({ data }) {
 
             <div className="space-y-12 pl-0 lg:pl-10">
               <div className="space-y-3">
-                <h3 className="text-3xl font-bold text-slate-800 tracking-tight">Reasons To Choose Us</h3>
+                <h3 className="text-3xl font-bold text-slate-800 ">Reasons To Choose Us</h3>
                 <div className="w-12 h-1 bg-sky-400 rounded-full"></div>
               </div>
 

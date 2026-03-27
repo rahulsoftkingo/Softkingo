@@ -18,6 +18,7 @@ export default function DynamicPortfolioCard({
   portfolioType = "app",
   title,
   subtitle,
+  gradientText,
   className = "",
 }) {
   const [projects, setProjects] = useState([]);
@@ -69,7 +70,7 @@ export default function DynamicPortfolioCard({
           </div>
           <div className="space-y-6">
             {[1, 2].map((i) => (
-              <div key={i} className="h-64 bg-slate-50 rounded-3xl animate-pulse" />
+              <div key={i} className="h-64 bg-slate-50 rounded-2xl animate-pulse" />
             ))}
           </div>
         </div>
@@ -87,7 +88,7 @@ export default function DynamicPortfolioCard({
 
             {/* ── LEFT: sticky ── */}
             <div className="w-full lg:w-[30%] lg:sticky lg:top-28 space-y-6">
-              <CommonTitle align="left" title={displayTitle} subtitle={displaySubtitle} />
+              <CommonTitle align="left" title={displayTitle} subtitle={displaySubtitle} gradientText={gradientText} />
               <button
                 onClick={() => setShowModal(true)}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-md shadow-sky-200 hover:scale-105 active:scale-95 transition-all duration-300 group"
@@ -140,7 +141,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
     <motion.div
       ref={ref}
       style={{ scale, opacity, top: `${88 + index * 20}px` }}
-      className="sticky rounded-3xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.16)] hover:shadow-[0_26px_60px_rgba(15,23,42,0.26)] transition-shadow"
+      className="sticky rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.16)] hover:shadow-[0_26px_60px_rgba(15,23,42,0.26)] transition-shadow"
     >
       {/* Card inner */}
       <div
@@ -166,11 +167,11 @@ function StickyProjectCard({ p, index, total, onContact }) {
                   <span className="text-2xl font-bold text-slate-800">{p.title?.[0]}</span>
                 )}
               </div>
-              <h3 className="text-xl md:text-3xl font-extrabold text-white leading-normal">{p.title}</h3>
+                <h3 className="text-xl md:text-3xl font-bold text-white leading-normal">{p.title}</h3>
             </div>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm text-white/90 leading-relaxed">{p.description}</p>
+            <p className="text-xs sm:text-sm text-white/90 leading-relaxed" dangerouslySetInnerHTML={{ __html: p.description }} />
 
             {/* Specs */}
             <div className="rounded-xl bg-white/30 backdrop-blur-sm p-4 grid grid-cols-3 gap-3 text-[11px] sm:text-xs">
@@ -220,7 +221,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
               {p.phoneMockup ? (
                 <Image src={p.phoneMockup} alt={`${p.title} mockup`} fill className="object-contain drop-shadow-2xl" />
               ) : (
-                <div className="w-full h-full bg-white/20 rounded-3xl" />
+                  <div className="w-full h-full bg-white/20 rounded-2xl" />
               )}
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
+import BlogCategorySelector from '@/components/admin/BlogCategorySelector';
 import {
     ArrowLeft, Save, Eye, Image as ImageIcon, Plus, X,
     Smartphone, Layout, Database, Settings, Briefcase, Users, Zap, CheckCircle2, Layers, DollarSign, BarChart3, MousePointerClick, FolderOpen, Loader2, MessageSquare,
@@ -614,8 +615,13 @@ export default function HireEditor({ data, onBack, onSave, loading }) {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Blog Category (Slug)</label>
-                                <input className={inputStyle} placeholder="e.g. app-development (leave empty for latest)" value={formData.content.blogCategory || ''} onChange={e => updateField('content.blogCategory', e.target.value)} />
+                                <label className={labelStyle}>Blog Category</label>
+                                <BlogCategorySelector 
+                                    value={formData.content.blogCategory || ''} 
+                                    onChange={val => updateField('content.blogCategory', val)}
+                                    className={inputStyle}
+                                />
+                                <p className="text-[10px] text-slate-400 italic">Select specific category or leave for latest blogs.</p>
                             </div>
                         </SectionWrapper>
                     </div>

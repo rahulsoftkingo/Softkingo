@@ -67,7 +67,7 @@ const TestimonialCarousel = ({ data }) => {
                         key={i} 
                         className="snap-center flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
                     >
-                        <div className="bg-white p-6 rounded-xl shadow-md border border-slate-100 h-full flex flex-col hover:shadow-lg hover:border-sky-200 transition-all duration-300">
+                        <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 h-full flex flex-col hover:shadow-lg hover:border-sky-200 transition-all duration-300">
                             
                             {/* Header with Quote Icon */}
                             <div className="flex items-start justify-between mb-4">
@@ -83,9 +83,7 @@ const TestimonialCarousel = ({ data }) => {
                             </div>
 
                             {/* Review Text */}
-                            <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-grow">
-                                "{t.review}"
-                            </p>
+                            <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-grow" dangerouslySetInnerHTML={{ __html: `"${t.review || t.feedback || ""}"` }} />
 
                             {/* User Info */}
                             <div className="flex items-center gap-3 mt-auto pt-4 border-t border-slate-100">
@@ -93,12 +91,12 @@ const TestimonialCarousel = ({ data }) => {
                                     {t.image ? (
                                         <Image src={t.image} alt={t.name} fill className="object-cover" />
                                     ) : (
-                                        <span>{t.avatar || t.name.charAt(0)}</span>
+                                        <span>{t.avatar || t.name?.charAt(0)}</span>
                                     )}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <h4 className="font-semibold text-slate-900 text-sm truncate">{t.name}</h4>
-                                    <p className="text-xs text-slate-500 line-clamp-1">{t.title}</p>
+                                    <h4 className="font-bold text-slate-900 text-sm truncate">{t.name}</h4>
+                                    <p className="text-xs text-slate-500 line-clamp-1">{t.title || t.role}</p>
                                 </div>
                             </div>
                         </div>
