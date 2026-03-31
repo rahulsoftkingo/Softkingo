@@ -1,4 +1,9 @@
 
+"use client";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import CommonTitle from '@/components/ui/CommonTitle';
+
 const defaultTechStackData = {
     title: "Our Cutting-Edge Technology Stack",
     highlight: "Modern. Scalable. Future-Ready.",
@@ -99,12 +104,14 @@ export default function SolutionsTechStack({ data }) {
                                 className="group flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-sky-500/10 hover:border-sky-200 transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
                             >
                                 <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
-                                    <Image
-                                        src={tech.image}
-                                        alt={tech.name}
-                                        fill
-                                        className="object-contain transition-all duration-500"
-                                    />
+                                    {tech.image && (
+                                        <Image
+                                            src={tech.image}
+                                            alt={tech.name}
+                                            fill
+                                            className="object-contain transition-all duration-500"
+                                        />
+                                    )}
                                 </div>
                                 <span className="text-xs md:text-sm font-bold text-slate-800 tracking-tight text-center">
                                     {tech.name}
