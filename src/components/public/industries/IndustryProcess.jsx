@@ -22,14 +22,14 @@ const IndustryProcess = ({ data }) => {
   if (!data || !data.steps) return null;
 
   return (
-    <section ref={containerRef} className="py-24 bg-white px-6 overflow-hidden relative">
+    <section ref={containerRef} className="py-24 bg-white px-4 sm:px-6 overflow-hidden relative">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
         <div className="absolute top-1/4 left-10 w-64 h-64 bg-sky-100 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-blue-50 rounded-full blur-3xl animate-pulse delay-700" />
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <CommonTitle
           title={data.title || "Our Development Process"}
           subtitle={data.subtitle || "A systematic, results-driven approach to every project we undertake."}

@@ -46,11 +46,11 @@ export default function AIPage() {
     <>
 
       {/* 01. Hero Section - REDESIGNED FOR IMMERSIVE FEEL */}
-      <section className="relative min-h-[50vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden py-24">
+      <section className="relative min-h-[50vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden">
         {/* Full Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/ai/ai-hero-bg.png"
+            src="/images/ai/AI-Services.webp"
             alt="AI Hero Background"
             fill
             className="object-cover object-center scale-105"
@@ -59,7 +59,7 @@ export default function AIPage() {
 
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10 w-full text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -102,7 +102,7 @@ export default function AIPage() {
 
       {/* 02. We Are Section - PIXEL PERFECT MATCH */}
       <section id="about" className=" bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             {/* Left: Image - Clean & Simple */}
             <motion.div
@@ -226,8 +226,8 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 06. Our Expertise in AI Development */}
-      <section id="expertise" className="py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="expertise" className="bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <CommonTitle
             align="center"
             title="Our Expertise in"
@@ -302,8 +302,8 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 07. Why AI Development? */}
-      <section id="why-invest" className="py-24 bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="why-invest" className="bg-white relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
             {/* Left: Sticky Title & Info */}
             <div className="lg:w-1/3 lg:sticky lg:top-32 h-fit z-10">
@@ -394,8 +394,8 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 08. AI Development Process */}
-      <section id="process" className="py-20 lg:py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <section id="process" className="bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 w-full">
           <CommonTitle
             align="center"
             title="AI Development"
@@ -487,8 +487,8 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 09. Our AI Projects */}
-      <section id="projects" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="projects" className="bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <CommonTitle
             align="center"
             title="Our AI"
@@ -593,8 +593,8 @@ export default function AIPage() {
       </section>
 
       {/* 10. Ai Powered Solutions */}
-      <section id="solutions" className="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm text-black overflow-hidden w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <section id="solutions" className="bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm text-black overflow-hidden w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 w-full">
           <CommonTitle
             align="center"
             title="Ai Powered Solutions"
@@ -711,8 +711,8 @@ export default function AIPage() {
       <div className="section-divider" />
 
       {/* 11. AI Capability Models */}
-      <section id="capabilities" className="py-24 bg-white text-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="capabilities" className="bg-white text-black">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           <CommonTitle
             align="center"
             title="Advanced AI"

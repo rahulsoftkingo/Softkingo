@@ -126,9 +126,9 @@ const HeroSection = () => {
       ))}
 
       {/* Main content */}
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-        {/* Left content */}
+          {/* Left content */}
           <motion.div
             className="w-full lg:w-1/2 flex flex-col items-center md:items-start"
             initial={{ opacity: 0, x: -20 }}
@@ -143,7 +143,7 @@ const HeroSection = () => {
             >
               <span ><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" /></span> Transforming Businesses Since 2020
             </motion.div>
- 
+
             <motion.h1
               className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-800 leading-normal flex flex-col items-center md:items-start"
               initial={{ opacity: 0, y: 10 }}

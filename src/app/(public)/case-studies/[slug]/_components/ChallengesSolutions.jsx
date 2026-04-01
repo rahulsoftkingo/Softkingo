@@ -8,10 +8,10 @@ export default function ChallengesSolutions({ data, branding }) {
 
     return (
         <section
-            className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 lg:px-12 bg-white relative overflow-hidden"
+            className="bg-white relative overflow-hidden"
             style={{ fontFamily: primaryFont }}
         >
-            <div className="max-w-7xl mx-auto relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
 
                     {/* Left: Challenges */}

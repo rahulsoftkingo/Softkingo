@@ -22,7 +22,7 @@ export default function FeatureSection({
     // Premium Light Design strategy for consistency and readability
     return (
         <section
-            className={`py-24 md:py-36 px-4 sm:px-6 lg:px-12 relative overflow-hidden ${isDark ? 'bg-slate-50/50' : 'bg-white'} text-slate-900`}
+            className={`relative overflow-hidden ${isDark ? 'bg-slate-50/50' : 'bg-white'} text-slate-900`}
             style={{ fontFamily: branding.primaryFont }}
         >
             {/* Soft Brand Glow Accents */}
@@ -39,8 +39,8 @@ export default function FeatureSection({
                 </>
             )}
 
-            <div className="max-w-7xl mx-auto relative z-10">
-                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32 items-center`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24 relative z-10">
+                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center`}>
 
                     {/* Content Section */}
                     <motion.div

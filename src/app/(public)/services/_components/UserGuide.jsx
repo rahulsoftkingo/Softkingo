@@ -137,13 +137,13 @@ const UserGuide = ({ data }) => {
     }
 
     return (
-        <section className="bg-white py-12 md:py-16 px-4 md:px-6 lg:px-12 relative overflow-hidden" id="user-guide">
+        <section className="bg-white relative overflow-hidden" id="user-guide">
             <motion.div
                 className="fixed top-0 left-0 right-0 h-1 bg-sky-500 origin-left z-[100]"
                 style={{ scaleX }}
             />
 
-            <div className="max-w-7xl mx-auto relative">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative">
                 {/* Skip Guide Button (Desktop) */}
                 <button
                     onClick={skipGuide}
@@ -262,7 +262,7 @@ const UserGuide = ({ data }) => {
                     <main className="lg:w-2/3 xl:w-3/4">
                         <div
                             ref={contentScrollRef}
-                            className="bg-gradient-to-br from-white to-sky-50/10 rounded-2xl p-6 md:p-16 border border-slate-100 shadow-2xl shadow-sky-100/5 max-h-[80vh] lg:max-h-[85vh] overflow-y-auto scrollbar-hide lg:scrollbar-default custom-scrollbar scroll-smooth"
+                            className="bg-gradient-to-br from-white to-sky-50/10 rounded-2xl p-6 md:p-16 border border-slate-100 shadow-2xl shadow-sky-100/5 max-h-[80vh] lg:max-h-[85vh] overflow-y-auto scrollbar-hide lg:scrollbar-default custom-scrollbar scroll-smooth relative"
                         >
                             {isRich ? (
                                 <div className="prose prose-sky prose-lg max-w-none 

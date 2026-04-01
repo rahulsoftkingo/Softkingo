@@ -14,28 +14,178 @@ export const metadata = {
 };
 
 const industries = [
-  { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat />, color: "from-rose-500/10 to-rose-500/5", iconColor: "text-rose-600", image: "/images/industries/i-1.png" },
-  { title: "Education / E-Learning", href: "/industries/education", icon: <FaGraduationCap />, color: "from-sky-500/10 to-sky-500/5", iconColor: "text-sky-600", image: "/images/industries/education-preview.jpg" },
-  { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding />, color: "from-emerald-500/10 to-emerald-500/5", iconColor: "text-emerald-600", image: "/images/industries/realestate-preview.jpg" },
-  { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane />, color: "from-orange-500/10 to-orange-500/5", iconColor: "text-orange-600", image: "/images/industries/travel-preview.jpg" },
-  { title: "Food & Restaurant", href: "/industries/restaurant", icon: <FaUtensils />, color: "from-amber-500/10 to-amber-500/5", iconColor: "text-amber-600", image: "/images/industries/food-preview.jpg" },
-  { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell />, color: "from-purple-500/10 to-purple-500/5", iconColor: "text-purple-600", image: "/images/industries/fitness-preview.jpg" },
-  { title: "Retail & E-Commerce", href: "/industries/retail", icon: <FaStore />, color: "from-indigo-500/10 to-indigo-500/5", iconColor: "text-indigo-600", image: "/images/industries/ecommerce-preview.jpg" },
-  { title: "Logistics", href: "/industries/logistics", icon: <FaTruck />, color: "from-slate-500/10 to-slate-500/5", iconColor: "text-slate-600", image: "/images/industries/logistics-preview.jpg" },
-  { title: "Media & Entertainment", href: "/industries/entertainment", icon: <FaFilm />, color: "from-lime-500/10 to-lime-500/5", iconColor: "text-lime-600", image: "/images/industries/media-preview.jpg" },
-  { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers />, color: "from-fuchsia-500/10 to-fuchsia-500/5", iconColor: "text-fuchsia-600", image: "/images/industries/social-preview.jpg" },
-  { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign />, color: "from-green-500/10 to-green-500/5", iconColor: "text-green-600", image: "/images/industries/fintech-preview.jpg" },
-  { title: "Automotive", href: "/industries/automotive", icon: <FaCar />, color: "from-blue-500/10 to-blue-500/5", iconColor: "text-blue-600", image: "/images/industries/automotive-preview.jpg" },
-  { title: "Construction", href: "/industries/construction", icon: <FaHammer />, color: "from-yellow-500/10 to-yellow-500/5", iconColor: "text-yellow-600", image: "/images/industries/construction-preview.jpg" },
-  { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory />, color: "from-gray-500/10 to-gray-500/5", iconColor: "text-gray-600", image: "/images/industries/manufacturing-preview.jpg" },
-  { title: "Sports & Events", href: "/industries/sports", icon: <FaCalendarAlt />, color: "from-violet-500/10 to-violet-500/5", iconColor: "text-violet-600", image: "/images/industries/events-preview.jpg" },
+  {
+    title: "Healthcare",
+    headline: "Healthcare Software Development",
+    desc: "Digital solutions are helping healthcare providers improve patient care and manage operations more efficiently. We build secure healthcare applications that support better communication and service delivery.",
+    subServices: ["Telemedicine App Development", "Hospital Management Systems", "Patient Monitoring Applications", "Appointment Scheduling Platforms"],
+    href: "/industries/healthcare",
+    icon: <FaHeartbeat />,
+    color: "from-rose-500/10 to-rose-500/5",
+    iconColor: "text-rose-600",
+    image: "/images/industries/i-1.png"
+  },
+  {
+    title: "Education / E-Learning",
+    headline: "Education Technology Solutions",
+    desc: "Modern learning platforms make education more accessible and interactive. We develop digital education solutions that support online learning and efficient course management.",
+    subServices: ["E-Learning Platform Development", "Learning Management Systems (LMS)", "Virtual Classroom Applications", "Online Course Marketplace"],
+    href: "/industries/education",
+    icon: <FaGraduationCap />,
+    color: "from-sky-500/10 to-sky-500/5",
+    iconColor: "text-sky-600",
+    image: "/images/industries/Industrieslists/Education.webp"
+  },
+  {
+    title: "Real Estate",
+    headline: "Real Estate Software Development",
+    desc: "Real estate businesses are using digital platforms to simplify property discovery and customer engagement. We build solutions that help manage listings and connect buyers with agents.",
+    subServices: ["Property Listing Platforms", "Real Estate CRM Systems", "Virtual Property Tour Apps", "Property Booking Platforms"],
+    href: "/industries/real-estate",
+    icon: <FaBuilding />,
+    color: "from-emerald-500/10 to-emerald-500/5",
+    iconColor: "text-emerald-600",
+    image: "/images/industries/Industrieslists/Real Estate.webp"
+  },
+  {
+    title: "Travel & Tourism",
+    headline: "Travel Technology Solutions",
+    desc: "Travel businesses rely on technology to simplify bookings and enhance customer experiences. We develop digital solutions for efficient travel and hospitality management.",
+    subServices: ["Travel Booking Applications", "Hotel Management Systems", "Tour Package Management Platforms", "Travel Marketplace Apps"],
+    href: "/industries/travel",
+    icon: <FaPlane />,
+    color: "from-orange-500/10 to-orange-500/5",
+    iconColor: "text-orange-600",
+    image: "/images/industries/Industrieslists/Travel.webp"
+  },
+  {
+    title: "Food & Restaurant",
+    headline: "Food Delivery App Development",
+    desc: "Online food ordering platforms help restaurants serve customers faster and more efficiently. We build reliable systems for food delivery and restaurant management.",
+    subServices: ["Food Delivery App Development", "Restaurant Management Software", "Online Food Ordering Platforms", "Cloud Kitchen Solutions"],
+    href: "/industries/restaurant",
+    icon: <FaUtensils />,
+    color: "from-amber-500/10 to-amber-500/5",
+    iconColor: "text-amber-600",
+    image: "/images/industries/Industrieslists/Resturant.webp"
+  },
+  {
+    title: "Fitness & Wellness",
+    headline: "Fitness App Development",
+    desc: "Digital fitness platforms help people stay active and track their health goals. We create fitness apps that connect trainers and users through engaging experiences.",
+    subServices: ["Workout & Training Applications", "Fitness Tracking Apps", "Online Personal Training Platforms", "Nutrition & Wellness Apps"],
+    href: "/industries/fitness",
+    icon: <FaDumbbell />,
+    color: "from-purple-500/10 to-purple-500/5",
+    iconColor: "text-purple-600",
+    image: "/images/industries/Industrieslists/Fitness.webp"
+  },
+  {
+    title: "Retail & E-Commerce",
+    headline: "Retail & E-Commerce Solutions",
+    desc: "Retail businesses are expanding online to reach customers more effectively. We build scalable e-commerce platforms that deliver smooth and secure shopping experiences.",
+    subServices: ["E-Commerce Website Development", "Multi-Vendor Marketplace Platforms", "Mobile Shopping Applications", "Payment Integration Systems"],
+    href: "/industries/retail",
+    icon: <FaStore />,
+    color: "from-indigo-500/10 to-indigo-500/5",
+    iconColor: "text-indigo-600",
+    image: "/images/industries/Industrieslists/Ecommerce.webp"
+  },
+  {
+    title: "Logistics / Transportation",
+    headline: "Logistics Software Development",
+    desc: "Logistics companies use technology to manage deliveries and optimize operations. We develop platforms that improve shipment tracking and fleet management.",
+    subServices: ["Fleet Management Software", "Delivery Tracking Applications", "Route Optimization Systems", "Logistics Management Platforms"],
+    href: "/industries/logistics",
+    icon: <FaTruck />,
+    color: "from-slate-500/10 to-slate-500/5",
+    iconColor: "text-slate-600",
+    image: "/images/industries/Industrieslists/Logistic.webp"
+  },
+  {
+    title: "Media & Entertainment",
+    headline: "Media & Entertainment Solutions",
+    desc: "Digital platforms are transforming how media content is created and consumed. We build solutions that help businesses manage and distribute content effectively.",
+    subServices: ["Video Streaming Applications", "Content Management Platforms", "OTT Platform Development", "Media Sharing Applications"],
+    href: "/industries/entertainment",
+    icon: <FaFilm />,
+    color: "from-lime-500/10 to-lime-500/5",
+    iconColor: "text-lime-600",
+    image: "/images/industries/Industrieslists/Entertainment.webp"
+  },
+  {
+    title: "Social Networking",
+    headline: "Social Networking Platform Development",
+    desc: "Social platforms help people connect and share information instantly. We develop scalable social networking apps with modern engagement features.",
+    subServices: ["Community Networking Platforms", "Messaging & Chat Applications", "Content Sharing Platforms", "Social Media App Development"],
+    href: "/industries/social-media",
+    icon: <FaUsers />,
+    color: "from-fuchsia-500/10 to-fuchsia-500/5",
+    iconColor: "text-fuchsia-600",
+    image: "/images/industries/Industrieslists/SocialNetworking.webp"
+  },
+  {
+    title: "Finance / FinTech",
+    headline: "FinTech Software Development",
+    desc: "Financial technology is reshaping banking and digital payments. We build secure fintech platforms that support modern financial services.",
+    subServices: ["Digital Wallet Applications", "Online Payment Systems", "Mobile Banking Solutions", "Financial Management Platforms"],
+    href: "/industries/fintech",
+    icon: <FaDollarSign />,
+    color: "from-green-500/10 to-green-500/5",
+    iconColor: "text-green-600",
+    image: "/images/industries/Industrieslists/Banking.webp"
+  },
+  {
+    title: "Automotive",
+    headline: "Automotive Software Development",
+    desc: "Technology is driving innovation in the automotive industry. We develop digital solutions that support connected vehicles and mobility platforms.",
+    subServices: ["Connected Vehicle Applications", "Fleet Management Platforms", "Vehicle Marketplace Systems", "Taxi Booking App Development"],
+    href: "/industries/automotive",
+    icon: <FaCar />,
+    color: "from-blue-500/10 to-blue-500/5",
+    iconColor: "text-blue-600",
+    image: "/images/industries/Industrieslists/Automotive.webp"
+  },
+  {
+    title: "Construction",
+    headline: "Construction Technology Solutions",
+    desc: "Construction companies use digital tools to manage projects and resources more efficiently. We build software that improves project planning and monitoring.",
+    subServices: ["Construction Project Management Software", "Resource Management Systems", "Site Monitoring Applications", "Construction ERP Solutions"],
+    href: "/industries/construction",
+    icon: <FaHammer />,
+    color: "from-yellow-500/10 to-yellow-500/5",
+    iconColor: "text-yellow-600",
+    image: "/images/industries/Industrieslists/Construction.webp"
+  },
+  {
+    title: "Manufacturing",
+    headline: "Manufacturing IT Solutions",
+    desc: "Manufacturing businesses rely on technology to improve production and supply chain efficiency. We develop systems that support smarter industrial operations.",
+    subServices: ["Production Management Systems", "Inventory Management Platforms", "Manufacturing ERP Solutions", "Industrial Automation Software"],
+    href: "/industries/manufacturing",
+    icon: <FaFactory />,
+    color: "from-gray-500/10 to-gray-500/5",
+    iconColor: "text-gray-600",
+    image: "/images/industries/Industrieslists/Manufacturing.webp"
+  },
+  {
+    title: "Sports",
+    headline: "Sports Technology Solutions",
+    desc: "Technology helps sports organizations improve training and fan engagement. We build digital platforms that support athletes, teams, and sports communities.",
+    subServices: ["Sports Training Applications", "Athlete Performance Tracking", "Sports Event Management Platforms", "Fan Engagement Applications"],
+    href: "/industries/sports",
+    icon: <FaCalendarAlt />,
+    color: "from-violet-500/10 to-violet-500/5",
+    iconColor: "text-violet-600",
+    image: "/images/industries/Industrieslists/Sports.webp"
+  },
 ];
 
 export default function IndustriesPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden min-h-[500px] flex items-center">
+      <section className="relative overflow-hidden min-h-[500px] flex items-center">
         <Image
           src="/images/industries/industries-bg.png"
           alt="Industries Expertise"
@@ -45,22 +195,22 @@ export default function IndustriesPage() {
         />
         <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-[2px]" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 text-center">
           <div className="inline-flex items-center gap-2 bg-sky-500/20 border border-sky-400/30 px-4 py-2 rounded-full mb-6">
             <span className="text-xs font-bold text-sky-300 uppercase tracking-widest">Global Expertise</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
-            Industries We <span className="text-sky-500">Transform</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 tracking-tight">
+            Technology Solutions for Every Industry
           </h1>
-          <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-300 leading-relaxed font-medium">
-            We build tailored digital products for high‑impact industries, aligning technology with complex domain workflows to drive real business value.
+          <p className="max-w-3xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 leading-relaxed font-medium">
+            We build custom software, mobile apps, and digital platforms for a wide range of industries, helping businesses transform ideas into scalable digital solutions.
           </p>
         </div>
       </section>
 
       {/* Industry Listing */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-6">
+      <section>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
           {industries.map((industry, index) => (
             <div
               key={industry.title}
@@ -74,20 +224,20 @@ export default function IndustriesPage() {
                   <span className="font-bold text-slate-900">{industry.title}</span>
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-normal">
-                  Driving Digital Innovation in {industry.title}
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 leading-normal">
+                  {industry.headline}
                 </h2>
 
-                <p className="text-lg text-slate-600 leading-relaxed max-w-xl">
-                  Specialized software solutions designed to streamline {industry.title.toLowerCase()} operations.
-                  From compliance-ready architectures to real-time analytics, we cover it all.
+                <p className="text-sm md:text-base lg:text-lg text-slate-600 leading-relaxed max-w-xl font-medium">
+                  {industry.desc}
                 </p>
 
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 pb-4 text-sm font-semibold text-slate-700">
-                  <li className="flex items-center gap-2"><FaChevronRight className="text-sky-500 text-[10px]" /> Industry-compliant Tech</li>
-                  <li className="flex items-center gap-2"><FaChevronRight className="text-sky-500 text-[10px]" /> Scalable Infrastructure</li>
-                  <li className="flex items-center gap-2"><FaChevronRight className="text-sky-500 text-[10px]" /> Advanced Security</li>
-                  <li className="flex items-center gap-2"><FaChevronRight className="text-sky-500 text-[10px]" /> Real-time Analytics</li>
+                  {industry.subServices.map((service, sIdx) => (
+                    <li key={sIdx} className="flex items-center gap-2">
+                       <FaChevronRight className="text-sky-500 text-[10px]" /> {service}
+                    </li>
+                  ))}
                 </ul>
 
                 <Link
@@ -126,4 +276,4 @@ function ArrowRight({ className }) {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
     </svg>
   );
-}
+}

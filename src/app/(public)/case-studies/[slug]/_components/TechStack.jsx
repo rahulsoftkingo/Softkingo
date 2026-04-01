@@ -7,26 +7,8 @@ export default function TechStack({ data }) {
     const { primaryColor, secondaryColor, accentColor } = data.branding;
 
     return (
-        <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 lg:px-12 relative overflow-hidden bg-slate-50">
-            {/* Background Texture Visibility Boost */}
-            <div className="absolute inset-0 opacity-60">
-                <Image
-                    src={data.technologies.backgroundImage}
-                    alt="Tech BG"
-                    fill
-                    className="object-cover"
-                />
-            </div>
-
-            {/* Dynamic Glass Gradient + Strong Overlay for Readability */}
-            <div
-                className="absolute inset-0 opacity-30"
-                style={{
-                    background: `linear-gradient(135deg, ${primaryColor}10 0%, #fff 60%, ${secondaryColor}15 100%)`
-                }}
-            />
-
-            <div className="max-w-7xl mx-auto relative z-10">
+        <section className="relative overflow-hidden bg-slate-50">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

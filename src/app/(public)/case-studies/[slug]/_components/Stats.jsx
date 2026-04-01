@@ -7,8 +7,8 @@ export default function Stats({ data }) {
     const { primaryColor, secondaryColor } = data.branding;
 
     return (
-        <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 lg:px-12 bg-slate-50 border-y border-slate-100">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <section className="bg-slate-50 border-y border-slate-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                 {/* Team Stats */}
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}

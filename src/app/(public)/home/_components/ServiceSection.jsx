@@ -27,8 +27,8 @@ import Link from "next/link";
 
 export default function ServicesSection() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-white py-10 sm:py-12 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-white to-white relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative">
         {/* Header (same style as Portfolio) */}
         <div className="text-center mb-8 sm:mb-12">
           <motion.h2

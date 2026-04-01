@@ -37,7 +37,7 @@ export default function IndustriesHero({ data }) {
             <div className="absolute inset-0 bg-black/60 z-10"></div>
 
             {/* 3. Centered Text Content */}
-            <div className="relative z-20 container mx-auto px-6 flex flex-col items-center text-center text-white">
+            <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center text-white">
                 
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-300 mb-4">

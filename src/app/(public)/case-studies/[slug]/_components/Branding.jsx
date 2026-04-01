@@ -14,8 +14,8 @@ export default function Branding({ data }) {
     // Standardizing on 'rounded-xl' for a professional, premium feel.
 
     return (
-        <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 lg:px-12 bg-white relative overflow-hidden" style={{ fontFamily: primaryFont }}>
-            <div className="max-w-7xl mx-auto">
+        <section className="bg-white relative overflow-hidden" style={{ fontFamily: primaryFont }}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                     
                     {/* Left: Client Information */}

@@ -32,8 +32,8 @@ export default function SolutionHighlight({ data }) {
     const activeTab = data.tabs[activeIdx] || data.tabs[0];
 
     return (
-        <section className="py-24 bg-white overflow-hidden" id="solution-highlight">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white overflow-hidden" id="solution-highlight">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
                 {/* Header Section */}
                 <CommonTitle
                     title={data.title || "Solutions"}

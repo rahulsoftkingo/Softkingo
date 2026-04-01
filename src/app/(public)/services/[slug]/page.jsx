@@ -145,7 +145,7 @@ export default async function ServicePage({ params }) {
     <main className="text-gray-800">
       {/* Hero Section with Lead Form */}
       {show('hero') && (
-        <section className="relative overflow-hidden flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900 min-h-[600px]">
+        <section className="relative overflow-hidden flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900">
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <Image
@@ -159,7 +159,7 @@ export default async function ServicePage({ params }) {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500/10 rounded-full -mr-64 -mt-64 blur-[120px] opacity-50"></div>
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 lg:py-24 w-full">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 w-full">
 
 
             <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -286,12 +286,12 @@ export default async function ServicePage({ params }) {
 
       {/* Stats Section */}
       {show('stats') && (
-        <section className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 py-10 px-4 md:px-6 lg:px-12 ">
+        <section className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400">
           {/* Decorative mesh-like blurs */}
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl -mt-32 opacity-30"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl -mb-48 opacity-20"></div>
 
-          <div className="max-w-7xl mx-auto relative z-10 px-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
             <div className="flex flex-wrap items-center justify-around gap-10 md:gap-12 text-white">
               <StatItem
                 icon={<Clock className="w-8 h-8 md:w-10 md:h-10" />}

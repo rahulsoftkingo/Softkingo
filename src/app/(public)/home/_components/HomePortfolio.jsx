@@ -53,7 +53,7 @@ const HomePortfolio = () => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
-        return scrollYProgress.onChange(v => {
+        return scrollYProgress.on("change", v => {
             if (v < 0.25) setActiveIndex(0);
             else if (v < 0.55) setActiveIndex(1);
             else if (v < 0.85) setActiveIndex(2);

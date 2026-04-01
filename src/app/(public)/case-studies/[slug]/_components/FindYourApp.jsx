@@ -10,7 +10,7 @@ export default function FindYourApp({ data, branding }) {
 
     return (
         <section 
-            className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 lg:px-12 relative overflow-hidden"
+            className="relative overflow-hidden"
             style={{ 
                 fontFamily: branding.primaryFont,
                 backgroundColor: `${primaryColor}08`
@@ -22,7 +22,7 @@ export default function FindYourApp({ data, branding }) {
                 style={{ background: `radial-gradient(circle, ${primaryColor}, transparent)` }} 
             />
 
-            <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center">
                 <motion.div 
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -76,7 +76,7 @@ export default function FindYourApp({ data, branding }) {
                                 scale: 1.05,
                                 transition: { duration: 0.4 }
                             }}
-                            className="relative h-[300px] sm:h-[380px] lg:h-[450px] w-auto aspect-[9/19] cursor-pointer"
+                            className="relative h-[300px] sm:h-[380px] lg:h-[420px] w-auto aspect-[9/19] cursor-pointer"
                             style={{ transformStyle: "preserve-3d" }}
                         >
                             <Image

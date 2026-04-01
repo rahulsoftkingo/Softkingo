@@ -104,6 +104,7 @@ const Navbar = () => {
                     height={58}
                     width={161}
                     className="w-[8rem] md:w-[9rem] lg:w-[14rem]"
+                    priority
                   />
                 </Link>
               </div>

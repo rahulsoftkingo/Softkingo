@@ -13,8 +13,8 @@ export default function ServiceProcess({ data }) {
     const steps = data.items;
 
     return (
-        <section className="py-24 bg-white overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6">
+        <section className="bg-white overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
                 <CommonTitle
                     align="center"
                     title={data.title || "Our Development Process"}

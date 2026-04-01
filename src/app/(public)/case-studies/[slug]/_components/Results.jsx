@@ -11,7 +11,7 @@ export default function Results({ results, branding }) {
             {results.map((result, index) => (
                 <section
                     key={index}
-                    className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 lg:px-12 border-b border-slate-50 last:border-none relative overflow-hidden"
+                    className="border-b border-slate-50 last:border-none relative overflow-hidden"
                 >
                     {/* Background Soft Glow */}
                     <div 
@@ -19,7 +19,7 @@ export default function Results({ results, branding }) {
                         style={{ backgroundColor: primaryColor }}
                     />
 
-                    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                         {/* Mockup Column */}
                         <motion.div 
                             initial={{ opacity: 0, scale: 0.9 }}

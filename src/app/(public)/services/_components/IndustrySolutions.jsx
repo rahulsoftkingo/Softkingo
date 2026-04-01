@@ -47,8 +47,8 @@ export default function IndustrySolutions({ data }) {
     if (!items.length) return null;
 
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
-            <div className="max-w-7xl mx-auto">
+        <section className="bg-white overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
                 {/* Header */}
                 <CommonTitle
                     title={title}
