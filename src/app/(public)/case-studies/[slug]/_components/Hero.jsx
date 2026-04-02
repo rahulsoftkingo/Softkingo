@@ -8,7 +8,7 @@ export default function Hero({ data }) {
 
     return (
         <section
-            className="relative overflow-hidden py-16 sm:py-24 md:py-32 lg:py-40"
+            className="relative overflow-hidden py-8 md:py-16"
             style={{
                 backgroundColor: primaryColor,
             }}
