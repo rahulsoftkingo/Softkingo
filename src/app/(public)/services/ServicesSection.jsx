@@ -313,13 +313,22 @@ export default function ServicesSection({ initialProjects = [] }) {
       {servicesData.map((section, index) => {
         const layoutLeft = index % 2 === 0;
 
-        // Try to find a matching project from DB by category
-        let project = initialProjects.find(p =>
+        // Use the manual fallback as the base to ensure high-quality visuals and human-written logic
+        const fallbackProject = fallbackProjects[index];
+
+        // Try to find a matching project from DB by category for dynamic links/data
+        const dbProject = initialProjects.find(p =>
           categoryMap[section.id]?.some(cat => p.category?.toLowerCase().includes(cat.toLowerCase()))
         );
 
-        // Fallback if not found
-        if (!project) project = fallbackProjects[index];
+        // Merge logic: prefer fallback visuals, but allow DB to override specific data if it's more accurate
+        const project = {
+          ...fallbackProject,
+          // Only use DB link if it matches the fallback link's target (to maintain E-commerce integrity)
+          readHref: (dbProject && dbProject.key === fallbackProject.readHref.split('/').pop())
+            ? `/case-studies/${dbProject.key}`
+            : fallbackProject.readHref
+        };
 
         // Enrich section with human-written content
         const sectionInfo = sectionContent[section.id] || { description: section.description, clientNote: section.description };
