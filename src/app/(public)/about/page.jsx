@@ -15,6 +15,44 @@ export const metadata = {
   alternates: { canonical: "/about" }
 };
 
+const FaqData = {
+  title: "General",
+  gradientText: "FAQs",
+  subtitle: "Everything you need to know about Softkingo's expertise, locations, and delivery process.",
+  items: [
+    {
+      id: 1,
+      q: "What core services does Softkingo provide?",
+      a: "Softkingo is a full-service digital agency specializing in custom software engineering, mobile app development (iOS, Android, and Hybrid), and complete web solutions. We also provide high-impact digital marketing services including SEO, SEM, and Social Media Optimization to ensure your digital products reach the right audience."
+    },
+    {
+      id: 2,
+      q: "Where is Softkingo located?",
+      a: "Our global headquarters is based in New Delhi, India. To provide seamless support to our international clients, we also operate through regional offices and dedicated teams in the United States, Canada, and Australia. This allows us to offer 24/7 collaboration regardless of your time zone."
+    },
+    {
+      id: 3,
+      q: "How experienced is the Softkingo team?",
+      a: "With over 6 years in the industry, our team has grown to 40+ enthusiastic professionals who have successfully delivered more than 400 projects. We are proud to be an ISO-certified company and have been recognized as a Top Mobile App Development Company by industry leaders like Clutch and Tech Behemoths."
+    },
+    {
+      id: 4,
+      q: "What is your approach to project development?",
+      a: "We strictly follow the Agile methodology. This means we break your project into smaller, manageable 'sprints,' providing you with regular updates and the flexibility to make changes as we progress. This transparent approach ensures the final product aligns perfectly with your business goals."
+    },
+    {
+      id: 5,
+      q: "How do you handle data security and confidentiality?",
+      a: "Data security is non-negotiable for us. We sign a Non-Disclosure Agreement (NDA) for every project to protect your intellectual property. We also follow global security standards (like GDPR or HIPAA where applicable) and use advanced encryption to keep your business data safe."
+    },
+    {
+      id: 6,
+      q: "Can we hire a dedicated team for long-term projects?",
+      a: "Yes, we offer flexible engagement models. You can hire a dedicated development team for ongoing support, opt for hourly-based hiring for specific tasks, or choose a fixed-cost model for projects with a clearly defined scope. This flexibility helps you scale your team based on your current project needs."
+    }
+  ]
+};
+
 const stats = [
   { number: '6+', label: 'Years Of Experience' },
   { number: '400+', label: 'Apps Developed' },
@@ -299,7 +337,7 @@ export default async function AboutUs() {
             </p>
           </div>
 
-          <div className=" bg-white drop-shadow-2xl shadow-lg justify-center lg:absolute bottom-10 right-10 flex gap-5 md:gap-10 w-full lg:w-auto mt-8 lg:mt-0">
+          <div className=" bg-white drop-shadow-2xl shadow-lg justify-center lg:absolute bottom-10 right-10 flex  md:gap-4 w-full lg:w-auto mt-8 lg:mt-0">
             {stats.map((stat, index) => (
               <div
                 key={index}
@@ -580,7 +618,7 @@ export default async function AboutUs() {
 
 
       <GallerySectionSafe />
-      <FAQAccordion />
+      <FAQAccordion data={FaqData} />
       <InquirySection />
     </div>
   );

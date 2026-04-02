@@ -9,6 +9,9 @@ import TestimonialCarousel from '@/components/public/TestimonialCarousel2';
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import JoinTeamPopup from '@/components/admin/JoinTeamPopup';
 import AwardsSection from '@/components/common/AwardsSection';
+import PopupQuoteModal from '@/components/PopupQuoteModal';
+import { FaQuoteRight } from 'react-icons/fa6';
+import { FaQuoteLeft } from 'react-icons/fa';
 
 // Icon mapping for expertise section
 const iconMap = {
@@ -34,6 +37,7 @@ const OurTeamClient = ({
     galleryImages
 }) => {
     const [isJoinPopupOpen, setIsJoinPopupOpen] = useState(false);
+    const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
 
     // Icon mapping
     const iconMap = {
@@ -45,8 +49,8 @@ const OurTeamClient = ({
 
     // --- MARQUEE CARD COMPONENT ---
     const TeamCard = ({ member }) => (
-        <div className="flex flex-col items-center group flex-shrink-0 w-64 mx-6">
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 bg-gradient-to-tr from-sky-400 to-cyan-300 mb-5 group-hover:scale-105 transition-transform duration-300 shadow-lg">
+        <div className="flex flex-col items-center group flex-shrink-0 w-34 md:w-50 mx-6">
+            <div className="w-32 h-32 md:w-50 md:h-50 rounded-full p-1 bg-gradient-to-tr from-sky-400 to-cyan-300 mb-5 group-hover:scale-105 transition-transform duration-300 shadow-lg">
                 <div className="w-full h-full rounded-full border-4 border-white overflow-hidden relative bg-white">
                     <Image
                         src={member.image || "/images/placeholder-user.jpg"}
@@ -68,24 +72,24 @@ const OurTeamClient = ({
     return (
         <main className="min-h-screen bg-white font-sans overflow-x-hidden">
             {/* 1. HERO SECTION */}
-            <section className="relative h-[450px] md:h-[350px] flex items-center justify-center overflow-hidden">
+            <section className="relative h-[250px] md:h-[350px] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <Image src={hero.image} alt="Team Hero" fill className="object-cover" priority />
-                    <div className="absolute inset-0 bg-sky-900/80 mix-blend-multiply"></div>
+                    <div className="absolute inset-0 bg-slate-900/60 mix-blend-multiply"></div>
                 </div>
                 <div className="relative z-10 text-center text-white max-w-4xl px-6">
-                    <h1 className="text-4xl md:text-6xl font-black mb-4 drop-shadow-lg tracking-tight">{hero.title}</h1>
-                    <p className="text-lg md:text-xl text-sky-100 font-light max-w-2xl mx-auto">{hero.subtitle}</p>
+                    <h1 className="text-3xl md:text-5xl font-bold mb-4 drop-shadow-lg text-white">{hero.title}</h1>
+                    <p className="text-md md:text-lg text-sky-50 font-light max-w-2xl mx-auto">{hero.subtitle}</p>
                 </div>
             </section>
 
             {/* 2. CEO DESK */}
-            <section className="pt-20 px-6 max-w-7xl mx-auto mb10">
+            <section className="px-6 max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row items-center relative mt-12">
                     {/* LEFT: Text Card */}
                     <div className="w-full lg:w-1/2 z-20 relative order-2 lg:order-1 lg:-mr-40 mt-[-50px] lg:mt-16">
                         <div className="text-sky-500 font-black text-3xl md:text-6xl uppercase mb-6 leading-none">
-                            From CEO's <br /> <span className="text-slate-800">Desk</span>
+                            Our team, <br /> <span className="text-slate-800">CEO Message</span>
                         </div>
                         <div className="bg-white p-10 md:p-12 rounded-[2.5rem] shadow-2xl shadow-sky-900/10 border border-slate-100 relative">
                             <div className="bg-gradient-to-r from-blue-600 to-sky-500 text-white py-3 px-8 rounded-full rounded-tl-none inline-block shadow-lg font-bold text-lg mb-8">
@@ -116,15 +120,15 @@ const OurTeamClient = ({
                 </div>
             </section>
 
-            <div className='h-20 bg-sky-500'></div>
+            <div className='h-20 bg-sky-500 flex items-center justify-center text-white font-bold text-sm md:text-2xl gap-2 '><FaQuoteLeft className='mb-4' />Leadership, Innovation, and Commitment to Excellence.<FaQuoteRight className='mt-4' /></div>
 
             {/* 3. MEET OUR TEAM */}
-            <section className="py-24 bg-gradient-to-b from-white to-sky-50 relative overflow-hidden">
+            <section className="py-8 md:py-16 bg-gradient-to-b from-white to-sky-50 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex flex-col lg:flex-row items-center gap-8 mb-20">
+                    <div className="flex flex-col lg:flex-row items-center gap-8">
                         {/* LEFT: Ribbon Container */}
 
-                        <div className="relative inline-block">
+                        <div className="relative inline-block mb-4 md:mb-0">
                             <div className="bg-gradient-to-r from-cyan-500 to-sky-600 text-white py-6 pl-8 pr-20 rounded-r-full shadow-xl relative z-10 transform -skew-x-6 origin-bottom-left">
                                 <div className="transform skew-x-6">
                                     <h2 className="text-3xl md:text-4xl font-black uppercase tracking-wide">Meet Our <br /> Team</h2>
@@ -137,17 +141,17 @@ const OurTeamClient = ({
 
                         {/* RIGHT: 6 Team Members Grid */}
                         <div className="flex-1">
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-16 justify-center">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 md:gap-y-4 justify-center">
                                 {leaders.map((member, i) => (
                                     <div key={i} className="flex flex-col items-center group">
-                                        <div className="w-32 h-32 md:w-44 md:h-46 rounded-t-2xl p-1 bg-gradient-to-tr from-sky-400 to-cyan-300 mb-5 group-hover:scale-105 transition-transform duration-300 shadow-lg">
+                                        <div className="w-42 h-42 md:w-66 md:h-66 rounded-t-2xl p-1 bg-gradient-to-tr from-sky-400 to-cyan-300 mb-5 group-hover:scale-105 transition-transform duration-300 shadow-lg">
                                             <div className="w-full h-full rounded-t-2xl border-4 border-white overflow-hidden relative bg-white">
                                                 <Image src={member.image || "/images/placeholder-user.jpg"} alt={member.name} fill className="object-cover" />
                                             </div>
                                         </div>
-                                        <div className="text-center bg-sky-400 text-amber-50 px-6 py-2 relative -top-10 rounded-tr-full rounded-bl-full w-full max-w-[220px]">
-                                            <h4 className="font-bold text-md leading-normal whitespace-nowrap">{member.name}</h4>
-                                            <span className="inline-block text-[10px] font-bold uppercase">{member.role}</span>
+                                        <div className="text-center bg-sky-400 text-amber-50 px-4 md:px-6 py-2 relative -top-10 rounded-tr-full rounded-bl-full w-full max-w-[220px]">
+                                            <h4 className="font-bold text-sm md:text-md  whitespace-nowrap">{member.name}</h4>
+                                            <span className="inline-block text-[10px] md:text-sm font-bold uppercase">{member.role}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -169,7 +173,7 @@ const OurTeamClient = ({
             </section>
 
             {/* 4. EXPERTISE & SKILLS */}
-            <section className="py-24 bg-gradient-to-b from-slate-50 to-white px-6">
+            <section className="py-8 md:py-16 bg-gradient-to-b from-slate-50 to-white px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Header using CommonTitle */}
                     <CommonTitle
@@ -228,11 +232,14 @@ const OurTeamClient = ({
 
                     {/* Bottom CTA */}
                     <div className="text-center mt-16">
-                        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-sky-600 to-cyan-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <button
+                            onClick={() => setIsQuoteModalOpen(true)}
+                            className="inline-flex items-center gap-3 bg-gradient-to-r from-sky-600 to-cyan-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                        >
                             <Globe className="w-5 h-5" />
                             Ready to build your project?
                             <ArrowRight className="w-5 h-5" />
-                        </div>
+                        </button>
                         <p className="mt-4 text-slate-600">
                             Let's discuss how our expertise can help you succeed
                         </p>
@@ -241,7 +248,7 @@ const OurTeamClient = ({
             </section>
 
             {/* 5. PROCESS - HOW WE WORK */}
-            <section className="py-24 bg-gradient-to-br from-white to-sky-100 px-6 relative overflow-hidden">
+            <section className="py-8 md:py-16 bg-gradient-to-br from-white to-sky-100 px-6 relative overflow-hidden">
                 {/* Background Effects */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-sky-200 rounded-full blur-[80px] opacity-30 pointer-events-none"></div>
@@ -295,11 +302,14 @@ const OurTeamClient = ({
 
                     {/* Bottom CTA */}
                     <div className="text-center mt-16">
-                        <div className="inline-flex items-center gap-3 bg-gradient-to-r from-sky-600 to-cyan-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <button
+                            onClick={() => setIsQuoteModalOpen(true)}
+                            className="inline-flex items-center gap-3 bg-gradient-to-r from-sky-600 to-cyan-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                        >
                             <Coffee className="w-5 h-5" />
                             Let's discuss your project
                             <ArrowRight className="w-5 h-5" />
-                        </div>
+                        </button>
                         <p className="mt-4 text-slate-400">
                             Ready to start your journey with us?
                         </p>
@@ -314,7 +324,7 @@ const OurTeamClient = ({
             <AwardsSection />
 
             {/* 8. GALLERY - LIFE AT SOFTKINGO */}
-            <section className="py-24 bg-white px-6">
+            <section className="py-8 md:py-16 bg-white px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Header using CommonTitle */}
                     <CommonTitle
@@ -352,7 +362,7 @@ const OurTeamClient = ({
             </section>
 
             {/* 8. TESTIMONIALS */}
-            <section className="py-24 bg-gradient-to-br from-white to-sky-100 px-6">
+            <section className="py-8 md:py-16 bg-gradient-to-br from-white to-sky-100 px-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Header using CommonTitle */}
                     <CommonTitle
@@ -369,12 +379,22 @@ const OurTeamClient = ({
 
 
 
-            <ConsultationCTA title="Join Our Team" subtitle="We are always looking for talent." href="/contact" />
+            <ConsultationCTA
+                title="Ready to Build Your Team?"
+                subtitle="Join our community of innovators and experts."
+                buttonLabel="Contact Us"
+            />
 
             {/* Join Team Popup */}
             <JoinTeamPopup
                 isOpen={isJoinPopupOpen}
                 onClose={() => setIsJoinPopupOpen(false)}
+            />
+
+            {/* Lead Generation Popup */}
+            <PopupQuoteModal
+                open={isQuoteModalOpen}
+                onClose={() => setIsQuoteModalOpen(false)}
             />
         </main>
     );

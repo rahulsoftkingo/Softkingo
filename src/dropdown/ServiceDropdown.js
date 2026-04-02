@@ -56,9 +56,9 @@ export const ResourceItem = ({
       </span>
       <FaArrowRight className="text-sky-400 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-xs" />
     </div>
-    <p className="text-slate-600 text-[13px] mt-1 leading-relaxed">
+    {/* <p className="text-slate-600 text-[13px] mt-1 leading-relaxed">
       {description}
-    </p>
+    </p> */}
     {/* {meta && (
       <p className="text-slate-500 text-[11px] mt-2">
         {meta}
@@ -67,22 +67,22 @@ export const ResourceItem = ({
   </Link>
 );
 const servicesData = [
-  {
-    id: "Overviewtab",
-    icon: <FaChartLine />,
-    heading: "Our Services",
-    pageHref: "/services",
-    title: "#1 Top Software Development Company Contributing to a Smarter World",
-    description: "Helping businesses grow with user-friendly mobile apps, visually stunning websites, and results-driven digital marketing. We create solutions that engage your audience and drive real impact.",
-    links: [
-      { href: "/services/mobile-app-development", title: "Mobile App Development", description: "Top mobile app solutions for all devices.", icon: <FaMobileAlt /> },
-      { href: "/services/web-development", title: "Web & CMS Development", description: "Design fast, secure websites and CMS.", icon: <FaDesktop /> },
-      { href: "/services/ecommerce-development", title: "eCommerce Development", description: "Robust stores built to increase sales.", icon: <FaShoppingCart /> },
-      { href: "/services/blockchain-development", title: "Blockchain Solutions", description: "Secure crypto and smart contracts.", icon: <FaBitcoin /> },
-      { href: "/services/ai-ml", title: "AI & ML Solutions", description: "Intelligent automation and predictions.", icon: <FaRobot /> },
-      { href: "/services/digital-marketing", title: "Digital Marketing", description: "Grow your brand and attract customers.", icon: <FaBullseye /> },
-    ],
-  },
+  // {
+  //   id: "Overviewtab",
+  //   icon: <FaChartLine />,
+  //   heading: "Our Services",
+  //   pageHref: "/services",
+  //   title: "#1 Top Software Development Company Contributing to a Smarter World",
+  //   description: "Helping businesses grow with user-friendly mobile apps, visually stunning websites, and results-driven digital marketing. We create solutions that engage your audience and drive real impact.",
+  //   links: [
+  //     { href: "/services/mobile-app-development", title: "Mobile App Development", description: "Top mobile app solutions for all devices.", icon: <FaMobileAlt /> },
+  //     { href: "/services/web-development", title: "Web & CMS Development", description: "Design fast, secure websites and CMS.", icon: <FaDesktop /> },
+  //     { href: "/services/ecommerce-development", title: "eCommerce Development", description: "Robust stores built to increase sales.", icon: <FaShoppingCart /> },
+  //     { href: "/services/blockchain-development", title: "Blockchain Solutions", description: "Secure crypto and smart contracts.", icon: <FaBitcoin /> },
+  //     { href: "/services/ai-ml", title: "AI & ML Solutions", description: "Intelligent automation and predictions.", icon: <FaRobot /> },
+  //     { href: "/services/digital-marketing", title: "Digital Marketing", description: "Grow your brand and attract customers.", icon: <FaBullseye /> },
+  //   ],
+  // },
   {
     id: "Mobileapptab",
     icon: <FaMobileAlt />,

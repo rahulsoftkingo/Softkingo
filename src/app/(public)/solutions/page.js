@@ -14,9 +14,9 @@ export default function SolutionsPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       {/* Hero Section */}
-      <section className="relative w-full min-h-[550px] md:min-h-[650px]">
+      <section className="relative w-full min-h-[300px] md:min-h-[400px]">
         <Image
-          src="/images/hire/h-bg.png"
+          src="/images/solutions/Solutions.webp"
           alt="Industry Solutions Background"
           fill
           className="object-cover object-center opacity-90"
@@ -28,14 +28,13 @@ export default function SolutionsPage() {
           <nav className="flex items-center space-x-3 text-sm text-gray-400 mb-4">
             <Link href="/" className="hover:text-sky-500 transition-colors">Home</Link>
             <span>›</span>
-            <span className="text-sky-300 font-semibold">Solutions</span>
+            <span className="text-sky-400 font-medium">Solutions</span>
           </nav>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-normal max-w-3xl text-white">
-            End-to-End Software <span className="text-sky-500">Solutions</span>  for Global Growth
+          <h1 className="max-w-3xl text-3xl md:text-5xl font-bold mb-4 drop-shadow-lg text-white">
+            End-to-End Software <span className="text-sky-500">Solutions</span> for Global Growth
           </h1>
-
-          <p className="mt-6 max-w-xl text-lg text-gray-300 leading-relaxed">
+          <p className="max-w-2xl text-md md:text-lg text-sky-50 font-light leading-relaxed">
             From disruptive startups to enterprise leaders, we provide the tech foundation your business needs. Explore our ready-to-deploy clones, custom SaaS architectures, and specialized domain solutions designed for speed and scale.
           </p>
         </div>

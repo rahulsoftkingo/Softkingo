@@ -10,14 +10,14 @@ export default function SolutionsSection() {
     {
       id: "industry",
       title: "Industry-Specific Solutions",
-      subtitle: "Tailored digital products for high‑impact sectors like healthcare, education, and finance.",
+      subtitle: "We deliver customized solutions for a wide range of industries, from healthcare and education to e-commerce and finance. Our apps are designed to streamline operations, improve user engagement, and drive business growth. Whatever your industry, we provide technology that fits your unique needs.",
       imagePosition: "right",
       bgColor: "bg-white",
       caseStudy: {
-        title: "Enterprise Transformation",
-        description: "Helping industries adopt AI and Cloud to lead in the global market.",
+        // title: "Enterprise Transformation",
+        // description: "Helping industries adopt AI and Cloud to lead in the global market.",
         buttonText: "Explore Industries",
-        image: "/images/solutions/healthcare.jpg",
+        image: "/images/solutions/solutionslist/Industry-specific-solutions.webp",
       },
       items: [
         { name: "Healthcare", href: "/solutions/healthcare-app-development", icon: FaHospital },
@@ -31,15 +31,15 @@ export default function SolutionsSection() {
     },
     {
       id: "ondemand",
-      title: "On‑Demand Platforms",
-      subtitle: "Robust platforms for delivery and mobility with real‑time tracking.",
+      title: "On-Demand & Real-Time Solutions",
+      subtitle: "Our on-demand platforms connect users with services instantly, making everything fast, convenient, and reliable. From food delivery and taxi booking to home services and healthcare apps, we ensure seamless real-time experiences. We help businesses thrive in the fast-paced on-demand market.",
       imagePosition: "left",
       bgColor: "bg-sky-50",
       caseStudy: {
-        title: "Hyperlocal Delivery",
-        description: "Scalable architectures for order matching and GPS tracking.",
+        // title: "Hyperlocal Delivery",
+        // description: "Scalable architectures for order matching and GPS tracking.",
         buttonText: "View On-Demand",
-        image: "/images/services/s3.png",
+        image: "/images/solutions/solutionslist/on-demand-platform.webp",
       },
       items: [
         { name: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: FaUtensils },
@@ -53,15 +53,15 @@ export default function SolutionsSection() {
     },
     {
       id: "cloneapps",
-      title: "Clone App Solutions",
-      subtitle: "Instant market entry with pre-built, high-quality clone solutions.",
+      title: "Ready-Made Clone App Solutions",
+      subtitle: "Launch apps inspired by top market leaders with our customizable clone solutions. Save time, reduce costs, and enter the market faster with apps tailored to your branding and features. From e-commerce and ride-hailing to social and entertainment apps, we provide ready-to-use solutions.",
       imagePosition: "right",
       bgColor: "bg-white",
       caseStudy: {
-        title: "Rapid Market Entry",
-        description: "Customizable models like Zomato, Uber, and Amazon clones.",
+        // title: "Rapid Market Entry",
+        // description: "Customizable models like Zomato, Uber, and Amazon clones.",
         buttonText: "Browse Clones",
-        image: "/images/services/s1.png",
+        image: "/images/solutions/solutionslist/clone-solutions.webp",
       },
       items: [
         { name: "Amazon Clone", href: "/solutions/amazon-clone-app-development", icon: FaShoppingCart },
@@ -74,15 +74,15 @@ export default function SolutionsSection() {
     },
     {
       id: "business",
-      title: "Business-Model Solutions",
-      subtitle: "Subscription software and marketplaces with integrated billing.",
+      title: "Business-Model Based Solutions",
+      subtitle: "We create apps and software built around the business model that works best for you. From marketplaces and subscription platforms to CRM, ERP, and booking systems, our solutions are designed to generate revenue and scale efficiently. We turn ideas into profitable, operationally strong businesses.",
       imagePosition: "left",
       bgColor: "bg-sky-50",
       caseStudy: {
-        title: "Scalable SaaS",
-        description: "B2B marketplaces and CRM/ERP custom software.",
+        // title: "Scalable SaaS",
+        // description: "B2B marketplaces and CRM/ERP custom software.",
         buttonText: "View Enterprise",
-        image: "/images/services/s3.png",
+        image: "/images/solutions/solutionslist/Business-Model Solutions.webp",
       },
       items: [
         { name: "Marketplace", href: "/solutions/marketplace-app-development", icon: FaStore },
@@ -150,10 +150,10 @@ export default function SolutionsSection() {
                   </div>
                 </div>
 
-                <div className="pt-6 border-t border-gray-100 relative z-10">
+                {/* <div className="pt-6 border-t border-gray-100 relative z-10">
                   <h3 className="text-2xl font-black text-gray-900">{section.caseStudy.title}</h3>
                   <p className="mt-2 text-md text-gray-600 max-w-lg">{section.caseStudy.description}</p>
-                </div>
+                </div> */}
               </div>
 
             </div>
@@ -177,11 +177,11 @@ function CaseStudyCard({ caseStudy }) {
           priority
         />
       </div>
-      <div className="mt-6">
+      {/* <div className="mt-6">
         <Link href="/contact" className="inline-flex items-center gap-2 bg-sky-600 text-white px-8 py-3.5 rounded-2xl font-bold hover:bg-sky-500 transition-colors shadow-lg shadow-sky-600/20">
           {caseStudy.buttonText} <ArrowRight className="w-4 h-4" />
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

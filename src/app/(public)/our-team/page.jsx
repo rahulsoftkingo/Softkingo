@@ -21,9 +21,9 @@ const STATIC_DATA = {
     ceo: {
         name: "Paramhans Singh",
         role: "CEO & Founder",
-        message: "We were very impressed with the service provided by this business. From start to finish, every step of the process was smooth, professional and effective.",
+        message: "We combine innovation, technology, and expertise to build digital solutions that drive business growth. Our focus is simple — deliver quality, build trust, and create long-term success for our clients.",
         image: "/images/team/Softkingo-Founder.webp",
-        linkedin: "#"
+        linkedin: "https://www.linkedin.com/in/paramhans/"
     },
     // Keep teamList empty here, will try to fetch or fallback
     teamList: [

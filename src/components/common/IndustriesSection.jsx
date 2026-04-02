@@ -162,7 +162,7 @@ export default function IndustriesSection({ data, industries }) {
     const sectionTitle = data?.title || "Industries We Transform";
 
     return (
-        <section className="py-20 bg-[#EFF9FF] relative overflow-hidden">
+        <section className="py-8 md:py-16 bg-[#EFF9FF] relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <CommonTitle
                     align="center"
@@ -171,7 +171,7 @@ export default function IndustriesSection({ data, industries }) {
                 />
 
                 {/* Tabs: Separated Underlined style */}
-                <div className="relative mb-16 flex lg:justify-center w-full overflow-hidden">
+                <div className="relative flex lg:justify-center w-full overflow-hidden">
                     <div className="flex gap-4 md:gap-5 lg:gap-8 overflow-x-auto no-scrollbar [&::-webkit-scrollbar]:hidden pb-4 relative z-10 w-full px-4 items-center justify-start lg:justify-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {activeIndustriesList.map((ind, i) => (
                             <button
@@ -202,7 +202,7 @@ export default function IndustriesSection({ data, industries }) {
                 </div>
 
                 {/* Content Area */}
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
+                <div className="grid lg:grid-cols-2 lg:gap-16 items-center">
 
                     {/* Left: Device Mockups */}
                     <div className="relative flex justify-center lg:justify-start">
@@ -236,7 +236,7 @@ export default function IndustriesSection({ data, industries }) {
                                 className="space-y-8"
                             >
                                 <div className="space-y-6">
-                                    <h3 className="text-4xl md:text-5xl font-black text-[#1A1A1A] tracking-tight">
+                                    <h3 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] tracking-tight">
                                         {activeIndustry.title || activeIndustry.itemTitle}
                                     </h3>
                                     <div

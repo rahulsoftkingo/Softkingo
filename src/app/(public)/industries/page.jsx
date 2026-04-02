@@ -185,24 +185,36 @@ export default function IndustriesPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-[500px] flex items-center">
+      <section className="relative h-[250px] md:h-[350px] flex items-center justify-center overflow-hidden">
         <Image
-          src="/images/industries/industries-bg.png"
+          src="/images/industries/Technology Solutions for Every Industry.webp"
           alt="Industries Expertise"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-slate-900/60 mix-blend-multiply" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 text-center">
-          <div className="inline-flex items-center gap-2 bg-sky-500/20 border border-sky-400/30 px-4 py-2 rounded-full mb-6">
+          {/* <div className="inline-flex items-center gap-2 bg-sky-500/20 border border-sky-400/30 px-4 py-2 rounded-full mb-6">
             <span className="text-xs font-bold text-sky-300 uppercase tracking-widest">Global Expertise</span>
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 tracking-tight">
+          </div> */}
+          {/* Breadcrumb */}
+          <nav className="flex items-center justify-center gap-2 text-xs md:text-sm text-slate-300 mb-4">
+            <Link href="/" className="hover:text-sky-400 transition-colors">
+              Home
+            </Link>
+            <span>›</span>
+            <Link href="/industries" className="text-sky-400 font-medium">
+              Industries
+            </Link>
+            {/* <span>›</span>
+            <span className="text-sky-400 font-medium">{title}</span> */}
+          </nav>
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 drop-shadow-lg text-white">
             Technology Solutions for Every Industry
           </h1>
-          <p className="max-w-3xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 leading-relaxed font-medium">
+          <p className="max-w-2xl mx-auto text-md md:text-lg text-sky-50 font-light leading-relaxed">
             We build custom software, mobile apps, and digital platforms for a wide range of industries, helping businesses transform ideas into scalable digital solutions.
           </p>
         </div>
@@ -235,7 +247,7 @@ export default function IndustriesPage() {
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 pb-4 text-sm font-semibold text-slate-700">
                   {industry.subServices.map((service, sIdx) => (
                     <li key={sIdx} className="flex items-center gap-2">
-                       <FaChevronRight className="text-sky-500 text-[10px]" /> {service}
+                      <FaChevronRight className="text-sky-500 text-[10px]" /> {service}
                     </li>
                   ))}
                 </ul>
@@ -276,4 +288,4 @@ function ArrowRight({ className }) {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
     </svg>
   );
-}
+}

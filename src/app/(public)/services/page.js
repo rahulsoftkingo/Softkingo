@@ -5,12 +5,13 @@ import ServicesSection from './ServicesSection';
 import Image from 'next/image';
 import LeadForm from '@/components/public/LeadForm';
 import InquirySection from '@/components/footer/InquirySection';
+import prisma from '@/lib/prisma';
 export const metadata = {
   title: "Custom Software Development Services",
   description: "End-to-end development services: Mobile Apps (iOS/Android), Web Applications, UI/UX Design, and AI/ML solutions.",
   alternates: { canonical: "/services" }
 };
-export default function ServicesHero() {
+export default async function ServicesHero() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
       {/* Hero Section */}
@@ -167,7 +168,7 @@ export default function ServicesHero() {
 
 
       </section>
-      <ServicesSection />
+      <ServicesSection initialProjects={await prisma.portfolioProject.findMany({ orderBy: { createdAt: 'desc' } })} />
       <InquirySection />
 
     </div>

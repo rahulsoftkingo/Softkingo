@@ -64,7 +64,7 @@ export default function FAQAccordion({ data }) {
 ];
 
   // Use props data if available, otherwise default
-  const items = data?.items || [];
+  const items = data?.items || defaultItems;
   const title = data?.title;
   const subtitle = data?.subtitle;
   const gradientText = data?.gradientText || "";
@@ -72,7 +72,7 @@ export default function FAQAccordion({ data }) {
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-8 md:py-16 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Common Title */}

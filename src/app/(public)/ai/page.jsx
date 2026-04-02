@@ -46,7 +46,7 @@ export default function AIPage() {
     <>
 
       {/* 01. Hero Section - REDESIGNED FOR IMMERSIVE FEEL */}
-      <section className="relative min-h-[50vh] md:min-h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[300px] md:h-[400px] flex items-center justify-center overflow-hidden">
         {/* Full Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -56,31 +56,28 @@ export default function AIPage() {
             className="object-cover object-center scale-105"
             priority
           />
-
+          <div className="absolute inset-0 bg-slate-900/60 mix-blend-multiply"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10 w-full text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10 w-full text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center"
           >
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-normal mb-6 text-white tracking-tight">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4 drop-shadow-lg text-white">
               AI Development Services
             </h1>
 
-            <div className="max-w-3xl space-y-5 mb-10">
-              <p className="text-xs sm:text-sm md:text-base text-slate-200 leading-relaxed font-medium">
+            <div className="max-w-2xl mx-auto space-y-2 mb-8">
+              <p className="text-md md:text-lg text-sky-50 font-light leading-relaxed">
                 At Softkingo Technologies, we design and develop intelligent AI solutions that help businesses automate processes, reduce operational costs, and unlock new growth opportunities.
-              </p>
-              <p className="text-xs sm:text-sm md:text-base text-slate-300 leading-relaxed">
-                Our AI development services are tailored to your industry, data, and business objectives—ensuring practical implementation with measurable impact. From AI-powered applications to advanced analytics and automation systems, we help you transform ideas into scalable AI products.
               </p>
             </div>
 
 
-            <div className="flex  sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
+            <div className="flex sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300">
               <buttom
                 onClick={() => setShowModal(true)}
                 // href="/contact"
@@ -98,26 +95,26 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 02. We Are Section - PIXEL PERFECT MATCH */}
       <section id="about" className=" bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+          <div className="flex flex-col-reverse lg:flex-row items-center gap-16 lg:gap-24">
             {/* Left: Image - Clean & Simple */}
             <motion.div
-              className="lg:w-1/3 relative"
+              className="w-full lg:w-1/3 relative"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="relative lg:aspect-[18/12] w-full rounded-[32px]  shadow-2xl">
+              <div className="relative aspect-[18/12] lg:aspect-[18/12] w-full rounded-2xl  shadow-2xl">
                 <Image
-                  src="/images/ai/we-are.svg"
+                  src="/images/ai/AI-Solutions.webp"
                   alt="Handshake - We are Softkingo"
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-3xl"
                   priority
                 />
               </div>
@@ -165,10 +162,10 @@ export default function AIPage() {
           {/* 02.5 Stats Section - Pixel Perfect Mockup Layout */}
           <div className="mt-16 lg:mt-22 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
             {[
-              { icon: 'clock', value: '5+', label: 'Years Of Experience' },
-              { icon: 'users', value: '450+', label: 'Apps Developed' },
-              { icon: 'layout', value: '50+', label: 'Mobile Apps Developer' },
-              { icon: 'globe', value: '400+', label: 'Clients Worldwide' }
+              { icon: 'clock', value: '6+', label: 'Years Of Experience' },
+              { icon: 'users', value: '400+', label: 'Apps Developed' },
+              { icon: 'layout', value: '50+', label: 'AI Solutions' },
+              { icon: 'globe', value: '350+', label: 'Clients Worldwide' }
             ].map((stat, idx) => (
               <motion.div
                 key={idx}
@@ -200,7 +197,7 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 03. AI Services Section - Shared Component */}
       <CoreServicesSection
@@ -211,7 +208,7 @@ export default function AIPage() {
       {/* 04. Industries We Transform */}
       <IndustriesSection />
 
-      {/* <div className="section-divider" /> */}
+      {/*  */}
 
       {/* 05. Consultation CTA */}
       <ConsultationCTA
@@ -223,11 +220,11 @@ export default function AIPage() {
       />
 
 
-      <div className="section-divider" />
+
 
       {/* 06. Our Expertise in AI Development */}
       <section id="expertise" className="bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
           <CommonTitle
             align="center"
             title="Our Expertise in"
@@ -299,12 +296,12 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 07. Why AI Development? */}
       <section id="why-invest" className="bg-white relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
             {/* Left: Sticky Title & Info */}
             <div className="lg:w-1/3 lg:sticky lg:top-32 h-fit z-10">
               <CommonTitle
@@ -370,7 +367,7 @@ export default function AIPage() {
               ].map((card, idx) => (
                 <div key={idx} style={{ zIndex: idx + 1 }} className="sticky top-40">
                   <motion.div
-                    className="bg-white/60 backdrop-blur-sm border border-sky-100 rounded-2xl p-8 hover:bg-white hover:shadow-xl hover:shadow-sky-100/50 transition-all duration-300"
+                    className="border border-sky-100 rounded-2xl p-6 bg-white hover:shadow-xl hover:shadow-sky-100/50 transition-all duration-300"
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: idx * 0.05 }}
@@ -391,11 +388,11 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 08. AI Development Process */}
       <section id="process" className="bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm overflow-hidden w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 w-full">
           <CommonTitle
             align="center"
             title="AI Development"
@@ -484,11 +481,11 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 09. Our AI Projects */}
       <section id="projects" className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
           <CommonTitle
             align="center"
             title="Our AI"
@@ -594,7 +591,7 @@ export default function AIPage() {
 
       {/* 10. Ai Powered Solutions */}
       <section id="solutions" className="bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm text-black overflow-hidden w-full">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 w-full">
           <CommonTitle
             align="center"
             title="Ai Powered Solutions"
@@ -708,11 +705,11 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 11. AI Capability Models */}
       <section id="capabilities" className="bg-white text-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
           <CommonTitle
             align="center"
             title="Advanced AI"
@@ -720,7 +717,7 @@ export default function AIPage() {
             subtitle="Explore our range of intelligent models designed to solve complex business challenges with precision and scale."
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16 lg:mt-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 title: "Automating Manual Tasks",
@@ -802,12 +799,12 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 12. Why Choose Us */}
-      <section id="why-us" className="py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm">
+      <section id="why-us" className="py-8 md:py-16 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-16">
             {/* Left Column: Title & Intro */}
             <div className="lg:w-2/5 lg:sticky lg:top-32 h-fit z-10">
               <CommonTitle
@@ -819,7 +816,7 @@ export default function AIPage() {
             </div>
 
             {/* Right Column: Detailed List */}
-            <div className="lg:w-3/5 space-y-12">
+            <div className="lg:w-3/5 space-y-8">
               {[
                 {
                   title: "Expert AI Talent",
@@ -873,7 +870,7 @@ export default function AIPage() {
         </div>
       </section>
 
-      {/* <div className="section-divider" /> */}
+      {/*  */}
 
       {/* 13. Latest App Projects */}
       {/* <DynamicPortfolioCard
@@ -882,12 +879,12 @@ export default function AIPage() {
         title="Latest App Projects"
         subtitle="Our newest mobile applications"
       /> */}
-      {/* <div className="section-divider" /> */}
+      {/*  */}
 
 
 
       {/* 14. Technology Stack - RESTORED SIDEBAR + IMAGE GRID */}
-      <section id="stack" className="py-24 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm">
+      <section id="stack" className="py-8 md:py-16 bg-gradient-to-br from-white to-sky-100 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <CommonTitle
             align="center"
@@ -896,10 +893,10 @@ export default function AIPage() {
             subtitle="Modern, proven AI technologies powering intelligent solutions"
           />
 
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-20 items-start">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-10 items-start">
             {/* Sidebar (Restored Layout + Hover/Mobile Scroll) */}
-            <aside className="w-full lg:w-72 shrink-0 bg-gradient-to-tl from-sky-400 via-sky-600 to-sky-500 rounded-[32px] p-6 lg:sticky lg:top-32 h-fit shadow-xl shadow-sky-600/20">
-              <h4 className="text-[10px] font-bold text-sky-100 uppercase tracking-widest mb-6 px-4 hidden lg:block">Categories</h4>
+            <aside className="w-full lg:w-72 shrink-0 bg-gradient-to-tl from-sky-400 via-sky-600 to-sky-500 rounded-lg md:rounded-2xl p-2 lg:p-6 lg:sticky lg:top-32 h-fit shadow-xl shadow-sky-600/20">
+              {/* <h4 className="text-xs font-bold text-sky-100 uppercase tracking-widest mb-6 px-4 hidden lg:block">Categories</h4> */}
 
               {/* Horizontal Scroll for Mobile */}
               <div
@@ -924,7 +921,7 @@ export default function AIPage() {
                       }
                     }}
                     id={`tech-nav-${item}`}
-                    className={`px-6 py-4 lg:py-4 rounded-2xl cursor-pointer transition-all text-sm font-bold shrink-0 lg:w-full text-left ${(activeSolution === item)
+                    className={`px-4 lg:px-6 py-2 lg:py-3 rounded-full cursor-pointer transition-all text-xs lg:text-sm font-bold shrink-0 lg:w-full text-left ${(activeSolution === item)
                       ? 'bg-white shadow-lg text-sky-600 scale-105'
                       : 'text-sky-50 hover:bg-white/10'
                       }`}
@@ -941,7 +938,7 @@ export default function AIPage() {
                 {activeSolution || 'Frameworks'}
                 <div className="h-1 flex-1 bg-gradient-to-r from-sky-500 to-transparent rounded-full opacity-20" />
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6">
                 {(
                   activeSolution === 'Languages' ? [
                     { name: 'Python', img: '/images/tech/Python.png' },
@@ -997,7 +994,7 @@ export default function AIPage() {
         </div>
       </section>
 
-      <div className="section-divider" />
+
 
       {/* 15. AI FAQ Section */}
       <FAQAccordion
