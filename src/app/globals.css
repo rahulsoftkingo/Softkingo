@@ -1893,21 +1893,24 @@ body {
   font-style: italic !important;
 }
 
-.rich-text ul {
+.rich-text ul,
+.ProseMirror ul {
   list-style-type: disc !important;
   padding-left: 1.5rem !important;
   margin-bottom: 1rem !important;
   display: block !important;
 }
 
-.rich-text ol {
+.rich-text ol,
+.ProseMirror ol {
   list-style-type: decimal !important;
   padding-left: 1.5rem !important;
   margin-bottom: 1rem !important;
   display: block !important;
 }
 
-.rich-text li {
+.rich-text li,
+.ProseMirror li {
   margin-bottom: 0.25rem !important;
   display: list-item !important;
 }

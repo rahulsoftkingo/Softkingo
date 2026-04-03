@@ -51,7 +51,7 @@ export default function IndustryWhyChooseCarousel({ items }) {
                             </h4>
                             
                             <p 
-                                className="text-slate-600 text-sm leading-relaxed"
+                                className="text-slate-600 text-sm leading-relaxed rich-text"
                                 dangerouslySetInnerHTML={{ __html: item.description }}
                             />
                         </div>

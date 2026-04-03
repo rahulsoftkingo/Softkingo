@@ -83,7 +83,7 @@ const TestimonialCarousel = ({ data }) => {
                             </div>
 
                             {/* Review Text */}
-                            <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-grow" dangerouslySetInnerHTML={{ __html: `"${t.review || t.feedback || ""}"` }} />
+                            <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-grow rich-text" dangerouslySetInnerHTML={{ __html: `"${t.review || t.feedback || ""}"` }} />
 
                             {/* User Info */}
                             <div className="flex items-center gap-3 mt-auto pt-4 border-t border-slate-100">

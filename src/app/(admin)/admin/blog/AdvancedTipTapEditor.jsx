@@ -235,7 +235,7 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
     editorProps: {
       attributes: {
         // NOTE: keep simple class; styling should be in global css
-        class: 'prose max-w-none focus:outline-none',
+        class: 'prose rich-text max-w-none focus:outline-none',
         spellcheck: 'true',
       },
       transformPastedHTML(html) {

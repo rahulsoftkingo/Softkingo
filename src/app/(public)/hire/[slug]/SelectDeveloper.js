@@ -101,9 +101,10 @@ export default function HireDevelopersPage({ data }) {
                         <hr className='w-24 border-2 border-white mt-4' />
                     </div>
 
-                    <p className="text-white/90 text-center text-base md:text-lg mb-12 max-w-4xl mx-auto font-medium">
-                        {subtitle}
-                    </p>
+                    <div 
+                        className="text-white/90 text-center text-base md:text-lg mb-12 max-w-4xl mx-auto font-medium rich-text"
+                        dangerouslySetInnerHTML={{ __html: subtitle }}
+                    />
 
                     {/* Main Responsive Container */}
                     <div className='flex flex-col lg:flex-row gap-8 items-start'>
@@ -133,11 +134,12 @@ export default function HireDevelopersPage({ data }) {
                                 <h3 className="text-2xl font-black text-slate-900 mb-4">
                                     {industries.find(ind => ind.name === selectedIndustry)?.title || selectedIndustry}
                                 </h3>
-                                <p className="text-slate-600 mb-8 leading-relaxed font-medium">
-                                    {industries.find(ind => ind.name === selectedIndustry)?.description || 
+                                <div 
+                                    className="text-slate-600 mb-8 leading-relaxed font-medium rich-text"
+                                    dangerouslySetInnerHTML={{ __html: industries.find(ind => ind.name === selectedIndustry)?.description || 
                                      fallbackIndustryContent[selectedIndustry]?.description ||
-                                     'Custom solutions tailored for your industry needs.'}
-                                </p>
+                                     'Custom solutions tailored for your industry needs.' }}
+                                />
 
                                 <button
                                     onClick={() => {

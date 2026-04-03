@@ -83,7 +83,7 @@ const IndustryProcess = ({ data }) => {
                       </div>
 
                       <p
-                        className="text-slate-500 leading-relaxed text-base md:text-lg"
+                        className="text-slate-500 leading-relaxed text-base md:text-lg rich-text"
                         dangerouslySetInnerHTML={{ __html: step.description }}
                       />
 

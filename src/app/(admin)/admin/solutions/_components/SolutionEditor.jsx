@@ -35,10 +35,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 1. HERO SECTION */}
             <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Badge (e.g. Trusted by 500+)" value={content.hero?.badge || ''} onChange={e => updateField('content.hero.badge', e.target.value)} />
-                <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Main Title (Line 1)" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
-                    <input className={`${inputStyle} text-sky-600 font-semibold`} placeholder="Highlight Text (Line 2)" value={content.hero?.highlight || ''} onChange={e => updateField('content.hero.highlight', e.target.value)} />
+                <div className="grid grid-cols-1 gap-4">
+                    <input className={inputStyle} placeholder="Main Title" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
                 </div>
                 <div className="space-y-1">
                     <label className={labelStyle}>Hero Description</label>
@@ -69,8 +67,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     <label className={labelStyle}>Intro Description</label>
                     <MiniRichTextEditor value={content.intro?.description || ''} onChange={val => updateField('content.intro.description', val)} />
                 </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <MediaInput label="Intro Highlight Image" value={content.intro?.image} path="content.intro.image" />
+                <div className="grid grid-cols-1 gap-4">
                     <div>
                         <label className={labelStyle}>Key Points (List)</label>
                         {(content.intro?.listItems || []).map((item, i) => (

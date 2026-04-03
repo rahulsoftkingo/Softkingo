@@ -66,7 +66,7 @@ export default function IndustriesHero({ data }) {
                 {/* Description */}
                 {description && (
                     <div
-                        className="text-md md:text-lg text-sky-50 font-light max-w-2xl mx-auto drop-shadow-lg"
+                        className="text-md md:text-lg text-sky-50 font-light max-w-2xl mx-auto drop-shadow-lg rich-text"
                         dangerouslySetInnerHTML={{ __html: description }}
                     />
                 )}

@@ -43,7 +43,7 @@ export default function SolutionsHero({ data }) {
             </h1>
 
             <div
-              className="text-xs sm:text-sm md:text-base text-slate-600 leading-[1.8] max-w-xl animate-fadeInUp delay-200 mb-10"
+              className="text-xs sm:text-sm md:text-base text-slate-600 leading-[1.8] max-w-xl animate-fadeInUp delay-200 mb-10 rich-text"
               dangerouslySetInnerHTML={{ __html: data.description }}
             />
 

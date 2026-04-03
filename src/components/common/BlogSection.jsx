@@ -177,7 +177,7 @@ function BlogCard({ blog, priority }) {
                 </div>
 
                 {/* Excerpt */}
-                <p className="text-sm text-slate-500 leading-relaxed line-clamp-3" dangerouslySetInnerHTML={{ __html: blog.excerpt || blog.description || "No description available for this post." }} />
+                <p className="text-sm text-slate-500 leading-relaxed line-clamp-3 rich-text" dangerouslySetInnerHTML={{ __html: blog.excerpt || blog.description || "No description available for this post." }} />
 
                 {/* Footer */}
                 <div className="mt-auto pt-4 flex items-center justify-between text-[10px] font-bold text-slate-400 border-t border-slate-50">
