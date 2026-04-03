@@ -83,7 +83,7 @@ export default function RecognitionSection() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-bfrom-sky-100 to-sky-50 text-black py-12 px-4 sm:px8">
+    <div className="min-h-screen bg-gradient-to-b from-sky-100 to-sky-50 text-black py-8 md:py-16 px-4 sm:px-8">
       <div className="max-w-7xl mx-auto">
         {/* <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">

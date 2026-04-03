@@ -20,7 +20,7 @@ export default function CloneProcess({ data }) {
   const currentStep = steps[activeIndex] || steps[0];
 
   return (
-    <section className="py-24 bg-[#F8FAFC] relative overflow-clip">
+    <section className="py-8 md:py-16 bg-[#F8FAFC] relative overflow-clip">
       {/* Background Grid Accent */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#2FB3E0 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
 

@@ -292,7 +292,7 @@ export async function generateMetadata({ params }) {
     };
   }
   return {
-    title: `${data.title} - Case Study | Softkingo`,
+    title: `${data.title} - Case Study`,
     description: data.subtitle,
     openGraph: {
       title: data.title,

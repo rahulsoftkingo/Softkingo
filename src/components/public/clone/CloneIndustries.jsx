@@ -34,7 +34,7 @@ export default function CloneIndustries({ data, industries = [] }) {
     const displayImage = customSelection?.image || content.hero?.image || defaultIndustryImages[activeIndustry.slug] || '/images/industries/clone/149.png';
 
     return (
-        <section className="py-20 bg-[#EFF9FF] relative overflow-clip">
+        <section className="py-8 md:py-16 bg-[#EFF9FF] relative overflow-clip">
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="mb-8">
                     <h2 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] text-center mb-12 tracking-tight">

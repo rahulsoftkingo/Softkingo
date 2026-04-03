@@ -82,7 +82,7 @@ export default function DynamicPortfolioCard({
 
   return (
     <>
-      <section className={`py-20 bg-white ${className}`}>
+      <section className={`py-8 md:py-16 bg-white ${className}`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-12 items-start">
 

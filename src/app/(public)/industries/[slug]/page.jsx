@@ -46,7 +46,7 @@ export async function generateMetadata(props) {
     const page = await getIndustryPage(params.slug);
     if (!page) return { title: 'Page Not Found' };
 
-    const title = page.seoTitle || `${page.title} | Softkingo`;
+    const title = page.seoTitle || page.title;
     const description = page.seoDescription || page.sections.hero?.description || `Solutions for the ${page.title} industry by Softkingo.`;
     const image = page.seoImage || "/og-image.png";
 

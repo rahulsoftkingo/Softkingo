@@ -36,7 +36,7 @@ export default function CloneVerticalSuite({ data }) {
     };
 
     return (
-        <section className="py-20 lg:py-28 px-6 bg-slate-50 relative overflow-clip">
+        <section className="py-8 md:py-16 px-6 bg-slate-50 relative overflow-clip">
             <div className="max-w-7xl mx-auto px-6 text-center">
 
                 <CommonTitle

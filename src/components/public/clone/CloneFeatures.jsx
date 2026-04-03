@@ -51,7 +51,7 @@ export default function CloneFeatures({ data }) {
     const features = data || defaultFeatures;
 
     return (
-        <section className="py-20 lg:py-28 px-6 bg-slate-50 relative overflow-clip">
+        <section className="py-8 md:py-16 px-6 bg-slate-50 relative overflow-clip">
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-[url('/patterns/grid.svg')] opacity-5"></div>
 

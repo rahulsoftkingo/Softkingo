@@ -3,7 +3,7 @@ import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 
 export const metadata = {
-  title: "Client Testimonials | Softkingo",
+  title: "Client Testimonials - Client Reviews",
   description:
     "What our clients say about Softkingo across Clutch, DesignRush, and more.",
   alternates: { canonical: "/testimonials" }

@@ -22,7 +22,7 @@ export default function SolutionsMonetization({ data }) {
   };
 
   return (
-    <section className="py-24 bg-slate-50">
+    <section className="py-8 md:py-16 bg-slate-50">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header + Navigation Buttons */}

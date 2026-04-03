@@ -20,6 +20,7 @@ import PopupQuoteModal from '@/components/PopupQuoteModal';
 import { Calendar } from 'lucide-react';
 import { ArrowRight } from 'lucide-react';
 
+
 export default function AIPage() {
   const [inView, setInView] = useState({});
   const [activeIndex, setActiveIndex] = useState(0);

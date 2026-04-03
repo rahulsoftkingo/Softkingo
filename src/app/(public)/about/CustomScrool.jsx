@@ -122,8 +122,8 @@ export default function StoryTimeline() {
             {timelineData.map((item) => (
               <button
                 key={item.year}
-                onClick={() => setActiveYear(item.year)}
-                className={`flex flex-col items-center gap-2 transition-all duration-300 group ${activeYear === item.year ? 'scale-110' : 'scale-100'
+                onMouseEnter={() => setActiveYear(item.year)}
+                className={`flex flex-col items-center gap-2 transition-all duration-300 group cursor-pointer ${activeYear === item.year ? 'scale-110' : 'scale-100'
                   }`}
                 aria-label={`View ${item.year} timeline`}
               >

@@ -126,7 +126,7 @@ const HeroSection = () => {
       ))}
 
       {/* Main content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Left content */}
           <motion.div

@@ -21,7 +21,7 @@ export default function ConsultationCTA({
   const isWhite = theme === "white";
 
   return (
-    <section className="py-12">
+    <section className="py-8 md:py-16">
       <div className="max-w-7xl mx-auto px-6 pt-24">
         <div className={`relative rounded-[28px]  ${isWhite
           ? "bg-white border border-slate-100 shadow-xl shadow-slate-200/50"

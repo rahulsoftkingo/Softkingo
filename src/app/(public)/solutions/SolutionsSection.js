@@ -9,7 +9,7 @@ export default function SolutionsSection() {
   const solutions = [
     {
       id: "industry",
-      title: "Industry-Specific Solutions",
+      title: "Industry-Based Solutions",
       subtitle: "We deliver customized solutions for a wide range of industries, from healthcare and education to e-commerce and finance. Our apps are designed to streamline operations, improve user engagement, and drive business growth. Whatever your industry, we provide technology that fits your unique needs.",
       imagePosition: "right",
       bgColor: "bg-white",

@@ -190,9 +190,7 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
                       {sec.blocks.map((block, idx) => {
                         if (block.type === "p") {
                           return (
-                            <p key={idx} className="text-slate-700">
-                              {block.text}
-                            </p>
+                            <p key={idx} className="text-slate-700" dangerouslySetInnerHTML={{ __html: block.text }} />
                           );
                         }
                         if (block.type === "h3") {
@@ -202,9 +200,8 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
                               key={idx}
                               id={subId}
                               className="sub-title text-[15px] sm:text-[16px] font-semibold text-slate-900 mt-5 border-l-4 border-sky-500 pl-4"
-                            >
-                              {block.text}
-                            </h3>
+                              dangerouslySetInnerHTML={{ __html: block.text }}
+                            />
                           );
                         }
                         if (block.type === "ul") {
@@ -214,7 +211,7 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
                               className="content-ul list-disc pl-5 space-y-1.5 marker:text-sky-500"
                             >
                               {block.items.map((it, i) => (
-                                <li key={i}>{it}</li>
+                                <li key={i} dangerouslySetInnerHTML={{ __html: it }} />
                               ))}
                             </ul>
                           );
@@ -226,7 +223,7 @@ function TocAndContentClient({ post, related, sectionKey, newsletterList }) {
                               className="content-ol list-decimal pl-5 space-y-1.5 marker:text-sky-500"
                             >
                               {block.items.map((it, i) => (
-                                <li key={i}>{it}</li>
+                                <li key={i} dangerouslySetInnerHTML={{ __html: it }} />
                               ))}
                             </ol>
                           );

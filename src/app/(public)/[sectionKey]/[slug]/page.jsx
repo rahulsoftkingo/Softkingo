@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
     }
   });
 
-  if (!post) return { title: "Article Not Found | Softkingo" };
+  if (!post) return { title: "Article Not Found" };
 
   const finalTitle = post.seoTitle || post.title;
   const finalDesc = post.seoDescription || post.excerpt || "";

@@ -77,7 +77,7 @@ export default function MethodologySection() {
     return (
         <section
             ref={sectionRef}
-            className="bg-white py-12 md:py-16 lg:py-20 px-4 md:px-6"
+            className="bg-white py-8 md:py-16 px-4 md:px-6"
         >
             <div className="max-w-7xl mx-auto">
                 {/* Header */}

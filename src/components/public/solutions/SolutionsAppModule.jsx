@@ -7,7 +7,7 @@ export default function SolutionsAppModule({ data, reverse = false, bg = "white"
     if (!data) return null;
 
     return (
-        <section className={`py-20 overflow-hidden ${bg === 'gray' ? 'bg-slate-50' : 'bg-white'}`}>
+        <section className={`py-8 md:py-16 overflow-hidden ${bg === 'gray' ? 'bg-slate-50' : 'bg-white'}`}>
             <div className="container mx-auto px-6 lg:px-12">
                 <div className={`flex flex-col lg:flex-row items-center gap-16 ${reverse ? 'lg:flex-row-reverse' : ''}`}>
 

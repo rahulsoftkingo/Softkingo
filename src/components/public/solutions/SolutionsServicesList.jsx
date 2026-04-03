@@ -18,7 +18,7 @@ export default function SolutionsServicesList({ data }) {
     };
 
     return (
-        <section className="py-20 bg-slate-50" id="services-list">
+        <section className="py-8 md:py-16 bg-slate-50" id="services-list">
             <div className="max-w-7xl mx-auto px-6 ">
 
                 {/* 1. Common Title (Center Aligned) */}

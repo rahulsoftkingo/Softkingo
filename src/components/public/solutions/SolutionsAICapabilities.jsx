@@ -9,7 +9,7 @@ export default function SolutionsAICapabilities({ data }) {
     if (!data) return null;
 
     return (
-        <section className="py-20 md:py-24 bg-slate-50 overflow-hidden" id="ai-capabilities">
+        <section className="py-8 md:py-16 bg-slate-50 overflow-hidden" id="ai-capabilities">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
                 {/* 1. Common Heading */}

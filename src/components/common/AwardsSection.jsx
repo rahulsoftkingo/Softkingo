@@ -36,7 +36,7 @@ function AwardsSection({
 
   if (variant === "service") {
     return (
-      <section className="bg-white py-12 lg:py-16 border-t border-slate-100">
+      <section className="bg-white py-8 md:py-16 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
             {/* Left: Title & Subtitle */}
@@ -79,7 +79,7 @@ function AwardsSection({
   }
 
   return (
-    <section className="bg-white py-12 lg:py-16">
+    <section className="bg-white py-8 md:py-16">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <div className="flex flex-col items-center gap-2">
           <CommonTitle

@@ -95,7 +95,7 @@ export async function generateMetadata(props) {
     const page = await getSolutionPage(params.slug);
     if (!page) return { title: 'Page Not Found' };
 
-    const title = page.seoTitle || `${page.title} | Softkingo`;
+    const title = page.seoTitle || page.title;
     const description = page.seoDescription || page.sections.hero?.description || `Explore our ${page.title} solution. Custom development services by Softkingo.`;
     const image = page.seoImage || "/og-image.png";
 

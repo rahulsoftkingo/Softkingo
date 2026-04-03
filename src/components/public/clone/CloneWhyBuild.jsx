@@ -39,7 +39,7 @@ export default function CloneWhyBuild({ data }) {
     const reasons = data?.items?.length > 0 ? data.items : defaultItems;
 
     return (
-        <section className="py-20 lg:py-28 px-6 bg-slate-50">
+        <section className="py-8 md:py-16 px-6 bg-slate-50">
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}

@@ -10,7 +10,7 @@ import {
   FaBriefcase,
   FaCalendarAlt
 } from "react-icons/fa";
-import { FaEnvelope, FaSkype } from "react-icons/fa";
+import { FaEnvelope, FaMicrosoft } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
 
 const NAV_ITEMS = [
@@ -94,12 +94,12 @@ const AboutUsDropdown = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl text-sky-600 mt-1">
-                    <FaSkype />
+                  <span className="text-2xl text-[#464EB8] mt-1">
+                    <FaMicrosoft />
                   </span>
                   <div>
-                    <span className="text-sky-600 font-semibold text-[13px] block">
-                      Skype
+                    <span className="text-[#464EB8] font-semibold text-[13px] block">
+                      Teams
                     </span>
                     <p className="text-sky-900 font-semibold text-sm">
                       softkingo

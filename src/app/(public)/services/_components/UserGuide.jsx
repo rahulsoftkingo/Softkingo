@@ -128,7 +128,7 @@ const UserGuide = ({ data }) => {
 
     if (isRich && blocks.length === 0) {
         return (
-            <section className="bg-white py-16 px-6">
+            <section className="bg-white py-8 md:py-16 px-6">
                 <div className="max-w-4xl mx-auto text-center py-20 bg-slate-50 rounded-2xl border border-slate-100">
                     <p className="text-slate-400 italic">No guide content has been added yet.</p>
                 </div>
@@ -143,7 +143,7 @@ const UserGuide = ({ data }) => {
                 style={{ scaleX }}
             />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative">
                 {/* Skip Guide Button (Desktop) */}
                 <button
                     onClick={skipGuide}

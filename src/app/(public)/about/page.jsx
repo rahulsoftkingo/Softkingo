@@ -10,8 +10,8 @@ import InquirySection from '@/components/footer/InquirySection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 
 export const metadata = {
-  title: "About Us | Leading Software Experts in India",
-  description: "Learn about Softkingo's journey, our mission to drive digital transformation, and the team behind our world-class software solutions.",
+  title: "About Softkingo - Leading Software Development Company in India",
+  description: "Learn about Softkingo's journey, our mission to drive digital transformation and the team behind our world-class software solutions. ISO-certified IT company in India.",
   alternates: { canonical: "/about" }
 };
 

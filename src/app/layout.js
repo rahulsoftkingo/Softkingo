@@ -10,8 +10,8 @@ export const metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || 'https://www.softkingo.com'
   ),
   title: {
-    default: "Softkingo – Mobile App & Web Development Company in India, New Delhi, Noida",
-    template: "%s | Softkingo"
+    default: "Softkingo – Top Mobile App & Web Development Company in India",
+    template: "%s - Softkingo Technologies"
   },
   description: "Softkingo helps businesses grow with custom mobile apps, modern websites, and effective digital marketing. We make tech easy and results-focused.",
   keywords: [

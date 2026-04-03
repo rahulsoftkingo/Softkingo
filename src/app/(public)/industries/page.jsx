@@ -8,7 +8,7 @@ import {
 import InquirySection from '@/components/footer/InquirySection';
 
 export const metadata = {
-  title: "Industries We Serve | Industry-Specific Tech Solutions",
+  title: "Industries We Serve - Industry-Specific Tech Solutions",
   description: "Transforming sectors like Healthcare, FinTech, and Logistics with domain-specific software. Explore Softkingo's industry expertise.",
   alternates: { canonical: "/industries" }
 };

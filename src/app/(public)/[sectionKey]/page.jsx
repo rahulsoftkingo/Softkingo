@@ -13,7 +13,7 @@ export async function generateMetadata({ params }) {
   if (!config) return {};
 
   return {
-    title: `${config.title} | Softkingo`,
+    title: `${config.title}`,
     description: config.heroSub || `Explore our latest ${config.title.toLowerCase()} and industry updates.`,
     alternates: {
       canonical: `${baseUrl}/${sectionKey}`,

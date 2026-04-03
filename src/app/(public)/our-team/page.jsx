@@ -198,7 +198,7 @@ async function getTeamData() {
 
 
 export const metadata = {
-    title: 'Our Team | Softkingo',
+    title: 'Our Team - Meet the Experts',
     description: 'Meet the experts driving Softkingo success.',
     alternates: { canonical: "/our-team" }
 };

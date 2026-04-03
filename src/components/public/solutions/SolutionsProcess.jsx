@@ -6,7 +6,7 @@ export default function SolutionsProcess({ data }) {
     if (!data) return null;
 
     return (
-        <section className="py-20 md:py-24 bg-slate-50 overflow-hidden">
+        <section className="py-8 md:py-16 bg-slate-50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <CommonTitle
                     align="center"

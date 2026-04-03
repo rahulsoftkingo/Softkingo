@@ -45,7 +45,7 @@ export default function CloneRevenue({ data }) {
     const tabs = data?.tabs?.length > 0 ? data.tabs : defaultTabs;
 
     return (
-        <section className="py-24 bg-[#F8FAFC] relative overflow-clip">
+        <section className="py-8 md:py-16 bg-[#F8FAFC] relative overflow-clip">
             <div className="max-w-7xl mx-auto px-6">
 
                 {/* Header Grid */}

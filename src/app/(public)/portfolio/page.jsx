@@ -11,10 +11,9 @@ import { FaArrowRight } from 'react-icons/fa6';
 import InquirySection from '@/components/footer/InquirySection';
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Our Portfolio | Mobile Apps, Websites & Digital Campaigns',
-  description:
-    'Explore our portfolio of successful apps, web platforms and digital marketing campaigns built for startups and enterprises.',
-    alternates: { canonical: "/portfolio" }
+  title: 'Our Portfolio - Successful Digital Projects by Softkingo',
+  description: 'Explore our portfolio of successful mobile apps, websites, and digital marketing campaigns built for startups and enterprises worldwide.',
+  alternates: { canonical: "/portfolio" }
 };
 
 // Convert badgesJson (stored as JSON string) into the badges object

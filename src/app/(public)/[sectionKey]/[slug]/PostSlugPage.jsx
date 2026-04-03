@@ -69,6 +69,35 @@ function safeImg(src, fallback = "/images/insights/hero-default.png") {
   return fallback;
 }
 
+// (Helper to convert TipTap node content with marks to HTML)
+function tipTapNodeToHtml(content) {
+  if (!content || !Array.isArray(content)) return "";
+  return content.map(node => {
+    if (node.type === "text") {
+      let text = node.text || "";
+      if (node.marks) {
+        // Sort marks to ensure consistent nesting if needed, or simply apply
+        node.marks.forEach(mark => {
+          if (mark.type === 'bold') text = `<strong>${text}</strong>`;
+          if (mark.type === 'italic') text = `<em>${text}</em>`;
+          if (mark.type === 'strike') text = `<del>${text}</del>`;
+          if (mark.type === 'underline') text = `<u>${text}</u>`;
+          if (mark.type === 'code') text = `<code>${text}</code>`;
+          if (mark.type === 'link') {
+            const href = mark.attrs?.href || "#";
+            const target = mark.attrs?.target || "_blank";
+            text = `<a href="${href}" target="${target}" rel="noopener noreferrer" class="text-sky-600 underline hover:text-sky-700 transition-colors font-medium">${text}</a>`;
+          }
+        });
+      }
+      return text;
+    }
+    // Handle other inline types like lineBreak if they exist
+    if (node.type === "hardBreak") return "<br/>";
+    return "";
+  }).join("");
+}
+
 // (same mapTipTapToSections as you already have)
 function mapTipTapToSections(rawJson, fallbackTitle, fallbackExcerpt) {
   let doc;
@@ -112,27 +141,28 @@ function mapTipTapToSections(rawJson, fallbackTitle, fallbackExcerpt) {
 
       if (level === 3) {
         subIndex += 1;
-        currentSection.blocks.push({ type: "h3", text: text || `Subheading ${sectionIndex}.${subIndex}` });
+        const html = tipTapNodeToHtml(node.content);
+        currentSection.blocks.push({ type: "h3", text: html || `Subheading ${sectionIndex}.${subIndex}` });
         continue;
       }
     }
 
     if (node.type === "paragraph") {
-      const text = node.content?.map((c) => c.text).join("").trim();
-      if (!text) continue;
-      currentSection.blocks.push({ type: "p", text });
+      const html = tipTapNodeToHtml(node.content);
+      if (!html) continue;
+      currentSection.blocks.push({ type: "p", text: html });
       continue;
     }
 
     if (node.type === "bulletList") {
       const items = [];
       node.content?.forEach((li) => {
-        const liText = li.content
+        const liHtml = li.content
           ?.flatMap((p) => p.content || [])
-          .map((c) => c.text)
+          .map((c) => tipTapNodeToHtml([c]))
           .join("")
           .trim();
-        if (liText) items.push(liText);
+        if (liHtml) items.push(liHtml);
       });
       if (items.length) currentSection.blocks.push({ type: "ul", items });
       continue;
@@ -141,12 +171,12 @@ function mapTipTapToSections(rawJson, fallbackTitle, fallbackExcerpt) {
     if (node.type === "orderedList") {
       const items = [];
       node.content?.forEach((li) => {
-        const liText = li.content
+        const liHtml = li.content
           ?.flatMap((p) => p.content || [])
-          .map((c) => c.text)
+          .map((c) => tipTapNodeToHtml([c]))
           .join("")
           .trim();
-        if (liText) items.push(liText);
+        if (liHtml) items.push(liHtml);
       });
       if (items.length) currentSection.blocks.push({ type: "ol", items });
       continue;

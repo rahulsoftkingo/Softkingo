@@ -9,8 +9,8 @@ import TechAheadSection from "@/components/public/TechAheadSection";
 import CommonTitle from "@/components/ui/CommonTitle";
 import AwardsSection from "@/components/common/AwardsSection";
 export const metadata = {
-  title: "Contact Softkingo | Get a Free Quote Today",
-  description: "Have a project in mind? Contact Softkingo for expert consultation on mobile apps, web development, and AI solutions. We are here to help you grow.",
+  title: "Contact Softkingo - Get a Free Quote for Your Digital Project",
+  description: "Have a project idea? Contact Softkingo for expert consultation on mobile apps, web development, and digital marketing. We reply within 2 hours!",
   alternates: { canonical: "/contact" }
 }
 export default function ContactPage() {

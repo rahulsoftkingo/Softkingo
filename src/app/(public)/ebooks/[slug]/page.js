@@ -28,13 +28,13 @@ export async function generateMetadata(props) {
 
   if (!guide) {
     return {
-      title: "Ebook not found | Softkingo",
+      title: "Ebook not found",
       description: "The requested guide is not available.",
     };
   }
 
   return {
-    title: `${guide.title} | Ebook | Softkingo`,
+    title: `${guide.title} | Ebook`,
     description:
       guide.summary ||
       guide.description ||

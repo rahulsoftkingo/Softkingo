@@ -14,7 +14,7 @@ import { IoLogoInstagram } from "react-icons/io5";
 import { TbBeta } from "react-icons/tb";
 import ReactCountryFlag from "react-country-flag";
 import { GoMail } from "react-icons/go";
-import { TfiSkype } from "react-icons/tfi";
+import { FaMicrosoft } from "react-icons/fa";
 import { MdPhone, MdLocationOn, MdAccessTime } from "react-icons/md";
 import { HiGlobeAlt } from "react-icons/hi";
 import InquiryForm from "../public/InquiryForm";
@@ -188,7 +188,7 @@ const InquirySection = ({
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-sky-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end">
 
           <div className="space-y-8">
@@ -226,15 +226,17 @@ const InquirySection = ({
               </a>
 
               <a
-                href="skype:softkingo?chat"
+                href="https://teams.microsoft.com/l/chat/0/0?users=info@softkingo.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group flex items-center gap-3"
               >
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-sky-500 to-cyan-600 flex items-center justify-center text-white group-hover:scale-110 transition-transform shadow-md">
-                  <TfiSkype className="text-xl" />
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#464EB8] to-[#5059C9] flex items-center justify-center text-white group-hover:scale-110 transition-transform shadow-md">
+                  <FaMicrosoft className="text-xl" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 font-semibold uppercase">Skype</p>
-                  <p className="text-sm font-bold text-gray-900 group-hover:text-sky-600 transition-colors">softkingo</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase">Teams</p>
+                  <p className="text-sm font-bold text-gray-900 group-hover:text-[#464EB8] transition-colors">softkingo</p>
                 </div>
               </a>
             </div>

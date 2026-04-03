@@ -36,7 +36,7 @@ function Process() {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-white to-white py-10 sm:py-12 px-4 sm:px-6">
+    <div className="h-full bg-gradient-to-br from-white to-white py-8 md:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">

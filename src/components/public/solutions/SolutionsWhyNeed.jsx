@@ -24,7 +24,7 @@ export default function SolutionsWhyNeed({ data }) {
     };
 
     return (
-        <section className="py-24 sm:py-32 bg-white overflow-hidden">
+        <section className="py-8 md:py-16 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
                 <CommonTitle
                     align="center"

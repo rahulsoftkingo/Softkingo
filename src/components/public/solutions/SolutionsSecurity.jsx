@@ -16,7 +16,7 @@ export default function SolutionsWhyChoose({ data }) {
     };
 
     return (
-        <section className="py-24 bg-white">
+        <section className="py-8 md:py-16 bg-white">
             <div className="max-w-7xl mx-auto px-6">
 
                 {/* 1. Header */}

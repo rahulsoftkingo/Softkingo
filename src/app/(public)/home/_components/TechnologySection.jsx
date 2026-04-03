@@ -94,7 +94,7 @@ export default function TechView() {
     const [selectedTech, setSelectedTech] = useState('Frontend');
 
     return (
-        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-12 md:py-16 px-4 md:px-6 overflow-hidden">
+        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-8 md:py-16 px-4 md:px-6 overflow-hidden">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8 md:mb-12 text-center max-w-2xl mx-auto">

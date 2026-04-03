@@ -6,7 +6,7 @@ import InquirySection from '@/components/footer/InquirySection';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: "Gallery & Portfolio | Softkingo",
+  title: "Gallery & Portfolio - Inside Softkingo",
   description: "Explore our visual journey. From office culture to successful project launches, see how Softkingo builds excellence.",
   alternates: { canonical: "/gallery" }
 };

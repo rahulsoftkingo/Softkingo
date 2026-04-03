@@ -14,7 +14,7 @@ export default function ServiceProcess({ data }) {
 
     return (
         <section className="bg-white overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
                 <CommonTitle
                     align="center"
                     title={data.title || "Our Development Process"}

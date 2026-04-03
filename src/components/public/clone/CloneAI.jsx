@@ -43,7 +43,7 @@ export default function CloneAI({ data }) {
     };
 
     return (
-        <section className="py-24 bg-white overflow-clip">
+        <section className="py-8 md:py-16 bg-white overflow-clip">
             <div className="max-w-7xl mx-auto px-6">
 
                 <CommonTitle

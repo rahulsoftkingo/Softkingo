@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
   const title = category ? `${category.name} | Insights` : "Insights Category";
   
   return {
-    title: `${title} | Softkingo`,
+    title: `${title}`,
     description: `Explore our latest insights and articles under the ${category?.name || 'various'} category.`,
   };
 }

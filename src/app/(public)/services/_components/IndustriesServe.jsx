@@ -48,7 +48,7 @@ export default function IndustriesServe({ data }) {
     if (!items.length) return null;
 
     return (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+        <section className="py-8 md:py-16 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <CommonTitle

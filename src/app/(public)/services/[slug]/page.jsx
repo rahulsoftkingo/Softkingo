@@ -159,7 +159,7 @@ export default async function ServicePage({ params }) {
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500/10 rounded-full -mr-64 -mt-64 blur-[120px] opacity-50"></div>
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 w-full">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 w-full">
 
 
             <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -291,8 +291,8 @@ export default async function ServicePage({ params }) {
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl -mt-32 opacity-30"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl -mb-48 opacity-20"></div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
-            <div className="flex flex-wrap items-center justify-around gap-10 md:gap-12 text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6 relative z-10">
+            <div className="flex flex-wrap items-center justify-around gap-4 md:gap-12 text-white">
               <StatItem
                 icon={<Clock className="w-8 h-8 md:w-10 md:h-10" />}
                 value={content.stats?.years}

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 export const metadata = {
-  title: "Privacy Policy | Softkingo - Data Protection & Privacy",
+  title: "Privacy Policy - Data Protection & Privacy",
   description: "Read Softkingo's comprehensive privacy policy. Learn how we collect, use, and protect your personal information in compliance with global privacy standards.",
   alternates: { canonical: "/privacy-policy" }
 };

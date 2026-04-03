@@ -5,8 +5,8 @@ import SolutionsSection from './SolutionsSection';
 import InquirySection from '@/components/footer/InquirySection';
 
 export const metadata = {
-  title: "Industry-Specific Software Solutions",
-  description: "Custom-built solutions for Food Delivery, Healthcare, E-commerce, and Fintech industries. Ready-to-deploy and scalable.",
+  title: "Custom Software Solutions",
+  description: "End-to-end software solutions, on-demand platforms, and ready-to-deploy clone apps for startups and enterprises.",
   alternates: { canonical: "/solutions" }
 };
 

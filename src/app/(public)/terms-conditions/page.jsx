@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: "Terms & Conditions | Softkingo - Legal Terms",
+  title: "Terms & Conditions - Legal Terms",
   description: "Read Softkingo's terms and conditions. Understand our service agreements, payment terms, and legal policies for web and app development services.",
   alternates: { canonical: "/terms-conditions" }
 };

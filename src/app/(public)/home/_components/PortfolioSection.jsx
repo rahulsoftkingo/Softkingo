@@ -230,7 +230,7 @@ export default function PortfolioSlider() {
   ];
 
   return (
-    <div className="w-full bg-gradient-to-br from-white via-sky-50 to-sky-100 py-10 sm:py-12 px-4 sm:px-6">
+    <div className="w-full bg-gradient-to-br from-white via-sky-50 to-sky-100 py-8 md:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">

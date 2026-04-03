@@ -83,7 +83,7 @@ export default function FAQAccordion({ data }) {
             subtitle={subtitle}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12 items-start">
           
           {/* Left: Accordion (span 2 columns on lg) */}
           <div className="lg:col-span-2 space-y-4">
