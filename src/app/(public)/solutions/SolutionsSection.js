@@ -39,7 +39,7 @@ export default function SolutionsSection() {
         // title: "Hyperlocal Delivery",
         // description: "Scalable architectures for order matching and GPS tracking.",
         buttonText: "View On-Demand",
-        image: "/images/solutions/solutionslist/on-demand-platform.webp",
+        image: "/images/solutions/solutionslist/On-Demand-Platforms.webp",
       },
       items: [
         { name: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: FaUtensils },
@@ -61,7 +61,7 @@ export default function SolutionsSection() {
         // title: "Rapid Market Entry",
         // description: "Customizable models like Zomato, Uber, and Amazon clones.",
         buttonText: "Browse Clones",
-        image: "/images/solutions/solutionslist/clone-solutions.webp",
+        image: "/images/solutions/solutionslist/Clone-app-development-solutions.webp",
       },
       items: [
         { name: "Amazon Clone", href: "/solutions/amazon-clone-app-development", icon: FaShoppingCart },
@@ -82,7 +82,7 @@ export default function SolutionsSection() {
         // title: "Scalable SaaS",
         // description: "B2B marketplaces and CRM/ERP custom software.",
         buttonText: "View Enterprise",
-        image: "/images/solutions/solutionslist/Business-Model Solutions.webp",
+        image: "/images/solutions/solutionslist/Business-Model-Solutions.webp",
       },
       items: [
         { name: "Marketplace", href: "/solutions/marketplace-app-development", icon: FaStore },

@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import CommonTitle from '@/components/ui/CommonTitle';
 
-function AwardsSection({ 
+function AwardsSection({
   variant = "default",
   title = "Our",
   gradientText = "Awards & Recognitions",

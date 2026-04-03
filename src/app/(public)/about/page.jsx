@@ -16,7 +16,7 @@ export const metadata = {
 };
 
 const FaqData = {
-  title: "General",
+  title: "About Us",
   gradientText: "FAQs",
   subtitle: "Everything you need to know about Softkingo's expertise, locations, and delivery process.",
   items: [
