@@ -9,8 +9,8 @@ import { ImagePlus, X, Send, Paperclip, Loader2 } from 'lucide-react';
 
 export default function OptimizedChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showInfoForm, setShowInfoForm] = useState(false);
-  const [visitorInfo, setVisitorInfo] = useState({ name: '', email: '' });
+  const [onboardingStep, setOnboardingStep] = useState(null); // 'name', 'phone', 'email', null (complete)
+  const [visitorInfo, setVisitorInfo] = useState({ name: '', email: '', phone: '' });
   const [conversationId, setConversationId] = useState(null);
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -72,18 +72,41 @@ export default function OptimizedChatWidget() {
     const savedConversation = localStorage.getItem('chatConversation');
     const savedVisitorInfo = localStorage.getItem('chatVisitorInfo');
 
+    if (savedVisitorInfo) {
+      setVisitorInfo(JSON.parse(savedVisitorInfo));
+    }
+
     if (savedConversation) {
       const data = JSON.parse(savedConversation);
       setConversationId(data.conversationId || data.id);
       fetchMessages(data.conversationId || data.id);
+      setOnboardingStep(null);
     } else {
-      setShowInfoForm(true);
-    }
-
-    if (savedVisitorInfo) {
-      setVisitorInfo(JSON.parse(savedVisitorInfo));
+      // If no conversation but we have info, we can skip onboarding but still need to create conversation
+      // However, usually we start onboarding if no savedConversation exists.
+      if (savedVisitorInfo) {
+        // We have info, just create the conversation
+        const info = JSON.parse(savedVisitorInfo);
+        createConversation(info);
+      } else {
+        // Start onboarding
+        setOnboardingStep('name');
+        addBotMessage("Hi there! Welcome to Softkingo. How can we help you today?");
+        setTimeout(() => {
+          addBotMessage("Before we start, could you please tell me your full name?");
+        }, 1000);
+      }
     }
   }, []);
+
+  const addBotMessage = (content) => {
+    setMessages((prev) => [...prev, {
+      id: Date.now() + Math.random(),
+      content,
+      sender: 'bot',
+      timestamp: new Date()
+    }]);
+  };
 
   const fetchMessages = async (id) => {
     try {
@@ -100,35 +123,53 @@ export default function OptimizedChatWidget() {
     }
   };
 
-  const createConversation = async () => {
-    if (!visitorInfo.name || !visitorInfo.email) return;
+  const createConversation = async (info = null) => {
+    const dataToUse = info || { name: visitorInfo.name || 'Guest', email: visitorInfo.email || 'guest@example.com' };
 
     try {
       const res = await fetch('/api/chat/conversation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(visitorInfo),
+        body: JSON.stringify(dataToUse),
       });
 
       if (res.ok) {
         const data = await res.json();
         setConversationId(data.conversationId);
-        setShowInfoForm(false);
         localStorage.setItem('chatConversation', JSON.stringify(data));
-        localStorage.setItem('chatVisitorInfo', JSON.stringify(visitorInfo));
+
+        if (info) {
+          localStorage.setItem('chatVisitorInfo', JSON.stringify(info));
+        }
 
         if (data.resumed) {
           fetchMessages(data.conversationId);
-        } else {
-          setMessages([]);
         }
 
         if (socketRef.current) {
           socketRef.current.emit('join-conversation', data.conversationId);
         }
+        return data.conversationId;
       }
     } catch (error) {
       console.error('Create conversation error:', error);
+    }
+    return null;
+  };
+
+  const updateVisitorDetails = async (id, details) => {
+    try {
+      await fetch('/api/chat/conversation', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId: id, ...details }),
+      });
+
+      const newInfo = { ...visitorInfo, ...details };
+      setVisitorInfo(newInfo);
+      localStorage.setItem('chatVisitorInfo', JSON.stringify(newInfo));
+    } catch (error) {
+      console.error('Update visitor details error:', error);
     }
   };
 
@@ -166,12 +207,13 @@ export default function OptimizedChatWidget() {
       localStorage.removeItem('chatConversation');
       // We keep visitorInfo (name/email) for convenience, 
       // but clear conversation specific data.
-      
+
       // 3. Reset state
       setConversationId(null);
       setMessages([]);
-      setShowInfoForm(true);
-      
+      setOnboardingStep('name');
+      addBotMessage("Chat has been reset. Let's start over! What is your full name?");
+
       // 4. Leave the old room
       if (socketRef.current && conversationId) {
         socketRef.current.emit('leave-conversation', conversationId);
@@ -180,19 +222,14 @@ export default function OptimizedChatWidget() {
   };
 
   const sendMessage = async () => {
-    if ((!newMessage.trim() && !attachedImage) || !conversationId) return;
+    if (!newMessage.trim() && !attachedImage) return;
 
-    const messageData = {
-      conversationId,
-      message: newMessage.trim(),
-      image: attachedImage,
-      sender: 'visitor'
-    };
+    const content = newMessage.trim();
 
     // Add user message locally immediately
     const localMsg = {
       id: Date.now(),
-      content: newMessage.trim(),
+      content: content,
       sender: 'visitor',
       timestamp: new Date(),
       image: attachedImage ? attachedImage.base64 : null
@@ -201,6 +238,15 @@ export default function OptimizedChatWidget() {
     setMessages(prev => [...prev, localMsg]);
     setNewMessage('');
     setAttachedImage(null);
+
+    // Handle Onboarding Steps
+    if (onboardingStep) {
+      handleOnboarding(content);
+      return;
+    }
+
+    if (!conversationId) return;
+
     setIsTyping(true);
 
     // Save to DB via standard API first (to keep history)
@@ -223,9 +269,76 @@ export default function OptimizedChatWidget() {
     // Send via socket for AI response
     if (socketRef.current) {
       socketRef.current.emit('send-message', {
-        ...messageData,
+        conversationId,
+        message: content,
+        image: attachedImage,
+        sender: 'visitor',
         visitorName: visitorInfo.name
       });
+    }
+  };
+
+  const handleOnboarding = async (content) => {
+    const trimmed = content.trim();
+
+    if (onboardingStep === 'name') {
+      // Validate Name: Min 3 chars, letters only (roughly), not common short answers
+      const isValid = trimmed.length >= 2 && /^[a-zA-Z\s.-]+$/.test(trimmed) && !['yes', 'no', 'ok', 'okay', 'hi', 'hello'].includes(trimmed.toLowerCase());
+
+      if (!isValid) {
+        addBotMessage("Please enter your actual full name so I can address you properly. 👋");
+        return;
+      }
+
+      setVisitorInfo(prev => ({ ...prev, name: trimmed }));
+      setOnboardingStep('phone');
+
+      const id = await createConversation({ name: trimmed, email: 'guest@example.com' });
+
+      setTimeout(() => {
+        addBotMessage(`Nice to meet you, ${trimmed}! Could you please share your mobile number?`);
+      }, 500);
+    }
+    else if (onboardingStep === 'phone') {
+      // Validate Phone: At least 10 digits
+      const digits = trimmed.replace(/\D/g, '');
+      const isValid = digits.length >= 10;
+
+      if (!isValid) {
+        addBotMessage("That doesn't look like a valid mobile number. Please enter at least 10 digits (e.g., 9876543210).");
+        return;
+      }
+
+      setVisitorInfo(prev => ({ ...prev, phone: trimmed }));
+      setOnboardingStep('email');
+
+      if (conversationId) {
+        await updateVisitorDetails(conversationId, { phone: trimmed });
+      }
+
+      setTimeout(() => {
+        addBotMessage("Great! And finally, what is your email address?");
+      }, 500);
+    }
+    else if (onboardingStep === 'email') {
+      // Validate Email: Standard pattern
+      const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
+
+      if (!isValid) {
+        addBotMessage("Please enter a valid email address (e.g., name@example.com).");
+        return;
+      }
+
+      setVisitorInfo(prev => ({ ...prev, email: trimmed }));
+      setOnboardingStep(null);
+
+      if (conversationId) {
+        await updateVisitorDetails(conversationId, { email: trimmed });
+      }
+
+      setTimeout(() => {
+        addBotMessage("Thank you! I've connected you to our AI Assistant. How can I help you today?");
+      }, 500);
     }
   };
 
@@ -242,15 +355,21 @@ export default function OptimizedChatWidget() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-sky-600 hover:bg-sky-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 flex items-center gap-2 group"
+          className="bg-white hover:bg-sky-50 text-sky-600 rounded-full shadow-2xl hover:shadow-sky-200 transition-all duration-300 hover:scale-110 flex items-center group border-2 border-sky-500 overflow-hidden"
         >
-          <div className="relative">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-green-400 ring-2 ring-white"></span>
+          <div className="relative w-14 h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden flex-shrink-0 bg-white">
+            <Image
+              src="/images/bot.png"
+              alt="Chat"
+              width={64}
+              height={64}
+              className="object-cover w-full h-full"
+            />
+            <span className="absolute bottom-1 right-1 block h-3 w-3 rounded-full bg-green-400 ring-2 ring-white"></span>
           </div>
-          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-medium">Chat with us</span>
+          <span className="max-w-0 overflow-hidden group-hover:max-w-xs group-hover:px-4 transition-all duration-500 ease-in-out whitespace-nowrap font-bold text-sky-700">
+            Chat with AI
+          </span>
         </button>
       )}
 
@@ -262,7 +381,7 @@ export default function OptimizedChatWidget() {
             <div className="flex items-center gap-3">
               <div className="relative">
                 <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center border border-slate-100 overflow-hidden">
-                  <Image src="/images/logo.png" alt="Softkingo" width={32} height={32} className="object-contain" />
+                  <Image src="/images/bot.png" alt="Softkingo Bot" width={40} height={40} className="object-cover" />
                 </div>
                 <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-sky-700"></div>
               </div>
@@ -281,9 +400,9 @@ export default function OptimizedChatWidget() {
                 className="p-2 hover:bg-white/10 rounded-full transition-colors"
               >
                 <div className="flex flex-col items-center">
-                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                   </svg>
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
                 </div>
               </button>
               <button
@@ -297,150 +416,108 @@ export default function OptimizedChatWidget() {
 
           {/* Messages Area */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50 custom-scrollbar">
-            {showInfoForm ? (
-              <div className="space-y-5 p-2 py-4 animate-in fade-in duration-500">
-                <div className="text-center space-y-2">
-                  <h3 className="text-lg font-bold text-slate-800">Hi there! 👋</h3>
-                  <p className="text-sm text-slate-500">How can we help you today? Please introduce yourself.</p>
-                </div>
-                <div className="space-y-3">
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-600 ml-1">Full Name</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. John Doe"
-                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition-all shadow-sm"
-                      value={visitorInfo.name}
-                      onChange={(e) => setVisitorInfo({ ...visitorInfo, name: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-600 ml-1">Email Address</label>
-                    <input
-                      type="email"
-                      placeholder="e.g. john@example.com"
-                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition-all shadow-sm"
-                      value={visitorInfo.email}
-                      onChange={(e) => setVisitorInfo({ ...visitorInfo, email: e.target.value })}
-                    />
-                  </div>
-                </div>
-                <button
-                  onClick={createConversation}
-                  disabled={!visitorInfo.name || !visitorInfo.email}
-                  className="w-full bg-sky-600 text-white p-3.5 rounded-xl font-bold hover:bg-sky-700 transition-all shadow-lg hover:shadow-sky-200 disabled:opacity-50 active:scale-[0.98]"
+            <div className="flex justify-center mb-6">
+              <span className="text-[10px] bg-slate-200 text-slate-500 px-3 py-1 rounded-full font-medium uppercase tracking-wider">
+                Today
+              </span>
+            </div>
+
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.sender === 'visitor' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
+              >
+                <div
+                  className={`max-w-[85%] space-y-1 ${message.sender === 'visitor' ? 'items-end' : 'items-start'}`}
                 >
-                  Start Conversation
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="flex justify-center mb-6">
-                  <span className="text-[10px] bg-slate-200 text-slate-500 px-3 py-1 rounded-full font-medium uppercase tracking-wider">
-                    Today
+                  <div
+                    className={`p-3.5 rounded-2xl shadow-sm text-sm ${message.sender === 'visitor'
+                      ? 'bg-sky-600 text-white rounded-tr-none'
+                      : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
+                      }`}
+                  >
+                    {message.image && (
+                      <div className="mb-2 rounded-lg overflow-hidden border border-white/20">
+                        <img src={message.image} alt="attached" className="max-w-full h-auto" />
+                      </div>
+                    )}
+                    <div className={`prose prose-sm max-w-none ${message.sender === 'visitor' ? 'prose-invert' : 'prose-slate'}`}>
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {message.content}
+                      </ReactMarkdown>
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-slate-400 px-1">
+                    {message.timestamp ? new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
                   </span>
                 </div>
+              </div>
+            ))}
 
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sender === 'visitor' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
-                  >
-                    <div
-                      className={`max-w-[85%] space-y-1 ${message.sender === 'visitor' ? 'items-end' : 'items-start'}`}
-                    >
-                      <div
-                        className={`p-3.5 rounded-2xl shadow-sm text-sm ${message.sender === 'visitor'
-                          ? 'bg-sky-600 text-white rounded-tr-none'
-                          : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
-                          }`}
-                      >
-                        {message.image && (
-                          <div className="mb-2 rounded-lg overflow-hidden border border-white/20">
-                            <img src={message.image} alt="attached" className="max-w-full h-auto" />
-                          </div>
-                        )}
-                        <div className={`prose prose-sm max-w-none ${message.sender === 'visitor' ? 'prose-invert' : 'prose-slate'}`}>
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {message.content}
-                          </ReactMarkdown>
-                        </div>
-                      </div>
-                      <span className="text-[10px] text-slate-400 px-1">
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-
-                {isTyping && (
-                  <div className="flex justify-start animate-pulse">
-                    <div className="bg-white border border-slate-100 p-3.5 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
-                      <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    </div>
-                  </div>
-                )}
-              </>
+            {isTyping && (
+              <div className="flex justify-start animate-pulse">
+                <div className="bg-white border border-slate-100 p-3.5 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1">
+                  <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
+                  <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                </div>
+              </div>
             )}
           </div>
 
           {/* Message Input */}
-          {!showInfoForm && (
-            <div className="p-4 bg-white border-t border-slate-100 space-y-3">
-              {attachedImage && (
-                <div className="relative inline-block animate-in zoom-in duration-200">
-                  <div className="h-16 w-16 rounded-xl border border-sky-100 overflow-hidden shadow-md">
-                    <img src={attachedImage.base64} alt="preview" className="object-cover h-full w-full" />
-                  </div>
-                  <button
-                    onClick={() => setAttachedImage(null)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full shadow-lg border-2 border-white hover:bg-red-600 transition-colors"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
+          <div className="p-4 bg-white border-t border-slate-100 space-y-3">
+            {attachedImage && (
+              <div className="relative inline-block animate-in zoom-in duration-200">
+                <div className="h-16 w-16 rounded-xl border border-sky-100 overflow-hidden shadow-md">
+                  <img src={attachedImage.base64} alt="preview" className="object-cover h-full w-full" />
                 </div>
-              )}
-
-              <div className="flex items-end gap-2 bg-slate-50 border border-slate-200 rounded-2xl p-2 transition-all focus-within:border-sky-400 focus-within:ring-2 focus-within:ring-sky-50 shadow-inner">
-                <label className="p-2 hover:bg-slate-200 rounded-full transition-colors cursor-pointer group">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                  <ImagePlus className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
-                </label>
-
-                <textarea
-                  rows="1"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      sendMessage();
-                    }
-                  }}
-                  placeholder="Ask something..."
-                  className="flex-1 bg-transparent border-none focus:ring-0 outline-none p-2 text-sm resize-none custom-scrollbar max-h-32 text-slate-700"
-                ></textarea>
-
                 <button
-                  onClick={sendMessage}
-                  disabled={!newMessage.trim() && !attachedImage}
-                  className="bg-sky-600 text-white p-2.5 rounded-xl hover:bg-sky-700 disabled:opacity-30 transition-all shadow-md active:scale-95"
+                  onClick={() => setAttachedImage(null)}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full shadow-lg border-2 border-white hover:bg-red-600 transition-colors"
                 >
-                  <Send className="w-4 h-4" />
+                  <X className="w-3 h-3" />
                 </button>
               </div>
-              <p className="text-[9px] text-center text-slate-400 font-medium uppercase tracking-tighter">
-                Powered by Softkingo AI Assistant
-              </p>
+            )}
+
+            <div className="flex items-end gap-2 bg-slate-50 border border-slate-200 rounded-2xl p-2 transition-all focus-within:border-sky-400 focus-within:ring-2 focus-within:ring-sky-50 shadow-inner">
+              <label className="p-2 hover:bg-slate-200 rounded-full transition-colors cursor-pointer group">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+                <ImagePlus className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+              </label>
+
+              <textarea
+                rows="1"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                }}
+                placeholder="Ask something..."
+                className="flex-1 bg-transparent border-none focus:ring-0 outline-none p-2 text-sm resize-none custom-scrollbar max-h-32 text-slate-700"
+              ></textarea>
+
+              <button
+                onClick={sendMessage}
+                disabled={!newMessage.trim() && !attachedImage}
+                className="bg-sky-600 text-white p-2.5 rounded-xl hover:bg-sky-700 disabled:opacity-30 transition-all shadow-md active:scale-95"
+              >
+                <Send className="w-4 h-4" />
+              </button>
             </div>
-          )}
+            <p className="text-[9px] text-center text-slate-400 font-medium uppercase ">
+              Powered by Softkingo AI Assistant
+            </p>
+          </div>
         </div>
       )}
 

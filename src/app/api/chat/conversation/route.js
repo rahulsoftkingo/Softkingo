@@ -34,8 +34,8 @@ export async function POST(req) {
     const conversation = await prisma.chatConversation.create({
       data: {
         visitorId,
-        visitorName: name,
-        visitorEmail: email,
+        visitorName: name || 'Guest',
+        visitorEmail: email || 'guest@example.com',
         visitorPhone: phone || null,
         status: 'active',
         priority: 'normal',
@@ -59,7 +59,7 @@ export async function POST(req) {
 export async function PUT(req) {
   try {
     const body = await req.json();
-    const { conversationId, status, assignedToId, rating, feedback, notes } = body;
+    const { conversationId, status, assignedToId, rating, feedback, notes, name, email, phone } = body;
 
     const updateData = {};
     if (status) updateData.status = status;
@@ -67,6 +67,9 @@ export async function PUT(req) {
     if (rating) updateData.rating = rating;
     if (feedback) updateData.feedback = feedback;
     if (notes) updateData.notes = notes;
+    if (name) updateData.visitorName = name;
+    if (email) updateData.visitorEmail = email;
+    if (phone) updateData.visitorPhone = phone;
     if (status === 'closed') updateData.closedAt = new Date();
 
     const conversation = await prisma.chatConversation.update({
