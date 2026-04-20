@@ -94,15 +94,14 @@ export default function OptimizedChatWidget() {
         const info = JSON.parse(savedVisitorInfo);
         createConversation(info);
       } else {
-        // Start onboarding
+        // Prepare onboarding step but don't add messages yet
+        // They will be added with animation in the auto-open logic or manual click
         setOnboardingStep('name');
-        addBotMessage("Hi there! Welcome to Softkingo. How can we help you today?");
-        setTimeout(() => {
-          addBotMessage("Before we start, could you please tell me your full name?");
-        }, 1000);
       }
     }
   }, []);
+
+  const [greetingTriggered, setGreetingTriggered] = useState(false);
 
   // Auto-open logic after 10 seconds
   useEffect(() => {
@@ -114,13 +113,32 @@ export default function OptimizedChatWidget() {
     const timer = setTimeout(() => {
       setIsOpen(true);
       sessionStorage.setItem('chatAutoTriggered', 'true');
-
-      // Play notification sound
-      playNotificationSound();
     }, 10000);
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Animated Greeting Observer: Triggers when chat opens for the first time
+  useEffect(() => {
+    if (isOpen && !greetingTriggered && messages.length === 0 && onboardingStep === 'name') {
+      setGreetingTriggered(true);
+
+      // Sequence: Short pause -> Typing -> Message + Sound -> Next Question
+      setTimeout(() => {
+        setIsTyping(true);
+        
+        setTimeout(() => {
+          setIsTyping(false);
+          addBotMessage("Hii! Welcome to Softkingo. How can we help you today?");
+          playNotificationSound();
+          
+          setTimeout(() => {
+            addBotMessage("Before we start, could you please tell me your full name?");
+          }, 1200);
+        }, 1500);
+      }, 600);
+    }
+  }, [isOpen, greetingTriggered, messages.length, onboardingStep]);
 
   const playNotificationSound = () => {
     try {

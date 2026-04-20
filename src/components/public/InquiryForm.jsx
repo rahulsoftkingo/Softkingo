@@ -121,6 +121,12 @@ const InquiryForm = ({
       }
 
       setToast({ type: "success", message: "Thank you! Your inquiry has been submitted." });
+      
+      // Store submission status to stop recurring popups
+      if (typeof window !== "undefined") {
+        localStorage.setItem("leadSubmitted", "true");
+      }
+
       e.target.reset();
       setPhone("");
       setFileName("");
