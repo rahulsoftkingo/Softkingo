@@ -138,21 +138,21 @@ const Navbar = () => {
   return (
     <>
       {/* Global Security Alert Banner with dynamic visibility */}
-      <div className={`bg-[#D32F2F] text-white px-4 py-2.5 text-center z-50 relative transition-all duration-700 ease-in-out border-b border-rose-700/30 overflow-hidden ${isBannerVisible ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-full'}`}>
+      <div className={`bg-[#D32F2F] text-white px-4 py-1.5 text-center z-50 relative transition-all duration-700 ease-in-out border-b border-rose-700/30 overflow-hidden ${isBannerVisible ? 'max-h-32 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-full'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-3">
-          <span className="flex-shrink-0 text-base md:text-lg animate-pulse">⚠️</span>
-          <p className="text-[10px] sm:text-xs md:text-[13px] font-medium tracking-tight leading-relaxed">
-            <span className="font-bold text-rose-100 uppercase mr-1.5 tracking-wider text-[11px]">Security Alert:</span> 
+          <span className="flex-shrink-0 text-sm md:text-base animate-pulse">⚠️</span>
+          <p className="text-[10px] sm:text-xs md:text-[12px] font-medium tracking-tight leading-normal">
+            <span className="font-bold text-rose-100 uppercase mr-1.5 tracking-wider text-[10px]">Security Alert:</span> 
             Softkingo strictly operates only through <span className="font-bold underline decoration-rose-300">softkingo.com</span>. 
-            We do NOT own or communicate via <span className="bg-white/20 px-1.5 rounded inline-block mx-0.5">softkingo.in</span>. 
-            Any email or job offer from <span className="italic text-rose-100 underline underline-offset-2">@softkingo.in</span> is <span className="font-bold">FAKE</span> and part of a scam. 
-            Please do not share any data or make payments.
+            We do NOT own or communicate via <span className="bg-white/20 px-1.2 rounded inline-block mx-0.5">softkingo.in</span>. 
+            Any email or job offer from <span className="italic text-rose-100 underline underline-offset-2">@softkingo.in</span> is <span className="font-bold">FAKE</span>. 
+            Please do not share data or make payments.
           </p>
           <button 
             onClick={() => setIsBannerVisible(false)}
             className="hidden sm:block ml-3 text-rose-300 hover:text-white transition-colors"
           >
-            <span className="text-2xl leading-none">&times;</span>
+            <span className="text-xl leading-none">&times;</span>
           </button>
         </div>
       </div>
