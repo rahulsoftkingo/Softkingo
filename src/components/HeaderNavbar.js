@@ -43,39 +43,41 @@ const Navbar = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-open logic: First trigger after 5s, then recurring every 15s if not submitted
+  // Auto-open logic: First trigger after 5s, then recurring every 15s after closing if not submitted
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // If form already submitted in the past, never auto-trigger again
-    const submitted = localStorage.getItem("leadSubmitted");
-    if (submitted) return;
-
-    // 1. First trigger after 5 seconds
+    // Trigger initial 5s popup
     const firstTimer = setTimeout(() => {
       const alreadySubmitted = localStorage.getItem("leadSubmitted");
-      if (!alreadySubmitted) {
+      if (!alreadySubmitted && !showModal) {
         setIsAutoTrigger(true);
         setShowModal(true);
       }
     }, 5000);
 
-    // 2. Recurring trigger every 15 seconds
-    const interval = setInterval(() => {
-      const alreadySubmitted = localStorage.getItem("leadSubmitted");
-      if (!alreadySubmitted) {
+    return () => clearTimeout(firstTimer);
+  }, []);
+
+  // Handle recurring 15s trigger AFTER closing
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (showModal) return; // Don't start timer while modal is open
+
+    const alreadySubmitted = localStorage.getItem("leadSubmitted");
+    if (alreadySubmitted) return;
+
+    // Wait 15 seconds after closing to show again
+    const recurringTimer = setTimeout(() => {
+      const stillNotSubmitted = localStorage.getItem("leadSubmitted");
+      if (!stillNotSubmitted && !showModal) {
         setIsAutoTrigger(true);
         setShowModal(true);
-      } else {
-        clearInterval(interval);
       }
     }, 15000);
 
-    return () => {
-      clearTimeout(firstTimer);
-      clearInterval(interval);
-    };
-  }, []);
+    return () => clearTimeout(recurringTimer);
+  }, [showModal]);
 
   const sidebarButtonRef = useRef(null);
 
@@ -136,21 +138,21 @@ const Navbar = () => {
   return (
     <>
       {/* Global Security Alert Banner with dynamic visibility */}
-      <div className={`bg-[#D32F2F] text-white px-4 py-2 text-center z-50 relative transition-all duration-700 ease-in-out border-b border-rose-700/30 overflow-hidden ${isBannerVisible ? 'max-h-20 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-full'}`}>
+      <div className={`bg-[#D32F2F] text-white px-4 py-2.5 text-center z-50 relative transition-all duration-700 ease-in-out border-b border-rose-700/30 overflow-hidden ${isBannerVisible ? 'max-h-40 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-full'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-3">
           <span className="flex-shrink-0 text-base md:text-lg animate-pulse">⚠️</span>
-          <p className="text-[10px] sm:text-xs md:text-[13px] font-medium tracking-tight leading-relaxed">
-            <span className="font-bold text-rose-100 uppercase mr-1">Security Alert:</span> 
-            Softkingo strictly operates only through <span className="font-bold underline">softkingo.com</span>. 
-            We do NOT own <span className="bg-white/10 px-1.5 rounded text-white mx-0.5">softkingo.in</span>. 
-            Any emails from <span className="italic text-rose-200">@softkingo.in</span> are phishing scams. 
-            Do not share data or make payments.
+          <p className="text-[10px] sm:text-xs md:text-[13px] font-bold uppercase tracking-[0.02em] leading-relaxed">
+            <span className="text-rose-100 mr-1">SECURITY ALERT:</span> 
+            Softkingo strictly operates only through <span className="underline decoration-rose-300 decoration-2 underline-offset-2">softkingo.com</span>. 
+            We do NOT own or communicate via <span className="bg-white/20 px-1.5 rounded mx-0.5">softkingo.in</span>. 
+            Any email or job offer from <span className="italic text-rose-100 underline underline-offset-2">@softkingo.in</span> is FAKE and part of a scam. 
+            Please do not share any data or make payments.
           </p>
           <button 
             onClick={() => setIsBannerVisible(false)}
-            className="hidden sm:block ml-2 text-rose-200 hover:text-white transition-colors"
+            className="hidden sm:block ml-3 text-rose-300 hover:text-white transition-colors"
           >
-            <span className="text-lg">×</span>
+            <span className="text-2xl leading-none">&times;</span>
           </button>
         </div>
       </div>
