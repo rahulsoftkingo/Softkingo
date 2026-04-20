@@ -27,6 +27,13 @@ export default function SolutionsWhyChoose({ data }) {
                     subtitle={data.subtitle}
                 />
 
+                {data.description && (
+                    <div 
+                        className="max-w-3xl mx-auto text-center mt-6 text-slate-600 text-lg leading-relaxed animate-fadeIn"
+                        dangerouslySetInnerHTML={{ __html: data.description }}
+                    />
+                )}
+
                 {/* 2. Main Container Box */}
                 <div className="mt-16 bg-sky-50 rounded-xl p-4  border border-sky-100 shadow-xl overflow-hidden relative">
 
@@ -102,7 +109,7 @@ export default function SolutionsWhyChoose({ data }) {
 
                                 {/* Points Grid */}
                                 <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 border border-white/50 shadow-sm">
-                                    <h5 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">Key Benefits</h5>
+                                    <h5 className="text-sm font-bold text-slate-400 mb-6">Key Benefits</h5>
                                     <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
                                         {data.items[activeTab]?.points?.map((point, pIdx) => (
                                             <div key={pIdx} className="flex items-start gap-3">

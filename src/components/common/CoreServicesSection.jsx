@@ -290,7 +290,7 @@ export default function CoreServicesSection({
 
     return (
         <section id={sectionId} className={`${bgClass}relative`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-1">
                 <CommonTitle align="center" title={title} subtitle={subtitle} />
 
                 {/* Mobile / Tablet Horizontal Navigation (NEW) */}

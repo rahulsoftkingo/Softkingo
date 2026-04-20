@@ -32,6 +32,13 @@ export default function SolutionsWhyNeed({ data }) {
                     subtitle={data.subtitle || "Exploring the critical advantages and strategic value for your business."}
                 />
 
+                {data.description && (
+                    <div 
+                        className="max-w-3xl mx-auto text-center mt-6 text-slate-600 text-lg leading-relaxed animate-fadeIn"
+                        dangerouslySetInnerHTML={{ __html: data.description }}
+                    />
+                )}
+
                 <div className="mt-16 flex flex-row gap-3 sm:gap-4 h-[420px] overflow-x-auto no-scrollbar pb-4">
                     {items.map((item, idx) => {
                         const isActive = activeIndex === idx;
@@ -91,7 +98,7 @@ export default function SolutionsWhyNeed({ data }) {
                                             {(item.bullets || ['Strategic Growth', 'Scalable Architecture', 'Premium Design', '24/7 Support']).map((tag, tIdx) => (
                                                 <div key={tIdx} className="flex items-center gap-2 sm:gap-3 group/tag transition-transform hover:scale-105">
                                                     <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-sky-500 flex-shrink-0" />
-                                                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 group-hover/tag:text-sky-600 transition-colors truncate">
+                                                    <span className="text-[9px] sm:text-[10px] font-bold text-slate-500 group-hover/tag:text-sky-600 transition-colors truncate">
                                                         {tag}
                                                     </span>
                                                 </div>
@@ -108,7 +115,7 @@ export default function SolutionsWhyNeed({ data }) {
                                         </div>
                                     </div>
                                     <div className="w-full text-center">
-                                        <h3 className="text-[10px] sm:text-xs lg:text-sm font-bold text-slate-400 uppercase tracking-tighter group-hover:text-sky-500 transition-colors line-clamp-3 sm:line-clamp-2 px-1">
+                                        <h3 className="text-[10px] sm:text-xs lg:text-sm font-bold text-slate-400 group-hover:text-sky-500 transition-colors line-clamp-3 sm:line-clamp-2 px-1">
                                             {item.title}
                                         </h3>
                                     </div>

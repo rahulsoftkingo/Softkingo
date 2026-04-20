@@ -2,6 +2,7 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import CommonTitle from '@/components/ui/CommonTitle';
 
 const defaultTechStackData = {
@@ -96,29 +97,39 @@ export default function SolutionsTechStack({ data }) {
                 )}
 
                 {/* 3. Tech Grid Display */}
-                <div className="min-h-[200px] flex justify-center">
-                    <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-6xl animate-fadeIn">
-                        {techData?.tabs?.[activeTab]?.items?.map((tech, idx) => (
-                             <div
-                                key={idx}
-                                className="group flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-sky-500/10 hover:border-sky-200 transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
-                            >
-                                <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
-                                    {tech.image && (
-                                        <Image
-                                            src={tech.image}
-                                            alt={tech.name}
-                                            fill
-                                            className="object-contain transition-all duration-500"
-                                        />
-                                    )}
+                <div className="min-h-[300px] flex justify-center">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeTab}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.4 }}
+                            className="flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-6xl"
+                        >
+                            {techData?.tabs?.[activeTab]?.items?.map((tech, idx) => (
+                                <div
+                                    key={`${activeTab}-${idx}`}
+                                    className="group flex flex-col items-center justify-center gap-4 p-6 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-sky-500/10 hover:border-sky-300 hover:bg-white transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
+                                >
+                                    <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center filter grayscale group-hover:grayscale-0 transition-all duration-500">
+                                        {tech.image && (
+                                            <Image
+                                                src={tech.image}
+                                                alt={tech.name}
+                                                fill
+                                                className="object-contain"
+                                                sizes="(max-width: 768px) 48px, 64px"
+                                            />
+                                        )}
+                                    </div>
+                                    <span className="text-xs md:text-sm font-bold text-slate-800 text-center">
+                                        {tech.name}
+                                    </span>
                                 </div>
-                                <span className="text-xs md:text-sm font-bold text-slate-800 tracking-tight text-center">
-                                    {tech.name}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
 
             </div>

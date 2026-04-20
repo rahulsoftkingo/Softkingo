@@ -29,11 +29,17 @@ export default function SolutionsMonetization({ data }) {
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div className="w-full md:w-auto text-center md:text-left mx-auto md:mx-0">
                 <CommonTitle 
-                    align="left" // Keep left align to match buttons on right, or center if you prefer
+                    align="left" 
                     title={data.title} 
                     gradientText={data.highlight}
                     subtitle={data.subtitle} 
                 />
+                {data.description && (
+                    <div 
+                        className="mt-6 text-slate-600 text-lg leading-relaxed max-w-3xl"
+                        dangerouslySetInnerHTML={{ __html: data.description }}
+                    />
+                )}
             </div>
 
             {/* Carousel Buttons */}
@@ -69,7 +75,7 @@ export default function SolutionsMonetization({ data }) {
                         <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                             <DollarSign size={28} />
                         </div>
-                        <span className="px-3 py-1 bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-wider rounded-full border border-slate-100">
+                        <span className="px-3 py-1 bg-slate-50 text-slate-500 text-xs font-bold rounded-full border border-slate-100">
                             Model 0{idx + 1}
                         </span>
                     </div>

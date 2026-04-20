@@ -32,6 +32,23 @@ const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isAutoTrigger, setIsAutoTrigger] = useState(false);
+
+  // Auto-open logic after 5 seconds
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const seen = sessionStorage.getItem("autoPopupSeen");
+    if (seen) return;
+
+    const timer = setTimeout(() => {
+      setIsAutoTrigger(true);
+      setShowModal(true);
+      sessionStorage.setItem("autoPopupSeen", "true");
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const sidebarButtonRef = useRef(null);
 
@@ -375,7 +392,14 @@ const Navbar = () => {
       {isMobile && isMenuOpen && <SideBar setShowModal={setShowModal} />}
 
       {/* Popup with InquiryForm inside */}
-      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
+      <PopupQuoteModal 
+        open={showModal} 
+        onClose={() => {
+          setShowModal(false);
+          setIsAutoTrigger(false);
+        }} 
+        isAutoTrigger={isAutoTrigger}
+      />
     </>
   );
 };

@@ -17,19 +17,28 @@ export default function SolutionsCTA({ data }) {
         <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
 
         <div className="relative z-10 max-w-3xl mx-auto space-y-6">
-          <h2 className="text-3xl md:text-5xl font-black leading-normal">
+          <h2 className="text-3xl md:text-4xl font-bold leading-normal">
             {data.title}
           </h2>
           <p className="text-lg text-sky-100">
             {data.subtitle}
           </p>
           <div className="pt-4">
-            <Button 
-              onClick={() => setShowModal(true)}
-              className="bg-white text-sky-600 hover:bg-sky-50 shadow-lg px-10 py-4 text-lg cursor-pointer"
-            >
-              {data.btnText || "Get Started Now"}
-            </Button>
+            {data.btnLink ? (
+              <a 
+                href={data.btnLink}
+                className="inline-block bg-white text-sky-600 hover:bg-sky-50 shadow-lg px-10 py-4 text-lg font-bold rounded-xl transition-all hover:-translate-y-1"
+              >
+                {data.btnText || "Get Started Now"}
+              </a>
+            ) : (
+              <Button 
+                onClick={() => setShowModal(true)}
+                className="bg-white text-sky-600 hover:bg-sky-50 shadow-lg px-10 py-4 text-lg cursor-pointer font-bold rounded-xl"
+              >
+                {data.btnText || "Get Started Now"}
+              </Button>
+            )}
           </div>
         </div>
       </div>

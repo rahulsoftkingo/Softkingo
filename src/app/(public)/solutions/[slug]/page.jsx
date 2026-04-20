@@ -11,6 +11,7 @@ import AwardsSection from '@/components/common/AwardsSection';
 import SolutionsWhyNeed from '@/components/public/solutions/SolutionsWhyNeed';
 import SolutionsServicesList from '@/components/public/solutions/SolutionsServicesList';
 import SolutionsAppModule from '@/components/public/solutions/SolutionsAppModule';
+import SolutionsAppModuleTabs from '@/components/public/solutions/SolutionsAppModuleTabs';
 import SolutionsAICapabilities from '@/components/public/solutions/SolutionsAICapabilities';
 import SolutionsProcess from '@/components/public/solutions/SolutionsProcess';
 import SolutionsTechStack from '@/components/public/solutions/SolutionsTechStack';
@@ -100,7 +101,9 @@ export async function generateMetadata(props) {
     const image = page.seoImage || "/og-image.png";
 
     return {
-        title,
+        title: {
+            absolute: title.replace(/Softkingo/gi, '').replace(/\s*-\s*$/g, '').trim()
+        },
         description,
         alternates: { canonical: `/solutions/${params.slug}` },
         openGraph: {
@@ -328,14 +331,9 @@ export default async function DynamicSolutionPage(props) {
             {show('awards') && <AwardsSection awards={awards?.items} />}
             {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
             {show('servicesList') && <SolutionsServicesList data={servicesList} />}
-            {show('appModules') && finalModules.map((tab, idx) => (
-                <SolutionsAppModule
-                    key={idx}
-                    data={tab}
-                    reverse={idx % 2 === 0}
-                    bg={idx % 2 === 0 ? "white" : "slate-50"}
-                />
-            ))}
+            {show('appModules') && (
+                <SolutionsAppModuleTabs data={{ ...appModules, tabs: finalModules }} />
+            )}
             {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
             {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title={portfolio?.title} subtitle={portfolio?.subtitle} />}
             {show('process') && <SolutionsProcess data={process} />}
@@ -359,14 +357,6 @@ export default async function DynamicSolutionPage(props) {
                     category={blogCategory || ""}
                     title={blogTitle || "Our Latest Blogs"}
                     subtitle={blogSubtitle || "Explore our latest insights, product lessons, and engineering best practices."}
-                />
-            )}
-
-            {show('cta') && (
-                <SolutionsCTA
-                    title={cta?.title}
-                    subtitle={cta?.subtitle}
-                    btnText={cta?.btnText}
                 />
             )}
 

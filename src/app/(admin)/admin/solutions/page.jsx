@@ -6,14 +6,14 @@ import PageEditor from "./_components/PageEditor";
 export default function SolutionsAdmin() {
     const [view, setView] = useState("list");
     const [editorType, setEditorType] = useState("solution");
-    
+
     // Data Container
-    const [items, setItems] = useState({ 
-        solutions: [], 
-        industries: [], 
-        clones: [] 
+    const [items, setItems] = useState({
+        solutions: [],
+        industries: [],
+        clones: []
     });
-    
+
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [editorData, setEditorData] = useState(null);
@@ -22,7 +22,7 @@ export default function SolutionsAdmin() {
     const initialForm = {
         section: "solutions",
         slug: "",
-        activeSections: ['hero', 'about', 'features', 'banner', 'whyInvest', 'tech', 'portfolio', 'awards', 'cta', 'blogs', 'faq'], 
+        activeSections: ['hero', 'about', 'features', 'banner', 'whyInvest', 'tech', 'portfolio', 'awards', 'cta', 'blogs', 'faq'],
         content: { hero: {} }
     };
 
@@ -44,10 +44,10 @@ export default function SolutionsAdmin() {
     // --- Handlers ---
     const handleCreate = (type) => {
         setEditorType(type);
-        setEditorData({ 
-            ...initialForm, 
-            type, 
-            section: type === 'industry' ? 'industries' : 'solutions' 
+        setEditorData({
+            ...initialForm,
+            type,
+            section: type === 'industry' ? 'industries' : 'solutions'
         });
         setView("editor");
     };
@@ -66,9 +66,9 @@ export default function SolutionsAdmin() {
             } else {
                 alert("Error loading page data.");
             }
-        } catch (e) { 
+        } catch (e) {
             console.error(e);
-            alert("Failed to fetch page details."); 
+            alert("Failed to fetch page details.");
         }
         setLoading(false);
     };
@@ -80,7 +80,7 @@ export default function SolutionsAdmin() {
     //         : `Are you sure you want to delete "${item.title}"? This cannot be undone.`;
 
     //     if (!confirm(msg)) return;
-        
+
     //     try {
     //         const res = await fetch("/api/admin/solutions", { 
     //             method: "DELETE", 
@@ -101,30 +101,30 @@ export default function SolutionsAdmin() {
     // Updated Delete Handler
     const handleDelete = async (item, section, deleteType) => {
         // deleteType: 'delete_db' or 'delete_file'
-        
-        const confirmMsg = deleteType === 'delete_file' 
+
+        const confirmMsg = deleteType === 'delete_file'
             ? `⚠️ DANGER: This will PERMANENTLY DELETE the folder "${item.slug}" from your server code. Cannot be undone.`
             : `Are you sure you want to delete "${item.title}" from the Database?`;
 
         if (!confirm(confirmMsg)) return;
-        
+
         try {
-            const res = await fetch("/api/admin/solutions", { 
-                method: "DELETE", 
+            const res = await fetch("/api/admin/solutions", {
+                method: "DELETE",
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     id: typeof item.id === 'number' ? item.id : null, // Only pass ID if it's a real DB id
                     slug: item.slug,
                     section: section, // needed for file path
                     action: deleteType // Tell API what to delete
-                }) 
+                })
             });
             const result = await res.json();
-            if (result.success) { 
+            if (result.success) {
                 alert(result.message);
                 fetchItems(); // Refresh list
-            } else { 
-                alert("Failed: " + result.message); 
+            } else {
+                alert("Failed: " + result.message);
             }
         } catch (e) { alert("An error occurred."); }
     };
@@ -143,13 +143,13 @@ export default function SolutionsAdmin() {
     // const ListItem = ({ item, catKey }) => {
     //     const isDb = item.source === 'db' || item.source === 'both';
     //     const isFile = item.source === 'file' || item.source === 'both';
-        
+
     //     const routeSection = catKey === 'industries' ? 'industries' : 'solutions';
     //     const viewUrl = `/${routeSection}/${item.slug}`;
 
     //     return (
     //         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all group relative">
-                
+
     //             {/* Source Badges */}
     //             <div className="absolute top-3 right-3 flex gap-1.5">
     //                 {isDb && <Database size={14} className="text-blue-500" strokeWidth={2.5} title="Source: Database" />}
@@ -207,13 +207,13 @@ export default function SolutionsAdmin() {
     const ListItem = ({ item, catKey }) => {
         const isDb = item.source === 'db' || item.source === 'both';
         const isFile = item.source === 'file' || item.source === 'both';
-        
+
         const routeSection = catKey === 'industries' ? 'industries' : 'solutions';
         const viewUrl = `/${routeSection}/${item.slug}`;
 
         return (
             <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all group relative">
-                
+
                 {/* Source Badges */}
                 <div className="absolute top-3 right-3 flex gap-1.5">
                     {isDb && <span title="Exists in DB" className="bg-blue-100 text-blue-700 p-1 rounded"><Database size={12} /></span>}
@@ -234,7 +234,7 @@ export default function SolutionsAdmin() {
 
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-50">
-                    
+
                     {/* 1. View */}
                     <button onClick={() => window.open(viewUrl, '_blank')} className="btn-icon bg-slate-50 text-slate-600 hover:text-sky-600 transition-colors duration-200 shadow-sm hover:shadow-md px-6 py-2" title="View Live">
                         <ExternalLink size={14} />
@@ -268,28 +268,28 @@ export default function SolutionsAdmin() {
     return (
         <div className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans p-6 md:p-8">
             <div className="max-w-[1800px] mx-auto space-y-8">
-                
+
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-slate-200">
                     <div>
                         <h1 className="text-3xl font-black text-slate-900 mb-1 flex items-center gap-3">
-                            Page Management {loading && <RefreshCw size={18} className="animate-spin text-slate-400"/>}
+                            Page Management {loading && <RefreshCw size={18} className="animate-spin text-slate-400" />}
                         </h1>
                         <p className="text-slate-500 text-sm font-medium">Manage Dynamic & Static Pages</p>
                     </div>
                     <div className="flex flex-wrap gap-3">
-                         <button onClick={fetchItems} className="bg-white border border-slate-200 text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-50 shadow-sm"><RefreshCw size={18}/></button>
-                         <button onClick={() => handleCreate('solution')} className="bg-sky-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-sky-700 shadow-sm text-xs"><Plus size={16}/> Add Solution</button>
-                         <button onClick={() => handleCreate('industry')} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-emerald-700 shadow-sm text-xs"><Plus size={16}/> Add Industry</button>
-                         <button onClick={() => handleCreate('clone')} className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-orange-700 shadow-sm text-xs"><Plus size={16}/> Add Clone</button>
+                        <button onClick={fetchItems} className="bg-white border border-slate-200 text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-50 shadow-sm"><RefreshCw size={18} /></button>
+                        <button onClick={() => handleCreate('solution')} className="bg-sky-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-sky-700 shadow-sm text-xs"><Plus size={16} /> Add Solution</button>
+                        <button onClick={() => handleCreate('industry')} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-emerald-700 shadow-sm text-xs"><Plus size={16} /> Add Industry</button>
+                        <button onClick={() => handleCreate('clone')} className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-orange-700 shadow-sm text-xs"><Plus size={16} /> Add Clone</button>
                     </div>
                 </div>
 
                 {/* Search */}
                 <div className="bg-white p-3 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3 px-4">
-                    <Search size={18} className="text-slate-400"/>
-                    <input 
-                        placeholder="Search pages..." 
+                    <Search size={18} className="text-slate-400" />
+                    <input
+                        placeholder="Search pages..."
                         className="bg-transparent border-none text-sm font-medium focus:ring-0 w-full outline-none"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -314,12 +314,12 @@ export default function SolutionsAdmin() {
                                 </div>
 
                                 <div className="p-4 overflow-y-auto h-[calc(100vh-320px)] custom-scrollbar space-y-6">
-                                    
+
                                     {/* DB Pages Section */}
                                     {dbItems.length > 0 && (
                                         <div>
                                             <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1">
-                                                <Database size={10}/> Database Pages
+                                                <Database size={10} /> Database Pages
                                             </h4>
                                             <div className="space-y-3">
                                                 {dbItems.map(item => <ListItem key={item.id} item={item} catKey={cat.key} />)}
@@ -331,7 +331,7 @@ export default function SolutionsAdmin() {
                                     {fileItems.length > 0 && (
                                         <div>
                                             <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1">
-                                                <Folder size={10}/> Static Files
+                                                <Folder size={10} /> Static Files
                                             </h4>
                                             <div className="space-y-3">
                                                 {fileItems.map(item => <ListItem key={item.id} item={item} catKey={cat.key} />)}
@@ -341,7 +341,7 @@ export default function SolutionsAdmin() {
 
                                     {allItems.length === 0 && (
                                         <div className="h-40 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 rounded-xl">
-                                            <Layers size={24} className="mb-2 opacity-30"/>
+                                            <Layers size={24} className="mb-2 opacity-30" />
                                             <p className="text-xs font-medium opacity-60">No pages found</p>
                                         </div>
                                     )}

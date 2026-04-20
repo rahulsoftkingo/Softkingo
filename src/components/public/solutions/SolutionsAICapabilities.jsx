@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import CommonTitle from '@/components/ui/CommonTitle';
-import { Check } from 'lucide-react';
+import { Check, Zap } from 'lucide-react';
 
 export default function SolutionsAICapabilities({ data }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -51,50 +51,47 @@ export default function SolutionsAICapabilities({ data }) {
                     </div>
 
                     {/* 3. RIGHT SIDE: Sticky Content Card */}
-                    {/* lg:sticky laga diya hai taaki scroll sirf desktop par stuck ho, mobile par natural flow rahe */}
-                    <div className="lg:col-span-7 relative h-full lg:min-h-[400px]">
+                    <div className="lg:col-span-7 relative h-full lg:min-h-[450px]">
                         <div className="lg:sticky lg:top-32">
-                            <div className="relative bg-sky-50 rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-12 overflow-hidden border border-sky-100 shadow-xl transition-all duration-500">
+                            <div className="relative bg-white rounded-[2rem] md:rounded-[3rem] p-8 sm:p-10 md:p-14 overflow-hidden border border-slate-100 shadow-2xl transition-all duration-500 hover:shadow-sky-200/50 group">
 
-                                {/* Background Giant Shadow Number */}
-                                {/* Font size mobile ke hisaab se chhota kiya hai (8rem) */}
-                                <div className="absolute top-0 right-0 text-[8rem] sm:text-[12rem] md:text-[15rem] font-black leading-none text-white/50 select-none pointer-events-none -mt-4 sm:-mt-10 -mr-4 sm:-mr-10 z-0">
+                                {/* Background Decorative Elements */}
+                                <div className="absolute top-0 right-0 text-[10rem] sm:text-[15rem] font-bold leading-none text-sky-50/50 select-none pointer-events-none -mt-4 sm:-mt-10 -mr-4 sm:-mr-10 z-0 transition-transform group-hover:scale-110 duration-700">
                                     0{activeTab + 1}
                                 </div>
+                                <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-sky-400/5 blur-[80px] rounded-full pointer-events-none" />
 
                                 {/* Content Container */}
                                 <div className="relative z-10 text-left animate-fadeIn">
+                                    
+                                    {/* Icon Backdrop */}
+                                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-200 mb-8 transform transition-transform group-hover:rotate-6">
+                                        <Zap className="w-8 h-8 text-white" />
+                                    </div>
 
                                     {/* Main Title */}
-                                    <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 mb-4 md:mb-6 pr-16 sm:pr-24">
+                                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-6 pr-16 sm:pr-24 leading-tight">
                                         {data?.items?.[activeTab]?.title}
                                     </h3>
 
                                     {/* Description */}
                                     <div
-                                        className="text-slate-600 text-sm md:text-md leading-relaxed mb-6 md:mb-8 max-w-lg rich-text"
+                                        className="text-slate-600 text-base md:text-lg leading-relaxed mb-10 max-w-xl font-medium"
                                         dangerouslySetInnerHTML={{ __html: data?.items?.[activeTab]?.description }}
                                     />
 
-                                    {/* Points List */}
-                                    <div>
-                                        <h5 className="font-bold text-slate-800 mb-3 md:mb-4 text-xs md:text-sm uppercase tracking-wider">Key Capabilities</h5>
-                                        <div className="grid grid-cols-1 gap-3 md:gap-4">
-                                            {data.items[activeTab]?.points?.map((point, pIdx) => (
-                                                <div key={pIdx} className="flex items-start gap-3">
-                                                    <div className="mt-1 p-1 shadow-2xl rounded-full text-sky-100 bg-sky-600 flex-shrink-0">
-                                                        <Check className="w-3 h-3 md:w-[14px] md:h-[14px]" strokeWidth={3} />
-                                                    </div>
-                                                    <span className="text-slate-700 font-medium text-xs sm:text-sm md:text-base leading-snug">{point}</span>
+                                    {/* Points Grid */}
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {data.items[activeTab]?.points?.map((point, pIdx) => (
+                                            <div key={pIdx} className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-sky-100 hover:bg-white transition-all duration-300">
+                                                <div className="p-1.5 rounded-full text-white bg-sky-500 flex-shrink-0 shadow-sm">
+                                                    <Check className="w-3.5 h-3.5" strokeWidth={3} />
                                                 </div>
-                                            ))}
-                                        </div>
+                                                <span className="text-slate-700 font-bold text-xs sm:text-sm">{point}</span>
+                                            </div>
+                                        ))}
                                     </div>
-
                                 </div>
-
-                                {/* Decorative Blob */}
-                                <div className="absolute bottom-0 left-0 w-48 md:w-64 h-48 md:h-64 bg-sky-200/30 rounded-full blur-3xl -z-0 translate-y-1/2 -translate-x-1/2"></div>
                             </div>
                         </div>
                     </div>

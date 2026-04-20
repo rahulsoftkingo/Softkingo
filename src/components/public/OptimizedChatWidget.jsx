@@ -46,6 +46,11 @@ export default function OptimizedChatWidget() {
           }];
         });
         setIsTyping(false);
+
+        // Play sound if message is from admin/bot and not from self
+        if (message.sender !== 'visitor') {
+          playNotificationSound();
+        }
       });
 
       socketRef.current.on('error', (err) => {
@@ -98,6 +103,54 @@ export default function OptimizedChatWidget() {
       }
     }
   }, []);
+
+  // Auto-open logic after 10 seconds
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const chatTriggered = sessionStorage.getItem('chatAutoTriggered');
+    if (chatTriggered) return;
+
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+      sessionStorage.setItem('chatAutoTriggered', 'true');
+
+      // Play notification sound
+      playNotificationSound();
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const playNotificationSound = () => {
+    try {
+      // Using the local user-provided sound file
+      const audioUrl = "/audio/live-chat.mp3";
+      const audio = new Audio(audioUrl);
+      audio.volume = 0.4;
+
+      const startPlay = () => {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            console.log("Autoplay blocked. Sound will trigger on first user interaction.");
+            
+            const playOnInteraction = () => {
+              audio.play().catch(() => {});
+              window.removeEventListener('click', playOnInteraction);
+              window.removeEventListener('touchstart', playOnInteraction);
+            };
+            window.addEventListener('click', playOnInteraction, { once: true });
+            window.addEventListener('touchstart', playOnInteraction, { once: true });
+          });
+        }
+      };
+
+      startPlay();
+    } catch (err) {
+      console.error("Audio playback error:", err);
+    }
+  };
 
   const addBotMessage = (content) => {
     setMessages((prev) => [...prev, {

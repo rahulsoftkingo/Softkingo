@@ -55,6 +55,9 @@ export default function AdminChatPage() {
       // Reload conversations list to show unread/last msg
       loadConversations();
 
+      // Play sound for admin
+      playNotificationSound();
+
       // If we are looking at this conversation, update messages
       if (selectedConv && data.conversationId === selectedConv.id) {
         setMessages(prev => {
@@ -223,6 +226,21 @@ export default function AdminChatPage() {
       month: 'short',
       day: 'numeric'
     });
+  };
+
+  const playNotificationSound = () => {
+    try {
+      const audio = new Audio('/audio/live-chat.mp3');
+      audio.volume = 0.5;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.warn("Autoplay blocked for admin sound:", error);
+        });
+      }
+    } catch (err) {
+      console.error("Failed to play admin notification sound:", err);
+    }
   };
 
   return (

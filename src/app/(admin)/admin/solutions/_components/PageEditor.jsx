@@ -56,26 +56,25 @@ export default function PageEditor({ data, type, onBack }) {
         solution: {
             theme: "sky", label: "Solution Page", uploadDir: "uploads/solutions",
             sections: [
-                { id: 'hero', label: '1. Hero', icon: Smartphone },
-                { id: 'stats', label: '2. Stats Banner', icon: BarChart3 },
-                { id: 'intro', label: '3. Intro', icon: Layout },
-                { id: 'features', label: '4. Features Grid', icon: Database },
-                { id: 'awards', label: '5. Awards', icon: Award },
-                { id: 'whyNeed', label: '6. Why Need', icon: HelpCircle },
-                { id: 'servicesList', label: '7. Services List', icon: Briefcase },
-                { id: 'appModules', label: '8. App Modules', icon: Smartphone },
-                { id: 'aiCapabilities', label: '9. AI Features', icon: Zap },
+                { id: 'hero', label: '1. Hero Section', icon: Smartphone },
+                { id: 'stats', label: '2. Statistics Banner', icon: BarChart3 },
+                { id: 'intro', label: '3. Introduction Section', icon: Layout },
+                { id: 'features', label: '4. Core Features Grid', icon: Database },
+                { id: 'awards', label: '5. Client Recognition / Awards', icon: Award },
+                { id: 'whyNeed', label: '6. Growing Need / Why Choose', icon: HelpCircle },
+                { id: 'servicesList', label: '7. Extensive Services Provided', icon: Briefcase },
+                { id: 'appModules', label: '8. App Modules (Tab Style)', icon: Smartphone },
+                { id: 'aiCapabilities', label: '9. Advanced AI Capabilities', icon: Zap },
                 { id: 'portfolio', label: '10. Portfolio', icon: Layout },
-                { id: 'process', label: '11. Process', icon: Settings },
-                { id: 'techStack', label: '12. Tech Stack', icon: Code },
-                { id: 'monetization', label: '13. Revenue', icon: DollarSign },
-                { id: 'whyChoose', label: '14. Security/Why', icon: ShieldCheck },
-                { id: 'consultation', label: '15. Consult CTA', icon: MessageSquare },
+                { id: 'process', label: '11. Development Roadmap', icon: Settings },
+                { id: 'techStack', label: '12. Technology Stack (Tabbed)', icon: Code },
+                { id: 'monetization', label: '13. Revenue Models', icon: DollarSign },
+                { id: 'whyChoose', label: '14. Enterprise Security & Quality', icon: ShieldCheck },
+                { id: 'consultation', label: '15. Consultation CTA', icon: MessageSquare },
                 { id: 'blogs', label: '16. Blog Section', icon: MessageSquare },
                 { id: 'faq', label: '17. FAQ', icon: HelpCircle },
-                { id: 'cta', label: '18. Bottom CTA', icon: MousePointerClick },
-                { id: 'seo', label: '19. SEO Settings', icon: Search },
-                { id: 'inquiry', label: '20. Inquiry Section', icon: MessageSquare }
+                { id: 'seo', label: '18. SEO Settings', icon: Search },
+                { id: 'inquiry', label: '19. Inquiry Section', icon: MessageSquare }
             ]
         },
         industry: {
@@ -89,12 +88,12 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'otherIndustries', label: '6. Other Industries', icon: Layers },
                 { id: 'whyChoose', label: '7. Why Choose Us', icon: ShieldCheck },
                 { id: 'process', label: '8. Development Process', icon: Settings },
-                { id: 'faq', label: '9. FAQ', icon: HelpCircle },
-                { id: 'testimonials', label: '10. Client Testimonials', icon: MessageSquare },
-                { id: 'consultation', label: '11. Consult CTA', icon: TrendingUp },
-                { id: 'blogs', label: '12. Blog Section', icon: MessageSquare },
-                { id: 'inquiry', label: '13. Inquiry Section', icon: MessageSquare },
-                { id: 'seo', label: '14. SEO Settings', icon: Search }
+                { id: 'testimonials', label: '9. Client Testimonials', icon: MessageSquare },
+                { id: 'consultation', label: '10. Consult CTA', icon: TrendingUp },
+                { id: 'blogs', label: '11. Blog Section', icon: MessageSquare },
+                { id: 'faq', label: '12. FAQ', icon: HelpCircle },
+                { id: 'seo', label: '13. SEO Settings', icon: Search },
+                { id: 'inquiry', label: '14. Inquiry Section', icon: MessageSquare }
             ]
         },
         clone: {
@@ -116,8 +115,8 @@ export default function PageEditor({ data, type, onBack }) {
                 { id: 'popularSolutions', label: '12. Popular Solutions', icon: Layout },
                 { id: 'comparison', label: '13. Comparison Table', icon: BarChart3 },
                 { id: 'consultation', label: '14. Consultation CTA', icon: TrendingUp },
-                { id: 'faq', label: '15. FAQ', icon: HelpCircle },
-                { id: 'blogs', label: '16. Blog Section', icon: MessageSquare },
+                { id: 'blogs', label: '15. Blog Section', icon: MessageSquare },
+                { id: 'faq', label: '16. FAQ', icon: HelpCircle },
                 { id: 'seo', label: '17. SEO Settings', icon: Search }
             ]
         },
@@ -296,19 +295,19 @@ export default function PageEditor({ data, type, onBack }) {
             <div className="w-80 border-r border-slate-200 bg-slate-50 flex flex-col">
                 <div className="p-5 border-b bg-white">
                     <button onClick={onBack} className="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-slate-800 mb-4"><ArrowLeft size={14} /> BACK</button>
-                    <h2 className={`text-lg font-black text-${themeColor}-600 flex items-center gap-2 uppercase`}>{config.label}</h2>
+                    <h2 className={`text-lg font-black text-${themeColor}-600 flex items-center gap-2`}>{config.label}</h2>
                 </div>
                 <div className="flex-1 overflow-y-auto p-5 space-y-6">
                     <div className="space-y-3">
-                        <label className="text-[10px] font-bold text-slate-400 block">PAGE SETTINGS</label>
+                        <label className="text-[10px] font-bold text-slate-400 block pb-1">PAGE SETTINGS</label>
                         <input className="w-full p-2.5 bg-white rounded-lg border border-slate-200 text-sm font-bold" value={formData.title || ''} onChange={e => {
                             const val = e.target.value;
                             setFormData(prev => {
                                 const newContent = { ...(prev.content || {}) };
                                 if (newContent.hero) {
-                                  if (!newContent.hero.title || newContent.hero.title === prev.title) {
-                                    newContent.hero = { ...newContent.hero, title: val };
-                                  }
+                                    if (!newContent.hero.title || newContent.hero.title === prev.title) {
+                                        newContent.hero = { ...newContent.hero, title: val };
+                                    }
                                 }
                                 return { ...prev, title: val, content: newContent };
                             });
@@ -319,7 +318,7 @@ export default function PageEditor({ data, type, onBack }) {
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-slate-400 block">SECTIONS</label>
+                        <label className="text-[10px] font-bold text-slate-400 block pb-1">SECTIONS</label>
                         {config.sections.map((section) => {
                             const isActive = formData.activeSections?.includes(section.id);
                             return (
@@ -333,7 +332,7 @@ export default function PageEditor({ data, type, onBack }) {
                                     });
                                 }} className={`flex items-center gap-3 w-full p-3 rounded-xl border transition-all ${isActive ? `bg-${themeColor}-50 border-${themeColor}-200 text-${themeColor}-700` : `bg-white border-slate-100 text-slate-400`}`}>
                                     <div className={`p-2 rounded-lg ${isActive ? `bg-${themeColor}-100` : 'bg-slate-50'}`}><section.icon size={16} /></div>
-                                    <span className="text-xs font-bold uppercase">{section.label}</span>
+                                    <span className="text-xs font-bold">{section.label}</span>
                                     {isActive && <CheckCircle2 size={14} className={`ml-auto text-${themeColor}-500`} />}
                                 </button>
                             );

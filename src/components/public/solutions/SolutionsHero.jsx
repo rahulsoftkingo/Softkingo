@@ -38,12 +38,12 @@ export default function SolutionsHero({ data }) {
               <span className="text-sky-400 font-medium">{data.title}</span>
             </nav>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-sky-950 leading-[1.1] animate-fadeInUp tracking-tight delay-100">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-sky-950 leading-[1.1] animate-fadeInUp delay-100">
               {data.title}
             </h1>
 
             <div
-              className="text-xs sm:text-sm md:text-base text-slate-600 leading-[1.8] max-w-xl animate-fadeInUp delay-200 mb-10 rich-text"
+              className="text-xs sm:text-sm md:text-base text-slate-600 leading-[1.8] max-w-xl animate-fadeInUp delay-200 rich-text"
               dangerouslySetInnerHTML={{ __html: data.description }}
             />
 

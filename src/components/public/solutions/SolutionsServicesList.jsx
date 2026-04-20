@@ -1,117 +1,76 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import CommonTitle from '@/components/ui/CommonTitle';
-import Image from 'next/image';
-import * as LucideIcons from 'lucide-react'; // Dynamic Icons
+import * as LucideIcons from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function SolutionsServicesList({ data }) {
-    const [activeTab, setActiveTab] = useState(0);
+    if (!data) return null;
 
-    if (!data || !data.tabs) return null;
-
-    const currentTab = data.tabs[activeTab];
+    // Use tabs, items or data directly
+    const services = data.tabs || data.items || [];
+    const sectionTitle = data.title || "Our Comprehensive Services";
+    const sectionSubtitle = data.subtitle || data.description || "End-to-end solutions designed to scale your business.";
 
     // Helper to render dynamic icon
     const renderIcon = (iconName) => {
         const IconComponent = LucideIcons[iconName] || LucideIcons.Zap;
-        return <IconComponent size={24} />;
+        return <IconComponent size={32} />;
     };
 
     return (
-        <section className="py-8 md:py-16 bg-slate-50" id="services-list">
-            <div className="max-w-7xl mx-auto px-6 ">
-
-                {/* 1. Common Title (Center Aligned) */}
+        <section className="py-16 md:py-24 bg-white" id="services-list">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12">
+                
+                {/* Header */}
                 <CommonTitle
                     align="center"
-                    title={data.title}
-                    subtitle={data.subtitle}
+                    title={sectionTitle}
+                    subtitle={sectionSubtitle}
                 />
 
-                {/* 2. Dynamic Tabs (Mobile: Horizontal Scroll, Desktop: Center Wrap) */}
-                <div className="flex overflow-x-auto lg:flex-wrap justify-start lg:justify-center gap-4 mb-16 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                    {data.tabs.map((tab, idx) => (
-                        <button
+                {/* Grid Container */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 md:mt-24">
+                    {services.map((service, idx) => (
+                        <motion.div
                             key={idx}
-                            onClick={() => setActiveTab(idx)}
-                            // flex-shrink-0 aur snap-start lagaya taaki button dab na jaye aur smooth scroll ho
-                            className={`flex-shrink-0 snap-start px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 border ${activeTab === idx
-                                    ? "bg-sky-600 text-white border-sky-600 shadow-lg shadow-sky-200"
-                                    : "bg-white text-slate-600 border-slate-200 hover:border-sky-400 hover:text-sky-500"
-                                }`}
+                            whileHover={{ y: -10 }}
+                            className="relative group bg-slate-50 rounded-[2.5rem] p-10 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-2xl hover:shadow-sky-200/50 overflow-hidden"
                         >
-                            {tab.label}
-                        </button>
-                    ))}
-                </div>
+                            {/* Decorative Glow */}
+                            <div className="absolute -top-24 -right-24 w-64 h-64 bg-sky-400/5 blur-[80px] rounded-full pointer-events-none group-hover:bg-sky-400/10 transition-colors" />
 
-                {/* 3. Main Content Grid */}
-                <div className="grid lg:grid-cols-5 gap-12 lg:gap-24 items-start">
-
-                    {/* LEFT SIDE: Scrollable Stacking Cards */}
-                    <div className="relative col-span-3 ">
-                        {/* Tab Title & Description */}
-                        <div className="mb-12 sticky top-24 z-10 bg-slate-50">
-                            <CommonTitle
-                                align="left"
-                                title={currentTab.heading}
-                                subtitle={currentTab.description}
-                            />
-                        </div>
-
-                        {/* Stacking Items List */}
-                        <div className="space-y-6 pb-20">
-                            {currentTab.items?.map((item, idx) => (
-                                // Sticky Card Logic: top-24 keeps it stuck while next card overlaps
-                                <div
-                                    key={idx}
-                                    className="sticky top-64 bg-white p-6  rounded-xl border border-slate-100 shadow-sm shadow-slate-200/50 flex gap-6 transition-all duration-500 animate-fadeInUp"
-                                    style={{ zIndex: idx + 1 }} // Ensures proper stacking order
-                                >
-                                    {/* Icon */}
-                                    <div className="flex-shrink-0 w-14 h-14 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center">
-                                        {renderIcon(item.icon)}
-                                    </div>
-
-                                    {/* Text */}
-                                    <div>
-                                        <h4 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h4>
-                                        <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
-                                    </div>
+                            <div className="relative z-10 space-y-6">
+                                {/* Icon Frame */}
+                                <div className="w-16 h-16 rounded-2xl bg-white text-sky-600 flex items-center justify-center shadow-sm border border-slate-100 group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition-all duration-500">
+                                    {renderIcon(service.icon || service.items?.[0]?.icon)}
                                 </div>
-                            ))}
-                        </div>
-                    </div>
 
-                    {/* RIGHT SIDE: Sticky Image (Changes based on Tab) */}
-                    <div className="hidden lg:block relative h-full col-span-2">
-                        <div className="sticky top-24 transition-all duration-500 ease-in-out">
-                            {/* Device Frame Logic */}
-                            <div className={`relative mx-auto rounded-2xl  ${currentTab.isWeb ? "aspect-video rounded-xl " : "max-w-sm aspect-[3/5]"
-                                }`}>
-
-                                {/* Screen Image */}
-                                <div className="relative w-full  h-full  ">
-                                    <Image
-                                        key={activeTab} // Key forces re-render animation on tab change
-                                        src={currentTab.image || "/images/placeholder.png"}
-                                        alt={currentTab.heading}
-                                        fill
-                                        // object-contain add kiya taaki notch wali image kate nahi
-                                        className="object-contain animate-scaleIn"
+                                {/* Content */}
+                                <div className="space-y-4">
+                                    <h3 className="text-xl md:text-2xl font-bold text-slate-900 group-hover:text-sky-700 transition-colors">
+                                        {service.label || service.title || service.heading}
+                                    </h3>
+                                    <div 
+                                        className="text-slate-500 text-sm md:text-base leading-relaxed line-clamp-5 rich-text"
+                                        dangerouslySetInnerHTML={{ __html: service.description || service.subtitle }}
                                     />
                                 </div>
 
-                                {/* Notch code here was completely REMOVED as per your request */}
+                                {/* Learn More Hint */}
+                                <div className="pt-4 flex items-center gap-2 text-sky-600 font-bold text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                                    View Details <LucideIcons.ArrowRight size={16} />
+                                </div>
                             </div>
 
-                            {/* Decorative background blob behind image */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-sky-100/50 rounded-full blur-3xl -z-10 scale-110"></div>
-                        </div>
-                    </div>
-
+                            {/* Section Index */}
+                            <div className="absolute bottom-6 right-8 text-4xl font-bold text-slate-200/50 select-none group-hover:text-sky-100 transition-colors">
+                                {idx < 9 ? `0${idx + 1}` : idx + 1}
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>
     );
-}
+}

@@ -151,14 +151,14 @@ export default function AdminHeaderClient({ session }) {
               </div>
               <div className="py-2">
                 <a
-                  href="/admin/account/profile"
+                  href="/admin/profile"
                   className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-sky-50 transition-colors"
                 >
                   <User className="h-4 w-4 text-sky-600" />
                   <span>My Profile</span>
                 </a>
                 <a
-                  href="/admin/account/settings"
+                  href="/admin/settings"
                   className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-sky-50 transition-colors"
                 >
                   <Settings className="h-4 w-4 text-sky-600" />

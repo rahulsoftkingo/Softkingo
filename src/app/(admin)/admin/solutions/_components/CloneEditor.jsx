@@ -560,8 +560,32 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                 </div>
             </SectionWrapper>
 
-            {/* 15. FAQ SECTION */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="15. FAQ" activeSections={activeSections}>
+
+            {/* 15. BLOG SECTION */}
+            <SectionWrapper id="blogs" icon={MessageSquare} title="15. Blog Section" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Title</label>
+                        <input className={inputStyle} placeholder="Latest Blogs" value={content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Subtitle</label>
+                        <input className={inputStyle} placeholder="Subtitle text..." value={content.blogSubtitle || ''} onChange={e => updateField('content.blogSubtitle', e.target.value)} />
+                    </div>
+                </div>
+                <div className="space-y-2">
+                    <label className={labelStyle}>Blog Category</label>
+                    <BlogCategorySelector
+                        value={content.blogCategory || ''}
+                        onChange={val => updateField('content.blogCategory', val)}
+                        className={inputStyle}
+                    />
+                    <p className="text-[10px] text-slate-400 italic">Select specific category or leave for latest blogs.</p>
+                </div>
+            </SectionWrapper>
+
+            {/* 16. FAQ SECTION */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="16. FAQ" activeSections={activeSections}>
                 <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="FAQ Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
@@ -596,29 +620,6 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                         </div>
                         <button type="button" onClick={() => updateField('content.faq.items', (prev) => [...(prev || []), { q: "", a: "" }])} className="text-xs font-bold text-orange-600 uppercase tracking-tight bg-orange-50 py-3 rounded-xl border border-dashed border-orange-200 w-full text-center hover:bg-orange-100 transition-colors">+ Add New FAQ Item</button>
                     </div>
-                </div>
-            </SectionWrapper>
-
-            {/* 16. BLOG SECTION */}
-            <SectionWrapper id="blogs" icon={MessageSquare} title="16. Blog Section" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Blog Section Title</label>
-                        <input className={inputStyle} placeholder="Latest Blogs" value={content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
-                    </div>
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Blog Section Subtitle</label>
-                        <input className={inputStyle} placeholder="Subtitle text..." value={content.blogSubtitle || ''} onChange={e => updateField('content.blogSubtitle', e.target.value)} />
-                    </div>
-                </div>
-                <div className="space-y-2">
-                    <label className={labelStyle}>Blog Category</label>
-                    <BlogCategorySelector 
-                        value={content.blogCategory || ''} 
-                        onChange={val => updateField('content.blogCategory', val)}
-                        className={inputStyle}
-                    />
-                    <p className="text-[10px] text-slate-400 italic">Select specific category or leave for latest blogs.</p>
                 </div>
             </SectionWrapper>
 

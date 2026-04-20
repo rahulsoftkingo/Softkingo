@@ -41,7 +41,7 @@ export default function SolutionsFeatureGrid({ data }) {
                   {/* Title Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <h4 className="text-white font-black text-2xl leading-normal border-l-4 border-sky-500 pl-4">
-                      {item.title}
+                      {item.title || item.name || "Enterprise Feature"}
                     </h4>
                   </div>
                 </div>
@@ -49,13 +49,13 @@ export default function SolutionsFeatureGrid({ data }) {
                 {/* --- BACK SIDE (Description) --- */}
                 <div className="absolute inset-0 h-full w-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-sky-600 rounded-3xl p-8 flex flex-col justify-center items-center text-center border-4 border-white/10">
                   {/* Repeating Title on Back for Context */}
-                  <h4 className="text-white font-bold text-xl mb-6">{item.title}</h4>
+                  <h4 className="text-white font-bold text-xl mb-6">{item.title || item.name || "Enterprise Feature"}</h4>
 
                   <div className="w-16 h-1 bg-white/30 rounded-full mb-6"></div>
 
                   <div
                     className="text-sky-50 text-base leading-relaxed font-medium rich-text"
-                    dangerouslySetInnerHTML={{ __html: item.description || "We provide top-notch development services tailored to your business needs." }}
+                    dangerouslySetInnerHTML={{ __html: item.description || item.content || "Empowering your business with scalable, high-performance technology solutions designed for growth." }}
                   />
                 </div>
 

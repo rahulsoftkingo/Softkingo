@@ -50,7 +50,7 @@ export default function ConsultationCTA({
 
             {/* Content */}
             <div className={`md:col-span-2 ${isWhite ? "text-slate-900" : "text-white"}`}>
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight">{title}</h2>
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold">{title}</h2>
               <div
                 className={`mt-3 text-sm md:text-base max-w-2xl leading-relaxed rich-text ${isWhite ? "text-slate-500" : "text-white/90"}`}
                 dangerouslySetInnerHTML={{ __html: subtitle }}
@@ -59,13 +59,13 @@ export default function ConsultationCTA({
               <div className="mt-8">
                 <button
                   onClick={() => setShowModal(true)}
-                  className={`inline-flex items-center gap-4 px-8 py-3 rounded-full font-bold shadow-2xl transition-all hover:-translate-y-1 active:scale-95 cursor-pointer z-20 ${isWhite
+                  className={`inline-flex items-center gap-4 px-8 py-3 rounded-full font-bold shadow-2xl transition-all hover:-translate-y-1 active:scale-95 cursor-pointer relative z-30 ${isWhite
                     ? "bg-sky-600 text-white shadow-sky-200 hover:bg-sky-700"
                     : "bg-gradient-to-r from-sky-600 via-sky-600 to-sky-400 text-white shadow-sky-800"
                     }`}
                 >
                   <span className={`inline-block w-3 h-3 rounded-full animate-pulse ${isWhite ? "bg-white" : "bg-sky-900/80"}`} />
-                  {buttonLabel}
+                  {buttonLabel || "Book a Free Consultation"}
                 </button>
               </div>
             </div>
