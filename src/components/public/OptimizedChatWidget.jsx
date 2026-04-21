@@ -103,19 +103,41 @@ export default function OptimizedChatWidget() {
 
   const [greetingTriggered, setGreetingTriggered] = useState(false);
 
-  // Auto-open logic after 10 seconds
+  // Track open status globally for mutual exclusion with Popup
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__softkingo_chat_active = isOpen;
+    }
+    return () => {
+      if (typeof window !== 'undefined') window.__softkingo_chat_active = false;
+    };
+  }, [isOpen]);
+
+  const chatTriggeredRef = useRef(false);
+
+  // Auto-open logic after 10 seconds (Once per layout mount)
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const chatTriggered = sessionStorage.getItem('chatAutoTriggered');
-    if (chatTriggered) return;
+    let chatTimer;
 
-    const timer = setTimeout(() => {
+    const attemptChat = () => {
+      if (chatTriggeredRef.current || isOpen) return;
+
+      // Don't open if a global popup is already active
+      if (window.__softkingo_popup_active) {
+        console.log('Chat auto-open suppressed: Popup is active. Retrying in 5s...');
+        chatTimer = setTimeout(attemptChat, 5000);
+        return;
+      }
+
       setIsOpen(true);
-      sessionStorage.setItem('chatAutoTriggered', 'true');
-    }, 10000);
+      chatTriggeredRef.current = true;
+    };
 
-    return () => clearTimeout(timer);
+    chatTimer = setTimeout(attemptChat, 10000);
+
+    return () => clearTimeout(chatTimer);
   }, []);
 
   // Animated Greeting Observer: Triggers when chat opens for the first time

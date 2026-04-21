@@ -1,7 +1,8 @@
 "use client";
-
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 
 /**
  * FeatureSection handles Overview, Requirements, Goals, and Challenges.
@@ -18,6 +19,7 @@ export default function FeatureSection({
     isDark = false
 }) {
     const { primaryColor, secondaryColor, accentColor } = branding;
+    const [activeFeat, setActiveFeat] = useState(0);
 
     // Premium Light Design strategy for consistency and readability
     return (
@@ -39,18 +41,18 @@ export default function FeatureSection({
                 </>
             )}
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24 relative z-10">
-                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12 relative z-10">
+                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center`}>
 
                     {/* Content Section */}
                     <motion.div
                         initial={{ opacity: 0, x: imagePosition === 'right' ? -30 : 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className={`space-y-10 ${imagePosition === 'right' ? '' : 'lg:order-2'}`}
+                        className={`space-y-6 ${imagePosition === 'right' ? '' : 'lg:order-2'}`}
                     >
-                        <div className="space-y-6">
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-normal text-slate-900">
+                        <div className="space-y-4">
+                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-normal text-slate-900">
                                 {title}
                             </h2>
                             <div className="w-20 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
@@ -63,35 +65,49 @@ export default function FeatureSection({
                         )}
 
                         {listItems && listItems.length > 0 && (
-                            <ul className="space-y-6">
-                                {listItems.map((item, idx) => (
-                                    <motion.li
-                                        key={idx}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: idx * 0.1 }}
-                                        className="flex gap-4 group"
-                                    >
-                                        <span
-                                            className="text-2xl flex-shrink-0 transition-transform group-hover:scale-125"
-                                            style={{ color: primaryColor }}
-                                        >
-                                            ▸
-                                        </span>
-                                        <div className="space-y-1 pt-1">
-                                            {typeof item === 'string' ? (
-                                                <p className="font-bold text-lg text-slate-700 leading-relaxed">{item}</p>
-                                            ) : (
-                                                <>
-                                                    <h4 className="font-black text-lg text-slate-900">{item.title}</h4>
-                                                    <p className="text-base font-bold text-slate-500 leading-relaxed">{item.description}</p>
-                                                </>
-                                            )}
-                                        </div>
-                                    </motion.li>
-                                ))}
-                            </ul>
+                            <div className="lg:max-h-[550px] overflow-y-auto pr-4 custom-scrollbar-stylish scroll-smooth">
+                                <ul className="space-y-4">
+                                    {listItems.map((item, idx) => {
+                                        const isActive = activeFeat === idx;
+                                        return (
+                                            <motion.li
+                                                key={idx}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ delay: idx * 0.05 }}
+                                                onMouseEnter={() => setActiveFeat(idx)}
+                                                className={`p-5 rounded-2xl border transition-all duration-300 cursor-pointer group ${isActive
+                                                    ? 'bg-white shadow-xl border-slate-100 translate-x-1'
+                                                    : 'bg-slate-50/50 border-transparent hover:bg-white hover:shadow-md'
+                                                    }`}
+                                            >
+                                                <div className="flex gap-4">
+                                                    <div
+                                                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-sky-500 text-white rotate-90 scale-110' : 'bg-slate-200 text-slate-500'
+                                                            }`}
+                                                        style={isActive ? { backgroundColor: primaryColor } : {}}
+                                                    >
+                                                        <ChevronRight size={18} strokeWidth={3} />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <h4 className={`text-lg font-bold transition-colors duration-300 ${isActive ? 'text-slate-900' : 'text-slate-600'}`}>
+                                                            {typeof item === 'string' ? item : item.title}
+                                                        </h4>
+
+                                                        {isActive && typeof item !== 'string' && item.description && (
+                                                            <div
+                                                                className="mt-3 text-base text-slate-500 leading-relaxed font-medium animate-in fade-in slide-in-from-top-2 duration-300"
+                                                                dangerouslySetInnerHTML={{ __html: item.description }}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </motion.li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
                         )}
                     </motion.div>
 

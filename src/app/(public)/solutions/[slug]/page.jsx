@@ -328,7 +328,13 @@ export default async function DynamicSolutionPage(props) {
             {show('stats') && <SolutionsStats data={stats} />}
             {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}
-            {show('awards') && <AwardsSection awards={awards?.items} />}
+            {show('awards') && (
+                <AwardsSection 
+                    awards={awards?.items} 
+                    title={awards?.title} 
+                    subtitle={awards?.subtitle} 
+                />
+            )}
             {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
             {show('servicesList') && <SolutionsServicesList data={servicesList} />}
             {show('appModules') && (

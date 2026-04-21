@@ -20,22 +20,22 @@ export default function TestimonialSection({ data, branding }) {
     const prev = () => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
     return (
-        <section className="py-24 sm:py-32 bg-white relative overflow-hidden">
+        <section className="py-12 sm:py-16 bg-white relative overflow-hidden">
             {/* Soft Background Accents */}
             <div
                 className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full opacity-[0.03] pointer-events-none"
                 style={{ background: `radial-gradient(circle, ${primaryColor}, transparent)` }}
             />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12 relative z-10">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center space-y-4 mb-16 sm:mb-20"
+                    className="text-center space-y-4 mb-10 sm:mb-12"
                 >
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
                         Voices Of Trust
                     </h2>
                     <div className="w-24 h-1.5 mx-auto rounded-full" style={{ backgroundColor: primaryColor }} />
@@ -67,23 +67,23 @@ export default function TestimonialSection({ data, branding }) {
                             </div>
 
                             {/* Right: Content Section */}
-                            <div className="w-full md:w-[60%] p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative">
+                            <div className="w-full md:w-[60%] p-6 sm:p-10 flex flex-col justify-center relative">
                                 <Quote
                                     className="absolute top-10 right-10 w-20 h-20 opacity-[0.05] -rotate-12"
                                     style={{ color: primaryColor }}
                                 />
 
-                                <div className="space-y-8 relative z-10">
+                                <div className="space-y-4 relative z-10">
                                     <p className="text-xl sm:text-2xl font-bold text-slate-700 leading-relaxed italic">
                                         "{current.review}"
                                     </p>
 
                                     <div className="space-y-2">
-                                        <h4 className="text-2xl sm:text-3xl font-black text-slate-900">
+                                        <h4 className="text-2xl sm:text-3xl font-bold text-slate-900">
                                             {current.name}
                                         </h4>
                                         <p
-                                            className="text-sm sm:text-base font-black uppercase tracking-[0.2em]"
+                                            className="text-sm sm:text-base font-bold uppercase"
                                             style={{ color: primaryColor }}
                                         >
                                             {current.designation || "Project Client"}

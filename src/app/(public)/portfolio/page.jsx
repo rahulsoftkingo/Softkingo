@@ -63,7 +63,7 @@ export default async function PortfolioPage() {
   //   'Gaming',
   //   'Healthcare',
   // ];
-   const categories = ['All', ...Array.from(
+  const categories = ['All', ...Array.from(
     new Set(records.map(p => p.category).filter(Boolean))
   ).sort()];
 
@@ -71,10 +71,19 @@ export default async function PortfolioPage() {
     <main className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-50 to-white text-slate-900">
       {/* Hero with breadcrumb, CTA buttons and right-side carousel */}
       <section
-        className="relative h-[20rem] md:h-[25rem] bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/portfolio/web.jpg')" }}
+        //  className="relative h-[20rem] md:h-[25rem] bg-cover bg-center"
+        //   style={{ backgroundImage: "url('/images/portfolio/web.jpg')" }}
+        // >
+        //   <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/80 via-[#001322]/75 to-[#001322]/30" />
+        className="relative h-[20rem] md:h-[25rem] overflow-hidden"
+        style={{ background: "linear-gradient(135deg, #042c3eff 0%, #097db7ff 100%)" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/80 via-[#001322]/75 to-[#001322]/30" />
+        {/* Subtle Background Texture */}
+        <div
+          className="absolute inset-0 opacity-80"
+          style={{ backgroundImage: "url('/images/portfolio/bg-1.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+        {/* <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" /> */}
         <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 w-full items-center">
             {/* Left: text */}
@@ -131,8 +140,8 @@ export default async function PortfolioPage() {
 
       <ConsultationCTA />
       <FAQAccordion />
-            <InquirySection />
-      
+      <InquirySection />
+
     </main>
   );
 }

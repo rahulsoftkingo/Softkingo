@@ -8,6 +8,8 @@ import {
   Upload,
   Image as ImageIcon,
   Code,
+  Plus,
+  Trash2,
   FileText,
   Link as LinkIcon,
   Search as SearchIcon,
@@ -16,7 +18,14 @@ import {
   Loader2,
   X,
   ExternalLink,
+  Folder,
+  FolderOpen,
+  ZoomIn,
+  ChevronRight,
+  Home,
+  ChevronDown,
 } from "lucide-react";
+import MiniRichTextEditor from "@/components/admin/MiniRichTextEditor";
 
 const TABS = [
   { id: "basic", label: "Basic Info", icon: FileText, mobileLabel: "Basic" },
@@ -53,6 +62,21 @@ export default function PortfolioProjectEditPage() {
   const [success, setSuccess] = useState("");
   const [uploadingField, setUploadingField] = useState(null);
 
+  // Image browser modal state
+  const [showImageBrowser, setShowImageBrowser] = useState(false);
+  const [currentImageField, setCurrentImageField] = useState('');
+  const [currentFolder, setCurrentFolder] = useState('');
+  const [folderFiles, setFolderFiles] = useState([]);
+  const [loadingFiles, setLoadingFiles] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const DEFAULT_BADGES = [
+    { platform: "googlePlay", url: "#", image: "/images/badges/google-play.png" },
+    { platform: "appStore", url: "#", image: "/images/badges/app-store.png" },
+    { platform: "web", url: "#", image: "/images/badges/web-badge.png" }
+  ];
+
   const [form, setForm] = useState({
     key: "",
     type: "app",
@@ -67,10 +91,8 @@ export default function PortfolioProjectEditPage() {
     icon: "/images/case-studies/logo.png",
     phoneMockup: "/images/case-studies/screen1.png",
     caseStudyId: null,
-    badgesText: "", // JSON text area
+    badges: DEFAULT_BADGES,
   });
-
-  const badgesObj = useMemo(() => safeParse(form.badgesText, null), [form.badgesText]);
 
   useEffect(() => {
     if (isNew) return;
@@ -118,18 +140,56 @@ export default function PortfolioProjectEditPage() {
         icon: data.icon || prev.icon,
         phoneMockup: data.phoneMockup || prev.phoneMockup,
         caseStudyId: data.caseStudyId ?? null,
-        badgesText: safeStringify(safeParse(data.badgesJson, null)),
+        badges: data.badgesJson ? Object.entries(safeParse(data.badgesJson, {})).map(([platform, badge]) => {
+          const b = typeof badge === 'object' && badge !== null ? badge : {};
+          return {
+            platform: String(platform || ""),
+            url: String(b.url || b.href || ""),
+            image: String(b.image || b.src || "")
+          };
+        }) : DEFAULT_BADGES,
+        challenges: (() => {
+          const cData = safeParse(data.caseStudy?.challengesJson, null);
+          if (Array.isArray(cData)) return cData;
+          if (cData && typeof cData === 'object') {
+            return [
+              { tabLabel: "Challenge", title: "The Project Challenge", description: cData.challenge || "", image: "" },
+              { tabLabel: "Solution", title: "The Solution", description: cData.solution || "", image: "" }
+            ];
+          }
+          return [{ tabLabel: "Analysis", title: "Project Analysis", description: "", image: "" }];
+        })(),
       }));
 
       setLoading(false);
     })();
   }, [isNew, params.id]);
 
+  const updateFormValue = (path, value) => {
+    setForm((prev) => {
+      const parts = path.split('.');
+      if (parts.length === 1) return { ...prev, [path]: value };
+
+      // Handle array updates like "badges.0.image"
+      if (parts.length === 3) {
+        const [arrayField, indexStr, subField] = parts;
+        const index = parseInt(indexStr);
+        if (!isNaN(index) && Array.isArray(prev[arrayField])) {
+          const copy = [...prev[arrayField]];
+          copy[index] = { ...copy[index], [subField]: value };
+          return { ...prev, [arrayField]: copy };
+        }
+      }
+
+      return prev;
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setError("");
     setSuccess("");
-    setForm((p) => ({ ...p, [name]: value }));
+    updateFormValue(name, value);
   };
 
   async function handleFileUpload(e, fieldName) {
@@ -145,12 +205,11 @@ export default function PortfolioProjectEditPage() {
       fd.append("file", file);
       fd.append("folder", "portfolio");
 
-      // Same upload endpoint used in case-studies page [file:617]
       const res = await fetch("/api/admin/media/upload", { method: "POST", body: fd });
       if (!res.ok) throw new Error("Upload failed");
 
       const data = await res.json();
-      setForm((p) => ({ ...p, [fieldName]: data.url }));
+      updateFormValue(fieldName, data.url);
       setSuccess("Image uploaded successfully!");
       setTimeout(() => setSuccess(""), 2500);
     } catch (err) {
@@ -160,6 +219,82 @@ export default function PortfolioProjectEditPage() {
       setUploadingField(null);
     }
   }
+
+  // Media Library Helpers
+  async function fetchFolderFiles(folder = '') {
+    setLoadingFiles(true);
+    try {
+      const res = await fetch(`/api/media/list?folder=${encodeURIComponent(folder)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setFolderFiles(data.files || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch files:', err);
+      setFolderFiles([]);
+    } finally {
+      setLoadingFiles(false);
+    }
+  }
+
+  const openImageBrowser = (fieldName) => {
+    setCurrentImageField(fieldName);
+    setCurrentFolder('');
+    setSearchQuery('');
+    setShowImageBrowser(true);
+    fetchFolderFiles('');
+  };
+
+  const navigateToFolder = (folderPath) => {
+    setCurrentFolder(folderPath);
+    setSearchQuery('');
+    fetchFolderFiles(folderPath);
+  };
+
+  const goToParentFolder = () => {
+    const parts = currentFolder.split('/').filter(Boolean);
+    parts.pop();
+    const parentFolder = parts.join('/');
+    navigateToFolder(parentFolder);
+  };
+
+  const selectImageFromBrowser = (imagePath) => {
+    updateFormValue(currentImageField, imagePath);
+    setShowImageBrowser(false);
+    setSuccess('Image selected!');
+    setTimeout(() => setSuccess(''), 2000);
+  };
+
+  const filteredFiles = folderFiles.filter((file) => {
+    if (!searchQuery) return true;
+    return file.name.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+  const folders = filteredFiles.filter((f) => f.isDir);
+  const images = filteredFiles.filter((f) => !f.isDir && /\.(jpg|jpeg|png|gif|svg|webp)$/i.test(f.name));
+
+  // Badge list helpers
+  const addBadge = () => {
+    setForm((p) => ({
+      ...p,
+      badges: [...p.badges, { platform: "", url: "", image: "" }],
+    }));
+  };
+
+  const updateBadge = (index, field, value) => {
+    setForm((p) => {
+      const copy = [...p.badges];
+      copy[index] = { ...copy[index], [field]: value };
+      return { ...p, badges: copy };
+    });
+  };
+
+  const removeBadge = (index) => {
+    setForm((p) => ({
+      ...p,
+      badges: p.badges.filter((_, i) => i !== index),
+    }));
+  };
 
   async function handleSave() {
     setError("");
@@ -180,14 +315,6 @@ export default function PortfolioProjectEditPage() {
       country: form.country.slice(0, 255),
       bgColor: form.bgColor.slice(0, 500),
     };
-
-
-    // Validate badges JSON if provided
-    if (form.badgesText.trim() && !badgesObj) {
-      setError("Badges JSON is invalid");
-      setActiveTab("links");
-      return;
-    }
 
     setSaving(true);
 
@@ -213,7 +340,17 @@ export default function PortfolioProjectEditPage() {
       bgColor: truncatedForm.bgColor || null,
       icon: truncatedForm.icon || null,
       phoneMockup: truncatedForm.phoneMockup || null,
-      badges: badgesObj,
+      badges: (form.badges || []).reduce((acc, curr) => {
+        const platform = String(curr?.platform || "").trim();
+        if (platform) {
+          acc[platform] = {
+            url: String(curr?.url || ""),
+            image: String(curr?.image || "")
+          };
+        }
+        return acc;
+      }, {}),
+      challenges: form.challenges || [],
       caseStudyId: truncatedForm.caseStudyId ? Number(truncatedForm.caseStudyId) : null,
     };
 
@@ -246,10 +383,10 @@ export default function PortfolioProjectEditPage() {
         value={value || ""}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
+        className="w-full rounded-lg border border-slate-200 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-mono sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
       />
-      <div className="flex items-center gap-2 sm:gap-3">
-        <label className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 cursor-pointer transition-colors">
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 cursor-pointer transition-colors">
           {uploadingField === name ? (
             <>
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -270,27 +407,131 @@ export default function PortfolioProjectEditPage() {
           />
         </label>
 
-        {value ? (
-          <div className="flex items-center gap-2">
-            <div className="h-10 w-10 rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
+        <button
+          type="button"
+          onClick={() => openImageBrowser(name)}
+          className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 transition-colors"
+        >
+          <Folder className="h-3.5 w-3.5" />
+          <span>Browse</span>
+        </button>
+
+        {value && (
+          <button
+            type="button"
+            onClick={() => setImagePreview(value)}
+            className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg border border-sky-300 bg-sky-50 hover:bg-sky-100 text-[10px] sm:text-xs font-medium text-sky-700 transition-colors"
+          >
+            <ZoomIn className="h-3.5 w-3.5" />
+            <span>Preview</span>
+          </button>
+        )}
+
+        {value && (
+          <div className="flex items-center gap-2 ml-auto">
+            <div className="h-8 w-8 rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
               <img src={value} alt="preview" className="h-full w-full object-cover" />
             </div>
             <a
               href={value}
               target="_blank"
-              className="text-xs text-sky-700 hover:text-sky-800 inline-flex items-center gap-1"
+              className="text-[10px] text-sky-700 hover:text-sky-800"
               rel="noreferrer"
             >
-              <ExternalLink className="h-3.5 w-3.5" />
-              View
+              Link
             </a>
           </div>
-        ) : (
-          <span className="text-xs text-slate-400">No image</span>
         )}
       </div>
     </div>
   );
+
+  const ImageBrowserModal = () => {
+    if (!showImageBrowser) return null;
+    return (
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4 md:p-6">
+        <div className="w-full max-w-5xl bg-white rounded-xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+          <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
+            <div>
+              <h3 className="text-sm sm:text-base font-bold text-slate-900">Browse Images</h3>
+              <p className="text-[10px] sm:text-xs text-slate-500">Select from public folder</p>
+            </div>
+            <button onClick={() => setShowImageBrowser(false)} className="p-2 hover:bg-slate-200 rounded-lg">
+              <X className="h-5 w-5 text-slate-500" />
+            </button>
+          </div>
+          <div className="px-4 py-2 border-b border-slate-200 bg-white flex items-center gap-2 overflow-x-auto text-[10px] sm:text-xs">
+            <button onClick={() => navigateToFolder("")} className="flex items-center gap-1 font-medium text-sky-600">
+              <Home className="h-3 w-3" /> Root
+            </button>
+            {currentFolder.split('/').filter(Boolean).map((part, idx, arr) => (
+              <span key={idx} className="flex items-center gap-1">
+                <ChevronRight className="h-3 w-3 text-slate-400" />
+                <button onClick={() => navigateToFolder(arr.slice(0, idx + 1).join('/'))} className="text-slate-600">
+                  {part}
+                </button>
+              </span>
+            ))}
+          </div>
+          <div className="p-4 overflow-y-auto flex-1">
+            <div className="mb-4">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search images..."
+                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-sky-500"
+              />
+            </div>
+            {loadingFiles ? <div className="flex justify-center p-8"><Loader2 className="animate-spin h-8 w-8 text-sky-600" /></div> : (
+              <div className="space-y-6">
+                {folders.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                    {folders.map((f, i) => (
+                      <button key={i} onClick={() => navigateToFolder(f.path)} className="flex flex-col items-center p-2 rounded-lg border border-slate-200 hover:bg-sky-50">
+                        <Folder className="h-8 w-8 text-sky-500 mb-1" />
+                        <span className="text-[9px] text-center truncate w-full">{f.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {images.length > 0 && (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                    {images.map((img, i) => (
+                      <button key={i} onClick={() => selectImageFromBrowser(img.path)} className="group relative aspect-square rounded-lg border-2 border-transparent hover:border-sky-500 overflow-hidden bg-slate-100">
+                        <img src={img.path} alt="" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                          <CheckCircle2 className="text-white h-6 w-6" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between">
+            <button onClick={goToParentFolder} disabled={!currentFolder} className="px-3 py-1.5 text-xs border border-slate-200 rounded-lg bg-white disabled:opacity-50">Back</button>
+            <button onClick={() => setShowImageBrowser(false)} className="px-3 py-1.5 text-xs bg-slate-200 rounded-lg">Cancel</button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ImagePreviewModal = () => {
+    if (!imagePreview) return null;
+    return (
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4" onClick={() => setImagePreview(null)}>
+        <div className="relative max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+          <button onClick={() => setImagePreview(null)} className="absolute -top-10 right-0 text-white p-2 hover:bg-white/10 rounded-full">
+            <X className="h-6 w-6" />
+          </button>
+          <img src={imagePreview} alt="" className="w-full h-auto rounded-lg shadow-2xl" />
+        </div>
+      </div>
+    );
+  };
 
   if (loading) {
     return (
@@ -617,40 +858,81 @@ export default function PortfolioProjectEditPage() {
             )}
 
             {activeTab === "links" && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1">
-                    Links & Badges
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500">
-                    Paste badges JSON (same as your badgesJson structure).
-                  </p>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-1">
+                      Links & Badges
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-500">
+                      Manage app store links and web badges.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={addBadge}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sky-50 text-sky-700 hover:bg-sky-100 text-xs font-semibold transition-colors"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span>Add Badge</span>
+                  </button>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="block text-xs sm:text-sm font-medium text-slate-700">
-                    Badges JSON
-                  </label>
-                  <textarea
-                    name="badgesText"
-                    value={form.badgesText}
-                    onChange={handleChange}
-                    rows={12}
-                    placeholder={`{
-  "play": {"src": "/images/badges/google-play.png", "href": "..."},
-  "app": {"src": "/images/badges/app-store.png", "href": "..."},
-  "web": {"src": "/images/badges/web-badge.png", "href": "..."}
-}`}
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-mono text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
-                  />
-                  <div className="text-xs text-slate-500 flex items-center gap-2">
-                    <Code className="h-3.5 w-3.5" />
-                    {form.badgesText.trim()
-                      ? badgesObj
-                        ? "Valid JSON"
-                        : "Invalid JSON"
-                      : "Optional"}
-                  </div>
+                <div className="space-y-3 sm:space-y-4">
+                  {form.badges.map((badge, index) => (
+                    <div
+                      key={index}
+                      className="p-3 sm:p-4 rounded-xl border border-slate-200 bg-slate-50 relative group"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => removeBadge(index)}
+                        className="absolute top-3 right-3 text-slate-400 hover:text-rose-600 transition-colors p-1"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
+                        <div>
+                          <label className="block text-[10px] uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                            Platform/Key
+                          </label>
+                          <input
+                            value={badge.platform}
+                            onChange={(e) => updateBadge(index, "platform", e.target.value)}
+                            placeholder="e.g. googlePlay"
+                            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] sm:text-xs lg:text-sm focus:ring-2 focus:ring-sky-500 outline-none"
+                          />
+                        </div>
+                        <div className="md:col-span-1">
+                          <label className="block text-[10px] uppercase tracking-wider font-bold text-slate-500 mb-1.5">
+                            Redirect URL
+                          </label>
+                          <input
+                            value={badge.url}
+                            onChange={(e) => updateBadge(index, "url", e.target.value)}
+                            placeholder="https://..."
+                            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-[10px] sm:text-xs lg:text-sm focus:ring-2 focus:ring-sky-500 outline-none"
+                          />
+                        </div>
+                        <div className="md:col-span-1">
+                          <ImageUploadField
+                            label="Badge Image"
+                            name={`badges.${index}.image`}
+                            value={badge.image}
+                            placeholder="/images/badges/..."
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {form.badges.length === 0 && (
+                    <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50">
+                      <LinkIcon className="h-10 w-10 text-slate-300 mx-auto mb-3" />
+                      <p className="text-slate-500 text-sm">No badges added yet. Click "Add Badge" to start.</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -672,6 +954,9 @@ export default function PortfolioProjectEditPage() {
           </div>
         </section>
       </div>
+
+      <ImageBrowserModal />
+      <ImagePreviewModal />
     </div>
   );
 }

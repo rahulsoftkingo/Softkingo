@@ -25,14 +25,14 @@ export default function SolutionsAppModuleTabs({ data }) {
                 )}
 
                 {/* 2. Tab Navigation */}
-                <div className="flex overflow-x-auto justify-start md:justify-center gap-3 md:gap-4 mb-16 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <div className="flex overflow-x-auto justify-start md:justify-center gap-0 mb-16 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-[#F1F3F6] p-1.5 rounded-2xl w-fit mx-auto border border-slate-100">
                     {data.tabs.map((tab, idx) => (
                         <button
                             key={idx}
-                            onClick={() => setActiveTab(idx)}
-                            className={`px-8 py-3 rounded-full text-sm font-extrabold transition-all duration-300 border whitespace-nowrap snap-center ${activeTab === idx
-                                ? "bg-sky-500 text-white border-sky-500 shadow-lg shadow-sky-200 transform scale-105"
-                                : "bg-slate-50 text-slate-500 border-slate-200 hover:border-sky-200 hover:text-sky-600 hover:bg-sky-50"
+                            onMouseEnter={() => setActiveTab(idx)}
+                            className={`px-8 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 whitespace-nowrap snap-center ${activeTab === idx
+                                ? "bg-sky-500 text-white shadow-md z-10"
+                                : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
                             }`}
                         >
                             {tab.tag || `Module ${idx + 1}`}

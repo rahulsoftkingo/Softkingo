@@ -274,54 +274,60 @@ function CategoryTabs({ categories, primaryColor, activeTab, onTabChange }) {
         {/* List */}
         <div className="space-y-3 sm:space-y-4">
           <div className="space-y-4 mb-6">
-            <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900">
               {currentCategory.name} Features
             </h3>
             <div className="w-16 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
           </div>
-          {screens.map((screen, i) => {
-            const active = i === selectedScreen;
-            return (
-              <button
-                key={screen.name}
-                type="button"
-                onClick={() => setSelectedScreen(i)}
-                className={`w-full flex items-start flex-col gap-1 sm:gap-2 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-xl shadow-sm hover:shadow-lg text-left transition-all ${active ? "ring-2" : "opacity-80 hover:opacity-100"
-                  }`}
-                style={
-                  active
-                    ? {
-                      borderColor: primaryColor,
-                      backgroundColor: `${primaryColor}10`,
-                      ringColor: primaryColor,
+
+          <div className="lg:max-h-[550px] overflow-y-auto pr-2 custom-scrollbar-stylish">
+            <div className="space-y-3 sm:space-y-4 p-1">
+              {screens.map((screen, i) => {
+                const active = i === selectedScreen;
+                return (
+                  <button
+                    key={screen.name}
+                    type="button"
+                    onMouseEnter={() => setSelectedScreen(i)}
+                    className={`w-full flex items-start flex-col gap-1 sm:gap-2 bg-white px-4 sm:px-5 lg:px-6 py-3 sm:py-4 rounded-xl shadow-sm hover:shadow-lg text-left transition-all ${active ? "ring-2" : "opacity-80 hover:opacity-100"
+                      }`}
+                    style={
+                      active
+                        ? {
+                          borderColor: primaryColor,
+                          backgroundColor: `${primaryColor}10`,
+                          ringColor: primaryColor,
+                        }
+                        : {}
                     }
-                    : {}
-                }
-              >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="rounded-full flex-shrink-0"
-                    style={{
-                      width: 10,
-                      height: 10,
-                      backgroundColor: active ? primaryColor : `${primaryColor}40`,
-                    }}
-                  />
-                  <span
-                    className={`text-sm sm:text-base lg:text-lg font-bold ${active ? "" : "text-slate-600"}`}
-                    style={active ? { color: primaryColor } : {}}
                   >
-                    {screen.name}
-                  </span>
-                </div>
-                {screen.description && (
-                  <p className="text-xs sm:text-sm text-slate-500 pl-4.5 sm:pl-5 line-clamp-2">
-                    {screen.description}
-                  </p>
-                )}
-              </button>
-            );
-          })}
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="rounded-full flex-shrink-0"
+                        style={{
+                          width: 10,
+                          height: 10,
+                          backgroundColor: active ? primaryColor : `${primaryColor}40`,
+                        }}
+                      />
+                      <span
+                        className={`text-sm sm:text-base lg:text-lg font-bold ${active ? "" : "text-slate-600"}`}
+                        style={active ? { color: primaryColor } : {}}
+                      >
+                        {screen.name}
+                      </span>
+                    </div>
+                    {screen.description && (
+                      <div
+                        className="text-xs sm:text-sm text-slate-500 pl-4.5 sm:pl-5 line-clamp-2"
+                        dangerouslySetInnerHTML={{ __html: screen.description }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -8,14 +8,14 @@ export default function TechStack({ data }) {
 
     return (
         <section className="relative overflow-hidden bg-slate-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center space-y-6 mb-16"
+                    className="text-center space-y-3 mb-10"
                 >
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
                         Technology & Tools
                     </h2>
                     <div className="w-24 h-1 mx-auto rounded-full" style={{ backgroundColor: primaryColor }} />
@@ -54,7 +54,7 @@ export default function TechStack({ data }) {
 
                             <div className="mt-4 text-center">
                                 <span
-                                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-slate-900 transition-colors duration-300"
+                                    className="text-[10px] font-bold uppercase text-slate-400 group-hover:text-slate-900 transition-colors duration-300"
                                     style={{ color: primaryColor }}
                                 >
                                     {tech.name}

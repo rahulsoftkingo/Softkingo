@@ -4,11 +4,12 @@ import CommonTitle from '@/components/ui/CommonTitle';
 
 function AwardsSection({
   variant = "default",
-  title = "Our",
-  gradientText = "Awards & Recognitions",
-  subtitle = "These recognitions reflect our commitment to quality, innovation, and long-term partnerships with our clients.",
+  title: propTitle,
+  subtitle: propSubtitle,
   awards: customAwards
 }) {
+  const title = propTitle || "Our Awards & Recognitions";
+  const subtitle = propSubtitle || "These recognitions reflect our commitment to quality, innovation, and long-term partnerships with our clients.";
   const defaultAwards = [
     {
       image: "/images/award/Black And Gold Modern Award Ceremony Instagram Post (1).png",
@@ -46,7 +47,6 @@ function AwardsSection({
                   align="left"
                   pill={false}
                   title={title}
-                  gradientText={gradientText}
                   subtitle={subtitle}
                 />
               </div>
@@ -86,7 +86,6 @@ function AwardsSection({
             align="center"
             pill={false}
             title={title}
-            gradientText={gradientText}
             subtitle={subtitle}
           />
         </div>

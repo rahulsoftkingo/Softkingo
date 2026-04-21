@@ -11,7 +11,7 @@ export default function Results({ results, branding }) {
             {results.map((result, index) => (
                 <section
                     key={index}
-                    className="border-b border-slate-50 last:border-none relative overflow-hidden"
+                    className="py-12 sm:py-16 bg-white relative overflow-hidden"
                 >
                     {/* Background Soft Glow */}
                     <div 
@@ -19,7 +19,7 @@ export default function Results({ results, branding }) {
                         style={{ backgroundColor: primaryColor }}
                     />
 
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                         {/* Mockup Column */}
                         <motion.div 
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -47,10 +47,10 @@ export default function Results({ results, branding }) {
                             initial={{ opacity: 0, x: result.position === "right" ? -30 : 30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            className={`space-y-8 ${result.position === "right" ? "lg:order-1" : ""}`}
+                            className={`space-y-4 ${result.position === "right" ? "lg:order-1" : ""}`}
                         >
-                            <div className="space-y-6">
-                                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+                            <div className="space-y-4">
+                                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
                                     Results Delivered
                                 </h3>
                                 <div className="w-20 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />

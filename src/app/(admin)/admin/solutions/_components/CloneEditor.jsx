@@ -288,11 +288,10 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
             {/* 7. REVENUE MODEL */}
             <SectionWrapper id="revenue" icon={DollarSign} title="7. Revenue Model" activeSections={activeSections}>
                 <div className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid md:grid-cols-1 gap-4">
                         <input className={inputStyle} placeholder="Section Heading" value={content.revenue?.title || ''} onChange={e => updateField('content.revenue.title', e.target.value)} />
-                        <input className={inputStyle} placeholder="Highlight Text (Gradient)" value={content.revenue?.highlight || ''} onChange={e => updateField('content.revenue.highlight', e.target.value)} />
                     </div>
-                    <textarea className={inputStyle} rows={3} placeholder="Right-side Description Text" value={content.revenue?.rightDesc || ''} onChange={e => updateField('content.revenue.rightDesc', e.target.value)} />
+                    <textarea className={inputStyle} rows={3} placeholder="Right-side Description Text (Subtitle)" value={content.revenue?.rightDesc || ''} onChange={e => updateField('content.revenue.rightDesc', e.target.value)} />
 
                     <div className="pt-4 border-t border-slate-100">
                         <label className={labelStyle}>Revenue Mode Tabs</label>
@@ -326,7 +325,6 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
             <SectionWrapper id="techStack" icon={Code} title="8. Tech Stack" activeSections={activeSections}>
                 <div className="space-y-4">
                     <input className={inputStyle} placeholder="Tech Stack Overview Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Gradient Highlight" value={content.techStack?.highlight || ''} onChange={e => updateField('content.techStack.highlight', e.target.value)} />
                     <textarea className={inputStyle} rows={2} placeholder="Subtitle text" value={content.techStack?.subtitle || ''} onChange={e => updateField('content.techStack.subtitle', e.target.value)} />
 
                     <div className="pt-4 border-t border-slate-100">

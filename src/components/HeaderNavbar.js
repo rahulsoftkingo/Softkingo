@@ -43,41 +43,44 @@ const Navbar = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Auto-open logic: First trigger after 5s, then recurring every 15s after closing if not submitted
+  // Track popup status globally for mutual exclusion with Chat
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // Trigger initial 5s popup
-    const firstTimer = setTimeout(() => {
-      const alreadySubmitted = localStorage.getItem("leadSubmitted");
-      if (!alreadySubmitted && !showModal) {
-        setIsAutoTrigger(true);
-        setShowModal(true);
-      }
-    }, 5000);
-
-    return () => clearTimeout(firstTimer);
-  }, []);
-
-  // Handle recurring 15s trigger AFTER closing
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (showModal) return; // Don't start timer while modal is open
-
-    const alreadySubmitted = localStorage.getItem("leadSubmitted");
-    if (alreadySubmitted) return;
-
-    // Wait 15 seconds after closing to show again
-    const recurringTimer = setTimeout(() => {
-      const stillNotSubmitted = localStorage.getItem("leadSubmitted");
-      if (!stillNotSubmitted && !showModal) {
-        setIsAutoTrigger(true);
-        setShowModal(true);
-      }
-    }, 15000);
-
-    return () => clearTimeout(recurringTimer);
+    if (typeof window !== 'undefined') {
+      window.__softkingo_popup_active = showModal;
+    }
+    return () => {
+      if (typeof window !== 'undefined') window.__softkingo_popup_active = false;
+    };
   }, [showModal]);
+
+  const popupTriggeredRef = useRef(false);
+
+  // Auto-open logic: Trigger after 20s (Once per layout mount)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let popupTimer;
+    
+    const attemptPopup = () => {
+      const alreadySubmitted = localStorage.getItem("leadSubmitted");
+      if (alreadySubmitted || popupTriggeredRef.current || showModal) return;
+
+      // if Chat is active, wait and retry in 5 seconds
+      if (window.__softkingo_chat_active) {
+        console.log('Popup auto-trigger delayed: Chat is active');
+        popupTimer = setTimeout(attemptPopup, 5000);
+        return;
+      }
+
+      setIsAutoTrigger(true);
+      setShowModal(true);
+      popupTriggeredRef.current = true;
+    };
+
+    popupTimer = setTimeout(attemptPopup, 20000);
+
+    return () => clearTimeout(popupTimer);
+  }, []);
 
   const sidebarButtonRef = useRef(null);
 
@@ -137,23 +140,57 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Global Security Alert Banner with dynamic visibility */}
-      <div className={`bg-[#D32F2F] text-white px-4 py-1.5 text-center z-50 relative transition-all duration-700 ease-in-out border-b border-rose-700/30 overflow-hidden ${isBannerVisible ? 'max-h-32 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-full'}`}>
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-3">
-          <span className="flex-shrink-0 text-sm md:text-base animate-pulse">⚠️</span>
-          <p className="text-[10px] sm:text-xs md:text-[12px] font-medium tracking-tight leading-normal">
-            <span className="font-bold text-rose-100 uppercase mr-1.5 tracking-wider text-[10px]">Security Alert:</span> 
-            Softkingo strictly operates only through <span className="font-bold underline decoration-rose-300">softkingo.com</span>. 
-            We do NOT own or communicate via <span className="bg-white/20 px-1.2 rounded inline-block mx-0.5">softkingo.in</span>. 
-            Any email or job offer from <span className="italic text-rose-100 underline underline-offset-2">@softkingo.in</span> is <span className="font-bold">FAKE</span>. 
-            Please do not share data or make payments.
-          </p>
-          <button 
-            onClick={() => setIsBannerVisible(false)}
-            className="hidden sm:block ml-3 text-rose-300 hover:text-white transition-colors"
-          >
-            <span className="text-xl leading-none">&times;</span>
-          </button>
+      {/* Global Security Alert Banner - Infinite Scroll Marquee */}
+      <div className={`bg-[#D32F2F] text-white z-50 relative transition-all duration-700 ease-in-out border-b border-rose-700/30 overflow-hidden ${isBannerVisible ? 'max-h-12 opacity-100 translate-y-0' : 'max-h-0 opacity-0 -translate-y-full'}`}>
+        <div className="flex items-center h-full relative group">
+          <div className="flex whitespace-nowrap animate-marquee py-2 hover:[animation-play-state:paused] cursor-default">
+            {/* Message Block 1 */}
+            <div className="flex items-center gap-6 px-4">
+              <span className="flex-shrink-0 text-sm animate-pulse">⚠️</span>
+              <p className="text-[11px] md:text-[13px] font-medium tracking-wide">
+                <span className="font-bold text-rose-100 uppercase mr-2 tracking-wider">Security Alert:</span> 
+                Softkingo strictly operates only through <span className="font-bold underline decoration-rose-300">softkingo.com</span>. 
+                We do NOT own or communicate via <span className="bg-white/20 px-1.5 py-0.5 rounded-sm mx-1 text-rose-50 text-[10px] md:text-[12px]">softkingo.in</span>. 
+                Email/Job offers from <span className="italic text-rose-100 underline underline-offset-2">@softkingo.in</span> are <span className="font-extrabold text-white text-shadow-sm shadow-black/20">FAKE</span>. 
+                Do not share data or make payments.
+              </p>
+            </div>
+            
+            {/* Duplicated Message Block for Seamless Loop */}
+            <div className="flex items-center gap-6 px-4">
+              <span className="flex-shrink-0 text-sm animate-pulse">⚠️</span>
+              <p className="text-[11px] md:text-[13px] font-medium tracking-wide">
+                <span className="font-bold text-rose-100 uppercase mr-2 tracking-wider">Security Alert:</span> 
+                Softkingo strictly operates only through <span className="font-bold underline decoration-rose-300">softkingo.com</span>. 
+                We do NOT own or communicate via <span className="bg-white/20 px-1.5 py-0.5 rounded-sm mx-1 text-rose-50 text-[10px] md:text-[12px]">softkingo.in</span>. 
+                Email/Job offers from <span className="italic text-rose-100 underline underline-offset-2">@softkingo.in</span> are <span className="font-extrabold text-white text-shadow-sm shadow-black/20">FAKE</span>. 
+                Do not share data or make payments.
+              </p>
+            </div>
+
+             {/* Triplicate for ultra-wide screens */}
+             <div className="flex items-center gap-6 px-4">
+              <span className="flex-shrink-0 text-sm animate-pulse">⚠️</span>
+              <p className="text-[11px] md:text-[13px] font-medium tracking-wide">
+                <span className="font-bold text-rose-100 uppercase mr-2 tracking-wider">Security Alert:</span> 
+                Softkingo strictly operates only through <span className="font-bold underline decoration-rose-300">softkingo.com</span>. 
+                We do NOT own or communicate via <span className="bg-white/20 px-1.5 py-0.5 rounded-sm mx-1 text-rose-50 text-[10px] md:text-[12px]">softkingo.in</span>. 
+                Email/Job offers from <span className="italic text-rose-100 underline underline-offset-2">@softkingo.in</span> are <span className="font-extrabold text-white text-shadow-sm shadow-black/20">FAKE</span>. 
+                Do not share data or make payments.
+              </p>
+            </div>
+          </div>
+
+          {/* Fixed Close Button with Gradient Fade */}
+          <div className="absolute right-0 top-0 bottom-0 z-30 flex items-center pr-2 pl-12 bg-gradient-to-l from-[#D32F2F] via-[#D32F2F]/90 to-transparent">
+            <button 
+              onClick={() => setIsBannerVisible(false)}
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-all duration-300"
+              title="Close Alert"
+            >
+              <span className="text-2xl leading-none">&times;</span>
+            </button>
+          </div>
         </div>
       </div>
 

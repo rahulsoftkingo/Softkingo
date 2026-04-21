@@ -22,15 +22,15 @@ export default function FindYourApp({ data, branding }) {
                 style={{ background: `radial-gradient(circle, ${primaryColor}, transparent)` }} 
             />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 <motion.div 
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="space-y-10"
+                    className="space-y-6"
                 >
-                    <div className="space-y-6">
-                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.1] text-slate-900">
+                    <div className="space-y-4">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] text-slate-900">
                             {data.findYourApp.title}
                         </h2>
                         <div className="w-20 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
@@ -43,7 +43,7 @@ export default function FindYourApp({ data, branding }) {
                     <div className="pt-8">
                         <Link
                             href={data.findYourApp.ctaUrl || "/contact"}
-                            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-black uppercase tracking-widest text-xs transition-all duration-500 hover:scale-105 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] group"
+                            className="inline-flex items-center gap-3 px-12 py-5 rounded-xl font-bold uppercase text-xs transition-all duration-500 hover:scale-105 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] group"
                             style={{ 
                                 backgroundColor: primaryColor,
                                 color: '#fff'

@@ -26,6 +26,30 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
     );
 };
 
+// --- 3. HELPERS ---
+const SectionHeader = ({ section, path, updateField, titlePlaceholder = "Section Title", showSubtitle = true }) => (
+    <div className="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+        <div className="space-y-1">
+            <label className={labelStyle}>Section Title</label>
+            <input
+                className={inputStyle}
+                placeholder={titlePlaceholder}
+                value={section?.title || ''}
+                onChange={e => updateField(`${path}.title`, e.target.value)}
+            />
+        </div>
+        {showSubtitle && (
+            <div className="space-y-1">
+                <label className={labelStyle}>Section Description / Subtitle</label>
+                <MiniRichTextEditor
+                    value={section?.subtitle || ''}
+                    onChange={val => updateField(`${path}.subtitle`, val)}
+                />
+            </div>
+        )}
+    </div>
+);
+
 // --- 3. MAIN SOLUTIONS EDITOR ---
 export default function SolutionsEditor({ formData, updateField, MediaInput, activeSections }) {
     const content = formData?.content || {};
@@ -48,6 +72,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 2. STATISTICS */}
             <SectionWrapper id="stats" icon={BarChart3} title="2. Statistics Banner" activeSections={activeSections}>
+                <SectionHeader section={content.stats} path="content.stats" updateField={updateField} />
                 <div className="space-y-4">
                     <label className={labelStyle}>Stats Items (Value & Label)</label>
                     {(content.stats?.items || []).map((item, i) => (
@@ -84,10 +109,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 4. FEATURES GRID */}
             <SectionWrapper id="features" icon={Database} title="4. Core Features Grid" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Grid Title" value={content.features?.title || ''} onChange={e => updateField('content.features.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Title Highlight" value={content.features?.highlight || ''} onChange={e => updateField('content.features.highlight', e.target.value)} />
-                </div>
+                <SectionHeader section={content.features} path="content.features" updateField={updateField} />
                 <div className="space-y-4">
                     <label className={labelStyle}>Feature Cards</label>
                     {(content.features?.items || []).map((item, i) => (
@@ -109,6 +131,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 5. AWARDS */}
             <SectionWrapper id="awards" icon={Award} title="5. Client Recognition / Awards" activeSections={activeSections}>
+                <SectionHeader section={content.awards} path="content.awards" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.awards?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-4 items-center bg-slate-50 p-2 rounded-lg">
@@ -122,7 +145,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 6. WHY NEED */}
             <SectionWrapper id="whyNeed" icon={HelpCircle} title="6. Growing Need / Why Choose" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Section Heading" value={content.whyNeed?.title || ''} onChange={e => updateField('content.whyNeed.title', e.target.value)} />
+                <SectionHeader section={content.whyNeed} path="content.whyNeed" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.whyNeed?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -154,7 +177,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 7. SERVICES LIST */}
             <SectionWrapper id="servicesList" icon={Briefcase} title="7. Extensive Services Provided" activeSections={activeSections}>
-                <input className={inputStyle} placeholder="Section Title" value={content.servicesList?.title || ''} onChange={e => updateField('content.servicesList.title', e.target.value)} />
+                <SectionHeader section={content.servicesList} path="content.servicesList" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.servicesList?.items || []).map((item, i) => (
                         <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
@@ -174,20 +197,20 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     <div className="grid md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
                         <div className="space-y-1">
                             <label className={labelStyle}>Section Title</label>
-                            <input 
-                                className={inputStyle} 
-                                placeholder="e.g. Powerful Mobile & Web Modules" 
-                                value={content.appModules?.title || ''} 
-                                onChange={e => updateField('content.appModules.title', e.target.value)} 
+                            <input
+                                className={inputStyle}
+                                placeholder="e.g. Powerful Mobile & Web Modules"
+                                value={content.appModules?.title || ''}
+                                onChange={e => updateField('content.appModules.title', e.target.value)}
                             />
                         </div>
                         <div className="space-y-1">
                             <label className={labelStyle}>Section Subtitle</label>
-                            <input 
-                                className={inputStyle} 
-                                placeholder="Describe the modules generally..." 
-                                value={content.appModules?.subtitle || ''} 
-                                onChange={e => updateField('content.appModules.subtitle', e.target.value)} 
+                            <input
+                                className={inputStyle}
+                                placeholder="Describe the modules generally..."
+                                value={content.appModules?.subtitle || ''}
+                                onChange={e => updateField('content.appModules.subtitle', e.target.value)}
                             />
                         </div>
                     </div>
@@ -199,22 +222,21 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                                 key={i}
                                 type="button"
                                 onClick={() => setActiveAppTab(i)}
-                                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all border ${
-                                    activeAppTab === i 
-                                    ? 'bg-sky-600 text-white border-sky-600 shadow-sm' 
-                                    : 'bg-white text-slate-500 border-slate-200 hover:border-sky-300'
-                                }`}
+                                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all border ${activeAppTab === i
+                                        ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
+                                        : 'bg-white text-slate-500 border-slate-200 hover:border-sky-300'
+                                    }`}
                             >
                                 {tab.tag || `Module ${i + 1}`}
                             </button>
                         ))}
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             onClick={() => {
                                 const newIndex = (content.appModules?.tabs || []).length;
                                 updateField('content.appModules.tabs', (prev) => [...(prev || []), { title: "", tag: "", description: "", image: "", isWeb: false, features: [] }]);
                                 setActiveAppTab(newIndex);
-                            }} 
+                            }}
                             className="px-4 py-2 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 border border-dashed border-slate-300 hover:bg-slate-200"
                         >
                             + Add New
@@ -224,14 +246,14 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     {/* Active Tab Content */}
                     {(content.appModules?.tabs || []).map((tab, i) => i === activeAppTab && (
                         <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-6 animate-in fade-in zoom-in-95 duration-200">
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 onClick={() => {
-                                    if(confirm("Are you sure you want to delete this module?")) {
+                                    if (confirm("Are you sure you want to delete this module?")) {
                                         updateField('content.appModules.tabs', (prev) => prev.filter((_, idx) => idx !== i));
                                         setActiveAppTab(Math.max(0, i - 1));
                                     }
-                                }} 
+                                }}
                                 className="absolute top-4 right-4 text-slate-400 hover:text-rose-500 p-2 transition-colors"
                             >
                                 <Trash2 size={18} />
@@ -278,34 +300,34 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                                                     newTabs[i] = { ...newTabs[i], features: newTabs[i].features.filter((_, idx) => idx !== fi) };
                                                     return newTabs;
                                                 })} className="absolute top-2 right-2 text-slate-300 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100"><X size={14} /></button>
-                                                
+
                                                 <div className="space-y-1">
                                                     <label className="text-[9px] font-bold text-slate-400">TITLE</label>
-                                                    <input 
-                                                        className="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-bold" 
-                                                        placeholder="Feature Title" 
-                                                        value={typeof feat === 'string' ? feat : (feat.title || '')} 
-                                                        onChange={e => updateField(`content.appModules.tabs.${i}.features.${fi}.title`, e.target.value)} 
+                                                    <input
+                                                        className="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-bold"
+                                                        placeholder="Feature Title"
+                                                        value={typeof feat === 'string' ? feat : (feat.title || '')}
+                                                        onChange={e => updateField(`content.appModules.tabs.${i}.features.${fi}.title`, e.target.value)}
                                                     />
                                                 </div>
 
                                                 <div className="space-y-1">
                                                     <label className="text-[9px] font-bold text-slate-400">DESCRIPTION (RICH TEXT)</label>
-                                                    <MiniRichTextEditor 
-                                                        value={feat.desc || ''} 
-                                                        onChange={val => updateField(`content.appModules.tabs.${i}.features.${fi}.desc`, val)} 
+                                                    <MiniRichTextEditor
+                                                        value={feat.desc || ''}
+                                                        onChange={val => updateField(`content.appModules.tabs.${i}.features.${fi}.desc`, val)}
                                                     />
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={() => updateField('content.appModules.tabs', (prev) => {
                                             const newTabs = [...(prev || [])];
                                             newTabs[i] = { ...newTabs[i], features: [...(newTabs[i].features || []), { title: "", desc: "" }] };
                                             return newTabs;
-                                        })} 
+                                        })}
                                         className="mt-4 w-full py-2.5 rounded-xl border-2 border-dashed border-sky-100 text-sky-600 font-bold text-[10px] hover:bg-sky-50 transition-colors"
                                     >
                                         + Add New Detail Point
@@ -328,12 +350,25 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 9. AI FEATURES */}
             <SectionWrapper id="aiCapabilities" icon={Zap} title="9. Advanced AI Capabilities" activeSections={activeSections}>
+                <SectionHeader section={content.aiCapabilities} path="content.aiCapabilities" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.aiCapabilities?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
                             <div className="flex-1 space-y-2">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="AI Feature Title" value={item.title || ''} onChange={e => updateField(`content.aiCapabilities.items.${i}.title`, e.target.value)} />
                                 <textarea className="w-full p-2 bg-white border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.aiCapabilities.items.${i}.description`, e.target.value)} />
+                                
+                                {/* Points list for Public UI */}
+                                <div className="p-2 bg-white rounded border border-slate-100">
+                                    <label className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block mb-1">Feature Points (List)</label>
+                                    {(item.points || []).map((point, pi) => (
+                                        <div key={pi} className="flex gap-2 mb-1">
+                                            <input className="flex-1 p-1.5 bg-slate-50 border rounded text-[11px]" value={point || ''} onChange={e => updateField(`content.aiCapabilities.items.${i}.points.${pi}`, e.target.value)} />
+                                            <button type="button" onClick={() => updateField(`content.aiCapabilities.items.${i}.points`, (prev) => (prev || []).filter((_, pidx) => pidx !== pi))} className="text-slate-300 hover:text-rose-500"><X size={12} /></button>
+                                        </div>
+                                    ))}
+                                    <button type="button" onClick={() => updateField(`content.aiCapabilities.items.${i}.points`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Point</button>
+                                </div>
                             </div>
                             <button type="button" onClick={() => updateField('content.aiCapabilities.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
                         </div>
@@ -372,6 +407,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 11. PROCESS */}
             <SectionWrapper id="process" icon={Settings} title="11. Development Roadmap" activeSections={activeSections}>
+                <SectionHeader section={content.process} path="content.process" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.process?.steps || []).map((step, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -387,12 +423,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             <SectionWrapper id="techStack" icon={Code} title="12. Technology Stack (Tabbed)" activeSections={activeSections}>
+                <SectionHeader section={content.techStack} path="content.techStack" updateField={updateField} />
                 <div className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <input className={inputStyle} placeholder="Section Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
-                        <input className={inputStyle} placeholder="Highlight Text" value={content.techStack?.highlight || ''} onChange={e => updateField('content.techStack.highlight', e.target.value)} />
-                    </div>
-                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.techStack?.subtitle || ''} onChange={e => updateField('content.techStack.subtitle', e.target.value)} />
 
                     <div className="space-y-6 pt-4 border-t border-slate-100">
                         <label className={labelStyle}>Categories (Tabs)</label>
@@ -445,6 +477,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 13. MONETIZATION */}
             <SectionWrapper id="monetization" icon={DollarSign} title="13. Revenue Models" activeSections={activeSections}>
+                <SectionHeader section={content.monetization} path="content.monetization" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.monetization?.models || []).map((item, i) => (
                         <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
@@ -459,6 +492,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 14. WHY CHOOSE / SECURITY */}
             <SectionWrapper id="whyChoose" icon={ShieldCheck} title="14. Enterprise Security & Quality" activeSections={activeSections}>
+                <SectionHeader section={content.whyChoose} path="content.whyChoose" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.whyChoose?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
@@ -520,6 +554,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 17. FAQ */}
             <SectionWrapper id="faq" icon={HelpCircle} title="17. FAQ" activeSections={activeSections}>
+                <SectionHeader section={content.faq} path="content.faq" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.faq?.items || []).map((item, i) => (
                         <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">

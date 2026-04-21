@@ -15,15 +15,15 @@ export default function Branding({ data }) {
 
     return (
         <section className="bg-white relative overflow-hidden" style={{ fontFamily: primaryFont }}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
                     
                     {/* Left: Client Information */}
                     <motion.div 
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="space-y-8 flex flex-col items-center lg:items-start text-center lg:text-left"
+                        className="space-y-4 flex flex-col items-center lg:items-start text-center lg:text-left"
                     >
                         <div className="relative">
                             <div className="relative w-44 h-44 rounded-xl overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-50">
@@ -47,9 +47,9 @@ export default function Branding({ data }) {
                             </motion.button>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             <div className="space-y-1">
-                                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+                                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
                                     {client.name}
                                 </h3>
                                 <div className="w-20 h-1 rounded-full mx-auto lg:mx-0" style={{ backgroundColor: primaryColor }} />
@@ -59,17 +59,17 @@ export default function Branding({ data }) {
                             </div>
 
                             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
-                                <div className="px-4 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                <div className="px-4 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold uppercase text-slate-500">
                                     {client.location}
                                 </div>
-                                <div className="px-4 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                <div className="px-4 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold uppercase text-slate-500">
                                     {client.industry}
                                 </div>
                             </div>
                             
                             <button 
                                 onClick={() => setIsModalOpen(true)}
-                                className="mt-4 flex items-center gap-2 text-sm font-black uppercase tracking-widest hover:opacity-70 transition-opacity"
+                                className="mt-4 flex items-center gap-2 text-sm font-bold uppercase hover:opacity-70 transition-opacity"
                                 style={{ color: primaryColor }}
                             >
                                 <span>View Testimonial</span>
@@ -79,7 +79,7 @@ export default function Branding({ data }) {
                     </motion.div>
 
                     {/* Right: Identity & Style Guide */}
-                    <div className="space-y-8">
+                    <div className="space-y-4">
                         {/* Typography Card - Reverted to clean white/brand approach */}
                         <motion.div 
                             initial={{ opacity: 0, y: 30 }}
@@ -88,13 +88,13 @@ export default function Branding({ data }) {
                             className="bg-slate-50 rounded-xl p-10 border border-slate-100 relative overflow-hidden"
                         >
                             <div className="absolute top-0 right-0 p-8 opacity-5">
-                                <span className="text-[120px] font-black leading-none" style={{ color: primaryColor }}>{primaryFont?.charAt(0)}</span>
+                                <span className="text-[120px] font-bold leading-none" style={{ color: primaryColor }}>{primaryFont?.charAt(0)}</span>
                             </div>
 
                             <div className="relative z-10 space-y-4">
                                 <div className="space-y-1">
-                                    <p className="text-7xl font-black tracking-tighter" style={{ color: primaryColor }}>Aa</p>
-                                    <p className="text-xl font-black text-slate-800">{primaryFont}</p>
+                                    <p className="text-7xl font-bold" style={{ color: primaryColor }}>Aa</p>
+                                    <p className="text-xl font-bold text-slate-800">{primaryFont}</p>
                                 </div>
                                 <div className="w-12 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
                             </div>
@@ -115,7 +115,7 @@ export default function Branding({ data }) {
                                         className="w-full aspect-square rounded-xl shadow-sm mb-3 border-2 border-slate-50"
                                         style={{ backgroundColor: color.hex }}
                                     />
-                                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{color.hex}</p>
+                                    <p className="text-[10px] font-bold text-slate-400 uppercase">{color.hex}</p>
                                 </motion.div>
                             ))}
                         </div>
@@ -172,7 +172,7 @@ export default function Branding({ data }) {
                                         />
                                     </div>
                                     <div>
-                                        <h4 className="text-base font-black text-slate-900">{client.name}</h4>
+                                        <h4 className="text-base font-bold text-slate-900">{client.name}</h4>
                                         <p className="text-sm font-bold opacity-50">{client.designation}</p>
                                     </div>
                                 </div>

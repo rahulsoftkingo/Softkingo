@@ -32,9 +32,9 @@ export default function SolutionsAICapabilities({ data }) {
                                     onClick={() => setActiveTab(idx)}
                                     // Mobile par fixed width (w-[75vw]) di hai taaki cards smooth scroll ho
                                     className={`flex-shrink-0 snap-start w-[75vw] sm:w-[300px] lg:w-auto p-4 rounded-2xl cursor-pointer transition-all duration-300 border-l-4 ${isActive
-                                            ? "bg-white border-sky-500 shadow-md lg:translate-x-2"
-                                            // Unselected tabs ke liye thoda sa background add kiya mobile par better visibility ke liye
-                                            : "bg-white/50 lg:bg-transparent border-slate-200 hover:bg-white hover:border-sky-200 hover:shadow-sm"
+                                        ? "bg-white border-sky-500 shadow-md lg:translate-x-2"
+                                        // Unselected tabs ke liye thoda sa background add kiya mobile par better visibility ke liye
+                                        : "bg-white/50 lg:bg-transparent border-slate-200 hover:bg-white hover:border-sky-200 hover:shadow-sm"
                                         }`}
                                 >
                                     <div className="flex justify-between items-center gap-3">
@@ -53,7 +53,7 @@ export default function SolutionsAICapabilities({ data }) {
                     {/* 3. RIGHT SIDE: Sticky Content Card */}
                     <div className="lg:col-span-7 relative h-full lg:min-h-[450px]">
                         <div className="lg:sticky lg:top-32">
-                            <div className="relative bg-white rounded-[2rem] md:rounded-[3rem] p-8 sm:p-10 md:p-14 overflow-hidden border border-slate-100 shadow-2xl transition-all duration-500 hover:shadow-sky-200/50 group">
+                            <div className="relative bg-white rounded-[1rem] md:rounded-[1.5rem] p-4 sm:p-6 md:p-10 overflow-hidden border border-slate-100 shadow-2xl transition-all duration-500 hover:shadow-sky-200/50 group">
 
                                 {/* Background Decorative Elements */}
                                 <div className="absolute top-0 right-0 text-[10rem] sm:text-[15rem] font-bold leading-none text-sky-50/50 select-none pointer-events-none -mt-4 sm:-mt-10 -mr-4 sm:-mr-10 z-0 transition-transform group-hover:scale-110 duration-700">
@@ -63,14 +63,14 @@ export default function SolutionsAICapabilities({ data }) {
 
                                 {/* Content Container */}
                                 <div className="relative z-10 text-left animate-fadeIn">
-                                    
+
                                     {/* Icon Backdrop */}
-                                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-200 mb-8 transform transition-transform group-hover:rotate-6">
+                                    {/* <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-200 mb-8 transform transition-transform group-hover:rotate-6">
                                         <Zap className="w-8 h-8 text-white" />
-                                    </div>
+                                    </div> */}
 
                                     {/* Main Title */}
-                                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-6 pr-16 sm:pr-24 leading-tight">
+                                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-6 pr-16 sm:pr-24 leading-tight">
                                         {data?.items?.[activeTab]?.title}
                                     </h3>
 

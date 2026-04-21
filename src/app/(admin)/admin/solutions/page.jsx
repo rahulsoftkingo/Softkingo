@@ -301,7 +301,7 @@ export default function SolutionsAdmin() {
                     {categories.map((cat) => {
                         const allItems = items[cat.key]?.filter(i => (i.slug + i.title).toLowerCase().includes(searchTerm.toLowerCase())) || [];
                         const dbItems = allItems.filter(i => i.source === 'db' || i.source === 'both');
-                        const fileItems = allItems.filter(i => i.source === 'file');
+                        const fileItems = allItems.filter(i => i.source === 'file' && i.slug !== '[slug]');
 
                         return (
                             <div key={cat.key} className="bg-slate-50/50 rounded-xl border border-slate-200 flex flex-col h-full overflow-hidden">
@@ -327,7 +327,7 @@ export default function SolutionsAdmin() {
                                         </div>
                                     )}
 
-                                    {/* File Pages Section */}
+                                    {/* Static Files Section */}
                                     {fileItems.length > 0 && (
                                         <div>
                                             <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1">

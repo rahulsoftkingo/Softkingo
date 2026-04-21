@@ -30,7 +30,7 @@ export default function HeroCarousel({ projects }) {
 
   return (
     <div className="w-full flex justify-end">
-      <div className="w-full max-w-xs md:max-w-sm rounded-3xl bg-white/10backdrop-blur-xl border border-white/20 shadow-[0_18px_40px_rgba(15,23,42,0.55)] p-4 md:p-5 flex flex-col gap-3 text-white">
+      <div className="w-full max-w-xs md:max-w-sm rounded-2xl bg-white/10backdrop-blur-xl border border-white/20 shadow-[0_18px_40px_rgba(15,23,42,0.55)] p-4 md:p-5 flex flex-col gap-3 text-white">
         {/* <p className="text-[10px] uppercase tracking-[0.18em] text-sky-200">
           Featured projects
         </p> */}

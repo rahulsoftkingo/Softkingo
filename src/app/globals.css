@@ -157,6 +157,11 @@ summary,
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
 /* Animation Classes */
 .animate-fadeInUp { animation: fadeInUp 0.8s ease-out both; }
 .animate-fadeLeft { animation: fadeLeft 0.8s ease-out both; }
@@ -167,6 +172,7 @@ summary,
 .animate-spin-slow { animation: spin 2s linear infinite; }
 .animate-slideIn { animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) both; }
 .animate-float-subtle { animation: float-subtle 3s ease-in-out infinite; }
+.animate-float { animation: float 6s ease-in-out infinite; }
 .animate-metric-rise { animation: metric-rise 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
 /* AI Page Helpers */
@@ -1962,3 +1968,9 @@ body {
 .rich-text a:hover {
   opacity: 0.8 !important;
 }
+/* White colored rich text for dark backgrounds */
+.rich-text-white { color: rgba(255, 255, 255, 0.9) !important; }
+.rich-text-white p { margin-bottom: 1rem !important; }
+.rich-text-white strong { color: #ffffff !important; font-weight: 700 !important; }
+.rich-text-white ul, .rich-text-white ol { list-style: disc !important; padding-left: 1.5rem !important; margin-bottom: 1rem !important; }
+.rich-text-white li { margin-bottom: 0.25rem !important; }

@@ -8,7 +8,7 @@ export default function Stats({ data }) {
 
     return (
         <section className="bg-slate-50 border-y border-slate-100">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-12 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 {/* Team Stats */}
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
@@ -24,11 +24,11 @@ export default function Stats({ data }) {
                     />
                     <div className="flex items-center justify-between relative z-10">
                         <div className="space-y-4">
-                            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+                            <p className="text-slate-400 font-bold uppercase text-xs flex items-center gap-2">
                                 <span className="w-4 h-[2px]" style={{ backgroundColor: secondaryColor }} />
                                 {data.team.title}
                             </p>
-                            <h3 className="text-3xl md:text-4xl font-black text-slate-900">
+                            <h3 className="text-3xl md:text-4xl font-bold text-slate-900">
                                 {data.team.size}
                             </h3>
                             <p className="text-slate-500 font-medium text-sm lg:text-base leading-relaxed">
@@ -55,11 +55,11 @@ export default function Stats({ data }) {
                 >
                     <div className="flex items-center justify-between">
                         <div className="space-y-4">
-                            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+                            <p className="text-slate-400 font-bold uppercase text-xs flex items-center gap-2">
                                 <span className="w-4 h-[2px]" style={{ backgroundColor: primaryColor }} />
                                 Timeline
                             </p>
-                            <h3 className="text-3xl md:text-4xl font-black text-slate-900">
+                            <h3 className="text-3xl md:text-4xl font-bold text-slate-900">
                                 {data.team.timeline}
                             </h3>
                             <p className="text-slate-500 font-medium text-sm lg:text-base leading-relaxed">

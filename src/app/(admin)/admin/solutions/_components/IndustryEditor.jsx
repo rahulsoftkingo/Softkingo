@@ -25,20 +25,14 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
     );
 };
 
-const TitleInputs = ({ section, content, updateField, showSubtitle = true, showGradient = true }) => (
-    <div className="grid md:grid-cols-2 gap-4 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+const TitleInputs = ({ section, content, updateField, showSubtitle = true }) => (
+    <div className="grid md:grid-cols-1 gap-4 bg-slate-50/50 p-4 rounded-xl border border-slate-100 mb-2">
         <div className="space-y-1">
             <label className={labelStyle}>Section Title</label>
             <input className={inputStyle} placeholder="e.g. Challenges We Solve" value={content[section]?.title || ''} onChange={e => updateField(`content.${section}.title`, e.target.value)} />
         </div>
-        {showGradient && (
-            <div className="space-y-1">
-                <label className={labelStyle}>Gradient Highlight</label>
-                <input className={inputStyle} placeholder="e.g. Solutions" value={content[section]?.gradientText || ''} onChange={e => updateField(`content.${section}.gradientText`, e.target.value)} />
-            </div>
-        )}
         {showSubtitle && (
-            <div className="col-span-full space-y-1">
+            <div className="space-y-1">
                 <label className={labelStyle}>Subtitle / Description (Rich Text)</label>
                 <MiniRichTextEditor value={content[section]?.subtitle || ''} onChange={val => updateField(`content.${section}.subtitle`, val)} />
             </div>
@@ -263,16 +257,12 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
             {/* 11. BLOG SECTION */}
             <SectionWrapper id="blogs" icon={MessageSquare} title="11. Blog Section" activeSections={activeSections}>
                 <div className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-4 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                    <div className="space-y-4 bg-slate-50/50 p-4 rounded-xl border border-slate-100">
                         <div className="space-y-1">
                             <label className={labelStyle}>Section Title</label>
                             <input className={inputStyle} placeholder="Latest Blogs" value={content.blogTitle || ''} onChange={e => updateField('content.blogTitle', e.target.value)} />
                         </div>
                         <div className="space-y-1">
-                            <label className={labelStyle}>Gradient Highlight</label>
-                            <input className={inputStyle} placeholder="Insights" value={content.blogGradientText || ''} onChange={e => updateField('content.blogGradientText', e.target.value)} />
-                        </div>
-                        <div className="col-span-full space-y-1">
                             <label className={labelStyle}>Subtitle (Rich Text)</label>
                             <MiniRichTextEditor value={content.blogSubtitle || ''} onChange={val => updateField('content.blogSubtitle', val)} />
                         </div>
@@ -326,7 +316,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             {/* 14. INQUIRY SECTION */}
             <SectionWrapper id="inquiry" icon={MessageSquare} title="14. Inquiry Section" activeSections={activeSections}>
-                <TitleInputs section="inquiry" content={content} updateField={updateField} showGradient={false} />
+                <TitleInputs section="inquiry" content={content} updateField={updateField} />
                 <div className="grid md:grid-cols-2 gap-4 mt-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Tagline</label>

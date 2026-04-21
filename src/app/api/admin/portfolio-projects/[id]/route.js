@@ -114,6 +114,7 @@ export async function PATCH(request, { params }) {
       where: { id },
       data: safeData,
     });
+
     return NextResponse.json({ 
       success: true, 
       project 

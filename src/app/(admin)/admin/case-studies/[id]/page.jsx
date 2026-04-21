@@ -7,9 +7,10 @@ import {
   ArrowLeft, Save, Upload, Image as ImageIcon, Code, Users,
   Palette, FileText, Layout, TrendingUp, Search as SearchIcon,
   CheckCircle2, AlertCircle, Loader2, X, Plus, Trash2, Eye,
-  Link2, Folder, FolderOpen, ZoomIn, ChevronRight, Home,
+  Link2, Folder, FolderOpen, ZoomIn, ChevronRight, Home, ChevronDown,
 } from 'lucide-react';
 import BlogCategorySelector from '@/components/admin/BlogCategorySelector';
+import MiniRichTextEditor from '@/components/admin/MiniRichTextEditor';
 
 const TABS = [
   { id: 'basic', label: 'Basic Info', icon: FileText, mobileLabel: 'Basic' },
@@ -93,12 +94,14 @@ export default function CaseStudyEditPage() {
     techItems: [{ name: 'React JS', icon: '/images/tech/react-js.png' }],
     overviewDescription: '',
     overviewMockup: '/images/case-studies/overview-phone.png',
-    requirementsText: '',
+    requirementsItems: [{ title: '', description: '' }],
     requirementsMockup: '/images/case-studies/requirements-phone.png',
     goalsBackgroundImage: '/images/case-studies/goals-bg.jpg',
-    goalsText: '',
-    challengeText: '',
-    solutionText: '',
+    goalsItems: [{ title: '', description: '' }],
+    mainChallenge: '',
+    challenges: [
+      { tabLabel: "Analysis", title: "Project Analysis", description: "", image: "" }
+    ],
     appScreensTitle: 'How Your App Looks When It Is Ready',
     appScreensCategories: [
       {
@@ -189,14 +192,33 @@ export default function CaseStudyEditPage() {
         techItems: technologies.items?.length ? technologies.items : prev.techItems,
         overviewDescription: overview.description || '',
         overviewMockup: overview.mockup || prev.overviewMockup,
-        requirementsText: (requirements.items || [])
-          .map((i) => `${i.title}: ${i.description}`)
-          .join('\n'),
+        requirementsItems: requirements.items?.length
+          ? requirements.items.map(it => ({ title: it.title || '', description: it.description || '' }))
+          : (requirements.items || []).length === 0 && requirements.text
+            ? requirements.text.split('\n').map(line => {
+              const [title, ...rest] = line.split(':');
+              return { title: title?.trim() || 'Point', description: rest.join(':')?.trim() || '' };
+            })
+            : [{ title: '', description: '' }],
         requirementsMockup: requirements.mockup || prev.requirementsMockup,
         goalsBackgroundImage: goals.backgroundImage || prev.goalsBackgroundImage,
-        goalsText: (goals.items || []).join('\n'),
-        challengeText: challenges.challenge || '',
-        solutionText: challenges.solution || '',
+        goalsItems: goals.items?.length
+          ? (typeof goals.items[0] === 'string'
+            ? goals.items.map(it => ({ title: it, description: '' }))
+            : goals.items.map(it => ({ title: it.title || '', description: it.description || '' }))
+          )
+          : [{ title: '', description: '' }],
+        challenges: (() => {
+          const cData = safeParse(data.challengesJson, {});
+          if (Array.isArray(cData)) return cData;
+          return Array.isArray(cData.solutions) ? cData.solutions : [
+            { tabLabel: "Analysis", title: "The Solution", description: cData.solution || "", image: "" }
+          ];
+        })(),
+        mainChallenge: (() => {
+          const cData = safeParse(data.challengesJson, {});
+          return cData.mainChallenge || cData.challenge || '';
+        })(),
         appScreensTitle: appScreens.title || prev.appScreensTitle,
         appScreensCategories: appScreens.categories?.length
           ? appScreens.categories
@@ -507,15 +529,8 @@ export default function CaseStudyEditPage() {
   }
 
   function buildRequirementsJson() {
-    const items = form.requirementsText
-      .split('\n')
-      .map((line) => {
-        const [title, ...rest] = line.split(':');
-        return { title: title?.trim(), description: rest.join(':').trim() };
-      })
-      .filter((i) => i.title);
     return JSON.stringify({
-      items,
+      items: (form.requirementsItems || []).filter(i => i.title),
       mockup: form.requirementsMockup,
     });
   }
@@ -523,14 +538,14 @@ export default function CaseStudyEditPage() {
   function buildGoalsJson() {
     return JSON.stringify({
       backgroundImage: form.goalsBackgroundImage,
-      items: form.goalsText.split('\n').filter(Boolean),
+      items: (form.goalsItems || []).filter(i => i.title),
     });
   }
 
   function buildChallengesJson() {
     return JSON.stringify({
-      challenge: form.challengeText,
-      solution: form.solutionText,
+      mainChallenge: form.mainChallenge,
+      solutions: form.challenges || []
     });
   }
 
@@ -1126,7 +1141,7 @@ export default function CaseStudyEditPage() {
                       label="Hero Mockups"
                       name="heroMockups"
                       value={form.heroMockups}
-                      placeholder="/images/mockups.png"
+                      placeholder="/images/screen-showcase.png"
                     />
                   </div>
 
@@ -1215,8 +1230,6 @@ export default function CaseStudyEditPage() {
               </div>
             )}
 
-            {/* Add remaining tabs: team, tech, content, screens, results, seo */}
-            {/* Use similar responsive patterns as shown above */}
             {/* Team & Client Tab */}
             {activeTab === 'team' && (
               <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
@@ -1351,7 +1364,7 @@ export default function CaseStudyEditPage() {
                           value={form.clientAvatar}
                           placeholder="/images/clients/avatar.jpg"
                         />
-                        
+
                         <div className="space-y-2 pt-2">
                           <label className="block text-[10px] xs:text-xs font-bold text-slate-700 uppercase tracking-widest">
                             Client Review (About Softkingo) - Pop-up Content
@@ -1599,21 +1612,55 @@ export default function CaseStudyEditPage() {
                 </div>
 
                 {/* Requirements */}
-                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-3 sm:space-y-4">
-                  <h4 className="text-xs sm:text-sm font-semibold text-slate-900">Requirements</h4>
-                  <div>
-                    <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5 sm:mb-2">
-                      Requirements (one per line: Title: Description)
-                    </label>
-                    <textarea
-                      name="requirementsText"
-                      value={form.requirementsText}
-                      onChange={handleChange}
-                      rows={6}
-                      placeholder="User Authentication: Secure login system&#10;Payment Gateway: Stripe integration"
-                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
-                    />
+                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs sm:text-sm font-semibold text-slate-900 uppercase tracking-wider">Project Requirements</h4>
+                    <button
+                      type="button"
+                      onClick={() => setForm(prev => ({ ...prev, requirementsItems: [...(prev.requirementsItems || []), { title: '', description: '' }] }))}
+                      className="text-[10px] font-bold text-sky-600 hover:text-sky-700 transition-colors flex items-center gap-1 bg-white px-2 py-1 rounded-md border border-slate-200 shadow-sm"
+                    >
+                      <Plus size={12} /> Add Requirement
+                    </button>
                   </div>
+
+                  <div className="space-y-4">
+                    {(form.requirementsItems || []).map((item, idx) => (
+                      <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group">
+                        <button
+                          type="button"
+                          onClick={() => setForm(prev => ({ ...prev, requirementsItems: prev.requirementsItems.filter((_, i) => i !== idx) }))}
+                          className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        >
+                          <X size={12} />
+                        </button>
+                        <div className="grid gap-3">
+                          <input
+                            placeholder="Requirement Title"
+                            value={item.title}
+                            onChange={(e) => setForm(prev => {
+                              const copy = [...prev.requirementsItems];
+                              copy[idx] = { ...copy[idx], title: e.target.value };
+                              return { ...prev, requirementsItems: copy };
+                            })}
+                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                          />
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase">Requirement Description (Rich Text)</label>
+                            <MiniRichTextEditor
+                              value={item.description}
+                              onChange={(val) => setForm(prev => {
+                                const copy = [...prev.requirementsItems];
+                                copy[idx] = { ...copy[idx], description: val };
+                                return { ...prev, requirementsItems: copy };
+                              })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
                   <ImageUploadField
                     label="Mockup Image"
                     name="requirementsMockup"
@@ -1623,57 +1670,150 @@ export default function CaseStudyEditPage() {
                 </div>
 
                 {/* Goals */}
-                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-3 sm:space-y-4">
-                  <h4 className="text-xs sm:text-sm font-semibold text-slate-900">Goals</h4>
+                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs sm:text-sm font-semibold text-slate-900 uppercase tracking-wider">Goals & Objectives</h4>
+                    <button
+                      type="button"
+                      onClick={() => setForm(prev => ({ ...prev, goalsItems: [...(prev.goalsItems || []), { title: '', description: '' }] }))}
+                      className="text-[10px] font-bold text-sky-600 hover:text-sky-700 transition-colors flex items-center gap-1 bg-white px-2 py-1 rounded-md border border-slate-200 shadow-sm"
+                    >
+                      <Plus size={12} /> Add Goal
+                    </button>
+                  </div>
+
                   <ImageUploadField
                     label="Background Image"
                     name="goalsBackgroundImage"
                     value={form.goalsBackgroundImage}
                     placeholder="/images/goals-bg.jpg"
                   />
-                  <div>
-                    <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5 sm:mb-2">
-                      Goals (one per line)
-                    </label>
-                    <textarea
-                      name="goalsText"
-                      value={form.goalsText}
-                      onChange={handleChange}
-                      rows={5}
-                      placeholder="Increase user engagement by 50%&#10;Reduce checkout time by 30%"
-                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
-                    />
+
+                  <div className="space-y-4">
+                    {(form.goalsItems || []).map((item, idx) => (
+                      <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group">
+                        <button
+                          type="button"
+                          onClick={() => setForm(prev => ({ ...prev, goalsItems: prev.goalsItems.filter((_, i) => i !== idx) }))}
+                          className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        >
+                          <X size={12} />
+                        </button>
+                        <div className="grid gap-3">
+                          <input
+                            placeholder="Goal Title"
+                            value={item.title}
+                            onChange={(e) => setForm(prev => {
+                              const copy = [...prev.goalsItems];
+                              copy[idx] = { ...copy[idx], title: e.target.value };
+                              return { ...prev, goalsItems: copy };
+                            })}
+                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                          />
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase">Goal Description (Rich Text)</label>
+                            <MiniRichTextEditor
+                              value={item.description}
+                              onChange={(val) => setForm(prev => {
+                                const copy = [...prev.goalsItems];
+                                copy[idx] = { ...copy[idx], description: val };
+                                return { ...prev, goalsItems: copy };
+                              })}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 {/* Challenges & Solutions */}
-                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-3 sm:space-y-4">
-                  <h4 className="text-xs sm:text-sm font-semibold text-slate-900">Challenges & Solutions</h4>
-                  <div>
-                    <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5 sm:mb-2">
-                      Challenge
-                    </label>
-                    <textarea
-                      name="challengeText"
-                      value={form.challengeText}
-                      onChange={handleChange}
-                      rows={3}
-                      placeholder="Describe the main challenge..."
-                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-5">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900 uppercase tracking-wider">The Main Challenge (Static Left Side)</h4>
+                      <p className="text-[10px] text-slate-500">This text appears fixed on the left side of the public section.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <MiniRichTextEditor
+                      value={form.mainChallenge}
+                      onChange={(val) => setForm(prev => ({ ...prev, mainChallenge: val }))}
                     />
                   </div>
-                  <div>
-                    <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5 sm:mb-2">
-                      Solution
-                    </label>
-                    <textarea
-                      name="solutionText"
-                      value={form.solutionText}
-                      onChange={handleChange}
-                      rows={3}
-                      placeholder="Describe how you solved it..."
-                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
-                    />
+
+                  <div className="h-px bg-slate-200 my-4" />
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900 uppercase tracking-wider">Interactive Solution Steps (Right Side Tabs)</h4>
+                      <p className="text-[10px] text-slate-500">Add multiple steps that users can hover through.</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setForm(prev => ({ ...prev, challenges: [...(prev.challenges || []), { tabLabel: 'Solution', title: '', description: '', image: '' }] }))}
+                      className="text-[10px] font-bold text-sky-600 hover:text-sky-700 transition-colors flex items-center gap-1 bg-white px-2 py-1 rounded-md border border-slate-200 shadow-sm"
+                    >
+                      <Plus size={12} /> Add Step
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    {(form.challenges || []).map((item, idx) => (
+                      <div key={idx} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group">
+                        <button
+                          type="button"
+                          onClick={() => setForm(prev => ({ ...prev, challenges: prev.challenges.filter((_, i) => i !== idx) }))}
+                          className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        >
+                          <X size={12} />
+                        </button>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="text-[10px] font-bold text-slate-400 uppercase">Tab Label</label>
+                            <input
+                              value={item.tabLabel}
+                              onChange={(e) => updateFormValue(`challenges.${idx}.tabLabel`, e.target.value)}
+                              placeholder="e.g. Analysis"
+                              className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] font-bold text-slate-400 uppercase">Heading / Title</label>
+                            <input
+                              value={item.title}
+                              onChange={(e) => updateFormValue(`challenges.${idx}.title`, e.target.value)}
+                              placeholder="e.g. Project Analysis"
+                              className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold focus:ring-2 focus:ring-sky-500 outline-none"
+                            />
+                          </div>
+                          <div className="sm:col-span-2 space-y-1">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase">Description / Solution (Rich Text)</label>
+                            <MiniRichTextEditor
+                              value={item.description}
+                              onChange={(val) => updateFormValue(`challenges.${idx}.description`, val)}
+                            />
+                          </div>
+                          <div className="sm:col-span-2">
+                             <ImageUploadField
+                                label="Solution Image (Optional)"
+                                name={`challenges.${idx}.image`}
+                                value={item.image}
+                                placeholder="/images/case-studies/..."
+                              />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+
+                    {(!form.challenges || form.challenges.length === 0) && (
+                      <div className="text-center py-8 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50">
+                        <Code className="h-8 w-8 text-slate-300 mx-auto mb-2" />
+                        <p className="text-slate-500 text-xs font-medium">No steps added yet.</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1857,19 +1997,20 @@ export default function CaseStudyEditPage() {
                                     </div>
                                   )}
                                 </div>
-                                <textarea
-                                  value={screen.description || ''}
-                                  onChange={(e) =>
-                                    updateAppScreen(
-                                      catIndex,
-                                      screenIndex,
-                                      'description',
-                                      e.target.value
-                                    )
-                                  }
-                                  placeholder="Brief description (optional)..."
-                                  className="w-full rounded border border-slate-200 px-2 py-1 text-[10px] xs:text-xs focus:outline-none focus:ring-1 focus:ring-sky-500 min-h-[40px]"
-                                />
+                                <div className="space-y-1">
+                                  <label className="text-[10px] uppercase font-bold text-slate-400">Description (Rich Text)</label>
+                                  <MiniRichTextEditor
+                                    value={screen.description || ''}
+                                    onChange={(val) =>
+                                      updateAppScreen(
+                                        catIndex,
+                                        screenIndex,
+                                        'description',
+                                        val
+                                      )
+                                    }
+                                  />
+                                </div>
                                 {screen.image && (
                                   <div className="flex items-center gap-1.5">
                                     <div className="h-8 w-8 sm:h-10 sm:w-10 rounded border border-slate-200 overflow-hidden bg-slate-50">

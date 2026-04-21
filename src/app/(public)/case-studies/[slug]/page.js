@@ -29,6 +29,7 @@ function parseJson(value, fallback) {
 async function getCaseStudy(slug) {
   const row = await prisma.caseStudy.findUnique({
     where: { slug },
+    include: { portfolioProjects: true },
   });
 
   if (!row) return null;
@@ -152,7 +153,7 @@ async function getCaseStudy(slug) {
         row.heroMockups || '/images/case-studies/screen1.png',
       ],
     },
-    downloads: {
+    downloads: parseJson(row.portfolioProjects?.[0]?.badgesJson, {
       googlePlay: {
         url: '#',
         image: '/images/badges/google-play.png',
@@ -165,7 +166,7 @@ async function getCaseStudy(slug) {
         url: '#',
         image: '/images/badges/web-badge.png',
       },
-    },
+    }),
     branding,
     team,
     client,
@@ -212,43 +213,43 @@ export default async function CaseStudyPage({ params }) {
 
       <main className="w-full bg-white overflow-hidden">
         <Hero data={data} />
-        
+
         <Stats data={data} />
-        
+
         <Branding data={data} />
-        
+
         <TechStack data={data} />
-        
-        <FeatureSection 
-            title="Project Overview"
-            description={data.overview.description}
-            mockup={data.overview.mockup}
-            branding={branding}
-            imagePosition="right"
+
+        <FeatureSection
+          title="Project Overview"
+          description={data.overview.description}
+          mockup={data.overview.mockup}
+          branding={branding}
+          imagePosition="right"
         />
 
-        <FeatureSection 
-            title="Project Requirements"
-            description="The client approached Softkingo with the following key goals:"
-            listItems={data.requirements.items}
-            mockup={data.requirements.mockup}
-            branding={branding}
-            imagePosition="left"
-            isDark={false}
+        <FeatureSection
+          title="Project Requirements"
+          description="The client approached Softkingo with the following key goals:"
+          listItems={data.requirements.items}
+          mockup={data.requirements.mockup}
+          branding={branding}
+          imagePosition="left"
+          isDark={false}
         />
 
-        <FeatureSection 
-            title="Goals & Objectives"
-            listItems={data.goals.items}
-            bgImage={data.goals.backgroundImage}
-            branding={branding}
-            imagePosition="right"
-            isDark={false}
+        <FeatureSection
+          title="Goals & Objectives"
+          listItems={data.goals.items}
+          bgImage={data.goals.backgroundImage}
+          branding={branding}
+          imagePosition="right"
+          isDark={false}
         />
 
-        <ChallengesSolutions 
-            data={data.challenges}
-            branding={branding}
+        <ChallengesSolutions
+          data={data}
+          branding={branding}
         />
 
         <AppScreensShowcase data={data.appScreens} branding={branding} />
@@ -257,9 +258,9 @@ export default async function CaseStudyPage({ params }) {
 
         <FindYourApp data={data} branding={branding} />
 
-        <TestimonialSection 
-          data={data.client} 
-          branding={branding} 
+        <TestimonialSection
+          data={data.client}
+          branding={branding}
         />
 
         <BlogSection
