@@ -330,20 +330,21 @@ function ProjectCard({ p }) {
             </div>
           </div>
 
-          <div className="mt-4 flex items-center gap-3 flex-wrap">
-
+          {/* Badges + Case Study standardized links */}
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-3 mt-5">
             {p.badges?.play && (
               <Link
                 href={p.badges.play.href || "#"}
                 target="_blank"
                 rel="noreferrer"
+                className="flex justify-start"
               >
                 <Image
                   src={p.badges.play.src}
                   alt="Google Play"
                   width={130}
                   height={40}
-                  className="h-6 md:h-8 w-auto"
+                  className="h-8 sm:h-9 w-auto object-contain"
                 />
               </Link>
             )}
@@ -352,13 +353,14 @@ function ProjectCard({ p }) {
                 href={p.badges.app.href || "#"}
                 target="_blank"
                 rel="noreferrer"
+                className="flex justify-start"
               >
                 <Image
                   src={p.badges.app.src}
                   alt="App Store"
                   width={130}
                   height={40}
-                  className="h-6 md:h-8 w-auto"
+                  className="h-8 sm:h-9 w-auto object-contain"
                 />
               </Link>
             )}
@@ -367,34 +369,29 @@ function ProjectCard({ p }) {
                 href={p.badges.web.href || "#"}
                 target="_blank"
                 rel="noreferrer"
+                className="flex justify-start"
               >
                 <Image
                   src={p.badges.web.src}
                   alt="Web"
                   width={120}
                   height={36}
-                  className="h-6 md:h-8 w-auto"
+                  className="h-8 sm:h-9 w-auto object-contain"
                 />
               </Link>
             )}
 
-            {/* case study icon button */}
-            <div className="absolute bottom-4 left4 md:top-4 md:right-4 cursor-pointer z-10 mt- ">
-              <Link
-                href={`/case-studies/${p.id}`}
-                className="inline-flex items-center justify-center w-9h-9 rounded-full bg-white/95 text-sky-900 shadow hover:bg-sky-50 transition px-4 py-2 text-xs"
-
-              >Case Study
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
+            <Link
+              href={`/case-studies/${p.id}`}
+              className="w-fit inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-black text-white hover:bg-white hover:text-black transition px-3 text-sm whitespace-nowrap border border-transparent hover:border-gray-400"
+            >
+              Case Study <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
-
-
         </div>
 
         {/* Right mockup */}
-        <div className="relative p-6md:p-8 flex items-center justify-center">
+        <div className="relative p-6 md:p-8 flex items-center justify-center">
           <div className="relative w-40 sm:w-44 md:w-52 h-[18rem] sm:h-[20rem]">
             {p.phoneMockup ? (
               <Image

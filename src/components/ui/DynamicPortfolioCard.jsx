@@ -167,7 +167,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
                   <span className="text-2xl font-bold text-slate-800">{p.title?.[0]}</span>
                 )}
               </div>
-                <h3 className="text-xl md:text-3xl font-bold text-white leading-normal">{p.title}</h3>
+              <h3 className="text-xl md:text-3xl font-bold text-white leading-normal">{p.title}</h3>
             </div>
 
             {/* Description */}
@@ -189,28 +189,28 @@ function StickyProjectCard({ p, index, total, onContact }) {
               </div>
             </div>
 
-            {/* Badges + Case Study inline */}
-            <div className="flex items-center gap-3 flex-wrap">
+            {/* Badges + Case Study - Unified Layout */}
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-3 mt-4">
               {p.badges?.play && (
-                <Link href={p.badges.play.href || "#"} target="_blank" rel="noreferrer">
-                  <Image src={p.badges.play.src || "/images/google-play.png"} alt="Google Play" width={130} height={45} className="h-7 w-auto" />
+                <Link href={p.badges.play.href || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
+                  <Image src={p.badges.play.src || "/images/google-play.png"} alt="Google Play" width={130} height={45} className="h-8 w-auto object-contain" />
                 </Link>
               )}
               {p.badges?.app && (
-                <Link href={p.badges.app.href || "#"} target="_blank" rel="noreferrer">
-                  <Image src={p.badges.app.src || "/images/app-store.png"} alt="App Store" width={130} height={45} className="h-7 w-auto" />
+                <Link href={p.badges.app.href || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
+                  <Image src={p.badges.app.src || "/images/app-store.png"} alt="App Store" width={130} height={45} className="h-8 w-auto object-contain" />
                 </Link>
               )}
               {p.badges?.web && (
-                <Link href={p.badges.web.href || "#"} target="_blank" rel="noreferrer">
-                  <Image src={p.badges.web.src || "/images/view-web.png"} alt="Web" width={130} height={45} className="h-7 w-auto" />
+                <Link href={p.badges.web.href || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
+                  <Image src={p.badges.web.src || "/images/view-web.png"} alt="Web" width={130} height={45} className="h-8 w-auto object-contain" />
                 </Link>
               )}
               <Link
                 href={`/case-studies/${p.id}`}
-                className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-black/95 text-sky-50 shadow hover:bg-white hover:text-black transition px-5 py-2 text-xs font-semibold whitespace-nowrap"
+                className="w-fit inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-black text-white hover:bg-white hover:text-black transition px-3 text-sm  whitespace-nowrap border border-transparent hover:border-gray-400"
               >
-                Case Study <ArrowRight className="h-3 w-3" />
+                Case Study <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
@@ -221,7 +221,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
               {p.phoneMockup ? (
                 <Image src={p.phoneMockup} alt={`${p.title} mockup`} fill className="object-contain drop-shadow-2xl" />
               ) : (
-                  <div className="w-full h-full bg-white/20 rounded-2xl" />
+                <div className="w-full h-full bg-white/20 rounded-2xl" />
               )}
             </div>
           </div>
