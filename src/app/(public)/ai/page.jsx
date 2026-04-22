@@ -44,7 +44,7 @@ export default function AIPage() {
   }, []);
 
   return (
-    <>
+    <main className="relative overflow-x-hidden w-full">
 
       {/* 01. Hero Section - REDESIGNED FOR IMMERSIVE FEEL */}
       <section className="relative h-[300px] md:h-[400px] flex items-center justify-center overflow-hidden">
@@ -79,12 +79,12 @@ export default function AIPage() {
 
 
             <div className="flex sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300">
-              <buttom
+              <button
                 onClick={() => setShowModal(true)}
                 // href="/contact"
                 className="w-fit px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2">
                 Consult Our AI Experts <ArrowRight size={18} />
-              </buttom>
+              </button>
               <Link href="https://calendly.com/paramhans-softkingo/30min"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1045,6 +1045,6 @@ export default function AIPage() {
       />
       <InquirySection />
       <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
-    </>
+    </main>
   );
 }

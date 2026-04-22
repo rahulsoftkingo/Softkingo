@@ -272,7 +272,7 @@ export default function UsersPage() {
                           {user.profileImage ? (
                             <Image
                               src={
-                                user.profileImage.startsWith('http')
+                                user.profileImage.startsWith('http') || user.profileImage.startsWith('data:')
                                   ? user.profileImage
                                   : user.profileImage.startsWith('/')
                                   ? user.profileImage
@@ -370,7 +370,7 @@ export default function UsersPage() {
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={
-                          user.profileImage.startsWith('http')
+                          user.profileImage.startsWith('http') || user.profileImage.startsWith('data:')
                             ? user.profileImage
                             : user.profileImage.startsWith('/')
                             ? user.profileImage

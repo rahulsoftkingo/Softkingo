@@ -25,8 +25,9 @@ export default function AdminHeaderClient({ session }) {
 
   const profileImage = session?.user?.profileImage ?? session?.user?.image ?? null;
 
-  const profileSrc =
-    typeof profileImage === 'string' && profileImage.trim().length
+  // Robust path handling for images
+  const profileSrc = 
+    typeof profileImage === 'string' && profileImage.trim().length > 0
       ? (profileImage.startsWith('/') || profileImage.startsWith('http') || profileImage.startsWith('data:'))
         ? profileImage
         : `/${profileImage}`
@@ -41,7 +42,7 @@ export default function AdminHeaderClient({ session }) {
             <Menu className="h-5 w-5 text-sky-700" />
           </SheetTrigger>
           <SheetContent side="left" className="p-0 flex h-screen">
-            <AdminSidebar />
+            <AdminSidebar userRoles={session?.user?.roles || []} />
           </SheetContent>
         </Sheet>
 
@@ -69,22 +70,7 @@ export default function AdminHeaderClient({ session }) {
             className="flex items-center gap-3 p-1.5 rounded-lg hover:bg-sky-50 transition-colors duration-200 border border-transparent hover:border-sky-200"
           >
             <div className="h-9 w-9 rounded-full bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center overflow-hidden shadow-sm">
-              {profileImage ? (
-                <Image
-                  src={
-                    profileImage.startsWith('/')
-                      ? profileImage
-                      : `/${profileImage}`
-                  }
-                  alt="Profile"
-                  width={36}
-                  height={36}
-                  className="h-9 w-9 rounded-full object-cover"
-                />
-              ) : (
-                <User className="h-5 w-5 text-white" />
-              )}
-              {/* {profileSrc ? (
+              {profileSrc ? (
                 <Image
                   src={profileSrc}
                   alt="Profile"
@@ -94,8 +80,7 @@ export default function AdminHeaderClient({ session }) {
                 />
               ) : (
                 <User className="h-5 w-5 text-white" />
-              )} */}
-
+              )}
             </div>
 
             <div className="hidden sm:flex flex-col items-start text-sm">
@@ -125,13 +110,9 @@ export default function AdminHeaderClient({ session }) {
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-64 origin-top-right bg-white rounded-xl shadow-xl py-2 z-50">
               <div className='flex justify-start pl-2 items-center'>
-                {profileImage ? (
+                {profileSrc ? (
                   <Image
-                    src={
-                      profileImage.startsWith('/')
-                        ? profileImage
-                        : `/${profileImage}`
-                    }
+                    src={profileSrc}
                     alt="Profile"
                     width={36}
                     height={36}

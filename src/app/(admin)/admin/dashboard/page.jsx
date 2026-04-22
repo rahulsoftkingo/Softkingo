@@ -180,22 +180,45 @@ export default async function CompleteEnterpriseDashboard() {
   const roles = Array.isArray(session.user?.roles) ? session.user.roles : [];
   const isClockedIn = user?.isClockedIn || false;
 
-  const profileImage =
-    session?.user?.profileImage ?? session?.user?.image ?? null;
-  const avatarSrc = getProfileImage(user) || profileImage;
+  const sessionProfileImage = session?.user?.profileImage ?? session?.user?.image ?? null;
+  const resolvedProfileImage = typeof sessionProfileImage === 'string' && sessionProfileImage.trim().length > 0
+    ? (sessionProfileImage.startsWith('/') || sessionProfileImage.startsWith('http') || sessionProfileImage.startsWith('data:'))
+      ? sessionProfileImage
+      : `/${sessionProfileImage}`
+    : null;
+  const avatarSrc = getProfileImage(user) || resolvedProfileImage;
+
   return (
     <>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-            Welcome back, <span className="text-sky-600">{user?.name?.split(' ')[0] || 'Admin'}</span>!
-          </h1>
-          <p className="text-slate-500 font-medium">Here's what's happening with your enterprise today.</p>
+        <div className="flex items-center gap-5">
+          <div className="relative group">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-600 p-0.5 shadow-lg shadow-sky-200">
+              <div className="w-full h-full rounded-[14px] bg-white overflow-hidden flex items-center justify-center">
+                {avatarSrc ? (
+                  <img
+                    src={avatarSrc}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Users className="h-8 w-8 text-sky-500" />
+                )}
+              </div>
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full shadow-sm" />
+          </div>
+          <div className="space-y-1">
+            <h1 className="text-3xl font-black text-slate-900 ">
+              Welcome back, <span className="text-sky-600">{user?.name?.split(' ')[0] || 'Admin'}</span>!
+            </h1>
+            <p className="text-slate-500 font-medium">Here's what's happening with your enterprise today.</p>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex flex-col items-end text-right">
-            <span className="text-xs font-black text-slate-400 uppercase tracking-widest leading-none">Server Status</span>
+            <span className="text-xs font-black text-slate-400 uppercase  leading-none">Server Status</span>
             <span className="text-sm font-bold text-emerald-600">Optimal Performance</span>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-inner">
@@ -254,7 +277,7 @@ export default async function CompleteEnterpriseDashboard() {
           <ActivityFeed title="New Leads" data={recent.leads.slice(0, 6)} type="lead" />
           <ActivityFeed title="Open Tickets" data={recent.tickets.slice(0, 6)} type="ticket" />
         </section>
-        
+
         <ActivityFeed title="Recent Posts" data={recent.blogPosts.slice(0, 8)} type="blog" />
 
         <section className="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -283,7 +306,7 @@ function KPICard({ title, value, change, icon: Icon, color, href }) {
           <StatusBadge status={isPositive ? 'active' : 'pending'} size="sm" />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3 opacity-90">{title}</h3>
+          <h3 className="text-sm font-bold text-slate-700 uppercase  mb-3 opacity-90">{title}</h3>
           <div className="text-4xl font-black text-slate-900 mb-3 leading-normal">{value}</div>
           <div className={`text-lg font-bold ${isPositive ? 'text-emerald-600' : 'text-orange-600'}`}>
             {change}
@@ -442,7 +465,7 @@ function LiveStatCard({ title, value, icon: Icon }) {
       </div>
       <div className="min-w-0 flex-1">
         <div className="text-xl lg:text-2xl font-black text-slate-900">{value}</div>
-        <div className="text-xs lg:text-sm font-semibold text-slate-600 uppercase tracking-wide mt-1">{title}</div>
+        <div className="text-xs lg:text-sm font-semibold text-slate-600 uppercase  mt-1">{title}</div>
       </div>
     </div>
   );
