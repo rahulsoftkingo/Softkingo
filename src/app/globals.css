@@ -1926,6 +1926,14 @@ body {
    RICH TEXT RENDERING
    For dynamic HTML content (Services/Solutions)
 ================================ */
+.rich-text p,
+.prose p,
+.modern-prose p,
+.content-body p {
+  margin-bottom: 1rem !important;
+  min-height: 1.2rem; /* Ensures empty paragraphs (Enter) show up as space */
+}
+
 .rich-text b,
 .rich-text strong {
   font-weight: 700 !important;
@@ -1970,7 +1978,7 @@ body {
 }
 /* White colored rich text for dark backgrounds */
 .rich-text-white { color: rgba(255, 255, 255, 0.9) !important; }
-.rich-text-white p { margin-bottom: 1rem !important; }
+.rich-text-white p { margin-bottom: 1rem !important; min-height: 1.2rem; }
 .rich-text-white strong { color: #ffffff !important; font-weight: 700 !important; }
 .rich-text-white ul, .rich-text-white ol { list-style: disc !important; padding-left: 1.5rem !important; margin-bottom: 1rem !important; }
 .rich-text-white li { margin-bottom: 0.25rem !important; }

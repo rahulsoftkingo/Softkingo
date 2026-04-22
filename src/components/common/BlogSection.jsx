@@ -63,7 +63,7 @@ export default function BlogSection({
     if (!blogs || blogs.length === 0) return null;
 
     return (
-        <section className={`bg-white overflow-hidden ${className}`}>
+        <section className={`relative bg-white overflow-hidden ${className}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
                 <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 

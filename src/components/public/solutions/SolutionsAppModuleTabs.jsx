@@ -10,13 +10,13 @@ export default function SolutionsAppModuleTabs({ data }) {
     if (!data || !data.tabs || data.tabs.length === 0) return null;
 
     return (
-        <section className="py-8 md:py-24 bg-white overflow-hidden">
+        <section className="py-8 md:py-16 bg-white overflow-hidden">
             <div className="container mx-auto px-6 lg:px-12">
-                
+
                 {/* 1. Section Header */}
                 {(data.title || data.subtitle) && (
                     <div className="mb-12">
-                        <CommonTitle 
+                        <CommonTitle
                             title={data.title || "Powerful App Modules"}
                             subtitle={data.subtitle}
                             align="center"
@@ -25,15 +25,15 @@ export default function SolutionsAppModuleTabs({ data }) {
                 )}
 
                 {/* 2. Tab Navigation */}
-                <div className="flex overflow-x-auto justify-start md:justify-center gap-0 mb-16 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-[#F1F3F6] p-1.5 rounded-2xl w-fit mx-auto border border-slate-100">
+                <div className="flex overflow-x-auto justify-center md:justify-center gap-0 mb-12 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-slate-50 p-2 rounded-lg w-fit mx-auto">
                     {data.tabs.map((tab, idx) => (
                         <button
                             key={idx}
                             onMouseEnter={() => setActiveTab(idx)}
-                            className={`px-8 py-3.5 rounded-xl text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 whitespace-nowrap snap-center ${activeTab === idx
-                                ? "bg-sky-500 text-white shadow-md z-10"
-                                : "text-slate-500 hover:text-slate-900 hover:bg-white/50"
-                            }`}
+                            className={`px-8 py-3 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 snap-center ${activeTab === idx
+                                ? "bg-sky-500 text-slate-50 shadow-sm z-10"
+                                : "text-slate-600 hover:text-sky-500 hover:bg-slate-100"
+                                }`}
                         >
                             {tab.tag || `Module ${idx + 1}`}
                         </button>
@@ -50,9 +50,9 @@ export default function SolutionsAppModuleTabs({ data }) {
                             exit={{ opacity: 0, x: -20 }}
                             transition={{ duration: 0.4, ease: "easeOut" }}
                         >
-                            <SolutionsAppModule 
-                                data={data.tabs[activeTab]} 
-                                componentOnly={true} 
+                            <SolutionsAppModule
+                                data={data.tabs[activeTab]}
+                                componentOnly={true}
                                 reverse={false} // Tabs usually look better with consistent alignment
                             />
                         </motion.div>

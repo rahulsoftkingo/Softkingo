@@ -72,7 +72,6 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             {/* 2. STATISTICS */}
             <SectionWrapper id="stats" icon={BarChart3} title="2. Statistics Banner" activeSections={activeSections}>
-                <SectionHeader section={content.stats} path="content.stats" updateField={updateField} />
                 <div className="space-y-4">
                     <label className={labelStyle}>Stats Items (Value & Label)</label>
                     {(content.stats?.items || []).map((item, i) => (

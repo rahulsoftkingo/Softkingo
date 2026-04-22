@@ -298,7 +298,7 @@ export default function LeadsPage() {
           {isAdminOrManager && (
             <button
               onClick={openCreate}
-              className="inline-flex items-center gap-2 rounded-full bg-sky-600 px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-sky-500"
+              className="inline-flex items-center gap-2 rounded-full bg-sky-600 px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-lg shadow-sky-100 hover:bg-sky-500 hover:scale-105 active:scale-95 transition-all"
             >
               <Plus className="h-4 w-4" />
               <span>Add lead</span>

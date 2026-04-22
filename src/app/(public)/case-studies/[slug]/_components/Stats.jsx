@@ -7,14 +7,14 @@ export default function Stats({ data }) {
     const { primaryColor, secondaryColor } = data.branding;
 
     return (
-        <section className="bg-slate-50 border-y border-slate-100">
+        <section className="relative overflow-hidden bg-slate-50 border-y border-slate-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-12 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 {/* Team Stats */}
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="group bg-white p-8 lg:p-10 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border-l-4"
+                    className="group relative overflow-hidden bg-white p-8 lg:p-10 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border-l-4"
                     style={{ borderColor: primaryColor }}
                 >
                     {/* Background Soft Glow */}
@@ -50,7 +50,7 @@ export default function Stats({ data }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
-                    className="group bg-white p-8 lg:p-10 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border-l-4"
+                    className="group relative overflow-hidden bg-white p-8 lg:p-10 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border-l-4"
                     style={{ borderColor: secondaryColor }}
                 >
                     <div className="flex items-center justify-between">

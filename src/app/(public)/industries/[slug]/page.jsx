@@ -114,18 +114,16 @@ export default async function IndustryPage(props) {
                                     />
                                 </div>
 
-                                <div className="space-y-6">
+                                <ul className="space-y-4">
                                     {challenges?.items?.map((item, i) => (
-                                        <div key={i} className="flex gap-4 items-center group">
-                                            <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center flex-shrink-0 group-hover:bg-sky-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                                                <CheckCircle2 size={20} strokeWidth={2.5} />
+                                        <li key={i} className="flex items-start gap-3 group">
+                                            <div className="mt-1 p-1 bg-sky-100 rounded-full text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-all duration-300">
+                                                <CheckCircle2 size={16} strokeWidth={2.5} />
                                             </div>
-                                            <div>
-                                                <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
-                                            </div>
-                                        </div>
+                                            <span className="text-slate-700 font-medium text-lg">{item.title}</span>
+                                        </li>
                                     ))}
-                                </div>
+                                </ul>
                             </div>
 
                             {/* Right Side: Image & Floating Stats */}
@@ -195,10 +193,14 @@ export default async function IndustryPage(props) {
                             {/* LEFT COLUMN (Items 0-2) - Align Right */}
                             <div className="space-y-12">
                                 {otherIndustries?.items?.slice(0, 3).map((item, i) => (
-                                    <div key={i} className="flex items-center justify-end group gap-6 cursor-pointer">
+                                    <div key={i} className="flex items-start justify-end group gap-6 cursor-pointer">
 
-                                        {/* Text Content (Aligned Right) */}                                        <div className="flex-1 flex flex-col items-end text-right">
-                                            <h4 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                        {/* Text Content (Aligned Right) */}
+                                        <div className="flex-1 flex flex-col items-end text-right">
+                                            <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            {item.description && (
+                                                <p className="text-sm text-slate-500 mb-3 line-clamp-2 max-w-[250px]">{item.description}</p>
+                                            )}
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
                                                 <div className="absolute top-0 right-0 h-full w-0 bg-sky-500 group-hover:w-full transition-all duration-500 origin-right"></div>
@@ -206,7 +208,7 @@ export default async function IndustryPage(props) {
                                         </div>
 
                                         {/* Icon (With Premium Container) */}
-                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30px_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300">
+                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30px_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300 mt-1">
                                             {item.icon && item.icon.includes('/') ? (
                                                 <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
                                             ) : (
@@ -218,31 +220,31 @@ export default async function IndustryPage(props) {
                             </div>
 
                             {/* CENTER COLUMN (Image with Premium Frame) */}
-                            <div className="relative flex justify-center py-10 lg:py-0 col-span-1">
+                            <div className="relative flex justify-center py-10 lg:py-0 col-span-1 min-h-[400px] items-center">
                                 {/* Decorative Pulsing Rings */}
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] aspect-square border border-sky-200/50 rounded-full animate-pulse"></div>
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[125%] aspect-square border border-dashed border-slate-200 rounded-full animate-spin-slow opacity-40"></div>
 
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] aspect-square bg-gradient-to-br from-sky-400/10 to-transparent rounded-full blur-3xl -z-10 animate-pulse"></div>
 
-                                <div className="relative w-full max-w-[340px] aspect-[3.5/4] overflow-hidden  group">
+                                <div className="relative w-full max-w-[340px] flex items-center justify-center group">
                                     <Image
                                         src={otherIndustries?.image || "/images/industry-center.jpg"}
                                         alt="Industries Center"
-                                        fill
-                                        className="object-cover"
+                                        width={400}
+                                        height={600}
+                                        className="w-full h-auto object-contain max-h-[500px]  relative z-10 transition-transform duration-500 group-hover:scale-105"
                                     />
-                                    {/* <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> */}
                                 </div>
                             </div>
 
                             {/* RIGHT COLUMN (Items 3-5) - Align Left */}
                             <div className="space-y-12">
                                 {otherIndustries?.items?.slice(3, 6).map((item, i) => (
-                                    <div key={i} className="flex items-center justify-start group gap-6 cursor-pointer">
+                                    <div key={i} className="flex items-start justify-start group gap-6 cursor-pointer">
 
                                         {/* Icon (With Premium Container) */}
-                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30px_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300">
+                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300 mt-1">
                                             {item.icon && item.icon.includes('/') ? (
                                                 <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
                                             ) : (
@@ -252,7 +254,10 @@ export default async function IndustryPage(props) {
 
                                         {/* Text Content (Aligned Left) */}
                                         <div className="flex-1 flex flex-col items-start text-left">
-                                            <h4 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            {item.description && (
+                                                <p className="text-sm text-slate-500 mb-3 line-clamp-2 max-w-[250px]">{item.description}</p>
+                                            )}
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
                                                 <div className="absolute top-0 left-0 h-full w-0 bg-sky-500 group-hover:w-full transition-all duration-500 origin-left"></div>

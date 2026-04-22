@@ -60,8 +60,10 @@ export async function PATCH(request, { params }) {
     roleIds,
     profileImage,
     phone,
+    whatsapp,
     department,
     title,
+    bio,
   } = body;
 
   const data = {
@@ -71,8 +73,10 @@ export async function PATCH(request, { params }) {
     status,
     profileImage: profileImage ?? undefined,
     phone: phone ?? undefined,
+    whatsapp: whatsapp ?? undefined,
     department: department ?? undefined,
     title: title ?? undefined,
+    bio: bio ?? undefined,
   };
 
   if (password) {

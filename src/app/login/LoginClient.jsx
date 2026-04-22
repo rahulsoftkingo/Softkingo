@@ -35,7 +35,24 @@ export default function LoginClient({ callbackUrl }) {
       return;
     }
 
-    router.push(callbackUrl || "/admin");
+    // Fetch the updated session to get roles
+    const sessionRes = await fetch('/api/auth/session');
+    const session = await sessionRes.json();
+    const roles = session?.user?.roles || [];
+
+    // Determine default route
+    let targetUrl = callbackUrl || "/admin/dashboard";
+
+    if (!callbackUrl) {
+      if (roles.includes('admin')) targetUrl = "/admin/dashboard";
+      else if (roles.includes('manager')) targetUrl = "/admin/dashboard";
+      else if (roles.includes('writer')) targetUrl = "/admin/blog";
+      else if (roles.includes('agent')) targetUrl = "/admin/tickets";
+      else if (roles.includes('hr')) targetUrl = "/admin/users";
+      else if (roles.includes('employee')) targetUrl = "/admin/profile";
+    }
+
+    router.push(targetUrl);
     router.refresh();
   };
 

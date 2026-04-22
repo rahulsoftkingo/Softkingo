@@ -14,37 +14,32 @@ export default function IndustryCoversTabs({ data }) {
     return (
         <section className="py-8 md:py-16  relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
-                
+
                 {/* Section Heading */}
                 <div className="text-center mb-16">
-                    
-                    <CommonTitle 
-                            title= {data.title || "What We Cover"} 
-                            subtitle={data.subtitle || "Explore our comprehensive services tailored for the industry."}
-                            pill={true}
-                            gradientText={data.gradientText || "Coverage"}
-                        />
+
+                    <CommonTitle
+                        title={data.title || "What We Cover"}
+                        subtitle={data.subtitle || "Explore our comprehensive services tailored for the industry."}
+                        pill={true}
+                        gradientText={data.gradientText || "Coverage"}
+                    />
                 </div>
 
                 <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-[500px] border border-slate-100 shadow-2xl">
-                    
+
                     {/* LEFT SIDE: TABS (Sky Background) */}
                     <div className="w-full lg:min-w-[40%] lg:w-fit bg-sky-500 p-8 flex flex-col">
-                        <div className="mb-6 flex items-center gap-3 text-sky-100 opacity-80">
-                            <Layers size={20} />
-                            <span className="text-xs font-bold uppercase tracking-widest">Service Areas</span>
-                        </div>
-                        
+
                         <div className="flex flex-col gap-4 overflow-auto  flex-1  max-h-[500px]">
                             {data.items.map((item, index) => (
                                 <button
                                     key={index}
                                     onMouseEnter={() => setActiveTab(index)}
-                                    className={`text-left px-6 py-3 rounded-xl transition-all duration-300 flex items-center justify-between group ${
-                                        activeTab === index 
-                                        ? "bg-white text-sky-700 shadow-lg translate-x-2 max-w-fit" 
+                                    className={`text-left px-6 py-3 rounded-xl transition-all duration-300 flex items-center justify-between group ${activeTab === index
+                                        ? "bg-white text-sky-700 shadow-lg translate-x-2 max-w-fit"
                                         : "hover:bg-sky-500/50 text-sky-50 border border-transparent hover:border-sky-400 max-w-fit "
-                                    }`}
+                                        }`}
                                 >
                                     <span className="font-bold text-base md:text-lg">{item.title}</span>
                                     {activeTab === index && (
@@ -57,15 +52,15 @@ export default function IndustryCoversTabs({ data }) {
 
                     {/* RIGHT SIDE: CONTENT (White Background) */}
                     <div className="w-full lg:w-[65%] bg-white p-8 md:p-12 flex flex-col justify-center relative my-8">
-                        
+
                         {/* Decorative Background Pattern */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-sky-50 rounded-bl-full -z-0 opacity-50"></div>
 
                         {/* Content Animation Wrapper */}
                         <div key={activeTab} className="relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            
+
                             <div className="flex items-start justify-between gap-6 mb-8">
-                            <div>
+                                <div>
                                     <h3 className="text-3xl font-bold text-slate-900 mb-2">
                                         {activeItem.title}
                                     </h3>
@@ -81,25 +76,13 @@ export default function IndustryCoversTabs({ data }) {
                                         <CheckCircle2 size={32} />
                                     )}
                                 </div>
-                                
+
                             </div>
 
                             <div className="prose prose-lg text-slate-600 leading-relaxed">
                                 <p className="rich-text" dangerouslySetInnerHTML={{ __html: activeItem.description }} />
                             </div>
 
-                            <div className="mt-10 pt-8 border-t border-slate-100 flex gap-4">
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Capabilities</span>
-                                    <div className="flex gap-2 flex-wrap">
-                                        {['Scalable', 'Secure', 'Customizable'].map(tag => (
-                                            <span key={tag} className="px-3 py-1 bg-slate-50 text-slate-600 text-xs font-bold rounded-full border border-slate-200">
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>

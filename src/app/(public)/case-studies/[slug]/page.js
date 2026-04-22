@@ -211,7 +211,7 @@ export default async function CaseStudyPage({ params }) {
         * { font-family: '${branding.primaryFont}', system-ui, sans-serif; }
       `}</style>
 
-      <main className="w-full bg-white overflow-hidden">
+      <main className="relative w-full bg-white overflow-hidden">
         <Hero data={data} />
 
         <Stats data={data} />

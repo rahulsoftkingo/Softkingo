@@ -170,13 +170,16 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                 <div className="space-y-4">
                     <label className={labelStyle}>Industry Sectors</label>
                     {(content.otherIndustries?.items || []).map((item, i) => (
-                        <div key={i} className="flex gap-2 items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
-                            <input className="flex-1 p-2 bg-white border rounded text-sm font-bold" placeholder="Industry Name" value={item.title || ''} onChange={e => updateField(`content.otherIndustries.items.${i}.title`, e.target.value)} />
-                            <input className="w-1/3 p-2 bg-white border rounded text-sm" placeholder="Icon/Img URL" value={item.icon || ''} onChange={e => updateField(`content.otherIndustries.items.${i}.icon`, e.target.value)} />
-                            <button type="button" onClick={() => updateField('content.otherIndustries.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3 relative group">
+                            <button type="button" onClick={() => updateField('content.otherIndustries.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity"><X size={16} /></button>
+                            <div className="flex gap-2">
+                                <input className="flex-1 p-2 bg-white border rounded text-sm font-bold" placeholder="Industry Name" value={item.title || ''} onChange={e => updateField(`content.otherIndustries.items.${i}.title`, e.target.value)} />
+                                <input className="w-1/3 p-2 bg-white border rounded text-sm" placeholder="Icon/Img URL" value={item.icon || ''} onChange={e => updateField(`content.otherIndustries.items.${i}.icon`, e.target.value)} />
+                            </div>
+                            <textarea className="w-full p-2 bg-white border rounded text-xs" placeholder="Short Description" rows={2} value={item.description || ''} onChange={e => updateField(`content.otherIndustries.items.${i}.description`, e.target.value)} />
                         </div>
                     ))}
-                    <button type="button" onClick={() => updateField('content.otherIndustries.items', (prev) => [...(prev || []), { title: "", icon: "" }])} className="text-xs font-bold text-emerald-600 p-1">+ Add Industry</button>
+                    <button type="button" onClick={() => updateField('content.otherIndustries.items', (prev) => [...(prev || []), { title: "", icon: "", description: "" }])} className="text-xs font-bold text-emerald-600 p-1">+ Add Industry</button>
                 </div>
             </SectionWrapper>
 

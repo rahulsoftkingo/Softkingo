@@ -197,7 +197,7 @@ export default function BlogListPage() {
           {canEdit && (
             <button
               onClick={openNew}
-              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-sky-600 to-cyan-600 px-6 py-2.5 text-sm font-semibold text-white hover:shadow-lg hover:shadow-sky-500/25 hover:from-sky-700 hover:to-cyan-700 transition-all shadow-md"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-600 to-cyan-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-sky-200/50 hover:from-sky-500 hover:to-cyan-500 hover:scale-105 active:scale-95 transition-all"
             >
               <Plus className="h-4 w-4" />
               New Post

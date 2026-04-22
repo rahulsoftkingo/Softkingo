@@ -123,7 +123,7 @@ export default function AdminHeaderClient({ session }) {
           </button>
 
           {showDropdown && (
-            <div className="absolute right-0 mt-2 w-64 origin-top-right bg-white rounded-xl shadow-xl borderborder-sky-200 py-2 z-50">
+            <div className="absolute right-0 mt-2 w-64 origin-top-right bg-white rounded-xl shadow-xl py-2 z-50">
               <div className='flex justify-start pl-2 items-center'>
                 {profileImage ? (
                   <Image
@@ -144,9 +144,19 @@ export default function AdminHeaderClient({ session }) {
                   <p className="text-sm font-semibold text-sky-950">
                     {session?.user?.name || session?.user?.username}
                   </p>
-                  <p className="text-sm text-sky-600 capitalize font-medium">
-                    {primaryRole}
-                  </p>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {(session?.user?.roles || []).length > 0 ? (
+                      session.user.roles.map((r) => (
+                        <span key={r} className="text-[10px] px-1.5 py-0.5 bg-sky-50 text-sky-600 rounded-md capitalize font-bold border border-sky-100">
+                          {r}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-xs text-sky-600 capitalize font-medium">
+                        {primaryRole}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               <div className="py-2">

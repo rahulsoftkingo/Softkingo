@@ -15,15 +15,14 @@ export const metadata = {
 
 
 export default async function AdminLayout({ children }) {
-  // const session = await getServerSession(authOptions);
-  // if (!session) redirect("/login?callbackUrl=/admin");
-  const session = { user: { name: 'Admin', email: 'admin@softkingo.com' } };
+  const session = await getServerSession(authOptions);
+  if (!session) redirect("/login?callbackUrl=/admin");
 
   return (
     <AdminSessionProvider session={session}>
       <div className="min-h-screen flex bg-sky-50 text-slate-900 font-sans antialiased overflow-x-hidden">
         <aside className="hidden md:block w-64 bg-white fixed left-0 top-0 h-screen overflow-y-auto custom-scrollbar">
-          <AdminSidebar />
+          <AdminSidebar userRoles={session?.user?.roles || []} />
         </aside>
 
         <div className="flex-1 md:ml-64 min-h-screen flex flex-col">

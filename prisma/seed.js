@@ -7,17 +7,25 @@ const prisma = new PrismaClient();
 async function main() {
   const passwordHash = await bcrypt.hash('Admin@123', 10);
 
-  // create role if not exists
-  const adminRole = await prisma.role.upsert({
-    where: { name: 'admin' },
-    update: {},
-    create: {
-      name: 'admin',
-      displayName: 'Administrator',
-      description: 'Full access to admin panel',
-      defaultRoute: '/admin',
-    },
-  });
+  // create roles if not exist
+  const roleData = [
+    { name: 'admin', displayName: 'Administrator', description: 'Full access to all modules.', defaultRoute: '/admin/dashboard' },
+    { name: 'manager', displayName: 'Manager', description: 'Manage leads, tickets, and content.', defaultRoute: '/admin/dashboard' },
+    { name: 'writer', displayName: 'Content Writer', description: 'Create and edit blog posts and pages.', defaultRoute: '/admin/blog' },
+    { name: 'agent', displayName: 'Support Agent', description: 'Handle support tickets and chats.', defaultRoute: '/admin/tickets' },
+    { name: 'hr', displayName: 'HR Manager', description: 'Manage employee directory and attendance.', defaultRoute: '/admin/users' },
+    { name: 'employee', displayName: 'Employee', description: 'View own attendance and profile.', defaultRoute: '/admin/profile' },
+  ];
+
+  for (const role of roleData) {
+    await prisma.role.upsert({
+      where: { name: role.name },
+      update: role,
+      create: role,
+    });
+  }
+
+  const adminRole = await prisma.role.findUnique({ where: { name: 'admin' } });
 
   // create admin user
   const adminUser = await prisma.user.upsert({
@@ -29,7 +37,7 @@ async function main() {
       username: 'admin',
       passwordHash,
       status: 'active',
-      profileImage: '/images/ansh.jpeg', // put any existing image or null
+      profileImage: '/images/ansh.jpeg',
     },
   });
 
@@ -48,9 +56,9 @@ async function main() {
     },
   });
 
-  console.log('Seeded admin user:');
-  console.log('username: admin');
-  console.log('password: Admin@123');
+  console.log('Seeded roles and admin user:');
+  console.log('Roles: admin, manager, writer, agent, hr, employee');
+  console.log('Admin login: admin / Admin@123');
 }
 
 main()

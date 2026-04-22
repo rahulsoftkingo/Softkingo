@@ -278,10 +278,10 @@ export default function SolutionsAdmin() {
                         <p className="text-slate-500 text-sm font-medium">Manage Dynamic & Static Pages</p>
                     </div>
                     <div className="flex flex-wrap gap-3">
-                        <button onClick={fetchItems} className="bg-white border border-slate-200 text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-50 shadow-sm"><RefreshCw size={18} /></button>
-                        <button onClick={() => handleCreate('solution')} className="bg-sky-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-sky-700 shadow-sm text-xs"><Plus size={16} /> Add Solution</button>
-                        <button onClick={() => handleCreate('industry')} className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-emerald-700 shadow-sm text-xs"><Plus size={16} /> Add Industry</button>
-                        <button onClick={() => handleCreate('clone')} className="bg-orange-600 text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-orange-700 shadow-sm text-xs"><Plus size={16} /> Add Clone</button>
+                        <button onClick={fetchItems} className="bg-white border border-slate-200 text-slate-600 p-2.5 rounded-full hover:bg-slate-50 shadow-sm transition-all hover:rotate-180 active:scale-95"><RefreshCw size={18} /></button>
+                        <button onClick={() => handleCreate('solution')} className="bg-sky-600 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-sky-500 shadow-lg shadow-sky-100 hover:scale-105 transition-all text-xs active:scale-95"><Plus size={16} /> Add Solution</button>
+                        <button onClick={() => handleCreate('industry')} className="bg-emerald-600 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-500 shadow-lg shadow-emerald-100 hover:scale-105 transition-all text-xs active:scale-95"><Plus size={16} /> Add Industry</button>
+                        <button onClick={() => handleCreate('clone')} className="bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-orange-500 shadow-lg shadow-orange-100 hover:scale-105 transition-all text-xs active:scale-95"><Plus size={16} /> Add Clone</button>
                     </div>
                 </div>
 

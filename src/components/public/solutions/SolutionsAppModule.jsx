@@ -36,14 +36,12 @@ export default function SolutionsAppModule({ data, reverse = false, bg = "white"
                             onMouseEnter={() => setActiveFeat(i)}
                             className={`group cursor-pointer transition-all duration-500 overflow-hidden rounded-xl border ${isActive
                                 ? "bg-white border-slate-100 shadow-xl shadow-sky-500/5 ring-1 ring-slate-100"
-                                : "bg-white/50 border-transparent hover:bg-white hover:border-slate-100"
+                                : "bg-white border-slate-100 shadow-sm hover:shadow-md"
                             }`}
                         >
                             <div className="relative">
-                                {/* Active Indicator Bar */}
-                                {isActive && (
-                                    <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-sky-500 z-10" />
-                                )}
+                                {/* Left Indicator Bar - Always Visible */}
+                                <div className={`absolute left-0 top-0 bottom-0 w-[4px] z-10 transition-colors duration-300 ${isActive ? 'bg-sky-500' : 'bg-slate-200 group-hover:bg-sky-300'}`} />
 
                                 <div className="p-5 sm:p-6 flex items-center gap-4 lg:gap-6">
                                     {/* Circular Icon Wrapper */}

@@ -18,67 +18,75 @@ const sections = [
   { title: 'Dashboard', key: 'dashboard', items: [{ label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard }] },
   {
     title: 'Content Management', key: 'content', items: [
-      { label: 'Blog Posts', href: '/admin/blog', icon: FileText },
-      { label: 'Categories', href: '/admin/categories', icon: Layers3 },
-      { label: 'Ebooks', href: '/admin/ebooks', icon: BookOpenText },
-      { label: 'Blog Analytics', href: '/admin/blog-analytics', icon: Lightbulb },
+      { label: 'Blog Posts', href: '/admin/blog', icon: FileText, roles: ['admin', 'manager', 'writer'] },
+      { label: 'Categories', href: '/admin/categories', icon: Layers3, roles: ['admin', 'manager', 'writer'] },
+      { label: 'Ebooks', href: '/admin/ebooks', icon: BookOpenText, roles: ['admin', 'manager', 'writer'] },
+      { label: 'Blog Analytics', href: '/admin/blog-analytics', icon: Lightbulb, roles: ['admin', 'manager'] },
     ]
   },
   {
     title: 'Portfolio', key: 'portfolio', items: [
-      { label: 'Case Studies', href: '/admin/case-studies', icon: FileText },
-      { label: 'Portfolio Items', href: '/admin/portfolio', icon: FolderKanban },
+      { label: 'Case Studies', href: '/admin/case-studies', icon: FileText, roles: ['admin', 'manager', 'writer'] },
+      { label: 'Portfolio Items', href: '/admin/portfolio', icon: FolderKanban, roles: ['admin', 'manager', 'writer'] },
     ]
   },
   {
     title: 'Pages', key: 'pages', items: [
-      { label: 'Services', href: '/admin/services', icon: Briefcase },
-      { label: 'Hire Pages', href: '/admin/hire', icon: Users2 },
-      { label: 'Solutions', href: '/admin/solutions', icon: Rocket },
+      { label: 'Services', href: '/admin/services', icon: Briefcase, roles: ['admin', 'manager', 'writer'] },
+      { label: 'Hire Pages', href: '/admin/hire', icon: Users2, roles: ['admin', 'manager', 'writer'] },
+      { label: 'Solutions', href: '/admin/solutions', icon: Rocket, roles: ['admin', 'manager', 'writer'] },
     ]
   },
   {
     title: 'Communication', key: 'communication', items: [
-      { label: 'Live Chat', href: '/admin/chat', icon: MessageSquare, badge: 'new' },
-      { label: 'WhatsApp', href: '/admin/whatsapp', icon: MessageCircle, badge: 'new' },
-      { label: 'Newsletters', href: '/admin/newsletters', icon: Mail },
-      { label: 'Email Campaigns', href: '/admin/email-campaigns', icon: MailOpen, badge: 'new' },
-      { label: 'AI Assistance', href: '/admin/ai-assistance', icon: ShieldCheck, badge: 'AI' },
+      { label: 'Live Chat', href: '/admin/chat', icon: MessageSquare, badge: 'new', roles: ['admin', 'manager', 'agent'] },
+      { label: 'WhatsApp', href: '/admin/whatsapp', icon: MessageCircle, badge: 'new', roles: ['admin', 'manager', 'agent'] },
+      { label: 'Newsletters', href: '/admin/newsletters', icon: Mail, roles: ['admin', 'manager'] },
+      { label: 'Email Campaigns', href: '/admin/email-campaigns', icon: MailOpen, badge: 'new', roles: ['admin', 'manager'] },
+      { label: 'AI Assistance', href: '/admin/ai-assistance', icon: ShieldCheck, badge: 'AI', roles: ['admin', 'manager'] },
     ]
   },
   {
     title: 'Operations', key: 'operations', items: [
-      { label: 'Leads', href: '/admin/leads', icon: Inbox },
-      { label: 'Support Tickets', href: '/admin/tickets', icon: MessageCircle },
-      { label: 'Daily Reports', href: '/admin/daily-reports', icon: FileBarChart },
-      { label: 'Career Applications', href: '/admin/career', icon: UserCheck, badge: 'new' },
+      { label: 'Leads', href: '/admin/leads', icon: Inbox, roles: ['admin', 'manager', 'agent'] },
+      { label: 'Support Tickets', href: '/admin/tickets', icon: MessageCircle, roles: ['admin', 'manager', 'agent'] },
+      { label: 'Daily Reports', href: '/admin/daily-reports', icon: FileBarChart, roles: ['admin', 'manager', 'agent'] },
+      { label: 'Career Applications', href: '/admin/career', icon: UserCheck, badge: 'new', roles: ['admin', 'manager', 'hr'] },
     ]
   },
   {
     title: 'People & Media', key: 'people', items: [
-      { label: 'User Management', href: '/admin/users', icon: UserCog, },
-      { label: 'Team Members', href: '/admin/team', icon: Users },
-      { label: 'Media Library', href: '/admin/media', icon: ImageIcon },
-      { label: 'Events & Popups', href: '/admin/events', icon: CalendarDays },
+      { label: 'User Management', href: '/admin/users', icon: UserCog, roles: ['admin', 'hr'] },
+      { label: 'Team Members', href: '/admin/team', icon: Users, roles: ['admin', 'hr'] },
+      { label: 'Media Library', href: '/admin/media', icon: ImageIcon, roles: ['admin', 'manager', 'writer'] },
+      { label: 'Events & Popups', href: '/admin/events', icon: CalendarDays, roles: ['admin', 'manager'] },
     ]
   },
   {
     title: 'Account & Settings', key: 'account', items: [
       { label: 'My Profile', href: '/admin/profile', icon: Users },
-      { label: 'Admin Settings', href: '/admin/settings', icon: Settings },
+      { label: 'Admin Settings', href: '/admin/settings', icon: Settings, roles: ['admin'] },
     ]
   },
 ];
 
-export default function AdminSidebar({ userPermissions = [] }) {
+export default function AdminSidebar({ userRoles = [] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(() => ({
     dashboard: true, content: true, portfolio: true, pages: true, communication: true,
     operations: true, hrms: true, people: true, account: true,
   }));
 
-  const hasPermission = (permission) => {
-    return userPermissions.includes(permission) || userPermissions.includes('super:admin');
+  const isAdmin = userRoles.includes('admin');
+  const isManager = userRoles.includes('manager');
+  const isWriter = userRoles.includes('writer');
+  const isAgent = userRoles.includes('agent');
+  const isHR = userRoles.includes('hr');
+
+  const hasAccess = (roles) => {
+    if (!roles || roles.length === 0) return true;
+    if (isAdmin) return true;
+    return roles.some(role => userRoles.includes(role));
   };
 
   const toggle = (key) => setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -93,7 +101,9 @@ export default function AdminSidebar({ userPermissions = [] }) {
 
       <div className="flex-1 overflow-y-auto py-4 px-2 custom-scrollbar">
         {sections.map((section) => {
-          if (section.permission && !hasPermission(section.permission)) return null;
+          // Filter section by roles if specified (all items in section must have access check)
+          const visibleItems = section.items.filter(item => hasAccess(item.roles));
+          if (visibleItems.length === 0) return null;
 
           return (
             <div key={section.key} className="mb-2">
@@ -108,9 +118,7 @@ export default function AdminSidebar({ userPermissions = [] }) {
 
               {open[section.key] && (
                 <div className="space-y-1 ml-1">
-                  {section.items.map((item) => {
-                    if (item.permission && !hasPermission(item.permission)) return null;
-
+                  {visibleItems.map((item) => {
                     const active = pathname === item.href || pathname.startsWith(item.href + '/');
                     const Icon = item.icon;
                     return (

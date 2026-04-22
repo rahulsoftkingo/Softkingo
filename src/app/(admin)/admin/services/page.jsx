@@ -126,7 +126,7 @@ export default function AdminServicesPage() {
             </div>
             <Link
               href="/admin/services/new"
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-600 hover:to-sky-600 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-xl"
+              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500 text-white rounded-full font-bold transition-all shadow-lg hover:shadow-cyan-200/50 hover:scale-105 active:scale-95 text-sm"
             >
               <Plus className="w-4 h-4" />
               Add New Service

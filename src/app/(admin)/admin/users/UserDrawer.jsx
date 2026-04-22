@@ -19,8 +19,10 @@ export default function UserDrawer({
         status: 'active',
         profileImage: '',
         phone: '',
+        whatsapp: '',
         department: '',
         title: '',
+        bio: '',
         roleIds: [],
     });
     const [previewUrl, setPreviewUrl] = useState('');
@@ -38,8 +40,10 @@ export default function UserDrawer({
                 status: editingUser.status || 'active',
                 profileImage: editingUser.profileImage || '',
                 phone: editingUser.phone || '',
+                whatsapp: editingUser.whatsapp || '',
                 department: editingUser.department || '',
                 title: editingUser.title || '',
+                bio: editingUser.bio || '',
                 roleIds: editingUser.roles?.map((ur) => ur.roleId) || [],
             });
             setPreviewUrl(editingUser.profileImage || '');
@@ -333,6 +337,18 @@ export default function UserDrawer({
                                 placeholder="+91…"
                             />
                         </div>
+                        <div className="space-y-2">
+                            <label className="block text-xs font-medium text-slate-700">
+                                WhatsApp
+                            </label>
+                            <input
+                                name="whatsapp"
+                                value={form.whatsapp}
+                                onChange={handleChange}
+                                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                                placeholder="+91…"
+                            />
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -360,6 +376,20 @@ export default function UserDrawer({
                                 placeholder="e.g. Senior Engineer"
                             />
                         </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="block text-xs font-medium text-slate-700">
+                            Short Bio
+                        </label>
+                        <textarea
+                            name="bio"
+                            value={form.bio}
+                            onChange={handleChange}
+                            rows={3}
+                            className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+                            placeholder="Briefly describe the user..."
+                        />
                     </div>
 
                     {/* Roles */}

@@ -65,8 +65,10 @@ export async function POST(req) {
     roleIds = [],
     profileImage,
     phone,
+    whatsapp,
     department,
     title,
+    bio,
   } = body;
 
   if (!password || password.length < 6) {
@@ -101,8 +103,10 @@ export async function POST(req) {
       status: status || 'active',
       profileImage: profileImage || null,
       phone: phone || null,
+      whatsapp: whatsapp || null,
       department: department || null,
       title: title || null,
+      bio: bio || null,
       roles: safeRoleIds.length
         ? {
             create: safeRoleIds.map((roleId) => ({

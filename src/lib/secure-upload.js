@@ -25,7 +25,7 @@ async function validateAndProcessUpload(file, options = {}) {
 
     // 2. Strict Extension Check (Zero-Trust)
     const originalName = file.name || 'document';
-    
+
     // Check for double extensions (e.g., test.png.php)
     const parts = originalName.split('.');
     if (parts.length > 2) {
@@ -43,7 +43,7 @@ async function validateAndProcessUpload(file, options = {}) {
         throw new Error('File must have an extension');
     }
     const ext = originalName.substring(lastDotIndex).toLowerCase();
-    
+
     // Strict Whitelist
     const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif', '.pdf'];
     if (!allowedExtensions.includes(ext)) {
@@ -93,14 +93,26 @@ async function validateAndProcessUpload(file, options = {}) {
         throw new Error(`MIME type ${detectedMime} is not allowed for this upload`);
     }
 
-    // 4. Force Random Filename (Zero-Trust Renaming)
-    // We strictly use a UUID to prevent path traversal or overwriting via filename
-    const fileName = `${crypto.randomUUID()}${ext}`;
-    
-    // 5. Ensure Directory Exists
+    // 4. Generate Unique Filename (Check for duplicates and append number if needed)
+    const baseName = originalName
+        .split('.')[0]
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '-')
+        .substring(0, 100) || 'upload';
+
+    // 5. Ensure Directory Exists (Moved up to check for duplicates)
     const targetDir = path.join(process.cwd(), baseDir, subFolder);
     if (!fs.existsSync(targetDir)) {
         fs.mkdirSync(targetDir, { recursive: true });
+    }
+
+    let fileName = `${baseName}${ext}`;
+    let counter = 1;
+
+    // Check if file already exists, if so, append -1, -2, etc.
+    while (fs.existsSync(path.join(targetDir, fileName))) {
+        fileName = `${baseName}-${counter}${ext}`;
+        counter++;
     }
 
     const filePath = path.join(targetDir, fileName);
@@ -111,7 +123,7 @@ async function validateAndProcessUpload(file, options = {}) {
     // 7. Generate Public URL (Remove '/public' prefix if it exists in baseDir)
     const publicBase = baseDir.replace(/^public[\/\\]?/, "").replace(/\\/g, '/');
     const publicPath = `/${publicBase}/${subFolder}/${fileName}`.replace(/\/+/g, '/');
-    
+
     return {
         url: publicPath,
         fileName,

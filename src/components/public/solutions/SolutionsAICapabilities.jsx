@@ -20,49 +20,50 @@ export default function SolutionsAICapabilities({ data }) {
                     subtitle={data.subtitle}
                 />
 
-                <div className="grid lg:grid-cols-12 gap-8 lg:gap-20 items-start mt-10 md:mt-16">
+                <div className="grid lg:grid-cols-12 gap-4 lg:gap-0 items-center mt-8 md:mt-10">
 
-                    {/* 2. LEFT SIDE: Tabs Navigation (Mobile: Horizontal Scroll, Desktop: Vertical Stack) */}
-                    <div className="lg:col-span-5 flex lg:flex-col overflow-x-auto lg:overflow-visible gap-4 lg:gap-0 lg:space-y-4 pb-4 lg:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                        {data.items?.map((item, idx) => {
-                            const isActive = activeTab === idx;
-                            return (
-                                <div
-                                    key={idx}
-                                    onClick={() => setActiveTab(idx)}
-                                    // Mobile par fixed width (w-[75vw]) di hai taaki cards smooth scroll ho
-                                    className={`flex-shrink-0 snap-start w-[75vw] sm:w-[300px] lg:w-auto p-4 rounded-2xl cursor-pointer transition-all duration-300 border-l-4 ${isActive
-                                        ? "bg-white border-sky-500 shadow-md lg:translate-x-2"
-                                        // Unselected tabs ke liye thoda sa background add kiya mobile par better visibility ke liye
-                                        : "bg-white/50 lg:bg-transparent border-slate-200 hover:bg-white hover:border-sky-200 hover:shadow-sm"
-                                        }`}
-                                >
-                                    <div className="flex justify-between items-center gap-3">
-                                        <div>
-                                            <h4 className={`text-sm md:text-lg font-bold transition-colors line-clamp-2 md:line-clamp-none ${isActive ? "text-sky-600" : "text-slate-700"}`}>
-                                                {item.title}
-                                            </h4>
+                    {/* 2. LEFT SIDE: Tabs Navigation (Overlapping Container) */}
+                    <div className="lg:col-span-5 bg-sky-50 rounded-xl p-4 lg:p-6 lg:max-h-[600px] lg:overflow-y-auto custom-scrollbar-stylish relative z-20 lg:translate-x-12">
+                        <div className="flex lg:flex-col overflow-x-auto lg:overflow-visible gap-4 lg:gap-3 pb-4 lg:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                            {data.items?.map((item, idx) => {
+                                const isActive = activeTab === idx;
+                                return (
+                                    <div
+                                        key={idx}
+                                        onMouseEnter={() => setActiveTab(idx)}
+                                        className={`flex-shrink-0 snap-start w-[75vw] sm:w-[300px] lg:w-auto p-4 rounded-xl cursor-pointer transition-all duration-300 border-l-4 ${isActive
+                                            ? "bg-white border-sky-500 shadow-sm lg:translate-x-2"
+                                            : "border-transparent hover:bg-white/50"
+                                            }`}
+                                    >
+                                        <div className="flex justify-between items-center gap-3">
+                                            <div>
+                                                <h4 className={`text-sm md:text-lg font-bold transition-colors line-clamp-2 md:line-clamp-none ${isActive ? "text-sky-600" : "text-slate-600"}`}>
+                                                    {item.title}
+                                                </h4>
+                                            </div>
+                                            {isActive && <div className="flex-shrink-0 w-2 h-2 rounded-full bg-sky-500 animate-pulse"></div>}
                                         </div>
-                                        {isActive && <div className="flex-shrink-0 w-2 h-2 rounded-full bg-sky-500 animate-pulse"></div>}
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* 3. RIGHT SIDE: Sticky Content Card */}
-                    <div className="lg:col-span-7 relative h-full lg:min-h-[450px]">
-                        <div className="lg:sticky lg:top-32">
-                            <div className="relative bg-white rounded-[1rem] md:rounded-[1.5rem] p-4 sm:p-6 md:p-10 overflow-hidden border border-slate-100 shadow-2xl transition-all duration-500 hover:shadow-sky-200/50 group">
+                    <div className="lg:col-span-7 relative z-10 h-full lg:min-h-[450px]">
+                        <div className="lg:sticky lg:top-32 h-full">
+                            <div className="relative h-full min-h-[450px] bg-white rounded-[1rem] md:rounded-[1.5rem] p-4 sm:p-6 md:p-10 lg:p-12 overflow-hidden border border-slate-100 shadow-2xl transition-all duration-500 hover:shadow-sky-200/50 group flex flex-col justify-center">
 
                                 {/* Background Decorative Elements */}
                                 <div className="absolute top-0 right-0 text-[10rem] sm:text-[15rem] font-bold leading-none text-sky-50/50 select-none pointer-events-none -mt-4 sm:-mt-10 -mr-4 sm:-mr-10 z-0 transition-transform group-hover:scale-110 duration-700">
                                     0{activeTab + 1}
+                                0{activeTab + 1}
                                 </div>
                                 <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-sky-400/5 blur-[80px] rounded-full pointer-events-none" />
 
                                 {/* Content Container */}
-                                <div className="relative z-10 text-left animate-fadeIn">
+                                <div className="relative z-10 text-left animate-fadeIn lg:pl-16">
 
                                     {/* Icon Backdrop */}
                                     {/* <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-500 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-200 mb-8 transform transition-transform group-hover:rotate-6">

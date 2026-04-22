@@ -119,7 +119,7 @@ export default function CaseStudiesPage() {
             {isAdminOrManager && (
               <button
                 onClick={() => router.push('/admin/case-studies/new')}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-purple-700 shadow-lg hover:shadow-xl hover:scale-105 transition-all whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-purple-700 shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
                 <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 <span className="hidden xs:inline">New Case Study</span>
