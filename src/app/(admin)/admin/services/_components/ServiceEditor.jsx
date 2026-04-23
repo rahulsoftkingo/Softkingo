@@ -118,7 +118,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                     <input className={inputStyle} placeholder="Gradient Text (e.g. Awards & Recognitions)" value={content.awards?.gradientText || ''} onChange={e => updateField('content.awards.gradientText', e.target.value)} />
                 </div>
                 <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.awards?.subtitle || ''} onChange={e => updateField('content.awards.subtitle', e.target.value)} />
-                
+
                 <div className="space-y-4 pt-4 border-t border-slate-100">
                     <label className={labelStyle}>Award Items</label>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -228,7 +228,10 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                         <input className={inputStyle} placeholder="Section Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
                         <input className={inputStyle} placeholder="Gradient Highlight" value={content.techStack?.highlight || ''} onChange={e => updateField('content.techStack.highlight', e.target.value)} />
                     </div>
-                    <textarea className={inputStyle} rows={2} placeholder="Subtitle text" value={content.techStack?.subtitle || ''} onChange={e => updateField('content.techStack.subtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.techStack?.subtitle || ''} onChange={val => updateField('content.techStack.subtitle', val)} />
+                    </div>
 
                     <div className="pt-4 border-t border-slate-100">
                         <label className={labelStyle}>Categories (Tabs)</label>
@@ -249,7 +252,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                                 </div>
                                             ))}
                                         </div>
-                                        <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-sky-600 uppercase">+ Add Tech Item</button>
+                                        <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="mt-4 text-[10px] font-bold text-sky-600 uppercase">+ Add Tech Item</button>
                                     </div>
                                 </div>
                             ))}
@@ -299,8 +302,14 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             {/* 8. SOLUTION HIGHLIGHT */}
             <SectionWrapper id="highlight" icon={Zap} title="8. Solution Highlight (Mockup Design)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.highlight?.title || ''} onChange={e => updateField('content.highlight.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.highlight?.subtitle || ''} onChange={e => updateField('content.highlight.subtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Title</label>
+                        <input className={inputStyle} placeholder="Section Title" value={content.highlight?.title || ''} onChange={e => updateField('content.highlight.title', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.highlight?.subtitle || ''} onChange={val => updateField('content.highlight.subtitle', val)} />
+                    </div>
                 </div>
 
                 <div className="space-y-6">
@@ -317,6 +326,11 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                     <label className={labelStyle}>Tab Icon (FaIcon Name)</label>
                                     <input className={inputStyle} placeholder="e.g. FaRobot" value={tab.iconName || ''} onChange={e => updateField(`content.highlight.tabs.${i}.iconName`, e.target.value)} />
                                 </div>
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className={labelStyle}>Tab Description (Rich Text)</label>
+                                <MiniRichTextEditor value={tab.description || ''} onChange={val => updateField(`content.highlight.tabs.${i}.description`, val)} />
                             </div>
 
                             <div className="space-y-2">
@@ -388,8 +402,14 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             {/* 10. INDUSTRY SOLUTIONS */}
             <SectionWrapper id="solutions" icon={Zap} title="10. Industry Solutions (Grid)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.solutions?.title || ''} onChange={e => updateField('content.solutions.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.solutions?.subtitle || ''} onChange={e => updateField('content.solutions.subtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Title</label>
+                        <input className={inputStyle} placeholder="Section Title" value={content.solutions?.title || ''} onChange={e => updateField('content.solutions.title', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.solutions?.subtitle || ''} onChange={val => updateField('content.solutions.subtitle', val)} />
+                    </div>
                 </div>
 
                 <div className="space-y-6">
@@ -404,10 +424,10 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                         <input className={inputStyle} placeholder="e.g. LGBTQ+ Dating Apps" value={item.itemTitle || ''} onChange={e => updateField(`content.solutions.items.${i}.itemTitle`, e.target.value)} />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className={labelStyle}>Item Description</label>
-                                        <textarea className={inputStyle} rows={3} placeholder="Describe the solution..." value={item.itemDesc || ''} onChange={e => updateField(`content.solutions.items.${i}.itemDesc`, e.target.value)} />
+                                        <label className={labelStyle}>Item Description (Rich Text)</label>
+                                        <MiniRichTextEditor value={item.itemDesc || ''} onChange={val => updateField(`content.solutions.items.${i}.itemDesc`, val)} />
                                     </div>
-                                    
+
                                     {/* Sub-points for this solution */}
                                     <div className="bg-white p-3 rounded-lg border border-slate-100 space-y-2">
                                         <label className={labelStyle}>Success Points / Features</label>
@@ -439,8 +459,14 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             {/* 11. INDUSTRIES WE SERVE */}
             <SectionWrapper id="industries" icon={Layers} title="11. Industries We Serve (Slider)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.industrySection?.title || ''} onChange={e => updateField('content.industrySection.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.industrySection?.subtitle || ''} onChange={e => updateField('content.industrySection.subtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Title</label>
+                        <input className={inputStyle} placeholder="Section Title" value={content.industrySection?.title || ''} onChange={e => updateField('content.industrySection.title', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.industrySection?.subtitle || ''} onChange={val => updateField('content.industrySection.subtitle', val)} />
+                    </div>
                 </div>
 
                 <div className="space-y-6">
@@ -455,8 +481,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                         <input className={inputStyle} placeholder="e.g. Healthcare" value={item.itemTitle || ''} onChange={e => updateField(`content.industrySection.items.${i}.itemTitle`, e.target.value)} />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className={labelStyle}>Industry Description</label>
-                                        <textarea className={inputStyle} rows={2} placeholder="Description text..." value={item.itemDesc || ''} onChange={e => updateField(`content.industrySection.items.${i}.itemDesc`, e.target.value)} />
+                                        <label className={labelStyle}>Industry Description (Rich Text)</label>
+                                        <MiniRichTextEditor value={item.itemDesc || ''} onChange={val => updateField(`content.industrySection.items.${i}.itemDesc`, val)} />
                                     </div>
                                     <div className="space-y-2">
                                         <label className={labelStyle}>Industry Features (Points)</label>
@@ -469,6 +495,10 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                             ))}
                                             <button type="button" onClick={() => updateField(`content.industrySection.items.${i}.itemPoints`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600 p-1">+ Add Point</button>
                                         </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className={labelStyle}>Button Link (Slug)</label>
+                                        <input className={inputStyle} placeholder="e.g. ecommerce" value={item.buttonLink || ''} onChange={e => updateField(`content.industrySection.items.${i}.buttonLink`, e.target.value)} />
                                     </div>
                                 </div>
                                 <div className="space-y-2">
@@ -486,8 +516,14 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             {/* 12. USER GUIDE */}
             <SectionWrapper id="user-guide" icon={BookOpen} title="12. User Guide" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Main Title" value={content.userGuide?.title || ''} onChange={e => updateField('content.userGuide.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.userGuide?.subtitle || ''} onChange={e => updateField('content.userGuide.subtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Title</label>
+                        <input className={inputStyle} placeholder="Section Main Title" value={content.userGuide?.title || ''} onChange={e => updateField('content.userGuide.title', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.userGuide?.subtitle || ''} onChange={val => updateField('content.userGuide.subtitle', val)} />
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-4 bg-slate-50 p-2 rounded-xl border border-slate-200">
@@ -566,8 +602,14 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             {/* 13. FAQ Section */}
             <SectionWrapper id="faq" icon={HelpCircle} title="13. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.faq?.subtitle || ''} onChange={e => updateField('content.faq.subtitle', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Title</label>
+                        <input className={inputStyle} placeholder="Section Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.faq?.subtitle || ''} onChange={val => updateField('content.faq.subtitle', val)} />
+                    </div>
                 </div>
                 <div className="space-y-4">
                     {(content.faq?.items || []).map((item, i) => (
@@ -600,8 +642,8 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 </div>
                 <div className="space-y-2">
                     <label className={labelStyle}>Blog Category</label>
-                    <BlogCategorySelector 
-                        value={content.blogCategory || ''} 
+                    <BlogCategorySelector
+                        value={content.blogCategory || ''}
                         onChange={val => updateField('content.blogCategory', val)}
                         className={inputStyle}
                     />
@@ -610,7 +652,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
 
-            
+
             {/* 15. INQUIRY SECTION */}
             <SectionWrapper id="inquiry" icon={MessageSquare} title="15. Inquiry Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">

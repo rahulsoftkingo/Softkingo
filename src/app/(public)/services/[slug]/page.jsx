@@ -145,65 +145,58 @@ export default async function ServicePage({ params }) {
     <main className="text-gray-800">
       {/* Hero Section with Lead Form */}
       {show('hero') && (
-        <section className="relative overflow-hidden flex items-center bg-gradient-to-br from-slate-900 via-slate-800 to-sky-900">
-          {/* Background Image */}
+        <section className="relative overflow-hidden flex items-center bg-[#0B1121]">
           <div className="absolute inset-0 z-0">
             <Image
               src={content.heroBg || "/images/services/default-bg.png"}
               alt={service.title}
               fill
-              className="object-cover opacity-90"
+              className="object-cover opacity-90 "
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/80 to-slate-900/40 opacity-80" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500/10 rounded-full -mr-64 -mt-64 blur-[120px] opacity-50"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 w-full">
-
-
-            <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-18 w-full">
+            <div className="grid md:grid-cols-3 gap-10 lg:gap-16 items-center">
               {/* Left Content */}
-              <div className="text-white space-y-6 md:space-y-8">
+              <div className="md:col-span-2 text-white space-y-4 animate-fadeInLeft">
                 {/* Breadcrumb */}
-                <nav className="mb-6 md:mb-8 animate-fadeInUp">
-                  <div className="flex flex-wrap items-center text-xs md:text-sm text-sky-100/80 gap-1 md:gap-2">
-                    <Link href="/" className="hover:text-white transition-colors">
-                      Home
-                    </Link>
-                    <span>›</span>
-                    <Link
-                      href="/services"
-                      className="hover:text-white transition-colors"
-                    >
-                      Services
-                    </Link>
-                    <span>›</span>
-                    <span className="font-semibold text-cyan-400">{service.title}</span>
-                  </div>
-
+                <nav className="flex items-center space-x-2 text-xs md:text-sm animate-fadeInUp">
+                  <Link href="/" className="hover:text-cyan-400 transition-colors">
+                    Home
+                  </Link>
+                  <span className="text-gray-400">›</span>
+                  <Link href="/services" className="hover:text-cyan-400 transition-colors">
+                    Our services
+                  </Link>
+                  <span className="text-gray-400">›</span>
+                  <span className="text-cyan-400 ">{service.title}</span>
                 </nav>
+
+                {/* Heading & Description */}
                 <div className="space-y-6">
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] animate-fadeInUp animation-delay-200">
+                  <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal animate-fadeInUp">
                     {content.heroTitle}
                   </h1>
+
                   <div
-                    className="text-sky-100/90 text-base md:text-lg lg:text-xl max-w-3xl leading-[1.8] font-medium animate-fadeInUp animation-delay-400 rich-text mb-10"
+                    className="text-gray-300 text-sm md:text-base leading-relaxed animate-fadeInUp animation-delay-200 max-w-4xl rich-text"
                     dangerouslySetInnerHTML={{ __html: content.heroSubtitle }}
                   />
                 </div>
 
-                <div className="flex gap-4 animate-fadeInUp animation-delay-600">
+                <div className="flex gap-4 animate-fadeInUp animation-delay-400">
                   <Link
                     href={content.heroButtonLink || "/contact"}
-                    className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
+                    className="px-6 md:px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-bold hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-xl shadow-sky-900/40 transition-all duration-300 items-center cursor-pointer inline-flex uppercase tracking-wider"
                   >
                     {content.heroButtonText || "Let’s Work Together"} <FaArrowRight className="ml-2" />
                   </Link>
                 </div>
 
                 {/* Trusted By Section */}
-                <div className="pt-6 md:pt-8 animate-fadeInUp animation-delay-800  ">
+                <div className="pt-4 md:pt-6 animate-fadeInUp animation-delay-800  ">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
                     <h3 className="text-sky-200 text-sm md:text-base font-semibold">
@@ -247,7 +240,7 @@ export default async function ServicePage({ params }) {
               </div>
 
               {/* Right - Lead Form Component */}
-              <div className="md:ml-auto w-full max-w-md mx-auto md:mx-0 animate-fadeInRight">
+              <div className="md:col-span-1 md:ml-auto w-full max-w-md mx-auto md:mx-0 animate-fadeInRight">
                 <LeadForm
                   formType="service"
                   formKey={service.slug}

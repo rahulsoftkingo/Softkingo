@@ -16,9 +16,10 @@ import AwardsSection from '@/components/common/AwardsSection';
 
 export default function FoodDeliveryHero() {
     const logos = [
-        { name: 'TATA', src: '/images/service/s2.png' },
-        { name: 'ISUZU', src: '/images/service/s3.png' },
-        { name: 'LOGO', src: '/images/service/s5.png' },
+        { name: 'AnyTime Astro', src: '/images/logo/AnyTime Astro-logo.webp' },
+        { name: 'CoreValent', src: '/images/logo/CoreValentLogo.png' },
+        { name: 'Bumpy', src: '/images/logo/Bumpy_logo.webp' },
+        { name: 'Potafo', src: '/images/logo/potafologo.png' },
     ];
 
     const stats = [

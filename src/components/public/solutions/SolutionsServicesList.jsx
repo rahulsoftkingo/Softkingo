@@ -24,7 +24,7 @@ export default function SolutionsServicesList({ data }) {
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
                     {/* LEFT COLUMN: Title & Description */}
-                    <div className="lg:w-1/2 lg:sticky lg:top-32">
+                    <div className="lg:w-1/3 lg:sticky lg:top-32">
                         <CommonTitle
                             align="left"
                             title={sectionTitle}
@@ -35,7 +35,7 @@ export default function SolutionsServicesList({ data }) {
                     </div>
 
                     {/* RIGHT COLUMN: Cards with Scroll */}
-                    <div className="lg:w-1/2 w-full">
+                    <div className="lg:w-2/3 w-full">
                         <div className="grid grid-cols-1 gap-6 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar-stylish">
                             {services.map((service, idx) => (
                                 <motion.div

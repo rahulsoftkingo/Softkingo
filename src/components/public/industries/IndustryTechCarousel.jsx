@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import CommonTitle from '@/components/ui/CommonTitle';
 
-export default function IndustryTechCarousel({ title, description, items, gradientText }) {
+export default function IndustryTechCarousel({ title, description, items, gradientText, detailedDescription }) {
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {
@@ -16,7 +16,7 @@ export default function IndustryTechCarousel({ title, description, items, gradie
     };
 
     return (
-        <section className="py-24 overflow-hidden">
+        <section className="py-24 overflow-hidden bg-white">
             <div className="max-w-7xl mx-auto px-6">
 
                 {/* Header: Title Left, Buttons Right */}
@@ -34,17 +34,16 @@ export default function IndustryTechCarousel({ title, description, items, gradie
 
                     {/* Navigation Buttons */}
                     <div className="flex gap-3">
-                        <button onClick={() => scroll('left')} className="p-3 rounded-full border border-slate-200 hover:bg-sky-50 hover:border-sky-200 text-slate-600 hover:text-sky-600 transition-all">
+                        <button onClick={() => scroll('left')} className="p-3 rounded-xl border border-slate-200 hover:bg-sky-50 hover:border-sky-200 text-slate-600 hover:text-sky-600 transition-all">
                             <ChevronLeft size={24} />
                         </button>
-                        <button onClick={() => scroll('right')} className="p-3 rounded-full border border-slate-200 hover:bg-sky-50 hover:border-sky-200 text-slate-600 hover:text-sky-600 transition-all">
+                        <button onClick={() => scroll('right')} className="p-3 rounded-xl border border-slate-200 hover:bg-sky-50 hover:border-sky-200 text-slate-600 hover:text-sky-600 transition-all">
                             <ChevronRight size={24} />
                         </button>
                     </div>
                 </div>
 
                 {/* Carousel Container */}
-                {/* showing 3.5 items on desktop (w-[28%]), 2.5 on tablet, 1.2 on mobile */}
                 <div
                     ref={scrollRef}
                     className="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-10"
@@ -55,7 +54,7 @@ export default function IndustryTechCarousel({ title, description, items, gradie
                             key={i}
                             className="relative flex-shrink-0 w-[85%] md:w-[40%] lg:w-[28%] snap-start group cursor-pointer"
                         >
-                            <div className="relative aspect-[3/3] w-full rounded-2xl overflow-hidden shadow-lg border border-slate-100">
+                            <div className="relative aspect-[3/3] w-full rounded-xl overflow-hidden shadow-lg border border-slate-100">
                                 {/* Background Image */}
                                 <Image
                                     src={item.image || "/images/placeholder-tech.jpg"}

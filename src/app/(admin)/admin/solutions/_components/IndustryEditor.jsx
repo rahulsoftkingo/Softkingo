@@ -111,6 +111,10 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
 
             <SectionWrapper id="technologies" icon={Code} title="4. Advanced Technologies We Use" activeSections={activeSections}>
                 <TitleInputs section="technologies" content={content} updateField={updateField} />
+                <div className="space-y-1 mb-4">
+                    <label className={labelStyle}>Section Description (Rich Text)</label>
+                    <MiniRichTextEditor value={content.technologies?.description || ''} onChange={val => updateField('content.technologies.description', val)} />
+                </div>
                 <div className="space-y-4">
                     <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
                         <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>

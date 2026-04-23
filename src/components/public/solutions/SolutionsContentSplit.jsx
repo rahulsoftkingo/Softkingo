@@ -16,11 +16,18 @@ export default function SolutionsContentSplit({ data, reverse = false }) {
                 {/* Text Side */}
                 <div className={`col-span-2 space-y-8 ${reverse ? 'lg:order-2' : ''}`}>
                     <div className="text-left">
-                        <CommonTitle
+                        {/* <CommonTitle
                             align="left"
                             title={data.title}
                             subtitle={data.description}
-                        />
+                        /> */}
+                        <h3 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal '>{data.title}</h3>
+                        {data.description && (
+                            <div
+                                className="text-slate-600 text-base leading-relaxed rich-text"
+                                dangerouslySetInnerHTML={{ __html: data.description }}
+                            />
+                        )}
                     </div>
 
                     {data.listItems && (
@@ -30,7 +37,7 @@ export default function SolutionsContentSplit({ data, reverse = false }) {
                                     <div className="mt-1 p-1 bg-sky-100 rounded-full text-sky-600">
                                         <CheckCircle2 size={16} />
                                     </div>
-                                    <span className="text-slate-700 font-medium">{item}</span>
+                                    <span className="text-slate-600 font-medium">{item}</span>
                                 </li>
                             ))}
                         </ul>

@@ -423,6 +423,10 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
             <SectionWrapper id="techStack" icon={Code} title="12. Technology Stack (Tabbed)" activeSections={activeSections}>
                 <SectionHeader section={content.techStack} path="content.techStack" updateField={updateField} />
+                <div className="space-y-1 mb-4">
+                    <label className={labelStyle}>Section Description (Rich Text)</label>
+                    <MiniRichTextEditor value={content.techStack?.description || ''} onChange={val => updateField('content.techStack.description', val)} />
+                </div>
                 <div className="space-y-6">
 
                     <div className="space-y-6 pt-4 border-t border-slate-100">

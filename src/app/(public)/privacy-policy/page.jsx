@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage() {
   return (
     <>
       {/* PERFECT HERO */}
-      <section className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+      <section className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden"
         style={{ backgroundImage: "url('/images/privacy-hero.png')" }}
       >
 
@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
         <div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
-        
+
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
 
@@ -63,9 +63,9 @@ export default function PrivacyPolicyPage() {
       </section>
 
       {/* SIMPLE MS WORD STYLE CONTENT */}
-      <div className="max-w-7xl mx-auto px-6 py-20 prose prose-lg">
-        <div className="prose prose-headings:font-bold prose-headings:text-sky-900 prose-headings:font-extrabold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-li:text-base prose-li:leading-relaxed prose-a:text-sky-600 hover:prose-a:text-sky-500 prose-a:no-underline hover:prose-a:underline font-serif leading-relaxed">
-          
+      <div className="max-w-7xl mx-auto px-6 py-20">
+        <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-sky-900 prose-headings:font-extrabold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-li:text-base prose-li:leading-relaxed prose-a:text-sky-600 hover:prose-a:text-sky-500 prose-a:no-underline hover:prose-a:underline font-serif leading-relaxed">
+
           <p className="text-gray-700 text-lg leading-relaxed mb-8">
             At Softkingo Technologies, we are committed to protecting the privacy of our visitors, as we do not spam, sell, rent, or give information to third parties.
           </p>
@@ -80,7 +80,7 @@ export default function PrivacyPolicyPage() {
 
           {/* 1. Information that we collect */}
           <h2 className="text-3xl font-bold text-sky-900 mt-16 mb-6 border-b border-sky-200 pb-4">1. Information that we collect</h2>
-          
+
           <h3 className="text-2xl font-bold text-sky-900 mt-12 mb-4">(I) Personal information</h3>
           <p className="text-gray-700 text-lg leading-relaxed mb-6">
             The personal information that we may collect includes names, contact details, IP addresses, choice of products and services, and other information that identifies you. We may also collect and collect personal information about you at various times, including, but not limited to, the following:
@@ -150,31 +150,36 @@ export default function PrivacyPolicyPage() {
 
           {/* Contact Details */}
           <div className="mt-12 pt-12 border-t border-sky-200 space-y-4 text-lg font-arial">
-            <p><strong style={{color: '#0ea5e9'}}>Contact Address:</strong></p>
+            <p><strong style={{ color: '#0ea5e9' }}>Contact Address:</strong></p>
             <p>New Ashok Nagar, New Delhi - 110096</p>
             <p>H61, Block H, Sector 63, Noida - 201301</p>
-            
+
             <div className="grid md:grid-cols-2 gap-6 pt-6">
               <div>
-                <p><strong style={{color: '#0ea5e9'}}>Phone:</strong></p>
+                <p><strong style={{ color: '#0ea5e9' }}>Phone:</strong></p>
                 <p><a href="tel:+917428750870" className="text-sky-600 hover:text-sky-500 hover:underline transition-colors font-medium">+91 7428750870</a></p>
                 <p><a href="tel:+13124285526" className="text-sky-600 hover:text-sky-500 hover:underline transition-colors font-medium">+1 (312)-428-5526</a></p>
                 <p><a href="tel:+911203506011" className="text-sky-600 hover:text-sky-500 hover:underline transition-colors font-medium">HR: 0120-(3506)-011</a></p>
               </div>
               <div>
-                <p><strong style={{color: '#0ea5e9'}}>Email:</strong></p>
+                <p><strong style={{ color: '#0ea5e9' }}>Email:</strong></p>
                 <p><a href="mailto:info@softkingo.com" className="text-sky-600 hover:text-sky-500 hover:underline transition-colors font-medium">info@softkingo.com</a></p>
                 <p><a href="mailto:sales@softkingo.com" className="text-sky-600 hover:text-sky-500 hover:underline transition-colors font-medium">sales@softkingo.com</a></p>
                 <p><a href="mailto:hr@softkingo.com" className="text-sky-600 hover:text-sky-500 hover:underline transition-colors font-medium">hr@softkingo.com</a></p>
               </div>
             </div>
-            <p className="pt-6">
-              <a href="https://calendly.com/paramhans-softkingo/30min" 
-                 className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover-lift border-0" 
-                 target="_blank" rel="noopener noreferrer"
+            <p className="pt-4">
+              <Link
+                href="https://calendly.com/paramhans-softkingo/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center cursor-pointer  hover:bg-[#28AFDF] hover:text-white group"
               >
-                Schedule a Meeting →
-              </a>
+                <span className="font-semibold text-xs md:text-md mr-3 transition-all group-hover:text-white">
+                  Schedule a Meeting
+                </span>
+                <span className="group-hover:translate-x-1 transition-transform duration-300 group-hover:text-white">→</span>
+              </Link>
             </p>
           </div>
 

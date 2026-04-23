@@ -19,14 +19,15 @@ export default function TechAheadSection({
   testimonialColumns = 1 // 1, 2, or 'auto'
 }) {
   const clientLogos = [
-    { src: "/images/logo/cl1.png", alt: "Client 1" },
-    { src: "/images/logo/cl2.png", alt: "Client 2" },
-    { src: "/images/logo/cl3.png", alt: "Client 3" },
-    { src: "/images/logo/cl4.png", alt: "Client 4" },
-    { src: "/images/logo/cl5.png", alt: "Client 5" },
-    { src: "/images/logo/cl6.png", alt: "Client 6" },
-    { src: "/images/logo/cl7.png", alt: "Client 7" },
-    // { src: "/images/logo/cl8.png", alt: "Client 8" },
+    // { src: "/images/logo/AnyTime Astro-logo.webp", alt: "AnyTime Astro" },
+    { src: "/images/logo/CoreValentLogo.png", alt: "CoreValent" },
+    // { src: "/images/logo/Bumpy_logo.webp", alt: "Bumpy" },
+    { src: "/images/logo/potafologo.png", alt: "Potafologo" },
+    // { src: "/images/logo/LoveLocal-logo.webp", alt: "LoveLocal" },
+    { src: "/images/logo/practivoo.png", alt: "Practivoo" },
+    { src: "/images/logo/Moglix_logo.webp", alt: "Moglix" },
+    { src: "/images/logo/Snoonu-logo.webp", alt: "Snoonu" },
+    { src: "/images/logo/guidely-logo.webp", alt: "Guidely" },
   ];
 
   return (
@@ -110,7 +111,7 @@ export default function TechAheadSection({
               <img
                 src={logo.src}
                 alt={logo.alt}
-                className="w-full h-full object-contain opacity-100 group-hover:opacity-100 transition-opacity filter grayscale-0 group-hover:grayscale-0"
+                className="w-full h-8 object-contain opacity-100 group-hover:opacity-100 transition-opacity filter grayscale-0 group-hover:grayscale-0"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.parentElement.innerHTML = '<div className="w-full h-full flex items-center justify-center  text-xs font-bold">LOGO</div>';

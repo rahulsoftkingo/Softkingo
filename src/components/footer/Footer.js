@@ -52,13 +52,15 @@ const Footer = () => {
 
 
   const partnerLogos = [
-    "/images/logo/cl1.png",
+    "/images/logo/AnyTime Astro-logo.webp",
     "/images/logo/CoreValentLogo.png",
-    "/images/logo/cl3.png",
+    "/images/logo/Bumpy_logo.webp",
     "/images/logo/potafologo.png",
-    "/images/logo/cl4.png",
+    "/images/logo/LoveLocal-logo.webp",
     "/images/logo/practivoo.png",
-    "/images/logo/cl7.png",
+    "/images/logo/Moglix_logo.webp",
+    "/images/logo/Snoonu-logo.webp",
+    "/images/logo/guidely-logo.webp",
   ];
 
   const socialIcons = [
@@ -112,10 +114,8 @@ const Footer = () => {
               </Link>
 
               <p className="text-sm text-slate-600 leading-relaxed">
-                Incepted in 2020, Softkingo has grown at an exponential pace
-                with clients across 107 countries. We offer a complete range of
-                IT services and industry‑focused solutions to more than 39+
-                domains worldwide.
+                Softkingo is an ISO-certified digital solutions provider offering web, mobile app, and digital marketing services with a focus on scalable, high-quality results.
+                Serving clients in 107 countries, we deliver end-to-end IT solutions across 39+ industries, driving growth and measurable success.
               </p>
             </div>
 
@@ -269,7 +269,7 @@ const Footer = () => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-5">
               {/* Copyright */}
               <p className="text-slate-500 text-xs md:text-sm">
-                © 2020–{currentYear} Softkingo Technologies Pvt. Ltd. All rights reserved.
+                © {currentYear} Softkingo Technologies Pvt. Ltd. All rights reserved.
               </p>
 
 

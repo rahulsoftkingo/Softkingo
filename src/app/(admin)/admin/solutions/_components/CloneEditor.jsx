@@ -326,6 +326,11 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                 <div className="space-y-4">
                     <input className={inputStyle} placeholder="Tech Stack Overview Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
                     <textarea className={inputStyle} rows={2} placeholder="Subtitle text" value={content.techStack?.subtitle || ''} onChange={e => updateField('content.techStack.subtitle', e.target.value)} />
+                    
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Description (Rich Text)</label>
+                        <MiniRichTextEditor value={content.techStack?.description || ''} onChange={val => updateField('content.techStack.description', val)} />
+                    </div>
 
                     <div className="pt-4 border-t border-slate-100">
                         <label className={labelStyle}>Categories (Tabs)</label>
@@ -461,6 +466,15 @@ export default function CloneEditor({ formData, updateField, MediaInput, activeS
                                                             value={item.image}
                                                             path={`content.industries.items.${i}.image`}
                                                         />
+                                                        <div className="mt-4 space-y-1">
+                                                            <label className={labelStyle}>Button Link (Slug)</label>
+                                                            <input 
+                                                                className={inputStyle} 
+                                                                placeholder="e.g. ecommerce" 
+                                                                value={item.buttonLink || ''} 
+                                                                onChange={e => updateField(`content.industries.items.${i}.buttonLink`, e.target.value)} 
+                                                            />
+                                                        </div>
                                                     </div>
                                                     {item.image && (
                                                         <div className="w-32 h-20 bg-slate-50 rounded-lg border border-slate-100 overflow-hidden flex-shrink-0 mt-6 md:mt-0">

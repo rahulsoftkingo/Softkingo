@@ -20,12 +20,12 @@ export default function CloneHero({ data }) {
   ];
 
   const defaultBrands = [
-    "/images/softkingo-logo.png",
-    "/images/softkingo-logo.png",
-    "/images/softkingo-logo.png",
-    "/images/softkingo-logo.png",
-    "/images/softkingo-logo.png",
-    "/images/softkingo-logo.png"
+    "/images/logo/AnyTime Astro-logo.webp",
+    "/images/logo/CoreValentLogo.png",
+    "/images/logo/Bumpy_logo.webp",
+    "/images/logo/potafologo.png",
+    "/images/logo/LoveLocal-logo.webp",
+    "/images/logo/practivoo.png"
   ];
 
   const sliderImages = data?.sliderImages && data.sliderImages.length > 0

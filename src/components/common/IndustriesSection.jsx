@@ -236,11 +236,11 @@ export default function IndustriesSection({ data, industries }) {
                                 className="space-y-8"
                             >
                                 <div className="space-y-6">
-                                    <h3 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] tracking-tight">
+                                    <h3 className="text-2xl md:text-3xl font-bold text-[#1A1A1A] tracking-tight">
                                         {activeIndustry.title || activeIndustry.itemTitle}
                                     </h3>
                                     <div
-                                        className="text-[#333] text-sm md:text-lg leading-relaxed font-medium max-w-xl opacity-90 rich-text"
+                                        className="text-[#333] text-sm md:text-base leading-relaxed font-medium max-w-xl opacity-90 rich-text"
                                         dangerouslySetInnerHTML={{ __html: heroDesc }}
                                     />
                                 </div>
@@ -249,9 +249,9 @@ export default function IndustriesSection({ data, industries }) {
                                 <div className="space-y-4 pt-2">
                                     {featuresList.slice(0, 3).map((item, i) => (
                                         <div key={i} className="flex items-center gap-3">
-                                            <Check size={20} className="text-[#1A1A1A]" strokeWidth={2.5} />
+                                            <Check size={18} className="text-[#1A1A1A]" strokeWidth={2.5} />
                                             <span
-                                                className="text-[#1A1A1A] font-bold text-sm md:text-lg rich-text"
+                                                className="text-[#1A1A1A] font-bold text-xs md:text-base rich-text"
                                                 dangerouslySetInnerHTML={{ __html: item.title }}
                                             />
                                         </div>
@@ -266,8 +266,8 @@ export default function IndustriesSection({ data, industries }) {
                                         className="inline-block"
                                     >
                                         <Link
-                                            href={`/industries/${activeIndustry.slug || 'it-consulting'}`}
-                                            className="px-8 py-3.5 rounded-full bg-[#1EAEDB] text-white font-bold text-base md:text-lg transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] flex items-center gap-2"
+                                            href={`/industries/${activeIndustry.buttonLink || activeIndustry.slug || 'it-consulting'}`}
+                                            className="px-6 py-3 rounded-xl bg-[#1EAEDB] text-white font-bold text-sm md:text-base transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] flex items-center gap-2"
                                         >
                                             {activeIndustry.title || activeIndustry.itemTitle}
                                         </Link>

@@ -141,7 +141,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
     <motion.div
       ref={ref}
       style={{ scale, opacity, top: `${88 + index * 20}px` }}
-      className="sticky rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.16)] hover:shadow-[0_26px_60px_rgba(15,23,42,0.26)] transition-shadow"
+      className="sticky rounded-2xl overflow-hidden transition-shadow"
     >
       {/* Card inner */}
       <div

@@ -12,15 +12,15 @@ export default function TermsConditionsPage() {
     <>
       {/* HERO (same style) */}
       <section
-        className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
+        className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden"
         style={{ backgroundImage: "url('/images/terms-hero.png')" }} // change image if you want
       >
-       {/* Enhanced background effects */}
+        {/* Enhanced background effects */}
         <div className="absolute inset-0 bg-gradient-to-br from-sky-900/20 via-slate-900 to-slate-950/90" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)]" />
         <div className="absolute top-1/4 -left-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl" />
-        
+
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
 
@@ -72,8 +72,8 @@ export default function TermsConditionsPage() {
       </section>
 
       {/* SIMPLE “MS WORD” CONTENT */}
-      <div className="max-w-7xl mx-auto px-6 py-20 prose prose-lg">
-        <div className="prose prose-headings:font-bold prose-headings:text-sky-900 prose-headings:font-extrabold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-li:text-base prose-li:leading-relaxed prose-a:text-sky-600 hover:prose-a:text-sky-500 prose-a:no-underline hover:prose-a:underline font-serif leading-relaxed">
+      <div className="max-w-7xl mx-auto px-6 py-20">
+        <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-sky-900 prose-headings:font-extrabold prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-li:text-base prose-li:leading-relaxed prose-a:text-sky-600 hover:prose-a:text-sky-500 prose-a:no-underline hover:prose-a:underline font-serif leading-relaxed">
           <h2 className="text-3xl font-bold text-sky-900 mt-0 mb-6 border-b border-sky-200 pb-4">
             Use of the Website
           </h2>

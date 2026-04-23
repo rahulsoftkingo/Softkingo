@@ -26,7 +26,7 @@ export default function IndustryCoversTabs({ data }) {
                     />
                 </div>
 
-                <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-[500px] border border-slate-100 shadow-2xl">
+                <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-[500px] borderborder-slate-100shadow-2xl">
 
                     {/* LEFT SIDE: TABS (Sky Background) */}
                     <div className="w-full lg:min-w-[40%] lg:w-fit bg-sky-500 p-8 flex flex-col">

@@ -68,7 +68,7 @@ export default function IndustrySolutions({ data }) {
                         {items.map((item, idx) => (
                             <div
                                 key={idx}
-                                className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start h-[480px] relative rounded-3xl overflow-hidden group/card shadow-lg hover:shadow-2xl transition-all duration-500 bg-slate-100"
+                                className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start h-[480px] relative rounded-xl overflow-hidden group/card shadow-lg hover:shadow-2xl transition-all duration-500 bg-slate-100"
                             >
                                 {/* Background Image */}
                                 <Image
@@ -84,11 +84,11 @@ export default function IndustrySolutions({ data }) {
                                 {/* Content */}
                                 <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
                                     <div className="space-y-4">
-                                        <h3 className="text-xl md:text-2xl font-bold tracking-tight leading-normal">
+                                        <h3 className="text-lg md:text-xl font-bold ">
                                             {item.itemTitle}
                                         </h3>
                                         <div
-                                            className="text-sm md:text-base font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300 rich-text"
+                                            className="text-xs md:text-sm font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300 rich-text"
                                             dangerouslySetInnerHTML={{ __html: item.itemDesc }}
                                         />
 
@@ -123,14 +123,14 @@ export default function IndustrySolutions({ data }) {
                     <div className="flex justify-end gap-4 mt-4">
                         <button
                             onClick={() => scroll("left")}
-                            className={`p-3 rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-900`}
+                            className={`p-3 rounded-xl border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-900`}
                             disabled={!canScrollLeft}
                         >
                             <ChevronLeft size={24} strokeWidth={2.5} />
                         </button>
                         <button
                             onClick={() => scroll("right")}
-                            className={`p-3 rounded-full border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-900`}
+                            className={`p-3 rounded-xl border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-900`}
                             disabled={!canScrollRight}
                         >
                             <ChevronRight size={24} strokeWidth={2.5} />

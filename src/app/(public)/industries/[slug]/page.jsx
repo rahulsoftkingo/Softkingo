@@ -98,7 +98,7 @@ export default async function IndustryPage(props) {
 
             {/* 2. CHALLENGES WE SOLVE (Updated Design) */}
             {show('challenges') && (
-                <section className="py-20 lg:py-28 px-6 overflow-visible">
+                <section className="py-8 md:py-16 px-6 overflow-visible">
                     <div className="max-w-7xl mx-auto">
                         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
@@ -159,6 +159,7 @@ export default async function IndustryPage(props) {
                         description={technologies?.subtitle || "We leverage cutting-edge tech stacks to build robust solutions."}
                         items={technologies?.items}
                         gradientText={technologies?.gradientText || "Tech"}
+                        detailedDescription={technologies?.description}
                     />
                 )}
             </div>
@@ -176,7 +177,7 @@ export default async function IndustryPage(props) {
 
             {/* 6. OTHER INDUSTRIES (Fixed Alignment) */}
             {show('otherIndustries') && (
-                <section className="py-24 bg-slate-50 px-6 relative overflow-hidden">
+                <section className="py-8 md:py-16 bg-slate-50 px-6 relative overflow-hidden">
                     <div className="max-w-7xl mx-auto relative z-10">
 
                         {/* Common Title */}
@@ -275,7 +276,7 @@ export default async function IndustryPage(props) {
             {/* 7. WHY CHOOSE */}
 
             {show('whyChoose') && (
-                <section className="py-24 bg-slate-50 relative overflow-hidden">
+                <section className="py-8 md:py-16 bg-slate-50 relative overflow-hidden">
                     <div className="max-w-7xl mx-auto px-6 relative z-10">
 
                         {/* Common Title */}
@@ -311,7 +312,7 @@ export default async function IndustryPage(props) {
 
             {/* 10. TESTIMONIALS */}
             {show('testimonials') && (
-                <section className="py-24 bg-white px-6">
+                <section className="py-8 md:py-16 bg-white px-6">
                     <div className="max-w-7xl mx-auto">
                         <CommonTitle
                             title={testimonials?.title || "What Our Clients Say"}

@@ -147,7 +147,7 @@ const UserGuide = ({ data }) => {
                 {/* Skip Guide Button (Desktop) */}
                 <button
                     onClick={skipGuide}
-                    className="hidden lg:flex absolute -top-4 right-0 z-20 px-6 py-2 rounded-full border border-slate-200 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-sky-500 hover:border-sky-100 transition-all duration-300 items-center gap-2 group"
+                    className="hidden lg:flex absolute top-4 right-6 z-20 px-6 py-2 rounded-full border border-slate-200 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-sky-500 hover:border-sky-100 transition-all duration-300 items-center gap-2 group"
                 >
                     Skip Guide
                     <svg className="w-3 h-3 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,7 +160,7 @@ const UserGuide = ({ data }) => {
                     pill={false}
                     title={data?.title}
                     gradientText={data?.subtitle}
-                    subtitle={data?.description}
+                    subtitle={data?.subtitle}
                 />
 
                 {/* Mobile Sticky ToC Bar */}

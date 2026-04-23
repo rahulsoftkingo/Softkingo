@@ -52,15 +52,15 @@ export default function SolutionHighlight({ data }) {
                                     key={idx}
                                     onMouseEnter={() => setActiveIdx(idx)}
                                     whileHover={{ x: isActive ? 0 : 5 }}
-                                    className={`p-5 rounded-2xl transition-all duration-300 cursor-pointer flex items-center gap-5 border-2 ${isActive
-                                        ? "bg-white border-sky-100 shadow-[0_15px_35px_rgba(14,165,233,0.1)] scale-105"
-                                        : "bg-white border-transparent text-slate-400 hover:border-sky-50"
+                                    className={`p-4 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-4 border-2 ${isActive
+                                        ? "bg-white border-sky-100 shadow-[0_10px_25px_rgba(14,165,233,0.1)] scale-105"
+                                        : "bg-white border-sky-100 text-slate-400 hover:border-sky-50"
                                         }`}
                                 >
-                                    <div className={`p-3 rounded-xl transition-all duration-300 ${isActive ? "bg-sky-50 text-sky-500" : "bg-slate-50 text-slate-300"}`}>
-                                        <Icon size={26} />
+                                    <div className={`p-2.5 rounded-lg transition-all duration-300 ${isActive ? "bg-sky-50 text-sky-500" : "bg-slate-50 text-slate-300"}`}>
+                                        <Icon size={22} />
                                     </div>
-                                    <h4 className={`text-lg font-bold tracking-tight transition-all duration-300 ${isActive ? "text-sky-600" : "text-slate-500"
+                                    <h4 className={`text-base font-bold  transition-all duration-300 ${isActive ? "text-sky-600" : "text-slate-500"
                                         }`}>
                                         {tab.label}
                                     </h4>
@@ -70,7 +70,7 @@ export default function SolutionHighlight({ data }) {
                     </div>
 
                     {/* Right Content Area: Detailed Insight */}
-                    <div className="lg:col-span-8 bg-[#4eb1f1] rounded-[2rem] p-8 md:p-14 text-white shadow-2xl shadow-sky-200/30 relative overflow-hidden min-h-[580px] flex flex-col lg:pl-20">
+                    <div className="lg:col-span-8 bg-[#4eb1f1] rounded-2xl md:rounded-3xl p-8 md:p-14 text-white shadow-2xl shadow-sky-200/30 relative overflow-hidden min-h-[580px] flex flex-col lg:pl-20">
                         {/* Decorative Background Element */}
                         <div className="absolute -top-24 -right-12 w-80 h-80 bg-white/10 rounded-full blur-[80px] pointer-events-none"></div>
 
@@ -85,11 +85,18 @@ export default function SolutionHighlight({ data }) {
                             >
                                 {/* Active Heading */}
                                 <div className="flex items-center gap-4 mb-10">
-                                    <span className="text-white/50 text-2xl font-light">→</span>
-                                    <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold leading-normal tracking-tight">
+                                    {/* <span className="text-white/50 text-2xl font-light">→</span> */}
+                                    <h3 className="text-lg md:text-xl lg:text-2xl font-bold">
                                         {activeTab.fullTitle || activeTab.label}
                                     </h3>
                                 </div>
+
+                                {activeTab.description && (
+                                    <div
+                                        className="text-white/80 text-sm md:text-base mb-8 rich-text"
+                                        dangerouslySetInnerHTML={{ __html: activeTab.description }}
+                                    />
+                                )}
 
                                 {/* Feature Highlights */}
                                 <div className="space-y-5 mb-12 flex-1">
@@ -102,10 +109,10 @@ export default function SolutionHighlight({ data }) {
                                             className="flex items-start gap-4"
                                         >
                                             <div className="mt-1 flex-shrink-0">
-                                                <Check size={20} strokeWidth={3} className="text-white" />
+                                                <Check size={18} strokeWidth={3} className="text-white" />
                                             </div>
-                                            <div 
-                                                className="text-base md:text-lg font-semibold text-white/90 leading-snug rich-text"
+                                            <div
+                                                className="text-sm md:text-base font-semibold text-white/90  rich-text"
                                                 dangerouslySetInnerHTML={{ __html: feature }}
                                             />
                                         </motion.div>
@@ -120,10 +127,10 @@ export default function SolutionHighlight({ data }) {
                                             const BottomIcon = iconMap[iconObj.iconName] || FaIcons.FaRobot;
                                             return (
                                                 <div key={iIdx} className="flex flex-col items-center gap-2">
-                                                    <div className="p-3 bg-white/10 rounded-xl backdrop-blur-md border border-white/10">
-                                                        <BottomIcon size={24} />
+                                                    <div className="p-2.5 bg-white/10 rounded-lg backdrop-blur-md border border-white/10">
+                                                        <BottomIcon size={20} />
                                                     </div>
-                                                    <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-white/60 text-center">
+                                                    <span className="text-[7px] font-bold text-white/60 text-center">
                                                         {iconObj.label}
                                                     </span>
                                                 </div>
@@ -134,10 +141,10 @@ export default function SolutionHighlight({ data }) {
                                     {/* Primary CTA */}
                                     <Link
                                         href="/contact"
-                                        className="inline-flex items-center gap-3 bg-white text-sky-500 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-sky-50 transition-all shadow-lg hover:-translate-y-1 active:scale-95 group"
+                                        className="inline-flex items-center gap-3 bg-white text-sky-500 px-6 py-3.5 rounded-xl font-bold text-base hover:bg-sky-50 transition-all shadow-lg hover:-translate-y-1 active:scale-95 group"
                                     >
                                         Get In Touch
-                                        <ArrowRight size={20} strokeWidth={2.5} className="group-hover:translate-x-1 transition-transform" />
+                                        <ArrowRight size={18} strokeWidth={2.5} className="group-hover:translate-x-1 transition-transform" />
                                     </Link>
                                 </div>
                             </motion.div>
