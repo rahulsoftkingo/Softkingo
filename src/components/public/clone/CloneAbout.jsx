@@ -25,7 +25,7 @@ export default function CloneAbout({ data }) {
     <section className="py-8 md:py-16 bg-white overflow-clip">
       <div className="max-w-7xl mx-auto px-6">
 
-        <div className="grid lg:grid-cols-3 gap-16 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 lg:gap-16 gap-8  items-start">
 
           {/* Left Column: Heading, Stats & CTA */}
           <div className="space-y-10 col-span-2">
@@ -36,7 +36,7 @@ export default function CloneAbout({ data }) {
             />
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-6 relative">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
               {/* Decorative Blur Background for Stats */}
               <div className="absolute -inset-10 bg-sky-50/50 blur-3xl -z-10 rounded-[3rem]"></div>
 
