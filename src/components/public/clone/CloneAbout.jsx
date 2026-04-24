@@ -36,7 +36,7 @@ export default function CloneAbout({ data }) {
             />
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-6 relative">
               {/* Decorative Blur Background for Stats */}
               <div className="absolute -inset-10 bg-sky-50/50 blur-3xl -z-10 rounded-[3rem]"></div>
 
