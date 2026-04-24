@@ -112,8 +112,19 @@ export async function POST(req) {
       });
     }
 
-    await prisma.newsletterSubscription.create({
-      data: {
+    // Upsert subscription: if already exists, just update source/status if needed, else create
+    await prisma.newsletterSubscription.upsert({
+      where: {
+        email_listId: {
+          email,
+          listId: list.id,
+        },
+      },
+      update: {
+        status: "active", // Reactivate if was inactive
+        source: source || listSlug,
+      },
+      create: {
         email,
         name,
         status: "active",
@@ -122,7 +133,7 @@ export async function POST(req) {
       },
     });
 
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json({ success: true, message: "Subscribed successfully" }, { status: 200 });
   } catch (error) {
     console.error("Newsletter subscribe failed:", error);
     return NextResponse.json(

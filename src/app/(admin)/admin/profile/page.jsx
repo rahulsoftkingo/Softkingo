@@ -141,7 +141,7 @@ export default function AdminProfilePage() {
 
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
-    
+
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       setError('New passwords do not match');
       return;
@@ -193,14 +193,14 @@ export default function AdminProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 z-20">
       {/* Header with Profile Banner */}
-      <div className="bg-gradient-to-r from-sky-600 to-sky-800 h-40 relative">
+      <div className="bg-gradient-to-r from-sky-600 to-sky-800 h-40 relative z-0">
         <div className="absolute inset-0 bg-black/10"></div>
       </div>
 
       {/* Profile Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-22 pb-12  z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 -mt-22 pb-12  z-20">
         {/* Profile Card Header */}
         <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden mb-6">
           <div className="p-6 sm:p-8">
@@ -295,21 +295,19 @@ export default function AdminProfilePage() {
             <div className="flex gap-1 p-2">
               <button
                 onClick={() => setActiveTab('general')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === 'general'
-                    ? 'bg-white text-sky-600 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'general'
+                  ? 'bg-white text-sky-600 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
               >
                 General Info
               </button>
               <button
                 onClick={() => setActiveTab('security')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeTab === 'security'
-                    ? 'bg-white text-sky-600 shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'security'
+                  ? 'bg-white text-sky-600 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
               >
                 Security
               </button>

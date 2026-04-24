@@ -7,6 +7,7 @@ import {
     HelpCircle, Briefcase, MousePointerClick, Award, MessageSquare, Globe, Search,
     Image as ImageIcon, TrendingUp, Layers, BookOpen
 } from "lucide-react";
+import { COMMON_TECH } from '../../solutions/_components/TechConstants';
 
 // --- 1. GLOBAL STYLES ---
 const inputStyle = "w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500 outline-none transition-all placeholder:text-slate-400";
@@ -243,6 +244,22 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
 
                                     <div className="space-y-3">
                                         <label className={labelStyle}>Technologies in this Category</label>
+                                        
+                                        <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
+                                            <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
+                                            {COMMON_TECH.map((tech) => (
+                                                <button
+                                                    key={tech.name}
+                                                    type="button"
+                                                    onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { ...tech }])}
+                                                    className="p-1 px-2 bg-slate-50 hover:bg-sky-50 hover:text-sky-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
+                                                >
+                                                    <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                                    {tech.name}
+                                                </button>
+                                            ))}
+                                        </div>
+
                                         <div className="grid md:grid-cols-2 gap-4">
                                             {(tab.items || []).map((item, j) => (
                                                 <div key={j} className="bg-white p-3 rounded-lg border border-slate-200 relative group/tech">

@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { notifySubscribersOfNewPost } from '@/lib/newsletter-service';
 
 function canEdit(session) {
   const roles = session?.user?.roles || [];
@@ -230,6 +231,12 @@ export async function POST(request) {
       ...post,
       placements: post.placements ? safeJsonParseArray(post.placements) : [],
     };
+
+    // Trigger newsletter notification if published
+    if (post.status === 'published') {
+      // We don't await this to keep the response fast
+      notifySubscribersOfNewPost(postData).catch(err => console.error('Notification trigger failed:', err));
+    }
 
     return NextResponse.json(postData, { status: 201 });
   } catch (err) {

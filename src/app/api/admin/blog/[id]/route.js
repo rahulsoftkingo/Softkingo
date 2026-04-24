@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { notifySubscribersOfNewPost } from '@/lib/newsletter-service';
 
 function canEdit(session) {
   const roles = session?.user?.roles || [];
@@ -129,6 +130,11 @@ export async function PATCH(request, { params }) {
     }
 
     // ✅ STRING PATH STORAGE (SIMPLE!)
+    const oldPost = await prisma.blogPost.findUnique({
+      where: { id },
+      select: { status: true }
+    });
+
     const post = await prisma.blogPost.update({
       where: { id },
       data: {
@@ -175,10 +181,17 @@ export async function PATCH(request, { params }) {
       },
     });
 
-    return NextResponse.json({
+    const postData = {
       ...post,
       placements: post.placements ? safeJsonParseArray(post.placements) : [],
-    });
+    };
+
+    // Trigger notification only if it's being published for the first time or from a non-published state
+    if (status === 'published' && oldPost?.status !== 'published') {
+      notifySubscribersOfNewPost(postData).catch(err => console.error('Notification trigger failed:', err));
+    }
+
+    return NextResponse.json(postData);
   } catch (err) {
     console.error('Blog update error', err);
     if (err.code === 'P2002' && err.meta?.target?.includes('slug')) {

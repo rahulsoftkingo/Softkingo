@@ -95,7 +95,9 @@ export default function AdminSidebar({ userRoles = [] }) {
     <nav className="h-full flex flex-col bg-white font-sans">
       <div className="h-16 flex items-center justify-center px-6 border-b border-slate-200 bg-white">
         <div className="flex items-center gap-3">
-          <Image src="/images/softkingo-logo.png" alt="Softkingo Logo" width={140} height={32} className="h-12 w-auto" />
+          <Link href="/">
+            <Image src="/images/softkingo-logo.png" alt="Softkingo Logo" width={140} height={48} className="h-12 w-auto" priority />
+          </Link>
         </div>
       </div>
 

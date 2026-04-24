@@ -97,12 +97,12 @@ export default function MiniRichTextEditor({ value, onChange, placeholder = "Sta
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      Underline,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: 'text-sky-600 underline cursor-pointer',
+      StarterKit.configure({
+        link: {
+          openOnClick: false,
+          HTMLAttributes: {
+            class: 'text-sky-600 underline cursor-pointer',
+          },
         },
       }),
       Placeholder.configure({

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
@@ -148,12 +148,12 @@ export default function OptimizedChatWidget() {
       // Sequence: Short pause -> Typing -> Message + Sound -> Next Question
       setTimeout(() => {
         setIsTyping(true);
-        
+
         setTimeout(() => {
           setIsTyping(false);
           addBotMessage("Hii! Welcome to Softkingo. How can we help you today?");
           playNotificationSound();
-          
+
           setTimeout(() => {
             addBotMessage("Before we start, could you please tell me your full name?");
           }, 1200);
@@ -174,9 +174,9 @@ export default function OptimizedChatWidget() {
         if (playPromise !== undefined) {
           playPromise.catch(() => {
             console.log("Autoplay blocked. Sound will trigger on first user interaction.");
-            
+
             const playOnInteraction = () => {
-              audio.play().catch(() => {});
+              audio.play().catch(() => { });
               window.removeEventListener('click', playOnInteraction);
               window.removeEventListener('touchstart', playOnInteraction);
             };
@@ -444,25 +444,41 @@ export default function OptimizedChatWidget() {
 
   return (
     <div className="fixed bottom-[100px] lg:bottom-4 right-4 z-50 font-sans">
-      {/* Chat Button */}
+      {/* Chat Button - Refined White Theme */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-white hover:bg-sky-50 text-sky-600 rounded-full shadow-2xl hover:shadow-sky-200 transition-all duration-300 hover:scale-110 flex items-center group border-2 border-sky-500 overflow-hidden"
+          className="relative group flex items-center justify-center transition-all duration-500"
         >
-          <div className="relative w-14 h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden flex-shrink-0 bg-white">
-            <Image
-              src="/images/bot.png"
-              alt="Chat"
-              width={64}
-              height={64}
-              className="object-cover w-full h-full"
-            />
-            <span className="absolute bottom-1 right-1 block h-3 w-3 rounded-full bg-green-400 ring-2 ring-white"></span>
+          {/* Subtle Attention Ping */}
+          <span className="absolute inset-0 rounded-full bg-sky-400/20 animate-ping duration-1000"></span>
+
+          {/* Main Button Body - Clean & Premium */}
+          <div className="relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-all duration-500 hover:scale-110 active:scale-95 overflow-visible">
+
+            {/* Subtle Blue Border Inner Ring */}
+            <div className="absolute inset-0 rounded-full border-2 border-sky-500/10 group-hover:border-sky-500/30 transition-all duration-500"></div>
+
+            {/* Avatar Container */}
+            <div className="relative w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden bg-sky-50 flex items-center justify-center shadow-inner">
+              <Image
+                src="/images/bot.png"
+                alt="AI Chat"
+                width={64}
+                height={64}
+                className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+
+            {/* Premium Status Dot */}
+            <span className="absolute top-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-[0_0_8px_rgba(34,197,94,0.4)] animate-pulse"></span>
+
+            {/* Floating Message Badge */}
+            <div className="absolute -top-11 right-0 bg-white text-slate-800 text-[10px]  px-3 py-1.5 rounded-xl shadow-xl border border-sky-50 whitespace-nowrap animate-bounce-slow">
+              Need help? Ask us
+              <div className="absolute -bottom-1 right-5 w-2 h-2 bg-white border-r border-b border-sky-50 transform rotate-45"></div>
+            </div>
           </div>
-          <span className="max-w-0 overflow-hidden group-hover:max-w-xs group-hover:px-4 transition-all duration-500 ease-in-out whitespace-nowrap font-bold text-sky-700">
-            Chat with AI
-          </span>
         </button>
       )}
 

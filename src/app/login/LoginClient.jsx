@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 export default function LoginClient({ callbackUrl }) {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
@@ -72,7 +73,7 @@ export default function LoginClient({ callbackUrl }) {
         <div className="md:w-1/2 w-full p-8 md:p-12">
           <div className="text-center mb-8">
             <a href="/" className="flex justify-center">
-              <img src="/images/softkingo-logo.png" className="h-12" alt="Softkingo Logo" />
+              <Image src="/images/softkingo-logo.png" className="h-12 w-auto" alt="Softkingo Logo" width={140} height={48} priority />
             </a>
             <h2 className="text-xl font-bold text-sky-900 mt-4">Welcome Back!</h2>
             <p className="text-gray-500 mt-2">Sign in to continue to your account.</p>

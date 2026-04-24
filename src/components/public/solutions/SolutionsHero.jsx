@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react'; // ✅ useEffect add kiya
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ArrowRight, Calendar } from 'lucide-react';
 import Link from 'next/link';

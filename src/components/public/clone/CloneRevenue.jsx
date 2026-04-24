@@ -51,12 +51,12 @@ export default function CloneRevenue({ data }) {
                 {/* Header Grid */}
                 <div className="grid lg:grid-cols-2 gap-12 mb-12 items-start">
                     <div className="space-y-4">
-                        <h4 className="text-[#2FB3E0] font-extrabold text-3xl lg:text-4xl  tracking-tighter">
+                        <h4 className="text-[#2FB3E0] font-bold text-3xl lg:text-4xl ">
                             {data?.title || defaultTitle}
                         </h4>
-                        <h2 className="text-3xl lg:text-4xl  font-extrabold text-slate-900 leading-normal whitespace-pre-line">
+                        <h4 className="text-3xl lg:text-4xl  font-bold text-slate-900 leading-normal whitespace-pre-line">
                             {data?.highlight || defaultHighlight}
-                        </h2>
+                        </h4>
                     </div>
 
                     <div className="lg:pt-14">
@@ -73,7 +73,7 @@ export default function CloneRevenue({ data }) {
                             <button
                                 key={index}
                                 onClick={() => setActiveTab(index)}
-                                className={`flex-1 min-w-[200px] md:min-w-0 px-8 py-8 text-sm font-extrabold transition-all duration-300 border-r last:border-r-0 border-slate-100 ${activeTab === index
+                                className={`flex-1 min-w-[200px] md:min-w-0 px-8 py-8 text-sm font-bold transition-all duration-300 border-r last:border-r-0 border-slate-100 ${activeTab === index
                                     ? "text-slate-900 bg-white"
                                     : "text-slate-400 bg-slate-50/50 hover:bg-slate-50 hover:text-slate-600"
                                     }`}
@@ -98,16 +98,16 @@ export default function CloneRevenue({ data }) {
                             className="grid lg:grid-cols-2 gap-16 items-center"
                         >
                             <div className="space-y-8">
-                                <h3 className="text-4xl lg:text-5xl font-extrabold text-slate-900 leading-normal ">
+                                <h3 className="text-3xl lg:text-4xl font-bold text-slate-900 leading-normal ">
                                     {tabs[activeTab].title}
                                 </h3>
                                 <p className="text-slate-500 text-lg leading-relaxed font-medium">
                                     {tabs[activeTab].description}
                                 </p>
- 
+
                                 <ul className="space-y-4">
                                     {(tabs[activeTab].bullets || []).map((bullet, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-slate-800 font-semibold">
+                                        <li key={i} className="flex items-center gap-3 text-slate-600 ">
                                             <div className="w-2 h-2 rounded-full bg-[#2FB3E0]" />
                                             {bullet}
                                         </li>

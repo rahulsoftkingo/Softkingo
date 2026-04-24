@@ -38,7 +38,7 @@ export default function CloneInvestment({ data }) {
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl lg:text-5xl font-black text-slate-900 leading-normal"
+                        className="text-4xl lg:text-5xl font-bold text-slate-900 leading-normal"
                     >
                         <span className="text-[#2FB3E0]">Why to invest</span> in <br />
                         Clone App Development?
@@ -63,7 +63,7 @@ export default function CloneInvestment({ data }) {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            className="bg-slate-50 p-10 rounded-[2.5rem] space-y-4 border border-slate-100 hover:border-[#2FB3E0]/30 transition-all group relative overflow-hidden"
+                            className="bg-slate-50 p-10 rounded-xl space-y-4 border border-slate-100 hover:border-[#2FB3E0]/30 transition-all group relative overflow-hidden"
                         >
                             {/* Floating Icon */}
                             <div className="absolute top-8 right-8 text-[#2FB3E0]/5 group-hover:text-[#2FB3E0]/10 transition-colors duration-500">
@@ -73,10 +73,10 @@ export default function CloneInvestment({ data }) {
                                 {item.number}
                             </h3>
                             <div className="space-y-3 pt-2">
-                                <p className="text-slate-900 font-bold text-lg">
+                                <p className="text-slate-900 text-lg">
                                     {item.label}
                                 </p>
-                                <p className="text-slate-500 font-medium">
+                                <p className="text-slate-500 ">
                                     {item.sublabel}
                                 </p>
                             </div>

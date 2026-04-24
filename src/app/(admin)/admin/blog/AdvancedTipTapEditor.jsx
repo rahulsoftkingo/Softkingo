@@ -170,27 +170,25 @@ export default function AdvancedTipTapEditor({ value, onChange }) {
         heading: { levels: [2, 3, 4] },
         bulletList: { keepMarks: true, keepAttributes: false },
         orderedList: { keepMarks: true, keepAttributes: false },
-        history: false, // Using our own or keeping it simple
-        dropcursor: false, // Already in StarterKit or we configure below
+        history: false,
+        dropcursor: false,
+        link: {
+          openOnClick: false,
+          linkOnPaste: true,
+          autolink: true,
+          HTMLAttributes: {
+            class: 'editor-link',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+        },
       }),
 
-      Underline,
       Subscript,
       Superscript,
       Typography,
 
       Highlight.configure({ multicolor: true }),
-
-      Link.configure({
-        openOnClick: false,
-        linkOnPaste: true,
-        autolink: true,
-        HTMLAttributes: {
-          class: 'editor-link',
-          target: '_blank',
-          rel: 'noopener noreferrer',
-        },
-      }),
 
       Image.configure({
         inline: true,

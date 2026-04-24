@@ -62,10 +62,10 @@ export default function EditServicePage() {
               subtitle: 'Comprehensive solutions for your business',
               categories: []
             },
-            tech: content.tech || {
+            techStack: content.techStack || content.tech || {
               title: 'Technology Stack',
               subtitle: 'Cutting-edge technologies we use',
-              items: []
+              tabs: []
             },
             process: content.process || {
               title: 'Our Process',

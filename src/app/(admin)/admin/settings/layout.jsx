@@ -7,52 +7,47 @@ import { Settings, Image, Lock, Share2, FileText, Globe, HardDrive } from "lucid
 
 const tabs = [
   { href: '/admin/settings', label: 'General', icon: Settings },
-  { href: '/admin/settings/media', label: 'Media', icon: Image },
-  { href: '/admin/settings/password', label: 'Password', icon: Lock },
-  { href: '/admin/settings/social', label: 'Social', icon: Share2 },
-  { href: '/admin/settings/seo', label: 'SEO', icon: Globe },
-  { href: '/admin/settings/footer', label: 'Footer', icon: FileText },
-  { href: "/admin/settings/storage", label: "Storage", icon: HardDrive },
+  { href: '/admin/settings/media', label: 'Media Library', icon: Image },
+  { href: '/admin/settings/seo', label: 'SEO Settings', icon: Globe },
+  { href: "/admin/settings/storage", label: "Cloud Storage", icon: HardDrive },
 ];
 
 export default function SettingsLayout({ children }) {
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-100">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        
+
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-14 h-14 bg-gradient-to-r from-sky-400 via-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-sky-500/30">
-            <Settings className="w-7 h-7 text-white drop-shadow-lg" />
-          </div>
+
           <div>
-            <h1 className="text-4xl font-black bg-gradient-to-r from-sky-700 via-cyan-700 to-blue-800 bg-clip-text text-transparent tracking-tight">
+            <h1 className="text-4xl font-bold  text-sky-800">
               Site Settings
             </h1>
-            <p className="text-lg text-slate-600 mt-1 font-medium">Configure your entire website</p>
+            <p className="text-lg text-sky-800 mt-1 font-medium">Configure your entire website</p>
           </div>
         </div>
 
-        {/* Top Tabs */}
-        <div className="bg-white/80 backdrop-blur-xl border border-sky-200/50 shadow-2xl shadow-sky-500/10 rounded-3xl overflow-hidden mb-8">
-          <div className="border-b border-sky-100 px-6 py-4">
-            <nav className="flex flex-wrap gap-2">
+        <div className="bg-white border-b border-slate-200 sticky top-0 z-20 rounded-lg">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="flex -mb-px space-x-8 overflow-x-auto scrollbar-hide">
               {tabs.map((tab) => {
                 const active = pathname === tab.href;
                 return (
                   <Link
                     key={tab.href}
                     href={tab.href}
-                    className={`group flex items-center gap-2.5 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 border-2 ${
-                      active
-                        ? 'bg-gradient-to-r from-sky-500 to-cyan-500 text-white border-transparent shadow-xl shadow-sky-500/25 transform scale-105'
-                        : 'text-slate-700 border-sky-200 hover:border-sky-300 hover:bg-sky-50 hover:shadow-md hover:scale-[1.02]'
-                    }`}
+                    className={`group relative min-w-0 flex-1 py-4 px-1 text-center text-sm font-medium hover:text-slate-700 transition-all duration-200 border-b-2 ${active
+                      ? 'border-sky-600 text-sky-600'
+                      : 'border-transparent text-slate-500 hover:border-slate-300'
+                      }`}
                   >
-                    <tab.icon className={`w-5 h-5 ${active ? 'drop-shadow-lg' : 'group-hover:scale-110 transition-transform'}`} />
-                    <span>{tab.label}</span>
+                    <div className="flex items-center justify-center gap-2">
+                      <tab.icon className={`w-4 h-4 ${active ? 'text-sky-600' : 'text-slate-400 group-hover:text-slate-500'}`} />
+                      <span className="whitespace-nowrap">{tab.label}</span>
+                    </div>
                   </Link>
                 );
               })}
@@ -60,9 +55,11 @@ export default function SettingsLayout({ children }) {
           </div>
         </div>
 
-        {/* Content (Full Width) */}
-        <div className="bg-white/70 backdrop-blur-lg rounded-3xl border border-sky-200/50 shadow-2xl shadow-sky-500/10 overflow-hidden">
-          {children}
+        {/* Content Area */}
+        <div className="py-8">
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            {children}
+          </div>
         </div>
       </div>
     </div>

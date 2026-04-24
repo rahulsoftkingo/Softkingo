@@ -84,11 +84,11 @@ export default function IndustrySolutions({ data }) {
                                 {/* Content */}
                                 <div className="absolute inset-0 p-8 flex flex-col justify-end text-white">
                                     <div className="space-y-4">
-                                        <h3 className="text-lg md:text-xl font-bold ">
+                                        <h3 className="text-lg md:text-xl font-bold">
                                             {item.itemTitle}
                                         </h3>
                                         <div
-                                            className="text-xs md:text-sm font-medium text-white/80 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300 rich-text"
+                                            className="text-xs md:text-sm font-medium text-white/80 line-clamp-3 group-hover/card:line-clamp-none transition-all duration-300 rich-text"
                                             dangerouslySetInnerHTML={{ __html: item.itemDesc }}
                                         />
 

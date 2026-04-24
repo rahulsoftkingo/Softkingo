@@ -19,7 +19,7 @@ export default function SolutionsServicesList({ data }) {
     };
 
     return (
-        <section className="py-8 md:py-16 bg-white overflow-hidden" id="services-list">
+        <section className="py-8 md:py-16 bg-slate-50 overflow-hidden" id="services-list">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
 
@@ -44,7 +44,7 @@ export default function SolutionsServicesList({ data }) {
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: idx * 0.1 }}
-                                    className="group bg-slate-50 rounded-3xl p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl hover:shadow-sky-100 border-l-4 border-l-transparent hover:border-l-sky-500"
+                                    className="group bg-white rounded-3xl p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl hover:shadow-sky-100 border-l-4 border-l-transparent hover:border-l-sky-500"
                                 >
                                     <div className="space-y-6">
                                         {/* Icon Frame */}

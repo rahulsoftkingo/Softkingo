@@ -79,10 +79,10 @@ export default function WhatsAppButton() {
         <span className="absolute inset-0 rounded-full bg-emerald-500 animate-pulse opacity-50"></span>
 
         {/* Button */}
-        <div className="relative w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-emerald-500/50">
+        <div className="relative w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-emerald-500/50">
           {/* WhatsApp Icon */}
           <svg
-            className="w-6 h-6 text-white"
+            className="w-5 h-5 lg:w-6 lg:h-6 text-white"
             fill="currentColor"
             viewBox="0 0 24 24"
           >

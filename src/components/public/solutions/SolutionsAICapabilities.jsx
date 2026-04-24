@@ -58,7 +58,6 @@ export default function SolutionsAICapabilities({ data }) {
                                 {/* Background Decorative Elements */}
                                 <div className="absolute top-0 right-0 text-[10rem] sm:text-[15rem] font-bold leading-none text-sky-50/50 select-none pointer-events-none -mt-4 sm:-mt-10 -mr-4 sm:-mr-10 z-0 transition-transform group-hover:scale-110 duration-700">
                                     0{activeTab + 1}
-                                0{activeTab + 1}
                                 </div>
                                 <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-sky-400/5 blur-[80px] rounded-full pointer-events-none" />
 

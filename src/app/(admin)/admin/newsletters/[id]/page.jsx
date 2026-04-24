@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
+import NewsletterListActions from "./_components/NewsletterListActions";
 
 function getDateRange(range) {
   const now = new Date();
@@ -91,19 +92,22 @@ export default async function NewsletterDetailPage(ctx) {
           <p className="text-[11px] text-slate-500 uppercase tracking-wide">
             Newsletter list
           </p>
-          <h1 className="text-lg font-semibold text-slate-900">
-            {list.name}
-          </h1>
-          <p className="text-xs text-slate-500">
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-bold text-slate-900">
+              {list.name}
+            </h1>
+            <NewsletterListActions listId={list.id} />
+          </div>
+          <p className="text-xs text-slate-500 mt-1">
             {list.slug} · {list._count.subscribers} subscribers ·{" "}
             {list._count.campaigns} campaigns
           </p>
         </div>
         <Link
           href="/admin/newsletters"
-          className="text-xs text-slate-500 hover:text-sky-600"
+          className="text-xs text-slate-500 hover:text-sky-600 flex items-center gap-1"
         >
-          ← Back to lists
+          <span>←</span> Back to lists
         </Link>
       </div>
 

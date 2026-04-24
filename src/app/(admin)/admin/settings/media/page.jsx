@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, Fragment } from "react";
 import Image from "next/image";
 import {
   Folder,
@@ -249,18 +249,15 @@ export default function MediaManagerPage() {
 
     return (
       <div className="space-y-1">
-        <button
+        <div
           onClick={() => setCurrentFolder(node.path || "")}
-          className={`w-full flex items-center justify-between rounded-xl px-3 py-2 transition ${
-            isActive ? "bg-sky-500 text-white" : "hover:bg-sky-50 text-slate-800"
-          }`}
-          type="button"
+          className={`w-full flex items-center justify-between rounded-xl px-3 py-2 transition cursor-pointer ${isActive ? "bg-sky-600 text-white shadow-sm" : "hover:bg-sky-50 text-slate-800"
+            }`}
         >
           <span className="flex items-center gap-2 flex-1 min-w-0">
             <Folder
-              className={`h-4 w-4 flex-shrink-0 ${
-                isActive ? "text-white" : "text-amber-500"
-              }`}
+              className={`h-4 w-4 flex-shrink-0 ${isActive ? "text-white" : "text-amber-500"
+                }`}
             />
             <span className="text-sm font-medium truncate">
               {node.path ? node.name : "public"}
@@ -299,7 +296,7 @@ export default function MediaManagerPage() {
               </button>
             )}
           </span>
-        </button>
+        </div>
 
         {hasSubfolders && !isCollapsed && (
           <div className="pl-4 border-l-2 border-sky-200 space-y-1 ml-2">
@@ -324,50 +321,49 @@ export default function MediaManagerPage() {
         }
       `}</style>
 
-      {/* Top header */}
-      <div className="rounded-3xl p-4 sm:p-6 bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-2xl shadow-sky-500/20">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3">
-              <ImageIcon className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0" />
-              <h2 className="text-xl sm:text-2xl font-bold truncate">Media Manager</h2>
-            </div>
-            <p className="text-white/90 mt-1 text-xs sm:text-sm">
-              Upload, rename, delete, and manage folders inside{" "}
-              <span className="font-semibold">public/</span>
-            </p>
-          </div>
-
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 pb-6 border-b border-slate-100">
+        <div>
+          <h2 className="text-2xl font-bold text-sky-900 tracking-tight flex items-center gap-2">
+            <ImageIcon className="h-6 w-6 text-sky-600" /> Media Manager
+          </h2>
+          <p className="text-slate-500 text-sm mt-1">Organize and manage your assets within the public directory.</p>
+        </div>
+        <div className="flex items-center gap-3">
           <button
             onClick={loadTree}
-            className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-2xl bg-white/20 hover:bg-white/30 border border-white/30 transition flex-shrink-0 text-sm"
-            type="button"
+            disabled={loading}
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-all disabled:opacity-50 shadow-sm text-sm"
           >
-            <RefreshCcw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-            <span className="hidden sm:inline">Refresh</span>
+            <RefreshCcw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+            Refresh
           </button>
         </div>
+      </div>
 
-        {/* Breadcrumb */}
-        <div className="mt-4 flex items-center gap-2 text-sm overflow-x-auto scrollbar-hide pb-2">
-          {breadcrumb.map((c) => (
+      {/* Breadcrumb - Slightly refined */}
+      <div className="flex items-center gap-2 text-sm overflow-x-auto scrollbar-hide mb-6 p-1">
+        {breadcrumb.map((c, i) => (
+          <React.Fragment key={c.path}>
+            {i > 0 && <span className="text-slate-300">/</span>}
             <button
-              key={c.path}
               onClick={() => setCurrentFolder(c.path)}
-              className="px-3 py-1 rounded-full bg-white/20 hover:bg-white/30 border border-white/30 transition flex-shrink-0 whitespace-nowrap"
+              className={`px-3 py-1 rounded-lg transition-colors text-xs font-semibold ${currentFolder === c.path
+                  ? 'bg-sky-100 text-sky-700'
+                  : 'text-slate-500 hover:bg-slate-100'
+                }`}
               type="button"
             >
-              {c.label}
+              {c.label || 'root'}
             </button>
-          ))}
-        </div>
+          </React.Fragment>
+        ))}
       </div>
 
       {/* Body */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
         {/* Left: folder tree */}
         <div className="lg:col-span-3">
-          <div className="bg-white/70 backdrop-blur rounded-3xl border border-sky-200 shadow-xl p-4 max-h-[500px] lg:max-h-[100vh] flex flex-col">
+          <div className="bg-white rounded-xl border border-sky-200 shadow-sm p-4 max-h-[500px] lg:max-h-[100vh] flex flex-col">
             <div className="flex items-center justify-between mb-3 flex-shrink-0">
               <h3 className="font-bold text-slate-900 text-sm sm:text-base">Folders</h3>
             </div>
@@ -390,7 +386,7 @@ export default function MediaManagerPage() {
                   <button
                     onClick={createFolder}
                     disabled={loading || !newFolderName.trim()}
-                    className="w-full px-3 py-2 rounded-xl bg-sky-500 text-white hover:bg-sky-600 transition inline-flex items-center justify-center gap-2 disabled:opacity-50 text-sm font-medium"
+                    className="w-full px-3 py-2 rounded-xl bg-sky-600 text-white hover:bg-sky-700 transition inline-flex items-center justify-center gap-2 disabled:opacity-50 text-sm font-medium"
                     type="button"
                   >
                     <Plus className="h-4 w-4" />
@@ -405,7 +401,7 @@ export default function MediaManagerPage() {
         {/* Right: uploader + grid */}
         <div className="lg:col-span-9 space-y-4 sm:space-y-6">
           {/* uploader */}
-          <div className="bg-white/70 backdrop-blur rounded-3xl border border-sky-200 shadow-xl p-4">
+          <div className="bg-white rounded-xl border border-sky-200 shadow-sm p-4">
             <p className="text-sm font-semibold text-slate-900 mb-1">
               Upload to: /{currentFolder || ""}
             </p>
@@ -441,7 +437,7 @@ export default function MediaManagerPage() {
                 <button
                   onClick={upload}
                   disabled={!uploadFile || loading}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-gradient-to-r from-sky-500 to-cyan-500 text-white font-semibold hover:shadow-lg hover:shadow-sky-500/25 transition inline-flex items-center justify-center gap-2 disabled:opacity-50 text-sm"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition-all inline-flex items-center justify-center gap-2 disabled:opacity-50 text-sm shadow-sm"
                   type="button"
                 >
                   <Upload className="h-4 w-4" />
@@ -452,7 +448,7 @@ export default function MediaManagerPage() {
           </div>
 
           {/* grid */}
-          <div className="bg-white/70 backdrop-blur rounded-3xl border border-sky-200 shadow-xl p-4 max-h-[500px] lg:max-h-[600px] overflow-y-auto scrollbar-hide">
+          <div className="bg-white/70 backdrop-blur rounded-xl border border-sky-200 shadow-sm p-4 max-h-[500px] lg:max-h-[600px] overflow-y-auto scrollbar-hide">
             <div className="flex items-center justify-between mb-4 sticky top-0 bg-white/70 backdrop-blur pb-3 border-b border-sky-100">
               <h3 className="font-bold text-slate-900 text-sm sm:text-base truncate">
                 {currentNode ? `/${currentNode.path}` : "/"} assets

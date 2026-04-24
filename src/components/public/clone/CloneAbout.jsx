@@ -76,7 +76,7 @@ export default function CloneAbout({ data }) {
 
             <div className="space-y-12 pl-0 lg:pl-10">
               <div className="space-y-3">
-                <h3 className="text-3xl font-bold text-slate-800 ">Reasons To Choose Us</h3>
+                <h3 className="text-2xl font-bold text-slate-800 ">Reasons To Choose Us</h3>
                 <div className="w-12 h-1 bg-sky-400 rounded-full"></div>
               </div>
 

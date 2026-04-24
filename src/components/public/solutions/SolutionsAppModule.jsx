@@ -14,7 +14,7 @@ export default function SolutionsAppModule({ data, reverse = false, bg = "white"
             {/* 1. LEFT SIDE: Accordion Feature List */}
             <div className="flex-1 w-full relative">
                 {/* Module Header Inside Tab */}
-                <div className="mb-8">
+                <div >
                     <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-4">{data.title}</h2>
                     {data.description && (
                         <div
