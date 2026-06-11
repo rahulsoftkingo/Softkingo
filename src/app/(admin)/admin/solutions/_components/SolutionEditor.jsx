@@ -69,9 +69,24 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
                 <MediaInput label="Hero Image" value={content.hero?.image} path="content.hero.image" />
             </SectionWrapper>
+             
+              {/* 2. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="2. SEO Settings" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>SEO Title</label>
+                        <input className={inputStyle} placeholder="Meta Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>SEO Description</label>
+                        <textarea className={inputStyle} rows={3} placeholder="Meta Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
+                    </div>
+                    <MediaInput label="OG Image" value={formData.seoImage} path="seoImage" />
+                </div>
+            </SectionWrapper>
 
-            {/* 2. STATISTICS */}
-            <SectionWrapper id="stats" icon={BarChart3} title="2. Statistics Banner" activeSections={activeSections}>
+            {/* 3. STATISTICS */}
+            <SectionWrapper id="stats" icon={BarChart3} title="3. Statistics Banner" activeSections={activeSections}>
                 <div className="space-y-4">
                     <label className={labelStyle}>Stats Items (Value & Label)</label>
                     {(content.stats?.items || []).map((item, i) => (
@@ -85,8 +100,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            {/* 3. INTRODUCTION */}
-            <SectionWrapper id="intro" icon={Layout} title="3. Introduction Section" activeSections={activeSections}>
+            {/* 4. INTRODUCTION */}
+            <SectionWrapper id="intro" icon={Layout} title="4. Introduction Section" activeSections={activeSections}>
                 <input className={inputStyle} placeholder="Section Title" value={content.intro?.title || ''} onChange={e => updateField('content.intro.title', e.target.value)} />
                 <div className="space-y-1">
                     <label className={labelStyle}>Intro Description</label>
@@ -107,7 +122,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 4. FEATURES GRID */}
-            <SectionWrapper id="features" icon={Database} title="4. Core Features Grid" activeSections={activeSections}>
+            <SectionWrapper id="features" icon={Database} title="5. Core Features Grid" activeSections={activeSections}>
                 <SectionHeader section={content.features} path="content.features" updateField={updateField} />
                 <div className="space-y-4">
                     <label className={labelStyle}>Feature Cards</label>
@@ -120,7 +135,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                                     <label className={labelStyle}>Feature Description</label>
                                     <MiniRichTextEditor value={item.description || ''} onChange={val => updateField(`content.features.items.${i}.description`, val)} />
                                 </div>
-                                <input className="w-full p-2 bg-white border rounded text-xs" placeholder="Icon URL" value={item.image || ''} onChange={e => updateField(`content.features.items.${i}.image`, e.target.value)} />
+                                <MediaInput label="Icon" value={item.image} path={`content.features.items.${i}.image`} updateField={updateField} />
+                                {/* <input className="w-full p-2 bg-white border rounded text-xs" placeholder="Icon URL" value={item.image || ''} onChange={e => updateField(`content.features.items.${i}.image`, e.target.value)} /> */}
                             </div>
                         </div>
                     ))}
@@ -129,7 +145,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 5. AWARDS */}
-            <SectionWrapper id="awards" icon={Award} title="5. Client Recognition / Awards" activeSections={activeSections}>
+            <SectionWrapper id="awards" icon={Award} title="6. Client Recognition / Awards" activeSections={activeSections}>
                 <SectionHeader section={content.awards} path="content.awards" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.awards?.items || []).map((item, i) => (
@@ -143,7 +159,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 6. WHY NEED */}
-            <SectionWrapper id="whyNeed" icon={HelpCircle} title="6. Growing Need / Why Choose" activeSections={activeSections}>
+            <SectionWrapper id="whyNeed" icon={HelpCircle} title="7. Growing Need / Why Choose" activeSections={activeSections}>
                 <SectionHeader section={content.whyNeed} path="content.whyNeed" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.whyNeed?.items || []).map((item, i) => (
@@ -175,7 +191,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 7. SERVICES LIST */}
-            <SectionWrapper id="servicesList" icon={Briefcase} title="7. Extensive Services Provided" activeSections={activeSections}>
+            <SectionWrapper id="servicesList" icon={Briefcase} title="8. Extensive Services Provided" activeSections={activeSections}>
                 <SectionHeader section={content.servicesList} path="content.servicesList" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.servicesList?.items || []).map((item, i) => (
@@ -190,7 +206,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 8. APP MODULES (Tabbed Editor) */}
-            <SectionWrapper id="appModules" icon={Smartphone} title="8. App Modules (Tab Style)" activeSections={activeSections}>
+            <SectionWrapper id="appModules" icon={Smartphone} title="9. App Modules (Tab Style)" activeSections={activeSections}>
                 <div className="space-y-6">
                     {/* Section Header Inputs */}
                     <div className="grid md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -348,7 +364,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 9. AI FEATURES */}
-            <SectionWrapper id="aiCapabilities" icon={Zap} title="9. Advanced AI Capabilities" activeSections={activeSections}>
+            <SectionWrapper id="aiCapabilities" icon={Zap} title="10. Advanced AI Capabilities" activeSections={activeSections}>
                 <SectionHeader section={content.aiCapabilities} path="content.aiCapabilities" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.aiCapabilities?.items || []).map((item, i) => (
@@ -377,7 +393,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 10. PORTFOLIO */}
-            <SectionWrapper id="portfolio" icon={Globe} title="10. Portfolio" activeSections={activeSections}>
+            <SectionWrapper id="portfolio" icon={Globe} title="11. Portfolio" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
@@ -405,7 +421,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 11. PROCESS */}
-            <SectionWrapper id="process" icon={Settings} title="11. Development Roadmap" activeSections={activeSections}>
+            <SectionWrapper id="process" icon={Settings} title="12. Development Roadmap" activeSections={activeSections}>
                 <SectionHeader section={content.process} path="content.process" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.process?.steps || []).map((step, i) => (
@@ -421,7 +437,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            <SectionWrapper id="techStack" icon={Code} title="12. Technology Stack (Tabbed)" activeSections={activeSections}>
+            <SectionWrapper id="techStack" icon={Code} title="13. Technology Stack (Tabbed)" activeSections={activeSections}>
                 <SectionHeader section={content.techStack} path="content.techStack" updateField={updateField} />
                 <div className="space-y-1 mb-4">
                     <label className={labelStyle}>Section Description (Rich Text)</label>
@@ -452,20 +468,44 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                                         ))}
                                     </div>
 
-                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                                        {(tab.items || []).map((item, j) => (
-                                            <div key={j} className="bg-white p-3 rounded-xl border border-slate-200 relative group/tech">
-                                                <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => (prev || []).filter((_, idx) => idx !== j))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
-                                                <div className="flex gap-2 items-center">
-                                                    <div className="flex-1">
-                                                        <input className="w-full p-1.5 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.techStack.tabs.${i}.items.${j}.name`, e.target.value)} />
-                                                    </div>
-                                                    <div className="w-12 h-10">
-                                                        <MediaInput label="Icon" value={item.image} path={`content.techStack.tabs.${i}.items.${j}.image`} />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
+                                    <div className="grid md:grid-cols-2 gap-4">
+                                       {(tab.items || []).map((item, j) => (
+    <div
+        key={j}
+        className="bg-white p-3 rounded-lg border border-slate-200 relative group/tech"
+    >
+        <input
+            className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs font-bold mb-2"
+            placeholder="Tech Name"
+            value={item.name || ''}
+            onChange={e =>
+                updateField(
+                    `content.techStack.tabs.${i}.items.${j}.name`,
+                    e.target.value
+                )
+            }
+        />
+
+        <MediaInput
+            label="Icon"
+            value={item.image}
+            path={`content.techStack.tabs.${i}.items.${j}.image`}
+        />
+
+        <button
+            type="button"
+            onClick={() =>
+                updateField(
+                    `content.techStack.tabs.${i}.items`,
+                    (prev) => (prev || []).filter((_, idx) => idx !== j)
+                )
+            }
+            className="absolute top-1 right-1 text-slate-200 hover:text-rose-500 opacity-0 group-hover/tech:opacity-100 transition-opacity"
+        >
+            <X size={14} />
+        </button>
+    </div>
+))}
                                     </div>
                                     <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-sky-600 uppercase">+ Add Custom Tech</button>
                                 </div>
@@ -479,14 +519,15 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 13. MONETIZATION */}
-            <SectionWrapper id="monetization" icon={DollarSign} title="13. Revenue Models" activeSections={activeSections}>
+            <SectionWrapper id="monetization" icon={DollarSign} title="14. Revenue Models" activeSections={activeSections}>
                 <SectionHeader section={content.monetization} path="content.monetization" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.monetization?.models || []).map((item, i) => (
                         <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
                             <button type="button" onClick={() => updateField('content.monetization.models', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
                             <input className="w-full p-2 bg-white border rounded text-sm font-bold mb-2" placeholder="Model Title" value={item.title || ''} onChange={e => updateField(`content.monetization.models.${i}.title`, e.target.value)} />
-                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="How it generates revenue..." value={item.description || ''} onChange={e => updateField(`content.monetization.models.${i}.description`, e.target.value)} />
+                            <div className="space-y-1"> <label className={labelStyle}>Description (Rich Text)</label> <MiniRichTextEditor  value={item.description || ''}  onChange={val => updateField(`content.monetization.models.${i}.description`, val)} />
+                         </div>
                         </div>
                     ))}
                     <button type="button" onClick={() => updateField('content.monetization.models', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-sm font-bold text-sky-600">+ Add Monetization Model</button>
@@ -494,7 +535,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 14. WHY CHOOSE / SECURITY */}
-            <SectionWrapper id="whyChoose" icon={ShieldCheck} title="14. Enterprise Security & Quality" activeSections={activeSections}>
+            <SectionWrapper id="whyChoose" icon={ShieldCheck} title="15. Enterprise Security & Quality" activeSections={activeSections}>
                 <SectionHeader section={content.whyChoose} path="content.whyChoose" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.whyChoose?.items || []).map((item, i) => (
@@ -511,7 +552,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 15. CONSULTATION CTA */}
-            <SectionWrapper id="consultation" icon={MessageSquare} title="15. Consultation CTA" activeSections={activeSections}>
+            <SectionWrapper id="consultation" icon={MessageSquare} title="16. Consultation CTA" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Button Label" value={content.consultation?.buttonLabel || ''} onChange={e => updateField('content.consultation.buttonLabel', e.target.value)} />
@@ -533,7 +574,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 16. BLOG SECTION */}
-            <SectionWrapper id="blogs" icon={MessageSquare} title="16. Blog Section" activeSections={activeSections}>
+            <SectionWrapper id="blogs" icon={MessageSquare} title="17. Blog Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className={labelStyle}>Blog Section Title</label>
@@ -556,7 +597,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 17. FAQ */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="17. FAQ" activeSections={activeSections}>
+            <SectionWrapper id="faq" icon={HelpCircle} title="18. FAQ" activeSections={activeSections}>
                 <SectionHeader section={content.faq} path="content.faq" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.faq?.items || []).map((item, i) => (
@@ -588,23 +629,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper> */}
 
 
-            {/* 19. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="19. SEO Settings" activeSections={['seo', ...(activeSections || [])]}>
-                <div className="space-y-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>SEO Title</label>
-                        <input className={inputStyle} placeholder="Meta Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
-                    </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>SEO Description</label>
-                        <textarea className={inputStyle} rows={3} placeholder="Meta Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
-                    </div>
-                    <MediaInput label="OG Image" value={formData.seoImage} path="seoImage" />
-                </div>
-            </SectionWrapper>
-
             {/* 20. INQUIRY SECTION */}
-            <SectionWrapper id="inquiry" icon={MessageSquare} title="20. Inquiry Section" activeSections={activeSections}>
+            <SectionWrapper id="inquiry" icon={MessageSquare} title="19. Inquiry Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Tagline (e.g. GET IN TOUCH)" value={content.inquiry?.tagline || ''} onChange={e => updateField('content.inquiry.tagline', e.target.value)} />
                     <input className={inputStyle} placeholder="Title Prefix (e.g. Let's )" value={content.inquiry?.titlePrefix || ''} onChange={e => updateField('content.inquiry.titlePrefix', e.target.value)} />

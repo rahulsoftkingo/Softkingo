@@ -25,7 +25,7 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
 
             <input
                 className="flex-1 p-2.5 bg-transparent border-none text-xs font-medium text-slate-700 outline-none placeholder:text-slate-400"
-                value={value || ''}
+                value={value?.toLowerCase() || ''}
                 onChange={(e) => onUpdate(path, e.target.value)}
                 placeholder="Paste URL or Select Image..."
             />
@@ -62,21 +62,22 @@ export default function ServicePageEditor({ data, onBack }) {
         uploadDir: "uploads/services",
         sections: [
             { id: 'hero', label: '1. Hero Section', icon: Smartphone },
-            { id: 'stats', label: '2. Stats Section', icon: BarChart3 },
-            { id: 'awards', label: '3. Awards Section', icon: Award },
-            { id: 'services', label: '4. Service Categories', icon: Layout },
-            { id: 'consultation', label: '5. Consultation CTA', icon: TrendingUp },
-            { id: 'tech', label: '6. Tech Stack', icon: Code },
-            { id: 'process', label: '7. Our Process', icon: Settings },
-            { id: 'highlight', label: '8. Solution Highlight', icon: Zap },
-            { id: 'portfolio', label: '9. Portfolio', icon: Globe },
-            { id: 'solutions', label: '10. Industry Solutions', icon: Grid },
-            { id: 'industries', label: '11. Industries We Serve', icon: Layers },
-            { id: 'user-guide', label: '12. User Guide', icon: BookOpen },
-            { id: 'faq', label: '13. FAQ Section', icon: HelpCircle },
-            { id: 'blogs', label: '14. Blog Section', icon: MessageSquare },
-            { id: 'inquiry', label: '15. Inquiry Section', icon: MessageSquare },
-            { id: 'seo', label: '16. SEO Settings', icon: Search }
+            { id: 'seo', label: '2. SEO Settings', icon: Search },
+            { id: 'stats', label: '3. Stats Section', icon: BarChart3 },
+            { id: 'awards', label: '4. Awards Section', icon: Award },
+            { id: 'services', label: '5. Service Categories', icon: Layout },
+            { id: 'consultation', label: '6. Consultation CTA', icon: TrendingUp },
+            { id: 'tech', label: '7. Tech Stack', icon: Code },
+            { id: 'process', label: '8. Our Process', icon: Settings },
+            { id: 'highlight', label: '9. Solution Highlight', icon: Zap },
+            { id: 'portfolio', label: '10. Portfolio', icon: Globe },
+            { id: 'solutions', label: '11. Industry Solutions', icon: Grid },
+            { id: 'industries', label: '12. Industries We Serve', icon: Layers },
+            { id: 'user-guide', label: '13. User Guide', icon: BookOpen },
+            { id: 'faq', label: '14. FAQ Section', icon: HelpCircle },
+            { id: 'blogs', label: '15. Blog Section', icon: MessageSquare },
+            { id: 'inquiry', label: '16. Inquiry Section', icon: MessageSquare },
+           
         ]
     };
 

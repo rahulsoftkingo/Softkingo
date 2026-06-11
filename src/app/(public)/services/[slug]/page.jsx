@@ -41,6 +41,7 @@ import {
   Globe
 } from "lucide-react";
 
+import { commonSchemas } from "@/lib/commonSchema";
 import InquirySection from "@/components/footer/InquirySection";
 import { FaArrowRight } from "react-icons/fa6";
 import CommonTitle from "@/components/ui/CommonTitle";
@@ -79,6 +80,7 @@ const iconMap = {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
+  console.log("Generating metadata for slug:", slug);
 
   // DB call now happens at request-time (SSR), not at build-time
   const service = await prisma.page.findUnique({
@@ -143,6 +145,33 @@ export default async function ServicePage({ params }) {
 
   return (
     <main className="text-gray-800">
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            ...commonSchemas,
+            {
+              "@type": "BreadcrumbList",
+              "@id": "https://www.softkingo.com/#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://www.softkingo.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": slug,
+                  "item": `https://www.softkingo.com/${slug}`
+                }
+              ]
+            }
+          ])
+        }}
+      />
       {/* Hero Section with Lead Form */}
       {show('hero') && (
         <section className="relative overflow-hidden flex items-center bg-[#0B1121]">

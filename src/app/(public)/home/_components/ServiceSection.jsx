@@ -118,7 +118,7 @@ export default function ServicesSection() {
                 title: "Flutter App Development",
                 description: "Beautiful, fast apps built with Flutter and Dart.",
                 icon: <FaCode />,
-                link: "/services/flutter-native-app-development",
+                link: "/services/flutter-app-development",
                 technologies: [
                   { name: "Flutter", image: "/images/tech/Flutter.png" },
                   { name: "Dart", image: "/images/tech/Dart.png" },
@@ -587,4 +587,4 @@ function ServiceCategory({ title, categoryLink, icon, description, services }) {
       </div>
     </motion.div>
   );
-}
+}

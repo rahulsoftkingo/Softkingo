@@ -335,7 +335,7 @@ model Page {
   type           String
   excerpt        String?          @db.LongText
   contentJson    String?          @db.LongText
-  status         String           @default("draft")
+  status         String           @default("published")
   featured       Boolean          @default(false)
   seoTitle       String?
   seoDescription String?          @db.LongText

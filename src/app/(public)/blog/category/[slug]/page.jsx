@@ -29,5 +29,23 @@ export default async function Page({ params, searchParams }) {
     category: slug
   };
 
-  return <SectionPage sectionKey="blog" searchParams={mergedParams} />;
+  return (<>
+      <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "softkingo", "item": "https://www.softkingo.com" },
+              { "@type": "ListItem", "position": 2, "name": category?.name ?? slug, "item": `https://www.softkingo.com/${slug}` }
+            ]
+          })
+        }}
+      />
+      <SectionPage sectionKey="blog" searchParams={mergedParams} />
+    </>
+  <SectionPage sectionKey="blog" searchParams={mergedParams} />
+  </>);
 }

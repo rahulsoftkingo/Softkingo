@@ -1,6 +1,7 @@
 // src/app/(public)/privacy-policy/page.jsx - PERFECT FINAL VERSION
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { commonSchemas } from "@/lib/commonSchema";
 
 export const metadata = {
   title: "Privacy Policy - Data Protection & Privacy",
@@ -11,6 +12,36 @@ export const metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "@id": "https://www.softkingo.com/privacy-policy#breadcrumb",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://www.softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Privacy Policy",
+                    "item": "https://www.softkingo.com/privacy-policy"
+                  }
+                ]
+              },
+              ...commonSchemas
+            ]
+          })
+        }}
+      />
       {/* PERFECT HERO */}
       <section className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden"
         style={{ backgroundImage: "url('/images/privacy-hero.png')" }}

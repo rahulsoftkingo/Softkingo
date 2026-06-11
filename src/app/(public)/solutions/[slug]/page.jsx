@@ -1,7 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/db'; // Database connection
-
+import { commonSchemas } from "@/lib/commonSchema";
 // --- SOLUTIONS COMPONENTS (Existing) ---
 import SolutionsHero from '@/components/public/solutions/SolutionsHero';
 import SolutionsStats from '@/components/public/solutions/SolutionsStats';
@@ -157,6 +157,34 @@ export default async function DynamicSolutionPage(props) {
 
         return (
             <main className="min-h-screen bg-white overflow-x-clip">
+
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify([
+                            ...commonSchemas,
+                            {
+                                "@context": "https://schema.org/",
+                                "@type": "BreadcrumbList",
+                                "@id": "https://www.softkingo.com/#breadcrumb",
+                                "itemListElement": [
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 1,
+                                        "name": "softkingo",
+                                        "item": "https://www.softkingo.com"
+                                    },
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 2,
+                                        "name": slug,
+                                        "item": `https://www.softkingo.com/${slug}`
+                                    }
+                                ]
+                            }
+                        ])
+                    }}
+                />
                 {faqSchema && (
                     <script
                         type="application/ld+json"
@@ -318,6 +346,30 @@ export default async function DynamicSolutionPage(props) {
 
     return (
         <main className="min-h-screen bg-white overflow-x-clip">
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org/",
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type": "ListItem",
+                                "position": 1,
+                                "name": "softkingo",
+                                "item": "https://www.softkingo.com"
+                            },
+                            {
+                                "@type": "ListItem",
+                                "position": 2,
+                                "name": params.slug,
+                                "item": `https://www.softkingo.com/${params.slug}`
+                            }
+                        ]
+                    })
+                }}
+            />
             {faqSchema && (
                 <script
                     type="application/ld+json"
@@ -329,10 +381,10 @@ export default async function DynamicSolutionPage(props) {
             {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}
             {show('awards') && (
-                <AwardsSection 
-                    awards={awards?.items} 
-                    title={awards?.title} 
-                    subtitle={awards?.subtitle} 
+                <AwardsSection
+                    awards={awards?.items}
+                    title={awards?.title}
+                    subtitle={awards?.subtitle}
                 />
             )}
             {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}

@@ -138,7 +138,7 @@ const SideBar = () => {
           icon: <FaReact />,
         },
         {
-          href: "/services/flutter-native-app-development",
+          href: "/services/flutter-app-development",
           title: "Flutter App Development",
           icon: <FaReact />,
         },

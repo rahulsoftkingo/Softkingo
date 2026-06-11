@@ -69,7 +69,7 @@ export default function AdminServicesPage() {
           title: `${service.title} (Copy)`,
           slug: `${service.slug}-copy`,
           excerpt: service.excerpt,
-          status: 'draft',
+          status: 'published',
           type: 'service',
           contentJson: JSON.stringify(content),
         }),
@@ -118,24 +118,28 @@ export default function AdminServicesPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+        <div className="px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Services Management</h1>
               <p className="text-sm text-slate-500 mt-1">Manage your service pages</p>
             </div>
+            <div className="flex items-center gap-3">
             <Link
               href="/admin/services/new"
-              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-cyan-600 to-sky-600 hover:from-cyan-500 hover:to-sky-500 text-white rounded-full font-bold transition-all shadow-lg hover:shadow-cyan-200/50 hover:scale-105 active:scale-95 text-sm"
+              className="bg-sky-600 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-sky-500 shadow-lg shadow-sky-100 hover:scale-105 transition-all text-xs active:scale-95"
             >
               <Plus className="w-4 h-4" />
               Add New Service
             </Link>
+              {/* <button onClick={() => handleCreate('solution')} className="bg-red-600 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-red-500 shadow-lg shadow-red-100 hover:scale-105 transition-all text-xs active:scale-95"><Plus size={16} /> Add Digital Marketing</button>
+              <button onClick={() => handleCreate('industry')} className="bg-emerald-600 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-emerald-500 shadow-lg shadow-emerald-100 hover:scale-105 transition-all text-xs active:scale-95"><Plus size={16} /> Add Website</button> */}
+          </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+      <main className="mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((stat, idx) => (

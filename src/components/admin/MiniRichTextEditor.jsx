@@ -115,7 +115,7 @@ export default function MiniRichTextEditor({ value, onChange, placeholder = "Sta
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm rich-text max-w-none p-3 min-h-[100px] focus:outline-none text-slate-700',
+        class: 'prose prose-sm rich-text max-w-none p-0 min-h-[20px] focus:outline-none text-slate-700',
       },
     },
     immediatelyRender: false,

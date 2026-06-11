@@ -1,5 +1,6 @@
 // src/app/(public)/terms-conditions/page.jsx
 import Link from 'next/link';
+import { commonSchemas } from "@/lib/commonSchema";
 
 export const metadata = {
   title: "Terms & Conditions - Legal Terms",
@@ -11,6 +12,36 @@ export default function TermsConditionsPage() {
   return (
     <>
       {/* HERO (same style) */}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "@id": "https://www.softkingo.com/terms-conditions#breadcrumb",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://www.softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Terms Conditions",
+                    "item": "https://www.softkingo.com/terms-conditions"
+                  }
+                ]
+              },
+              ...commonSchemas
+            ]
+          })
+        }}
+      />
       <section
         className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden"
         style={{ backgroundImage: "url('/images/terms-hero.png')" }} // change image if you want

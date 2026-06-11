@@ -57,23 +57,23 @@ export default function PageEditor({ data, type, onBack }) {
             theme: "sky", label: "Solution Page", uploadDir: "uploads/solutions",
             sections: [
                 { id: 'hero', label: '1. Hero Section', icon: Smartphone },
-                { id: 'stats', label: '2. Statistics Banner', icon: BarChart3 },
-                { id: 'intro', label: '3. Introduction Section', icon: Layout },
-                { id: 'features', label: '4. Core Features Grid', icon: Database },
-                { id: 'awards', label: '5. Client Recognition / Awards', icon: Award },
-                { id: 'whyNeed', label: '6. Growing Need / Why Choose', icon: HelpCircle },
-                { id: 'servicesList', label: '7. Extensive Services Provided', icon: Briefcase },
-                { id: 'appModules', label: '8. App Modules (Tab Style)', icon: Smartphone },
-                { id: 'aiCapabilities', label: '9. Advanced AI Capabilities', icon: Zap },
-                { id: 'portfolio', label: '10. Portfolio', icon: Layout },
-                { id: 'process', label: '11. Development Roadmap', icon: Settings },
-                { id: 'techStack', label: '12. Technology Stack (Tabbed)', icon: Code },
-                { id: 'monetization', label: '13. Revenue Models', icon: DollarSign },
-                { id: 'whyChoose', label: '14. Enterprise Security & Quality', icon: ShieldCheck },
-                { id: 'consultation', label: '15. Consultation CTA', icon: MessageSquare },
-                { id: 'blogs', label: '16. Blog Section', icon: MessageSquare },
-                { id: 'faq', label: '17. FAQ', icon: HelpCircle },
-                { id: 'seo', label: '18. SEO Settings', icon: Search },
+                { id: 'seo', label: '2. SEO Settings', icon: Search },
+                { id: 'stats', label: '3. Statistics Banner', icon: BarChart3 },
+                { id: 'intro', label: '4. Introduction Section', icon: Layout },
+                { id: 'features', label: '5. Core Features Grid', icon: Database },
+                { id: 'awards', label: '6. Client Recognition / Awards', icon: Award },
+                { id: 'whyNeed', label: '7. Growing Need / Why Choose', icon: HelpCircle },
+                { id: 'servicesList', label: '8. Extensive Services Provided', icon: Briefcase },
+                { id: 'appModules', label: '9. App Modules (Tab Style)', icon: Smartphone },
+                { id: 'aiCapabilities', label: '10. Advanced AI Capabilities', icon: Zap },
+                { id: 'portfolio', label: '11. Portfolio', icon: Layout },
+                { id: 'process', label: '12. Development Roadmap', icon: Settings },
+                { id: 'techStack', label: '13. Technology Stack (Tabbed)', icon: Code },
+                { id: 'monetization', label: '14. Revenue Models', icon: DollarSign },
+                { id: 'whyChoose', label: '15. Enterprise Security & Quality', icon: ShieldCheck },
+                { id: 'consultation', label: '16. Consultation CTA', icon: MessageSquare },
+                { id: 'blogs', label: '17. Blog Section', icon: MessageSquare },
+                { id: 'faq', label: '18. FAQ', icon: HelpCircle },
                 { id: 'inquiry', label: '19. Inquiry Section', icon: MessageSquare }
             ]
         },
@@ -199,6 +199,7 @@ export default function PageEditor({ data, type, onBack }) {
 
         setLoading(true);
         try {
+
             const payload = { ...formData, type };
             // Determine API endpoint based on type
             const apiEndpoint = "/api/admin/solutions";

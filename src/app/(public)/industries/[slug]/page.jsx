@@ -4,6 +4,7 @@ import prisma from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { commonSchemas } from "@/lib/commonSchema";
 
 // --- SHARED COMPONENTS (Reuse existing ones where possible) ---
 // import SolutionsHero from '@/components/public/solutions/SolutionsHero'; 
@@ -88,6 +89,35 @@ export default async function IndustryPage(props) {
 
     return (
         <main className="min-h-screen bg-white">
+
+
+            <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify([
+      ...commonSchemas,
+      {
+        "@context": "https://schema.org/",
+        "@type": "BreadcrumbList",
+        "@id": "https://www.softkingo.com/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "softkingo",
+            "item": "https://www.softkingo.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": params.slug,
+            "item": `https://www.softkingo.com/${params.slug}`
+          }
+        ]
+      }
+    ])
+  }}
+/>
 
             {/* 1. HERO SECTION (Reusing SolutionsHero for consistency) */}
             {show('hero') && (

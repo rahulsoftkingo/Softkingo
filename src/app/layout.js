@@ -70,49 +70,50 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Softkingo - Top Mobile App & Web Development Company in India, Delhi, NCR",
-    "image": "https://www.softkingo.com/og-image.png",
-    "@id": "https://www.softkingo.com",
-    "url": "https://www.softkingo.com/",
-    "telephone": "+91-7428750870",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "a179, Block ED, New Ashok Nagar",
-      "addressLocality": "New Delhi",
-      "postalCode": "110096",
-      "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 28.5981795,
-      "longitude": 77.3113186
-    },
-    "areaServed": ["IN", "US", "UK", "UAE", "CA"],
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "09:00",
-      "closes": "20:00"
-    },
-    "sameAs": [
-      "https://www.facebook.com/softkingo",
-      "https://in.linkedin.com/company/softkingo",
-      "https://instagram.com/softkingotechnologies",
-      "https://twitter.com/softkingo",
-      "https://www.youtube.com/channel/UCFiVxuCrteF5cmyvcIx-Idw"
-    ]
-  };
+  // const jsonLd = {
+  //   "@context": "https://schema.org",
+  //   "@type": "LocalBusiness",
+  //   "name": "Softkingo - Top Mobile App & Web Development Company in India, Delhi, NCR",
+  //   "image": "https://www.softkingo.com/og-image.png",
+  //   "@id": "https://www.softkingo.com",
+  //   "url": "https://www.softkingo.com/",
+  //   "telephone": "+91-7428750870",
+  //   "address": {
+  //     "@type": "PostalAddress",
+  //     "streetAddress": "a179, Block ED, New Ashok Nagar",
+  //     "addressLocality": "New Delhi",
+  //     "postalCode": "110096",
+  //     "addressCountry": "IN"
+  //   },
+  //   "geo": {
+  //     "@type": "GeoCoordinates",
+  //     "latitude": 28.5981795,
+  //     "longitude": 77.3113186
+  //   },
+  //   "areaServed": ["IN", "US", "UK", "UAE", "CA"],
+  //   "openingHoursSpecification": {
+  //     "@type": "OpeningHoursSpecification",
+  //     "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  //     "opens": "09:00",
+  //     "closes": "20:00"
+  //   },
+  //   "sameAs": [
+  //     "https://www.facebook.com/softkingo",
+  //     "https://in.linkedin.com/company/softkingo",
+  //     "https://instagram.com/softkingotechnologies",
+  //     "https://twitter.com/softkingo",
+  //     "https://www.youtube.com/channel/UCFiVxuCrteF5cmyvcIx-Idw"
+  //   ]
+  // };
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
+        <link rel="canonical" href="https://www.softkingo.com/" />
+        {/* <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        /> */}
         {/* Google Tag (gtag.js) */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-5HJYNEGH9M"

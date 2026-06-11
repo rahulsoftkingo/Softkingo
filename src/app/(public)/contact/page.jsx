@@ -8,6 +8,8 @@ import InquiryForm from "@/components/public/InquiryForm";
 import TechAheadSection from "@/components/public/TechAheadSection";
 import CommonTitle from "@/components/ui/CommonTitle";
 import AwardsSection from "@/components/common/AwardsSection";
+import { commonSchemas } from "@/lib/commonSchema";
+
 export const metadata = {
   title: "Contact Softkingo - Get a Free Quote for Your Digital Project",
   description: "Have a project idea? Contact Softkingo for expert consultation on mobile apps, web development, and digital marketing. We reply within 2 hours!",
@@ -16,6 +18,35 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main className="min-h-screen  text-slate-900">
+
+      <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Softkingo",
+              "item": "https://softkingo.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Contact",
+              "item": "https://softkingo.com/contact"
+            }
+          ]
+        },
+        ...commonSchemas
+      ]
+    })
+  }}
+/>
       {/* HERO */}
       <section
         className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center"

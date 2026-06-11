@@ -9,6 +9,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from '@/components/footer/InquirySection';
+import { commonSchemas } from "@/lib/commonSchema";
 
 // Static fallback jobs shown before API loads or on error
 const FALLBACK_JOBS = [
@@ -87,6 +88,43 @@ const WhyJoinUs = () => {
 
     return (
         <div className="bg-white">
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@graph": [
+                            {
+                                "@type": "BreadcrumbList",
+                                "itemListElement": [
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 1,
+                                        "name": "softkingo",
+                                        "item": "https://www.softkingo.com"
+                                    },
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 2,
+                                        "name": "careers",
+                                        "item": "https://www.softkingo.com/careers"
+                                    }
+                                ]
+                            },
+                            {
+                                "@type": "ImageObject",
+                                "contentUrl":
+                                    "https://www.softkingo.com/images/about/ceo.png",
+                                "width": 937,
+                                "height": 937,
+                                "associatedMedia": "https://www.softkingo.com/careers"
+                            },
+                           ...commonSchemas
+                        ]
+                    })
+                }}
+            />
             {/* Hero Section */}
             <section className="relative w-full overflow-hidden bg-gradient-to-br from-white via-sky-50 to-blue-50">
                 <div className="container mx-auto px-4 py-20 lg:py-32">

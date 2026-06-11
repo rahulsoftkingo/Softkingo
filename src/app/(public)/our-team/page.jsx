@@ -100,6 +100,239 @@ const STATIC_DATA = {
     ]
 };
 
+
+
+ const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+
+    {
+      "@type": "WebPage",
+      "@id": "https://www.softkingo.com/our-team",
+      "url": "https://www.softkingo.com/our-team",
+      "name": "Our Team - Softkingo",
+      "description": "Meet the expert team behind Softkingo's innovative digital solutions."
+    },
+
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "softkingo",
+          "item": "https://www.softkingo.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "our-team",
+          "item": "https://www.softkingo.com/our-team"
+        }
+      ]
+    },
+
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://asthatechnologies.org/wp-content/uploads/2025/09/Food-Delivery_.webp",
+      "width": 937,
+      "height": 937,
+      "associatedMedia": "https://www.softkingo.com/our-team"
+    },
+
+    {
+      "@type": "Organization",
+      "@id": "https://softkingo.com/#organization",
+      "name": "Softkingo",
+      "url": "https://softkingo.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://softkingo.com/logo.png",
+        "width": 200,
+        "height": 60
+      },
+      "description": "Softkingo is a global IT services company specializing in mobile app development, web development, AI solutions, and digital transformation services.",
+      "telephone": "+91-7428750870",
+      "email": "sales@softkingo.com",
+      "foundingDate": "2018",
+      "numberOfEmployees": {
+        "@type": "QuantitativeValue",
+        "value": 50
+      },
+      "areaServed": "Worldwide",
+      "sameAs": [
+        "https://www.facebook.com/softkingo",
+        "https://www.linkedin.com/company/softkingo",
+        "https://www.instagram.com/softkingo"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "telephone": "+91-7428750870",
+          "email": "sales@softkingo.com",
+          "availableLanguage": ["English", "Hindi"],
+          "areaServed": "Worldwide"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "telephone": "+91-7428750870",
+          "email": "sales@softkingo.com",
+          "availableLanguage": ["English", "Hindi"]
+        }
+      ],
+      "address": [
+        {
+          "@type": "PostalAddress",
+          "streetAddress": "A179, Block ED, New Ashok Nagar",
+          "addressLocality": "New Delhi",
+          "addressRegion": "Delhi",
+          "postalCode": "110096",
+          "addressCountry": "IN",
+          "name": "Delhi Office"
+        },
+        {
+          "@type": "PostalAddress",
+          "streetAddress": "B-148, Block B, Sector 63",
+          "addressLocality": "Noida",
+          "addressRegion": "Uttar Pradesh",
+          "postalCode": "201301",
+          "addressCountry": "IN",
+          "name": "Noida Office"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "120",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "name": "Outstanding Mobile App Development",
+          "author": { "@type": "Person", "name": "James Carter" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-11-10",
+          "reviewBody": "Softkingo delivered our mobile app on time and exceeded our expectations. The team was professional, communicative, and highly skilled. Highly recommend for any mobile development project."
+        },
+        {
+          "@type": "Review",
+          "name": "Excellent Web Development Partner",
+          "author": { "@type": "Person", "name": "Priya Sharma" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-10-22",
+          "reviewBody": "We hired Softkingo for our web development project and were truly impressed. The team has deep technical expertise and delivered a flawless product. Great value for money."
+        },
+        {
+          "@type": "Review",
+          "name": "Game-changing AI Solution",
+          "author": { "@type": "Person", "name": "Michael Thompson" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-09-15",
+          "reviewBody": "Their AI solution transformed our business operations. Softkingo understood our requirements perfectly and built a scalable, intelligent system. Exceptional work!"
+        },
+        {
+          "@type": "Review",
+          "name": "Reliable Digital Transformation Partner",
+          "author": { "@type": "Person", "name": "Sarah Mitchell" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-08-05",
+          "reviewBody": "Softkingo helped us digitally transform our entire workflow. From planning to delivery, their team was thorough and transparent. A trusted technology partner."
+        },
+        {
+          "@type": "Review",
+          "name": "Top-notch Flutter App Development",
+          "author": { "@type": "Person", "name": "Rahul Verma" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-07-18",
+          "reviewBody": "The Flutter app built by Softkingo is fast, beautiful, and bug-free. Their developers are top-notch and the project management was smooth throughout. Will definitely work with them again."
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "IT Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mobile App Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Solutions" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Digital Transformation" } }
+        ]
+      }
+    },
+
+    {
+      "@type": "FAQPage",
+      "@id": "https://softkingo.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What services does Softkingo offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Softkingo offers mobile app development (iOS & Android), web development, AI & machine learning solutions, UI/UX design, and digital transformation consulting for businesses worldwide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is Softkingo located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Softkingo has two offices in India — Delhi: A179, Block ED, New Ashok Nagar, New Delhi 110096, and Noida: B-148, Block B, Sector 63, Noida 201301. We serve clients globally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I contact Softkingo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can reach Softkingo by phone at +91-7428750870 or by email at sales@softkingo.com. Our team is available Monday to Friday, 9:00 AM to 6:30 PM IST."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take to develop a mobile app?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A basic app typically takes 4–8 weeks, while a complex enterprise application may take 4–6 months. Softkingo provides a detailed estimate after an initial consultation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Softkingo provide post-launch support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Softkingo offers post-launch support and maintenance packages including bug fixes, performance optimization, and feature updates to keep your application running smoothly."
+          }
+        }
+      ]
+    }
+
+  ]
+};
+
 // --- DATA FETCHER (Hero, Text, Team, Gallery) ---
 async function getTeamData() {
     try {
@@ -226,6 +459,13 @@ export default async function OurTeamPage() {
 
     return (
         <>
+              <Script
+        id="our-team-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
             <OurTeamClient
                 hero={hero}
                 ceo={ceo}

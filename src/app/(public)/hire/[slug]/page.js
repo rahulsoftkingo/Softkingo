@@ -14,6 +14,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 import HireDevelopersPage from './SelectDeveloper';
 import CloneTechStack from '@/components/public/clone/CloneTechStack';
+import { commonSchemas } from "@/lib/commonSchema";
 
 // --- ICONS ---
 import { BsCheckCircle, BsTransparency, BsFileEarmarkBarGraph } from 'react-icons/bs';
@@ -184,6 +185,34 @@ export default async function HireSlugPage({ params }) {
 
   return (
     <main className="relative bg-white ">
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            ...commonSchemas,
+            {
+              "@context": "https://schema.org/",
+              "@type": "BreadcrumbList",
+              "@id": "https://www.softkingo.com/#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "softkingo",
+                  "item": "https://www.softkingo.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": category?.name ?? slug,
+                  "item": `https://www.softkingo.com/${slug}`
+                }
+              ]
+            }
+          ])
+        }}
+      />
 
       {/* 1. HERO SECTION */}
       {content.activeSections?.includes('hero') && (
