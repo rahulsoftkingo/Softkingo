@@ -11,6 +11,7 @@ import Strengths_Scroll from "./_components/StrengthsScroll";
 import ReviewSection from "./_components/ClientsReview";
 import FooterForm from "@/components/footer/InquirySection";
 import BlogSection from "@/components/common/BlogSection";
+import { commonSchemas } from "@/lib/commonSchema";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -18,6 +19,46 @@ export const revalidate = 0;
 export default function Home() {
   return (
     <div className="bg-white">
+
+      <Script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@graph": [
+                      {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                          {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Softkingo",
+                            "item": "https://softkingo.com"
+                          }
+                        ]
+                      },
+                      ...commonSchemas,
+                      {
+                        "@type": "Service",
+                        "@id": "https://softkingo.com/#mobile-app-development",
+                        "name": "Mobile App Development",
+                        "serviceType": "Software Development Service",
+                        "category": "Software Development Service",
+                        "description": "Softkingo delivers AI-driven web, app & digital marketing solutions with 6+ years of experience, serving 350+ clients worldwide. We turn ideas into successful digital products.",
+        
+                        "areaServed": {
+                          "@type": "Place",
+                          "name": "Worldwide"
+                        },
+                        "potentialAction": {
+                          "@type": "ContactAction",
+                          "target": "https://softkingo.com/contact"
+                        }
+                      }
+                    ]
+                  })
+                }}
+              />
       <HeroSection />
       <Feature />
       <Crafting />
