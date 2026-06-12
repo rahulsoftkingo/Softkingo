@@ -44,11 +44,9 @@ export const commonSchemas = [
                 "addressRegion": "Uttar Pradesh",
                 "postalCode": "201301",
                 "addressCountry": "IN",
-                "geo": {
-                    "@type": "GeoCoordinates",
-                    "latitude": 28.6252,
-                    "longitude": 77.3700
-                }
+                "latitude": 28.6252,
+                "longitude": 77.3700
+
             },
             {
                 "@type": "PostalAddress",
@@ -57,11 +55,8 @@ export const commonSchemas = [
                 "addressRegion": "Delhi",
                 "postalCode": "110096",
                 "addressCountry": "IN",
-                "geo": {
-                    "@type": "GeoCoordinates",
-                    "latitude": 28.6150502,
-                    "longitude": 77.3769649
-                }
+                "latitude": 28.6150502,
+                "longitude": 77.3769649
             }
         ],
 

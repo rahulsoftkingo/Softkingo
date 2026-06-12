@@ -2,7 +2,7 @@ import Link from "next/link";
 import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 import { commonSchemas } from "@/lib/commonSchema";
-
+import Script from "next/script";
 
 export const metadata = {
   title: "Client Testimonials - Client Reviews",
@@ -58,10 +58,6 @@ export default function TestimonialsPage() {
                   "name": "App Development"
                 },
 
-                "potentialAction": {
-                  "@type": "ContactAction",
-                  "target": "https://softkingo.com/contact"
-                }
               }
             ]
           })

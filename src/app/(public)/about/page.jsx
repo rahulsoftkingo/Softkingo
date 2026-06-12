@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-
+import Script from "next/script";
 import Image from 'next/image';
 import { FaStar, FaBrain, FaEye, FaTasks, FaTools, FaLightbulb, FaFlag } from "react-icons/fa";
 import { FiArrowRight, FiTarget } from "react-icons/fi";
@@ -9,6 +9,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import InquirySection from '@/components/footer/InquirySection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import { commonSchemas } from "@/lib/commonSchema";
+import Script from "next/script";
 
 export const metadata = {
   title: "About Softkingo - Leading Software Development Company in India",
@@ -467,11 +468,6 @@ export default async function AboutUs() {
                 "isRelatedTo": {
                   "@type": "Thing",
                   "name": "App Development"
-                },
-
-                "potentialAction": {
-                  "@type": "ContactAction",
-                  "target": "https://softkingo.com/contact"
                 }
               }
             ]

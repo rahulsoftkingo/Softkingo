@@ -11,6 +11,7 @@ import JoinTeamPopup from '@/components/admin/JoinTeamPopup';
 import OurTeamClient from './OurTeamClient';
 import InquirySection from "@/components/footer/InquirySection";
 import { commonSchemas } from "@/lib/commonSchema";
+import Script from "next/script";
 
 // --- STATIC DATA ---
 const STATIC_DATA = {
@@ -500,10 +501,7 @@ export default async function OurTeamPage() {
                   "@type": "Thing",
                   "name": "App Development"
                 },
-                "potentialAction": {
-                  "@type": "ContactAction",
-                  "target": "https://softkingo.com/contact"
-                }
+               
               }
             ]
           })

@@ -148,11 +148,6 @@ export default async function IndustryPage(props) {
                             // ✅ ImageObject array
                             "image": data.imageObjects,
                             "url": `https://www.softkingo.com/industries/${params.slug}`,
-                            "provider": {
-                                "@type": "Organization",
-                                "@id": "https://softkingo.com/#organization",
-                                "name": "Softkingo"
-                            },
                         }
                     ])
                 }}

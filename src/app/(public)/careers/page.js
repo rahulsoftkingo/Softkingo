@@ -1,4 +1,5 @@
 "use client"
+import Script from "next/script";
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch, FaChevronRight, FaClock, FaCheckCircle, FaSpinner } from 'react-icons/fa';
@@ -89,12 +90,28 @@ const WhyJoinUs = () => {
     return (
         <div className="bg-white">
 
-            <script
+            <Script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
                         "@graph": [
+                            {
+                                "@type": "Service",
+                                "@id": "https://softkingo.com/#mobile-app-development",
+                                "name": "Mobile App Development",
+                                "serviceType": "App Development",
+                                "category": "Software Development Service",
+                                "description": "Custom mobile app solutions...",
+                                "areaServed": {
+                                    "@type": "Place",
+                                    "name": "Worldwide"
+                                },
+                                "isRelatedTo": {
+                                    "@type": "Thing",
+                                    "name": "App Development"
+                                }
+                            },
                             {
                                 "@type": "BreadcrumbList",
                                 "itemListElement": [
@@ -114,13 +131,12 @@ const WhyJoinUs = () => {
                             },
                             {
                                 "@type": "ImageObject",
-                                "contentUrl":
-                                    "https://www.softkingo.com/images/about/ceo.png",
+                                "contentUrl": "https://www.softkingo.com/images/about/ceo.png",
                                 "width": 937,
                                 "height": 937,
                                 "associatedMedia": "https://www.softkingo.com/careers"
                             },
-                           ...commonSchemas
+                            ...commonSchemas
                         ]
                     })
                 }}

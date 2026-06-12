@@ -297,10 +297,6 @@ export default function FAQPage() {
                   "@type": "Place",
                   "name": "Worldwide"
                 },
-                "potentialAction": {
-                  "@type": "ContactAction",
-                  "target": "https://softkingo.com/contact"
-                }
               },
               {
                 "@type": "BreadcrumbList",

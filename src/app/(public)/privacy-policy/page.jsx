@@ -55,10 +55,6 @@ export default function PrivacyPolicyPage() {
                 "isRelatedTo": {
                   "@type": "Thing",
                   "name": "App Development"
-                },
-                "potentialAction": {
-                  "@type": "ContactAction",
-                  "target": "https://softkingo.com/contact"
                 }
               },
 

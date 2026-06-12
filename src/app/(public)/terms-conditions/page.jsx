@@ -36,10 +36,6 @@ export default function TermsConditionsPage() {
                   "@type": "Thing",
                   "name": "App Development"
                 },
-                "potentialAction": {
-                  "@type": "ContactAction",
-                  "target": "https://softkingo.com/contact"
-                }
               },
               {
                 "@type": "BreadcrumbList",

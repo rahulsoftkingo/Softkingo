@@ -60,11 +60,6 @@ export default function ContactPage() {
                 "isRelatedTo": {
                   "@type": "Thing",
                   "name": "App Development"
-                },
-
-                "potentialAction": {
-                  "@type": "ContactAction",
-                  "target": "https://softkingo.com/contact"
                 }
               },
 
