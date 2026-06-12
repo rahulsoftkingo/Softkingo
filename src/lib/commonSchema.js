@@ -44,8 +44,6 @@ export const commonSchemas = [
                 "addressRegion": "Uttar Pradesh",
                 "postalCode": "201301",
                 "addressCountry": "IN",
-                "latitude": 28.6252,
-                "longitude": 77.3700
 
             },
             {
@@ -55,8 +53,6 @@ export const commonSchemas = [
                 "addressRegion": "Delhi",
                 "postalCode": "110096",
                 "addressCountry": "IN",
-                "latitude": 28.6150502,
-                "longitude": 77.3769649
             }
         ],
 

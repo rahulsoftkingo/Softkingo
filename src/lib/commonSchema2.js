@@ -42,9 +42,7 @@ export const commonSchemas = [
         "addressLocality": "Noida",
         "addressRegion": "Uttar Pradesh",
         "postalCode": "201301",
-        "addressCountry": "IN",
-        "latitude": 28.6252,
-        "longitude": 77.37
+        "addressCountry": "IN"
       },
       {
         "@type": "PostalAddress",
@@ -52,9 +50,7 @@ export const commonSchemas = [
         "addressLocality": "New Delhi",
         "addressRegion": "Delhi",
         "postalCode": "110096",
-        "addressCountry": "IN",
-        "latitude": 28.6150502,
-        "longitude": 77.3769649
+        "addressCountry": "IN"
       }
     ],
     "aggregateRating": {
