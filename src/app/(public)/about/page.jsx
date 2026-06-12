@@ -9,7 +9,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import InquirySection from '@/components/footer/InquirySection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import { commonSchemas } from "@/lib/commonSchema";
-import Script from "next/script";
+
 
 export const metadata = {
   title: "About Softkingo - Leading Software Development Company in India",
