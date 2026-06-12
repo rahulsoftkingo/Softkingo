@@ -190,6 +190,20 @@ export default async function ServicePage({ params }) {
 
   const show = (section) => activeSections.includes(section);
 
+  // ADD THIS RIGHT HERE ↓
+const faqSchema = show('faq') && content.faq?.items?.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": content.faq.items.map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+    }
+  }))
+} : null;
+
   return (
     <main className="text-gray-800">
 
@@ -235,6 +249,14 @@ export default async function ServicePage({ params }) {
           ])
         }}
       />
+
+      {/* ADD THIS RIGHT HERE ↓ */}
+{faqSchema && (
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+  />
+)}
 
 
       {/* Hero Section with Lead Form */}

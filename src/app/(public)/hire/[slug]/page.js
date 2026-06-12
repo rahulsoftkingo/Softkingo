@@ -215,6 +215,20 @@ export default async function HireSlugPage({ params }) {
 
   const content = normalizeHireContent(page);
 
+  // ADD THIS ↓
+  const faqSchema = content.activeSections?.includes('faq') && content.faq?.items?.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": content.faq.items.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+      }
+    }))
+  } : null;
+
   return (
     <main className="relative bg-white ">
 
@@ -246,6 +260,13 @@ export default async function HireSlugPage({ params }) {
           ])
         }}
       />
+
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       {/* 1. HERO SECTION */}
       {content.activeSections?.includes('hero') && (

@@ -121,6 +121,20 @@ export default async function IndustryPage(props) {
 
     const show = (id) => data.activeSections.includes(id);
 
+    // ADD THIS ↓
+    const faqSchema = show('faq') && faq?.items?.length > 0 ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq.items.map(item => ({
+            "@type": "Question",
+            "name": item.q,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+            }
+        }))
+    } : null;
+
     return (
         <main className="min-h-screen bg-white">
 
@@ -152,6 +166,28 @@ export default async function IndustryPage(props) {
                     ])
                 }}
             />
+
+
+            {/* ADD THIS RIGHT BELOW ↓ */}
+            {show('faq') && faq?.items?.length > 0 && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "FAQPage",
+                            "mainEntity": faq.items.map(item => ({
+                                "@type": "Question",
+                                "name": item.q,
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+                                }
+                            }))
+                        })
+                    }}
+                />
+            )}
 
             {/* 1. HERO SECTION (Reusing SolutionsHero for consistency) */}
             {show('hero') && (
