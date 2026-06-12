@@ -2,6 +2,7 @@ import Link from "next/link";
 import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 import { commonSchemas } from "@/lib/commonSchema";
+import { commonSchemas } from "@/lib/commonSchema";
 
 export const metadata = {
   title: "Client Testimonials - Client Reviews",
@@ -15,37 +16,45 @@ export default function TestimonialsPage() {
     <main className="bg-[#f6f9ff]">
       {/* HERO (enhanced like your Terms hero) */}
 
-      <script
+      <Script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "WebPage",
-              "@id": "https://www.softkingo.com/testimonials",
-              "url": "https://www.softkingo.com/testimonials",
-              "name": "Testimonials - Softkingo",
-              "description": "Read what our clients say about Softkingo's mobile app, web and AI development services."
-            },
-            {
-              "@type": "BreadcrumbList",
-              "itemListElement": [
-                {
-                  "@type": "ListItem",
-                  "position": 1,
-                  "name": "softkingo",
-                  "item": "https://www.softkingo.com"
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              ...commonSchemas,
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "provider": {
+                  "@type": "Organization",
+                  "@id": "https://softkingo.com/#organization",
+                  "name": "Softkingo",
+                  "url": "https://softkingo.com"
                 },
-                {
-                  "@type": "ListItem",
-                  "position": 2,
-                  "name": "testimonials",
-                  "item": "https://www.softkingo.com/testimonials"
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                },
+
+                "potentialAction": {
+                  "@type": "ContactAction",
+                  "target": "https://softkingo.com/contact"
                 }
-              ]
-            },
-            ...commonSchemas
-          ]
+              }
+            ]
+          })
         }}
       />
 

@@ -8,6 +8,7 @@ import Link from 'next/link';
 import CommonTitle from '@/components/ui/CommonTitle';
 import InquirySection from '@/components/footer/InquirySection';
 import FAQAccordion from '@/components/common/Faqaccordion';
+import { commonSchemas } from "@/lib/commonSchema";
 
 export const metadata = {
   title: "About Softkingo - Leading Software Development Company in India",
@@ -419,10 +420,47 @@ export default async function AboutUs() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
 
-        <script
+          <Script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              ...commonSchemas,
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "provider": {
+                  "@type": "Organization",
+                  "@id": "https://softkingo.com/#organization",
+                  "name": "Softkingo",
+                  "url": "https://softkingo.com"
+                },
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                },
+
+                "potentialAction": {
+                  "@type": "ContactAction",
+                  "target": "https://softkingo.com/contact"
+                }
+              }
+            ]
+          })
+        }}
+      />
         
       {/* Hero Section */}
       <section className="relative w-full min-h-[500px] md:min-h-[600px] ">

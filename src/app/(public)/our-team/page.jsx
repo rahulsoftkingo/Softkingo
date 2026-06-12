@@ -10,6 +10,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import JoinTeamPopup from '@/components/admin/JoinTeamPopup';
 import OurTeamClient from './OurTeamClient';
 import InquirySection from "@/components/footer/InquirySection";
+import { commonSchemas } from "@/lib/commonSchema";
 
 // --- STATIC DATA ---
 const STATIC_DATA = {
@@ -460,12 +461,46 @@ export default async function OurTeamPage() {
     return (
         <>
               <Script
-        id="our-team-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd),
-        }}
-      />
+                      type="application/ld+json"
+                      dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                          "@context": "https://schema.org",
+                          "@graph": [
+                            ...commonSchemas,
+                            {
+                              "@type": "Service",
+                              "@id": "https://softkingo.com/#mobile-app-development",
+                              "name": "Mobile App Development",
+                              "serviceType": "App Development",
+                              "category": "Software Development Service",
+                              "description": "Custom mobile app solutions...",
+              
+                              "provider": {
+                                "@type": "Organization",
+                                "@id": "https://softkingo.com/#organization",
+                                "name": "Softkingo",
+                                "url": "https://softkingo.com"
+                              },
+              
+                              "areaServed": {
+                                "@type": "Place",
+                                "name": "Worldwide"
+                              },
+              
+                              "isRelatedTo": {
+                                "@type": "Thing",
+                                "name": "App Development"
+                              },
+              
+                              "potentialAction": {
+                                "@type": "ContactAction",
+                                "target": "https://softkingo.com/contact"
+                              }
+                            }
+                          ]
+                        })
+                      }}
+                    />
             <OurTeamClient
                 hero={hero}
                 ceo={ceo}
