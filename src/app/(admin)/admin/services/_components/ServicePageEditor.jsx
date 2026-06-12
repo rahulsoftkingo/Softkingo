@@ -47,7 +47,7 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
         {value && (
             <div className="mt-2 h-32 w-full bg-slate-50 rounded-lg border border-slate-100 overflow-hidden relative group/preview">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={value} className="w-full h-full object-contain" alt="preview" />
+                <img src={value?.toLowerCase()} className="w-full h-full object-contain" alt="preview" />
             </div>
         )}
     </div>

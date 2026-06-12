@@ -152,6 +152,7 @@ export default async function ServicePage({ params }) {
           __html: JSON.stringify([
             ...commonSchemas,
             {
+              "@context": "https://schema.org",
               "@type": "BreadcrumbList",
               "@id": "https://www.softkingo.com/#breadcrumb",
               "itemListElement": [
@@ -164,10 +165,29 @@ export default async function ServicePage({ params }) {
                 {
                   "@type": "ListItem",
                   "position": 2,
+                  "name": "Services",
+                  "item": `https://www.softkingo.com/services/${slug}`
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
                   "name": slug,
-                  "item": `https://www.softkingo.com/${slug}`
+                  "item": `https://www.softkingo.com/services/services/${slug}`
                 }
               ]
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "@id": `https://www.softkingo.com/services/${slug}/#service`,
+
+              "name": service.title,
+              "seotitle": service.seoTitle,
+              "url": `https://www.softkingo.com/services/${slug}`,
+              "description": service.seoDescription ?? "",
+              "image": service.seoImage
+                ? `https://www.softkingo.com${service.seoImage}`
+                : `https://www.softkingo.com${""}`,
             }
           ])
         }}
