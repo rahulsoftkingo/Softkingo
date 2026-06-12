@@ -242,11 +242,6 @@ export default async function HireSlugPage({ params }) {
               "description": page?.seoDescription || page?.excerpt || "",
               "image": content.imageObjects,
               "url": `https://www.softkingo.com/hire/${slug}`,
-              "provider": {
-                "@type": "Organization",
-                "@id": "https://softkingo.com/#organization",
-                "name": "Softkingo"
-              }
             }
           ])
         }}

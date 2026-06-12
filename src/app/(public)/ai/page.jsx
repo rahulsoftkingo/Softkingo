@@ -58,6 +58,23 @@ export default function AIPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "AI",
+                    "item": "https://softkingo.com/ai"
+                  }
+                ]
+              },
               ...commonSchemas,
               {
                 "@type": "Service",
@@ -66,24 +83,14 @@ export default function AIPage() {
                 "serviceType": "App Development",
                 "category": "Software Development Service",
                 "description": "Custom mobile app solutions...",
-
-                "provider": {
-                  "@type": "Organization",
-                  "@id": "https://softkingo.com/#organization",
-                  "name": "Softkingo",
-                  "url": "https://softkingo.com"
-                },
-
                 "areaServed": {
                   "@type": "Place",
                   "name": "Worldwide"
                 },
-
                 "isRelatedTo": {
                   "@type": "Thing",
                   "name": "App Development"
                 },
-
                 "potentialAction": {
                   "@type": "ContactAction",
                   "target": "https://softkingo.com/contact"

@@ -406,12 +406,7 @@ export default async function DynamicSolutionPage(props) {
                             "description": data?.seoDescription || "",
                             "url": `https://www.softkingo.com/solutions/${params.slug}`,
                             // ✅ ImageObject array
-                            "image": data.imageObjects,
-                            "provider": {
-                                "@type": "Organization",
-                                "@id": "https://softkingo.com/#organization",
-                                "name": "Softkingo"
-                            },
+                            "image": data.imageObjects
                         }
                     ])
                 }}

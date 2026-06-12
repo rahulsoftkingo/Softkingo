@@ -426,6 +426,23 @@ export default async function AboutUs() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "About us",
+                    "item": "https://softkingo.com/about"
+                  }
+                ]
+              },
               ...commonSchemas,
               {
                 "@type": "Service",

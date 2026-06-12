@@ -20,34 +20,59 @@ export default function ContactPage() {
     <main className="min-h-screen  text-slate-900">
 
       <script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Softkingo",
-              "item": "https://softkingo.com"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Contact",
-              "item": "https://softkingo.com/contact"
-            }
-          ]
-        },
-        ...commonSchemas
-      ]
-    })
-  }}
-/>
-      {/* HERO */}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Contact",
+                    "item": "https://softkingo.com/contact"
+                  }
+                ]
+              },
+
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                },
+
+                "potentialAction": {
+                  "@type": "ContactAction",
+                  "target": "https://softkingo.com/contact"
+                }
+              },
+
+              ...commonSchemas
+            ]
+          })
+        }}
+      /> {/* HERO */}
       <section
         className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center"
         style={{ backgroundImage: "url('/images/contact-hero.png')" }}

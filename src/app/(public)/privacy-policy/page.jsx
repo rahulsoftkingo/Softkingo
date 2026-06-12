@@ -19,6 +19,9 @@ export default function PrivacyPolicyPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@graph": [
+
+               ...commonSchemas,
+
               {
                 "@type": "BreadcrumbList",
                 "@id": "https://www.softkingo.com/privacy-policy#breadcrumb",
@@ -37,7 +40,28 @@ export default function PrivacyPolicyPage() {
                   }
                 ]
               },
-              ...commonSchemas
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                },
+                "potentialAction": {
+                  "@type": "ContactAction",
+                  "target": "https://softkingo.com/contact"
+                }
+              },
+
             ]
           })
         }}

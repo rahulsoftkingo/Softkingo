@@ -286,6 +286,23 @@ export default function FAQPage() {
             "@context": "https://schema.org",
             "@graph": [
               {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+                "potentialAction": {
+                  "@type": "ContactAction",
+                  "target": "https://softkingo.com/contact"
+                }
+              },
+              {
                 "@type": "BreadcrumbList",
                 "@id": "https://www.softkingo.com/faq#breadcrumb",
                 "itemListElement": [

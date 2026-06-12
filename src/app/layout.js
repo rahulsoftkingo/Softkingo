@@ -4,6 +4,7 @@ import Script from 'next/script';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+import { commonSchemas } from "@/lib/commonSchema";
 
 export const metadata = {
   metadataBase: new URL(
@@ -110,6 +111,46 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="canonical" href="https://www.softkingo.com/" />
+
+              <Script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@graph": [
+                      {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                          {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Softkingo",
+                            "item": "https://softkingo.com"
+                          }
+                        ]
+                      },
+                      ...commonSchemas,
+                      {
+                        "@type": "Service",
+                        "@id": "https://softkingo.com/#mobile-app-development",
+                        "name": "Mobile App Development",
+                        "serviceType": "Software Development Service",
+                        "category": "Software Development Service",
+                        "description": "Softkingo delivers AI-driven web, app & digital marketing solutions with 6+ years of experience, serving 350+ clients worldwide. We turn ideas into successful digital products.",
+        
+                        "areaServed": {
+                          "@type": "Place",
+                          "name": "Worldwide"
+                        },
+                        "potentialAction": {
+                          "@type": "ContactAction",
+                          "target": "https://softkingo.com/contact"
+                        }
+                      }
+                    ]
+                  })
+                }}
+              />
         {/* <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

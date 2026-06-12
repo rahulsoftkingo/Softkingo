@@ -22,6 +22,23 @@ export default function TestimonialsPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Testimonials",
+                    "item": "https://softkingo.com/testimonials"
+                  }
+                ]
+              },
               ...commonSchemas,
               {
                 "@type": "Service",
@@ -30,13 +47,6 @@ export default function TestimonialsPage() {
                 "serviceType": "App Development",
                 "category": "Software Development Service",
                 "description": "Custom mobile app solutions...",
-
-                "provider": {
-                  "@type": "Organization",
-                  "@id": "https://softkingo.com/#organization",
-                  "name": "Softkingo",
-                  "url": "https://softkingo.com"
-                },
 
                 "areaServed": {
                   "@type": "Place",
