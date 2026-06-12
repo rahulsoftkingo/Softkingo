@@ -1,7 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/db'; // Database connection
-import { commonSchemas } from "@/lib/commonSchema";
+import { commonSchemas } from "@/lib/commonSchema2";
 // --- SOLUTIONS COMPONENTS (Existing) ---
 import SolutionsHero from '@/components/public/solutions/SolutionsHero';
 import SolutionsStats from '@/components/public/solutions/SolutionsStats';

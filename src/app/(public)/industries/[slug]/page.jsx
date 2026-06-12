@@ -4,7 +4,7 @@ import prisma from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
-import { commonSchemas } from "@/lib/commonSchema";
+import { commonSchemas } from "@/lib/commonSchema2";
 
 // --- SHARED COMPONENTS (Reuse existing ones where possible) ---
 // import SolutionsHero from '@/components/public/solutions/SolutionsHero'; 

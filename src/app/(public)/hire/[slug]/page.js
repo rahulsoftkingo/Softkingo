@@ -14,7 +14,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 import HireDevelopersPage from './SelectDeveloper';
 import CloneTechStack from '@/components/public/clone/CloneTechStack';
-import { commonSchemas } from "@/lib/commonSchema";
+import { commonSchemas } from "@/lib/commonSchema2";
 
 // --- ICONS ---
 import { BsCheckCircle, BsTransparency, BsFileEarmarkBarGraph } from 'react-icons/bs';

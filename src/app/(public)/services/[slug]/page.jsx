@@ -41,7 +41,7 @@ import {
   Globe
 } from "lucide-react";
 
-import { commonSchemas } from "@/lib/commonSchema";
+import { commonSchemas } from "@/lib/commonSchema2";
 import InquirySection from "@/components/footer/InquirySection";
 import { FaArrowRight } from "react-icons/fa6";
 import CommonTitle from "@/components/ui/CommonTitle";
