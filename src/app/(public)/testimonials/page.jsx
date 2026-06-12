@@ -2,7 +2,7 @@ import Link from "next/link";
 import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 import { commonSchemas } from "@/lib/commonSchema";
-import { commonSchemas } from "@/lib/commonSchema";
+
 
 export const metadata = {
   title: "Client Testimonials - Client Reviews",
