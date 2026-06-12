@@ -209,7 +209,23 @@ export default async function HireSlugPage({ params }) {
                   "item": `https://www.softkingo.com/${slug}`
                 }
               ]
-            }
+            },
+            {
+              "@context": "https://schema.org",   
+              "@type": "Service",
+              "@id": `https://www.softkingo.com/hire/${slug}/#hire`,
+              "name": page?.seoTitle || page?.title,
+              "description": page?.seoDescription || page?.excerpt || "",
+              "image": page?.seoImage
+                ? `https://www.softkingo.com${page.seoImage}`
+                : `https://www.softkingo.com${content.heroBg || ""}`,
+              "url": `https://www.softkingo.com/hire/${slug}`,
+              "provider": {
+                "@type": "Organization",
+                "@id": "https://softkingo.com/#organization",
+                "name": "Softkingo"
+              } 
+            }   
           ])
         }}
       />

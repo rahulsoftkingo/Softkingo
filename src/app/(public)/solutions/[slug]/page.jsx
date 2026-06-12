@@ -164,23 +164,46 @@ export default async function DynamicSolutionPage(props) {
                         __html: JSON.stringify([
                             ...commonSchemas,
                             {
-                                "@context": "https://schema.org/",
+                                "@context": "https://schema.org",
                                 "@type": "BreadcrumbList",
                                 "@id": "https://www.softkingo.com/#breadcrumb",
                                 "itemListElement": [
                                     {
                                         "@type": "ListItem",
                                         "position": 1,
-                                        "name": "softkingo",
+                                        "name": "Home",
                                         "item": "https://www.softkingo.com"
                                     },
                                     {
                                         "@type": "ListItem",
                                         "position": 2,
-                                        "name": slug,
-                                        "item": `https://www.softkingo.com/${slug}`
+                                        "name": "Solutions",
+                                        "item": "https://www.softkingo.com/solutions"
+                                    },
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 3,
+                                        "name": data?.title ?? params.slug,
+                                        "item": `https://www.softkingo.com/solutions/${params.slug}`
                                     }
                                 ]
+                            },
+                            {
+                                "@context": "https://schema.org",
+                                "@type": "Service",
+                                "@id": `https://www.softkingo.com/solutions/${params.slug}/#service`,
+                                "name": data?.seoTitle || data?.title,
+                                "description": data?.seoDescription || "",
+                                "image": data?.seoImage
+                                    ? `https://www.softkingo.com${data.seoImage}`
+                                    : `https://www.softkingo.com${hero?.heroBg || ""}`,
+                                "url": `https://www.softkingo.com/solutions/${params.slug}`,
+                                "provider": {
+                                    "@type": "Organization",
+                                    "@id": "https://softkingo.com/#organization",
+                                    "name": "Softkingo"
+                                },
+
                             }
                         ])
                     }}

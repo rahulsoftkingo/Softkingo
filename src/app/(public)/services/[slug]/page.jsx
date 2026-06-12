@@ -180,9 +180,7 @@ export default async function ServicePage({ params }) {
               "@context": "https://schema.org",
               "@type": "Service",
               "@id": `https://www.softkingo.com/services/${slug}/#service`,
-
               "name": service.title,
-              "seotitle": service.seoTitle,
               "url": `https://www.softkingo.com/services/${slug}`,
               "description": service.seoDescription ?? "",
               "image": service.seoImage

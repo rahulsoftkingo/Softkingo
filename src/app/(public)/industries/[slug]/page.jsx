@@ -92,32 +92,56 @@ export default async function IndustryPage(props) {
 
 
             <script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify([
-      ...commonSchemas,
-      {
-        "@context": "https://schema.org/",
-        "@type": "BreadcrumbList",
-        "@id": "https://www.softkingo.com/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "softkingo",
-            "item": "https://www.softkingo.com"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": params.slug,
-            "item": `https://www.softkingo.com/${params.slug}`
-          }
-        ]
-      }
-    ])
-  }}
-/>
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify([
+                        ...commonSchemas,
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            "@id": "https://www.softkingo.com/#breadcrumb",
+                            "itemListElement": [
+                                {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://www.softkingo.com"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Industries",
+                                    "item": "https://www.softkingo.com/industries"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": data?.title ?? params.slug,
+                                    "item": `https://www.softkingo.com/industries/${params.slug}`
+                                }
+                            ]
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Service",
+                            "@id": `https://www.softkingo.com/industries/${params.slug}/#service`,
+                            "name": data?.seoTitle || data?.title,
+                            "description": data?.seoDescription || "",
+                            "image": data?.seoImage
+                                ? `https://www.softkingo.com${data.seoImage}`
+                                : `https://www.softkingo.com${hero?.image || hero?.heroBg || ""}`,
+                            "url": `https://www.softkingo.com/industries/${params.slug}`,
+                            "provider": {
+                                "@type": "Organization",
+                                "@id": "https://softkingo.com/#organization",
+                                "name": "Softkingo"
+                            },
+                            "serviceType": data?.title ?? params.slug,
+                            "areaServed": "Worldwide"
+                        }
+                    ])
+                }}
+            />
 
             {/* 1. HERO SECTION (Reusing SolutionsHero for consistency) */}
             {show('hero') && (
