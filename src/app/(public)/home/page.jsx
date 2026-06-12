@@ -28,66 +28,26 @@ export default function Home() {
             "@context": "https://schema.org",
             "@graph": [
               {
-                "@type": "Sitemap",
+                "@type": "WebSite",
                 "@id": "https://www.softkingo.com/#website",
                 "url": "https://www.softkingo.com",
                 "name": "Softkingo",
-                "hasPart": [
-                  {
-                    "@type": "WebPage",
-                    "name": "Home",
-                    "url": "https://www.softkingo.com/"
-                  },
-                  {
-                    "@type": "WebPage",
-                    "name": "About",
-                    "url": "https://www.softkingo.com/about"
-                  },
-                  {
-                    "@type": "WebPage",
-                    "name": "Services",
-                    "url": "https://www.softkingo.com/services"
-                  },
-                  {
-                    "@type": "WebPage",
-                    "name": "Hire",
-                    "url": "https://www.softkingo.com/hire"
-                  },
-                  {
-                    "@type": "WebPage",
-                    "name": "Solutions",
-                    "url": "https://www.softkingo.com/solutions"
-                  },
-                  {
-                    "@type": "WebPage",
-                    "name": "Industries",
-                    "url": "https://www.softkingo.com/industries"
-                  },
-                  {
-                    "@type": "WebPage",
-                    "name": "Contact",
-                    "url": "https://www.softkingo.com/contact"
-                  },
-                  {
-                    "@type": "WebPage",
-                    "name": "Blog",
-                    "url": "https://www.softkingo.com/blog"
-                  }
-                ]
+                "description": "Softkingo is a software development company."
               },
+
               {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
                   {
                     "@type": "ListItem",
                     "position": 1,
-                    "name": "Softkingo",
-                    "item": "https://www.softkingo.com"
+                    "name": "Home",
+                    "item": "https://www.softkingo.com/"
                   }
                 ]
               },
-              ...commonSchemas,
 
+              ...commonSchemas
             ]
           })
         }}
