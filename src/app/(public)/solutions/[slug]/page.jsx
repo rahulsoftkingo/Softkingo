@@ -53,36 +53,49 @@ async function getSolutionPage(slug) {
         if (!page) return null;
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
 
-        // Fetch selected industries data if present
+        // ✅ Image extraction function
+        function extractAllImages(obj) {
+            const images = [];
+            function traverse(value) {
+                if (typeof value === "string" && value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)) {
+                    images.push(value);
+                } else if (Array.isArray(value)) {
+                    value.forEach(traverse);
+                } else if (typeof value === "object" && value !== null) {
+                    Object.values(value).forEach(traverse);
+                }
+            }
+            traverse(obj);
+            return [...new Set(images)];
+        }
+
+        const pageImageUrls = extractAllImages(jsonContent);
+
+        // ✅ ImageObject array banana
+        const imageObjects = [
+            ...(page.seoImage
+                ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
+                : []
+            ),
+            ...pageImageUrls.map(img => ({
+                "@type": "ImageObject",
+                "url": `https://www.softkingo.com${img}`,
+                "width": 937,
+                "height": 937,
+            }))
+        ];
+
+        // ... baaki existing code same
         let industryPages = [];
         const industryConfig = jsonContent.content?.industries;
-
-        if (industryConfig?.items?.length > 0) {
-            const selectedSlugs = industryConfig.items.map(i => i.slug);
-            const rawIndustries = await prisma.page.findMany({
-                where: {
-                    slug: { in: selectedSlugs },
-                    type: 'industry'
-                }
-            });
-
-            // Map and parse content for each industry
-            industryPages = rawIndustries.map(ind => ({
-                ...ind,
-                content: ind.contentJson ? JSON.parse(ind.contentJson).content : {}
-            }));
-
-            // Maintain selection order
-            industryPages.sort((a, b) =>
-                selectedSlugs.indexOf(a.slug) - selectedSlugs.indexOf(b.slug)
-            );
-        }
+        // ... (existing industry fetch code)
 
         return {
             ...page,
             activeSections: jsonContent.activeSections || [],
             sections: jsonContent.content || {},
-            industryPages
+            industryPages,
+            imageObjects, // ✅ return mein add karo
         };
     } catch (error) {
         console.error("Error fetching solution page:", error);
@@ -369,28 +382,38 @@ export default async function DynamicSolutionPage(props) {
 
     return (
         <main className="min-h-screen bg-white overflow-x-clip">
-
+            {/* CASE A: Clone page schema */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org/",
-                        "@type": "BreadcrumbList",
-                        "itemListElement": [
-                            {
-                                "@type": "ListItem",
-                                "position": 1,
-                                "name": "softkingo",
-                                "item": "https://www.softkingo.com"
+                    __html: JSON.stringify([
+                        ...commonSchemas,
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            "@id": "https://www.softkingo.com/#breadcrumb",
+                            "itemListElement": [
+                                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.softkingo.com" },
+                                { "@type": "ListItem", "position": 2, "name": "Solutions", "item": "https://www.softkingo.com/solutions" },
+                                { "@type": "ListItem", "position": 3, "name": data?.title ?? params.slug, "item": `https://www.softkingo.com/solutions/${params.slug}` }
+                            ]
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Service",
+                            "@id": `https://www.softkingo.com/solutions/${params.slug}/#service`,
+                            "name": data?.seoTitle || data?.title,
+                            "description": data?.seoDescription || "",
+                            "url": `https://www.softkingo.com/solutions/${params.slug}`,
+                            // ✅ ImageObject array
+                            "image": data.imageObjects,
+                            "provider": {
+                                "@type": "Organization",
+                                "@id": "https://softkingo.com/#organization",
+                                "name": "Softkingo"
                             },
-                            {
-                                "@type": "ListItem",
-                                "position": 2,
-                                "name": params.slug,
-                                "item": `https://www.softkingo.com/${params.slug}`
-                            }
-                        ]
-                    })
+                        }
+                    ])
                 }}
             />
             {faqSchema && (

@@ -30,10 +30,44 @@ async function getIndustryPage(slug) {
         if (!page) return null;
 
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
+
+        // ✅ Image extraction
+        function extractAllImages(obj) {
+            const images = [];
+            function traverse(value) {
+                if (typeof value === "string" && value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)) {
+                    images.push(value);
+                } else if (Array.isArray(value)) {
+                    value.forEach(traverse);
+                } else if (typeof value === "object" && value !== null) {
+                    Object.values(value).forEach(traverse);
+                }
+            }
+            traverse(obj);
+            return [...new Set(images)];
+        }
+
+        const pageImageUrls = extractAllImages(jsonContent);
+
+        // ✅ ImageObject array
+        const imageObjects = [
+            ...(page.seoImage
+                ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
+                : []
+            ),
+            ...pageImageUrls.map(img => ({
+                "@type": "ImageObject",
+                "url": `https://www.softkingo.com${img}`,
+                "width": 937,
+                "height": 937,
+            }))
+        ];
+
         return {
             ...page,
             activeSections: jsonContent.activeSections || [],
-            sections: jsonContent.content || {}
+            sections: jsonContent.content || {},
+            imageObjects, // ✅ return mein add
         };
     } catch (error) {
         console.error("Error fetching page:", error);
@@ -90,7 +124,6 @@ export default async function IndustryPage(props) {
     return (
         <main className="min-h-screen bg-white">
 
-
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
@@ -101,24 +134,9 @@ export default async function IndustryPage(props) {
                             "@type": "BreadcrumbList",
                             "@id": "https://www.softkingo.com/#breadcrumb",
                             "itemListElement": [
-                                {
-                                    "@type": "ListItem",
-                                    "position": 1,
-                                    "name": "Home",
-                                    "item": "https://www.softkingo.com"
-                                },
-                                {
-                                    "@type": "ListItem",
-                                    "position": 2,
-                                    "name": "Industries",
-                                    "item": "https://www.softkingo.com/industries"
-                                },
-                                {
-                                    "@type": "ListItem",
-                                    "position": 3,
-                                    "name": data?.title ?? params.slug,
-                                    "item": `https://www.softkingo.com/industries/${params.slug}`
-                                }
+                                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.softkingo.com" },
+                                { "@type": "ListItem", "position": 2, "name": "Industries", "item": "https://www.softkingo.com/industries" },
+                                { "@type": "ListItem", "position": 3, "name": data?.title ?? params.slug, "item": `https://www.softkingo.com/industries/${params.slug}` }
                             ]
                         },
                         {
@@ -127,17 +145,14 @@ export default async function IndustryPage(props) {
                             "@id": `https://www.softkingo.com/industries/${params.slug}/#service`,
                             "name": data?.seoTitle || data?.title,
                             "description": data?.seoDescription || "",
-                            "image": data?.seoImage
-                                ? `https://www.softkingo.com${data.seoImage}`
-                                : `https://www.softkingo.com${hero?.image || hero?.heroBg || ""}`,
+                            // ✅ ImageObject array
+                            "image": data.imageObjects,
                             "url": `https://www.softkingo.com/industries/${params.slug}`,
                             "provider": {
                                 "@type": "Organization",
                                 "@id": "https://softkingo.com/#organization",
                                 "name": "Softkingo"
                             },
-                            "serviceType": data?.title ?? params.slug,
-                            "areaServed": "Worldwide"
                         }
                     ])
                 }}

@@ -130,6 +130,53 @@ export default async function ServicePage({ params }) {
 
   const jsonContent = service.contentJson ? JSON.parse(service.contentJson) : {};
 
+
+  // ✅ IMAGE ARRAY EXTRACTION - contentJson se saari images nikalna
+  function extractAllImages(obj) {
+    const images = [];
+
+    function traverse(value) {
+      if (
+        typeof value === "string" &&
+        value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+      ) {
+        images.push(value);
+      } else if (Array.isArray(value)) {
+        value.forEach(traverse);
+      } else if (typeof value === "object" && value !== null) {
+        Object.values(value).forEach(traverse);
+      }
+    }
+
+    traverse(obj);
+    return [...new Set(images)]; // duplicates remove
+  }
+
+
+  const pageImageUrls = extractAllImages(jsonContent);
+  console.log(`[${slug}] Found images:`, pageImageUrls);
+
+
+  // ✅ ImageObject array banana
+  const imageObjects = [
+    // seoImage ko pehle add karo (agar ho)
+    ...(service.seoImage
+      ? [{
+        "@type": "ImageObject",
+        "url": `https://www.softkingo.com${service.seoImage}`,
+        "width": 1200,   // seoImage ka standard OG size
+        "height": 630,
+      }]
+      : []
+    ),
+    // contentJson ki saari images
+    ...pageImageUrls.map(img => ({
+      "@type": "ImageObject",
+      "url": `https://www.softkingo.com${img}`,
+      "width": 937,
+      "height": 937,
+    }))
+  ];
   // If activeSections is missing OR empty, default to showing everything
   const defaultSections = ['hero', 'stats', 'services', 'consultation', 'tech', 'process', 'highlight', 'portfolio', 'solutions', 'industries', 'user-guide', 'faq', 'seo'];
   const activeSections = (jsonContent.activeSections && jsonContent.activeSections.length > 0)
@@ -183,13 +230,13 @@ export default async function ServicePage({ params }) {
               "name": service.title,
               "url": `https://www.softkingo.com/services/${slug}`,
               "description": service.seoDescription ?? "",
-              "image": service.seoImage
-                ? `https://www.softkingo.com${service.seoImage}`
-                : `https://www.softkingo.com${""}`,
+              "image": imageObjects
             }
           ])
         }}
       />
+
+
       {/* Hero Section with Lead Form */}
       {show('hero') && (
         <section className="relative overflow-hidden flex items-center bg-[#0B1121]">
