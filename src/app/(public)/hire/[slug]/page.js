@@ -205,7 +205,7 @@ export default async function HireSlugPage({ params }) {
                 {
                   "@type": "ListItem",
                   "position": 2,
-                  "name": category?.name ?? slug,
+                  "name": slug,
                   "item": `https://www.softkingo.com/${slug}`
                 }
               ]

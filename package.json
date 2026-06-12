@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "set NODE_ENV=development && nodemon server.js",
     "build": "next build --webpack",
     "start": "NODE_ENV=production node server.js",
     "lint": "eslint",
