@@ -1300,7 +1300,7 @@ const SideBar = () => {
             <a href="https://www.youtube.com/@softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
               <FaYoutube className="w-4 h-4 text-gray-700 hover:text-red-600" />
             </a>
-            <a href="https://www.instagram.com/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
+            <a href="https://www.instagram.com/softkingotechnologies/" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
               <IoLogoInstagram className="w-4 h-4 text-gray-700 hover:text-pink-600" />
             </a>
             <a href="https://clutch.co/profile/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">

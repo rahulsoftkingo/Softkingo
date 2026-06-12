@@ -18,7 +18,7 @@ export const commonSchemas = [
       "Softkingo is a global IT services company specializing in mobile app development, web development, AI solutions, and digital transformation services.",
     "telephone": "+91-7428750870",
     "email": "sales@softkingo.com",
-    "foundingDate": "2018",
+    "foundingDate": "2020",
     "areaServed": "Worldwide",
     "sameAs": [
       "https://www.facebook.com/softkingo/",

@@ -407,8 +407,26 @@ export default async function IndustryPage(props) {
                 <IndustryProcess data={process} />
             )}
 
-            {/* 9. FAQ */}
-            {show('faq') && <FAQAccordion data={faq} />}
+          {/* 9. FAQ */}
+{show('faq') && (
+    <section className="py-8 md:py-16 bg-white px-6 lg:h-screen lg:overflow-hidden">
+        <div className="max-w-7xl mx-auto h-full flex flex-col">
+
+            <CommonTitle
+                title={faq?.title || "Frequently Asked Questions"}
+                subtitle={faq?.subtitle || ""}
+                pill={true}
+                gradientText={faq?.gradientText || "FAQ"}
+            />
+
+            {/* 👇 THIS is the key scroll lock area */}
+            <div className="mt-10 flex-1 overflow-y-auto pr-2 scroll-smooth">
+                <FAQAccordion data={faq} />
+            </div>
+
+        </div>
+    </section>
+)}
 
             {/* 10. TESTIMONIALS */}
             {show('testimonials') && (

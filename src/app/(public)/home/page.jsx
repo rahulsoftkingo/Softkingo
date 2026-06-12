@@ -20,45 +20,78 @@ export const revalidate = 0;
 export default function Home() {
   return (
     <div className="bg-white">
-       <Script
-  id="home-schema"
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Softkingo",
-              "item": "https://www.softkingo.com"
-            }
-          ]
-        },
-        ...commonSchemas,
-        {
-          "@type": "Service",
-          "@id": "https://www.softkingo.com/#mobile-app-development",
-          "name": "Mobile App Development",
-          "serviceType": "Software Development Service",
-          "category": "Software Development Service",
-          "description": "Softkingo delivers AI-driven web, app & digital marketing solutions.",
-          "areaServed": {
-            "@type": "Place",
-            "name": "Worldwide"
-          },
-          "potentialAction": {
-            "@type": "ContactAction",
-            "target": "https://www.softkingo.com/contact"
-          }
-        }
-      ]
-    })
-  }}
-/>
+      <Script
+        id="home-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Sitemap",
+                "@id": "https://www.softkingo.com/#website",
+                "url": "https://www.softkingo.com",
+                "name": "Softkingo",
+                "hasPart": [
+                  {
+                    "@type": "WebPage",
+                    "name": "Home",
+                    "url": "https://www.softkingo.com/"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "name": "About",
+                    "url": "https://www.softkingo.com/about"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "name": "Services",
+                    "url": "https://www.softkingo.com/services"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "name": "Hire",
+                    "url": "https://www.softkingo.com/hire"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "name": "Solutions",
+                    "url": "https://www.softkingo.com/solutions"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "name": "Industries",
+                    "url": "https://www.softkingo.com/industries"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "name": "Contact",
+                    "url": "https://www.softkingo.com/contact"
+                  },
+                  {
+                    "@type": "WebPage",
+                    "name": "Blog",
+                    "url": "https://www.softkingo.com/blog"
+                  }
+                ]
+              },
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://www.softkingo.com"
+                  }
+                ]
+              },
+              ...commonSchemas,
+
+            ]
+          })
+        }}
+      />
       <HeroSection />
       <Feature />
       <Crafting />

@@ -68,7 +68,7 @@ const Footer = () => {
     { Icon: FaLinkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/softkingo" },
     { Icon: FaXTwitter, label: "X", href: "https://x.com/softkingo" },
     { Icon: FaYoutube, label: "YouTube", href: "https://www.youtube.com/@softkingo" },
-    { Icon: IoLogoInstagram, label: "Instagram", href: "https://www.instagram.com/softkingo" },
+    { Icon: IoLogoInstagram, label: "Instagram", href: "https://www.instagram.com/softkingotechnologies/" },
     { Icon: TbBeta, label: "Clutch", href: "https://clutch.co/profile/softkingo" },
   ];
 
