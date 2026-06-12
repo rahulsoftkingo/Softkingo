@@ -41,6 +41,7 @@ import {
   Globe
 } from "lucide-react";
 
+import { commonSchemas } from "@/lib/commonSchema2";
 import InquirySection from "@/components/footer/InquirySection";
 import { FaArrowRight } from "react-icons/fa6";
 import CommonTitle from "@/components/ui/CommonTitle";
@@ -79,6 +80,7 @@ const iconMap = {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
+  console.log("Generating metadata for slug:", slug);
 
   // DB call now happens at request-time (SSR), not at build-time
   const service = await prisma.page.findUnique({
@@ -128,6 +130,53 @@ export default async function ServicePage({ params }) {
 
   const jsonContent = service.contentJson ? JSON.parse(service.contentJson) : {};
 
+
+  // ✅ IMAGE ARRAY EXTRACTION - contentJson se saari images nikalna
+  function extractAllImages(obj) {
+    const images = [];
+
+    function traverse(value) {
+      if (
+        typeof value === "string" &&
+        value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+      ) {
+        images.push(value);
+      } else if (Array.isArray(value)) {
+        value.forEach(traverse);
+      } else if (typeof value === "object" && value !== null) {
+        Object.values(value).forEach(traverse);
+      }
+    }
+
+    traverse(obj);
+    return [...new Set(images)]; // duplicates remove
+  }
+
+
+  const pageImageUrls = extractAllImages(jsonContent);
+  console.log(`[${slug}] Found images:`, pageImageUrls);
+
+
+  // ✅ ImageObject array banana
+  const imageObjects = [
+    // seoImage ko pehle add karo (agar ho)
+    ...(service.seoImage
+      ? [{
+        "@type": "ImageObject",
+        "url": `https://www.softkingo.com${service.seoImage}`,
+        "width": 1200,   // seoImage ka standard OG size
+        "height": 630,
+      }]
+      : []
+    ),
+    // contentJson ki saari images
+    ...pageImageUrls.map(img => ({
+      "@type": "ImageObject",
+      "url": `https://www.softkingo.com${img}`,
+      "width": 937,
+      "height": 937,
+    }))
+  ];
   // If activeSections is missing OR empty, default to showing everything
   const defaultSections = ['hero', 'stats', 'services', 'consultation', 'tech', 'process', 'highlight', 'portfolio', 'solutions', 'industries', 'user-guide', 'faq', 'seo'];
   const activeSections = (jsonContent.activeSections && jsonContent.activeSections.length > 0)
@@ -141,8 +190,75 @@ export default async function ServicePage({ params }) {
 
   const show = (section) => activeSections.includes(section);
 
+  // ADD THIS RIGHT HERE ↓
+const faqSchema = show('faq') && content.faq?.items?.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": content.faq.items.map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+    }
+  }))
+} : null;
+
   return (
     <main className="text-gray-800">
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            ...commonSchemas,
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "@id": "https://www.softkingo.com/#breadcrumb",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://www.softkingo.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Services",
+                  "item": `https://www.softkingo.com/services/${slug}`
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": slug,
+                  "item": `https://www.softkingo.com/services/services/${slug}`
+                }
+              ]
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "@id": `https://www.softkingo.com/services/${slug}/#service`,
+              "name": service.title,
+              "url": `https://www.softkingo.com/services/${slug}`,
+              "description": service.seoDescription ?? "",
+              "image": imageObjects
+            }
+          ])
+        }}
+      />
+
+      {/* ADD THIS RIGHT HERE ↓ */}
+{faqSchema && (
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+  />
+)}
+
+
       {/* Hero Section with Lead Form */}
       {show('hero') && (
         <section className="relative overflow-hidden flex items-center bg-[#0B1121]">

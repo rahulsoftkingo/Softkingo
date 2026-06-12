@@ -95,7 +95,7 @@ const servicesData = [
       { href: "/services/ios-app-development", title: "iOS App Development", description: "Reliable apps for iPhone & iPad.", icon: <FaApple /> },
       { href: "/services/hybrid-app-development", title: "Hybrid App Development", description: "One app for Android & iOS.", icon: <FaMobileAlt /> },
       { href: "/services/react-native-app-development", title: "React Native App Development", description: "Cross-platform apps with native feel.", icon: <FaReact /> },
-      { href: "/services/flutter-native-app-development", title: "Flutter App Development", description: "Beautiful apps with smooth performance.", icon: <FaReact /> },
+      { href: "/services/flutter-app-development", title: "Flutter App Development", description: "Beautiful apps with smooth performance.", icon: <FaReact /> },
       { href: "/services/app-ui-ux-design", title: "App UI/UX Design", description: "Intuitive designs people love.", icon: <FaRegFileCode /> },
     ],
   },

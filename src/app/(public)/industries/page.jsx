@@ -185,6 +185,29 @@ export default function IndustriesPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
+      <script
+        type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { 
+          "@type": "ListItem",
+          "position": 1,
+          "name": "softkingo",
+          "item": "https://www.softkingo.com"
+          },
+          {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "industries",
+          "item": "https://www.softkingo.com/industries"
+          }
+        ]
+      })
+    }}
+    />
       <section className="relative h-[250px] md:h-[350px] flex items-center justify-center overflow-hidden">
         <Image
           src="/images/industries/Technology Solutions for Every Industry.webp"

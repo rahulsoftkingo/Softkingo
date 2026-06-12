@@ -1,4 +1,5 @@
 "use client"
+import Script from "next/script";
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch, FaChevronRight, FaClock, FaCheckCircle, FaSpinner } from 'react-icons/fa';
@@ -9,6 +10,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from '@/components/footer/InquirySection';
+import { commonSchemas } from "@/lib/commonSchema";
 
 // Static fallback jobs shown before API loads or on error
 const FALLBACK_JOBS = [
@@ -87,6 +89,58 @@ const WhyJoinUs = () => {
 
     return (
         <div className="bg-white">
+
+            <Script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@graph": [
+                            {
+                                "@type": "Service",
+                                "@id": "https://softkingo.com/#mobile-app-development",
+                                "name": "Mobile App Development",
+                                "serviceType": "App Development",
+                                "category": "Software Development Service",
+                                "description": "Custom mobile app solutions...",
+                                "areaServed": {
+                                    "@type": "Place",
+                                    "name": "Worldwide"
+                                },
+                                "isRelatedTo": {
+                                    "@type": "Thing",
+                                    "name": "App Development"
+                                }
+                            },
+                            {
+                                "@type": "BreadcrumbList",
+                                "itemListElement": [
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 1,
+                                        "name": "softkingo",
+                                        "item": "https://www.softkingo.com"
+                                    },
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 2,
+                                        "name": "careers",
+                                        "item": "https://www.softkingo.com/careers"
+                                    }
+                                ]
+                            },
+                            {
+                                "@type": "ImageObject",
+                                "contentUrl": "https://www.softkingo.com/images/about/ceo.png",
+                                "width": 937,
+                                "height": 937,
+                                "associatedMedia": "https://www.softkingo.com/careers"
+                            },
+                            ...commonSchemas
+                        ]
+                    })
+                }}
+            />
             {/* Hero Section */}
             <section className="relative w-full overflow-hidden bg-gradient-to-br from-white via-sky-50 to-blue-50">
                 <div className="container mx-auto px-4 py-20 lg:py-32">

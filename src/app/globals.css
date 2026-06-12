@@ -1936,7 +1936,7 @@ body {
 .prose p,
 .modern-prose p,
 .content-body p {
-  margin-bottom: 1rem !important;
+  margin: 5px !important;
   min-height: 1.2rem; /* Ensures empty paragraphs (Enter) show up as space */
 }
 

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
+import { commonSchemas } from "@/lib/commonSchema";
+import Script from "next/script";
 
 export const metadata = {
   title: "Client Testimonials - Client Reviews",
@@ -13,6 +15,55 @@ export default function TestimonialsPage() {
   return (
     <main className="bg-[#f6f9ff]">
       {/* HERO (enhanced like your Terms hero) */}
+
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Testimonials",
+                    "item": "https://softkingo.com/testimonials"
+                  }
+                ]
+              },
+              ...commonSchemas,
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                },
+
+              }
+            ]
+          })
+        }}
+      />
+
       <section
         className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/terms-hero.png')" }}

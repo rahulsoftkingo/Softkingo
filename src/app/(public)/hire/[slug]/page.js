@@ -14,6 +14,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 import HireDevelopersPage from './SelectDeveloper';
 import CloneTechStack from '@/components/public/clone/CloneTechStack';
+import { commonSchemas } from "@/lib/commonSchema2";
 
 // --- ICONS ---
 import { BsCheckCircle, BsTransparency, BsFileEarmarkBarGraph } from 'react-icons/bs';
@@ -65,7 +66,42 @@ function getIcon(key, size = 24, className = "") {
 function normalizeHireContent(page) {
   const c = parseJsonSafe(page?.contentJson);
 
+  // ✅ Image extraction
+  function extractAllImages(obj) {
+    const images = [];
+    function traverse(value) {
+      if (typeof value === "string" && value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)) {
+        images.push(value);
+      } else if (Array.isArray(value)) {
+        value.forEach(traverse);
+      } else if (typeof value === "object" && value !== null) {
+        Object.values(value).forEach(traverse);
+      }
+    }
+    traverse(obj);
+    return [...new Set(images)];
+  }
+
+  const pageImageUrls = extractAllImages(c);
+
+  // ✅ ImageObject array
+  const imageObjects = [
+    ...(page?.seoImage
+      ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
+      : []
+    ),
+    ...pageImageUrls.map(img => ({
+      "@type": "ImageObject",
+      "url": `https://www.softkingo.com${img}`,
+      "width": 937,
+      "height": 937,
+    }))
+  ];
+
   return {
+    // ✅ imageObjects sabse pehle
+    imageObjects,
+
     heroBg: c.heroBg || '',
     heroTitle: c.heroTitle || page?.title || '',
     heroSubtitle: c.heroSubtitle || '',
@@ -75,7 +111,6 @@ function normalizeHireContent(page) {
       network: c.metrics?.network || '',
       rating: c.metrics?.rating || '',
     },
-
     aboutTitle: c.aboutTitle || '',
     aboutSubtitle: c.aboutSubtitle || '',
     features: Array.isArray(c.features) ? c.features : [],
@@ -86,7 +121,6 @@ function normalizeHireContent(page) {
     portfolioCategory: c.portfolioCategory || "",
     portfolioTitle: c.portfolioTitle || "",
     portfolioSubtitle: c.portfolioSubtitle || "",
-
     profileSection: {
       enabled: c.profileSection?.enabled ?? false,
       title: c.profileSection?.title || '',
@@ -98,7 +132,6 @@ function normalizeHireContent(page) {
         rightBottom: '',
       },
     },
-
     ctaBanner: {
       enabled: c.ctaBanner?.enabled ?? false,
       title: c.ctaBanner?.title || '',
@@ -182,8 +215,58 @@ export default async function HireSlugPage({ params }) {
 
   const content = normalizeHireContent(page);
 
+  // ADD THIS ↓
+  const faqSchema = content.activeSections?.includes('faq') && content.faq?.items?.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": content.faq.items.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+      }
+    }))
+  } : null;
+
   return (
     <main className="relative bg-white ">
+
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            ...commonSchemas,
+            {
+              "@context": "https://schema.org/",
+              "@type": "BreadcrumbList",
+              "@id": "https://www.softkingo.com/#breadcrumb",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "softkingo", "item": "https://www.softkingo.com" },
+                { "@type": "ListItem", "position": 2, "name": "Hire", "item": "https://www.softkingo.com/hire" },
+                { "@type": "ListItem", "position": 3, "name": slug, "item": `https://www.softkingo.com/hire/${slug}` }
+              ]
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "@id": `https://www.softkingo.com/hire/${slug}/#hire`,
+              "name": page?.seoTitle || page?.title,
+              "description": page?.seoDescription || page?.excerpt || "",
+              "image": content.imageObjects,
+              "url": `https://www.softkingo.com/hire/${slug}`,
+            }
+          ])
+        }}
+      />
+
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       {/* 1. HERO SECTION */}
       {content.activeSections?.includes('hero') && (

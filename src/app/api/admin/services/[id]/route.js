@@ -50,7 +50,7 @@ export async function PUT(req, { params }) {
         key: key,
         excerpt: excerpt || null,
         contentJson: contentDataString,
-        status: status,
+        status: "published",
         featured: featured || false,
         seoTitle: seoTitle || title,
         seoDescription: seoDescription || null,

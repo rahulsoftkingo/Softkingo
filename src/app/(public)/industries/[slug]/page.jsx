@@ -4,6 +4,7 @@ import prisma from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { commonSchemas } from "@/lib/commonSchema2";
 
 // --- SHARED COMPONENTS (Reuse existing ones where possible) ---
 // import SolutionsHero from '@/components/public/solutions/SolutionsHero'; 
@@ -29,10 +30,44 @@ async function getIndustryPage(slug) {
         if (!page) return null;
 
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
+
+        // ✅ Image extraction
+        function extractAllImages(obj) {
+            const images = [];
+            function traverse(value) {
+                if (typeof value === "string" && value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)) {
+                    images.push(value);
+                } else if (Array.isArray(value)) {
+                    value.forEach(traverse);
+                } else if (typeof value === "object" && value !== null) {
+                    Object.values(value).forEach(traverse);
+                }
+            }
+            traverse(obj);
+            return [...new Set(images)];
+        }
+
+        const pageImageUrls = extractAllImages(jsonContent);
+
+        // ✅ ImageObject array
+        const imageObjects = [
+            ...(page.seoImage
+                ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
+                : []
+            ),
+            ...pageImageUrls.map(img => ({
+                "@type": "ImageObject",
+                "url": `https://www.softkingo.com${img}`,
+                "width": 937,
+                "height": 937,
+            }))
+        ];
+
         return {
             ...page,
             activeSections: jsonContent.activeSections || [],
-            sections: jsonContent.content || {}
+            sections: jsonContent.content || {},
+            imageObjects, // ✅ return mein add
         };
     } catch (error) {
         console.error("Error fetching page:", error);
@@ -86,8 +121,73 @@ export default async function IndustryPage(props) {
 
     const show = (id) => data.activeSections.includes(id);
 
+    // ADD THIS ↓
+    const faqSchema = show('faq') && faq?.items?.length > 0 ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq.items.map(item => ({
+            "@type": "Question",
+            "name": item.q,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+            }
+        }))
+    } : null;
+
     return (
         <main className="min-h-screen bg-white">
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify([
+                        ...commonSchemas,
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            "@id": "https://www.softkingo.com/#breadcrumb",
+                            "itemListElement": [
+                                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.softkingo.com" },
+                                { "@type": "ListItem", "position": 2, "name": "Industries", "item": "https://www.softkingo.com/industries" },
+                                { "@type": "ListItem", "position": 3, "name": data?.title ?? params.slug, "item": `https://www.softkingo.com/industries/${params.slug}` }
+                            ]
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Service",
+                            "@id": `https://www.softkingo.com/industries/${params.slug}/#service`,
+                            "name": data?.seoTitle || data?.title,
+                            "description": data?.seoDescription || "",
+                            // ✅ ImageObject array
+                            "image": data.imageObjects,
+                            "url": `https://www.softkingo.com/industries/${params.slug}`,
+                        }
+                    ])
+                }}
+            />
+
+
+            {/* ADD THIS RIGHT BELOW ↓ */}
+            {show('faq') && faq?.items?.length > 0 && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "FAQPage",
+                            "mainEntity": faq.items.map(item => ({
+                                "@type": "Question",
+                                "name": item.q,
+                                "acceptedAnswer": {
+                                    "@type": "Answer",
+                                    "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+                                }
+                            }))
+                        })
+                    }}
+                />
+            )}
 
             {/* 1. HERO SECTION (Reusing SolutionsHero for consistency) */}
             {show('hero') && (
@@ -307,8 +407,26 @@ export default async function IndustryPage(props) {
                 <IndustryProcess data={process} />
             )}
 
-            {/* 9. FAQ */}
-            {show('faq') && <FAQAccordion data={faq} />}
+          {/* 9. FAQ */}
+{show('faq') && (
+    <section className="py-8 md:py-16 bg-white px-6 lg:h-screen lg:overflow-hidden">
+        <div className="max-w-7xl mx-auto h-full flex flex-col">
+
+            <CommonTitle
+                title={faq?.title || "Frequently Asked Questions"}
+                subtitle={faq?.subtitle || ""}
+                pill={true}
+                gradientText={faq?.gradientText || "FAQ"}
+            />
+
+            {/* 👇 THIS is the key scroll lock area */}
+            <div className="mt-10 flex-1 overflow-y-auto pr-2 scroll-smooth">
+                <FAQAccordion data={faq} />
+            </div>
+
+        </div>
+    </section>
+)}
 
             {/* 10. TESTIMONIALS */}
             {show('testimonials') && (

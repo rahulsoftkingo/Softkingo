@@ -22,6 +22,23 @@ const iconMap = {
 };
 
 
+const jsonLd = {
+  "@context": "https://schema.org/", 
+  "@type": "BreadcrumbList", 
+  "itemListElement": [{
+    "@type": "ListItem", 
+    "position": 1, 
+    "name": "softkingo",
+    "item": "https://www.softkingo.com"  
+  },{
+    "@type": "ListItem", 
+    "position": 2, 
+    "name": "our-team",
+    "item": "https://www.softkingo.com/our-team"  
+  }]
+}
+
+
 // Gallery Section handled via props
 
 const OurTeamClient = ({
@@ -71,6 +88,8 @@ const OurTeamClient = ({
 
     return (
         <main className="min-h-screen bg-white font-sans overflow-x-hidden">
+
+
             {/* 1. HERO SECTION */}
             <section className="relative h-[250px] md:h-[350px] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0">

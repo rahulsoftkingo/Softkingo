@@ -2,6 +2,7 @@
 'use client'
 import Link from 'next/link';
 import { useState } from 'react';
+import { commonSchemas } from "@/lib/commonSchema";
 
 // export const metadata = {
 //   title: "FAQ | Softkingo - Common Questions Answered",
@@ -278,6 +279,48 @@ export default function FAQPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": "https://www.softkingo.com/faq#breadcrumb",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://www.softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "FAQ",
+                    "item": "https://www.softkingo.com/faq"
+                  }
+                ]
+              },
+              ...commonSchemas
+            ]
+          })
+        }}
+      />
       {/* PERFECT HERO (same style) */}
       <section className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{ backgroundImage: "url('/images/faq-hero.png')" }}
@@ -331,8 +374,8 @@ export default function FAQPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex-1 min-w-[160px] py-4 px-2 sm:px-4 text-center font-semibold text-xs sm:text-sm md:text-base transition-all duration-300 rounded-2xl ${activeTab === tab.id
-                  ? 'bg-gradient-to-r from-sky-600 to-sky-600 text-white shadow-lg shadow-sky-500/25 scale-105'
-                  : 'text-slate-600 hover:text-sky-600 hover:bg-white/50'
+                ? 'bg-gradient-to-r from-sky-600 to-sky-600 text-white shadow-lg shadow-sky-500/25 scale-105'
+                : 'text-slate-600 hover:text-sky-600 hover:bg-white/50'
                 }`}
             >
               {tab.label}
