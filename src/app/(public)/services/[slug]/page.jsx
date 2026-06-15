@@ -169,7 +169,7 @@ export default async function ServicePage({ params }) {
 
 
   const pageImages = extractAllImages(jsonContent);
-  console.log(`[${slug}] Found images:`, pageImageUrls);
+
 
 
   // ✅ ImageObject array banana
