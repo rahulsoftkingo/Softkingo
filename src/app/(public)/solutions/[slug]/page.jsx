@@ -53,35 +53,58 @@ async function getSolutionPage(slug) {
         if (!page) return null;
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
 
-        // ✅ Image extraction function
         function extractAllImages(obj) {
             const images = [];
+
             function traverse(value) {
-                if (typeof value === "string" && value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)) {
-                    images.push(value);
-                } else if (Array.isArray(value)) {
+                if (!value) return;
+
+                if (
+                    typeof value === "object" &&
+                    value.src &&
+                    typeof value.src === "string" &&
+                    value.src.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+                ) {
+                    images.push({
+                        src: value.src,
+                        width: value.width || 1200,
+                        height: value.height || 630,
+                    });
+                }
+
+                if (Array.isArray(value)) {
                     value.forEach(traverse);
-                } else if (typeof value === "object" && value !== null) {
+                } else if (typeof value === "object") {
                     Object.values(value).forEach(traverse);
                 }
             }
+
             traverse(obj);
-            return [...new Set(images)];
+
+            return images.filter(
+                (img, index, self) =>
+                    index === self.findIndex(i => i.src === img.src)
+            );
         }
 
-        const pageImageUrls = extractAllImages(jsonContent);
+        const pageImages = extractAllImages(jsonContent);
 
-        // ✅ ImageObject array banana
         const imageObjects = [
             ...(page.seoImage
-                ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
+                ? [{
+                    "@type": "ImageObject",
+                    "url": `https://www.softkingo.com${page.seoImage}`,
+                    "width": 1200,
+                    "height": 630
+                }]
                 : []
             ),
-            ...pageImageUrls.map(img => ({
+
+            ...pageImages.map(img => ({
                 "@type": "ImageObject",
-                "url": `https://www.softkingo.com${img}`,
-                "width": 937,
-                "height": 937,
+                "url": `https://www.softkingo.com${img.src}`,
+                "width": img.width,
+                "height": img.height,
             }))
         ];
 
@@ -207,9 +230,7 @@ export default async function DynamicSolutionPage(props) {
                                 "@id": `https://www.softkingo.com/solutions/${params.slug}/#service`,
                                 "name": data?.seoTitle || data?.title,
                                 "description": data?.seoDescription || "",
-                                "image": data?.seoImage
-                                    ? `https://www.softkingo.com${data.seoImage}`
-                                    : `https://www.softkingo.com${hero?.heroBg || ""}`,
+                                "image": data.imageObjects,
                                 "url": `https://www.softkingo.com/solutions/${params.slug}`,
                                 "provider": {
                                     "@type": "Organization",

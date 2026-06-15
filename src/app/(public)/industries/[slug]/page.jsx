@@ -31,38 +31,73 @@ async function getIndustryPage(slug) {
 
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
 
-        // ✅ Image extraction
         function extractAllImages(obj) {
             const images = [];
+
             function traverse(value) {
-                if (typeof value === "string" && value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)) {
-                    images.push(value);
-                } else if (Array.isArray(value)) {
+                if (!value) return;
+
+                // New image object format
+                if (
+                    typeof value === "object" &&
+                    value.src &&
+                    typeof value.src === "string" &&
+                    value.src.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+                ) {
+                    images.push({
+                        src: value.src,
+                        width: value.width || 1200,
+                        height: value.height || 630,
+                    });
+                }
+
+                // Old string image format
+                else if (
+                    typeof value === "string" &&
+                    value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+                ) {
+                    images.push({
+                        src: value,
+                        width: 1200,
+                        height: 630,
+                    });
+                }
+
+                if (Array.isArray(value)) {
                     value.forEach(traverse);
-                } else if (typeof value === "object" && value !== null) {
+                } else if (typeof value === "object") {
                     Object.values(value).forEach(traverse);
                 }
             }
+
             traverse(obj);
-            return [...new Set(images)];
+
+            return images.filter(
+                (img, index, self) =>
+                    index === self.findIndex(i => i.src === img.src)
+            );
         }
 
-        const pageImageUrls = extractAllImages(jsonContent);
+        const pageImages = extractAllImages(jsonContent);
 
-        // ✅ ImageObject array
         const imageObjects = [
             ...(page.seoImage
-                ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
+                ? [{
+                    "@type": "ImageObject",
+                    "url": `https://www.softkingo.com${page.seoImage}`,
+                    "width": 1200,
+                    "height": 630
+                }]
                 : []
             ),
-            ...pageImageUrls.map(img => ({
+
+            ...pageImages.map(img => ({
                 "@type": "ImageObject",
-                "url": `https://www.softkingo.com${img}`,
-                "width": 937,
-                "height": 937,
+                "url": `https://www.softkingo.com${img.src}`,
+                "width": img.width,
+                "height": img.height,
             }))
         ];
-
         return {
             ...page,
             activeSections: jsonContent.activeSections || [],
@@ -407,26 +442,19 @@ export default async function IndustryPage(props) {
                 <IndustryProcess data={process} />
             )}
 
-          {/* 9. FAQ */}
-{show('faq') && (
-    <section className="py-8 md:py-16 bg-white px-6 lg:h-screen lg:overflow-hidden">
-        <div className="max-w-7xl mx-auto h-full flex flex-col">
-
-            <CommonTitle
-                title={faq?.title || "Frequently Asked Questions"}
-                subtitle={faq?.subtitle || ""}
-                pill={true}
-                gradientText={faq?.gradientText || "FAQ"}
-            />
-
-            {/* 👇 THIS is the key scroll lock area */}
-            <div className="mt-10 flex-1 overflow-y-auto pr-2 scroll-smooth">
-                <FAQAccordion data={faq} />
-            </div>
-
-        </div>
-    </section>
-)}
+            {show('faq') && (
+                <section className="py-8 md:py-16 bg-white px-6">
+                    <div className="max-w-7xl mx-auto">
+                        <CommonTitle
+                            title={faq?.title || "Frequently Asked Questions"}
+                            subtitle={faq?.subtitle || ""}
+                            pill={true}
+                            gradientText={faq?.gradientText || "FAQ"}
+                        />
+                    </div>
+                    <FAQAccordion data={faq} />
+                </section>
+            )}
 
             {/* 10. TESTIMONIALS */}
             {show('testimonials') && (

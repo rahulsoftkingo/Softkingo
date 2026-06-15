@@ -131,29 +131,44 @@ export default async function ServicePage({ params }) {
   const jsonContent = service.contentJson ? JSON.parse(service.contentJson) : {};
 
 
-  // ✅ IMAGE ARRAY EXTRACTION - contentJson se saari images nikalna
   function extractAllImages(obj) {
     const images = [];
 
     function traverse(value) {
+      if (!value) return;
+
+      // image object found
       if (
-        typeof value === "string" &&
-        value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+        typeof value === "object" &&
+        value.src &&
+        typeof value.src === "string" &&
+        value.src.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
       ) {
-        images.push(value);
-      } else if (Array.isArray(value)) {
+        images.push({
+          src: value.src,
+          width: value.width || 1200,
+          height: value.height || 630,
+        });
+      }
+
+      if (Array.isArray(value)) {
         value.forEach(traverse);
-      } else if (typeof value === "object" && value !== null) {
+      } else if (typeof value === "object") {
         Object.values(value).forEach(traverse);
       }
     }
 
     traverse(obj);
-    return [...new Set(images)]; // duplicates remove
+
+    // remove duplicates
+    return images.filter(
+      (img, index, self) =>
+        index === self.findIndex((i) => i.src === img.src)
+    );
   }
 
 
-  const pageImageUrls = extractAllImages(jsonContent);
+  const pageImages = extractAllImages(jsonContent);
   console.log(`[${slug}] Found images:`, pageImageUrls);
 
 
@@ -170,11 +185,11 @@ export default async function ServicePage({ params }) {
       : []
     ),
     // contentJson ki saari images
-    ...pageImageUrls.map(img => ({
+    ...pageImages.map(img => ({
       "@type": "ImageObject",
-      "url": `https://www.softkingo.com${img}`,
-      "width": 937,
-      "height": 937,
+      "url": `https://www.softkingo.com${img.src}`,
+      "width": img.width,
+      "height": img.height,
     }))
   ];
   // If activeSections is missing OR empty, default to showing everything
@@ -191,18 +206,18 @@ export default async function ServicePage({ params }) {
   const show = (section) => activeSections.includes(section);
 
   // ADD THIS RIGHT HERE ↓
-const faqSchema = show('faq') && content.faq?.items?.length > 0 ? {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": content.faq.items.map(item => ({
-    "@type": "Question",
-    "name": item.q,
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": (item.a || '').replace(/<[^>]*>?/gm, '')
-    }
-  }))
-} : null;
+  const faqSchema = show('faq') && content.faq?.items?.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": content.faq.items.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+      }
+    }))
+  } : null;
 
   return (
     <main className="text-gray-800">
@@ -251,12 +266,12 @@ const faqSchema = show('faq') && content.faq?.items?.length > 0 ? {
       />
 
       {/* ADD THIS RIGHT HERE ↓ */}
-{faqSchema && (
-  <script
-    type="application/ld+json"
-    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-  />
-)}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
 
       {/* Hero Section with Lead Form */}
