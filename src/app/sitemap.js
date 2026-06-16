@@ -84,7 +84,7 @@ export default async function sitemap() {
         }),
 
         prisma.page.findMany({
-          where: { status: "published" },
+          // where: { status: "published" },
           // select: { slug: true, updatedAt: true, type: true },
         }),
       ]);

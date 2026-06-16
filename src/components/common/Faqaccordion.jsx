@@ -17,50 +17,49 @@ export default function FAQAccordion({ data }) {
     const section = sectionRef.current;
     if (!inner || !section) return;
 
-    // ✅ Wheel event — mouse scroll ke liye
+    let isInnerScrolling = false;
+
+    // ✅ Mouse wheel ke liye
     const handleWheel = (e) => {
       const rect = section.getBoundingClientRect();
-      const sectionVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (!sectionVisible) return;
+      const sectionTopTouchedScreen = rect.top <= 200;
+      if (!sectionTopTouchedScreen) return;
 
       const atTop = inner.scrollTop <= 0;
       const atBottom = Math.ceil(inner.scrollTop + inner.clientHeight) >= inner.scrollHeight;
 
       if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) {
         e.preventDefault();
-        inner.scrollBy({ top: e.deltaY, behavior: "instant" });
+        isInnerScrolling = true;
+        inner.scrollBy({ top: e.deltaY * 0.8, behavior: "smooth" });
+        setTimeout(() => { isInnerScrolling = false; }, 100);
       }
     };
 
-    // ✅ Page scrollbar drag ke liye — window scroll intercept
+    // ✅ Scrollbar drag ke liye
     const handleWindowScroll = () => {
-      const rect = section.getBoundingClientRect();
-      const sectionVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      
-      if (!sectionVisible) {
-        lastScrollTop.current = window.scrollY;
-        return;
-      }
+      if (isInnerScrolling) return;
 
-      const atBottom = Math.ceil(inner.scrollTop + inner.clientHeight) >= inner.scrollHeight;
+      const rect = section.getBoundingClientRect();
+      const sectionTopTouchedScreen = rect.top <= 200;
+      if (!sectionTopTouchedScreen) return;
+
       const atTop = inner.scrollTop <= 0;
+      const atBottom = Math.ceil(inner.scrollTop + inner.clientHeight) >= inner.scrollHeight;
+
       const scrollingDown = window.scrollY > lastScrollTop.current;
       const scrollingUp = window.scrollY < lastScrollTop.current;
+      const diff = Math.abs(window.scrollY - lastScrollTop.current);
 
-      // FAQ andar scroll ho sakta hai
       if (scrollingDown && !atBottom) {
-        // Page ko wapas rok do jahan tha
         window.scrollTo({ top: lastScrollTop.current, behavior: "instant" });
-        // FAQ andar scroll karo
-        const diff = window.scrollY - lastScrollTop.current || 60;
-        inner.scrollBy({ top: 40, behavior: "smooth" });
+        inner.scrollBy({ top: diff * 1.5, behavior: "smooth" });
         return;
       }
 
       if (scrollingUp && !atTop) {
         window.scrollTo({ top: lastScrollTop.current, behavior: "instant" });
-        const diff = lastScrollTop.current - window.scrollY || 60;
-        inner.scrollBy({ top: -40, behavior: "smooth" });
+        inner.scrollBy({ top: -diff * 1.5, behavior: "smooth" });
         return;
       }
 
@@ -152,7 +151,7 @@ export default function FAQAccordion({ data }) {
           <div ref={sectionRef} className="lg:col-span-2">
             <div
               ref={innerRef}
-              className="overflow-y-auto pr-2"
+              className="overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
               style={{ maxHeight: "60vh" }}
             >
               <div className="space-y-4">
@@ -161,9 +160,8 @@ export default function FAQAccordion({ data }) {
                   return (
                     <div
                       key={it.id || i}
-                      className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${
-                        isOpen ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100" : "bg-white"
-                      }`}
+                      className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${isOpen ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100" : "bg-white"
+                        }`}
                     >
                       <button
                         aria-expanded={isOpen}
@@ -171,9 +169,8 @@ export default function FAQAccordion({ data }) {
                         onClick={() => toggle(i)}
                         className="w-full flex items-start gap-4 px-6 py-5 text-left bg-transparent hover:bg-slate-50/50 transition-colors"
                       >
-                        <div className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors mt-0.5 ${
-                            isOpen ? "bg-sky-500 border-sky-500 text-white" : "bg-white border-slate-200 text-slate-500"
-                        }`}>
+                        <div className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors mt-0.5 ${isOpen ? "bg-sky-500 border-sky-500 text-white" : "bg-white border-slate-200 text-slate-500"
+                          }`}>
                           {isOpen ? <Minus size={16} /> : <Plus size={16} />}
                         </div>
                         <h3 className={`text-lg font-bold flex-1 ${isOpen ? "text-sky-900" : "text-slate-900"}`}>
@@ -183,9 +180,8 @@ export default function FAQAccordion({ data }) {
 
                       <div
                         id={`faq-panel-${it.id || i}`}
-                        className={`grid transition-all duration-300 ease-in-out ${
-                          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                        }`}
+                        className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                          }`}
                       >
                         <div className="overflow-hidden">
                           <div

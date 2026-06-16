@@ -92,8 +92,8 @@ const OurTeamClient = ({
 
             {/* 1. HERO SECTION */}
             <section className="relative h-[250px] md:h-[350px] flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 z-0">
-                    <Image src={hero.image} alt="Team Hero" fill className="object-cover" priority />
+                <div className="absolute inset-0 z-0 bg-black/50">
+                    {/* <Image src={hero.image} alt="Team Hero" fill className="object-cover" priority /> */}
                     <div className="absolute inset-0 bg-slate-900/60 mix-blend-multiply"></div>
                 </div>
                 <div className="relative z-10 text-center text-white max-w-4xl px-6">

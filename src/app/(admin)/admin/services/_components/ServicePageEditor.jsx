@@ -92,6 +92,19 @@ export default function ServicePageEditor({ data, onBack }) {
         content: data?.content || { hero: {} }
     });
 
+    useEffect(() => {
+    if (data) {
+        setFormData({
+            title: '',
+            slug: '',
+            ...data,
+            activeSections:
+                data?.activeSections || config.sections.map(s => s.id),
+            content: data?.content || { hero: {} }
+        });
+    }
+}, [data]);
+
     const [loading, setLoading] = useState(false);
     const [portfolioCategories, setPortfolioCategories] = useState([]);
 
@@ -248,6 +261,8 @@ export default function ServicePageEditor({ data, onBack }) {
 
     const folders = mediaFiles.filter(f => f.isDir && f.name.toLowerCase().includes(searchQuery.toLowerCase()));
     const images = mediaFiles.filter(f => !f.isDir && f.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    console.log("FORM DATA:", formData);
 
     return (
         <div className="flex h-screen overflow-hidden bg-white fixed inset-0 z-50">

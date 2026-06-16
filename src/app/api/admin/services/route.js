@@ -190,7 +190,7 @@ export async function POST(req) {
         type: 'service',
         excerpt: excerpt || null,
         contentJson: contentDataString,
-        status: status || 'draft',
+        status: status || 'published',
         featured: featured || false,
         seoTitle: seoTitle || title,
         seoDescription: seoDescription || excerpt || null,

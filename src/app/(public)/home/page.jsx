@@ -1,5 +1,4 @@
 // src/app/(public)/home/page.jsx
-import Script from "next/script";
 import HeroSection from "./_components/HeroSection";
 import Feature from "./_components/FeatureSection";
 import Crafting from "./_components/CraftingSection";
@@ -17,90 +16,62 @@ import { commonSchemas } from "@/lib/commonSchema";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+export const metadata = {
+  alternates: {
+    canonical: "https://www.softkingo.com/",
+  },
+};
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.softkingo.com/#website",
+      "url": "https://www.softkingo.com",
+      "name": "Softkingo",
+      "description": "Softkingo is a software development company.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "@id": "https://www.softkingo.com/#navigation",
+      "name": "Main Navigation",
+      "hasPart": [
+        { "@type": "WebPage", "name": "Home", "url": "https://www.softkingo.com/" },
+        { "@type": "WebPage", "name": "About", "url": "https://www.softkingo.com/about" },
+        { "@type": "WebPage", "name": "Services", "url": "https://www.softkingo.com/services" },
+        { "@type": "WebPage", "name": "Hire", "url": "https://www.softkingo.com/hire" },
+        { "@type": "WebPage", "name": "Solutions", "url": "https://www.softkingo.com/solutions" },
+        { "@type": "WebPage", "name": "Industries", "url": "https://www.softkingo.com/industries" },
+        { "@type": "WebPage", "name": "Contact", "url": "https://www.softkingo.com/contact" },
+        { "@type": "WebPage", "name": "Blog", "url": "https://www.softkingo.com/blog" }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.softkingo.com/"
+        }
+      ]
+    },
+    ...commonSchemas
+  ]
+};
+
 export default function Home() {
   return (
     <div className="bg-white">
-      <Script
-  id="home-schema"
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebSite",
-          "@id": "https://www.softkingo.com/#website",
-          "url": "https://www.softkingo.com",
-          "name": "Softkingo",
-          "description": "Softkingo is a software development company.",
-          "inLanguage": "en"
-        },
+    <link rel="canonical" href="https://www.softkingo.com/" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
 
-        {
-          "@type": "SiteNavigationElement",
-          "@id": "https://www.softkingo.com/#navigation",
-          "name": "Main Navigation",
-          "hasPart": [
-            {
-              "@type": "WebPage",
-              "name": "Home",
-              "url": "https://www.softkingo.com/"
-            },
-            {
-              "@type": "WebPage",
-              "name": "About",
-              "url": "https://www.softkingo.com/about"
-            },
-            {
-              "@type": "WebPage",
-              "name": "Services",
-              "url": "https://www.softkingo.com/services"
-            },
-            {
-              "@type": "WebPage",
-              "name": "Hire",
-              "url": "https://www.softkingo.com/hire"
-            },
-            {
-              "@type": "WebPage",
-              "name": "Solutions",
-              "url": "https://www.softkingo.com/solutions"
-            },
-            {
-              "@type": "WebPage",
-              "name": "Industries",
-              "url": "https://www.softkingo.com/industries"
-            },
-            {
-              "@type": "WebPage",
-              "name": "Contact",
-              "url": "https://www.softkingo.com/contact"
-            },
-            {
-              "@type": "WebPage",
-              "name": "Blog",
-              "url": "https://www.softkingo.com/blog"
-            }
-          ]
-        },
-
-        {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://www.softkingo.com/"
-            }
-          ]
-        },
-
-        ...commonSchemas
-      ]
-    })
-  }}
-/>
       <HeroSection />
       <Feature />
       <Crafting />
@@ -110,16 +81,13 @@ export default function Home() {
       <Tech />
       <Process />
       <Strengths_Scroll />
-
       <BlogSection
         category=""
         title="Our Latest Blogs"
         subtitle="Explore our latest insights, product lessons, and engineering best practices."
       />
       <ReviewSection />
-
       <FooterForm />
     </div>
   );
 }
-

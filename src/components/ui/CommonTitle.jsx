@@ -43,7 +43,7 @@ const CommonTitle = ({
                 {plainText}{' '}
                 {gradientPart && (
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 py-1">
-                        {gradientPart}
+                        {/* {gradientPart} */}
                     </span>
                 )}
             </h2>

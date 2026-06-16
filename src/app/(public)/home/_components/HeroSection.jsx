@@ -1,13 +1,13 @@
 // components/HeroSection.jsx
 'use client';
+
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { FaArrowRight, FaCode, FaMobileAlt, FaLaptopCode, FaChartLine } from 'react-icons/fa';
+import { FaArrowRight, FaCode, FaMobileAlt, FaLaptopCode, FaBook } from 'react-icons/fa';
+import { FaPhoneAlt } from "react-icons/fa";
 
-import RightSec from './ProfessionalCardStack';
 
 
-import Link from 'next/link';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 
 const HeroSection = () => {
@@ -19,7 +19,7 @@ const HeroSection = () => {
 
   useEffect(() => {
     setMounted(true);
-    // Generate random elements once on mount
+
     const elements = [...Array(15)].map(() => ({
       width: Math.random() * 150 + 50,
       height: Math.random() * 150 + 50,
@@ -29,6 +29,7 @@ const HeroSection = () => {
       animateX: [0, Math.random() * 50 - 25],
       duration: Math.random() * 5 + 5,
     }));
+
     setBgElements(elements);
 
     const dots = [...Array(12)].map(() => ({
@@ -40,217 +41,235 @@ const HeroSection = () => {
       animateX: [0, Math.random() * 30 - 15],
       duration: Math.random() * 6 + 6,
     }));
+
     setBgDots(dots);
+
   }, []);
-
-
 
   return (
     <div
       ref={sectionRef}
-      className="relative bg-white bg-gradient-to-br from-white via-sky-50 to-sky-100 overflow-hidden max-h-[75vh] sm:max-h-[80vh] md:max-h-[90vh] lg:max-h-screen min-h-[75vh] sm:min-h-[80vh] md:min-h-[90vh] lg:min-h-screen flex items-center md:items-center"
+      className="relative min-h-screen overflow-hidden flex items-center justify-center"
     >
-      {/* Animated background elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-        {mounted && bgElements.map((el, i) => (
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/videos/softkingovideo.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/30 z-[1]" />
+
+      {/* Background bubbles */}
+      <div className="absolute inset-0 overflow-hidden z-[2]">
+        {mounted &&
+          bgElements.map((el, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-sky-200 opacity-10"
+              style={{
+                width: el.width,
+                height: el.height,
+                top: el.top,
+                left: el.left,
+              }}
+              animate={{
+                x: el.animateX,
+                y: el.animateY,
+              }}
+              transition={{
+                duration: el.duration,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+            />
+          ))}
+      </div>
+
+      {/* Floating Icons */}
+      <motion.div
+        className="absolute top-1/3 right-10 z-[3]"
+        animate={{ y: [0, -20, 0] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      >
+        <FaCode className="text-sky-400 text-3xl" />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-1/4 left-10 z-[3]"
+        animate={{ y: [0, -25, 0] }}
+        transition={{ duration: 5, repeat: Infinity }}
+      >
+        <FaMobileAlt className="text-sky-400 text-3xl" />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-10 left-1/2 z-[3]"
+        animate={{ y: [0, -15, 0] }}
+        transition={{ duration: 4.5, repeat: Infinity }}
+      >
+        <FaLaptopCode className="text-sky-400 text-3xl" />
+      </motion.div>
+
+      {/* Dots */}
+      {mounted &&
+        bgDots.map((dot, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-sky-200 opacity-10"
+            className="absolute rounded-full z-[2]"
             style={{
-              width: el.width,
-              height: el.height,
-              top: el.top,
-              left: el.left,
+              width: dot.width,
+              height: dot.height,
+              top: dot.top,
+              left: dot.left,
+              background: "#28AFDF",
+              opacity: 0.15,
             }}
             animate={{
-              y: el.animateY,
-              x: el.animateX,
+              x: dot.animateX,
+              y: dot.animateY,
             }}
             transition={{
-              duration: el.duration,
+              duration: dot.duration,
               repeat: Infinity,
               repeatType: "reverse",
             }}
           />
         ))}
-      </div>
 
-      {/* Floating elements - restricted horizontally for mobile */}
-      <motion.div
-        className="absolute top-1/3 md:top-1/5 right-4 md:right-1/4 w-12 h-12 rounded-lg bg-transparent shadow-xl flex items-center justify-center"
-        animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      >
-        <FaCode className="text-sky-400 text-2xl" />
-      </motion.div>
-
-      <motion.div
-        className="absolute top-1/4 left-4 md:left-1/4 w-12 h-12 rounded-lg bg-transparent shadow-xl flex items-center justify-center"
-        animate={{ y: [0, -25, 0] }}
-        transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
-      >
-        <FaMobileAlt className="text-sky-400 text-2xl" />
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-8 md:bottom-1/4 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-2/4 w-12 h-12 rounded-lg bg-transparent shadow-xl flex items-center justify-center"
-        animate={{ y: [0, -15, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity, delay: 1 }}
-      >
-        <FaLaptopCode className="text-sky-400 text-2xl" />
-      </motion.div>
-
-      {/* Floating dots */}
-      {mounted && bgDots.map((dot, i) => (
+      {/* Main Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
         <motion.div
-          key={i}
-          className="absolute rounded-full"
-          style={{
-            width: dot.width,
-            height: dot.height,
-            top: dot.top,
-            left: dot.left,
-            backgroundColor: '#28AFDF',
-            opacity: 0.1
-          }}
-          animate={{
-            y: dot.animateY,
-            x: dot.animateX,
-          }}
-          transition={{
-            duration: dot.duration,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
-      ))}
-
-      {/* Main content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          {/* Left content */}
-          <motion.div
-            className="w-full lg:w-1/2 flex flex-col items-center md:items-start"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <motion.div
-              className="inline-block bg-sky-50 text-sky-400 px-6 py-2 rounded-full mb-6 font-medium border border-[#28AFDF]/30 text-xs md:text-md text-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <span ><span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" /></span> Transforming Businesses Since 2020
-            </motion.div>
-
-            <motion.h1
-              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-gray-800 leading-normal flex flex-col items-center md:items-start"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <span className="block mb-3 text-sky-950">AI-Driven</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
-                Digital Solutions
-              </span>
-              <span className="text-2xl md:text-3xl lg:text-4xl block mt-3 text-sky-950 text-center md:text-start">for Apps, Web & Digital Marketing</span>
-            </motion.h1>
-
-            <motion.p
-              className="text-sm md:text-lg text-gray-600 mb-10 max-w-2xl text-center md:text-start"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              Softkingo delivers AI-driven web, app & digital marketing solutions with 6+ years of experience, serving 350+ clients worldwide. We turn ideas into successful digital products.
-            </motion.p>
-
-            <motion.div
-              className="flex flex-wrap gap-6 mb-10 justify-center md:justify-start"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium shadow-lg shadow-sky-900/30 transition-all duration-300 inline-flex items-center cursor-pointer"
-                >
-                  Get A Quote <FaArrowRight className="ml-2" />
-                </button>
-              </motion.div>
-
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="https://calendly.com/paramhans-softkingo/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center"
-                >
-                  <span className="font-semibold text-xs md:text-md mr-3 transition-all">
-                    Meeting
-                  </span>
-                  <FaArrowRight />
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              className="flex flex-wrap items-center gap-8 justify-center md:justify-start"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="flex items-center">
-                <div className="flex -space-x-3">
-                  {[
-                    "/images/client/client1.png",
-                    "/images/client/client5.png",
-                    "/images/client/client2.png",
-                    "/images/client/client3.png"
-                  ].map((src, i) => (
-                    <motion.div
-                      key={i}
-                      className="w-10 h-10 rounded-full bg-white border-2 border-white shadow-md overflow-hidden"
-                      whileHover={{ y: -5 }}
-                    >
-                      <img
-                        src={src}
-                        alt={`client-${i}`}
-                        className="object-cover w-full h-full"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="ml-4 text-center md:text-start">
-                  <p className="font-bold text-gray-800">Our</p>
-                  <p className="text-sm text-gray-600">Clients</p>
-                </div>
-              </div>
-
-              <div className="h-8 w-px bg-gray-300 hidden md:block"></div>
-
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-300 to-sky-800 flex items-center justify-center">
-                  <span className="text-white font-bold">6+</span>
-                </div>
-                <div className="ml-4 text-center md:text-start">
-                  <p className="font-bold text-gray-800">Years</p>
-                  <p className="text-sm text-gray-600">Experience</p>
-                </div>
-              </div>
-            </motion.div>
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="flex flex-col items-center"
+        >
+          {/* Badge */}
+          <motion.div className="bg-sky-50/10 backdrop-blur-sm text-white px-6 py-2 rounded-full mb-6 border border-white/20 text-xs md:text-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block mr-2" />
+            #1 Software Development Company
           </motion.div>
 
-          {/* Right content - Professional card stack */}
-          <RightSec />
-        </div>
+          {/* Heading */}
+          <motion.h1 className="text-3xl md:text-6xl font-bold mb-6 text-white leading-normal">
+            <span className="">AI-Driven  </span>
+
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
+              Digital Solutions
+            </span>
+
+            <span className="block mt-3 text-2xl md:text-4xl text-white">
+              for Apps, Web & Digital Marketing
+            </span>
+          </motion.h1>
+
+          <div className="flex flex-wrap justify-center gap-8 mb-8 text-white text-sm md:text-base">
+
+            <div className="flex items-center gap-2">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
+                ✓
+              </span>
+              400+ Projects Delivered
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
+                ✓
+              </span>
+              Trusted by 350+ Global Clients
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
+                ✓
+              </span>
+              6+ Years of Innovation
+            </div>
+
+          </div>
+
+          {/* Description */}
+          <motion.p className="text-sm md:text-lg text-gray-200 mb-10 max-w-2xl">
+            Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
+          </motion.p>
+
+          {/* Buttons */}
+          <motion.div className="flex flex-wrap justify-center gap-4 mb-10">
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
+            >
+
+              Get A Quote
+
+              <FaArrowRight />
+              <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <FaPhoneAlt className="text-black text-sm" />
+              </span>
+            </button>
+
+            <button className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3">
+              Book A Meeting
+              <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <FaBook className="text-black text-sm" />
+              </span>
+            </button>
+          </motion.div>
+
+          {/* Clients & Experience */}
+          <div className="flex items-center gap-8 flex-wrap justify-center">
+            {/* <div className="flex items-center">
+              <div className="flex -space-x-3">
+                {[
+                  "/images/client/client1.png",
+                  "/images/client/client5.png",
+                  "/images/client/client2.png",
+                  "/images/client/client3.png",
+                ].map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt="client"
+                    className="w-10 h-10 rounded-full border-2 border-white object-cover"
+                  />
+                ))}
+              </div>
+
+              <div className="ml-4 text-left">
+                <p className="font-bold text-white">Our</p>
+                <p className="text-sm text-gray-300">Clients</p>
+              </div>
+            </div> */}
+
+            {/* <div className="h-8 w-px bg-gray-400" /> */}
+
+            {/* <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-300 to-sky-800 flex items-center justify-center text-white font-bold">
+                6+
+              </div>
+
+              <div className="ml-4 text-left">
+                <p className="font-bold text-white">Years</p>
+                <p className="text-sm text-gray-300">Experience</p>
+              </div>
+            </div> */}
+          </div>
+        </motion.div>
       </div>
 
-      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
+      <PopupQuoteModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 };
+
 
 export default HeroSection;

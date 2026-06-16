@@ -313,7 +313,7 @@ export default async function ServicePage({ params }) {
 
                   <div
                     className="text-gray-300 text-sm md:text-base leading-relaxed animate-fadeInUp animation-delay-200 max-w-4xl rich-text"
-                    dangerouslySetInnerHTML={{ __html: content.heroSubtitle }}
+                    dangerouslySetInnerHTML={{ __html: content.heroSubtitle || "" }}
                   />
                 </div>
 
