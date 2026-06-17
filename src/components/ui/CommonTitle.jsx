@@ -29,10 +29,6 @@ const CommonTitle = ({
     const plainText = hasExplicitGradient ? title : (title ? title.split(' ')[0] : '');
     const gradientPart = gradientText || (title ? title.split(' ').slice(1).join(' ') : '');
 
-
-    console.log("show plaine text",plainText)
-    console.log("show gradient part",gradientPart)
-
     return (
         <div className={`${textAlignClass} ${containerClass} mb-8 sm:mb-12`}>
             {/* Pill with alignment */}

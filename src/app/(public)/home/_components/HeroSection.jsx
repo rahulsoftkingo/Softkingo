@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { FaArrowRight, FaCode, FaMobileAlt, FaLaptopCode, FaBook } from 'react-icons/fa';
 import { FaPhoneAlt } from "react-icons/fa";
+import Link from 'next/link';
 
 
 
@@ -214,12 +215,17 @@ const HeroSection = () => {
               </span>
             </button>
 
-            <button className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3">
+            <Link
+              href="https://calendly.com/paramhans-softkingo/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
+            >
               Book A Meeting
               <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
                 <FaBook className="text-black text-sm" />
               </span>
-            </button>
+            </Link>
           </motion.div>
 
           {/* Clients & Experience */}
