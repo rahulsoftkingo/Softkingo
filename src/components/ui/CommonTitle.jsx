@@ -29,6 +29,10 @@ const CommonTitle = ({
     const plainText = hasExplicitGradient ? title : (title ? title.split(' ')[0] : '');
     const gradientPart = gradientText || (title ? title.split(' ').slice(1).join(' ') : '');
 
+
+    console.log("show plaine text",plainText)
+    console.log("show gradient part",gradientPart)
+
     return (
         <div className={`${textAlignClass} ${containerClass} mb-8 sm:mb-12`}>
             {/* Pill with alignment */}
@@ -43,7 +47,7 @@ const CommonTitle = ({
                 {plainText}{' '}
                 {gradientPart && (
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 py-1">
-                        {/* {gradientPart} */}
+                        {gradientPart}
                     </span>
                 )}
             </h2>
