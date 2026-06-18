@@ -1,8 +1,30 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import CommonTitle from '@/components/ui/CommonTitle';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 import { Plus, Minus, MessageCircle, ArrowRight } from 'lucide-react';
+
+// Container controls the stagger timing for its children
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+// Each FAQ item animates up + fades in
+const itemVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+  },
+};
 
 export default function FAQAccordion({ data }) {
   const [openIndex, setOpenIndex] = useState(0);
@@ -10,68 +32,145 @@ export default function FAQAccordion({ data }) {
 
   const innerRef = useRef(null);
   const sectionRef = useRef(null);
-  const lastScrollTop = useRef(0);
 
   useEffect(() => {
     const inner = innerRef.current;
     const section = sectionRef.current;
     if (!inner || !section) return;
 
-    let isInnerScrolling = false;
+    // How close to the top of the viewport the section needs to be
+    // before we start "locking" scroll into the question list.
+    const TRIGGER_LINE = 200;
 
-    // ✅ Mouse wheel ke liye
-    const handleWheel = (e) => {
+    // How quickly the list "catches up" to its target each frame.
+    // Lower = smoother/slower glide, higher = snappier.
+    const EASE = 0.15;
+
+    // The lock is only active while the trigger line still sits
+    // somewhere inside the section. Once the section has fully
+    // scrolled past (rect.bottom < 0) or hasn't arrived yet
+    // (rect.top > TRIGGER_LINE), normal page scrolling takes over.
+    const isLockActive = () => {
       const rect = section.getBoundingClientRect();
-      const sectionTopTouchedScreen = rect.top <= 200;
-      if (!sectionTopTouchedScreen) return;
+      return rect.top <= TRIGGER_LINE && rect.bottom > 0;
+    };
 
-      const atTop = inner.scrollTop <= 0;
-      const atBottom = Math.ceil(inner.scrollTop + inner.clientHeight) >= inner.scrollHeight;
+    const maxScroll = () => inner.scrollHeight - inner.clientHeight;
 
-      if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) {
+    // --- Smooth animated scroll engine ---
+    // We never set inner.scrollTop directly. Instead every input
+    // nudges a "target", and a rAF loop eases the real scrollTop
+    // toward that target each frame, giving the question list a
+    // gentle glide instead of an instant jump.
+    let target = inner.scrollTop;
+    let rafId = null;
+
+    const tick = () => {
+      const current = inner.scrollTop;
+      const diff = target - current;
+
+      if (Math.abs(diff) < 0.5) {
+        inner.scrollTop = target;
+        rafId = null;
+        return;
+      }
+
+      inner.scrollTop = current + diff * EASE;
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const queueScroll = (delta) => {
+      target = Math.min(Math.max(target + delta, 0), maxScroll());
+      if (rafId === null) rafId = requestAnimationFrame(tick);
+    };
+
+    // Boundary checks use the *target*, not the live (still-easing)
+    // scrollTop, so the lock releases exactly when the queued
+    // movement has genuinely run out of room.
+    const atTop = () => target <= 0;
+    const atBottom = () => target >= maxScroll() - 0.5;
+
+    // ✅ Mouse wheel / trackpad
+    const handleWheel = (e) => {
+      if (!isLockActive()) return;
+
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+
+      // Only swallow the page scroll while the inner list still has
+      // room to move in that direction. The moment it hits its edge,
+      // we stop calling preventDefault and the page scroll resumes
+      // naturally on the very next tick.
+      if ((scrollingDown && !atBottom()) || (scrollingUp && !atTop())) {
         e.preventDefault();
-        isInnerScrolling = true;
-        inner.scrollBy({ top: e.deltaY * 0.8, behavior: "smooth" });
-        setTimeout(() => { isInnerScrolling = false; }, 100);
+        queueScroll(e.deltaY);
       }
     };
 
-    // ✅ Scrollbar drag ke liye
-    const handleWindowScroll = () => {
-      if (isInnerScrolling) return;
+    // ✅ Touch (mobile swipe)
+    let touchStartY = 0;
 
-      const rect = section.getBoundingClientRect();
-      const sectionTopTouchedScreen = rect.top <= 200;
-      if (!sectionTopTouchedScreen) return;
+    const handleTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
 
-      const atTop = inner.scrollTop <= 0;
-      const atBottom = Math.ceil(inner.scrollTop + inner.clientHeight) >= inner.scrollHeight;
+    const handleTouchMove = (e) => {
+      if (!isLockActive()) return;
 
-      const scrollingDown = window.scrollY > lastScrollTop.current;
-      const scrollingUp = window.scrollY < lastScrollTop.current;
-      const diff = Math.abs(window.scrollY - lastScrollTop.current);
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY; // positive = swiping up = scrolling down
+      touchStartY = currentY;
 
-      if (scrollingDown && !atBottom) {
-        window.scrollTo({ top: lastScrollTop.current, behavior: "instant" });
-        inner.scrollBy({ top: diff * 1.5, behavior: "smooth" });
+      const scrollingDown = deltaY > 0;
+      const scrollingUp = deltaY < 0;
+
+      if ((scrollingDown && !atBottom()) || (scrollingUp && !atTop())) {
+        e.preventDefault();
+        queueScroll(deltaY);
+      }
+    };
+
+    // ✅ Scrollbar-thumb drag (and keyboard PageDown/Space/arrows)
+    // These move window.scrollY directly and fire a non-cancelable
+    // "scroll" event — wheel/touch preventDefault can't catch them.
+    // So instead we detect the jump, snap the page back to where it
+    // was, and route that same movement into the question list.
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      if (!isLockActive()) {
+        lastScrollY = window.scrollY;
         return;
       }
 
-      if (scrollingUp && !atTop) {
-        window.scrollTo({ top: lastScrollTop.current, behavior: "instant" });
-        inner.scrollBy({ top: -diff * 1.5, behavior: "smooth" });
-        return;
-      }
+      const currentY = window.scrollY;
+      const diff = currentY - lastScrollY;
+      if (diff === 0) return;
 
-      lastScrollTop.current = window.scrollY;
+      const scrollingDown = diff > 0;
+      const scrollingUp = diff < 0;
+
+      if ((scrollingDown && !atBottom()) || (scrollingUp && !atTop())) {
+        // Hold the page exactly where it was...
+        window.scrollTo(0, lastScrollY);
+        // ...and feed the movement into the list instead.
+        queueScroll(diff);
+      } else {
+        lastScrollY = currentY;
+      }
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("scroll", handleWindowScroll, { passive: true });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("scroll", handleWindowScroll);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -154,12 +253,19 @@ export default function FAQAccordion({ data }) {
               className="overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
               style={{ maxHeight: "60vh" }}
             >
-              <div className="space-y-4">
+              <motion.div
+                className="space-y-4"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+              >
                 {items.map((it, i) => {
                   const isOpen = i === openIndex;
                   return (
-                    <div
+                    <motion.div
                       key={it.id || i}
+                      variants={itemVariants}
                       className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${isOpen ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100" : "bg-white"
                         }`}
                     >
@@ -190,15 +296,21 @@ export default function FAQAccordion({ data }) {
                           />
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
             </div>
           </div>
 
           <aside className="w-full lg:col-span-1">
-            <div className="sticky top-24 rounded-2xl bg-gradient-to-br from-[#28AFDF] to-[#06465D] p-8 shadow-xl text-center">
+            <motion.div
+              initial={{ opacity: 0, x: 32 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              className="sticky top-24 rounded-2xl bg-gradient-to-br from-[#28AFDF] to-[#06465D] p-8 shadow-xl text-center"
+            >
               <div className="flex justify-center">
                 <div className="p-4 rounded-full bg-white/20 backdrop-blur-sm shadow-inner">
                   <MessageCircle className="w-10 h-10 text-white" />
@@ -216,7 +328,7 @@ export default function FAQAccordion({ data }) {
                   Contact Us <ArrowRight size={18} />
                 </button>
               </div>
-            </div>
+            </motion.div>
           </aside>
 
         </div>
