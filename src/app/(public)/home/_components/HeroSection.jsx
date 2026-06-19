@@ -52,6 +52,13 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen overflow-hidden flex items-center justify-center"
     >
+
+
+      <img
+        src="/videos/frame.png"
+        alt="Softkingo"
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      />
       {/* Video Background */}
       <video
         autoPlay

@@ -25,11 +25,10 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
 
             <input
                 className="flex-1 p-2.5 bg-transparent border-none text-xs font-medium text-slate-700 outline-none placeholder:text-slate-400"
-                value={value?.toLowerCase() || ''}
-                onChange={(e) => onUpdate(path, e.target.value)}
+                value={(value || '').toLowerCase()}
+                onChange={(e) => onUpdate(path, e.target.value.toLowerCase())}
                 placeholder="Paste URL or Select Image..."
             />
-
             {value && (
                 <button onClick={() => onUpdate(path, "")} className="px-2 text-slate-400 hover:text-red-500" title="Clear">
                     <X size={14} />
@@ -77,7 +76,7 @@ export default function ServicePageEditor({ data, onBack }) {
             { id: 'faq', label: '14. FAQ Section', icon: HelpCircle },
             { id: 'blogs', label: '15. Blog Section', icon: MessageSquare },
             { id: 'inquiry', label: '16. Inquiry Section', icon: MessageSquare },
-           
+
         ]
     };
 
@@ -93,17 +92,17 @@ export default function ServicePageEditor({ data, onBack }) {
     });
 
     useEffect(() => {
-    if (data) {
-        setFormData({
-            title: '',
-            slug: '',
-            ...data,
-            activeSections:
-                data?.activeSections || config.sections.map(s => s.id),
-            content: data?.content || { hero: {} }
-        });
-    }
-}, [data]);
+        if (data) {
+            setFormData({
+                title: '',
+                slug: '',
+                ...data,
+                activeSections:
+                    data?.activeSections || config.sections.map(s => s.id),
+                content: data?.content || { hero: {} }
+            });
+        }
+    }, [data]);
 
     const [loading, setLoading] = useState(false);
     const [portfolioCategories, setPortfolioCategories] = useState([]);

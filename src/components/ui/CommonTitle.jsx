@@ -38,14 +38,13 @@ const CommonTitle = ({
                 </div>
             )}
 
-            {/* DO NOT TOUCH THE FONT SIZES BELOW: TESTED FOR SYSTEM STABILITY */}
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal py-1">
-                {plainText}{' '}
-                {gradientPart && (
+                    {plainText}{' '}
+                    {gradientPart && gradientPart !== "<p></p>" ? (
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 py-1">
                         {gradientPart}
                     </span>
-                )}
+                    ) : null}
             </h2>
             
 

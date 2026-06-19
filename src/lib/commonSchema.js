@@ -22,7 +22,9 @@ export const commonSchemas = [
         "sameAs": [
             "https://www.facebook.com/softkingo/",
             "https://in.linkedin.com/company/softkingo",
-            "https://www.instagram.com/softkingotechnologies"
+            "https://www.instagram.com/softkingotechnologies",
+            "https://x.com/softkingo",
+            "https://www.youtube.com/channel/UCFiVxuCrteF5cmyvcIx-Idw"
         ],
 
         "contactPoint": [
@@ -60,8 +62,6 @@ export const commonSchemas = [
             "@type": "AggregateRating",
             "ratingValue": "4.9",
             "reviewCount": "120",
-            "bestRating": "5",
-            "worstRating": "1"
         },
 
         "review": [
@@ -70,7 +70,7 @@ export const commonSchemas = [
                 "@type": "Review",
                 "name": "Outstanding Mobile App Development",
                 "author": { "@type": "Person", "name": "James Carter" },
-                "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+                // "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
                 "datePublished": "2024-11-10",
                 "reviewBody": "Softkingo delivered our mobile app on time and exceeded our expectations. Highly recommend!"
             },
@@ -79,7 +79,7 @@ export const commonSchemas = [
                 "@type": "Review",
                 "name": "Excellent Web Development Partner",
                 "author": { "@type": "Person", "name": "Priya Sharma" },
-                "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+                // "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
                 "datePublished": "2024-10-22",
                 "reviewBody": "Deep technical expertise and delivered a flawless product. Great value for money."
             },
@@ -88,7 +88,7 @@ export const commonSchemas = [
                 "@type": "Review",
                 "name": "Game-changing AI Solution",
                 "author": { "@type": "Person", "name": "Michael Thompson" },
-                "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+                // "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
                 "datePublished": "2024-09-15",
                 "reviewBody": "Their AI solution transformed our business operations. Exceptional work!"
             },
@@ -97,7 +97,7 @@ export const commonSchemas = [
                 "@type": "Review",
                 "name": "Reliable Digital Transformation Partner",
                 "author": { "@type": "Person", "name": "Sarah Mitchell" },
-                "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+                // "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
                 "datePublished": "2024-08-05",
                 "reviewBody": "Thorough and transparent from planning to delivery. A trusted technology partner."
             },
@@ -106,7 +106,7 @@ export const commonSchemas = [
                 "@type": "Review",
                 "name": "Top-notch Flutter App Development",
                 "author": { "@type": "Person", "name": "Rahul Verma" },
-                "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+                // "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
                 "datePublished": "2024-07-18",
                 "reviewBody": "Fast, beautiful, bug-free Flutter app. Top-notch developers and smooth project management."
             }
