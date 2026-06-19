@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import CommonTitle from '@/components/ui/CommonTitle';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
@@ -29,150 +29,6 @@ const itemVariants = {
 export default function FAQAccordion({ data }) {
   const [openIndex, setOpenIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
-
-  const innerRef = useRef(null);
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const inner = innerRef.current;
-    const section = sectionRef.current;
-    if (!inner || !section) return;
-
-    // How close to the top of the viewport the section needs to be
-    // before we start "locking" scroll into the question list.
-    const TRIGGER_LINE = 200;
-
-    // How quickly the list "catches up" to its target each frame.
-    // Lower = smoother/slower glide, higher = snappier.
-    const EASE = 0.15;
-
-    // The lock is only active while the trigger line still sits
-    // somewhere inside the section. Once the section has fully
-    // scrolled past (rect.bottom < 0) or hasn't arrived yet
-    // (rect.top > TRIGGER_LINE), normal page scrolling takes over.
-    const isLockActive = () => {
-      const rect = section.getBoundingClientRect();
-      return rect.top <= TRIGGER_LINE && rect.bottom > 0;
-    };
-
-    const maxScroll = () => inner.scrollHeight - inner.clientHeight;
-
-    // --- Smooth animated scroll engine ---
-    // We never set inner.scrollTop directly. Instead every input
-    // nudges a "target", and a rAF loop eases the real scrollTop
-    // toward that target each frame, giving the question list a
-    // gentle glide instead of an instant jump.
-    let target = inner.scrollTop;
-    let rafId = null;
-
-    const tick = () => {
-      const current = inner.scrollTop;
-      const diff = target - current;
-
-      if (Math.abs(diff) < 0.5) {
-        inner.scrollTop = target;
-        rafId = null;
-        return;
-      }
-
-      inner.scrollTop = current + diff * EASE;
-      rafId = requestAnimationFrame(tick);
-    };
-
-    const queueScroll = (delta) => {
-      target = Math.min(Math.max(target + delta, 0), maxScroll());
-      if (rafId === null) rafId = requestAnimationFrame(tick);
-    };
-
-    // Boundary checks use the *target*, not the live (still-easing)
-    // scrollTop, so the lock releases exactly when the queued
-    // movement has genuinely run out of room.
-    const atTop = () => target <= 0;
-    const atBottom = () => target >= maxScroll() - 0.5;
-
-    // ✅ Mouse wheel / trackpad
-    const handleWheel = (e) => {
-      if (!isLockActive()) return;
-
-      const scrollingDown = e.deltaY > 0;
-      const scrollingUp = e.deltaY < 0;
-
-      // Only swallow the page scroll while the inner list still has
-      // room to move in that direction. The moment it hits its edge,
-      // we stop calling preventDefault and the page scroll resumes
-      // naturally on the very next tick.
-      if ((scrollingDown && !atBottom()) || (scrollingUp && !atTop())) {
-        e.preventDefault();
-        queueScroll(e.deltaY);
-      }
-    };
-
-    // ✅ Touch (mobile swipe)
-    let touchStartY = 0;
-
-    const handleTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e) => {
-      if (!isLockActive()) return;
-
-      const currentY = e.touches[0].clientY;
-      const deltaY = touchStartY - currentY; // positive = swiping up = scrolling down
-      touchStartY = currentY;
-
-      const scrollingDown = deltaY > 0;
-      const scrollingUp = deltaY < 0;
-
-      if ((scrollingDown && !atBottom()) || (scrollingUp && !atTop())) {
-        e.preventDefault();
-        queueScroll(deltaY);
-      }
-    };
-
-    // ✅ Scrollbar-thumb drag (and keyboard PageDown/Space/arrows)
-    // These move window.scrollY directly and fire a non-cancelable
-    // "scroll" event — wheel/touch preventDefault can't catch them.
-    // So instead we detect the jump, snap the page back to where it
-    // was, and route that same movement into the question list.
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      if (!isLockActive()) {
-        lastScrollY = window.scrollY;
-        return;
-      }
-
-      const currentY = window.scrollY;
-      const diff = currentY - lastScrollY;
-      if (diff === 0) return;
-
-      const scrollingDown = diff > 0;
-      const scrollingUp = diff < 0;
-
-      if ((scrollingDown && !atBottom()) || (scrollingUp && !atTop())) {
-        // Hold the page exactly where it was...
-        window.scrollTo(0, lastScrollY);
-        // ...and feed the movement into the list instead.
-        queueScroll(diff);
-      } else {
-        lastScrollY = currentY;
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      if (rafId !== null) cancelAnimationFrame(rafId);
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
 
   const defaultItems = [
     {
@@ -247,10 +103,9 @@ export default function FAQAccordion({ data }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12 items-start">
 
-          <div ref={sectionRef} className="lg:col-span-2">
+          <div className="lg:col-span-2">
             <div
-              ref={innerRef}
-              className="overflow-y-auto pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              className="faq-scroll overflow-y-auto pr-3"
               style={{ maxHeight: "60vh" }}
             >
               <motion.div
@@ -335,6 +190,27 @@ export default function FAQAccordion({ data }) {
       </div>
 
       <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
+
+      <style jsx global>{`
+        .faq-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: #28AFDF #f1f5f9;
+        }
+        .faq-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .faq-scroll::-webkit-scrollbar-track {
+          background: #f1f5f9;
+          border-radius: 8px;
+        }
+        .faq-scroll::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #28AFDF, #06465D);
+          border-radius: 8px;
+        }
+        .faq-scroll::-webkit-scrollbar-thumb:hover {
+          background: #06465D;
+        }
+      `}</style>
     </section>
   );
 }
