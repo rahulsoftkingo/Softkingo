@@ -177,27 +177,27 @@ const HeroSection = () => {
             </span>
           </motion.h1>
 
-          <div className="flex flex-wrap justify-center gap-8 mb-8 text-white text-sm md:text-base">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-5 md:gap-y-4 mb-8 md:mb-4 text-white text-sm md:text-base">
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2">
               <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
                 ✓
               </span>
-              400+ Projects Delivered
+              <span>400+ Projects Delivered</span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2">
               <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
                 ✓
               </span>
-              Trusted by 350+ Global Clients
+              <span>Trusted by 350+ Global Clients</span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 md:gap-2">
               <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
                 ✓
               </span>
-              6+ Years of Innovation
+              <span>6+ Years of Innovation</span>
             </div>
 
           </div>
