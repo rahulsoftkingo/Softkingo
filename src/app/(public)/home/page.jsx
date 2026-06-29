@@ -48,17 +48,6 @@ const schemaData = {
         { "@type": "WebPage", "name": "Blog", "url": "https://www.softkingo.com/blog" }
       ]
     },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://www.softkingo.com/"
-        }
-      ]
-    },
     ...commonSchemas
   ]
 };
