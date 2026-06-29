@@ -110,9 +110,9 @@ export default function SolutionsTechStack({ data }) {
                             {techData?.tabs?.[activeTab]?.items?.map((tech, idx) => (
                                 <div
                                     key={`${activeTab}-${idx}`}
-                                    className="group flex flex-col items-center justify-center gap-4 p-6 rounded-3xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-sky-500/10 hover:border-sky-300 hover:bg-white transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
+                                    className="group flex flex-col items-center justify-center gap-4 p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-sky-500/10 hover:border-sky-300 hover:bg-white transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
                                 >
-                                    <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center filter grayscale group-hover:grayscale-0 transition-all duration-500">
+                                    <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center filter group-hover:grayscale-0 transition-all duration-500">
                                         {tech.image && (
                                             <Image
                                                 src={tech.image}

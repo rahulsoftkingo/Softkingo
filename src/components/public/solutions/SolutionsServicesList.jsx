@@ -48,9 +48,9 @@ export default function SolutionsServicesList({ data }) {
                                 >
                                     <div className="space-y-6">
                                         {/* Icon Frame */}
-                                        <div className="w-14 h-14 rounded-2xl bg-white text-sky-600 flex items-center justify-center shadow-sm border border-slate-100 group-hover:bg-sky-600 group-hover:text-white transition-all duration-500">
-                                            {renderIcon(service.icon || service.items?.[0]?.icon)}
-                                        </div>
+                                        {/* <div className="w-14 h-14 rounded-2xl bg-white text-sky-600 flex items-center justify-center shadow-sm border border-slate-100 group-hover:bg-sky-600 group-hover:text-white transition-all duration-500"> */}
+                                            {/* {renderIcon(service.icon || service.items?.[0]?.icon)} */}
+                                        {/* </div> */}
 
                                         <div className="space-y-4">
                                             <h3 className="text-xl md:text-2xl font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
