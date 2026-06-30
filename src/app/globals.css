@@ -1982,6 +1982,20 @@ body {
 .rich-text a:hover {
   opacity: 0.8 !important;
 }
+
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 40s linear infinite;
+}
 /* White colored rich text for dark backgrounds */
 .rich-text-white { color: rgba(255, 255, 255, 0.9) !important; }
 .rich-text-white p { margin-bottom: 1rem !important; min-height: 1.2rem; }

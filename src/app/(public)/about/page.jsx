@@ -421,7 +421,7 @@ export default async function AboutUs() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
 
-          <Script
+      <Script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
@@ -474,7 +474,7 @@ export default async function AboutUs() {
           })
         }}
       />
-        
+
       {/* Hero Section */}
       <section className="relative w-full min-h-[500px] md:min-h-[600px] ">
         <Image
@@ -960,26 +960,30 @@ async function GallerySectionSafe() {
           subtitle="We believe in cultivating a work culture that goes beyond projects. Where creativity flourishes, and ideas thrive with a shared commitment to excellence."
         />
 
-        <div className="flex flex-wrap gap-4 md:gap-6 lg:gap-8 justify-center">
-          {galleryImages.length > 0 ? (
-            galleryImages.map((image) => (
-              <div key={image.id} className="group relative w-full sm:w-[calc(50%-8px)] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-21.33px)] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={400}
-                  height={300}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                />
+        <div className="relative w-full overflow-hidden">
+          <div className="flex gap-4 md:gap-6 lg:gap-8 w-max animate-scroll-left hover:[animation-play-state:paused]">
+            {galleryImages.length > 0 ? (
+              [...galleryImages, ...galleryImages].map((image, index) => (
+                <div
+                  key={`${image.id}-${index}`}
+                  className="group relative flex-shrink-0 w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] h-[220px] md:h-[260px] lg:h-[300px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                >
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    fill
+                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 768px) 280px, 400px"
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="w-full text-center py-16">
+                <div className="text-gray-400 text-6xl mb-4">📸</div>
+                <p className="text-gray-500 text-lg">Gallery coming soon...</p>
               </div>
-            ))
-          ) : (
-            <div className="w-full text-center py-16">
-              <div className="text-gray-400 text-6xl mb-4">📸</div>
-              <p className="text-gray-500 text-lg">Gallery coming soon...</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </section>
