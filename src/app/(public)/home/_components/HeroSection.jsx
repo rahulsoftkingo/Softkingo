@@ -52,10 +52,8 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen overflow-hidden flex items-center justify-center"
     >
-
-
       <img
-        src="/videos/frame.png"
+        src="/videos/frame.webp"
         alt="Softkingo"
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
@@ -180,24 +178,26 @@ const HeroSection = () => {
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-5 md:gap-y-4 mb-8 md:mb-4 text-white text-sm md:text-base">
 
             <div className="flex items-center gap-1 md:gap-2">
-              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
                 ✓
               </span>
-              <span>400+ Projects Delivered</span>
+              <span>
+                <span className='font-extrabold text-2lg text-white'>400+ Projects Delivered</span>
+              </span>
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
-              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
                 ✓
               </span>
-              <span>Trusted by 350+ Global Clients</span>
+              <span className='font-extrabold text-2lg text-white'>Trusted by 350+ Global Clients</span>
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
-              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
                 ✓
               </span>
-              <span>6+ Years of Innovation</span>
+              <span className='font-extrabold text-2lg text-white'>6+ Years of Innovation</span>
             </div>
 
           </div>

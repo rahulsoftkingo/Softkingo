@@ -34,7 +34,7 @@ export default async function sitemap() {
     "/contact",
     "/ebooks",
     "/featured",
-    "/gallery",
+    // "/gallery",
     "/hire",
     "/portfolio",
     "/our-team",

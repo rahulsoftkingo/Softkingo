@@ -230,7 +230,7 @@ export default async function ServicePage({ params }) {
             {
               "@context": "https://schema.org",
               "@type": "BreadcrumbList",
-              "@id": "https://www.softkingo.com/#breadcrumb",
+              "@id": `https://www.softkingo.com/services/${slug}#breadcrumb`,
               "itemListElement": [
                 {
                   "@type": "ListItem",
@@ -242,13 +242,13 @@ export default async function ServicePage({ params }) {
                   "@type": "ListItem",
                   "position": 2,
                   "name": "Services",
-                  "item": `https://www.softkingo.com/services/${slug}`
+                  "item": `https://www.softkingo.com/services`
                 },
                 {
                   "@type": "ListItem",
                   "position": 3,
                   "name": slug,
-                  "item": `https://www.softkingo.com/services/services/${slug}`
+                  "item": `https://www.softkingo.com/services/${slug}`
                 }
               ]
             },

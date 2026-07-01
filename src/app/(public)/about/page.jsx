@@ -568,12 +568,12 @@ export default async function AboutUs() {
               <FiArrowRight size={20} className="ml-4" />
             </div>
 
-            <div className='flex justify-between text-white items-center'>
+            {/* <div className='flex justify-between text-white items-center'>
               <a href="gallery" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
                 Inside  Gallery
               </a>
               <FiArrowRight size={20} className="ml-4" />
-            </div>
+            </div> */}
 
             <div className='flex justify-between text-white items-center'>
               <a href="careers" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
@@ -961,28 +961,57 @@ async function GallerySectionSafe() {
         />
 
         <div className="relative w-full overflow-hidden">
-          <div className="flex gap-4 md:gap-6 lg:gap-8 w-max animate-scroll-left hover:[animation-play-state:paused]">
-            {galleryImages.length > 0 ? (
-              [...galleryImages, ...galleryImages].map((image, index) => (
-                <div
-                  key={`${image.id}-${index}`}
-                  className="group relative flex-shrink-0 w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] h-[220px] md:h-[260px] lg:h-[300px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
-                >
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 280px, 400px"
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="w-full text-center py-16">
-                <div className="text-gray-400 text-6xl mb-4">📸</div>
-                <p className="text-gray-500 text-lg">Gallery coming soon...</p>
-              </div>
-            )}
+          <div className="flex gap-3 md:gap-4 w-max animate-scroll-left hover:[animation-play-state:paused]">
+            {[...galleryImages, ...galleryImages].reduce((acc, image, index, arr) => {
+              // Har 3rd image ko tall banao, baaki 2 ko stack karo
+              if (index % 3 === 0) {
+                // Tall image - dono rows cover karegi
+                acc.push(
+                  <div
+                    key={`tall-${image.id}-${index}`}
+                    className="group relative flex-shrink-0 w-[220px] sm:w-[260px] md:w-[300px] h-[338px] md:h-[398px] lg:h-[438px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                  >
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 768px) 260px, 300px"
+                    />
+                  </div>
+                );
+              } else if (index % 3 === 1) {
+                // 2 chhoti images stacked
+                const nextImage = arr[index + 1] || image;
+                acc.push(
+                  <div
+                    key={`stack-${image.id}-${index}`}
+                    className="flex flex-col gap-3 md:gap-4 flex-shrink-0"
+                  >
+                    <div className="group relative w-[220px] sm:w-[260px] md:w-[300px] h-[160px] md:h-[190px] lg:h-[210px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 260px, 300px"
+                      />
+                    </div>
+                    <div className="group relative w-[220px] sm:w-[260px] md:w-[300px] h-[160px] md:h-[190px] lg:h-[210px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                      <Image
+                        src={nextImage.src}
+                        alt={nextImage.alt}
+                        fill
+                        className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 260px, 300px"
+                      />
+                    </div>
+                  </div>
+                );
+              }
+              // index % 3 === 2 skip karo kyunki wo upar stacked ho chuka hai
+              return acc;
+            }, [])}
           </div>
         </div>
       </div>
