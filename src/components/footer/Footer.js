@@ -90,7 +90,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
             {/* Company Info */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="flex flex-col md:flex-row items-start gap-6">
+              <div className="flex flex-col md:flex-row items-start gap-6 mt-0 mb-1">
                 <Image
                   src="/images/softkingo-logo.png"
                   alt="Softkingo"
@@ -105,18 +105,46 @@ const Footer = () => {
                   <span>Work</span>
                 </div>
               </div>
+
+              <div className="text-sm font-bold text-slate-800">
+                Ready to take your business online?
+              </div>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-sky-00  border border-sky-400 text-sky-400 text-xs font-semibold hover:shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:text-white  hover:bg-sky-500 transition-colors w-fit"
+                className="inline-flex items-center  px-5 py-2 rounded-full bg-sky-00  border border-sky-400 text-sky-400 text-xs font-semibold hover:shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:text-white  hover:bg-sky-500 transition-colors w-fit mb-1"
               >
                 Contact Us
                 <FaArrowRight className="text-[0.75rem]" />
               </Link>
 
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Softkingo is an ISO-certified digital solutions provider offering web, mobile app, and digital marketing services with a focus on scalable, high-quality results.
-                Serving clients in 107 countries, we deliver end-to-end IT solutions across 39+ industries, driving growth and measurable success.
+              <p className="text-sm font-bold text-slate-600 leading-relaxed underline mb-0">
+                For Sales enquiries:
+                <br />
+                <span className="text-xs">sales@softkingo.com</span>
               </p>
+              
+              <div className="flex flex-col gap-3 mt-3">
+                {/* First Row */}
+                <div>
+                  <img
+                    src="/images/dmca.webp"
+                    alt="DMCA Protected"
+                    className="w-20 h-auto rounded-md"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <img
+                    src="/images/ISO-9001.webp"
+                    alt="ISO 9001:2015"
+                    className="w-16 h-auto border border-gray-300 rounded-md bg-white p-1"
+                  />
+                  <img
+                    src="/images/msme.webp"
+                    alt="MSME"
+                    className="w-16 h-auto border border-gray-300 rounded-md bg-white p-1"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Contact Info */}
@@ -127,7 +155,7 @@ const Footer = () => {
               <div className="space-y-4 text-sm">
                 <FooterContactRow
                   title="Email"
-                  value="sales@softkingo.com"
+                  value="info@softkingo.com"
                   href="mailto:sales@softkingo.com"
                   type="mail"
                 />
@@ -375,3 +403,7 @@ function FooterContactRow({ title, value, href, type }) {
     </div>
   );
 }
+
+
+{/* Softkingo is an ISO-certified digital solutions provider offering web, mobile app, and digital marketing services with a focus on scalable, high-quality results.
+                Serving clients in 107 countries, we deliver end-to-end IT solutions across 39+ industries, driving growth and measurable success. */}

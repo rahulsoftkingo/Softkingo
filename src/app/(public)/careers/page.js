@@ -81,7 +81,15 @@ const WhyJoinUs = () => {
 
     const handleApplyNow = (job) => {
         setSelectedJob(job);
-        const formElement = document.getElementById('career-form');
+        const formElement = document.getElementById('findyourdream');
+        if (formElement) {
+            formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const handleApplyNow1 = (job) => {
+        setSelectedJob(job);
+        const formElement = document.getElementById('findyourdream1');
         if (formElement) {
             formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -183,7 +191,8 @@ const WhyJoinUs = () => {
                                         <FaChevronRight className="text-sm group-hover:translate-x-1 transition-transform" />
                                     </button>
                                     <button
-                                        onClick={() => setShowModal(true)}
+                                         onClick={() => handleApplyNow1(null)}
+                                        // onClick={() => setShowModal(true)}
                                         className="w-full sm:w-auto bg-white border border-sky-600 text-sky-600 px-10 py-5 rounded-2xl font-bold text-lg shadow-sm hover:bg-sky-50 transition-all cursor-pointer">
                                         Hear from Team
                                     </button>
@@ -198,7 +207,7 @@ const WhyJoinUs = () => {
             <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-px bg-slate-200"></div>
                 <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-16" id="findyourdream">
                         <CommonTitle
                             align="center"
                             pill="CURRENT OPENINGS"

@@ -955,9 +955,9 @@ async function GallerySectionSafe() {
         <CommonTitle
           align="center"
           pill={false}
-          title="Softkingo"
-          gradientText="Gallery"
-          subtitle="We believe in cultivating a work culture that goes beyond projects. Where creativity flourishes, and ideas thrive with a shared commitment to excellence."
+          title="A Culture of"
+          gradientText="Continuous Growth"
+          subtitle="A great workplace is built with intention—by creating an environment where people can learn, collaborate, and grow every day. This is a glimpse into the teamwork, shared moments, and vibrant culture at Softkingo that brings together passionate minds to create impactful digital solutions."
         />
 
         <div className="relative w-full overflow-hidden">
