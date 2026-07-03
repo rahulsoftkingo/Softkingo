@@ -22,7 +22,6 @@ const iconMap = {
     Heart
 };
 
-
 const jsonLd = {
     "@context": "https://schema.org/",
     "@type": "BreadcrumbList",
@@ -39,6 +38,19 @@ const jsonLd = {
     }]
 }
 
+const leaderQuotes = [
+  "I am proud to lead our delivery operations with a commitment to excellence, innovation, and client satisfaction. My focus is on ensuring seamless project execution, maintaining the highest quality standards, and empowering our teams to deliver exceptional digital solutions. Together, we strive to build lasting client relationships through reliability, efficiency, and continuous improvement.",
+
+  "As VP – Delivery, I am committed to driving operational excellence and delivering solutions that exceed client expectations. By fostering collaboration, optimizing delivery processes, and encouraging innovation, I ensure our teams consistently achieve outstanding results while maintaining quality, transparency, and timely execution.",
+
+  "I am honored to lead our technology vision by embracing innovation and building future-ready digital solutions. My focus is on leveraging emerging technologies, strengthening technical excellence, and empowering our engineering teams to create scalable, secure, and high-performing products that drive business success.",
+
+  "As VP – Technology, I am dedicated to advancing our technical capabilities and delivering innovative solutions that solve complex business challenges. By promoting a culture of continuous learning, collaboration, and technological excellence, I strive to ensure our products remain reliable, scalable, and ahead of industry trends.",
+
+  "I am passionate about creating a workplace where people can thrive, grow, and achieve their full potential. My focus is on fostering a positive work culture, attracting exceptional talent, supporting employee development, and building an environment that encourages collaboration, inclusivity, and continuous learning.",
+
+  "As HR Manager, I am committed to nurturing a people-first culture that values integrity, teamwork, and professional growth. By strengthening employee engagement, streamlining HR practices, and supporting talent development, I strive to create an inspiring workplace where individuals and the organization succeed together.",
+];
 
 const OurTeamClient = ({
     hero,
@@ -217,6 +229,11 @@ const OurTeamClient = ({
                     {/* LEADERS SPOTLIGHT (Zigzag with Framer Motion slide-in) */}
                     {/* LEADERS SPOTLIGHT (Chairman/MD/CEO style quote cards) */}
                     {/* LEADERS SPOTLIGHT (Zigzag with Framer Motion slide-in) */}
+                   <CommonTitle
+                        align="left"
+                        title="Mentor"
+                        gradientText="Insights"
+                    />
                     {leaders?.length > 0 && (
                         <div className="mt-16 md:mt-24 space-y-16 md:space-y-20 border-t border-sky-100/50 pt-16">
                             {leaders.map((leader, i) => {
@@ -291,7 +308,7 @@ const OurTeamClient = ({
 
                                             {/* Main Quote Text */}
                                             <p className="text-2xl md:text-3xl leading-relaxed font-bold text-slate-700 mb-3 max-w-2xl">
-                                                {leader.quote || "I am honored to lead our organization with a vision that transcends challenges and embraces innovation. We are dedicated to fostering a culture of excellence, where every member contributes to our collective success."}
+                                                {leaderQuotes[i] || "I am honored to lead our organization with a vision that transcends challenges and embraces innovation. We are dedicated to fostering a culture of excellence, where every member contributes to our collective success."}
                                             </p>
 
                                             {/* Leader Name */}

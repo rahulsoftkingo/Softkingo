@@ -117,12 +117,6 @@ const Footer = () => {
                 <FaArrowRight className="text-[0.75rem]" />
               </Link>
 
-              <p className="text-sm font-bold text-slate-600 leading-relaxed underline mb-0">
-                For Sales enquiries:
-                <br />
-                {/* <span className="text-xs">sales@softkingo.com</span> */}
-              </p>
-              
               <div className="flex flex-col gap-3 mt-3">
                 {/* First Row */}
                 <div>
@@ -132,16 +126,16 @@ const Footer = () => {
                     className="w-20 h-auto rounded-md"
                   />
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                   <img
                     src="/images/ISO-9001.webp"
                     alt="ISO 9001:2015"
-                    className="w-16 h-auto border border-gray-300 rounded-md bg-white p-1"
+                    className="w-20 h-20 object-contain border border-gray-300 rounded-md bg-white p-2"
                   />
                   <img
                     src="/images/msme.webp"
                     alt="MSME"
-                    className="w-16 h-auto border border-gray-300 rounded-md bg-white p-1"
+                    className="w-20 h-20 object-contain border border-gray-300 rounded-md bg-white p-2"
                   />
                 </div>
               </div>
