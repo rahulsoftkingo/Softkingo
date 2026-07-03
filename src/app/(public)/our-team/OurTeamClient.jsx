@@ -39,17 +39,17 @@ const jsonLd = {
 }
 
 const leaderQuotes = [
-  "I am proud to lead our delivery operations with a commitment to excellence, innovation, and client satisfaction. My focus is on ensuring seamless project execution, maintaining the highest quality standards, and empowering our teams to deliver exceptional digital solutions. Together, we strive to build lasting client relationships through reliability, efficiency, and continuous improvement.",
+  "I am committed to leading our delivery teams with excellence, ensuring every project is executed with quality, efficiency, and client satisfaction. Together, we strive to deliver innovative solutions that create lasting value.",
 
-  "As VP – Delivery, I am committed to driving operational excellence and delivering solutions that exceed client expectations. By fostering collaboration, optimizing delivery processes, and encouraging innovation, I ensure our teams consistently achieve outstanding results while maintaining quality, transparency, and timely execution.",
+  "My focus is on driving seamless project delivery through collaboration, innovation, and operational excellence. We are dedicated to exceeding client expectations with every solution we deliver.",
 
-  "I am honored to lead our technology vision by embracing innovation and building future-ready digital solutions. My focus is on leveraging emerging technologies, strengthening technical excellence, and empowering our engineering teams to create scalable, secure, and high-performing products that drive business success.",
+  "I am passionate about driving technological innovation and building scalable, future-ready digital solutions. By empowering our teams, we deliver impactful products that support business growth.",
 
-  "As VP – Technology, I am dedicated to advancing our technical capabilities and delivering innovative solutions that solve complex business challenges. By promoting a culture of continuous learning, collaboration, and technological excellence, I strive to ensure our products remain reliable, scalable, and ahead of industry trends.",
+  "I focus on strengthening our technology capabilities through innovation, collaboration, and continuous improvement. Our goal is to deliver reliable, secure, and high-performing solutions.",
 
-  "I am passionate about creating a workplace where people can thrive, grow, and achieve their full potential. My focus is on fostering a positive work culture, attracting exceptional talent, supporting employee development, and building an environment that encourages collaboration, inclusivity, and continuous learning.",
+  "I am dedicated to creating a positive workplace that encourages growth, collaboration, and employee success. My focus is on building a strong team and fostering a culture of excellence.",
 
-  "As HR Manager, I am committed to nurturing a people-first culture that values integrity, teamwork, and professional growth. By strengthening employee engagement, streamlining HR practices, and supporting talent development, I strive to create an inspiring workplace where individuals and the organization succeed together.",
+  "My priority is to nurture a people-first culture that supports talent, engagement, and professional development. Together, we create an environment where individuals and the organization thrive.",
 ];
 
 const OurTeamClient = ({
