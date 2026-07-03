@@ -194,7 +194,7 @@ const WhyJoinUs = () => {
                                          onClick={() => handleApplyNow1(null)}
                                         // onClick={() => setShowModal(true)}
                                         className="w-full sm:w-auto bg-white border border-sky-600 text-sky-600 px-10 py-5 rounded-2xl font-bold text-lg shadow-sm hover:bg-sky-50 transition-all cursor-pointer">
-                                        Hear from Team
+                                        Apply Now
                                     </button>
                                 </div>
                             </div>

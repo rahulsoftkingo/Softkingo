@@ -317,30 +317,43 @@ export default function CoreServicesSection({
 
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12 lg:mt-20 items-start">
                     {/* Dashboard Navigation Sidebar (Left Side Sticky) */}
-                    <div className="hidden lg:block w-80 shrink-0 sticky top-32 self-start bg-white rounded-3xl p-3 shadow-2xl shadow-sky-200/50 border border-sky-100 z-10">
-                        {/* <div className="bg-sky-500 rounded-2xl p-6 mb-2">
-                            <h4 className="text-[10px] font-semibold text-white/80 uppercase tracking-[0.2em]">Solution Navigator</h4>
-                            <p className="text-white text-lg font-bold leading-normal mt-1">Explore Core Expertise</p>
-                        </div> */}
-                        <div className="space-y-1 p-2">
+                    <div className="hidden lg:block w-80 shrink-0 sticky top-32 self-start rounded-3xl border border-sky-200/20 bg-white/5 backdrop-blur-xl shadow-2xl shadow-sky-900/10 overflow-hidden">
+
+                        <div className="divide-y divide-sky-200/15">
                             {services.map((s, idx) => (
                                 <button
                                     key={idx}
                                     onClick={() => scrollToService(idx)}
-                                    className={`w-full text-left px-5 py-4 rounded-xl text-[13px] font-semibold transition-all duration-300 flex items-center gap-4 group active:scale-[0.98] ${activeIndex === idx
-                                        ? "bg-sky-50 text-sky-600 shadow-sm"
-                                        : "text-slate-500 hover:bg-slate-50 hover:text-sky-500"
+                                    className={`w-full text-left px-7 py-6 transition-all duration-300 group ${activeIndex === idx
+                                            ? "bg-white/10"
+                                            : "hover:bg-white/5"
                                         }`}
                                 >
-                                    <span className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all shrink-0 ${activeIndex === idx
-                                        ? "bg-sky-500 text-white shadow-lg shadow-sky-200"
-                                        : "bg-slate-100 text-slate-400 group-hover:bg-sky-100 group-hover:text-sky-500"
-                                        }`}>
-                                        {String(idx + 1).padStart(2, '0')}
-                                    </span>
-                                    <span className="leading-normal overflow-hidden text-ellipsis whitespace-nowrap  tracking-wider">
-                                        {s?.title || s?.name || `Service ${idx + 1}`}
-                                    </span>
+                                    <div className="flex items-start gap-5">
+
+                                        {/* Number */}
+                                        <div
+                                            className={`text-lg font-bold transition-all ${activeIndex === idx
+                                                    ? "text-sky-300 shadow-sm"
+                                                    : "text-sky-300/70 group-hover:text-white"
+                                                }`}
+                                        >
+                                            {String(idx + 1).padStart(2, "0")}
+                                        </div>
+
+                                        {/* Content */}
+                                        <div>
+                                            <h4
+                                                className={`text-xl font-semibold leading-tight transition-all ${activeIndex === idx
+                                                        ? "text-sky-300 shadow-sm"
+                                                        : "text-sky-100/70 group-hover:text-white"
+                                                    }`}
+                                            >
+                                                {s?.title || s?.name || `Service ${idx + 1}`}
+                                            </h4>
+                                        </div>
+
+                                    </div>
                                 </button>
                             ))}
                         </div>

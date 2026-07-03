@@ -25,7 +25,7 @@ export default function SolutionsAppModuleTabs({ data }) {
                 )}
 
                 {/* 2. Tab Navigation */}
-                <div className="flex overflow-x-auto justify-center md:justify-center gap-0 mb-12 pb-4 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-slate-50 p-2 rounded-lg w-fit mx-auto">
+                <div className="flex overflow-x-auto justify-center md:justify-center gap-0 mb-12 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] bg-slate-50 p-0 rounded-lg w-fit mx-auto">
                     {data.tabs.map((tab, idx) => (
                         <button
                             key={idx}

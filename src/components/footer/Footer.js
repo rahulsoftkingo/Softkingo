@@ -120,7 +120,7 @@ const Footer = () => {
               <p className="text-sm font-bold text-slate-600 leading-relaxed underline mb-0">
                 For Sales enquiries:
                 <br />
-                <span className="text-xs">sales@softkingo.com</span>
+                {/* <span className="text-xs">sales@softkingo.com</span> */}
               </p>
               
               <div className="flex flex-col gap-3 mt-3">

@@ -12,6 +12,7 @@ import AwardsSection from '@/components/common/AwardsSection';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 import { FaQuoteRight } from 'react-icons/fa6';
 import { FaQuoteLeft } from 'react-icons/fa';
+import { motion } from "framer-motion";
 
 // Icon mapping for expertise section
 const iconMap = {
@@ -23,23 +24,21 @@ const iconMap = {
 
 
 const jsonLd = {
-  "@context": "https://schema.org/", 
-  "@type": "BreadcrumbList", 
-  "itemListElement": [{
-    "@type": "ListItem", 
-    "position": 1, 
-    "name": "softkingo",
-    "item": "https://www.softkingo.com"  
-  },{
-    "@type": "ListItem", 
-    "position": 2, 
-    "name": "our-team",
-    "item": "https://www.softkingo.com/our-team"  
-  }]
+    "@context": "https://schema.org/",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "softkingo",
+        "item": "https://www.softkingo.com"
+    }, {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "our-team",
+        "item": "https://www.softkingo.com/our-team"
+    }]
 }
 
-
-// Gallery Section handled via props
 
 const OurTeamClient = ({
     hero,
@@ -86,14 +85,87 @@ const OurTeamClient = ({
         </div>
     );
 
+    // --- LEADER SPOTLIGHT CARD COMPONENT (Zigzag layout) ---
+    const LeaderCard = ({ leader, i }) => {
+        const isReversed = i % 2 !== 0; // odd index => photo on right
+
+        return (
+            <div
+                className={`flex flex-col ${isReversed ? "md:flex-row-reverse" : "md:flex-row"
+                    } items-center gap-10 md:gap-16`}
+            >
+                {/* Photo with circular arrow accent */}
+                <div className="relative w-56 h-56 md:w-72 md:h-72 flex-shrink-0 mt-6 md:mt-0">
+                    {/* Faint background circle */}
+                    <div className="absolute inset-2 rounded-full bg-sky-50"></div>
+
+                    {/* Arrow ring */}
+                    <svg
+                        viewBox="0 0 200 200"
+                        className={`absolute -inset-2 w-[calc(100%+1rem)] h-[calc(100%+1rem)] pointer-events-none z-0 ${isReversed ? "-scale-x-100" : ""
+                            }`}
+                    >
+                        <defs>
+                            <marker
+                                id={`arrowhead-${i}`}
+                                markerWidth="8"
+                                markerHeight="8"
+                                refX="2.5"
+                                refY="2.5"
+                                orient="auto"
+                            >
+                                <path d="M0,0 L5,2.5 L0,5 Z" fill="#38bdf8" />
+                            </marker>
+                        </defs>
+                        <path
+                            d="M100,6 A94,94 0 1 1 12,58"
+                            fill="none"
+                            stroke="#38bdf8"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            markerEnd={`url(#arrowhead-${i})`}
+                        />
+                    </svg>
+
+                    {/* Photo - offset up so it pokes out of the ring */}
+                    <div
+                        className={`absolute -top-4 ${isReversed ? "-left-4" : "-right-4"
+                            } w-full h-full rounded-full p-1 bg-gradient-to-tr from-sky-400 to-cyan-300 shadow-lg z-10`}
+                    >
+                        <div className="w-full h-full rounded-full border-4 border-white overflow-hidden relative bg-white">
+                            <Image
+                                src={leader.image || "/images/placeholder-user.jpg"}
+                                alt={leader.name}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Text content */}
+                <div className={`flex-1 text-center ${isReversed ? "md:text-right" : "md:text-left"}`}>
+                    <span className="text-6xl font-serif text-sky-200 leading-none block mb-2">
+                        &ldquo;
+                    </span>
+                    <p className="text-slate-700 text-lg leading-relaxed mb-6 max-w-xl md:mx-0 mx-auto">
+                        {leader.quote}
+                    </p>
+                    <h3 className="text-3xl md:text-4xl font-extrabold text-sky-500">
+                        {leader.name}
+                    </h3>
+                    <p className="text-slate-600 text-lg mt-1">{leader.role}</p>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <main className="min-h-screen bg-white font-sans overflow-x-hidden">
-
 
             {/* 1. HERO SECTION */}
             <section className="relative h-[250px] md:h-[350px] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 z-0 bg-black/50">
-                    {/* <Image src={hero.image} alt="Team Hero" fill className="object-cover" priority /> */}
                     <div className="absolute inset-0 bg-slate-900/60 mix-blend-multiply"></div>
                 </div>
                 <div className="relative z-10 text-center text-white max-w-4xl px-6">
@@ -105,7 +177,6 @@ const OurTeamClient = ({
             {/* 2. CEO DESK */}
             <section className="px-6 max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row items-center relative mt-12">
-                    {/* LEFT: Text Card */}
                     <div className="w-full lg:w-1/2 z-20 relative order-2 lg:order-1 lg:-mr-40 mt-[-50px] lg:mt-16">
                         <div className="text-sky-500 font-black text-3xl md:text-6xl uppercase mb-6 leading-none">
                             Our team, <br /> <span className="text-slate-800">CEO Message</span>
@@ -129,11 +200,9 @@ const OurTeamClient = ({
                             )}
                         </div>
                     </div>
-                    {/* RIGHT: CEO Image */}
                     <div className="w-full lg:w-3/5 relative z-10 order-1 lg:order-2">
                         <div className="relative aspect-[3/4] md:aspect-[16/16] w-full overflow-hidden ">
                             <Image src={ceo.image || "/images/team/Softkingo-Founder.png"} alt={ceo.name} fill className="object-cover object-top hover:scale-105 transition-transform duration-1000" />
-
                         </div>
                     </div>
                 </div>
@@ -144,9 +213,106 @@ const OurTeamClient = ({
             {/* 3. MEET OUR TEAM */}
             <section className="py-8 md:py-16 bg-gradient-to-b from-white to-sky-50 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex flex-col lg:flex-row items-center gap-8">
-                        {/* LEFT: Ribbon Container */}
+                    {/* LEADERS SPOTLIGHT (Chairman/MD/CEO style quote cards) */}
+                    {/* LEADERS SPOTLIGHT (Zigzag with Framer Motion slide-in) */}
+                    {/* LEADERS SPOTLIGHT (Chairman/MD/CEO style quote cards) */}
+                    {/* LEADERS SPOTLIGHT (Zigzag with Framer Motion slide-in) */}
+                    {leaders?.length > 0 && (
+                        <div className="mt-16 md:mt-24 space-y-16 md:space-y-20 border-t border-sky-100/50 pt-16">
+                            {leaders.map((leader, i) => {
+                                const isReversed = i % 2 !== 0;
 
+                                return (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, x: isReversed ? 100 : -100 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, amount: 0.3 }}
+                                        transition={{ duration: 0.7, ease: "easeOut" }}
+                                        className={`flex flex-col ${isReversed ? "md:flex-row-reverse" : "md:flex-row"
+                                            } items-center gap-10 md:gap-16`}
+                                    >
+                                        {/* 1. PHOTO BLOCK */}
+                                        <div className="relative w-72 h-72 md:w-96 md:h-96 flex-shrink-0 mt-6 md:mt-0">
+                                            {/* Faint background circle */}
+                                            <div className="absolute inset-2 rounded-full bg-sky-50"></div>
+
+                                            {/* Photo Container (z-10) - Image stands inside */}
+                                            <div className="absolute inset-2 rounded-full overflow-hidden border-4 border-white shadow-lg z-10 bg-white">
+                                                <Image
+                                                    src={leader.image || "/images/placeholder-user.jpg"}
+                                                    alt={leader.name}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+
+                                            {/* Arrow ring (z-20) - Fully visible over the image boundaries */}
+                                            <svg
+                                                viewBox="0 0 200 200"
+                                                className={`absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] pointer-events-none z-20 overflow-visible ${isReversed ? "-scale-x-100" : ""
+                                                    }`}
+                                            >
+                                                <defs>
+                                                    <marker
+                                                        id={`arrowhead-${i}`}
+                                                        markerWidth="7"
+                                                        markerHeight="7"
+                                                        refX="2"
+                                                        refY="3.5"
+                                                        orient="auto"
+                                                    >
+                                                        <path d="M0,1 L6,3.5 L0,6 Z" fill="#38bdf8" />
+                                                    </marker>
+                                                </defs>
+                                                <path
+                                                    d="M100,12 A88,88 0 1 1 18,62"
+                                                    fill="none"
+                                                    stroke="#38bdf8"
+                                                    strokeWidth="6"
+                                                    strokeLinecap="round"
+                                                    markerEnd={`url(#arrowhead-${i})`}
+                                                />
+                                            </svg>
+                                        </div>
+
+                                        {/* 2. TEXT BLOCK - Balanced for both normal and row-reverse flex setups */}
+                                        <div
+                                            className={`flex-1 text-center px-4 md:px-0 flex flex-col ${isReversed
+                                                ? "md:text-right md:items-end md:mr-6 md:ml-0"
+                                                : "md:text-left md:items-start md:ml-6 md:mr-0"
+                                                }`}
+                                        >
+                                            {/* Large Quote Icon with balanced padding adjustments */}
+                                            <span className="block text-[130px] md:text-[160px] font-serif text-sky-200 leading-none mb-[-20px] h-16 md:h-20 select-none">
+                                                &ldquo;
+                                            </span>
+
+
+                                            {/* Main Quote Text */}
+                                            <p className="text-2xl md:text-3xl leading-relaxed font-bold text-slate-700 mb-3 max-w-2xl">
+                                                {leader.quote || "I am honored to lead our organization with a vision that transcends challenges and embraces innovation. We are dedicated to fostering a culture of excellence, where every member contributes to our collective success."}
+                                            </p>
+
+                                            {/* Leader Name */}
+                                            <h3 className="text-4xl md:text-5xl font-extrabold text-sky-500 tracking-tight">
+                                                {leader.name}
+                                            </h3>
+
+                                            {/* Leader Role */}
+                                            <p className="text-slate-600 text-xl md:text-2xl mt-1">
+                                                {leader.role}
+                                            </p>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    )}
+
+
+                    <div className="flex flex-col lg:flex-row items-center gap-8 mt-[178px]">
+                        {/* LEFT: Ribbon Container */}
                         <div className="relative inline-block mb-4 md:mb-0">
                             <div className="bg-gradient-to-r from-cyan-500 to-sky-600 text-white py-6 pl-8 pr-20 rounded-r-full shadow-xl relative z-10 transform -skew-x-6 origin-bottom-left">
                                 <div className="transform skew-x-6">
@@ -161,7 +327,7 @@ const OurTeamClient = ({
                         {/* RIGHT: 6 Team Members Grid */}
                         <div className="flex-1">
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 md:gap-y-4 justify-center">
-                                {leaders.map((member, i) => (
+                                {marqueeTeam.map((member, i) => (
                                     <div key={i} className="flex flex-col items-center group">
                                         <div className="w-42 h-42 md:w-66 md:h-66 rounded-t-2xl p-1 bg-gradient-to-tr from-sky-400 to-cyan-300 mb-5 group-hover:scale-105 transition-transform duration-300 shadow-lg">
                                             <div className="w-full h-full rounded-t-2xl border-4 border-white overflow-hidden relative bg-white">
@@ -177,24 +343,24 @@ const OurTeamClient = ({
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 {/* Part B: MARQUEE SCROLL */}
-                {marqueeTeam.length > 0 && (
-                    <div className="w-full overflow-hidden border-t border-sky-100/50 pt-16 pb-8 bg-sky-50/20">
+                {/* {marqueeTeam.length > 0 && (
+                    <div className="w-full overflow-hidden border-t border-sky-100/50 pt-16 pb-8 bg-sky-50/20 mt-16">
                         <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
                             {[...marqueeTeam, ...marqueeTeam].map((member, i) => (
                                 <TeamCard key={i} member={member} />
                             ))}
                         </div>
                     </div>
-                )}
+                )} */}
             </section>
 
             {/* 4. EXPERTISE & SKILLS */}
             <section className="py-8 md:py-16 bg-gradient-to-b from-slate-50 to-white px-6">
                 <div className="max-w-7xl mx-auto">
-                    {/* Header using CommonTitle */}
                     <CommonTitle
                         align="center"
                         pill="Our Superpowers"
@@ -203,25 +369,19 @@ const OurTeamClient = ({
                         subtitle="We master the technologies that power modern digital experiences. From frontend to backend, design to deployment."
                     />
 
-                    {/* Skills Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {expertise?.map((item, i) => (
                             <div key={i} className="group">
-                                {/* Card */}
                                 <div className="bg-white rounded-3xl border border-slate-200 p-8 h-full hover:shadow-2xl hover:shadow-sky-100/50 transition-all duration-500 relative overflow-hidden">
-                                    {/* Background Pattern */}
                                     <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-sky-50 to-transparent rounded-full -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                                    {/* Icon */}
                                     <div className="w-16 h-16 bg-gradient-to-br from-sky-500 to-cyan-600 rounded-2xl flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 transition-transform duration-300">
                                         {iconMap[item.iconName] && React.createElement(iconMap[item.iconName], { size: 32, className: "text-white" })}
                                     </div>
 
-                                    {/* Content */}
                                     <h3 className="text-2xl font-bold text-slate-900 mb-3">{item.title}</h3>
                                     <p className="text-slate-600 leading-relaxed mb-6">{item.description}</p>
 
-                                    {/* Skills List */}
                                     <div className="space-y-4">
                                         {item.skills?.map((skill, idx) => (
                                             <div key={idx} className="space-y-2">
@@ -249,7 +409,6 @@ const OurTeamClient = ({
                         ))}
                     </div>
 
-                    {/* Bottom CTA */}
                     <div className="text-center mt-16">
                         <button
                             onClick={() => setIsQuoteModalOpen(true)}
@@ -268,38 +427,30 @@ const OurTeamClient = ({
 
             {/* 5. PROCESS - HOW WE WORK */}
             <section className="py-8 md:py-16 bg-gradient-to-br from-white to-sky-100 px-6 relative overflow-hidden">
-                {/* Background Effects */}
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white rounded-full blur-[120px] opacity-20 pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-sky-200 rounded-full blur-[80px] opacity-30 pointer-events-none"></div>
 
                 <div className="max-w-7xl mx-auto relative z-10">
-                    {/* Header using CommonTitle */}
                     <CommonTitle
                         align="center"
                         pill="Our Process"
                         title="How We Work"
-
                         subtitle="Our streamlined process ensures transparency, speed, and quality at every step of your project journey."
                     />
 
-                    {/* Process Steps */}
                     <div className="relative mt-20">
-                        {/* Desktop Connecting Line */}
                         <div className="hidden lg:block absolute top-0 left-0 w-full h-0.5 border-t-[3px] border-dashed border-sky-400/30 z-0 transform translate-y-8"></div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 relative z-10">
                             {process?.map((step, idx) => (
                                 <div key={idx} className="group relative">
-                                    {/* Floating Number Badge */}
                                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-slate-800/50 backdrop-blur-sm border-4 border-sky-400/30 rounded-full flex items-center justify-center z-20 shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:border-sky-400 group-hover:bg-sky-600">
                                         <span className="text-xl font-black text-sky-400 group-hover:text-white transition-colors duration-300">
                                             {step.step}
                                         </span>
                                     </div>
 
-                                    {/* Process Card */}
                                     <div className="h-full bg-white/80 backdrop-blur-sm pt-14 pb-8 px-6 rounded-3xl border border-sky-100/50 text-center transition-all duration-500 hover:bg-white hover:shadow-2xl hover:shadow-sky-500/20 hover:-translate-y-2">
-                                        {/* Decorative Dot */}
                                         <div className="w-2 h-2 rounded-full bg-sky-400/50 mx-auto mb-4 group-hover:bg-sky-400 transition-colors"></div>
 
                                         <h4 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-sky-600 transition-colors">
@@ -310,7 +461,6 @@ const OurTeamClient = ({
                                         </p>
                                     </div>
 
-                                    {/* Mobile Connector */}
                                     {idx !== process.length - 1 && (
                                         <div className="lg:hidden absolute bottom-[-32px] left-1/2 -translate-x-1/2 w-0.5 h-8 bg-sky-400/30 border-l border-dashed"></div>
                                     )}
@@ -319,7 +469,6 @@ const OurTeamClient = ({
                         </div>
                     </div>
 
-                    {/* Bottom CTA */}
                     <div className="text-center mt-16">
                         <button
                             onClick={() => setIsQuoteModalOpen(true)}
@@ -345,7 +494,6 @@ const OurTeamClient = ({
             {/* 8. GALLERY - LIFE AT SOFTKINGO */}
             <section className="py-8 md:py-16 bg-white px-6">
                 <div className="max-w-7xl mx-auto">
-                    {/* Header using CommonTitle */}
                     <CommonTitle
                         align="center"
                         pill="Culture"
@@ -353,7 +501,6 @@ const OurTeamClient = ({
                         subtitle="We believe that happy teams build better products. Get a glimpse of our culture."
                     />
 
-                    {/* Masonry Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[190px] mt-16">
                         {galleryImages?.map((img) => (
                             <div key={img.id} className={`relative rounded-[2rem] overflow-hidden group ${img.span} ${img.height}`}>
@@ -383,7 +530,6 @@ const OurTeamClient = ({
             {/* 8. TESTIMONIALS */}
             <section className="py-8 md:py-16 bg-gradient-to-br from-white to-sky-100 px-6">
                 <div className="max-w-7xl mx-auto">
-                    {/* Header using CommonTitle */}
                     <CommonTitle
                         align="center"
                         pill="Client Reviews"
@@ -391,12 +537,9 @@ const OurTeamClient = ({
                         subtitle="Real feedback from real clients who have experienced our work firsthand."
                     />
 
-                    {/* Testimonial Carousel with Different Design */}
                     <TestimonialCarousel data={testimonialsData} />
                 </div>
             </section>
-
-
 
             <ConsultationCTA
                 title="Ready to Build Your Team?"
@@ -404,13 +547,11 @@ const OurTeamClient = ({
                 buttonLabel="Contact Us"
             />
 
-            {/* Join Team Popup */}
             <JoinTeamPopup
                 isOpen={isJoinPopupOpen}
                 onClose={() => setIsJoinPopupOpen(false)}
             />
 
-            {/* Lead Generation Popup */}
             <PopupQuoteModal
                 open={isQuoteModalOpen}
                 onClose={() => setIsQuoteModalOpen(false)}

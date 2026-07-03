@@ -63,14 +63,25 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 <div className="grid grid-cols-1 gap-4">
                     <input className={inputStyle} placeholder="Main Title" value={content.hero?.title || ''} onChange={e => updateField('content.hero.title', e.target.value)} />
                 </div>
-                <div className="space-y-1">
-                    <label className={labelStyle}>Hero Description</label>
-                    <MiniRichTextEditor value={content.hero?.description || ''} onChange={val => updateField('content.hero.description', val)} />
+                <div className="flex gap-6 items-start">
+                    <div className="flex-1 space-y-1">
+                        <label className={labelStyle}>Hero Description</label>
+                        <MiniRichTextEditor
+                            value={content.hero?.description || ""}
+                            onChange={(val) => updateField("content.hero.description", val)}
+                        />
+                    </div>
+                    <div className="w-80 shrink-0">
+                        <MediaInput
+                            label="Hero Image"
+                            value={content.hero?.image}
+                            path="content.hero.image"
+                        />
+                    </div>
                 </div>
-                <MediaInput label="Hero Image" value={content.hero?.image} path="content.hero.image" />
             </SectionWrapper>
-             
-              {/* 2. SEO SETTINGS */}
+
+            {/* 2. SEO SETTINGS */}
             <SectionWrapper id="seo" icon={Search} title="2. SEO Settings" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="space-y-1">
@@ -238,8 +249,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                                 type="button"
                                 onClick={() => setActiveAppTab(i)}
                                 className={`px-4 py-2 rounded-lg text-xs font-bold transition-all border ${activeAppTab === i
-                                        ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
-                                        : 'bg-white text-slate-500 border-slate-200 hover:border-sky-300'
+                                    ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
+                                    : 'bg-white text-slate-500 border-slate-200 hover:border-sky-300'
                                     }`}
                             >
                                 {tab.tag || `Module ${i + 1}`}
@@ -372,7 +383,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                             <div className="flex-1 space-y-2">
                                 <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="AI Feature Title" value={item.title || ''} onChange={e => updateField(`content.aiCapabilities.items.${i}.title`, e.target.value)} />
                                 <textarea className="w-full p-2 bg-white border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.aiCapabilities.items.${i}.description`, e.target.value)} />
-                                
+
                                 {/* Points list for Public UI */}
                                 <div className="p-2 bg-white rounded border border-slate-100">
                                     <label className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block mb-1">Feature Points (List)</label>
@@ -469,43 +480,43 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                                     </div>
 
                                     <div className="grid md:grid-cols-2 gap-4">
-                                       {(tab.items || []).map((item, j) => (
-    <div
-        key={j}
-        className="bg-white p-3 rounded-lg border border-slate-200 relative group/tech"
-    >
-        <input
-            className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs font-bold mb-2"
-            placeholder="Tech Name"
-            value={item.name || ''}
-            onChange={e =>
-                updateField(
-                    `content.techStack.tabs.${i}.items.${j}.name`,
-                    e.target.value
-                )
-            }
-        />
+                                        {(tab.items || []).map((item, j) => (
+                                            <div
+                                                key={j}
+                                                className="bg-white p-3 rounded-lg border border-slate-200 relative group/tech"
+                                            >
+                                                <input
+                                                    className="w-full p-2 bg-slate-50 border border-slate-100 rounded text-xs font-bold mb-2"
+                                                    placeholder="Tech Name"
+                                                    value={item.name || ''}
+                                                    onChange={e =>
+                                                        updateField(
+                                                            `content.techStack.tabs.${i}.items.${j}.name`,
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
 
-        <MediaInput
-            label="Icon"
-            value={item.image}
-            path={`content.techStack.tabs.${i}.items.${j}.image`}
-        />
+                                                <MediaInput
+                                                    label="Icon"
+                                                    value={item.image}
+                                                    path={`content.techStack.tabs.${i}.items.${j}.image`}
+                                                />
 
-        <button
-            type="button"
-            onClick={() =>
-                updateField(
-                    `content.techStack.tabs.${i}.items`,
-                    (prev) => (prev || []).filter((_, idx) => idx !== j)
-                )
-            }
-            className="absolute top-1 right-1 text-slate-200 hover:text-rose-500 opacity-0 group-hover/tech:opacity-100 transition-opacity"
-        >
-            <X size={14} />
-        </button>
-    </div>
-))}
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        updateField(
+                                                            `content.techStack.tabs.${i}.items`,
+                                                            (prev) => (prev || []).filter((_, idx) => idx !== j)
+                                                        )
+                                                    }
+                                                    className="absolute top-1 right-1 text-slate-200 hover:text-rose-500 opacity-0 group-hover/tech:opacity-100 transition-opacity"
+                                                >
+                                                    <X size={14} />
+                                                </button>
+                                            </div>
+                                        ))}
                                     </div>
                                     <button type="button" onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-bold text-sky-600 uppercase">+ Add Custom Tech</button>
                                 </div>
@@ -526,8 +537,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                         <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
                             <button type="button" onClick={() => updateField('content.monetization.models', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
                             <input className="w-full p-2 bg-white border rounded text-sm font-bold mb-2" placeholder="Model Title" value={item.title || ''} onChange={e => updateField(`content.monetization.models.${i}.title`, e.target.value)} />
-                            <div className="space-y-1"> <label className={labelStyle}>Description (Rich Text)</label> <MiniRichTextEditor  value={item.description || ''}  onChange={val => updateField(`content.monetization.models.${i}.description`, val)} />
-                         </div>
+                            <div className="space-y-1"> <label className={labelStyle}>Description (Rich Text)</label> <MiniRichTextEditor value={item.description || ''} onChange={val => updateField(`content.monetization.models.${i}.description`, val)} />
+                            </div>
                         </div>
                     ))}
                     <button type="button" onClick={() => updateField('content.monetization.models', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-sm font-bold text-sky-600">+ Add Monetization Model</button>
