@@ -9,6 +9,7 @@ import { testimonials as testimonialsData } from '@/data/testimonials';
 import CommonTitle from '@/components/ui/CommonTitle';
 import JoinTeamPopup from '@/components/admin/JoinTeamPopup';
 import OurTeamClient from './OurTeamClient';
+import AchievementsSection from './AchievementsSection';
 import InquirySection from "@/components/footer/InquirySection";
 import { commonSchemas } from "@/lib/commonSchema";
 import Script from "next/script";

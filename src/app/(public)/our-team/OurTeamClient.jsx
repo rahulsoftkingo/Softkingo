@@ -13,7 +13,7 @@ import PopupQuoteModal from '@/components/PopupQuoteModal';
 import { FaQuoteRight } from 'react-icons/fa6';
 import { FaQuoteLeft } from 'react-icons/fa';
 import { motion } from "framer-motion";
-
+import AchievementsSection from './AchievementsSection';
 // Icon mapping for expertise section
 const iconMap = {
     Layout,
@@ -360,6 +360,8 @@ const OurTeamClient = ({
                             </div>
                         </div>
                     </div>
+
+                    <AchievementsSection />
 
                 </div>
 
