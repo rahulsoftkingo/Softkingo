@@ -203,7 +203,7 @@ const servicesData = [
     title: "Top Digital Marketing Company",
     description: "Services that grow your brand, attract the right customers, and boost your online visibility and engagement.",
     links: [
-      { href: "/services/seo-services", title: "SEO Services", description: "Get found by the right audience.", icon: <FaSearch /> },
+      { href: "/services/seo", title: "SEO Services", description: "Get found by the right audience.", icon: <FaSearch /> },
       { href: "/services/paid-marketing", title: "Paid Marketing", description: "Ads that reach and convert customers.", icon: <FaBullseye /> },
       { href: "/services/online-reputation-management", title: "Online Reputation Management", description: "Keep your brand trusted and credible.", icon: <FaEye /> },
       { href: "/services/app-marketing", title: "App Marketing", description: "Promote apps to the right users.", icon: <FaMobileAlt /> },
