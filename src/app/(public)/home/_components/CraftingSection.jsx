@@ -72,7 +72,7 @@ function Crafting() {
                 <p className='text-gray-600 text-sm '>{craftings.featurs}</p>
               </div>
               <div className='col-span-1 '>
-                <img src={craftings.image} className='h-full w-full fit'></img>
+                <img src={craftings.image} alt={craftings?.featurs} className='h-full w-full fit'></img>
               </div>
             </div>
           ))}
@@ -84,7 +84,7 @@ function Crafting() {
                   <p className='text-gray-600 text-[0.6rem] '>{craftings.featurs}</p>
                 </div>
                 <div className='col-span-1 hidden'>
-                  <img src={craftings.image} className='h-full w-full fit'></img>
+                  <img src={craftings.image} alt={craftings?.featurs} className='h-full w-full fit'></img>
                 </div>
               </div>
             ))}
