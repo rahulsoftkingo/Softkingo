@@ -67,8 +67,8 @@ export default function SolutionsProcess({ data }) {
                 <div className="flex items-end justify-between gap-4 flex-wrap">
                     <CommonTitle
                         align="center"
-                        title="Development Process"
-                        subtitle="From concept to launch, we follow a proven agile methodology."
+                        title={data.title || "Our Process"}
+                        subtitle={data.subtitle || "A step-by-step guide to our solutions"}
                     />
 
                     <div className="hidden sm:flex items-center gap-3 mb-2">
