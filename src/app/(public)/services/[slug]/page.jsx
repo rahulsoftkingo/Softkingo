@@ -276,7 +276,7 @@ export default async function ServicePage({ params }) {
 
       {/* Hero Section with Lead Form */}
       {show('hero') && (
-        <section className="relative overflow-hidden flex items-center bg-[#0B1121]">
+        <section className="relative overflow-hidden flex items-center bg-white">
           <div className="absolute inset-0 z-0">
             <Image
               src={content.heroBg || "/images/services/default-bg.png"}
@@ -473,7 +473,7 @@ export default async function ServicePage({ params }) {
             title={content.services?.title}
             subtitle={content.services?.subtitle}
             services={mappedServices}
-            bgClass="bg-[#f8faff]"
+            bgClass="bg-white"
             sectionId="core-services"
           />
         );
