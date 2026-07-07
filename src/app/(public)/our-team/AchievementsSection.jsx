@@ -6,6 +6,8 @@ const stats = [
     { value: "400+", label: "Projects Delivered" },   
     { value: "350+", label: "Global Clients" },
     { value: "6+", label: "Years of Innovation" },
+    { value: "15k+", label: "User Engagement" },
+
 ];
 
 const AchievementsSection = () => {

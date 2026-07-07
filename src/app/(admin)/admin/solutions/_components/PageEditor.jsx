@@ -51,6 +51,23 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
 
 export default function PageEditor({ data, type, onBack }) {
 
+     const [portfolioCategories, setPortfolioCategories] = useState([]);
+    
+        // Fetch Portfolio Categories
+        useEffect(() => {
+            const fetchCategories = async () => {
+                try {
+                    const res = await fetch("/api/admin/portfolio-projects/categories");
+                    if (res.ok) {
+                        const data = await res.json();
+                        setPortfolioCategories(data || []);
+                    }
+                } catch (err) {
+                    console.error("Error fetching portfolio categories:", err);
+                }
+            };
+            fetchCategories();
+        }, []);
     // --- CONFIGURATION ---
     const config = {
         solution: {
@@ -357,6 +374,7 @@ export default function PageEditor({ data, type, onBack }) {
                             updateField={updateField}
                             MediaInput={BoundMediaInput}
                             activeSections={formData.activeSections}
+                            portfolioCategories={portfolioCategories}
                         />
                     )}
 

@@ -51,7 +51,7 @@ const SectionHeader = ({ section, path, updateField, titlePlaceholder = "Section
 );
 
 // --- 3. MAIN SOLUTIONS EDITOR ---
-export default function SolutionsEditor({ formData, updateField, MediaInput, activeSections }) {
+export default function SolutionsEditor({ formData, updateField, MediaInput, activeSections, portfolioCategories }) {
     const content = formData?.content || {};
     const [activeAppTab, setActiveAppTab] = useState(0);
 
@@ -409,20 +409,16 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
                         <div className="space-y-1">
-                            <label className={labelStyle}>Category Filter</label>
-                            <select className={inputStyle} value={content.portfolio?.category || ''} onChange={e => updateField('content.portfolio.category', e.target.value)}>
-                                <option value="">Select Category...</option>
-                                <option value="dating">Dating Apps</option>
-                                <option value="ecommerce">E-commerce</option>
-                                <option value="delivery">Delivery Apps</option>
-                                <option value="taxi">Taxi / Ride Sharing</option>
-                                <option value="education">E-Learning</option>
-                                <option value="fitness">Health & Fitness</option>
-                                <option value="healthcare">Healthcare / Medical</option>
-                                <option value="fintech">Fintech / Banking</option>
-                                <option value="realestate">Real Estate / Property</option>
-                                <option value="booking">Travel & Booking</option>
-                                <option value="social">Social Media</option>
+                            <label className={labelStyle}>Category Filter (Slug)</label>
+                            <select
+                                className={inputStyle}
+                                value={content.portfolio?.category || ''}
+                                onChange={e => updateField('content.portfolio.category', e.target.value)}
+                            >
+                                <option value="">Default (Top 7 Projects)</option>
+                                {portfolioCategories?.map((cat) => (
+                                    <option key={cat} value={cat}>{cat}</option>
+                                ))}
                             </select>
                         </div>
                     </div>

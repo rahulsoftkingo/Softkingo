@@ -225,17 +225,14 @@ const OurTeamClient = ({
             {/* 3. MEET OUR TEAM */}
             <section className="py-8 md:py-16 bg-gradient-to-b from-white to-sky-50 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6">
-                    {/* LEADERS SPOTLIGHT (Chairman/MD/CEO style quote cards) */}
                     {/* LEADERS SPOTLIGHT (Zigzag with Framer Motion slide-in) */}
-                    {/* LEADERS SPOTLIGHT (Chairman/MD/CEO style quote cards) */}
-                    {/* LEADERS SPOTLIGHT (Zigzag with Framer Motion slide-in) */}
-                   <CommonTitle
+                    <CommonTitle
                         align="left"
                         title="Mentor"
                         gradientText="Insights"
                     />
                     {leaders?.length > 0 && (
-                        <div className="mt-16 md:mt-24 space-y-16 md:space-y-20 border-t border-sky-100/50 pt-16">
+                        <div className="mt-16 md:mt-24 space-y-16 md:space-y-20 pt-16">
                             {leaders.map((leader, i) => {
                                 const isReversed = i % 2 !== 0;
 
@@ -327,8 +324,13 @@ const OurTeamClient = ({
                         </div>
                     )}
 
+                    {/* ACHIEVEMENTS SECTION - now stacked ABOVE the team block, full width on its own */}
+                    <div className="mt-[178px]">
+                        <AchievementsSection />
+                    </div>
 
-                    <div className="flex flex-col lg:flex-row items-center gap-8 mt-[178px]">
+                    {/* TEAM SECTION - now stacked BELOW achievements, on its own row */}
+                    <div className="flex flex-col lg:flex-row items-center gap-8 mt-16">
                         {/* LEFT: Ribbon Container */}
                         <div className="relative inline-block mb-4 md:mb-0">
                             <div className="bg-gradient-to-r from-cyan-500 to-sky-600 text-white py-6 pl-8 pr-20 rounded-r-full shadow-xl relative z-10 transform -skew-x-6 origin-bottom-left">
@@ -341,7 +343,7 @@ const OurTeamClient = ({
                             </div>
                         </div>
 
-                        {/* RIGHT: 6 Team Members Grid */}
+                        {/* RIGHT: Team Members Grid */}
                         <div className="flex-1">
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 md:gap-y-4 justify-center">
                                 {marqueeTeam.map((member, i) => (
@@ -360,8 +362,6 @@ const OurTeamClient = ({
                             </div>
                         </div>
                     </div>
-
-                    <AchievementsSection />
 
                 </div>
 
