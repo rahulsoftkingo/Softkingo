@@ -97,7 +97,7 @@ const tabs = [
     items: [
       { title: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
       { title: "Grocery Delivery", href: "/solutions/grocery-delivery-app-development", icon: <FaShoppingBag /> },
-      { title: "Pickup & Delivery", href: "/solutions/pickup-and-delivery-service-app-development", icon: <FaTruck /> },
+      { title: "Pickup & Delivery", href: "/solutions/pickup-delivery-app-development", icon: <FaTruck /> },
       { title: "Taxi Booking", href: "/solutions/taxi-app-development", icon: <FaTaxi /> },
       { title: "Fitness Trainer App", href: "/solutions/fitness-trainer-app-development", icon: <FaDumbbell /> },
       { title: "Home Services", href: "/solutions/on-demand-home-service-app-development", icon: <FaHome /> },

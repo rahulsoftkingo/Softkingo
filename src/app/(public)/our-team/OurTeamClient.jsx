@@ -232,7 +232,7 @@ const OurTeamClient = ({
                         gradientText="Insights"
                     />
                     {leaders?.length > 0 && (
-                        <div className="mt-16 md:mt-24 space-y-16 md:space-y-20 pt-16">
+                        <div className="mt-2 md:mt-5 space-y-16 md:space-y-20 ">
                             {leaders.map((leader, i) => {
                                 const isReversed = i % 2 !== 0;
 
