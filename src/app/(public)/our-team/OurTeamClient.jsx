@@ -39,17 +39,17 @@ const jsonLd = {
 }
 
 const leaderQuotes = [
-  "I am committed to leading our delivery teams with excellence, ensuring every project is executed with quality, efficiency, and client satisfaction. Together, we strive to deliver innovative solutions that create lasting value.",
+    "I am committed to leading our delivery teams with excellence, ensuring every project is executed with quality, efficiency, and client satisfaction. Together, we strive to deliver innovative solutions that create lasting value.",
 
-  "My focus is on driving seamless project delivery through collaboration, innovation, and operational excellence. We are dedicated to exceeding client expectations with every solution we deliver.",
+    "My focus is on driving seamless project delivery through collaboration, innovation, and operational excellence. We are dedicated to exceeding client expectations with every solution we deliver.",
 
-  "I am passionate about driving technological innovation and building scalable, future-ready digital solutions. By empowering our teams, we deliver impactful products that support business growth.",
+    "I am passionate about driving technological innovation and building scalable, future-ready digital solutions. By empowering our teams, we deliver impactful products that support business growth.",
 
-  "I focus on strengthening our technology capabilities through innovation, collaboration, and continuous improvement. Our goal is to deliver reliable, secure, and high-performing solutions.",
+    "I focus on strengthening our technology capabilities through innovation, collaboration, and continuous improvement. Our goal is to deliver reliable, secure, and high-performing solutions.",
 
-  "I am dedicated to creating a positive workplace that encourages growth, collaboration, and employee success. My focus is on building a strong team and fostering a culture of excellence.",
+    "I am dedicated to creating a positive workplace that encourages growth, collaboration, and employee success. My focus is on building a strong team and fostering a culture of excellence.",
 
-  "My priority is to nurture a people-first culture that supports talent, engagement, and professional development. Together, we create an environment where individuals and the organization thrive.",
+    "My priority is to nurture a people-first culture that supports talent, engagement, and professional development. Together, we create an environment where individuals and the organization thrive.",
 ];
 
 const OurTeamClient = ({
@@ -226,11 +226,16 @@ const OurTeamClient = ({
             <section className="py-8 md:py-16 bg-gradient-to-b from-white to-sky-50 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6">
                     {/* LEADERS SPOTLIGHT (Zigzag with Framer Motion slide-in) */}
-                    <CommonTitle
-                        align="left"
-                        title="Mentor"
-                        gradientText="Insights"
-                    />
+
+                    <div className="flex gap-4">
+                        <div className="w-3 h-22 bg-sky-500 relative left-10 rounded-sm p-1"></div>
+                        <CommonTitle
+                            align="left"
+                            title="Mentor"
+                            gradientText="Insights"
+                            textSize="text-4xl md:text-5xl lg:text-6xl"
+                        />
+                    </div>
                     {leaders?.length > 0 && (
                         <div className="mt-2 md:mt-5 space-y-16 md:space-y-20 ">
                             {leaders.map((leader, i) => {
@@ -344,7 +349,7 @@ const OurTeamClient = ({
                         </div>
 
                         {/* RIGHT: Team Members Grid */}
-                        <div className="flex-1">
+                        {/* <div className="flex-1">
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-8 md:gap-y-4 justify-center">
                                 {marqueeTeam.map((member, i) => (
                                     <div key={i} className="flex flex-col items-center group">
@@ -356,6 +361,57 @@ const OurTeamClient = ({
                                         <div className="text-center bg-sky-400 text-amber-50 px-4 md:px-6 py-2 relative -top-10 rounded-tr-full rounded-bl-full w-full max-w-[220px]">
                                             <h4 className="font-bold text-sm md:text-md  whitespace-nowrap">{member.name}</h4>
                                             <span className="inline-block text-[10px] md:text-sm font-bold uppercase">{member.role}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div> */}
+                        <div className="flex-1">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+                                {marqueeTeam.map((member, i) => (
+                                    <div
+                                        key={i}
+                                        className="w-full max-w-[330px] bg-[#F7F7F7] border border-sky-500 rounded-[36px] p-6 shadow-md hover:shadow-xl transition-all duration-300 bg-white shadow-md"
+                                    >
+                                        {/* Image */}
+                                        <div className="relative w-full aspect-[4/4] rounded-[28px] overflow-hidden bg-gray-100">
+                                            <Image
+                                                src={member.image || "/images/placeholder-user.jpg"}
+                                                alt={member.name}
+                                                fill
+                                                className="object-contain bg-white"
+                                                sizes="(max-width: 768px) 100vw, 330px"
+                                            />
+                                        </div>
+
+                                        {/* Name */}
+                                        <h3 className="mt-5 text-2xl font-bold text-gray-900 truncate">
+                                            {member.name}
+                                        </h3>
+
+                                        {/* Role + Linkedin */}
+                                        <div className="mt-3 flex items-end justify-between gap-4">
+                                            <p className="text-gray-500 text-base leading-6 flex-1">
+                                                {member.role}
+                                            </p>
+
+                                            {member.linkedin && (
+                                                <a
+                                                    href={member.linkedin}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#0077B5] flex items-center justify-center shadow-md hover:scale-105 transition"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 24 24"
+                                                        fill="white"
+                                                        className="w-6 h-6"
+                                                    >
+                                                        <path d="M4.98 3.5C4.98 4.6 4.1 5.5 3 5.5S1 4.6 1 3.5 1.9 1.5 3 1.5s1.98.9 1.98 2zM1.5 8h3V22h-3V8zm7 0h2.88v1.91h.04c.4-.76 1.38-1.56 2.84-1.56 3.04 0 3.6 2 3.6 4.59V22h-3v-6.3c0-1.5-.03-3.43-2.09-3.43-2.1 0-2.42 1.64-2.42 3.32V22h-3V8z" />
+                                                    </svg>
+                                                </a>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -519,6 +575,17 @@ const OurTeamClient = ({
                         title="Life at Softkingo"
                         subtitle="We believe that happy teams build better products. Get a glimpse of our culture."
                     />
+
+                    {/* --- Updated Sky Blue Buttons Start --- */}
+                    <div className="flex justify-center items-center gap-4 mt-8">
+                        <button className="px-6 py-3 text-sm font-medium tracking-wide text-white bg-sky-500 border border-sky-500 rounded-full transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:border-white hover:shadow-lg">
+                            Our Organization
+                        </button>
+
+                        <button className="px-6 py-3 text-sm font-medium tracking-wide text-white bg-sky-500 border border-sky-500 rounded-full transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:border-white hover:shadow-lg">
+                            Our Party
+                        </button>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[190px] mt-16">
                         {galleryImages?.map((img) => (

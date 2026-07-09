@@ -52,3 +52,4 @@ prisma/*.log
 # public/uploads/
 
 src/app/(admin)/admin/services/page.jsx
+src/app/(public)/seo/
