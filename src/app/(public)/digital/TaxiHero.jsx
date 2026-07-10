@@ -10,10 +10,38 @@ const FEATURES = [
   "Multi-language & Multi-currency Support",
 ];
 
-export default function TaxiHero() {
+// 👇 Dummy/default data — agar backend se data na aaye to yahi dikhega
+const DEFAULT_DATA = {
+  heroTitle: "Taxi Booking App Development Company That Delivers Results",
+  heroSubtitle:
+    "<p>Boost your ride-hailing business with our trusted full-service taxi app development team in India, delivering client-first solutions focused on measurable growth, not just features.</p>",
+  heroButtonText: "Speak to Our Experts",
+  heroButtonLink: "/contact",
+  heroBg: "",
+};
+
+export default function TaxiHero({ data }) {
+  // ✅ data prop na aaye, ya kisi field ki value missing/empty ho, to dummy fallback use hoga
+  const heroTitle = data?.heroTitle || DEFAULT_DATA.heroTitle;
+  const heroSubtitle = data?.heroSubtitle || DEFAULT_DATA.heroSubtitle;
+  const heroButtonText = data?.heroButtonText || DEFAULT_DATA.heroButtonText;
+  const heroButtonLink = data?.heroButtonLink || DEFAULT_DATA.heroButtonLink;
+  const heroBg = data?.heroBg || DEFAULT_DATA.heroBg;
+
   return (
     <div>
-      <section className="relative bg-[#0B1F2A]">
+      <section
+        className="relative bg-[#0B1F2A]"
+        style={
+          heroBg
+            ? {
+                backgroundImage: `linear-gradient(rgba(11,31,42,0.85), rgba(11,31,42,0.85)), url(${heroBg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : undefined
+        }
+      >
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-18 w-full">
           <div className="grid md:grid-cols-3 gap-10 lg:gap-16 items-center">
             {/* Left Content */}
@@ -32,14 +60,13 @@ export default function TaxiHero() {
               {/* Heading & Description */}
               <div className="space-y-6">
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal animate-fadeInUp">
-                  Taxi Booking App Development Company That Delivers Results
+                  {heroTitle}
                 </h1>
 
-                <p className="text-gray-300 text-sm md:text-base leading-relaxed animate-fadeInUp animation-delay-200 max-w-4xl">
-                  Boost your ride-hailing business with our trusted full-service
-                  taxi app development team in India, delivering client-first
-                  solutions focused on measurable growth, not just features.
-                </p>
+                <div
+                  className="text-gray-300 text-sm md:text-base leading-relaxed animate-fadeInUp animation-delay-200 max-w-4xl"
+                  dangerouslySetInnerHTML={{ __html: heroSubtitle }}
+                />
               </div>
 
               {/* Feature List */}
@@ -55,10 +82,10 @@ export default function TaxiHero() {
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4 pt-2 animate-fadeInUp animation-delay-400">
                 <Link
-                  href="/contact"
+                  href={heroButtonLink}
                   className="px-6 md:px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-bold hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-xl shadow-sky-900/40 transition-all duration-300 items-center cursor-pointer inline-flex uppercase tracking-wider"
                 >
-                  Speak to Our Experts <FaArrowRight className="ml-2" />
+                  {heroButtonText} <FaArrowRight className="ml-2" />
                 </Link>
 
                 <Link
@@ -120,19 +147,19 @@ export default function TaxiHero() {
 
             {/* Right Image */}
             <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
-                          <LeadForm
-                            formType="service"
-                            formKey='service'
-                            serviceName='our service'
-                            title="Book a Free Consultation"
-                            subtitle="Response within 1 Business Day!"
-                            variant="hero"
-                            showLogo={true}
-                            showCompany={false}
-                            showBudget={false}
-                            showAttachment={false}
-                            showNDA={false}
-                          />
+              <LeadForm
+                formType="service"
+                formKey="service"
+                serviceName="our service"
+                title="Book a Free Consultation"
+                subtitle="Response within 1 Business Day!"
+                variant="hero"
+                showLogo={true}
+                showCompany={false}
+                showBudget={false}
+                showAttachment={false}
+                showNDA={false}
+              />
             </div>
           </div>
         </div>

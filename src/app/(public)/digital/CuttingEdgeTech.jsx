@@ -7,9 +7,13 @@ import {
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
-import { Brain, Satellite, Link2, BarChart3, Glasses } from "lucide-react";
+import { Brain, Satellite, Link2, BarChart3, Glasses, Cpu } from "lucide-react";
 
-const technologies = [
+// Fallback icons cycled through when dynamic items don't provide an icon image
+const FALLBACK_ICONS = [Brain, Satellite, Link2, BarChart3, Glasses, Cpu];
+
+// Dummy/default data — used when no `data` prop or an empty items array is passed
+const DUMMY_TECHNOLOGIES = [
   {
     tag: "AI / ML",
     icon: Brain,
@@ -47,11 +51,41 @@ const technologies = [
   },
 ];
 
+const DUMMY_TITLE_PARTS = {
+  before: "Cutting-Edge Technologies Powering Our",
+  highlight: "Taxi App Development",
+};
+
+const DUMMY_SUBTITLE =
+  "We integrate the latest technology to boost your taxi app with enhanced functionality, security, and seamless user experience, keeping your solution future-ready and ahead of the curve.";
+
 const SEGMENT_VH = 70;
 
-export default function CuttingEdgeTech() {
+export default function CuttingEdgeTech({ data }) {
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // --- Normalize incoming dynamic data, fall back to dummy data ---
+  const hasDynamicItems = Array.isArray(data?.items) && data.items.length > 0;
+
+  const technologies = hasDynamicItems
+    ? data.items.map((item, i) => ({
+        tag: item.category || item.name || `Tech ${i + 1}`,
+        title: item.name || item.category || `Technology ${i + 1}`,
+        description: item.description || "",
+        icon: item.icon || "", // string URL (may be empty)
+        fallbackIcon: FALLBACK_ICONS[i % FALLBACK_ICONS.length],
+      }))
+    : DUMMY_TECHNOLOGIES.map((t) => ({
+        tag: t.tag,
+        title: t.title,
+        description: t.description,
+        icon: "", // dummy data has no image icon, always uses the lucide icon
+        fallbackIcon: t.icon,
+      }));
+
+  const sectionTitle = hasDynamicItems && data?.title ? data.title : null;
+  const sectionSubtitle = hasDynamicItems && data?.subtitle ? data.subtitle : null;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -80,7 +114,8 @@ export default function CuttingEdgeTech() {
     });
   };
 
-  const ActiveIcon = technologies[activeIndex].icon;
+  const activeTech = technologies[activeIndex];
+  const ActiveFallbackIcon = activeTech.fallbackIcon;
 
   return (
     <section
@@ -98,13 +133,19 @@ export default function CuttingEdgeTech() {
             className="mx-auto max-w-2xl text-center"
           >
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal text-slate-900">
-              Cutting-Edge Technologies Powering Our{" "}
-              <span className="text-sky-500">Taxi App Development</span>
+              {sectionTitle ? (
+                sectionTitle
+              ) : (
+                <>
+                  {DUMMY_TITLE_PARTS.before}{" "}
+                  <span className="text-sky-500">
+                    {DUMMY_TITLE_PARTS.highlight}
+                  </span>
+                </>
+              )}
             </h2>
             <p className="mt-4 text-md leading-relaxed text-slate-600">
-              We integrate the latest technology to boost your taxi app with
-              enhanced functionality, security, and seamless user experience,
-              keeping your solution future-ready and ahead of the curve.
+              {sectionSubtitle || DUMMY_SUBTITLE}
             </p>
           </motion.div>
 
@@ -119,7 +160,7 @@ export default function CuttingEdgeTech() {
                 const isActive = i === activeIndex;
                 return (
                   <button
-                    key={tech.tag}
+                    key={`${tech.tag}-${i}`}
                     onClick={() => handleTabClick(i)}
                     className={`w-full rounded-xl px-5 py-4 text-left text-sm font-semibold tracking-wide transition-colors duration-300 ${
                       isActive
@@ -147,14 +188,23 @@ export default function CuttingEdgeTech() {
                   transition={{ duration: 0.35, ease: "easeOut" }}
                   className="flex flex-col gap-4"
                 >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-500/10 text-sky-500">
-                    <ActiveIcon className="h-6 w-6" strokeWidth={2} />
+                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-500/10 text-sky-500 overflow-hidden">
+                    {activeTech.icon ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={activeTech.icon}
+                        alt={activeTech.title}
+                        className="h-full w-full object-contain p-1.5"
+                      />
+                    ) : (
+                      <ActiveFallbackIcon className="h-6 w-6" strokeWidth={2} />
+                    )}
                   </span>
                   <h3 className="text-xl font-bold text-slate-900">
-                    {technologies[activeIndex].title}
+                    {activeTech.title}
                   </h3>
                   <p className="max-w-xl text-md leading-relaxed text-slate-600">
-                    {technologies[activeIndex].description}
+                    {activeTech.description}
                   </p>
                 </motion.div>
               </AnimatePresence>

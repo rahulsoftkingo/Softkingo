@@ -5,7 +5,7 @@ import {
     Smartphone, Layout, Database, Code, Settings, Zap,
     BarChart3, ShieldCheck, DollarSign, Plus, X, Trash2,
     HelpCircle, Briefcase, MousePointerClick, Award, MessageSquare, Globe, Search,
-    Image as ImageIcon, TrendingUp, Layers, BookOpen
+    Image as ImageIcon, TrendingUp, Layers, BookOpen, CheckCircle2   // 👈 add kiya
 } from "lucide-react";
 import { COMMON_TECH } from '../../solutions/_components/TechConstants';
 
@@ -27,8 +27,27 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
     );
 };
 
+// --- Reusable Section Header (Title + Subtitle inputs) ---
+const SectionHeader = ({ section, path, updateField }) => (
+    <div className="grid md:grid-cols-2 gap-4">
+        <input
+            className={inputStyle}
+            placeholder="Section Title"
+            value={section?.title || ''}
+            onChange={(e) => updateField(`${path}.title`, e.target.value)}
+        />
+        <input
+            className={inputStyle}
+            placeholder="Section Subtitle"
+            value={section?.subtitle || ''}
+            onChange={(e) => updateField(`${path}.subtitle`, e.target.value)}
+        />
+    </div>
+);
+
 // --- 3. MAIN DIGITAL EDITOR ---
 export default function DigitalEditor({ formData, updateField, MediaInput, TipTapEditor, activeSections, portfolioCategories }) {
+
     const content = formData?.content || {};
 
     return (
@@ -60,8 +79,356 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 <MediaInput label="Hero Background Image" value={content.heroBg} path="content.heroBg" />
             </SectionWrapper>
 
-            {/* 2. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="2. SEO Settings" activeSections={activeSections}>
+            {/* 2. SERVICE CATEGORIES */}
+            <SectionWrapper
+                id="services"
+                icon={Layout}
+                title="2. Service Categories"
+                activeSections={activeSections}
+            >
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input
+                        className={inputStyle}
+                        placeholder="Section Title"
+                        value={content.services?.title || ""}
+                        onChange={(e) =>
+                            updateField("content.services.title", e.target.value)
+                        }
+                    />
+                    <input
+                        className={inputStyle}
+                        placeholder="Section Subtitle"
+                        value={content.services?.subtitle || ""}
+                        onChange={(e) =>
+                            updateField("content.services.subtitle", e.target.value)
+                        }
+                    />
+                </div>
+
+                <div className="space-y-8">
+                    {(content.services?.categories || []).map((cat, i) => (
+                        <div
+                            key={i}
+                            className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4"
+                        >
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    updateField("content.services.categories", (prev) =>
+                                        (prev || []).filter((_, idx) => idx !== i)
+                                    )
+                                }
+                                className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>
+                                        Sidebar Small Title
+                                    </label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="e.g. AI-Driven Apps"
+                                        value={cat.shortTitle || ""}
+                                        onChange={(e) =>
+                                            updateField(
+                                                `content.services.categories.${i}.shortTitle`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>
+                                        Sidebar Small Description
+                                    </label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="e.g. Architect Smart Products"
+                                        value={cat.shortDesc || ""}
+                                        onChange={(e) =>
+                                            updateField(
+                                                `content.services.categories.${i}.shortDesc`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className={labelStyle}>
+                                    Full Content Title
+                                </label>
+                                <input
+                                    className={inputStyle}
+                                    placeholder="e.g. Your Partner in AI Engineering"
+                                    value={cat.fullTitle || ""}
+                                    onChange={(e) =>
+                                        updateField(
+                                            `content.services.categories.${i}.fullTitle`,
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className={labelStyle}>
+                                    Full Content Description
+                                </label>
+                                <MiniRichTextEditor
+                                    value={cat.fullDesc || ""}
+                                    onChange={(val) =>
+                                        updateField(
+                                            `content.services.categories.${i}.fullDesc`,
+                                            val
+                                        )
+                                    }
+                                />
+                            </div>
+
+                            {/* Service Image */}
+                            <div className="space-y-2">
+                                <MediaInput
+                                    label="Service Image"
+                                    value={cat.image}
+                                    path={`content.services.categories.${i}.image`}
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            updateField("content.services.categories", (prev) => [
+                                ...(prev || []),
+                                {
+                                    shortTitle: "",
+                                    shortDesc: "",
+                                    fullTitle: "",
+                                    fullDesc: "",
+                                    image: "",
+                                },
+                            ])
+                        }
+                        className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
+                    >
+                        <Plus size={20} /> Add New Service Category
+                    </button>
+                </div>
+            </SectionWrapper>
+
+            {/* 3. EXTENSIVE SERVICES PROVIDED */}
+            <SectionWrapper id="servicesList" icon={Briefcase} title="3. Extensive Services Provided" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title" value={content.servicesList?.title || ''} onChange={e => updateField('content.servicesList.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Section Subtitle" value={content.servicesList?.subtitle || ''} onChange={e => updateField('content.servicesList.subtitle', e.target.value)} />
+                </div>
+                <div className="space-y-4">
+                    {(content.servicesList?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
+                            <input className="w-full p-2 bg-white border rounded text-sm font-bold mb-2" placeholder="Service Name" value={item.title || ''} onChange={e => updateField(`content.servicesList.items.${i}.title`, e.target.value)} />
+                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.servicesList.items.${i}.description`, e.target.value)} />
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-sm font-bold text-sky-600">+ Add Service Item</button>
+                </div>
+            </SectionWrapper>
+
+
+            {/* 9. TECH STACK / TECHNOLOGIES USED */}
+            <SectionWrapper id="tech" icon={Code} title="9. Tech Stack" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Section Subtitle" value={content.tech?.subtitle || ''} onChange={e => updateField('content.tech.subtitle', e.target.value)} />
+                </div>
+                <div className="space-y-4">
+                    {(content.tech?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button type="button" onClick={() => updateField('content.tech.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
+
+                            <div className="grid md:grid-cols-2 gap-3 mb-2">
+                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Technology Name (e.g. React)" value={item.name || ''} onChange={e => updateField(`content.tech.items.${i}.name`, e.target.value)} />
+                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Category (e.g. Frontend)" value={item.category || ''} onChange={e => updateField(`content.tech.items.${i}.category`, e.target.value)} />
+                            </div>
+
+                            <textarea className="w-full p-2 bg-white border rounded text-sm mb-3" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.tech.items.${i}.description`, e.target.value)} />
+
+                            <MediaInput
+                                label="Technology Icon / Logo"
+                                value={item.icon}
+                                path={`content.tech.items.${i}.icon`}
+                            />
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.tech.items', (prev) => [...(prev || []), { name: "", category: "", description: "", icon: "" }])} className="text-sm font-bold text-sky-600">+ Add Technology</button>
+                </div>
+            </SectionWrapper>
+
+            {/* 4. Industries with we works */}
+            <SectionWrapper
+                id="industries"
+                icon={Layers}
+                title="4. Industries We Serve"
+                activeSections={activeSections}
+            >
+                <div className="grid md:grid-cols-2 gap-4 mb-6">
+                    <input
+                        className={inputStyle}
+                        placeholder="Section Title"
+                        value={content.industries?.title || ""}
+                        onChange={(e) =>
+                            updateField("content.industries.title", e.target.value)
+                        }
+                    />
+
+                    <input
+                        className={inputStyle}
+                        placeholder="Section Subtitle"
+                        value={content.industries?.subtitle || ""}
+                        onChange={(e) =>
+                            updateField("content.industries.subtitle", e.target.value)
+                        }
+                    />
+                </div>
+
+                <div className="space-y-6">
+                    {(content.industries?.items || []).map((item, i) => (
+                        <div
+                            key={i}
+                            className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4"
+                        >
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    updateField("content.industries.items", (prev) =>
+                                        (prev || []).filter((_, idx) => idx !== i)
+                                    )
+                                }
+                                className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-2 rounded-lg"
+                            >
+                                <X size={18} />
+                            </button>
+
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>Industry Name</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="e.g. Healthcare"
+                                        value={item.title || ""}
+                                        onChange={(e) =>
+                                            updateField(
+                                                `content.industries.items.${i}.title`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    {/* <label className={labelStyle}>Industry Icon</label> */}
+                                    <MediaInput
+                                        label="Industry Icon"
+                                        value={item.icon}
+                                        path={`content.industries.items.${i}.icon`}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className={labelStyle}>Description</label>
+                                <textarea
+                                    className={inputStyle}
+                                    rows={3}
+                                    placeholder="Brief Description"
+                                    value={item.description || ""}
+                                    onChange={(e) =>
+                                        updateField(
+                                            `content.industries.items.${i}.description`,
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            updateField("content.industries.items", (prev) => [
+                                ...(prev || []),
+                                {
+                                    title: "",
+                                    description: "",
+                                    icon: "",
+                                },
+                            ])
+                        }
+                        className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
+                    >
+                        <Plus size={20} />
+                        Add Industry Item
+                    </button>
+                </div>
+            </SectionWrapper>
+
+
+            {/* 4. CORE FEATURES GRID */}
+            <SectionWrapper id="features" icon={Database} title="4. Core Features Grid" activeSections={activeSections}>
+                <SectionHeader section={content.features} path="content.features" updateField={updateField} />
+                <div className="space-y-4">
+                    <label className={labelStyle}>Feature Cards</label>
+                    {(content.features?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button
+                                type="button"
+                                onClick={() => updateField('content.features.items', (prev) => (prev || []).filter((_, idx) => idx !== i))}
+                                className="absolute top-2 right-2 text-rose-500"
+                            >
+                                <X size={18} />
+                            </button>
+                            <div className="grid gap-3">
+                                <input
+                                    className="w-full p-2 bg-white border rounded text-sm font-bold"
+                                    placeholder="Feature Title"
+                                    value={item.title || ''}
+                                    onChange={e => updateField(`content.features.items.${i}.title`, e.target.value)}
+                                />
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Feature Description</label>
+                                    <MiniRichTextEditor
+                                        value={item.description || ''}
+                                        onChange={val => updateField(`content.features.items.${i}.description`, val)}
+                                    />
+                                </div>
+                                <MediaInput
+                                    label="Icon"
+                                    value={item.image}
+                                    path={`content.features.items.${i}.image`}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        onClick={() => updateField('content.features.items', (prev) => [...(prev || []), { title: "", description: "", image: "" }])}
+                        className="text-sm font-bold text-sky-600"
+                    >
+                        + Add Feature Card
+                    </button>
+                </div>
+            </SectionWrapper>
+
+            {/* 4. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="5. SEO Settings" activeSections={activeSections}>
                 <div className="space-y-4">
                     <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
                     <textarea className={inputStyle} rows={3} placeholder="SEO Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
@@ -69,8 +436,232 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 3. STATISTICS */}
-            <SectionWrapper id="stats" icon={BarChart3} title="3. Statistics Section" activeSections={activeSections}>
+
+
+            {/* PRICING / COMPARE PLANS SECTION */}
+            <SectionWrapper id="pricing" icon={DollarSign} title="Pricing / Compare Plans" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Title (e.g. Compare)" value={content.pricing?.title || ''} onChange={e => updateField('content.pricing.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Highlight Text (e.g. Plans)" value={content.pricing?.highlight || ''} onChange={e => updateField('content.pricing.highlight', e.target.value)} />
+                </div>
+                <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.pricing?.subtitle || ''} onChange={e => updateField('content.pricing.subtitle', e.target.value)} />
+
+                {/* PLAN COLUMNS */}
+                <div className="space-y-4 pt-4 border-t border-slate-100">
+                    <label className={labelStyle}>Pricing Plans (Columns)</label>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        {(content.pricing?.plans || []).map((plan, i) => (
+                            <div key={i} className="bg-slate-50 p-4 rounded-2xl border border-slate-200 relative space-y-3">
+                                <button type="button" onClick={() => updateField('content.pricing.plans', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-3 right-3 text-rose-500 hover:bg-rose-50 p-1 rounded-lg"><X size={16} /></button>
+
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input className={inputStyle} placeholder="Plan Name (e.g. Basic)" value={plan.name || ''} onChange={e => updateField(`content.pricing.plans.${i}.name`, e.target.value)} />
+                                    <input className={inputStyle} placeholder="Badge (e.g. MOST POPULAR)" value={plan.badge || ''} onChange={e => updateField(`content.pricing.plans.${i}.badge`, e.target.value)} />
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input className={inputStyle} placeholder="Price (e.g. $49)" value={plan.price || ''} onChange={e => updateField(`content.pricing.plans.${i}.price`, e.target.value)} />
+                                    <input className={inputStyle} placeholder="Price Note" value={plan.priceNote || ''} onChange={e => updateField(`content.pricing.plans.${i}.priceNote`, e.target.value)} />
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input className={inputStyle} placeholder="Credits (e.g. 30,000 credits)" value={plan.credits || ''} onChange={e => updateField(`content.pricing.plans.${i}.credits`, e.target.value)} />
+                                    <input className={inputStyle} placeholder="Credits Note" value={plan.creditsNote || ''} onChange={e => updateField(`content.pricing.plans.${i}.creditsNote`, e.target.value)} />
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input className={inputStyle} placeholder="Button Label (e.g. Buy now)" value={plan.buttonLabel || ''} onChange={e => updateField(`content.pricing.plans.${i}.buttonLabel`, e.target.value)} />
+                                    <input className={inputStyle} placeholder="Button Link" value={plan.buttonLink || ''} onChange={e => updateField(`content.pricing.plans.${i}.buttonLink`, e.target.value)} />
+                                </div>
+                                <label className="flex items-center gap-2 text-xs font-bold text-slate-500">
+                                    <input type="checkbox" checked={!!plan.dark} onChange={e => updateField(`content.pricing.plans.${i}.dark`, e.target.checked)} />
+                                    Dark / Highlighted Button
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                    <button type="button" onClick={() => updateField('content.pricing.plans', (prev) => [...(prev || []), { name: "", price: "", priceNote: "", credits: "", creditsNote: "", buttonLabel: "Buy now", buttonLink: "", badge: "", dark: false }])} className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
+                        <Plus size={18} /> Add Plan Column
+                    </button>
+                </div>
+
+                {/* FEATURE GROUPS (ACCORDIONS jaise Outbound) */}
+                <div className="space-y-4 pt-6 border-t border-slate-100">
+                    <label className={labelStyle}>Feature Groups (Accordions — jaise "Outbound")</label>
+                    <div className="space-y-6">
+                        {(content.pricing?.featureGroups || []).map((group, gi) => (
+                            <div key={gi} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
+                                <button type="button" onClick={() => updateField('content.pricing.featureGroups', (prev) => (prev || []).filter((_, idx) => idx !== gi))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg"><X size={18} /></button>
+
+                                <div className="grid md:grid-cols-2 gap-4">
+                                    <input className={inputStyle} placeholder="Group Title (e.g. Outbound)" value={group.title || ''} onChange={e => updateField(`content.pricing.featureGroups.${gi}.title`, e.target.value)} />
+                                    <input className={inputStyle} placeholder="Group Description" value={group.description || ''} onChange={e => updateField(`content.pricing.featureGroups.${gi}.description`, e.target.value)} />
+                                </div>
+
+                                <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
+                                    <label className={labelStyle}>Features in this Group</label>
+                                    {(group.features || []).map((feat, fi) => (
+                                        <div key={fi} className="bg-slate-50 p-3 rounded-lg border border-slate-200 relative space-y-2">
+                                            <button type="button" onClick={() => updateField(`content.pricing.featureGroups.${gi}.features`, (prev) => prev.filter((_, idx) => idx !== fi))} className="absolute top-2 right-2 text-slate-300 hover:text-rose-500"><X size={14} /></button>
+
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <input className="p-2 bg-white border rounded text-xs font-bold" placeholder="Feature Name" value={feat.name || ''} onChange={e => updateField(`content.pricing.featureGroups.${gi}.features.${fi}.name`, e.target.value)} />
+                                                <input className="p-2 bg-white border rounded text-xs" placeholder="Badge (optional, e.g. INTRODUCTORY FREE)" value={feat.badge || ''} onChange={e => updateField(`content.pricing.featureGroups.${gi}.features.${fi}.badge`, e.target.value)} />
+                                            </div>
+
+                                            {/* Har plan ke liye value cell */}
+                                            <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${(content.pricing?.plans || []).length || 1}, minmax(0,1fr))` }}>
+                                                {(content.pricing?.plans || []).map((plan, pi) => (
+                                                    <div key={pi} className="space-y-1">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase truncate block">{plan.name || `Plan ${pi + 1}`}</label>
+                                                        <input
+                                                            className="w-full p-1.5 bg-white border rounded text-[10px] text-center"
+                                                            placeholder="check / text / blank"
+                                                            value={feat.values?.[pi] ?? ''}
+                                                            onChange={e => updateField(`content.pricing.featureGroups.${gi}.features.${fi}.values.${pi}`, e.target.value)}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <p className="text-[9px] text-slate-400 italic">"check" likhne se ✓ tick dikhega, ya custom text (jaise "5 chats"), ya blank chhodo kuch na dikhane ke liye.</p>
+                                        </div>
+                                    ))}
+                                    <button type="button" onClick={() => updateField(`content.pricing.featureGroups.${gi}.features`, (prev) => [...(prev || []), { name: "", badge: "", values: [] }])} className="text-[10px] font-bold text-sky-600">+ Add Feature Row</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <button type="button" onClick={() => updateField('content.pricing.featureGroups', (prev) => [...(prev || []), { title: "", description: "", features: [] }])} className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
+                        <Plus size={18} /> Add Feature Group (Accordion)
+                    </button>
+                </div>
+            </SectionWrapper>
+
+
+
+            {/* Pricing Cards Sections */}
+            {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
+            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
+
+                {/* TOP TEXT + BILLING TOGGLE LABELS */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Top-right Intro Text</label>
+                        <textarea className={inputStyle} rows={2} placeholder="Build pipeline smarter, close deals faster..." value={content.pricingCards?.topText || ''} onChange={e => updateField('content.pricingCards.topText', e.target.value)} />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Annual Label</label>
+                            <input className={inputStyle} placeholder="Annual billing" value={content.pricingCards?.annualLabel || ''} onChange={e => updateField('content.pricingCards.annualLabel', e.target.value)} />
+                        </div>
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Annual Save Badge</label>
+                            <input className={inputStyle} placeholder="SAVE 20%" value={content.pricingCards?.annualBadge || ''} onChange={e => updateField('content.pricingCards.annualBadge', e.target.value)} />
+                        </div>
+                        <div className="space-y-1 col-span-2">
+                            <label className={labelStyle}>Monthly Label</label>
+                            <input className={inputStyle} placeholder="Monthly billing" value={content.pricingCards?.monthlyLabel || ''} onChange={e => updateField('content.pricingCards.monthlyLabel', e.target.value)} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* SOLUTION TABS BAR */}
+                <div className="space-y-3 pt-4 border-t border-slate-100">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Tabs Bar Title (e.g. Explore features by solutions:)" value={content.pricingCards?.tabsTitle || ''} onChange={e => updateField('content.pricingCards.tabsTitle', e.target.value)} />
+                        <input className={inputStyle} placeholder="Tabs Bar Subtitle (e.g. All tiers include every solution)" value={content.pricingCards?.tabsSubtitle || ''} onChange={e => updateField('content.pricingCards.tabsSubtitle', e.target.value)} />
+                    </div>
+
+                    <label className={labelStyle}>Solution Tabs (e.g. Outbound, Inbound, Data Enrichment...)</label>
+                    <div className="space-y-2">
+                        {(content.pricingCards?.solutionTabs || []).map((tab, i) => (
+                            <div key={i} className="flex gap-2 items-center bg-slate-50 p-2 rounded-lg border border-slate-200">
+                                <input className="flex-1 p-2 bg-white border rounded text-xs font-bold" placeholder="Tab Label (e.g. Outbound)" value={tab.label || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${i}.label`, e.target.value)} />
+                                <input className="w-40 p-2 bg-white border rounded text-xs" placeholder="Icon Name (e.g. Megaphone)" value={tab.iconName || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${i}.iconName`, e.target.value)} />
+                                <button type="button" onClick={() => updateField('content.pricingCards.solutionTabs', (prev) => prev.filter((_, idx) => idx !== i))}><X size={16} className="text-rose-400" /></button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => updateField('content.pricingCards.solutionTabs', (prev) => [...(prev || []), { label: "", iconName: "" }])} className="text-[10px] font-bold text-sky-600">+ Add Solution Tab</button>
+                    </div>
+                </div>
+
+                {/* PLAN CARDS */}
+                <div className="space-y-6 pt-6 border-t border-slate-100">
+                    <label className={labelStyle}>Plan Cards</label>
+                    {(content.pricingCards?.plans || []).map((plan, i) => (
+                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
+                            <button type="button" onClick={() => updateField('content.pricingCards.plans', (prev) => prev.filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg"><X size={18} /></button>
+
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <input className={inputStyle} placeholder="Plan Name (e.g. Professional)" value={plan.name || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.name`, e.target.value)} />
+                                <input className={inputStyle} placeholder="Badge (e.g. MOST POPULAR)" value={plan.badge || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.badge`, e.target.value)} />
+                            </div>
+
+                            <textarea className={inputStyle} rows={2} placeholder="Short Description (e.g. Optimize your sales process...)" value={plan.description || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.description`, e.target.value)} />
+
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <input className={inputStyle} placeholder="Price (e.g. $79)" value={plan.price || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.price`, e.target.value)} />
+                                <input className={inputStyle} placeholder="Price Note (e.g. Per seat per month, billed annually)" value={plan.priceNote || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.priceNote`, e.target.value)} />
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <input className={inputStyle} placeholder="Credits (e.g. 48,000 credits)" value={plan.credits || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.credits`, e.target.value)} />
+                                <input className={inputStyle} placeholder="Credits Note" value={plan.creditsNote || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.creditsNote`, e.target.value)} />
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <input className={inputStyle} placeholder="Learn More Link" value={plan.learnMoreLink || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.learnMoreLink`, e.target.value)} />
+                                <input className={inputStyle} placeholder="Trial Text (e.g. Start 14-day trial)" value={plan.trialText || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.trialText`, e.target.value)} />
+                            </div>
+
+                            {/* Primary + Secondary Buttons */}
+                            <div className="grid md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-slate-100">
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>Primary Button</label>
+                                    <input className={inputStyle} placeholder="Label (e.g. Buy now / Get started)" value={plan.primaryButton?.label || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.primaryButton.label`, e.target.value)} />
+                                    <input className={inputStyle} placeholder="Link" value={plan.primaryButton?.link || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.primaryButton.link`, e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>Secondary Button (optional, e.g. Talk to Sales)</label>
+                                    <input className={inputStyle} placeholder="Label" value={plan.secondaryButton?.label || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.secondaryButton.label`, e.target.value)} />
+                                    <input className={inputStyle} placeholder="Link" value={plan.secondaryButton?.link || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.secondaryButton.link`, e.target.value)} />
+                                </div>
+                            </div>
+
+                            <label className="flex items-center gap-2 text-xs font-bold text-slate-500">
+                                <input type="checkbox" checked={!!plan.highlighted} onChange={e => updateField(`content.pricingCards.plans.${i}.highlighted`, e.target.checked)} />
+                                Highlighted Card (blue border, jaise Professional)
+                            </label>
+
+                            {/* Feature List (checklist per card) */}
+                            <div className="space-y-2 bg-white p-4 rounded-xl border border-slate-100">
+                                <label className={labelStyle}>Feature List (checkmarks)</label>
+                                {(plan.features || []).map((feat, j) => (
+                                    <div key={j} className="flex gap-2 items-center">
+                                        <input className="flex-1 p-2 bg-slate-50 border border-slate-100 rounded text-xs" placeholder="Feature text" value={feat.text || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.features.${j}.text`, e.target.value)} />
+                                        <input className="w-40 p-2 bg-slate-50 border border-slate-100 rounded text-xs" placeholder="Badge (optional)" value={feat.badge || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.features.${j}.badge`, e.target.value)} />
+                                        <button type="button" onClick={() => updateField(`content.pricingCards.plans.${i}.features`, (prev) => prev.filter((_, idx) => idx !== j))}><X size={14} className="text-slate-300" /></button>
+                                    </div>
+                                ))}
+                                <button type="button" onClick={() => updateField(`content.pricingCards.plans.${i}.features`, (prev) => [...(prev || []), { text: "", badge: "" }])} className="text-[10px] font-bold text-sky-600">+ Add Feature Line</button>
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className={labelStyle}>"Compare all plans" Link Text (optional, usually only on Free plan)</label>
+                                <input className={inputStyle} placeholder="Compare all plans" value={plan.compareAllText || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.compareAllText`, e.target.value)} />
+                            </div>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.pricingCards.plans', (prev) => [...(prev || []), {
+                        name: "", badge: "", description: "", price: "", priceNote: "", credits: "", creditsNote: "",
+                        learnMoreLink: "", trialText: "", highlighted: false,
+                        primaryButton: { label: "", link: "" }, secondaryButton: { label: "", link: "" },
+                        features: [], compareAllText: ""
+                    }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
+                        <Plus size={20} /> Add Plan Card
+                    </button>
+                </div>
+            </SectionWrapper>
+
+            {/* 5. STATISTICS */}
+            <SectionWrapper id="stats" icon={BarChart3} title="6. Statistics Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <label className={labelStyle}>Primary Metrics</label>
@@ -121,8 +712,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 4. AWARDS SECTION */}
-            <SectionWrapper id="awards" icon={Award} title="4. Awards Section" activeSections={activeSections}>
+            {/* 7. AWARDS SECTION */}
+            <SectionWrapper id="awards" icon={Award} title="7. Awards Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title (e.g. Our)" value={content.awards?.title || ''} onChange={e => updateField('content.awards.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Gradient Text (e.g. Awards & Recognitions)" value={content.awards?.gradientText || ''} onChange={e => updateField('content.awards.gradientText', e.target.value)} />
@@ -146,79 +737,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 5. SERVICE CATEGORIES */}
-            <SectionWrapper id="services" icon={Layout} title="5. Service Categories (Tabs Layout)" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.services?.title || ''} onChange={e => updateField('content.services.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.services?.subtitle || ''} onChange={e => updateField('content.services.subtitle', e.target.value)} />
-                </div>
-
-                <div className="space-y-8">
-                    {(content.services?.categories || []).map((cat, i) => (
-                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
-                            <button type="button" onClick={() => updateField('content.services.categories', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"><X size={20} /></button>
-
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className={labelStyle}>Sidebar Small Title</label>
-                                    <input className={inputStyle} placeholder="e.g. AI-Driven Apps" value={cat.shortTitle || ''} onChange={e => updateField(`content.services.categories.${i}.shortTitle`, e.target.value)} />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className={labelStyle}>Sidebar Small Desc</label>
-                                    <input className={inputStyle} placeholder="e.g. Architect Smart Products" value={cat.shortDesc || ''} onChange={e => updateField(`content.services.categories.${i}.shortDesc`, e.target.value)} />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className={labelStyle}>Full Content Title</label>
-                                <input className={inputStyle} placeholder="e.g. Your Partner in AI Engineering" value={cat.fullTitle || ''} onChange={e => updateField(`content.services.categories.${i}.fullTitle`, e.target.value)} />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className={labelStyle}>Full Content Description (Rich Text)</label>
-                                <MiniRichTextEditor value={cat.fullDesc || ''} onChange={val => updateField(`content.services.categories.${i}.fullDesc`, val)} />
-                            </div>
-
-                            {/* Expertise Nested List */}
-                            <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
-                                <label className={labelStyle}>Certified Tech Expertise</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {(cat.expertise || []).map((exp, j) => (
-                                        <div key={j} className="flex gap-2 items-center bg-slate-50 p-2 rounded-lg border border-slate-200">
-                                            <input className="w-20 p-1.5 bg-white border rounded text-[10px]" placeholder="Icon" value={exp.iconName || ''} onChange={e => updateField(`content.services.categories.${i}.expertise.${j}.iconName`, e.target.value)} />
-                                            <input className="flex-1 p-1.5 bg-white border rounded text-[10px]" placeholder="Label" value={exp.label || ''} onChange={e => updateField(`content.services.categories.${i}.expertise.${j}.label`, e.target.value)} />
-                                            <button type="button" onClick={() => updateField(`content.services.categories.${i}.expertise`, (prev) => prev.filter((_, idx) => idx !== j))}><X size={12} className="text-slate-400" /></button>
-                                        </div>
-                                    ))}
-                                    <button type="button" onClick={() => updateField(`content.services.categories.${i}.expertise`, (prev) => [...(prev || []), { iconName: "FaRobot", label: "" }])} className="text-[10px] font-black text-sky-600 border border-dashed border-sky-200 rounded-lg p-2">+ Add Expertise</button>
-                                </div>
-                            </div>
-
-                            {/* Products Nested List */}
-                            <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
-                                <label className={labelStyle}>Advanced Product Suite</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {(cat.products || []).map((prod, j) => (
-                                        <div key={j} className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200 relative">
-                                            <button type="button" onClick={() => updateField(`content.services.categories.${i}.products`, (prev) => prev.filter((_, idx) => idx !== j))} className="absolute top-1 right-1 text-slate-300"><X size={12} /></button>
-                                            <input className="w-full p-1.5 bg-white border rounded text-[10px]" placeholder="Product Name" value={prod.name || ''} onChange={e => updateField(`content.services.categories.${i}.products.${j}.name`, e.target.value)} />
-                                            <MediaInput label="Logo" value={prod.image} path={`content.services.categories.${i}.products.${j}.image`} />
-                                        </div>
-                                    ))}
-                                    <button type="button" onClick={() => updateField(`content.services.categories.${i}.products`, (prev) => [...(prev || []), { name: "", image: "" }])} className="text-[10px] font-black text-sky-600 border border-dashed border-sky-200 rounded-lg p-2">+ Add Product</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.services.categories', (prev) => [...(prev || []), { shortTitle: "", shortDesc: "", fullTitle: "", fullDesc: "", expertise: [], products: [] }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
-                        <Plus size={20} /> Add New Service Category
-                    </button>
-                </div>
-            </SectionWrapper>
-
-            {/* 6. CONSULTATION CTA */}
-            <SectionWrapper id="consultation" icon={TrendingUp} title="6. Consultation CTA" activeSections={activeSections}>
+            {/* 8. CONSULTATION CTA */}
+            <SectionWrapper id="consultation" icon={TrendingUp} title="8. Consultation CTA" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
@@ -231,8 +751,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 7. TECH STACK (TABBED) */}
-            <SectionWrapper id="tech" icon={Code} title="7. Tech Stack (Tabbed)" activeSections={activeSections}>
+            {/* 9. TECH STACK (TABBED) */}
+            {/* <SectionWrapper id="tech" icon={Code} title="9. Tech Stack (Tabbed)" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
@@ -253,7 +773,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
                                     <div className="space-y-3">
                                         <label className={labelStyle}>Technologies in this Category</label>
-                                        
+
                                         <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
                                             <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
                                             {COMMON_TECH.map((tech) => (
@@ -286,10 +806,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         <button type="button" onClick={() => updateField('content.techStack.tabs', (prev) => [...(prev || []), { label: "", items: [] }])} className="mt-4 w-full py-3 border-2 border-dashed border-sky-200 rounded-xl text-sky-600 font-bold uppercase tracking-tight">+ Add Tech Category</button>
                     </div>
                 </div>
-            </SectionWrapper>
+            </SectionWrapper> */}
 
-            {/* 8. PROCESS */}
-            <SectionWrapper id="process" icon={Settings} title="8. Our Process" activeSections={activeSections}>
+            {/* 10. PROCESS */}
+            <SectionWrapper id="process" icon={Settings} title="10. Our Process" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.process?.title || ''} onChange={e => updateField('content.process.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.process?.subtitle || ''} onChange={e => updateField('content.process.subtitle', e.target.value)} />
@@ -325,8 +845,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 9. SOLUTION HIGHLIGHT */}
-            <SectionWrapper id="highlight" icon={Zap} title="9. Solution Highlight (Mockup Design)" activeSections={activeSections}>
+            {/* 11. SOLUTION HIGHLIGHT */}
+            <SectionWrapper id="highlight" icon={Zap} title="11. Solution Highlight (Mockup Design)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -401,8 +921,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 10. PORTFOLIO */}
-            <SectionWrapper id="portfolio" icon={Globe} title="10. Portfolio Section" activeSections={activeSections}>
+            {/* 12. PORTFOLIO */}
+            <SectionWrapper id="portfolio" icon={Globe} title="12. Portfolio Section" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.portfolioTitle || ''} onChange={e => updateField('content.portfolioTitle', e.target.value)} />
@@ -425,8 +945,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 11. INDUSTRY SOLUTIONS */}
-            <SectionWrapper id="solutions" icon={Zap} title="11. Industry Solutions (Grid)" activeSections={activeSections}>
+            {/* 13. INDUSTRY SOLUTIONS */}
+            <SectionWrapper id="solutions" icon={Zap} title="13. Industry Solutions (Grid)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -482,8 +1002,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 12. INDUSTRIES WE SERVE */}
-            <SectionWrapper id="industries" icon={Layers} title="12. Industries We Serve (Slider)" activeSections={activeSections}>
+            {/* 14. INDUSTRIES WE SERVE */}
+            {/* <SectionWrapper id="industries" icon={Layers} title="14. Industries We Serve (Slider)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -537,10 +1057,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         <Plus size={20} /> Add Industry Card
                     </button>
                 </div>
-            </SectionWrapper>
+            </SectionWrapper> */}
 
-            {/* 13. USER GUIDE */}
-            <SectionWrapper id="user-guide" icon={BookOpen} title="13. User Guide" activeSections={activeSections}>
+            {/* 14. USER GUIDE */}
+            <SectionWrapper id="user-guide" icon={BookOpen} title="14. User Guide" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -625,8 +1145,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 )}
             </SectionWrapper>
 
-            {/* 14. FAQ Section */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="14. FAQ Section" activeSections={activeSections}>
+            {/* 15. FAQ Section */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="15. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -654,8 +1174,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 15. BLOG SECTION */}
-            <SectionWrapper id="blogs" icon={MessageSquare} title="15. Blog Section" activeSections={activeSections}>
+            {/* 17. BLOG SECTION */}
+            <SectionWrapper id="blogs" icon={MessageSquare} title="17. Blog Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className={labelStyle}>Blog Section Title</label>
@@ -677,8 +1197,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 16. INQUIRY SECTION */}
-            <SectionWrapper id="inquiry" icon={MessageSquare} title="16. Inquiry Section" activeSections={activeSections}>
+            {/* 18. INQUIRY SECTION */}
+            <SectionWrapper id="inquiry" icon={MessageSquare} title="18. Inquiry Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Tagline (e.g. GET IN TOUCH)" value={content.inquiry?.tagline || ''} onChange={e => updateField('content.inquiry.tagline', e.target.value)} />
                     <input className={inputStyle} placeholder="Title Prefix (e.g. Let's )" value={content.inquiry?.titlePrefix || ''} onChange={e => updateField('content.inquiry.titlePrefix', e.target.value)} />
