@@ -100,9 +100,9 @@ export default async function Page({ params }) {
 
       <CuttingEdgeTech data={content.tech} />
 
-      <PlanFeatures data={content.pricing} />
+      <PricingPage pricing={content.pricing} pricingCards={content.pricingCards} />
 
-      <PricingPage data={content.pricingCards} />
+      {/* <PlanFeatures data={content.pricing} /> */}
 
       <ConsultationCTA
         title={content.consultation?.title}
@@ -116,5 +116,5 @@ export default async function Page({ params }) {
 
       <InquirySection data={content.inquiry} />
        </div>
- ); // 👈 semicolon add karo
+ ); 
 }

@@ -592,7 +592,7 @@ export default function ServicesDigitalAdmin() {
                                                 key={item.id}
                                                 item={item}
                                                 type={cat.type}
-                                                routeBase={cat.routeBase}
+                                                routeBase={"services"}
                                             />
                                         ))
                                     ) : (

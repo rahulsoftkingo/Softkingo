@@ -30,6 +30,9 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
 // --- 3. MAIN SERVICE EDITOR ---
 export default function ServiceEditor({ formData, updateField, MediaInput, TipTapEditor, activeSections, portfolioCategories }) {
     const content = formData?.content || {};
+    
+
+    // console.log("Main Service edtior",content)
 
     return (
         <div className="space-y-8 max-w-4xl mx-auto pb-20">

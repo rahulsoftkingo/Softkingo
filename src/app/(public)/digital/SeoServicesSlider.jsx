@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import CommonTitle from "@/components/ui/CommonTitle";
 
 // 👇 Dummy/default data — jab tak backend se real data na aaye
 const DEFAULT_DATA = {
@@ -37,7 +38,7 @@ const DEFAULT_DATA = {
       title: "Nestasia",
       description: "<p>Public Relations</p>",
       // image:
-        // "https://images.unsplash.com/photo-1616627561950-9f746e330187?q=80&w=1200&auto=format&fit=crop",
+      // "https://images.unsplash.com/photo-1616627561950-9f746e330187?q=80&w=1200&auto=format&fit=crop",
     },
     {
       title: "LCR Capital Partners",
@@ -59,9 +60,11 @@ export default function WorkShowcase({ data }) {
     <section className="bg-white py-8 lg:py-18 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
-        <h2 className="text-center text-2xl md:text-3xl lg:text-4xl font-bold leading-normal text-slate-900">
-          {title}
-        </h2>
+        <CommonTitle
+          title={title}
+          subtitle={subtitle}
+          className="text-center"
+        />
 
         {/* Subtitle */}
         <p

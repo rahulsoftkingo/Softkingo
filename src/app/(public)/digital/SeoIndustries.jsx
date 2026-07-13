@@ -69,7 +69,7 @@ export default function IndustriesWeWorkWith({ data }) {
   return (
     <section className="relative overflow-hidden bg-white py-20">
       {/* Top accent line */}
-      <div className="absolute left-0 top-0 h-1 w-full bg-sky-500" />
+      <div className="absolute left-0 top-0 h-1 w-full" />
 
       <div className="mx-auto max-w-7xl px-4">
         {/* Heading */}

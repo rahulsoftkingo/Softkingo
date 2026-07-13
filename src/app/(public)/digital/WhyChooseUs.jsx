@@ -10,6 +10,7 @@ import {
   Globe2,
   ShieldCheck,
 } from "lucide-react";
+import CommonTitle from "@/components/ui/CommonTitle";
 
 const icons = [
   Rocket,
@@ -106,8 +107,7 @@ export default function WhyChooseUs({ data }) {
   return (
     <section
       ref={containerRef}
-      className="relative bg-white"
-      style={{ height: `calc(100vh + ${scrollDistance}px)` }}
+      className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200 py-20"
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-12 lg:flex-row lg:items-center">
@@ -119,13 +119,13 @@ export default function WhyChooseUs({ data }) {
             transition={{ duration: 0.6 }}
             className="flex flex-1 flex-col justify-center"
           >
-            <h2 className="text-4xl font-bold text-slate-900">
-              {title}
-            </h2>
+            
+            <CommonTitle
+              title={title}
+              subtitle={subtitle}
+              align="left"
+            />
 
-            <p className="mt-5 text-lg leading-8 text-slate-600">
-              {subtitle}
-            </p>
           </motion.div>
 
           {/* Progress Bar */}

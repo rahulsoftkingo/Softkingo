@@ -63,7 +63,7 @@ const tabs = [
         { title: "Education / E-Learning", href: "/solutions/elearning-app-development", icon: <FaGraduationCap /> },
         { title: "Real Estate", href: "/solutions/real-estate-app-development", icon: <FaBuilding /> },
         { title: "Travel & Tourism", href: "/solutions/travel-app-development", icon: <FaPlane /> },
-        { title: "Food & Restaurant", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
+        { title: "Food & Restaurant", href: "/solutions/restaurant-app-development", icon: <FaUtensils /> },
         { title: "Fitness & Wellness", href: "/solutions/fitness-app-development", icon: <FaDumbbell /> },
         { title: "Retail & E-Commerce", href: "/solutions/ecommerce-app-development", icon: <FaStore /> },
 

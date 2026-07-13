@@ -1,25 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Check,
   ChevronDown,
+  ChevronUp,
   Megaphone,
   Inbox,
   Sparkles,
   Target,
   Waypoints,
-  Zap,
   Users,
   Shield,
   Globe,
+  Layers,
 } from "lucide-react";
 
-// Map string icon names (as they'd arrive in JSON) to actual lucide components.
-// Add more entries here as new iconName values show up in your data source.
+/* -------------------------------------------------------------------------
+ * Icons
+ * ---------------------------------------------------------------------- */
 const ICON_MAP = {
   outbound: Megaphone,
   megaphone: Megaphone,
+  megaphor: Megaphone, // tolerate the "Megaphor" typo from source data
   inbound: Inbox,
   inbox: Inbox,
   enrichment: Sparkles,
@@ -27,7 +30,6 @@ const ICON_MAP = {
   execution: Target,
   target: Target,
   waypoints: Waypoints,
-  zap: Zap,
   users: Users,
   shield: Shield,
   globe: Globe,
@@ -39,188 +41,110 @@ function getIcon(iconName) {
   return ICON_MAP[key] || Sparkles;
 }
 
-// ---------------------------------------------------------------------------
-// Dummy/fallback data — used whenever a field (or the whole data prop) is
-// missing or empty, so the page never renders blank.
-// ---------------------------------------------------------------------------
-const DUMMY_DATA = {
-  topText:
-    "Build pipeline smarter, close deals faster, and unify your tech stack with an AI-powered platform.",
-  annualLabel: "Annual billing",
-  annualBadge: "SAVE 20%",
-  monthlyLabel: "Monthly billing",
-  tabsTitle: "Explore features by solution",
-  tabsSubtitle: "All tiers include every solution",
-  solutionTabs: [
-    { label: "Outbound", iconName: "megaphone" },
-    { label: "Inbound", iconName: "inbox" },
-    { label: "Data Enrichment", iconName: "sparkles" },
-    { label: "Deal Execution", iconName: "target" },
-  ],
-  plans: [
+// Used for the compare-table group headers, cycled the same way the
+// original ComparePlans component cycled GROUP_ICONS.
+const GROUP_ICONS = [Waypoints, Users, Sparkles, Shield, Layers];
+
+const badgeStyles = {
+  sky: "bg-sky-50 text-sky-700 border border-sky-200",
+  skyDark: "bg-sky-100 text-sky-800 border border-sky-300",
+  pink: "bg-pink-50 text-pink-600 border border-pink-200",
+};
+
+/* -------------------------------------------------------------------------
+ * Data
+ *
+ * The component is prop-driven now — call it like:
+ *
+ *   <PricingPage pricing={content.pricing} pricingCards={content.pricingCards} />
+ *
+ * `pricing`      -> the compare-table side: title / highlight / subtitle
+ *                   (section heading) + featureGroups (the accordion rows).
+ * `pricingCards` -> the plan-cards side: topText, billing-toggle labels,
+ *                   solutionTabs, and the `plans` array (used both for the
+ *                   cards up top AND as the column headers of the compare
+ *                   table below, since they're the same plans).
+ *
+ * `solutionTabs[i].id` and `pricing.featureGroups[i].id` are meant to line
+ * up so the "Compare all plans" button / tab clicks can open + scroll to
+ * the matching accordion section.
+ *
+ * The two constants below (DEFAULT_PRICING / DEFAULT_PRICING_CARDS) are
+ * only used as a fallback when the component isn't given props — they
+ * mirror the two JSON blobs supplied.
+ * ---------------------------------------------------------------------- */
+const DEFAULT_PRICING = {
+  title: "Pricing ",
+  highlight: "Plans",
+  subtitle: "sectino subutile ",
+
+  featureGroups: [
     {
-      name: "Free",
-      badge: null,
-      description:
-        "Explore the outreach platform to find leads, manage pipeline & close deals.",
-      price: "$0",
-      priceNote: "Free forever",
-      credits: "900 credits",
-      creditsNote: "per seat per year, granted monthly",
-      learnMoreLink: "#",
-      trialText: null,
-      highlighted: false,
-      primaryButton: { label: "Get started", link: "#" },
-      secondaryButton: null,
+      id: "1",
+      title: "outbound ",
+      description: "descrption ",
       features: [
-        { text: "AI Assistant (5 chats limit)", badge: null },
-        { text: "AI Research", badge: null },
-        { text: "2 Sequences", badge: null },
-        { text: "Prospecting, Gmail & Salesforce Extensions", badge: null },
-        { text: "Basic Filters", badge: null },
+        {
+          name: "feature 1",
+          badge: "Badge",
+          tone: "",
+          values: ["check ", "check "],
+          children: [],
+        },
+        {
+          name: "feature 2",
+          badge: "Badge ",
+          tone: "",
+          values: ["check", "check"],
+          children: [],
+        },
       ],
-      compareAllText: "Compare all plans",
-    },
-    {
-      name: "Basic",
-      badge: null,
-      description: "Take prospecting, outreach & data management to the next level.",
-      price: "$49",
-      priceNote: "Per seat per month, billed annually",
-      credits: "30,000 credits",
-      creditsNote: "per seat per year, granted upfront",
-      learnMoreLink: "#",
-      trialText: "Start 14-day trial",
-      highlighted: false,
-      primaryButton: { label: "Buy now", link: "#" },
-      secondaryButton: null,
-      features: [
-        { text: "AI Assistant", badge: "INTRODUCTORY FREE" },
-        { text: "AI Research & Lead Scoring", badge: null },
-        { text: "Unlimited Sequences", badge: null },
-        { text: "Deliverability Suite & Email Warmup", badge: null },
-        { text: "CRM Integrations", badge: null },
-        { text: "Waterfall Enrichment", badge: null },
-      ],
-      compareAllText: "Compare all plans",
-    },
-    {
-      name: "Professional",
-      badge: "MOST POPULAR",
-      description: "Optimize your sales process with multi-touch outreach, AI automation.",
-      price: "$79",
-      priceNote: "Per seat per month, billed annually",
-      credits: "48,000 credits",
-      creditsNote: "per seat per year, granted upfront",
-      learnMoreLink: "#",
-      trialText: "Start 14-day trial",
-      highlighted: true,
-      primaryButton: { label: "Buy now", link: "#" },
-      secondaryButton: null,
-      features: [
-        { text: "AI Assistant", badge: "INTRODUCTORY FREE" },
-        { text: "Unlimited Sequences & A/Z Testing", badge: null },
-        { text: "Automated Workflows", badge: null },
-        { text: "Projects", badge: "BETA" },
-        { text: "Call Recordings & AI Insights (4,000 mins)", badge: null },
-        { text: "Analytics & Pre-built Reports", badge: null },
-      ],
-      compareAllText: "Compare all plans",
-    },
-    {
-      name: "Organization",
-      badge: null,
-      description:
-        "Transform go-to-market with advanced tools, custom solutions & expert help.",
-      price: "$119",
-      priceNote: "Per seat per month, (min 3 seats) billed annually",
-      credits: "72,000 credits",
-      creditsNote: "per seat per year, granted upfront",
-      learnMoreLink: "#",
-      trialText: null,
-      highlighted: false,
-      primaryButton: { label: "Buy now", link: "#" },
-      secondaryButton: { label: "Talk to Sales", link: "#" },
-      features: [
-        { text: "Unlimited Meeting Events", badge: null },
-        { text: "Advanced Security Configurations", badge: null },
-        { text: "Single Sign-on (SSO)", badge: null },
-        { text: "Use your own ULP API key", badge: null },
-        { text: "Customizable Reports & Dashboards", badge: null },
-      ],
-      compareAllText: "Compare all plans",
     },
   ],
 };
 
-// Fill in any missing/empty field on `value` using the corresponding field on `fallback`.
-function withFallback(value, fallback) {
-  if (value === undefined || value === null || value === "") return fallback;
-  if (Array.isArray(value) && value.length === 0) return fallback;
-  return value;
-}
+const DEFAULT_PRICING_CARDS = {
+  topText: "Build Pipelines ",
+  annualLabel: "Annual Billing ",
+  annualBadge: "SAVE 20%",
+  monthlyLabel: "Monthly Billing",
+  tabsTitle: "Tabs Bar Title ",
+  tabsSubtitle: "Tabs Bar Subsutein ",
 
-function normalizeFeature(feature, fallbackFeature) {
-  const f = feature || {};
-  return {
-    text: withFallback(f.text, fallbackFeature?.text ?? "Feature"),
-    badge: withFallback(f.badge, null),
-  };
-}
+  solutionTabs: [
+    { id: "1", label: "outbound", iconName: "Megaphor" },
+    { id: "2", label: "outbound", iconName: "Megaphor" },
+    { id: "3", label: "outbound", iconName: "Megaphos" },
+  ],
 
-function normalizePlan(plan, fallbackPlan) {
-  const p = plan || {};
-  const features =
-    Array.isArray(p.features) && p.features.length > 0
-      ? p.features.map((f, i) => normalizeFeature(f, fallbackPlan.features[i]))
-      : fallbackPlan.features;
+  plans: [
+    {
+      name: "descrittion",
+      badge: "bage",
+      description: "dfafe",
+      price: "79",
+      priceNote: "Rahul ",
+      credits: "credits",
+      creditsNote: "note ",
+      learnMoreLink: "link",
+      trialText: "text",
+      highlighted: true,
+      primaryButton: { label: "label ", link: "link " },
+      secondaryButton: { label: "link", link: "link " },
+      features: [
+        { text: "feature ", badge: "badge " },
+        { text: "feature 2 ", badge: "badge" },
+        { text: "feature 3", badge: "badge" },
+      ],
+      compareAllText: "compare all plans ",
+    },
+  ],
+};
 
-  return {
-    name: withFallback(p.name, fallbackPlan.name),
-    badge: withFallback(p.badge, fallbackPlan.badge),
-    description: withFallback(p.description, fallbackPlan.description),
-    price: withFallback(p.price, fallbackPlan.price),
-    priceNote: withFallback(p.priceNote, fallbackPlan.priceNote),
-    credits: withFallback(p.credits, fallbackPlan.credits),
-    creditsNote: withFallback(p.creditsNote, fallbackPlan.creditsNote),
-    learnMoreLink: withFallback(p.learnMoreLink, fallbackPlan.learnMoreLink),
-    trialText: withFallback(p.trialText, fallbackPlan.trialText),
-    highlighted: p.highlighted ?? fallbackPlan.highlighted,
-    primaryButton: withFallback(p.primaryButton, fallbackPlan.primaryButton),
-    secondaryButton: withFallback(p.secondaryButton, fallbackPlan.secondaryButton),
-    features,
-    compareAllText: withFallback(p.compareAllText, fallbackPlan.compareAllText),
-  };
-}
-
-function normalizeData(data) {
-  const d = data || {};
-
-  const solutionTabs =
-    Array.isArray(d.solutionTabs) && d.solutionTabs.length > 0
-      ? d.solutionTabs.map((tab, i) => ({
-          label: withFallback(tab?.label, DUMMY_DATA.solutionTabs[i % DUMMY_DATA.solutionTabs.length].label),
-          iconName: withFallback(tab?.iconName, DUMMY_DATA.solutionTabs[i % DUMMY_DATA.solutionTabs.length].iconName),
-        }))
-      : DUMMY_DATA.solutionTabs;
-
-  const plans =
-    Array.isArray(d.plans) && d.plans.length > 0
-      ? d.plans.map((plan, i) => normalizePlan(plan, DUMMY_DATA.plans[i % DUMMY_DATA.plans.length]))
-      : DUMMY_DATA.plans;
-
-  return {
-    topText: withFallback(d.topText, DUMMY_DATA.topText),
-    annualLabel: withFallback(d.annualLabel, DUMMY_DATA.annualLabel),
-    annualBadge: withFallback(d.annualBadge, DUMMY_DATA.annualBadge),
-    monthlyLabel: withFallback(d.monthlyLabel, DUMMY_DATA.monthlyLabel),
-    tabsTitle: withFallback(d.tabsTitle, DUMMY_DATA.tabsTitle),
-    tabsSubtitle: withFallback(d.tabsSubtitle, DUMMY_DATA.tabsSubtitle),
-    solutionTabs,
-    plans,
-  };
-}
-
+/* -------------------------------------------------------------------------
+ * Pricing-card feature row (identical markup/classes to the original
+ * PricingPage's FeatureItem)
+ * ---------------------------------------------------------------------- */
 function FeatureItem({ feature }) {
   return (
     <li className="flex items-start gap-2 py-1.5 text-sm text-slate-700">
@@ -243,190 +167,464 @@ function FeatureItem({ feature }) {
   );
 }
 
-/**
- * PricingPage
- *
- * Fully data-driven pricing page. Pass a `data` prop shaped like:
- * {
- *   topText, annualLabel, annualBadge, monthlyLabel,
- *   tabsTitle, tabsSubtitle,
- *   solutionTabs: [{ label, iconName }],
- *   plans: [{
- *     name, badge, description, price, priceNote,
- *     credits, creditsNote, learnMoreLink, trialText, highlighted,
- *     primaryButton: { label, link },
- *     secondaryButton: { label, link } | null,
- *     features: [{ text, badge }],
- *     compareAllText,
- *   }],
- * }
- *
- * Any field that's missing, null, or an empty string/array falls back to
- * built-in dummy content so the page never renders blank/broken.
- */
-export default function PricingPage({ data }) {
-  const content = normalizeData(data);
-  const [billing, setBilling] = useState("annual");
-  const [activeTab, setActiveTab] = useState(0);
+/* -------------------------------------------------------------------------
+ * Compare-table cell (identical logic/classes to the original ComparePlans)
+ * ---------------------------------------------------------------------- */
+function normalizeValue(raw) {
+  if (raw === null || raw === undefined) return null;
+  if (typeof raw === "boolean") return raw ? true : null;
+  const str = String(raw).trim();
+  if (str === "") return null;
+  const lower = str.toLowerCase();
+  if (lower === "check" || lower === "true" || lower === "yes") return true;
+  if (lower === "false" || lower === "no") return null;
+  return str;
+}
+
+function Cell({ value }) {
+  const normalized = normalizeValue(value);
+  if (normalized === true) {
+    return (
+      <div className="flex justify-center">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900">
+          <Check className="h-3.5 w-3.5 text-white" strokeWidth={3} />
+        </span>
+      </div>
+    );
+  }
+  if (normalized === null) return <div />;
+  return <p className="text-center text-sm text-amber-700">{normalized}</p>;
+}
+
+/* -------------------------------------------------------------------------
+ * A single feature row inside the compare table. Supports an optional
+ * `children` array so a row (e.g. "Forms") can itself expand into its own
+ * nested sub-accordion, same as in the screenshot.
+ * ---------------------------------------------------------------------- */
+function FeatureRow({ feature, groupId, index, plans, openFeatures, toggleFeature, depth = 0, parentKey = "" }) {
+  const rowKey = parentKey ? `${parentKey}.${index}` : `${groupId}:${index}`;
+  const hasChildren = Array.isArray(feature.children) && feature.children.length > 0;
+  const isOpen = !!openFeatures[rowKey];
+  const gridStyle = { gridTemplateColumns: `1.6fr repeat(${plans.length}, 1fr)` };
+  const labelClass = `text-sm ${depth > 0 ? "text-amber-700" : "text-slate-800"}`;
 
   return (
-    <section className="bg-white px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Top intro line */}
-        <p className="ml-auto max-w-md text-right text-sm leading-relaxed text-slate-600">
-          {content.topText}
-        </p>
-
-        {/* Billing toggle */}
-        <div className="mt-4 flex justify-end">
-          <div className="inline-flex items-center rounded-full border border-slate-200 p-1">
+    <>
+      <div className="grid items-center gap-4 border-b border-slate-100 px-4 py-3.5" style={gridStyle}>
+        <div className="flex items-center gap-2" style={{ paddingLeft: depth * 20 }}>
+          {hasChildren ? (
             <button
               type="button"
-              onClick={() => setBilling("annual")}
-              className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                billing === "annual" ? "bg-slate-900 text-white" : "text-slate-600"
-              }`}
+              onClick={() => toggleFeature(rowKey)}
+              className="flex items-center gap-1.5 text-left"
             >
-              {content.annualLabel}
-              {content.annualBadge && (
-                <span className="rounded bg-yellow-300 px-1.5 py-0.5 text-[10px] font-bold text-slate-900">
-                  {content.annualBadge}
-                </span>
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={() => setBilling("monthly")}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                billing === "monthly" ? "bg-slate-900 text-white" : "text-slate-600"
-              }`}
-            >
-              {content.monthlyLabel}
-            </button>
-          </div>
-        </div>
-
-        {/* Solutions tabs */}
-        <div className="mt-10 rounded-xl border border-slate-200 p-4">
-          <p className="text-xs text-slate-500">
-            {content.tabsTitle}
-            <span className="block text-[11px] text-slate-400">{content.tabsSubtitle}</span>
-          </p>
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {content.solutionTabs.map((tab, i) => {
-              const Icon = getIcon(tab.iconName);
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setActiveTab(i)}
-                  className={`flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
-                    activeTab === i
-                      ? "border-yellow-300 bg-yellow-50 text-slate-900"
-                      : "border-slate-100 text-slate-500 hover:text-slate-900"
+              <p className={labelClass}>{feature.name}</p>
+              {feature.badge && (
+                <span
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                    badgeStyles[feature.tone] || badgeStyles.sky
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
-                  {tab.label}
+                  {feature.badge}
+                </span>
+              )}
+              {isOpen ? (
+                <ChevronUp className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+              ) : (
+                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400" />
+              )}
+            </button>
+          ) : (
+            <>
+              <p className={labelClass}>{feature.name}</p>
+              {feature.badge && (
+                <span
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                    badgeStyles[feature.tone] || badgeStyles.sky
+                  }`}
+                >
+                  {feature.badge}
+                </span>
+              )}
+            </>
+          )}
+        </div>
+
+        {plans.map((_, idx) => (
+          <Cell key={idx} value={feature.values?.[idx]} />
+        ))}
+      </div>
+
+      {hasChildren &&
+        isOpen &&
+        feature.children.map((child, ci) => (
+          <FeatureRow
+            key={ci}
+            feature={child}
+            groupId={groupId}
+            index={ci}
+            plans={plans}
+            openFeatures={openFeatures}
+            toggleFeature={toggleFeature}
+            depth={depth + 1}
+            parentKey={rowKey}
+          />
+        ))}
+    </>
+  );
+}
+
+/* -------------------------------------------------------------------------
+ * Main component
+ * ---------------------------------------------------------------------- */
+export default function PricingPage({
+  pricing = DEFAULT_PRICING,
+  pricingCards = DEFAULT_PRICING_CARDS,
+}) {
+  const [billing, setBilling] = useState("annual");
+  const [activeTabId, setActiveTabId] = useState(pricingCards.solutionTabs[0]?.id);
+  const [openSections, setOpenSections] = useState(() => {
+    const initial = {};
+    pricing.featureGroups.forEach((g, i) => (initial[g.id] = i === 0));
+    return initial;
+  });
+  const [justJumped, setJustJumped] = useState(null);
+  const [openFeatures, setOpenFeatures] = useState({});
+
+  const compareRef = useRef(null);
+  const sectionRefs = useRef({});
+
+  function toggleSection(id) {
+    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
+    setActiveTabId(id);
+  }
+
+  function toggleFeature(key) {
+    setOpenFeatures((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  function goToCompare(targetId) {
+    setActiveTabId(targetId);
+    setOpenSections((prev) => {
+      const next = {};
+      pricing.featureGroups.forEach((g) => (next[g.id] = g.id === targetId));
+      return next;
+    });
+    setJustJumped(targetId);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const node = sectionRefs.current[targetId] || compareRef.current;
+        node?.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => setJustJumped(null), 1400);
+      });
+    });
+  }
+
+  return (
+    <div className="bg-white">
+      {/* ============================= PRICING ============================= */}
+      <section className="bg-gradient-to-br from-white via-sky-50 to-sky-200 py-20 px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          {/* New heading, driven by title / highlight / subtitle */}
+          {(pricing.title || pricing.highlight || pricing.subtitle) && (
+            <div className="mb-6 text-center">
+              <h2 className="text-3xl font-semibold text-slate-900">
+                {pricing.title}
+                {pricing.highlight && (
+                  <span className="text-sky-600"> {pricing.highlight}</span>
+                )}
+              </h2>
+              {pricing.subtitle && (
+                <p className="mt-2 text-sm text-slate-500">{pricing.subtitle}</p>
+              )}
+            </div>
+          )}
+
+          {/* Top intro line */}
+          <p className="ml-auto max-w-md text-right text-sm leading-relaxed text-slate-600">
+            {pricingCards.topText}
+          </p>
+
+          {/* Billing toggle */}
+          <div className="mt-4 flex justify-end">
+            <div className="inline-flex items-center rounded-full border border-slate-200 p-1">
+              <button
+                type="button"
+                onClick={() => setBilling("annual")}
+                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  billing === "annual" ? "bg-slate-900 text-white" : "text-slate-600"
+                }`}
+              >
+                {pricingCards.annualLabel}
+                {pricingCards.annualBadge && (
+                  <span className="rounded bg-yellow-300 px-1.5 py-0.5 text-[10px] font-bold text-slate-900">
+                    {pricingCards.annualBadge}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => setBilling("monthly")}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  billing === "monthly" ? "bg-slate-900 text-white" : "text-slate-600"
+                }`}
+              >
+                {pricingCards.monthlyLabel}
+              </button>
+            </div>
+          </div>
+
+          {/* Solutions tabs */}
+          <div className="mt-10 rounded-xl border border-slate-200 p-4">
+            <p className="text-xs text-slate-500">
+              {pricingCards.tabsTitle}
+              <span className="block text-[11px] text-slate-400">{pricingCards.tabsSubtitle}</span>
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {pricingCards.solutionTabs.map((tab) => {
+                const Icon = getIcon(tab.iconName);
+                const active = activeTabId === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveTabId(tab.id)}
+                    className={`flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
+                      active
+                        ? "border-yellow-300 bg-yellow-50 text-slate-900"
+                        : "border-slate-100 text-slate-500 hover:text-slate-900"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Plans */}
+          <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-4">
+            {pricingCards.plans.map((plan, i) => (
+              <div
+                key={i}
+                className={`relative flex flex-col rounded-2xl border p-5 ${
+                  plan.highlighted
+                    ? "border-sky-400 bg-sky-100 shadow-md"
+                    : "border-slate-200 bg-white"
+                }`}
+              >
+                {plan.badge && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-slate-900 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
+                    {plan.badge}
+                  </span>
+                )}
+
+                <p className="text-md font-medium text-slate-900">{plan.name}</p>
+                <p className="mt-1.5 min-h-[36px] text-xs leading-relaxed text-slate-500">
+                  {plan.description}
+                </p>
+
+                <p className="mt-4 text-3xl font-medium text-slate-900">{plan.price}</p>
+                <p className="mt-1 min-h-[32px] text-xs leading-relaxed text-slate-500">
+                  {plan.priceNote}
+                </p>
+
+                <div className="mt-3 flex items-start gap-1.5 text-xs text-slate-500">
+                  <Waypoints className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  <span>
+                    <span className="font-medium text-slate-700">{plan.credits}</span>
+                    <br />
+                    {plan.creditsNote}
+                    <br />
+                    {plan.learnMoreLink && (
+                      <a
+                        href={plan.learnMoreLink}
+                        className="underline underline-offset-2 hover:text-slate-700"
+                      >
+                        Learn more
+                      </a>
+                    )}
+                  </span>
+                </div>
+
+                {plan.primaryButton && (
+                  <a
+                    href={plan.primaryButton.link || "#"}
+                    className={`mt-4 block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
+                      plan.highlighted
+                        ? "bg-slate-900 text-white hover:bg-slate-800"
+                        : "bg-sky-500 text-white hover:bg-sky-600"
+                    }`}
+                  >
+                    {plan.primaryButton.label}
+                  </a>
+                )}
+
+                {plan.trialText && (
+                  <p className="mt-2 text-center text-xs text-slate-500">{plan.trialText}</p>
+                )}
+
+                {plan.secondaryButton && (
+                  <a
+                    href={plan.secondaryButton.link || "#"}
+                    className="mt-2 block rounded-md border border-slate-300 px-4 py-2 text-center text-sm font-medium text-slate-900 transition-colors hover:bg-slate-50"
+                  >
+                    {plan.secondaryButton.label}
+                  </a>
+                )}
+
+                <ul className="mt-5 divide-y divide-slate-100 border-t border-slate-100">
+                  {plan.features.map((feature, j) => (
+                    <FeatureItem key={j} feature={feature} />
+                  ))}
+                </ul>
+
+                <button
+                  type="button"
+                  onClick={() => goToCompare(activeTabId)}
+                  className="mt-4 flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900"
+                >
+                  {plan.compareAllText}
+                  <ChevronDown className="h-3.5 w-3.5" />
                 </button>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-8 text-center text-xs text-slate-400">
+            Prices exclude any applicable taxes.
+          </p>
+        </div>
+      </section>
+
+      {/* ============================= COMPARE ============================= */}
+      <section ref={compareRef} className="scroll-mt-6 bg-white px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center">
+            <h2 className="text-3xl font-semibold text-slate-900">
+              Compare <span className="text-sky-600">our plans</span>
+            </h2>
+          </div>
+
+          <div className="sticky top-[73px] z-30 mt-6 bg-white pb-4 pt-2">
+            <div
+              className="grid gap-4"
+              style={{ gridTemplateColumns: `1.6fr repeat(${pricingCards.plans.length}, 1fr)` }}
+            >
+              <div />
+              {pricingCards.plans.map((plan, i) => (
+                <div key={i} className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <p className="text-md font-medium text-slate-900">{plan.name}</p>
+                    {plan.badge && (
+                      <span className="rounded bg-sky-100 px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-sky-800">
+                        {plan.badge}
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="mt-2 text-2xl font-medium text-slate-900">{plan.price}</p>
+
+                  {plan.priceNote && (
+                    <p className="mt-2 min-h-[32px] text-xs leading-relaxed text-slate-500">
+                      {plan.priceNote}
+                    </p>
+                  )}
+
+                  {plan.credits && (
+                    <div className="mt-3 flex items-start gap-1.5 text-xs text-slate-500">
+                      <Waypoints className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                      <span>
+                        <span className="font-medium text-slate-700">{plan.credits}</span>
+                        {plan.creditsNote && (
+                          <>
+                            <br />
+                            {plan.creditsNote}
+                          </>
+                        )}
+                      </span>
+                    </div>
+                  )}
+
+                  {plan.primaryButton && (
+                    <a
+                      href={plan.primaryButton.link || "#"}
+                      className={`mt-4 inline-block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
+                        plan.highlighted
+                          ? "bg-slate-900 text-white hover:bg-slate-800"
+                          : "bg-sky-300 text-slate-900 hover:bg-sky-400"
+                      }`}
+                    >
+                      {plan.primaryButton.label}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            {pricing.featureGroups.map((group, gi) => {
+              const IconComponent = GROUP_ICONS[gi % GROUP_ICONS.length];
+              const isOpen = openSections[group.id];
+              const isFlashing = justJumped === group.id;
+
+              return (
+                <div
+                  key={group.id}
+                  ref={(el) => (sectionRefs.current[group.id] = el)}
+                  className={`scroll-mt-24 rounded-lg border overflow-hidden transition-shadow ${
+                    isFlashing ? "border-yellow-300 ring-2 ring-yellow-200" : "border-slate-100"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleSection(group.id)}
+                    className="flex w-full items-center justify-between gap-3 bg-slate-50 px-4 py-4 transition-colors hover:bg-slate-100/70"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-sky-300 shrink-0">
+                        <IconComponent className="h-4 w-4 text-slate-900" />
+                      </span>
+                      <div className="text-left">
+                        <p className="text-md font-medium text-slate-900">{group.title}</p>
+                        {group.description && (
+                          <p className="text-xs leading-relaxed text-slate-500 max-w-2xl">
+                            {group.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {isOpen ? (
+                      <ChevronUp className="h-4 w-4 shrink-0 text-slate-500" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4 shrink-0 text-slate-500" />
+                    )}
+                  </button>
+
+                  {isOpen && (
+                    <div className="bg-white">
+                      {group.features.map((feature, fi) => (
+                        <FeatureRow
+                          key={fi}
+                          feature={feature}
+                          groupId={group.id}
+                          index={fi}
+                          plans={pricingCards.plans}
+                          openFeatures={openFeatures}
+                          toggleFeature={toggleFeature}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
         </div>
-
-        {/* Plans */}
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-4">
-          {content.plans.map((plan, i) => (
-            <div
-              key={i}
-              className={`relative flex flex-col rounded-2xl border p-5 ${
-                plan.highlighted
-                  ? "border-sky-400 bg-sky-100 shadow-md"
-                  : "border-slate-200 bg-white"
-              }`}
-            >
-              {plan.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-slate-900 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                  {plan.badge}
-                </span>
-              )}
-
-              <p className="text-md font-medium text-slate-900">{plan.name}</p>
-              <p className="mt-1.5 min-h-[36px] text-xs leading-relaxed text-slate-500">
-                {plan.description}
-              </p>
-
-              <p className="mt-4 text-3xl font-medium text-slate-900">{plan.price}</p>
-              <p className="mt-1 min-h-[32px] text-xs leading-relaxed text-slate-500">
-                {plan.priceNote}
-              </p>
-
-              <div className="mt-3 flex items-start gap-1.5 text-xs text-slate-500">
-                <Waypoints className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                <span>
-                  <span className="font-medium text-slate-700">{plan.credits}</span>
-                  <br />
-                  {plan.creditsNote}
-                  <br />
-                  {plan.learnMoreLink && (
-                    <a
-                      href={plan.learnMoreLink}
-                      className="underline underline-offset-2 hover:text-slate-700"
-                    >
-                      Learn more
-                    </a>
-                  )}
-                </span>
-              </div>
-
-              {plan.primaryButton && (
-                <a
-                  href={plan.primaryButton.link || "#"}
-                  className={`mt-4 block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
-                    plan.highlighted
-                      ? "bg-slate-900 text-white hover:bg-slate-800"
-                      : "bg-sky-500 text-white hover:bg-sky-600"
-                  }`}
-                >
-                  {plan.primaryButton.label}
-                </a>
-              )}
-
-              {plan.trialText && (
-                <p className="mt-2 text-center text-xs text-slate-500">{plan.trialText}</p>
-              )}
-
-              {plan.secondaryButton && (
-                <a
-                  href={plan.secondaryButton.link || "#"}
-                  className="mt-2 block rounded-md border border-slate-300 px-4 py-2 text-center text-sm font-medium text-slate-900 transition-colors hover:bg-slate-50"
-                >
-                  {plan.secondaryButton.label}
-                </a>
-              )}
-
-              <ul className="mt-5 divide-y divide-slate-100 border-t border-slate-100">
-                {plan.features.map((feature, j) => (
-                  <FeatureItem key={j} feature={feature} />
-                ))}
-              </ul>
-
-              <button
-                type="button"
-                className="mt-4 flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900"
-              >
-                {plan.compareAllText}
-                <ChevronDown className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {/* Footer note */}
-        <p className="mt-8 text-center text-xs text-slate-400">
-          Prices exclude any applicable taxes.
-        </p>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

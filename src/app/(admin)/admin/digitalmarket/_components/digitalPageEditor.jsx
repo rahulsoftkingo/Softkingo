@@ -438,6 +438,8 @@ import {
 import dynamic from 'next/dynamic';
 import DigitalEditor from "./digitalEditor";
 
+
+
 const AdvancedTipTapEditor = dynamic(() => import('../../blog/AdvancedTipTapEditor'), {
     ssr: false,
 });
@@ -512,12 +514,12 @@ export default function DigitalPageEditor({ data, onBack }) {
         sections: [
             { id: 'hero', label: '1. Hero Section', icon: Smartphone },
             { id: 'services', label: '2. Service Categories', icon: Layout },
-            { id: 'servicesList', label: '3. Extensive Services Provided', icon: Briefcase },
+            { id: 'servicesList', label: '3. Extensive Services', icon: Briefcase },
             { id: 'industries', label: '4. Industries We Serve', icon: Layers },
             { id: 'features', label: '5. Core Features Grid', icon: Database },
             { id: 'seo', label: '6. SEO Settings', icon: Search },
-            { id: 'pricing', label: '7. Pricing / Compare Plans', icon: DollarSign },
-            { id: 'pricingCards', label: '8. Pricing Cards (Solutions Tabs)', icon: CheckCircle2 },
+            { id: 'pricingCards', label: '7. Pricing Cards Tabs', icon: CheckCircle2 },
+            { id: 'pricing', label: '8. Pricing / Compare Plans', icon: DollarSign },        
             // { id: 'stats', label: '9. Stats Section', icon: BarChart3 },
             // { id: 'awards', label: '10. Awards Section', icon: Award },
             // { id: 'consultation', label: '11. Consultation CTA', icon: TrendingUp },
