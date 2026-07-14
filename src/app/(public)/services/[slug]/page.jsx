@@ -740,6 +740,7 @@ export default async function ServicePage({ params }) {
   }
 
   const jsonContent = service.contentJson ? JSON.parse(service.contentJson) : {};
+  console.log("JSON Content ",jsonContent)
 
 
   function extractAllImages(obj) {

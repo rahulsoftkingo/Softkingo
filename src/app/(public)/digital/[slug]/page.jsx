@@ -5,14 +5,17 @@ import DigitalMarketingServices from "../DigitalMarketingServices";
 import AppFeatures from "../AppFeatures";
 import PlanFeatures from "../PlanFeatures";
 import WhyChooseUs from "../WhyChooseUs";
+import WorkflowAddOns from "../WorkFlowAddons";
 import TaxiHero from "../TaxiHero";
 import SeoIndustries from "../SeoIndustries";
 import SeoServicesSlider from "../SeoServicesSlider";
+import ServicesByCompany from "../ServicesByCompany"
 import PricingPage from "../PricingPage";
 import CuttingEdgeTech from "../CuttingEdgeTech";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import FAQAccordion from "@/components/common/Faqaccordion";
 import InquirySection from "@/components/footer/InquirySection";
+
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -88,6 +91,8 @@ export default async function Page({ params }) {
         }}
       />
 
+      <ServicesByCompany data={content.enterpriseMarketing} />
+
       <DigitalMarketingServices data={content.services} />
 
       <WhyChooseUs data={content.servicesList} />
@@ -100,9 +105,11 @@ export default async function Page({ params }) {
 
       <CuttingEdgeTech data={content.tech} />
 
-      <PricingPage pricing={content.pricing} pricingCards={content.pricingCards} />
-
-      {/* <PlanFeatures data={content.pricing} /> */}
+      <PricingPage/>
+      
+      <WorkflowAddOns  />
+            
+      <PlanFeatures data={content.pricing} />
 
       <ConsultationCTA
         title={content.consultation?.title}

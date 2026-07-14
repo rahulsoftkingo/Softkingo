@@ -130,12 +130,12 @@ const Footer = () => {
                   <img
                     src="/images/ISO-9001.webp"
                     alt="ISO 9001:2015"
-                    className="w-24 h-24 object-contain border border-gray-300 rounded-md bg-white p-2"
+                    className="w-20 h-20 object-contain border border-gray-300 rounded-md bg-white p-2"
                   />
                   <img
                     src="/images/msme.webp"
                     alt="MSME"
-                    className="w-24 h-24 object-contain border border-gray-300 rounded-md bg-white p-2"
+                    className="w-20 h-20 object-contain border border-gray-300 rounded-md bg-white p-2"
                   />
                 </div>
               </div>

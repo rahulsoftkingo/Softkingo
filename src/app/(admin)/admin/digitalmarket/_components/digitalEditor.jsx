@@ -5,8 +5,9 @@ import {
     Smartphone, Layout, Database, Code, Settings, Zap,
     BarChart3, ShieldCheck, DollarSign, Plus, X, Trash2,
     HelpCircle, Briefcase, MousePointerClick, Award, MessageSquare, Globe, Search,
-    Image as ImageIcon, TrendingUp, Layers, BookOpen, CheckCircle2   // 👈 add kiya
+    Image as ImageIcon, TrendingUp, Layers, BookOpen, CheckCircle2, Puzzle, Share2
 } from "lucide-react";
+
 import { COMMON_TECH } from '../../solutions/_components/TechConstants';
 
 // --- 1. GLOBAL STYLES ---
@@ -243,7 +244,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
             {/* 9. TECH STACK / TECHNOLOGIES USED */}
-            <SectionWrapper id="tech" icon={Code} title="9. Tech Stack" activeSections={activeSections}>
+            {/* <SectionWrapper id="tech" icon={Code} title="9. Tech Stack" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.tech?.subtitle || ''} onChange={e => updateField('content.tech.subtitle', e.target.value)} />
@@ -269,7 +270,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                     ))}
                     <button type="button" onClick={() => updateField('content.tech.items', (prev) => [...(prev || []), { name: "", category: "", description: "", icon: "" }])} className="text-sm font-bold text-sky-600">+ Add Technology</button>
                 </div>
-            </SectionWrapper>
+            </SectionWrapper> */}
 
             {/* 4. Industries with we works */}
             <SectionWrapper
@@ -464,7 +465,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
             {/* Pricing Cards Sections */}
             {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
-            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="7.  Pricing Cards 2(Solutions Tabs)" activeSections={activeSections}>
+            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="7.  Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
 
                 {/* TOP TEXT + BILLING TOGGLE LABELS */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -757,7 +758,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 5. STATISTICS */}
-            <SectionWrapper id="stats" icon={BarChart3} title="6. Statistics Section" activeSections={activeSections}>
+            {/* <SectionWrapper id="stats" icon={BarChart3} title="6. Statistics Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <label className={labelStyle}>Primary Metrics</label>
@@ -801,15 +802,15 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                 <input className={inputStyle} placeholder="Client Rating" value={content.stats?.ratingLabel || ''} onChange={e => updateField('content.stats.ratingLabel', e.target.value)} />
                             </div>
                         </div>
-                    </div>
-                    <div className="space-y-4">
+                    </div> */}
+                    {/* <div className="space-y-4"> */}
                         {/* Images removed as per request */}
-                    </div>
-                </div>
-            </SectionWrapper>
+                    {/* </div> */}
+                {/* </div> */}
+            {/* </SectionWrapper> */}
 
             {/* 7. AWARDS SECTION */}
-            <SectionWrapper id="awards" icon={Award} title="7. Awards Section" activeSections={activeSections}>
+            {/* <SectionWrapper id="awards" icon={Award} title="7. Awards Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title (e.g. Our)" value={content.awards?.title || ''} onChange={e => updateField('content.awards.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Gradient Text (e.g. Awards & Recognitions)" value={content.awards?.gradientText || ''} onChange={e => updateField('content.awards.gradientText', e.target.value)} />
@@ -831,10 +832,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         <Plus size={20} /> Add Award
                     </button>
                 </div>
-            </SectionWrapper>
+            </SectionWrapper> */}
 
             {/* 8. CONSULTATION CTA */}
-            <SectionWrapper id="consultation" icon={TrendingUp} title="8. Consultation CTA" activeSections={activeSections}>
+            {/* <SectionWrapper id="consultation" icon={TrendingUp} title="8. Consultation CTA" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
@@ -845,7 +846,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         <MediaInput label="Consultant Image" value={content.consultation?.imageSrc} path="content.consultation.imageSrc" />
                     </div>
                 </div>
-            </SectionWrapper>
+            </SectionWrapper> */}
 
             {/* 9. TECH STACK (TABBED) */}
             {/* <SectionWrapper id="tech" icon={Code} title="9. Tech Stack (Tabbed)" activeSections={activeSections}>
@@ -904,8 +905,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper> */}
 
-            {/* 10. PROCESS */}
-            <SectionWrapper id="process" icon={Settings} title="10. Our Process" activeSections={activeSections}>
+          
+            {/* <SectionWrapper id="process" icon={Settings} title="10. Our Process" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.process?.title || ''} onChange={e => updateField('content.process.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.process?.subtitle || ''} onChange={e => updateField('content.process.subtitle', e.target.value)} />
@@ -918,12 +919,12 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                             <div className="flex gap-4 items-center mb-2">
                                 <div className="w-10 h-10 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-sm shrink-0">{i + 1}</div>
                                 <input className={inputStyle} placeholder="Step Title" value={step.title || ''} onChange={e => updateField(`content.process.items.${i}.title`, e.target.value)} />
-                            </div>
-
-                            <textarea className={inputStyle} placeholder="Step Description" value={step.description || ''} onChange={e => updateField(`content.process.items.${i}.description`, e.target.value)} />
+                            </div> */}
+{/* 
+                            <textarea className={inputStyle} placeholder="Step Description" value={step.description || ''} onChange={e => updateField(`content.process.items.${i}.description`, e.target.value)} /> */}
 
                             {/* Bullets List */}
-                            <div className="bg-white p-4 rounded-xl border border-slate-100 space-y-3">
+                            {/* <div className="bg-white p-4 rounded-xl border border-slate-100 space-y-3">
                                 <label className={labelStyle}>Features / Details (Bullets)</label>
                                 <div className="space-y-2">
                                     {(step.bullets || []).map((bullet, j) => (
@@ -935,90 +936,14 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                     <button type="button" onClick={() => updateField(`content.process.items.${i}.bullets`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Detail Bullet</button>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        </div> */}
+                    {/* ))}
                     <button type="button" onClick={() => updateField('content.process.items', (prev) => [...(prev || []), { title: "", description: "", bullets: [] }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 hover:text-sky-600 font-bold uppercase tracking-tight">+ Add Process Step</button>
-                </div>
-            </SectionWrapper>
-
-            {/* 11. SOLUTION HIGHLIGHT */}
-            <SectionWrapper id="highlight" icon={Zap} title="11. Solution Highlight (Mockup Design)" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Section Title</label>
-                        <input className={inputStyle} placeholder="Section Title" value={content.highlight?.title || ''} onChange={e => updateField('content.highlight.title', e.target.value)} />
-                    </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
-                        <MiniRichTextEditor value={content.highlight?.subtitle || ''} onChange={val => updateField('content.highlight.subtitle', val)} />
-                    </div>
-                </div>
-
-                <div className="space-y-6">
-                    {(content.highlight?.tabs || []).map((tab, i) => (
-                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
-                            <button type="button" onClick={() => updateField('content.highlight.tabs', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"><X size={20} /></button>
-
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className={labelStyle}>Tab Label</label>
-                                    <input className={inputStyle} placeholder="e.g. AI Predictions" value={tab.label || ''} onChange={e => updateField(`content.highlight.tabs.${i}.label`, e.target.value)} />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className={labelStyle}>Tab Icon (FaIcon Name)</label>
-                                    <input className={inputStyle} placeholder="e.g. FaRobot" value={tab.iconName || ''} onChange={e => updateField(`content.highlight.tabs.${i}.iconName`, e.target.value)} />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1">
-                                <label className={labelStyle}>Tab Description (Rich Text)</label>
-                                <MiniRichTextEditor value={tab.description || ''} onChange={val => updateField(`content.highlight.tabs.${i}.description`, val)} />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className={labelStyle}>Full Content Title</label>
-                                <input className={inputStyle} placeholder="e.g. AI Powered Intelligent Predictions" value={tab.fullTitle || ''} onChange={e => updateField(`content.highlight.tabs.${i}.fullTitle`, e.target.value)} />
-                            </div>
-
-                            {/* Features List */}
-                            <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
-                                <label className={labelStyle}>Feature Points</label>
-                                <div className="space-y-2">
-                                    {(tab.features || []).map((feature, j) => (
-                                        <div key={j} className="flex gap-2 items-center">
-                                            <input className="flex-1 p-2 bg-slate-50 border border-slate-100 rounded text-xs" placeholder="e.g. High precision models" value={feature || ''} onChange={e => updateField(`content.highlight.tabs.${i}.features.${j}`, e.target.value)} />
-                                            <button type="button" onClick={() => updateField(`content.highlight.tabs.${i}.features`, (prev) => prev.filter((_, idx) => idx !== j))}><X size={14} className="text-slate-300" /></button>
-                                        </div>
-                                    ))}
-                                    <button type="button" onClick={() => updateField(`content.highlight.tabs.${i}.features`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Feature</button>
-                                </div>
-                            </div>
-
-                            {/* Bottom Icons Row */}
-                            <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
-                                <label className={labelStyle}>Bottom Icons Row (Icons + Labels)</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {(tab.icons || []).map((iconObj, j) => (
-                                        <div key={j} className="flex gap-2 items-center bg-slate-50 p-2 rounded-lg border border-slate-200">
-                                            <input className="w-20 p-1.5 bg-white border rounded text-[10px]" placeholder="Icon Name" value={iconObj.iconName || ''} onChange={e => updateField(`content.highlight.tabs.${i}.icons.${j}.iconName`, e.target.value)} />
-                                            <input className="flex-1 p-1.5 bg-white border rounded text-[10px]" placeholder="Label" value={iconObj.label || ''} onChange={e => updateField(`content.highlight.tabs.${i}.icons.${j}.label`, e.target.value)} />
-                                            <button type="button" onClick={() => updateField(`content.highlight.tabs.${i}.icons`, (prev) => prev.filter((_, idx) => idx !== j))}><X size={12} className="text-slate-400" /></button>
-                                        </div>
-                                    ))}
-                                    <button type="button" onClick={() => updateField(`content.highlight.tabs.${i}.icons`, (prev) => [...(prev || []), { iconName: "FaRobot", label: "" }])} className="text-[10px] font-black text-sky-600 border border-dashed border-sky-200 rounded-lg p-2">+ Add Icon</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.highlight.tabs', (prev) => [...(prev || []), { label: "", iconName: "FaRobot", fullTitle: "", features: [], icons: [] }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
-                        <Plus size={20} /> Add New Tab
-                    </button>
-                </div>
-            </SectionWrapper>
-
+                </div> */}
+            {/* </SectionWrapper> */}
+           
             {/* 12. PORTFOLIO */}
-            <SectionWrapper id="portfolio" icon={Globe} title="12. Portfolio Section" activeSections={activeSections}>
+            {/* <SectionWrapper id="portfolio" icon={Globe} title="12. Portfolio Section" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.portfolioTitle || ''} onChange={e => updateField('content.portfolioTitle', e.target.value)} />
@@ -1039,64 +964,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                     <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolioSubtitle || ''} onChange={e => updateField('content.portfolioSubtitle', e.target.value)} />
                     <p className="text-[10px] text-slate-400">Leave category blank → uses the page slug by default.</p>
                 </div>
-            </SectionWrapper>
+            </SectionWrapper> */}
 
             {/* 13. INDUSTRY SOLUTIONS */}
-            <SectionWrapper id="solutions" icon={Zap} title="13. Industry Solutions (Grid)" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Section Title</label>
-                        <input className={inputStyle} placeholder="Section Title" value={content.solutions?.title || ''} onChange={e => updateField('content.solutions.title', e.target.value)} />
-                    </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
-                        <MiniRichTextEditor value={content.solutions?.subtitle || ''} onChange={val => updateField('content.solutions.subtitle', val)} />
-                    </div>
-                </div>
-
-                <div className="space-y-6">
-                    {(content.solutions?.items || []).map((item, i) => (
-                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
-                            <button type="button" onClick={() => updateField('content.solutions.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"><X size={20} /></button>
-
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <label className={labelStyle}>Item Title</label>
-                                        <input className={inputStyle} placeholder="e.g. LGBTQ+ Dating Apps" value={item.itemTitle || ''} onChange={e => updateField(`content.solutions.items.${i}.itemTitle`, e.target.value)} />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className={labelStyle}>Item Description (Rich Text)</label>
-                                        <MiniRichTextEditor value={item.itemDesc || ''} onChange={val => updateField(`content.solutions.items.${i}.itemDesc`, val)} />
-                                    </div>
-
-                                    {/* Sub-points for this solution */}
-                                    <div className="bg-white p-3 rounded-lg border border-slate-100 space-y-2">
-                                        <label className={labelStyle}>Success Points / Features</label>
-                                        {(item.points || []).map((point, j) => (
-                                            <div key={j} className="flex gap-2">
-                                                <input className="flex-1 p-1.5 bg-slate-50 border rounded text-[10px]" placeholder="Feature point..." value={point || ''} onChange={e => updateField(`content.solutions.items.${i}.points.${j}`, e.target.value)} />
-                                                <button type="button" onClick={() => updateField(`content.solutions.items.${i}.points`, (prev) => prev.filter((_, idx) => idx !== j))}><X size={12} className="text-slate-300" /></button>
-                                            </div>
-                                        ))}
-                                        <button type="button" onClick={() => updateField(`content.solutions.items.${i}.points`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Point</button>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className={labelStyle}>Button Link</label>
-                                        <input className={inputStyle} placeholder="/contact or url" value={item.buttonLink || ''} onChange={e => updateField(`content.solutions.items.${i}.buttonLink`, e.target.value)} />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <MediaInput label="Background Image" value={item.itemImage} path={`content.solutions.items.${i}.itemImage`} />
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.solutions.items', (prev) => [...(prev || []), { itemTitle: "", itemDesc: "", itemImage: "", points: [], buttonLink: "" }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
-                        <Plus size={20} /> Add Solution Card
-                    </button>
-                </div>
-            </SectionWrapper>
+         
 
             {/* 14. INDUSTRIES WE SERVE */}
             {/* <SectionWrapper id="industries" icon={Layers} title="14. Industries We Serve (Slider)" activeSections={activeSections}>
@@ -1156,7 +1027,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper> */}
 
             {/* 14. USER GUIDE */}
-            <SectionWrapper id="user-guide" icon={BookOpen} title="14. User Guide" activeSections={activeSections}>
+            {/* <SectionWrapper id="user-guide" icon={BookOpen} title="14. User Guide" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -1239,10 +1110,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         </button>
                     </div>
                 )}
-            </SectionWrapper>
+            </SectionWrapper> */}
 
             {/* 15. FAQ Section */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="15. FAQ Section" activeSections={activeSections}>
+            <SectionWrapper id="faq" icon={HelpCircle} title="11. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -1271,7 +1142,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 17. BLOG SECTION */}
-            <SectionWrapper id="blogs" icon={MessageSquare} title="17. Blog Section" activeSections={activeSections}>
+            {/* <SectionWrapper id="blogs" icon={MessageSquare} title="17. Blog Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className={labelStyle}>Blog Section Title</label>
@@ -1291,10 +1162,321 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                     />
                     <p className="text-[10px] text-slate-400 italic">Select specific category or leave for latest blogs.</p>
                 </div>
+            </SectionWrapper> */}
+
+            {/* 18. WORKFLOW ADD-ONS SECTION */}
+            <SectionWrapper id="workflowAddOns" icon={Puzzle} title="9. Workflow Add-Ons" activeSections={activeSections}>
+
+                {/* HEADER TEXT */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Lead (e.g. Add more power)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Add more power"
+                            value={content.workflowAddOns?.titleLead || ''}
+                            onChange={(e) => updateField('content.workflowAddOns.titleLead', e.target.value)}
+                        />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Accent (highlighted, e.g. to your workflow)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="to your workflow"
+                            value={content.workflowAddOns?.titleAccent || ''}
+                            onChange={(e) => updateField('content.workflowAddOns.titleAccent', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-1">
+                    <label className={labelStyle}>Footnote</label>
+                    <textarea
+                        className={inputStyle}
+                        rows={2}
+                        placeholder="Select your paid plan first, then add any add-on in-app..."
+                        value={content.workflowAddOns?.footnote || ''}
+                        onChange={(e) => updateField('content.workflowAddOns.footnote', e.target.value)}
+                    />
+                </div>
+
+                {/* CARDS */}
+                <div className="space-y-6 pt-4 border-t border-slate-100">
+                    <label className={labelStyle}>Add-on Cards</label>
+
+                    {(content.workflowAddOns?.cards || []).map((card, i) => (
+                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    updateField('content.workflowAddOns.cards', (prev) =>
+                                        (prev || []).filter((_, idx) => idx !== i)
+                                    )
+                                }
+                                className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+
+                            {/* Card header fields */}
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Eyebrow (e.g. Add-on)</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="Add-on"
+                                        value={card.eyebrow || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.eyebrow`, e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Card Name</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="e.g. Inbound"
+                                        value={card.name || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.name`, e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Pricing fields */}
+                            <div className="grid md:grid-cols-3 gap-4">
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Price (e.g. $119)</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="$119"
+                                        value={card.price || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.price`, e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Price Unit</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="Per team, per month"
+                                        value={card.priceUnit || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.priceUnit`, e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Price Note</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="billed annually"
+                                        value={card.priceNote || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.priceNote`, e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Features list */}
+                            <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
+                                <label className={labelStyle}>Features</label>
+
+                                {(card.features || []).map((feature, j) => (
+                                    <div key={j} className="bg-slate-50 p-3 rounded-lg border border-slate-200 relative space-y-2">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                updateField(`content.workflowAddOns.cards.${i}.features`, (prev) =>
+                                                    (prev || []).filter((_, idx) => idx !== j)
+                                                )
+                                            }
+                                            className="absolute top-2 right-2 text-slate-300 hover:text-rose-500"
+                                        >
+                                            <X size={14} />
+                                        </button>
+
+                                        <div className="grid md:grid-cols-2 gap-2">
+                                            <input
+                                                className="p-2 bg-white border rounded text-xs font-bold"
+                                                placeholder="Feature Title"
+                                                value={feature.title || ''}
+                                                onChange={(e) =>
+                                                    updateField(`content.workflowAddOns.cards.${i}.features.${j}.title`, e.target.value)
+                                                }
+                                            />
+                                            <input
+                                                className="p-2 bg-white border rounded text-xs"
+                                                placeholder="Badge (optional, e.g. Coming soon)"
+                                                value={feature.badge || ''}
+                                                onChange={(e) =>
+                                                    updateField(`content.workflowAddOns.cards.${i}.features.${j}.badge`, e.target.value)
+                                                }
+                                            />
+                                        </div>
+
+                                        <textarea
+                                            className="w-full p-2 bg-white border rounded text-xs"
+                                            rows={2}
+                                            placeholder="Feature description"
+                                            value={feature.description || ''}
+                                            onChange={(e) =>
+                                                updateField(`content.workflowAddOns.cards.${i}.features.${j}.description`, e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                ))}
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        updateField(`content.workflowAddOns.cards.${i}.features`, (prev) => [
+                                            ...(prev || []),
+                                            { title: "", description: "", badge: "" },
+                                        ])
+                                    }
+                                    className="text-[10px] font-bold text-sky-600"
+                                >
+                                    + Add Feature
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            updateField('content.workflowAddOns.cards', (prev) => [
+                                ...(prev || []),
+                                {
+                                    eyebrow: "Add-on",
+                                    name: "",
+                                    price: "",
+                                    priceUnit: "",
+                                    priceNote: "",
+                                    features: [],
+                                },
+                            ])
+                        }
+                        className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
+                    >
+                        <Plus size={20} /> Add New Card
+                    </button>
+                </div>
+            </SectionWrapper>
+
+
+             {/* 22. ENTERPRISE DIGITAL MARKETING (Radial Diagram) */}
+            <SectionWrapper id="enterpriseMarketing" icon={Share2} title="10. Enterprise Digital Marketing" activeSections={activeSections}>
+
+                {/* HEADER TEXT */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Lead (e.g. Enterprise Digital Marketing)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Enterprise Digital Marketing"
+                            value={content.enterpriseMarketing?.titleLead || ''}
+                            onChange={(e) => updateField('content.enterpriseMarketing.titleLead', e.target.value)}
+                        />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Accent (highlighted, e.g. Services by Infosys)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Services by Infosys"
+                            value={content.enterpriseMarketing?.titleAccent || ''}
+                            onChange={(e) => updateField('content.enterpriseMarketing.titleAccent', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-1">
+                    <label className={labelStyle}>Description</label>
+                    <textarea
+                        className={inputStyle}
+                        rows={4}
+                        placeholder="Softkingo Digital Marketing practice helps enterprises..."
+                        value={content.enterpriseMarketing?.description || ''}
+                        onChange={(e) => updateField('content.enterpriseMarketing.description', e.target.value)}
+                    />
+                </div>
+
+                {/* RING IMAGE (Radial Diagram center/ring) */}
+                <MediaInput
+                    label="Ring Image (Radial Diagram)"
+                    value={content.enterpriseMarketing?.ringImage}
+                    path="content.enterpriseMarketing.ringImage"
+                />
+
+                {/* STATS GRID */}
+                <div className="space-y-4 pt-6 border-t border-slate-100">
+                    <label className={labelStyle}>Stats Grid</label>
+
+                    {(content.enterpriseMarketing?.stats || []).map((stat, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative space-y-3">
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    updateField('content.enterpriseMarketing.stats', (prev) =>
+                                        (prev || []).filter((_, idx) => idx !== i)
+                                    )
+                                }
+                                className="absolute top-3 right-3 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"
+                            >
+                                <X size={16} />
+                            </button>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Value (e.g. 50)</label>
+                                    <input
+                                        className="w-full p-2 bg-white border rounded text-sm font-bold"
+                                        placeholder="50"
+                                        value={stat.value || ''}
+                                        onChange={(e) =>
+                                            updateField(`content.enterpriseMarketing.stats.${i}.value`, e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Unit (e.g. %)</label>
+                                    <input
+                                        className="w-full p-2 bg-white border rounded text-sm font-bold"
+                                        placeholder="%"
+                                        value={stat.unit || ''}
+                                        onChange={(e) =>
+                                            updateField(`content.enterpriseMarketing.stats.${i}.unit`, e.target.value)
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className={labelStyle}>Description</label>
+                                <textarea
+                                    className="w-full p-2 bg-white border rounded text-sm"
+                                    rows={2}
+                                    placeholder="of Indian shoppers check online before making an actual purchase."
+                                    value={stat.description || ''}
+                                    onChange={(e) =>
+                                        updateField(`content.enterpriseMarketing.stats.${i}.description`, e.target.value)
+                                    }
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            updateField('content.enterpriseMarketing.stats', (prev) => [
+                                ...(prev || []),
+                                { value: "", unit: "", description: "" },
+                            ])
+                        }
+                        className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
+                    >
+                        <Plus size={18} /> Add Stat
+                    </button>
+                </div>
             </SectionWrapper>
 
             {/* 18. INQUIRY SECTION */}
-            <SectionWrapper id="inquiry" icon={MessageSquare} title="18. Inquiry Section" activeSections={activeSections}>
+            {/* <SectionWrapper id="inquiry" icon={MessageSquare} title="18. Inquiry Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Tagline (e.g. GET IN TOUCH)" value={content.inquiry?.tagline || ''} onChange={e => updateField('content.inquiry.tagline', e.target.value)} />
                     <input className={inputStyle} placeholder="Title Prefix (e.g. Let's )" value={content.inquiry?.titlePrefix || ''} onChange={e => updateField('content.inquiry.titlePrefix', e.target.value)} />
@@ -1303,7 +1485,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                     <input className={inputStyle} placeholder="Main Title (e.g. Connect)" value={content.inquiry?.title || ''} onChange={e => updateField('content.inquiry.title', e.target.value)} />
                     <textarea className={inputStyle} rows={2} placeholder="Description/Subtitle" value={content.inquiry?.subtitle || ''} onChange={e => updateField('content.inquiry.subtitle', e.target.value)} />
                 </div>
-            </SectionWrapper>
+            </SectionWrapper> */}
 
         </div>
     );

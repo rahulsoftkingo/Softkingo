@@ -431,8 +431,8 @@ import {
     ArrowLeft, RefreshCw, Smartphone, Layout, Database,
     Target, Settings, Zap, CheckCircle2, X, Image as ImageIcon, Folder,
     Briefcase, Code, DollarSign, BarChart3, ShieldCheck, HelpCircle,
-    UploadCloud, FolderPlus, ChevronRight, Home, Search, Loader2, FolderOpen,
-    Award, MessageSquare, MousePointerClick, Layers, Save, Grid, Cpu, TrendingUp,
+    UploadCloud, FolderPlus, ChevronRight, Home, Search, Loader2, FolderOpen,Puzzle,
+    Award, MessageSquare, MousePointerClick, Layers, Save, Grid, Cpu, TrendingUp,Share2,
     Globe, BookOpen
 } from "lucide-react";
 import dynamic from 'next/dynamic';
@@ -519,7 +519,9 @@ export default function DigitalPageEditor({ data, onBack }) {
             { id: 'features', label: '5. Core Features Grid', icon: Database },
             { id: 'seo', label: '6. SEO Settings', icon: Search },
             { id: 'pricingCards', label: '7. Pricing Cards Tabs', icon: CheckCircle2 },
-            { id: 'pricing', label: '8. Pricing / Compare Plans', icon: DollarSign },        
+            { id: 'pricing', label: '8. Pricing / Compare Plans', icon: DollarSign },   
+            { id: 'workflowAddOns', label: '9. Workflow Add-Ons', icon: Puzzle },
+            { id: 'enterpriseMarketing', label: '10. Enterprise Digital Mark.', icon: Share2 },     
             // { id: 'stats', label: '9. Stats Section', icon: BarChart3 },
             // { id: 'awards', label: '10. Awards Section', icon: Award },
             // { id: 'consultation', label: '11. Consultation CTA', icon: TrendingUp },

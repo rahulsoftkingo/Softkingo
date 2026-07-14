@@ -8,10 +8,14 @@ import SeoIndustries from "../../digital/SeoIndustries";
 import SeoServicesSlider from "../../digital/SeoServicesSlider";
 import PricingPage from "../../digital/PricingPage";
 import CuttingEdgeTech from "../../digital/CuttingEdgeTech";
+import OurProcessRadial from "../../digital/OurProcessRadial";
+import ServicesByCompany from "../../digital/ServicesByCompany"
+import WorkflowAddOns from "../../digital/WorkFlowAddons";
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import CommonTitle from "@/components/ui/CommonTitle";
 import InquirySection from "@/components/footer/InquirySection";
+
 
 export default function DigitalComponent({ content }) {
   return (
@@ -69,6 +73,8 @@ export default function DigitalComponent({ content }) {
           }}
         />
 
+        <ServicesByCompany data={content.enterpriseMarketing} />
+
         <DigitalMarketingServices data={content.services} />
 
         <WhyChooseUs data={content.servicesList} />
@@ -82,6 +88,7 @@ export default function DigitalComponent({ content }) {
         <CuttingEdgeTech data={content.tech} />
 
         <PricingPage pricing={content.pricing} pricingCards={content.pricingCards} />
+        <WorkflowAddOns/>
 
         {/* <PlanFeatures data={content.pricing} /> */}
 
