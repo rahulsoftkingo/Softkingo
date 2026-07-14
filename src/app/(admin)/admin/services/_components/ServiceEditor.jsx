@@ -29,10 +29,22 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
 
 // --- 3. MAIN SERVICE EDITOR ---
 export default function ServiceEditor({ formData, updateField, MediaInput, TipTapEditor, activeSections, portfolioCategories }) {
-    const content = formData?.content || {};
-    
 
-    // console.log("Main Service edtior",content)
+    let content = {};
+
+    try {
+        content =
+            typeof formData?.contentJson === "string"
+                ? JSON.parse(formData.contentJson)
+                : formData?.contentJson || {};
+    } catch (error) {
+        console.error("Invalid JSON in contentJson:", error);
+        content = {};
+    }
+
+
+    content = content.content || {};
+
 
     return (
         <div className="space-y-8 max-w-4xl mx-auto pb-20">
@@ -64,7 +76,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
 
-             {/* 16. SEO SETTINGS */}
+            {/* 16. SEO SETTINGS */}
             <SectionWrapper id="seo" icon={Search} title="2. SEO Settings" activeSections={activeSections}>
                 <div className="space-y-4">
                     <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
@@ -257,7 +269,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
 
                                     <div className="space-y-3">
                                         <label className={labelStyle}>Technologies in this Category</label>
-                                        
+
                                         <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
                                             <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
                                             {COMMON_TECH.map((tech) => (

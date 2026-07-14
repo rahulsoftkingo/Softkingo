@@ -16,7 +16,7 @@ const defaultData = {
       fullDesc:
         "<p>We improve your site's visibility on search engines through on-page optimization, technical audits, content strategy, and link building — driving sustainable organic traffic.</p><ul><li>On-page &amp; technical audits</li><li>Content &amp; keyword strategy</li><li>Authority link building</li></ul>",
       image:
-        "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+        "",
     },
     {
       shortTitle: "Social Media\nMarketing",
@@ -25,7 +25,7 @@ const defaultData = {
       fullDesc:
         "<p>We craft platform-specific strategies for Instagram, LinkedIn, X, and more — creating content that builds community and turns followers into customers.</p><ul><li>Platform-specific content</li><li>Community management</li><li>Influencer collaborations</li></ul>",
       image:
-        "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80",
+        "",
     },
     {
       shortTitle: "PPC\nAdvertising",
@@ -34,7 +34,7 @@ const defaultData = {
       fullDesc:
         "<p>We run targeted ad campaigns across Google, Meta, and LinkedIn, optimizing bids and creatives continuously to maximize your return on ad spend.</p><ul><li>Google &amp; Meta ad management</li><li>Continuous bid optimization</li><li>Creative testing &amp; iteration</li></ul>",
       image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+        "",
     },
     {
       shortTitle: "Content\nMarketing",
@@ -43,7 +43,7 @@ const defaultData = {
       fullDesc:
         "<p>We produce blogs, videos, and guides that establish authority in your industry, nurture leads, and support every stage of the buyer's journey.</p><ul><li>Blogs, guides &amp; video</li><li>Thought-leadership content</li><li>Full-funnel lead nurturing</li></ul>",
       image:
-        "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",
+        "",
     },
     {
       shortTitle: "Email\nMarketing",
@@ -52,7 +52,7 @@ const defaultData = {
       fullDesc:
         "<p>We design automated email flows and campaigns that keep your audience engaged, from welcome sequences to re-engagement and post-purchase nurturing.</p><ul><li>Automated email flows</li><li>Segmentation &amp; personalization</li><li>Re-engagement campaigns</li></ul>",
       image:
-        "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=800&q=80",
+        "",
     },
     {
       shortTitle: "Web\nAnalytics",
@@ -61,7 +61,7 @@ const defaultData = {
       fullDesc:
         "<p>We set up dashboards and tracking that reveal how visitors interact with your site, helping you make informed decisions about where to invest next.</p><ul><li>Custom dashboards</li><li>Conversion &amp; funnel tracking</li><li>Data-backed recommendations</li></ul>",
       image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+        "",
     },
     {
       shortTitle: "Branding &\nDesign",
@@ -70,7 +70,7 @@ const defaultData = {
       fullDesc:
         "<p>We build cohesive visual identities — logos, color systems, and guidelines — so your brand looks consistent and professional everywhere it appears.</p><ul><li>Logo &amp; visual identity</li><li>Brand guidelines</li><li>Consistent cross-channel design</li></ul>",
       image:
-        "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80",
+        "",
     }
   ],
 };

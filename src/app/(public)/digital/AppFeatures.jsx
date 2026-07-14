@@ -210,7 +210,7 @@ function PhoneMockup() {
 
 export default function AstrologyAppFeatures() {
   return (
-    <section className="bg-sky-50 py-8 lg:py-18 px-4 sm:px-6 lg:px-8">
+    <section className="hidden lg:block bg-sky-50 py-8 lg:py-18 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
         <h2 className="text-center text-2xl md:text-3xl lg:text-4xl font-bold leading-normal text-slate-900">

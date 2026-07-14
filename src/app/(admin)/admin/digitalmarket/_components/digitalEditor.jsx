@@ -694,7 +694,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                                     </div>
                                                 ))}
                                             </div>
-                                            <p className="text-[9px] text-slate-400 italic">"check" likhne se ✓ tick dikhega, ya custom text (jaise "5 chats"), ya blank chhodo kuch na dikhane ke liye.</p>
+                                            <p className="text-[9px] text-slate-400 italic">Type "check" to display a ✓ checkmark, enter custom text (such as "5 chats") to display that text instead, or leave the field blank if you don't want anything to be displayed.</p>
 
                                             {/* SUB-ROWS: nested accordion-inside-accordion, jaise "Forms" under Inbound */}
                                             <div className="space-y-2 bg-amber-50/50 p-3 rounded-lg border border-amber-100 mt-2">

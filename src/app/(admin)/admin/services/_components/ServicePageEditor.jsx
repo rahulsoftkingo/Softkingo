@@ -261,8 +261,6 @@ export default function ServicePageEditor({ data, onBack }) {
     const folders = mediaFiles.filter(f => f.isDir && f.name.toLowerCase().includes(searchQuery.toLowerCase()));
     const images = mediaFiles.filter(f => !f.isDir && f.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    console.log("FORM DATA:", formData);
-
     return (
         <div className="flex h-screen overflow-hidden bg-white fixed inset-0 z-50">
             {/* Sidebar */}
