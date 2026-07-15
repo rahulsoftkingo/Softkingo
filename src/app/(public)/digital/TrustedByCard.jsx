@@ -7,14 +7,14 @@ const TRUSTED_BRANDS = [
   { name: "Allbirds", src: "/images/logo/LoveLocal-logo.webp", width: 110, height: 34 },
   { name: "Stanley", src: "/images/logo/Moglix_logo.webp", width: 100, height: 34 },
   { name: "Arc'teryx", src: "/images/logo/practivoo.png", width: 100, height: 34 },
-  { name: "Faber-Castell", src:"/images/logo/practivoo.png", width: 120, height: 34 },
+  { name: "Faber-Castell", src:"/images/logo/Bumpy_logo.webp", width: 120, height: 34 },
 ];
 
 const EXPERT_AVATARS = [
   "/images/client/client2.png",
-  "/images/client/client2.png",
-  "/images/client/client2.png",
-  "/images/client/client2.png",
+  "/images/client/client1.png",
+  "/images/client/client3.png",
+  "/images/client/client6.png",
 ];
 
 export default function TrustedByCard({
@@ -26,7 +26,7 @@ export default function TrustedByCard({
   return (
     <div className="relative w-full max-w-5xl mx-auto">
       {/* Card */}
-      <div className="rounded-2xl bg-[#F4F1EA] shadow-xl shadow-black/10">
+      <div className="relative top-[-40px] rounded-2xl bg-[#F4F1EA] shadow-xl shadow-black/10">
         <div className="px-6 sm:px-10 py-8 sm:py-10 text-center">
           <h3 className="text-lg sm:text-xl font-bold text-[#0B1F2A]">{heading}</h3>
 
@@ -45,15 +45,8 @@ export default function TrustedByCard({
         </div>
       </div>
 
-      
-      {/* Chevron indicator — overlaps the card's bottom edge, static (decorative only) */}
-      <span className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-[#F4F1EA] border border-sky-400/30 text-[#0B1F2A] shadow-md">
-        <FaChevronDown className="text-sm" />
-      </span>
-
-
       {/* Recommended by experts row */}
-      <div className="mt-10 flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-4">
         <div className="flex -space-x-3">
           {avatars.map((src, i) => (
             <Image

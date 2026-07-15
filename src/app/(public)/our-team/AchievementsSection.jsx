@@ -22,7 +22,7 @@ const AchievementsSection = () => {
                     <div className="absolute top-1/2 -left-20 -translate-y-1/2 w-64 h-64 rounded-full border-[24px] border-white/10"></div>
 
                     <div className="relative z-10 text-center max-w-3xl mx-auto">
-                        <h2 className="text-4xl md:text-6xl font-black text-white mb-4">
+                        <h2 className="text-4xl md:text-6xl font-black text-white mb-4 font-sans">
                             Our Achievements
                         </h2>
                         <p className="text-sky-50 text-base md:text-lg font-medium leading-relaxed">

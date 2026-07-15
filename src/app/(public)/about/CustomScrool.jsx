@@ -43,11 +43,12 @@ const timelineData = [
   },
   {
     year: 2025,
-    title: 'Growing with Purpose',
-    sorttitle: 'Stronger, smarter, and future-ready.',
-    description: 'By 2025, Softkingo had grown into a trusted name for businesses looking for reliable digital solutions. With a strong team, valuable experience, and a clear vision ahead, we continue to move forward—focused on innovation, quality, and long-term impact.',
-    image: '/images/about/journey/Growing with Purpose.webp',
-  },
+    title: "A Proud Milestone in Our Journey",
+    sorttitle: "TechBehemoths Awards 2025 Winner for Mobile App Development",
+    description:
+      "Softkingo is proud to be recognized as a TechBehemoths Awards 2025 Winner for Mobile App Development. This achievement reflects our dedication to delivering innovative, high-quality mobile solutions and the trust of our amazing clients. A big thank you to our team, clients, and partners for being part of this journey.",
+    image: "/images/about/journey/Award.webp",
+  }
 ];
 
 export default function StoryTimeline() {

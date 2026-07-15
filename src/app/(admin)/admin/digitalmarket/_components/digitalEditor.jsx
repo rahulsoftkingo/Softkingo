@@ -110,7 +110,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
 
-               {/* 2. ENTERPRISE DIGITAL MARKETING (Radial Diagram) */}
+            {/* 2. ENTERPRISE DIGITAL MARKETING (Radial Diagram) */}
             <SectionWrapper id="enterpriseMarketing" icon={Share2} title="2. Enterprise Digital Marketing" activeSections={activeSections}>
 
                 {/* HEADER TEXT */}
@@ -1259,34 +1259,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 )}
             </SectionWrapper> */}
 
-            {/* 15. FAQ Section */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="11. FAQ Section" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Section Title</label>
-                        <input className={inputStyle} placeholder="Section Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
-                    </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
-                        <MiniRichTextEditor value={content.faq?.subtitle || ''} onChange={val => updateField('content.faq.subtitle', val)} />
-                    </div>
-                </div>
-                <div className="space-y-4">
-                    {(content.faq?.items || []).map((item, i) => (
-                        <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                            <div className="flex-1 space-y-2">
-                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateField(`content.faq.items.${i}.q`, e.target.value)} />
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Answer (Rich Text)</label>
-                                    <MiniRichTextEditor value={item.a || ''} onChange={val => updateField(`content.faq.items.${i}.a`, val)} />
-                                </div>
-                            </div>
-                            <button type="button" onClick={() => updateField('content.faq.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.faq.items', (prev) => [...(prev || []), { q: "", a: "" }])} className="text-xs font-bold text-sky-600 p-1">+ Add FAQ Item</button>
-                </div>
-            </SectionWrapper>
+
 
             {/* 17. BLOG SECTION */}
             {/* <SectionWrapper id="blogs" icon={MessageSquare} title="17. Blog Section" activeSections={activeSections}>
@@ -1506,18 +1479,34 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
 
-         
-            {/* 18. INQUIRY SECTION */}
-            {/* <SectionWrapper id="inquiry" icon={MessageSquare} title="18. Inquiry Section" activeSections={activeSections}>
+            {/* 15. FAQ Section */}
+            <SectionWrapper id="faq" icon={HelpCircle} title="11. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Tagline (e.g. GET IN TOUCH)" value={content.inquiry?.tagline || ''} onChange={e => updateField('content.inquiry.tagline', e.target.value)} />
-                    <input className={inputStyle} placeholder="Title Prefix (e.g. Let's )" value={content.inquiry?.titlePrefix || ''} onChange={e => updateField('content.inquiry.titlePrefix', e.target.value)} />
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Title</label>
+                        <input className={inputStyle} placeholder="Section Title" value={content.faq?.title || ''} onChange={e => updateField('content.faq.title', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Section Subtitle (Rich Text)</label>
+                        <MiniRichTextEditor value={content.faq?.subtitle || ''} onChange={val => updateField('content.faq.subtitle', val)} />
+                    </div>
                 </div>
-                <div className="grid md:grid-cols-2 gap-4 mt-4">
-                    <input className={inputStyle} placeholder="Main Title (e.g. Connect)" value={content.inquiry?.title || ''} onChange={e => updateField('content.inquiry.title', e.target.value)} />
-                    <textarea className={inputStyle} rows={2} placeholder="Description/Subtitle" value={content.inquiry?.subtitle || ''} onChange={e => updateField('content.inquiry.subtitle', e.target.value)} />
+                <div className="space-y-4">
+                    {(content.faq?.items || []).map((item, i) => (
+                        <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
+                            <div className="flex-1 space-y-2">
+                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Question" value={item.q || ''} onChange={e => updateField(`content.faq.items.${i}.q`, e.target.value)} />
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Answer (Rich Text)</label>
+                                    <MiniRichTextEditor value={item.a || ''} onChange={val => updateField(`content.faq.items.${i}.a`, val)} />
+                                </div>
+                            </div>
+                            <button type="button" onClick={() => updateField('content.faq.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.faq.items', (prev) => [...(prev || []), { q: "", a: "" }])} className="text-xs font-bold text-sky-600 p-1">+ Add FAQ Item</button>
                 </div>
-            </SectionWrapper> */}
+            </SectionWrapper>
 
         </div>
     );

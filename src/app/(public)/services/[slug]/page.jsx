@@ -732,6 +732,7 @@ export default async function ServicePage({ params }) {
       ? jsonContent.content
       : jsonContent;
 
+    data.slug = slug;
     if (digitalPage && digitalPage.status === "published") {
       return <DigitalComponent content={data} />;
     }

@@ -438,7 +438,7 @@ const OurTeamClient = ({
                 <div className="max-w-7xl mx-auto">
                     <CommonTitle
                         align="center"
-                        pill="Our Superpowers"
+                        // pill="Our Superpowers"
                         title="Expertise & Skills"
                         gradientText="Skills"
                         subtitle="We master the technologies that power modern digital experiences. From frontend to backend, design to deployment."
@@ -571,13 +571,13 @@ const OurTeamClient = ({
                 <div className="max-w-7xl mx-auto">
                     <CommonTitle
                         align="center"
-                        pill="Culture"
+                        // pill="Culture"
                         title="Life at Softkingo"
                         subtitle="We believe that happy teams build better products. Get a glimpse of our culture."
                     />
 
                     {/* --- Updated Sky Blue Buttons Start --- */}
-                    <div className="flex justify-center items-center gap-4 mt-8">
+                    {/* <div className="flex justify-center items-center gap-4 mt-8">
                         <button className="px-6 py-3 text-sm font-medium tracking-wide text-white bg-sky-500 border border-sky-500 rounded-full transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:border-white hover:shadow-lg">
                             Our Organization
                         </button>
@@ -585,26 +585,79 @@ const OurTeamClient = ({
                         <button className="px-6 py-3 text-sm font-medium tracking-wide text-white bg-sky-500 border border-sky-500 rounded-full transition-all duration-300 ease-in-out hover:bg-white hover:text-black hover:border-white hover:shadow-lg">
                             Our Party
                         </button>
-                    </div>
+                    </div> */}
 
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[190px] mt-16">
-                        {galleryImages?.map((img) => (
-                            <div key={img.id} className={`relative rounded-[2rem] overflow-hidden group ${img.span} ${img.height}`}>
-                                <Image
-                                    src={img.src}
-                                    alt={img.alt}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                    sizes="(max-width: 768px) 100vw, 50vw"
-                                />
-                                <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
-                                <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                        {img.alt}
-                                    </p>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="relative w-full overflow-hidden">
+                        <div className="flex gap-3 md:gap-4 w-max animate-scroll-left hover:[animation-play-state:paused]">
+                            {[...galleryImages, ...galleryImages].reduce((acc, image, index, arr) => {
+                                // Har 3rd image ko tall banao, baaki 2 ko stack karo
+                                if (index % 3 === 0) {
+                                    // Tall image - dono rows cover karegi
+                                    acc.push(
+                                        <div
+                                            key={`tall-${image.id}-${index}`}
+                                            className="group relative flex-shrink-0 w-[220px] sm:w-[260px] md:w-[300px] h-[338px] md:h-[398px] lg:h-[438px] rounded-[2rem] overflow-hidden"
+                                        >
+                                            <Image
+                                                src={image.src}
+                                                alt={image.alt}
+                                                fill
+                                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                sizes="(max-width: 768px) 260px, 300px"
+                                            />
+                                            <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
+                                            <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                    {image.alt}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    );
+                                } else if (index % 3 === 1) {
+                                    // 2 chhoti images stacked
+                                    const nextImage = arr[index + 1] || image;
+                                    acc.push(
+                                        <div
+                                            key={`stack-${image.id}-${index}`}
+                                            className="flex flex-col gap-3 md:gap-4 flex-shrink-0"
+                                        >
+                                            <div className="group relative w-[220px] sm:w-[260px] md:w-[300px] h-[160px] md:h-[190px] lg:h-[210px] rounded-[2rem] overflow-hidden">
+                                                <Image
+                                                    src={image.src}
+                                                    alt={image.alt}
+                                                    fill
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                    sizes="(max-width: 768px) 260px, 300px"
+                                                />
+                                                <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
+                                                <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                    <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                        {image.alt}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div className="group relative w-[220px] sm:w-[260px] md:w-[300px] h-[160px] md:h-[190px] lg:h-[210px] rounded-[2rem] overflow-hidden">
+                                                <Image
+                                                    src={nextImage.src}
+                                                    alt={nextImage.alt}
+                                                    fill
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                                    sizes="(max-width: 768px) 260px, 300px"
+                                                />
+                                                <div className="absolute inset-0 bg-sky-900/0 transition-colors duration-300 group-hover:bg-sky-900/40"></div>
+                                                <div className="absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                    <p className="text-white font-bold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                        {nextImage.alt}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                }
+                                return acc;
+                            }, [])}
+                        </div>
                     </div>
 
                     <div className="text-center mt-12">
@@ -618,7 +671,7 @@ const OurTeamClient = ({
                 <div className="max-w-7xl mx-auto">
                     <CommonTitle
                         align="center"
-                        pill="Client Reviews"
+                        // pill="Client Reviews"
                         title="Client feedback"
                         subtitle="Real feedback from real clients who have experienced our work firsthand."
                     />

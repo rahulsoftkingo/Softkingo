@@ -57,9 +57,13 @@ export default function TaxiHero({ data }) {
                 <Link href="/" className="hover:text-cyan-400 transition-colors">
                   Home
                 </Link>
-                <span className="text-gray-400">&gt;&gt;</span>
+                <span className="text-gray-400">&gt;</span>
                 <Link href="/services" className="hover:text-cyan-400 transition-colors">
                   Our Services
+                </Link>
+                 <span className="text-gray-400">&gt;</span>
+                  <Link href="/services" className="hover:text-cyan-400 transition-colors">
+                 {data.slug}
                 </Link>
               </nav>
 

@@ -6,6 +6,7 @@ import WhyChooseUs from "../../digital/WhyChooseUs";
 import TaxiHero from "../../digital/TaxiHero";
 import SeoIndustries from "../../digital/SeoIndustries";
 import SeoServicesSlider from "../../digital/SeoServicesSlider";
+import TrustedByCard from "../../digital/TrustedByCard";
 import PricingPage from "../../digital/PricingPage";
 import CuttingEdgeTech from "../../digital/CuttingEdgeTech";
 import OurProcessRadial from "../../digital/OurProcessRadial";
@@ -14,10 +15,13 @@ import WorkflowAddOns from "../../digital/WorkFlowAddons";
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
+
 import CommonTitle from '@/components/ui/CommonTitle';
 
 
 export default function DigitalComponent({ content }) {
+
+  console.log("Rahul content",content)
   return (
     <div>
       <div>
@@ -30,10 +34,13 @@ export default function DigitalComponent({ content }) {
             heroButtonText2: content.heroButtonText2,
             heroButtonLink2: content.heroButtonLink2,
             heroBg: content.heroBg,
-            heroBullets: content.heroBullets,         
+            heroBullets: content.heroBullets, 
+            slug:content.slug        
           }}
         />
-
+        <div className="bg-white">
+        <TrustedByCard/>
+        </div>
         <ServicesByCompany data={content.enterpriseMarketing} />
 
         <DigitalMarketingServices data={content.services} />
@@ -49,9 +56,8 @@ export default function DigitalComponent({ content }) {
         <CuttingEdgeTech data={content.tech} />
 
         <PricingPage pricing={content.pricing} pricingCards={content.pricingCards} />
-        <WorkflowAddOns />
-
-        {/* <PlanFeatures data={content.pricing} /> */}
+        
+        <WorkflowAddOns data={content.workflowAddOns}  />
 
         <ConsultationCTA
           title={content.consultation?.title}

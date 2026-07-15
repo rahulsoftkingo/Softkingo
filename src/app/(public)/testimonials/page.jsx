@@ -113,6 +113,24 @@ export default function TestimonialsPage() {
           </div>
         </div>
       </section>
+      
+
+     {/* VIDEO SECTION */}
+      <section className="max-w-7xl mx-auto px-4 pt-14">
+        <div className="relative w-full h-[45vh] md:h-[60vh] lg:h-[75vh] rounded-3xl overflow-hidden shadow-[0_14px_40px_rgba(2,6,23,0.10)] border border-slate-100 bg-slate-950">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/yUL97dFOfHA?si=hzIyMVW9FmaQj5d8&rel=0&modestbranding=1"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          ></iframe>
+        </div>
+      </section>
 
       {/* CONTENT */}
       <section className="max-w-7xl mx-auto px-4 py-14">
