@@ -27,6 +27,7 @@ const itemVariants = {
 };
 
 export default function FAQAccordion({ data }) {
+
   const [openIndex, setOpenIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
 

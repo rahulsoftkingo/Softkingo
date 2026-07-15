@@ -107,7 +107,7 @@ export default function WhyChooseUs({ data }) {
   return (
     <section
       ref={containerRef}
-      className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200 py-20"
+      className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200"
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-12 lg:flex-row lg:items-center">

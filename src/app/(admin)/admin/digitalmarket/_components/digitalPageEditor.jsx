@@ -431,8 +431,8 @@ import {
     ArrowLeft, RefreshCw, Smartphone, Layout, Database,
     Target, Settings, Zap, CheckCircle2, X, Image as ImageIcon, Folder,
     Briefcase, Code, DollarSign, BarChart3, ShieldCheck, HelpCircle,
-    UploadCloud, FolderPlus, ChevronRight, Home, Search, Loader2, FolderOpen,Puzzle,
-    Award, MessageSquare, MousePointerClick, Layers, Save, Grid, Cpu, TrendingUp,Share2,
+    UploadCloud, FolderPlus, ChevronRight, Home, Search, Loader2, FolderOpen, Puzzle,
+    Award, MessageSquare, MousePointerClick, Layers, Save, Grid, Cpu, TrendingUp, Share2,
     Globe, BookOpen
 } from "lucide-react";
 import dynamic from 'next/dynamic';
@@ -513,27 +513,16 @@ export default function DigitalPageEditor({ data, onBack }) {
         uploadDir: 'digital',        // set to whatever the media upload folder should be
         sections: [
             { id: 'hero', label: '1. Hero Section', icon: Smartphone },
-            { id: 'services', label: '2. Service Categories', icon: Layout },
-            { id: 'servicesList', label: '3. Extensive Services', icon: Briefcase },
-            { id: 'industries', label: '4. Industries We Serve', icon: Layers },
-            { id: 'features', label: '5. Core Features Grid', icon: Database },
-            { id: 'seo', label: '6. SEO Settings', icon: Search },
-            { id: 'pricingCards', label: '7. Pricing Cards Tabs', icon: CheckCircle2 },
-            { id: 'pricing', label: '8. Pricing / Compare Plans', icon: DollarSign },   
-            { id: 'workflowAddOns', label: '9. Workflow Add-Ons', icon: Puzzle },
-            { id: 'enterpriseMarketing', label: '10. Enterprise Digital Mark.', icon: Share2 },     
-            // { id: 'stats', label: '9. Stats Section', icon: BarChart3 },
-            // { id: 'awards', label: '10. Awards Section', icon: Award },
-            // { id: 'consultation', label: '11. Consultation CTA', icon: TrendingUp },
-            // { id: 'tech', label: '12. Tech Stack', icon: Code },
-            // { id: 'process', label: '13. Our Process', icon: Settings },
-            // { id: 'highlight', label: '14. Solution Highlight', icon: Zap },
-            // { id: 'portfolio', label: '15. Portfolio', icon: Globe },
-            // { id: 'solutions', label: '16. Industry Solutions', icon: Grid },
-            // { id: 'user-guide', label: '17. User Guide', icon: BookOpen },
-            // { id: 'faq', label: '18. FAQ Section', icon: HelpCircle },
-            // { id: 'blogs', label: '19. Blog Section', icon: MessageSquare },
-            // { id: 'inquiry', label: '20. Inquiry Section', icon: MessageSquare },
+            { id: 'enterpriseMarketing', label: '2. Enterprise Digital', icon: Share2 },
+            { id: 'services', label: '3. Service Categories', icon: Layout },
+            { id: 'servicesList', label: '4. Extensive Services', icon: Briefcase },
+            { id: 'industries', label: '5. Industries We Serve', icon: Layers },
+            { id: 'features', label: '6. Core Features Grid', icon: Database },
+            { id: 'seo', label: '7. SEO Settings', icon: Search },
+            { id: 'pricingCards', label: '8. Pricing Cards Tabs', icon: CheckCircle2 },
+            { id: 'pricing', label: '9. Pricing / Compare Plans', icon: DollarSign },
+            { id: 'workflowAddOns', label: '10. Workflow Add-Ons', icon: Puzzle },
+            { id: 'faq', label: '11. FAQ Section', icon: HelpCircle }
         ]
     };
 
@@ -712,6 +701,7 @@ export default function DigitalPageEditor({ data, onBack }) {
     const BoundMediaInput = useCallback((props) => (
         <MediaInput
             {...props}
+            value={typeof props.value === 'string' ? props.value : ''}
             onUpdate={updateField}
             onBrowse={openBrowser}
         />
@@ -737,16 +727,12 @@ export default function DigitalPageEditor({ data, onBack }) {
                             onChange={e => {
                                 const val = e.target.value;
                                 setFormData(prev => {
-                                    // ✅ FIX: write into content.hero.heroTitle instead of content.heroTitle (root)
-                                    const prevHero = { ...((prev.content && prev.content.hero) || {}) };
-                                    if (!prevHero.heroTitle || prevHero.heroTitle === prev.title) {
-                                        prevHero.heroTitle = val;
+                                    const prevContent = { ...(prev.content || {}) };
+                                    // ✅ FIX: write flat, matching DigitalEditor.jsx's content.heroTitle
+                                    if (!prevContent.heroTitle || prevContent.heroTitle === prev.title) {
+                                        prevContent.heroTitle = val;
                                     }
-                                    const newContent = {
-                                        ...(prev.content || {}),
-                                        hero: prevHero
-                                    };
-                                    return { ...prev, title: val, content: newContent };
+                                    return { ...prev, title: val, content: prevContent };
                                 });
                             }}
                             placeholder="Page Title"

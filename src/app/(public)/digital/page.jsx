@@ -17,6 +17,8 @@ import CommonTitle from "@/components/ui/CommonTitle";
 import InquirySection from "@/components/footer/InquirySection";
 import OurProcessRadial from "./OurProcessRadial";
 import WorkflowAddOns from "./WorkFlowAddons";
+import TrustedByCard from "./TrustedByCard";
+
 
 
 export default function Page() {
@@ -24,6 +26,9 @@ export default function Page() {
         <div>
             <div>
                 <TaxiHero />
+            </div>
+            <div className="relative bg-white">
+                <TrustedByCard />
             </div>
 
             <div>
@@ -53,7 +58,7 @@ export default function Page() {
             <div>
                 <PlanFeatures />
             </div>
-        
+
             <div>
                 <PricingPage />
             </div>

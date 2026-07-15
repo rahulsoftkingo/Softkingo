@@ -55,6 +55,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
         <div className="space-y-8 max-w-4xl mx-auto pb-20">
 
             {/* 1. HERO SECTION */}
+            {/* 1. HERO SECTION */}
             <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={activeSections}>
                 <div className="grid grid-cols-1 gap-4">
                     <input className={inputStyle} placeholder="Hero Title" value={content.heroTitle || ''} onChange={e => updateField('content.heroTitle', e.target.value)} />
@@ -62,7 +63,22 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         <label className={labelStyle}>Hero Subtitle (Rich Text)</label>
                         <MiniRichTextEditor value={content.heroSubtitle || ''} onChange={val => updateField('content.heroSubtitle', val)} />
                     </div>
+
+                    {/* Bullet Points below Subtitle */}
+                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-3">
+                        <label className={labelStyle}>Hero Bullet Points</label>
+                        <div className="space-y-2">
+                            {(content.heroBullets || []).map((bullet, i) => (
+                                <div key={i} className="flex gap-2 items-center">
+                                    <input className="flex-1 p-2 bg-white border border-slate-200 rounded text-xs" placeholder="e.g. 24/7 Support" value={bullet || ''} onChange={e => updateField(`content.heroBullets.${i}`, e.target.value)} />
+                                    <button type="button" onClick={() => updateField('content.heroBullets', (prev) => (prev || []).filter((_, idx) => idx !== i))}><X size={14} className="text-slate-300" /></button>
+                                </div>
+                            ))}
+                            <button type="button" onClick={() => updateField('content.heroBullets', (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Bullet Point</button>
+                        </div>
+                    </div>
                 </div>
+
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Hero Button Text</label>
@@ -73,6 +89,19 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         <input className={inputStyle} placeholder="/contact" value={content.heroButtonLink || ''} onChange={e => updateField('content.heroButtonLink', e.target.value)} />
                     </div>
                 </div>
+
+                {/* Second Button */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Hero Button 2 Text</label>
+                        <input className={inputStyle} placeholder="e.g. View Portfolio" value={content.heroButtonText2 || ''} onChange={e => updateField('content.heroButtonText2', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Hero Button 2 Link</label>
+                        <input className={inputStyle} placeholder="/portfolio" value={content.heroButtonLink2 || ''} onChange={e => updateField('content.heroButtonLink2', e.target.value)} />
+                    </div>
+                </div>
+
                 <div className="space-y-1">
                     <label className={labelStyle}>Trusted By Text</label>
                     <input className={inputStyle} placeholder="Trusted By Leading Brands" value={content.trustedByText || ''} onChange={e => updateField('content.trustedByText', e.target.value)} />
@@ -80,11 +109,129 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 <MediaInput label="Hero Background Image" value={content.heroBg} path="content.heroBg" />
             </SectionWrapper>
 
+
+               {/* 2. ENTERPRISE DIGITAL MARKETING (Radial Diagram) */}
+            <SectionWrapper id="enterpriseMarketing" icon={Share2} title="2. Enterprise Digital Marketing" activeSections={activeSections}>
+
+                {/* HEADER TEXT */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Lead (e.g. Enterprise Digital Marketing)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Enterprise Digital Marketing"
+                            value={content.enterpriseMarketing?.titleLead || ''}
+                            onChange={(e) => updateField('content.enterpriseMarketing.titleLead', e.target.value)}
+                        />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Accent (highlighted, e.g. Services by Infosys)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Services by Infosys"
+                            value={content.enterpriseMarketing?.titleAccent || ''}
+                            onChange={(e) => updateField('content.enterpriseMarketing.titleAccent', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-1">
+                    <label className={labelStyle}>Description</label>
+                    <textarea
+                        className={inputStyle}
+                        rows={4}
+                        placeholder="Softkingo Digital Marketing practice helps enterprises..."
+                        value={content.enterpriseMarketing?.description || ''}
+                        onChange={(e) => updateField('content.enterpriseMarketing.description', e.target.value)}
+                    />
+                </div>
+
+                {/* RING IMAGE (Radial Diagram center/ring) */}
+                <MediaInput
+                    label="Ring Image (Radial Diagram)"
+                    value={content.enterpriseMarketing?.ringImage}
+                    path="content.enterpriseMarketing.ringImage"
+                />
+
+                {/* STATS GRID */}
+                <div className="space-y-4 pt-6 border-t border-slate-100">
+                    <label className={labelStyle}>Stats Grid</label>
+
+                    {(content.enterpriseMarketing?.stats || []).map((stat, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative space-y-3">
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    updateField('content.enterpriseMarketing.stats', (prev) =>
+                                        (prev || []).filter((_, idx) => idx !== i)
+                                    )
+                                }
+                                className="absolute top-3 right-3 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"
+                            >
+                                <X size={16} />
+                            </button>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Value (e.g. 50)</label>
+                                    <input
+                                        className="w-full p-2 bg-white border rounded text-sm font-bold"
+                                        placeholder="50"
+                                        value={stat.value || ''}
+                                        onChange={(e) =>
+                                            updateField(`content.enterpriseMarketing.stats.${i}.value`, e.target.value)
+                                        }
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Unit (e.g. %)</label>
+                                    <input
+                                        className="w-full p-2 bg-white border rounded text-sm font-bold"
+                                        placeholder="%"
+                                        value={stat.unit || ''}
+                                        onChange={(e) =>
+                                            updateField(`content.enterpriseMarketing.stats.${i}.unit`, e.target.value)
+                                        }
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className={labelStyle}>Description</label>
+                                <textarea
+                                    className="w-full p-2 bg-white border rounded text-sm"
+                                    rows={2}
+                                    placeholder="of Indian shoppers check online before making an actual purchase."
+                                    value={stat.description || ''}
+                                    onChange={(e) =>
+                                        updateField(`content.enterpriseMarketing.stats.${i}.description`, e.target.value)
+                                    }
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            updateField('content.enterpriseMarketing.stats', (prev) => [
+                                ...(prev || []),
+                                { value: "", unit: "", description: "" },
+                            ])
+                        }
+                        className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
+                    >
+                        <Plus size={18} /> Add Stat
+                    </button>
+                </div>
+            </SectionWrapper>
+
+
             {/* 2. SERVICE CATEGORIES */}
             <SectionWrapper
                 id="services"
                 icon={Layout}
-                title="2. Service Categories"
+                title="3. Service Categories"
                 activeSections={activeSections}
             >
                 <div className="grid md:grid-cols-2 gap-4">
@@ -225,7 +372,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 3. EXTENSIVE SERVICES PROVIDED */}
-            <SectionWrapper id="servicesList" icon={Briefcase} title="3. Extensive Services Provided" activeSections={activeSections}>
+            <SectionWrapper id="servicesList" icon={Briefcase} title="4. Extensive Services Provided" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.servicesList?.title || ''} onChange={e => updateField('content.servicesList.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.servicesList?.subtitle || ''} onChange={e => updateField('content.servicesList.subtitle', e.target.value)} />
@@ -276,7 +423,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             <SectionWrapper
                 id="industries"
                 icon={Layers}
-                title="4. Industries We Serve"
+                title="5. Industries We Serve"
                 activeSections={activeSections}
             >
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
@@ -383,7 +530,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
             {/* 4. CORE FEATURES GRID */}
-            <SectionWrapper id="features" icon={Database} title="5. Core Features Grid" activeSections={activeSections}>
+            <SectionWrapper id="features" icon={Database} title="6. Core Features Grid" activeSections={activeSections}>
                 <SectionHeader section={content.features} path="content.features" updateField={updateField} />
                 <div className="space-y-4">
                     <label className={labelStyle}>Feature Cards</label>
@@ -429,7 +576,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 4. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="6. SEO Settings" activeSections={activeSections}>
+            <SectionWrapper id="seo" icon={Search} title="7. SEO Settings" activeSections={activeSections}>
                 <div className="space-y-4">
                     <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
                     <textarea className={inputStyle} rows={3} placeholder="SEO Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
@@ -465,7 +612,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
             {/* Pricing Cards Sections */}
             {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
-            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="7.  Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
+            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="8.  Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
 
                 {/* TOP TEXT + BILLING TOGGLE LABELS */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -596,7 +743,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
             {/* PRICING / COMPARE PLANS SECTION */}
-            <SectionWrapper id="pricing" icon={DollarSign} title="8. Pricing / Compare Plans" activeSections={activeSections}>
+            <SectionWrapper id="pricing" icon={DollarSign} title="9. Pricing / Compare Plans" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Title (e.g. Compare)" value={content.pricing?.title || ''} onChange={e => updateField('content.pricing.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Highlight Text (e.g. Plans)" value={content.pricing?.highlight || ''} onChange={e => updateField('content.pricing.highlight', e.target.value)} />
@@ -803,10 +950,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                             </div>
                         </div>
                     </div> */}
-                    {/* <div className="space-y-4"> */}
-                        {/* Images removed as per request */}
-                    {/* </div> */}
-                {/* </div> */}
+            {/* <div className="space-y-4"> */}
+            {/* Images removed as per request */}
+            {/* </div> */}
+            {/* </div> */}
             {/* </SectionWrapper> */}
 
             {/* 7. AWARDS SECTION */}
@@ -905,7 +1052,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper> */}
 
-          
+
             {/* <SectionWrapper id="process" icon={Settings} title="10. Our Process" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.process?.title || ''} onChange={e => updateField('content.process.title', e.target.value)} />
@@ -920,11 +1067,11 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                 <div className="w-10 h-10 rounded-full bg-sky-100 text-sky-600 flex items-center justify-center font-bold text-sm shrink-0">{i + 1}</div>
                                 <input className={inputStyle} placeholder="Step Title" value={step.title || ''} onChange={e => updateField(`content.process.items.${i}.title`, e.target.value)} />
                             </div> */}
-{/* 
+            {/* 
                             <textarea className={inputStyle} placeholder="Step Description" value={step.description || ''} onChange={e => updateField(`content.process.items.${i}.description`, e.target.value)} /> */}
 
-                            {/* Bullets List */}
-                            {/* <div className="bg-white p-4 rounded-xl border border-slate-100 space-y-3">
+            {/* Bullets List */}
+            {/* <div className="bg-white p-4 rounded-xl border border-slate-100 space-y-3">
                                 <label className={labelStyle}>Features / Details (Bullets)</label>
                                 <div className="space-y-2">
                                     {(step.bullets || []).map((bullet, j) => (
@@ -937,11 +1084,11 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                 </div>
                             </div>
                         </div> */}
-                    {/* ))}
+            {/* ))}
                     <button type="button" onClick={() => updateField('content.process.items', (prev) => [...(prev || []), { title: "", description: "", bullets: [] }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 hover:text-sky-600 font-bold uppercase tracking-tight">+ Add Process Step</button>
                 </div> */}
             {/* </SectionWrapper> */}
-           
+
             {/* 12. PORTFOLIO */}
             {/* <SectionWrapper id="portfolio" icon={Globe} title="12. Portfolio Section" activeSections={activeSections}>
                 <div className="space-y-4">
@@ -967,7 +1114,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper> */}
 
             {/* 13. INDUSTRY SOLUTIONS */}
-         
+
 
             {/* 14. INDUSTRIES WE SERVE */}
             {/* <SectionWrapper id="industries" icon={Layers} title="14. Industries We Serve (Slider)" activeSections={activeSections}>
@@ -1165,7 +1312,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper> */}
 
             {/* 18. WORKFLOW ADD-ONS SECTION */}
-            <SectionWrapper id="workflowAddOns" icon={Puzzle} title="9. Workflow Add-Ons" activeSections={activeSections}>
+            <SectionWrapper id="workflowAddOns" icon={Puzzle} title="10. Workflow Add-Ons" activeSections={activeSections}>
 
                 {/* HEADER TEXT */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -1359,122 +1506,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
 
-             {/* 22. ENTERPRISE DIGITAL MARKETING (Radial Diagram) */}
-            <SectionWrapper id="enterpriseMarketing" icon={Share2} title="10. Enterprise Digital Marketing" activeSections={activeSections}>
-
-                {/* HEADER TEXT */}
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Title Lead (e.g. Enterprise Digital Marketing)</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="Enterprise Digital Marketing"
-                            value={content.enterpriseMarketing?.titleLead || ''}
-                            onChange={(e) => updateField('content.enterpriseMarketing.titleLead', e.target.value)}
-                        />
-                    </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Title Accent (highlighted, e.g. Services by Infosys)</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="Services by Infosys"
-                            value={content.enterpriseMarketing?.titleAccent || ''}
-                            onChange={(e) => updateField('content.enterpriseMarketing.titleAccent', e.target.value)}
-                        />
-                    </div>
-                </div>
-
-                <div className="space-y-1">
-                    <label className={labelStyle}>Description</label>
-                    <textarea
-                        className={inputStyle}
-                        rows={4}
-                        placeholder="Softkingo Digital Marketing practice helps enterprises..."
-                        value={content.enterpriseMarketing?.description || ''}
-                        onChange={(e) => updateField('content.enterpriseMarketing.description', e.target.value)}
-                    />
-                </div>
-
-                {/* RING IMAGE (Radial Diagram center/ring) */}
-                <MediaInput
-                    label="Ring Image (Radial Diagram)"
-                    value={content.enterpriseMarketing?.ringImage}
-                    path="content.enterpriseMarketing.ringImage"
-                />
-
-                {/* STATS GRID */}
-                <div className="space-y-4 pt-6 border-t border-slate-100">
-                    <label className={labelStyle}>Stats Grid</label>
-
-                    {(content.enterpriseMarketing?.stats || []).map((stat, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative space-y-3">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    updateField('content.enterpriseMarketing.stats', (prev) =>
-                                        (prev || []).filter((_, idx) => idx !== i)
-                                    )
-                                }
-                                className="absolute top-3 right-3 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"
-                            >
-                                <X size={16} />
-                            </button>
-
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Value (e.g. 50)</label>
-                                    <input
-                                        className="w-full p-2 bg-white border rounded text-sm font-bold"
-                                        placeholder="50"
-                                        value={stat.value || ''}
-                                        onChange={(e) =>
-                                            updateField(`content.enterpriseMarketing.stats.${i}.value`, e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Unit (e.g. %)</label>
-                                    <input
-                                        className="w-full p-2 bg-white border rounded text-sm font-bold"
-                                        placeholder="%"
-                                        value={stat.unit || ''}
-                                        onChange={(e) =>
-                                            updateField(`content.enterpriseMarketing.stats.${i}.unit`, e.target.value)
-                                        }
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-1">
-                                <label className={labelStyle}>Description</label>
-                                <textarea
-                                    className="w-full p-2 bg-white border rounded text-sm"
-                                    rows={2}
-                                    placeholder="of Indian shoppers check online before making an actual purchase."
-                                    value={stat.description || ''}
-                                    onChange={(e) =>
-                                        updateField(`content.enterpriseMarketing.stats.${i}.description`, e.target.value)
-                                    }
-                                />
-                            </div>
-                        </div>
-                    ))}
-
-                    <button
-                        type="button"
-                        onClick={() =>
-                            updateField('content.enterpriseMarketing.stats', (prev) => [
-                                ...(prev || []),
-                                { value: "", unit: "", description: "" },
-                            ])
-                        }
-                        className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
-                    >
-                        <Plus size={18} /> Add Stat
-                    </button>
-                </div>
-            </SectionWrapper>
-
+         
             {/* 18. INQUIRY SECTION */}
             {/* <SectionWrapper id="inquiry" icon={MessageSquare} title="18. Inquiry Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">

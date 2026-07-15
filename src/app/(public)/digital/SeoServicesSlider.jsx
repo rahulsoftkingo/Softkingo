@@ -65,13 +65,7 @@ export default function WorkShowcase({ data }) {
           subtitle={subtitle}
           className="text-center"
         />
-
-        {/* Subtitle */}
-        <p
-          className="mx-auto mt-4 max-w-3xl text-center text-md leading-relaxed text-gray-500"
-          dangerouslySetInnerHTML={{ __html: subtitle }}
-        />
-
+        
         {/* Grid */}
         <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => (

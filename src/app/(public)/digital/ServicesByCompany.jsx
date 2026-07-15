@@ -1,5 +1,6 @@
 "use client";
 
+import CommonTitle from '@/components/ui/CommonTitle';
 // Fallback data used when no `data` prop (or an empty one) is passed in
 const defaultData = {
   titleLead: "Enterprise Digital Marketing",
@@ -64,19 +65,25 @@ export default function EnterpriseDigitalMarketing({ data }) {
     <section className="py-16 sm:py-20 bg-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900">
-            {source.titleLead}
-          </h2>
+          <CommonTitle
+            align="left"
+            pill={false}
+            title={
+              <>
+                {source.titleLead}
+                <br />
+              </>
+            }
+            gradientText={source.titleAccent}
+            subtitle={false}
+          />
 
-          <h2 className="mt-2 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-sky-600">
-            {source.titleAccent}
-          </h2>
         </div>
 
         <div className="mt-12 sm:mt-14 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left: copy */}
           <div className="flex-1 min-w-0 w-full">
-            <p className="text-[15px] sm:text-base text-slate-600 leading-[1.85] max-w-lg">
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 rich-text">
               {source.description}
             </p>
           </div>
@@ -98,7 +105,7 @@ export default function EnterpriseDigitalMarketing({ data }) {
         </div>
 
         {/* Stats grid */}
-        <div className="mt-16 sm:mt-20 grid grid-cols-1 sm:grid-cols-2 gap-x-14 gap-y-10 max-w-4xl mx-auto lg:mx-0">
+        <div className="mt-16 sm:mt-20 grid grid-cols-1 sm:grid-cols-2 gap-x-14 gap-y-10 max-w-4xl mx-auto">
           {stats.map((stat, i) => (
             <div key={i} className="flex items-start gap-5">
               <div className="shrink-0 leading-none whitespace-nowrap">

@@ -17,16 +17,22 @@ const DEFAULT_DATA = {
     "<p>Boost your ride-hailing business with our trusted full-service taxi app development team in India, delivering client-first solutions focused on measurable growth, not just features.</p>",
   heroButtonText: "Speak to Our Experts",
   heroButtonLink: "/contact",
+  heroButtonText2: "",
+  heroButtonLink2: "",
+  heroBullets: [], // ✅ FIX: default empty array so .map() never crashes
   heroBg: "",
 };
 
 export default function TaxiHero({ data }) {
-  // ✅ data prop na aaye, ya kisi field ki value missing/empty ho, to dummy fallback use hoga
   const heroTitle = data?.heroTitle || DEFAULT_DATA.heroTitle;
   const heroSubtitle = data?.heroSubtitle || DEFAULT_DATA.heroSubtitle;
   const heroButtonText = data?.heroButtonText || DEFAULT_DATA.heroButtonText;
   const heroButtonLink = data?.heroButtonLink || DEFAULT_DATA.heroButtonLink;
+  const heroButtonText2 = data?.heroButtonText2 || DEFAULT_DATA.heroButtonText2;
+  const heroButtonLink2 = data?.heroButtonLink2 || DEFAULT_DATA.heroButtonLink2;
+  const heroBullets = Array.isArray(data?.heroBullets) ? data.heroBullets : DEFAULT_DATA.heroBullets;
   const heroBg = data?.heroBg || DEFAULT_DATA.heroBg;
+
 
   return (
     <div>
@@ -70,14 +76,16 @@ export default function TaxiHero({ data }) {
               </div>
 
               {/* Feature List */}
-              <ul className="space-y-2 pt-1 animate-fadeInUp animation-delay-200">
-                {FEATURES.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm md:text-base text-gray-200">
-                    <FaCheckCircle className="text-sky-400 mt-1 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
+              {heroBullets.length > 0 && (
+                <ul className="space-y-2 pt-1 animate-fadeInUp animation-delay-200">
+                  {heroBullets.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm md:text-base text-gray-200">
+                      <FaCheckCircle className="text-sky-400 mt-1 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4 pt-2 animate-fadeInUp animation-delay-400">
@@ -88,12 +96,21 @@ export default function TaxiHero({ data }) {
                   {heroButtonText} <FaArrowRight className="ml-2" />
                 </Link>
 
-                <Link
-                  href="/audit"
-                  className="px-6 md:px-8 py-3 rounded-full border border-sky-400/60 text-white text-xs md:text-sm font-bold hover:bg-white/10 transform hover:-translate-y-1 transition-all duration-300 items-center cursor-pointer inline-flex uppercase tracking-wider"
-                >
-                  Audit Your App Idea
-                </Link>
+                {heroButtonText2 ? (
+                  <Link
+                    href={heroButtonLink2 || "#"}
+                    className="px-6 md:px-8 py-3 rounded-full border border-sky-400/60 text-white text-xs md:text-sm font-bold hover:bg-white/10 transform hover:-translate-y-1 transition-all duration-300 items-center cursor-pointer inline-flex uppercase tracking-wider"
+                  >
+                    {heroButtonText2}
+                  </Link>
+                ) : (
+                  <Link
+                    href="/audit"
+                    className="px-6 md:px-8 py-3 rounded-full border border-sky-400/60 text-white text-xs md:text-sm font-bold hover:bg-white/10 transform hover:-translate-y-1 transition-all duration-300 items-center cursor-pointer inline-flex uppercase tracking-wider"
+                  >
+                    Audit Your App Idea
+                  </Link>
+                )}
               </div>
 
               {/* Trusted By Section */}
