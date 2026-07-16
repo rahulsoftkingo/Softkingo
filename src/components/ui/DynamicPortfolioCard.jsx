@@ -40,6 +40,9 @@ export default function DynamicPortfolioCard({
         let data = await res.json();
         let found = Array.isArray(data.projects) ? data.projects : [];
 
+
+
+
         // FALLBACK: no results with category → show top 7 without filter
         if (found.length === 0 && category) {
           const fallback = new URLSearchParams({ type: portfolioType || "app", take: 7 });
@@ -49,6 +52,7 @@ export default function DynamicPortfolioCard({
         }
 
         setProjects(found);
+
       } catch (error) {
         console.error("Portfolio fetch error:", error);
         setProjects([]);
@@ -122,6 +126,8 @@ export default function DynamicPortfolioCard({
 
 /* ─── Sticky Project Card with scroll-based scale/opacity — like h4-service ─── */
 function StickyProjectCard({ p, index, total, onContact }) {
+
+
   const ref = useRef(null);
 
   // Track scroll progress of THIS card relative to viewport
@@ -192,23 +198,23 @@ function StickyProjectCard({ p, index, total, onContact }) {
             {/* Badges + Case Study - Unified Layout */}
             <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-3 mt-4">
               {p.badges?.play && (
-                <Link href={p.badges.play.href || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
-                  <Image src={p.badges.play.src || "/images/google-play.png"} alt="Google Play" width={130} height={45} className="h-8 w-auto object-contain" />
+                <Link href={p.badges.play.url || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
+                  <Image src={p.badges.play.image || "/images/google-play.png"} alt="Google Play" width={130} height={45} className="h-8 w-auto object-contain" />
                 </Link>
               )}
               {p.badges?.app && (
-                <Link href={p.badges.app.href || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
-                  <Image src={p.badges.app.src || "/images/app-store.png"} alt="App Store" width={130} height={45} className="h-8 w-auto object-contain" />
+                <Link href={p.badges.app.url || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
+                  <Image src={p.badges.app.image || "/images/app-store.png"} alt="App Store" width={130} height={45} className="h-8 w-auto object-contain" />
                 </Link>
               )}
               {p.badges?.web && (
-                <Link href={p.badges.web.href || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
-                  <Image src={p.badges.web.src || "/images/view-web.png"} alt="Web" width={130} height={45} className="h-8 w-auto object-contain" />
+                <Link href={p.badges.web.url || "#"} target="_blank" rel="noreferrer" className="flex justify-start">
+                  <Image src={p.badges.web.image || "/images/view-web.png"} alt="Web" width={130} height={45} className="h-8 w-auto object-contain" />
                 </Link>
               )}
               <Link
                 href={`/case-studies/${p.id}`}
-                className="w-fit inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-black text-white hover:bg-white hover:text-black transition px-3 text-sm  whitespace-nowrap border border-transparent hover:border-gray-400"
+                className="w-fit inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-black text-white hover:bg-white hover:text-black transition px-3 text-sm whitespace-nowrap border border-transparent hover:border-gray-400"
               >
                 Case Study <ArrowRight className="h-4 w-4" />
               </Link>
