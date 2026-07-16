@@ -9,14 +9,12 @@ import SeoServicesSlider from "../../digital/SeoServicesSlider";
 import TrustedByCard from "../../digital/TrustedByCard";
 import PricingPage from "../../digital/PricingPage";
 import CuttingEdgeTech from "../../digital/CuttingEdgeTech";
-import OurProcessRadial from "../../digital/OurProcessRadial";
 import ServicesByCompany from "../../digital/ServicesByCompany"
 import WorkflowAddOns from "../../digital/WorkFlowAddons";
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
 
-import CommonTitle from '@/components/ui/CommonTitle';
 
 
 export default function DigitalComponent({ content }) {
@@ -24,6 +22,37 @@ export default function DigitalComponent({ content }) {
   console.log("Rahul content",content)
   return (
     <div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "softkingo",
+                "item": "https://www.softkingo.com"
+              },
+               {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "digitalmarket",
+                "item": `https://www.softkingo.com/${"digitalmarket"}`
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": content?.slug || "digital",
+                "item": `https://www.softkingo.com/${content?.slug || "digital"}`
+              }
+            ]
+          })
+        }}
+      />
+
       <div>
         <TaxiHero
           data={{

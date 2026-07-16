@@ -54,6 +54,19 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
 
 export default function ServicePageEditor({ data, onBack }) {
 
+    const parseContentJson = (raw) => {
+        try {
+            if (typeof raw === 'string') {
+                const parsed = JSON.parse(raw);
+                return parsed?.content || parsed || {};
+            }
+            return raw?.content || raw || {};
+        } catch (e) {
+            console.error("Invalid contentJson:", e);
+            return {};
+        }
+    };
+
     // --- CONFIGURATION ---
     const config = {
         theme: "sky",
@@ -88,7 +101,9 @@ export default function ServicePageEditor({ data, onBack }) {
         slug: '',
         ...data,
         activeSections: data?.activeSections || config.sections.map(s => s.id),
-        content: data?.content || { hero: {} }
+        content: data?.content && Object.keys(data.content).length
+            ? data.content
+            : (parseContentJson(data?.contentJson) || { hero: {} })
     });
 
     useEffect(() => {
@@ -99,7 +114,9 @@ export default function ServicePageEditor({ data, onBack }) {
                 ...data,
                 activeSections:
                     data?.activeSections || config.sections.map(s => s.id),
-                content: data?.content || { hero: {} }
+                content: data?.content && Object.keys(data.content).length
+                    ? data.content
+                    : (parseContentJson(data?.contentJson) || { hero: {} })
             });
         }
     }, [data]);
@@ -186,7 +203,11 @@ export default function ServicePageEditor({ data, onBack }) {
 
         setLoading(true);
         try {
-            const payload = { ...formData, type: 'service' };
+            const payload = {
+                ...formData,
+                contentJson: JSON.stringify({ content: formData.content }),
+                type: 'service'
+            };
             const isEdit = !!formData.id;
             const apiEndpoint = isEdit ? `/api/admin/services/${formData.id}` : "/api/admin/services";
 

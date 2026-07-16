@@ -79,7 +79,7 @@ export default function BlogSection({
                         </div>
 
                         <Link
-                            href={`/blog?category=${category}`}
+                            href={`/blog/category/${category}`}
                             className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0"
                         >
                             <div className="relative flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">

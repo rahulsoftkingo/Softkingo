@@ -30,20 +30,8 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
 // --- 3. MAIN SERVICE EDITOR ---
 export default function ServiceEditor({ formData, updateField, MediaInput, TipTapEditor, activeSections, portfolioCategories }) {
 
-    let content = {};
 
-    try {
-        content =
-            typeof formData?.contentJson === "string"
-                ? JSON.parse(formData.contentJson)
-                : formData?.contentJson || {};
-    } catch (error) {
-        console.error("Invalid JSON in contentJson:", error);
-        content = {};
-    }
-
-
-    content = content.content || {};
+    const content = formData?.content || {};
 
 
     return (

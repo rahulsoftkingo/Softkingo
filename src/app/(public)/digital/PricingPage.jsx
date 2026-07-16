@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import {
   Check,
   ChevronDown,
@@ -41,8 +42,6 @@ function getIcon(iconName) {
   return ICON_MAP[key] || Sparkles;
 }
 
-// Used for the compare-table group headers, cycled the same way the
-// original ComparePlans component cycled GROUP_ICONS.
 const GROUP_ICONS = [Waypoints, Users, Sparkles, Shield, Layers];
 
 const badgeStyles = {
@@ -52,26 +51,7 @@ const badgeStyles = {
 };
 
 /* -------------------------------------------------------------------------
- * Data
- *
- * The component is prop-driven now — call it like:
- *
- *   <PricingPage pricing={content.pricing} pricingCards={content.pricingCards} />
- *
- * `pricing`      -> the compare-table side: title / highlight / subtitle
- *                   (section heading) + featureGroups (the accordion rows).
- * `pricingCards` -> the plan-cards side: topText, billing-toggle labels,
- *                   solutionTabs, and the `plans` array (used both for the
- *                   cards up top AND as the column headers of the compare
- *                   table below, since they're the same plans).
- *
- * `solutionTabs[i].id` and `pricing.featureGroups[i].id` are meant to line
- * up so the "Compare all plans" button / tab clicks can open + scroll to
- * the matching accordion section.
- *
- * The two constants below (DEFAULT_PRICING / DEFAULT_PRICING_CARDS) are
- * only used as a fallback when the component isn't given props — they
- * mirror the two JSON blobs supplied.
+ * Default fallback data
  * ---------------------------------------------------------------------- */
 const DEFAULT_PRICING = {
   title: "Pricing ",
@@ -142,8 +122,7 @@ const DEFAULT_PRICING_CARDS = {
 };
 
 /* -------------------------------------------------------------------------
- * Pricing-card feature row (identical markup/classes to the original
- * PricingPage's FeatureItem)
+ * FeatureItem
  * ---------------------------------------------------------------------- */
 function FeatureItem({ feature }) {
   return (
@@ -168,7 +147,7 @@ function FeatureItem({ feature }) {
 }
 
 /* -------------------------------------------------------------------------
- * Compare-table cell (identical logic/classes to the original ComparePlans)
+ * Compare-table cell
  * ---------------------------------------------------------------------- */
 function normalizeValue(raw) {
   if (raw === null || raw === undefined) return null;
@@ -197,9 +176,7 @@ function Cell({ value }) {
 }
 
 /* -------------------------------------------------------------------------
- * A single feature row inside the compare table. Supports an optional
- * `children` array so a row (e.g. "Forms") can itself expand into its own
- * nested sub-accordion, same as in the screenshot.
+ * FeatureRow (with nested sub-rows support)
  * ---------------------------------------------------------------------- */
 function FeatureRow({ feature, groupId, index, plans, openFeatures, toggleFeature, depth = 0, parentKey = "" }) {
   const rowKey = parentKey ? `${parentKey}.${index}` : `${groupId}:${index}`;
@@ -281,13 +258,35 @@ export default function PricingPage({
   pricing = DEFAULT_PRICING,
   pricingCards = DEFAULT_PRICING_CARDS,
 }) {
+  // Merge onto defaults to secure correct formatting constraints
+  const safePricing = {
+    ...DEFAULT_PRICING,
+    ...pricing,
+    featureGroups: Array.isArray(pricing?.featureGroups)
+      ? pricing.featureGroups
+      : DEFAULT_PRICING.featureGroups,
+  };
+
+  const safePricingCards = {
+    ...DEFAULT_PRICING_CARDS,
+    ...pricingCards,
+    solutionTabs: Array.isArray(pricingCards?.solutionTabs)
+      ? pricingCards.solutionTabs
+      : DEFAULT_PRICING_CARDS.solutionTabs,
+    plans: Array.isArray(pricingCards?.plans)
+      ? pricingCards.plans
+      : DEFAULT_PRICING_CARDS.plans,
+  };
+
   const [billing, setBilling] = useState("annual");
-  const [activeTabId, setActiveTabId] = useState(pricingCards.solutionTabs[0]?.id);
+  const [activeTabId, setActiveTabId] = useState(safePricingCards.solutionTabs[0]?.id);
+
   const [openSections, setOpenSections] = useState(() => {
     const initial = {};
-    pricing.featureGroups.forEach((g, i) => (initial[g.id] = i === 0));
+    safePricing.featureGroups.forEach((g, i) => (initial[g.id] = i === 0));
     return initial;
   });
+
   const [justJumped, setJustJumped] = useState(null);
   const [openFeatures, setOpenFeatures] = useState({});
 
@@ -303,11 +302,12 @@ export default function PricingPage({
     setOpenFeatures((prev) => ({ ...prev, [key]: !prev[key] }));
   }
 
+  // Smooth scrolls to compare table
   function goToCompare(targetId) {
     setActiveTabId(targetId);
     setOpenSections((prev) => {
       const next = {};
-      pricing.featureGroups.forEach((g) => (next[g.id] = g.id === targetId));
+      safePricing.featureGroups.forEach((g) => (next[g.id] = g.id === targetId));
       return next;
     });
     setJustJumped(targetId);
@@ -324,29 +324,26 @@ export default function PricingPage({
   return (
     <div className="bg-white">
       {/* ============================= PRICING ============================= */}
-      <section className="bg-gradient-to-br from-white via-sky-50 to-sky-200 py-20 px-4 py-8 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-br from-white via-sky-50 to-sky-200 py-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          {/* New heading, driven by title / highlight / subtitle */}
-          {(pricing.title || pricing.highlight || pricing.subtitle) && (
+          {(safePricing.title || safePricing.highlight || safePricing.subtitle) && (
             <div className="mb-6 text-center">
               <h2 className="text-3xl font-semibold text-slate-900">
-                {pricing.title}
-                {pricing.highlight && (
-                  <span className="text-sky-600"> {pricing.highlight}</span>
+                {safePricing.title}
+                {safePricing.highlight && (
+                  <span className="text-sky-600"> {safePricing.highlight}</span>
                 )}
               </h2>
-              {pricing.subtitle && (
-                <p className="mt-2 text-sm text-slate-500">{pricing.subtitle}</p>
+              {safePricing.subtitle && (
+                <p className="mt-2 text-sm text-slate-500">{safePricing.subtitle}</p>
               )}
             </div>
           )}
 
-          {/* Top intro line */}
           <p className="ml-auto max-w-md text-right text-sm leading-relaxed text-slate-600">
-            {pricingCards.topText}
+            {safePricingCards.topText}
           </p>
 
-          {/* Billing toggle */}
           <div className="mt-4 flex justify-end">
             <div className="inline-flex items-center rounded-full border border-slate-200 p-1">
               <button
@@ -356,10 +353,10 @@ export default function PricingPage({
                   billing === "annual" ? "bg-slate-900 text-white" : "text-slate-600"
                 }`}
               >
-                {pricingCards.annualLabel}
-                {pricingCards.annualBadge && (
+                {safePricingCards.annualLabel}
+                {safePricingCards.annualBadge && (
                   <span className="rounded bg-yellow-300 px-1.5 py-0.5 text-[10px] font-bold text-slate-900">
-                    {pricingCards.annualBadge}
+                    {safePricingCards.annualBadge}
                   </span>
                 )}
               </button>
@@ -370,19 +367,18 @@ export default function PricingPage({
                   billing === "monthly" ? "bg-slate-900 text-white" : "text-slate-600"
                 }`}
               >
-                {pricingCards.monthlyLabel}
+                {safePricingCards.monthlyLabel}
               </button>
             </div>
           </div>
 
-          {/* Solutions tabs */}
           <div className="mt-10 rounded-xl border border-slate-200 p-4">
             <p className="text-xs text-slate-500">
-              {pricingCards.tabsTitle}
-              <span className="block text-[11px] text-slate-400">{pricingCards.tabsSubtitle}</span>
+              {safePricingCards.tabsTitle}
+              <span className="block text-[11px] text-slate-400">{safePricingCards.tabsSubtitle}</span>
             </p>
             <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {pricingCards.solutionTabs.map((tab) => {
+              {safePricingCards.solutionTabs.map((tab) => {
                 const Icon = getIcon(tab.iconName);
                 const active = activeTabId === tab.id;
                 return (
@@ -404,9 +400,8 @@ export default function PricingPage({
             </div>
           </div>
 
-          {/* Plans */}
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-4">
-            {pricingCards.plans.map((plan, i) => (
+            {safePricingCards.plans.map((plan, i) => (
               <div
                 key={i}
                 className={`relative flex flex-col rounded-2xl border p-5 ${
@@ -439,18 +434,18 @@ export default function PricingPage({
                     {plan.creditsNote}
                     <br />
                     {plan.learnMoreLink && (
-                      <a
+                      <Link
                         href={plan.learnMoreLink}
                         className="underline underline-offset-2 hover:text-slate-700"
                       >
                         Learn more
-                      </a>
+                      </Link>
                     )}
                   </span>
                 </div>
 
                 {plan.primaryButton && (
-                  <a
+                  <Link
                     href={plan.primaryButton.link || "#"}
                     className={`mt-4 block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
                       plan.highlighted
@@ -459,7 +454,7 @@ export default function PricingPage({
                     }`}
                   >
                     {plan.primaryButton.label}
-                  </a>
+                  </Link>
                 )}
 
                 {plan.trialText && (
@@ -467,16 +462,16 @@ export default function PricingPage({
                 )}
 
                 {plan.secondaryButton && (
-                  <a
+                  <Link
                     href={plan.secondaryButton.link || "#"}
                     className="mt-2 block rounded-md border border-slate-300 px-4 py-2 text-center text-sm font-medium text-slate-900 transition-colors hover:bg-slate-50"
                   >
                     {plan.secondaryButton.label}
-                  </a>
+                  </Link>
                 )}
 
                 <ul className="mt-5 divide-y divide-slate-100 border-t border-slate-100">
-                  {plan.features.map((feature, j) => (
+                  {(plan.features || []).map((feature, j) => (
                     <FeatureItem key={j} feature={feature} />
                   ))}
                 </ul>
@@ -511,10 +506,10 @@ export default function PricingPage({
           <div className="sticky top-[73px] z-30 mt-6 bg-white pb-4 pt-2">
             <div
               className="grid gap-4"
-              style={{ gridTemplateColumns: `1.6fr repeat(${pricingCards.plans.length}, 1fr)` }}
+              style={{ gridTemplateColumns: `1.6fr repeat(${safePricingCards.plans.length}, 1fr)` }}
             >
               <div />
-              {pricingCards.plans.map((plan, i) => (
+              {safePricingCards.plans.map((plan, i) => (
                 <div key={i} className="flex flex-col">
                   <div className="flex items-center gap-2">
                     <p className="text-md font-medium text-slate-900">{plan.name}</p>
@@ -549,7 +544,7 @@ export default function PricingPage({
                   )}
 
                   {plan.primaryButton && (
-                    <a
+                    <Link
                       href={plan.primaryButton.link || "#"}
                       className={`mt-4 inline-block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
                         plan.highlighted
@@ -558,7 +553,7 @@ export default function PricingPage({
                       }`}
                     >
                       {plan.primaryButton.label}
-                    </a>
+                    </Link>
                   )}
                 </div>
               ))}
@@ -566,7 +561,7 @@ export default function PricingPage({
           </div>
 
           <div className="mt-6 space-y-4">
-            {pricing.featureGroups.map((group, gi) => {
+            {safePricing.featureGroups.map((group, gi) => {
               const IconComponent = GROUP_ICONS[gi % GROUP_ICONS.length];
               const isOpen = openSections[group.id];
               const isFlashing = justJumped === group.id;
@@ -606,13 +601,13 @@ export default function PricingPage({
 
                   {isOpen && (
                     <div className="bg-white">
-                      {group.features.map((feature, fi) => (
+                      {(group.features || []).map((feature, fi) => (
                         <FeatureRow
                           key={fi}
                           feature={feature}
                           groupId={group.id}
                           index={fi}
-                          plans={pricingCards.plans}
+                          plans={safePricingCards.plans}
                           openFeatures={openFeatures}
                           toggleFeature={toggleFeature}
                         />
