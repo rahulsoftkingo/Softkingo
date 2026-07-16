@@ -7,8 +7,6 @@ import { FaArrowRight, FaCode, FaMobileAlt, FaLaptopCode, FaBook } from 'react-i
 import { FaPhoneAlt } from "react-icons/fa";
 import Link from 'next/link';
 
-
-
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 
 const HeroSection = () => {
@@ -44,7 +42,6 @@ const HeroSection = () => {
     }));
 
     setBgDots(dots);
-
   }, []);
 
   return (
@@ -71,8 +68,8 @@ const HeroSection = () => {
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/30 z-[1]" />
 
-      {/* Background bubbles */}
-      <div className="absolute inset-0 overflow-hidden z-[2]">
+      {/* Background bubbles - hidden on mobile via CSS, no JS flash */}
+      <div className="hidden md:block absolute inset-0 overflow-hidden z-[2]">
         {mounted &&
           bgElements.map((el, i) => (
             <motion.div
@@ -97,9 +94,9 @@ const HeroSection = () => {
           ))}
       </div>
 
-      {/* Floating Icons */}
+      {/* Floating Icons - hidden on mobile via CSS */}
       <motion.div
-        className="absolute top-1/3 right-10 z-[3]"
+        className="hidden md:block absolute top-1/3 right-10 z-[3]"
         animate={{ y: [0, -20, 0] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
@@ -107,7 +104,7 @@ const HeroSection = () => {
       </motion.div>
 
       <motion.div
-        className="absolute top-1/4 left-10 z-[3]"
+        className="hidden md:block absolute top-1/4 left-10 z-[3]"
         animate={{ y: [0, -25, 0] }}
         transition={{ duration: 5, repeat: Infinity }}
       >
@@ -115,19 +112,19 @@ const HeroSection = () => {
       </motion.div>
 
       <motion.div
-        className="absolute bottom-10 left-1/2 z-[3]"
+        className="hidden md:block absolute bottom-10 left-1/2 z-[3]"
         animate={{ y: [0, -15, 0] }}
         transition={{ duration: 4.5, repeat: Infinity }}
       >
         <FaLaptopCode className="text-sky-400 text-3xl" />
       </motion.div>
 
-      {/* Dots */}
+      {/* Dots - hidden on mobile via CSS */}
       {mounted &&
         bgDots.map((dot, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full z-[2]"
+            className="hidden md:block absolute rounded-full z-[2]"
             style={{
               width: dot.width,
               height: dot.height,
@@ -150,11 +147,88 @@ const HeroSection = () => {
 
       {/* Main Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
+        {/* Mobile version: plain elements, zero motion */}
+        <div className="flex md:hidden flex-col items-center">
+          {/* Badge */}
+          <div className="bg-sky-50/10 backdrop-blur-sm text-white px-6 py-2 rounded-full mb-6 border border-white/20 text-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block mr-2" />
+            #1 Software Development Company
+          </div>
+
+          {/* Heading */}
+          <h1 className="text-3xl font-bold mb-6 text-white leading-normal">
+            <span>AI-Driven  </span>
+
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
+              Digital Solutions
+            </span>
+
+            <span className="block mt-3 text-2xl text-white">
+              for Apps, Web & Digital Marketing
+            </span>
+          </h1>
+
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8 text-white text-sm">
+            <div className="flex items-center gap-1">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
+                ✓
+              </span>
+              <span className='font-extrabold text-2lg text-white'>400+ Projects Delivered</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
+                ✓
+              </span>
+              <span className='font-extrabold text-2lg text-white'>Trusted by 350+ Global Clients</span>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
+                ✓
+              </span>
+              <span className='font-extrabold text-2lg text-white'>6+ Years of Innovation</span>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-sm text-gray-200 mb-10 max-w-2xl">
+            Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
+          </p>
+
+          {/* Buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mb-10">
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
+            >
+              Get A Quote
+              <FaArrowRight />
+              <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <FaPhoneAlt className="text-black text-sm" />
+              </span>
+            </button>
+
+            <Link
+              href="https://calendly.com/paramhans-softkingo/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
+            >
+              Book A Meeting
+              <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <FaBook className="text-black text-sm" />
+              </span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Desktop/tablet version: with motion */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="flex flex-col items-center"
+          className="hidden md:flex flex-col items-center"
         >
           {/* Badge */}
           <motion.div className="bg-sky-50/10 backdrop-blur-sm text-white px-6 py-2 rounded-full mb-6 border border-white/20 text-xs md:text-md">
@@ -164,7 +238,7 @@ const HeroSection = () => {
 
           {/* Heading */}
           <motion.h1 className="text-3xl md:text-6xl font-bold mb-6 text-white leading-normal">
-            <span className="">AI-Driven  </span>
+            <span>AI-Driven  </span>
 
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
               Digital Solutions
@@ -176,14 +250,11 @@ const HeroSection = () => {
           </motion.h1>
 
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-5 md:gap-y-4 mb-8 md:mb-4 text-white text-sm md:text-base">
-
             <div className="flex items-center gap-1 md:gap-2">
               <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
                 ✓
               </span>
-              <span>
-                <span className='font-extrabold text-2lg text-white'>400+ Projects Delivered</span>
-              </span>
+              <span className='font-extrabold text-2lg text-white'>400+ Projects Delivered</span>
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
@@ -199,7 +270,6 @@ const HeroSection = () => {
               </span>
               <span className='font-extrabold text-2lg text-white'>6+ Years of Innovation</span>
             </div>
-
           </div>
 
           {/* Description */}
@@ -213,9 +283,7 @@ const HeroSection = () => {
               onClick={() => setShowModal(true)}
               className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
             >
-
               Get A Quote
-
               <FaArrowRight />
               <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
                 <FaPhoneAlt className="text-black text-sm" />
@@ -234,45 +302,6 @@ const HeroSection = () => {
               </span>
             </Link>
           </motion.div>
-
-          {/* Clients & Experience */}
-          <div className="flex items-center gap-8 flex-wrap justify-center">
-            {/* <div className="flex items-center">
-              <div className="flex -space-x-3">
-                {[
-                  "/images/client/client1.png",
-                  "/images/client/client5.png",
-                  "/images/client/client2.png",
-                  "/images/client/client3.png",
-                ].map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt="client"
-                    className="w-10 h-10 rounded-full border-2 border-white object-cover"
-                  />
-                ))}
-              </div>
-
-              <div className="ml-4 text-left">
-                <p className="font-bold text-white">Our</p>
-                <p className="text-sm text-gray-300">Clients</p>
-              </div>
-            </div> */}
-
-            {/* <div className="h-8 w-px bg-gray-400" /> */}
-
-            {/* <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-300 to-sky-800 flex items-center justify-center text-white font-bold">
-                6+
-              </div>
-
-              <div className="ml-4 text-left">
-                <p className="font-bold text-white">Years</p>
-                <p className="text-sm text-gray-300">Experience</p>
-              </div>
-            </div> */}
-          </div>
         </motion.div>
       </div>
 
@@ -283,6 +312,5 @@ const HeroSection = () => {
     </div>
   );
 };
-
 
 export default HeroSection;
