@@ -1,6 +1,5 @@
 "use client";
 
-import CommonTitle from '@/components/ui/CommonTitle';
 // Fallback data used when no `data` prop (or an empty one) is passed in
 const defaultData = {
   titleLead: "Enterprise Digital Marketing",
@@ -63,27 +62,19 @@ export default function EnterpriseDigitalMarketing({ data }) {
 
   return (
     <section className="py-16 sm:py-20 bg-white">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div>
-          <CommonTitle
-            align="left"
-            pill={false}
-            title={
-              <>
-                {source.titleLead}
-                <br />
-              </>
-            }
-            gradientText={source.titleAccent}
-            subtitle={false}
-          />
+      <div className="mx-auto max-w-7xl lg:px-8">
+        {/* Title + copy + image share one aligned row */}
+        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
+          {/* Left: title + description */}
+          <div className="">
+            {/* Custom title (replaces CommonTitle) */}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
+              <span className="text-[#0F3D5C]">{source.titleLead}</span>
+              <br />
+              <span className="text-[#1E88C7]">{source.titleAccent}</span>
+            </h2>
 
-        </div>
-
-        <div className="mt-12 sm:mt-14 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-          {/* Left: copy */}
-          <div className="flex-1 min-w-0 w-full">
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 rich-text">
+            <p className="mt-6 text-sm sm:text-base md:text-lg text-gray-600 rich-text">
               {source.description}
             </p>
           </div>
