@@ -13,7 +13,7 @@ export const metadata = {
 
 export default function TestimonialsPage() {
   return (
-    <main className="bg-[#f6f9ff]">
+    <main className="bg-[#f6f9ff] overflow-x-hidden">
       {/* HERO (enhanced like your Terms hero) */}
 
       <Script
@@ -65,7 +65,7 @@ export default function TestimonialsPage() {
       />
 
       <section
-        className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat"
+        className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{ backgroundImage: "url('/images/terms-hero.png')" }}
       >
         {/* Enhanced background effects */}

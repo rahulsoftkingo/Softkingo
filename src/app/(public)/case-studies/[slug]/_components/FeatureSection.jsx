@@ -57,13 +57,11 @@ export default function FeatureSection({
                             </h2>
                             <div className="w-20 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
                         </div>
-
                         {description && (
-                            <p className="text-lg leading-relaxed font-bold text-slate-600">
+                            <p className="text-lg leading-relaxed font-bold font-sans text-slate-600">
                                 {description}
                             </p>
                         )}
-
                         {listItems && listItems.length > 0 && (
                             <div className="lg:max-h-[550px] overflow-y-auto pr-4 custom-scrollbar-stylish scroll-smooth">
                                 <ul className="space-y-4">
