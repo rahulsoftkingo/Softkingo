@@ -110,8 +110,17 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
 
+             {/* 4. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="2. SEO Settings" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
+                    <textarea className={inputStyle} rows={3} placeholder="SEO Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
+                    <MediaInput label="SEO Image (OpenGraph)" value={formData.seoImage} path="seoImage" />
+                </div>
+            </SectionWrapper>
+
             {/* 2. ENTERPRISE DIGITAL MARKETING (Radial Diagram) */}
-            <SectionWrapper id="enterpriseMarketing" icon={Share2} title="2. Enterprise Digital Marketing" activeSections={activeSections}>
+            <SectionWrapper id="enterpriseMarketing" icon={Share2} title="3. Enterprise Digital Marketing" activeSections={activeSections}>
 
                 {/* HEADER TEXT */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -231,7 +240,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             <SectionWrapper
                 id="services"
                 icon={Layout}
-                title="3. Service Categories"
+                title="4. Service Categories"
                 activeSections={activeSections}
             >
                 <div className="grid md:grid-cols-2 gap-4">
@@ -372,7 +381,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 3. EXTENSIVE SERVICES PROVIDED */}
-            <SectionWrapper id="servicesList" icon={Briefcase} title="4. Extensive Services Provided" activeSections={activeSections}>
+            <SectionWrapper id="servicesList" icon={Briefcase} title="5. Extensive Services Provided" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.servicesList?.title || ''} onChange={e => updateField('content.servicesList.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.servicesList?.subtitle || ''} onChange={e => updateField('content.servicesList.subtitle', e.target.value)} />
@@ -423,7 +432,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             <SectionWrapper
                 id="industries"
                 icon={Layers}
-                title="5. Industries We Serve"
+                title="6. Industries We Serve"
                 activeSections={activeSections}
             >
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
@@ -530,7 +539,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
             {/* 4. CORE FEATURES GRID */}
-            <SectionWrapper id="features" icon={Database} title="6. Core Features Grid" activeSections={activeSections}>
+            <SectionWrapper id="features" icon={Database} title="7. Core Features Grid" activeSections={activeSections}>
                 <SectionHeader section={content.features} path="content.features" updateField={updateField} />
                 <div className="space-y-4">
                     <label className={labelStyle}>Feature Cards</label>
@@ -575,14 +584,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 4. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="7. SEO Settings" activeSections={activeSections}>
-                <div className="space-y-4">
-                    <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
-                    <textarea className={inputStyle} rows={3} placeholder="SEO Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
-                    <MediaInput label="SEO Image (OpenGraph)" value={formData.seoImage} path="seoImage" />
-                </div>
-            </SectionWrapper>
+           
 
 
             {/*

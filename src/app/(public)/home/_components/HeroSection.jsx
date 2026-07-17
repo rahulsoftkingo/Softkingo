@@ -47,46 +47,99 @@ const HeroSection = () => {
   return (
     <div
       ref={sectionRef}
-      className="relative min-h-screen overflow-hidden flex items-center justify-center"
+      className="relative flex flex-col md:block overflow-hidden md:min-h-screen"
     >
-      <img
-        src="/videos/frame.webp"
-        alt="Softkingo"
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      />
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      >
-        <source src="/videos/softkingovideo.mp4" type="video/mp4" />
-      </video>
+      {/* MEDIA BLOCK: mobile par normal flow me top pe (fixed height), desktop par absolute background */}
+      <div className="relative w-full h-[40vh] sm:h-[45vh] md:absolute md:inset-0 md:h-full z-0">
+        <img
+          src="/videos/frame.webp"
+          alt="Softkingo"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/videos/softkingovideo.mp4" type="video/mp4" />
+        </video>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/30 z-[1]" />
+        {/* Dark Overlay - sirf desktop par */}
+        <div className="hidden md:block absolute inset-0 bg-black/30 z-[1]" />
 
-      {/* Background bubbles - hidden on mobile via CSS, no JS flash */}
-      <div className="hidden md:block absolute inset-0 overflow-hidden z-[2]">
+        {/* Background bubbles - desktop only */}
+        <div className="hidden md:block absolute inset-0 overflow-hidden z-[2]">
+          {mounted &&
+            bgElements.map((el, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full bg-sky-200 opacity-10"
+                style={{
+                  width: el.width,
+                  height: el.height,
+                  top: el.top,
+                  left: el.left,
+                }}
+                animate={{
+                  x: el.animateX,
+                  y: el.animateY,
+                }}
+                transition={{
+                  duration: el.duration,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              />
+            ))}
+        </div>
+
+        {/* Floating Icons - desktop only */}
+        <motion.div
+          className="hidden md:block absolute top-1/3 right-10 z-[3]"
+          animate={{ y: [0, -20, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        >
+          <FaCode className="text-sky-400 text-3xl" />
+        </motion.div>
+
+        <motion.div
+          className="hidden md:block absolute top-1/4 left-10 z-[3]"
+          animate={{ y: [0, -25, 0] }}
+          transition={{ duration: 5, repeat: Infinity }}
+        >
+          <FaMobileAlt className="text-sky-400 text-3xl" />
+        </motion.div>
+
+        <motion.div
+          className="hidden md:block absolute bottom-10 left-1/2 z-[3]"
+          animate={{ y: [0, -15, 0] }}
+          transition={{ duration: 4.5, repeat: Infinity }}
+        >
+          <FaLaptopCode className="text-sky-400 text-3xl" />
+        </motion.div>
+
+        {/* Dots - desktop only */}
         {mounted &&
-          bgElements.map((el, i) => (
+          bgDots.map((dot, i) => (
             <motion.div
               key={i}
-              className="absolute rounded-full bg-sky-200 opacity-10"
+              className="hidden md:block absolute rounded-full z-[2]"
               style={{
-                width: el.width,
-                height: el.height,
-                top: el.top,
-                left: el.left,
+                width: dot.width,
+                height: dot.height,
+                top: dot.top,
+                left: dot.left,
+                background: "#28AFDF",
+                opacity: 0.15,
               }}
               animate={{
-                x: el.animateX,
-                y: el.animateY,
+                x: dot.animateX,
+                y: dot.animateY,
               }}
               transition={{
-                duration: el.duration,
+                duration: dot.duration,
                 repeat: Infinity,
                 repeatType: "reverse",
               }}
@@ -94,61 +147,11 @@ const HeroSection = () => {
           ))}
       </div>
 
-      {/* Floating Icons - hidden on mobile via CSS */}
-      <motion.div
-        className="hidden md:block absolute top-1/3 right-10 z-[3]"
-        animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      >
-        <FaCode className="text-sky-400 text-3xl" />
-      </motion.div>
-
-      <motion.div
-        className="hidden md:block absolute top-1/4 left-10 z-[3]"
-        animate={{ y: [0, -25, 0] }}
-        transition={{ duration: 5, repeat: Infinity }}
-      >
-        <FaMobileAlt className="text-sky-400 text-3xl" />
-      </motion.div>
-
-      <motion.div
-        className="hidden md:block absolute bottom-10 left-1/2 z-[3]"
-        animate={{ y: [0, -15, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity }}
-      >
-        <FaLaptopCode className="text-sky-400 text-3xl" />
-      </motion.div>
-
-      {/* Dots - hidden on mobile via CSS */}
-      {mounted &&
-        bgDots.map((dot, i) => (
-          <motion.div
-            key={i}
-            className="hidden md:block absolute rounded-full z-[2]"
-            style={{
-              width: dot.width,
-              height: dot.height,
-              top: dot.top,
-              left: dot.left,
-              background: "#28AFDF",
-              opacity: 0.15,
-            }}
-            animate={{
-              x: dot.animateX,
-              y: dot.animateY,
-            }}
-            transition={{
-              duration: dot.duration,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-          />
-        ))}
-
-      {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-        {/* Mobile version: plain elements, zero motion */}
-        <div className="flex md:hidden flex-col items-center">
+      {/* MAIN CONTENT: mobile par video ke NICHE content flow me, desktop par flex centering */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 text-center bg-black md:bg-transparent md:h-screen md:flex md:flex-col md:items-center md:justify-center">
+        
+        {/* Mobile version: plain elements, zero motion, video ke niche structure format */}
+        <div className="flex md:hidden flex-col items-center pt-8 pb-12">
           {/* Badge */}
           <div className="bg-sky-50/10 backdrop-blur-sm text-white px-6 py-2 rounded-full mb-6 border border-white/20 text-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block mr-2" />
@@ -158,54 +161,53 @@ const HeroSection = () => {
           {/* Heading */}
           <h1 className="text-3xl font-bold mb-6 text-white leading-normal">
             <span>AI-Driven  </span>
-
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
               Digital Solutions
             </span>
-
-            <span className="block mt-3 text-2xl text-white">
+            <span className="block mt-3 text-xl text-white font-medium">
               for Apps, Web & Digital Marketing
             </span>
           </h1>
 
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8 text-white text-sm">
-            <div className="flex items-center gap-1">
-              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
+          {/* Stats List */}
+          <div className="flex flex-col items-start gap-3 mb-8 text-white text-sm w-full max-w-xs mx-auto">
+            <div className="flex items-center gap-3">
+              <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-extrabold text-2lg text-white'>400+ Projects Delivered</span>
+              <span className='font-semibold text-white'>400+ Projects Delivered</span>
             </div>
 
-            <div className="flex items-center gap-1">
-              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
+            <div className="flex items-center gap-3">
+              <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-extrabold text-2lg text-white'>Trusted by 350+ Global Clients</span>
+              <span className='font-semibold text-white'>Trusted by 350+ Global Clients</span>
             </div>
 
-            <div className="flex items-center gap-1">
-              <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
+            <div className="flex items-center gap-3">
+              <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-extrabold text-2lg text-white'>6+ Years of Innovation</span>
+              <span className='font-semibold text-white'>6+ Years of Innovation</span>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm text-gray-200 mb-10 max-w-2xl">
+          <p className="text-sm text-gray-300 mb-8 px-2">
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-wrap justify-center gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 w-full px-4">
             <button
               onClick={() => setShowModal(true)}
-              className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto px-6 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center justify-center gap-3"
             >
               Get A Quote
               <FaArrowRight />
-              <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                <FaPhoneAlt className="text-black text-sm" />
+              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+                <FaPhoneAlt className="text-black text-xs" />
               </span>
             </button>
 
@@ -213,17 +215,17 @@ const HeroSection = () => {
               href="https://calendly.com/paramhans-softkingo/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
+              className="w-full sm:w-auto px-6 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center justify-center gap-3"
             >
               Book A Meeting
-              <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                <FaBook className="text-black text-sm" />
+              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+                <FaBook className="text-black text-xs" />
               </span>
             </Link>
           </div>
         </div>
 
-        {/* Desktop/tablet version: with motion */}
+        {/* Desktop/tablet version: with motion - EXACTLY same as before */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

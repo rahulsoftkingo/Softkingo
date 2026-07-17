@@ -367,25 +367,10 @@ export default function PricingPage({
          <CommonTitle
                    align="center"
                    pill={false}
-                  //  title={}
                    gradientText={pricingCards.heading}
                    subtitle={pricingCards.subtitle}
                  />
         <div className="mx-auto max-w-7xl">
-          {/* {(safePricing.title || safePricing.highlight || safePricing.subtitle) && (
-            <div className="mb-6 text-center">
-              <h2 className="text-3xl font-semibold text-slate-900">
-                {safePricing.title}
-                {safePricing.highlight && (
-                  <span className="text-sky-600"> {safePricing.highlight}</span>
-                )}
-              </h2>
-              {safePricing.subtitle && (
-                <p className="mt-2 text-sm text-slate-500">{safePricing.subtitle}</p>
-              )}
-            </div>
-          )} */}
-
           <p className="ml-auto max-w-md text-right text-sm leading-relaxed text-slate-600">
             {safePricingCards.topText}
           </p>

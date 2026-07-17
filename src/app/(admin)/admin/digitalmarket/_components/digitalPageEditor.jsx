@@ -513,12 +513,12 @@ export default function DigitalPageEditor({ data, onBack }) {
         uploadDir: 'digital',        // set to whatever the media upload folder should be
         sections: [
             { id: 'hero', label: '1. Hero Section', icon: Smartphone },
-            { id: 'enterpriseMarketing', label: '2. Enterprise Digital', icon: Share2 },
-            { id: 'services', label: '3. Service Categories', icon: Layout },
-            { id: 'servicesList', label: '4. Extensive Services', icon: Briefcase },
-            { id: 'industries', label: '5. Industries We Serve', icon: Layers },
-            { id: 'features', label: '6. Core Features Grid', icon: Database },
-            { id: 'seo', label: '7. SEO Settings', icon: Search },
+            { id: 'seo', label: '2. SEO Settings', icon: Search },
+            { id: 'enterpriseMarketing', label: '3. Enterprise Digital', icon: Share2 },
+            { id: 'services', label: '4. Service Categories', icon: Layout },
+            { id: 'servicesList', label: '5. Extensive Services', icon: Briefcase },
+            { id: 'industries', label: '6. Industries We Serve', icon: Layers },
+            { id: 'features', label: '7. Core Features Grid', icon: Database },          
             { id: 'pricingCards', label: '8. Pricing Cards Tabs', icon: CheckCircle2 },
             { id: 'pricing', label: '9. Pricing / Compare Plans', icon: DollarSign },
             { id: 'workflowAddOns', label: '10. Workflow Add-Ons', icon: Puzzle },

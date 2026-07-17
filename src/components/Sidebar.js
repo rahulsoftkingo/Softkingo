@@ -82,18 +82,18 @@ import {
   FaCar,
   // NEW Clone App Icons
   FaCopy,
- 
+
   FaBriefcase,
   FaBed,
   FaHeart,
-  
+
   FaQuestionCircle,
   FaMusic,
   FaSpotify,
   FaCameraRetro,
 } from "react-icons/fa";
 
-const SideBar = () => {
+const SideBar = ({ onClose }) => {
   const [openMenu, setOpenMenu] = useState(null);
   const [subMenuOpen, setSubMenuOpen] = useState(null);
 
@@ -105,6 +105,12 @@ const SideBar = () => {
   const toggleSubMenu = (subMenu, menu) => {
     setSubMenuOpen((prev) => (prev === subMenu ? null : subMenu));
     setOpenMenu(menu);
+  };
+
+  const handleLinkClick = () => {
+    setOpenMenu(null);
+    setSubMenuOpen(null);
+    if (onClose) onClose();
   };
   // ...................
   const servicesData = [
@@ -696,154 +702,154 @@ const SideBar = () => {
 
   const industriestabs = [
     // ✅ INDUSTRIES (main link: /industries)
-     {
-           id: "industry",
-           title: "Industry",
-           heading: "Industry‑Specific Solutions",
-           icon: <FaIndustry className="inline-block text-sky-600" />,
-     
-           href: "/industries",
-           description:
-             "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
-           items: [
-             { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat /> },
-             { title: "Education / E-Learning", href: "/industries/education", icon: <FaGraduationCap /> },
-             { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding /> },
-             { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane /> },
-             { title: "Food & Restaurant", href: "/industries/restaurant", icon: <FaUtensils /> },
-             { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell /> },
-             { title: "Retail & E-Commerce", href: "/industries/retail", icon: <FaStore /> },
-     
-             { title: "Logistics/Transportation", href: "/industries/logistics", icon: <FaTruck /> },
-     
-             // URL missing in your list -> fallback
-             { title: "Media & Entertainment", href: "/industries/entertainment", icon: <FaFilm /> },
-     
-             { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers /> },
-             { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign /> },
-             { title: "Automotive", href: "/industries/automotive", icon: <FaCar /> },
-             { title: "Construction", href: "/industries/construction", icon: <FaHammer /> },
-             { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory /> },
-             { title: "Sports", href: "/industries/sports", icon: <FaCalendarAlt /> },
-            
-           ],
-         },
-    
+    {
+      id: "industry",
+      title: "Industry",
+      heading: "Industry‑Specific Solutions",
+      icon: <FaIndustry className="inline-block text-sky-600" />,
+
+      href: "/industries",
+      description:
+        "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+      items: [
+        { title: "Healthcare", href: "/industries/healthcare", icon: <FaHeartbeat /> },
+        { title: "Education / E-Learning", href: "/industries/education", icon: <FaGraduationCap /> },
+        { title: "Real Estate", href: "/industries/real-estate", icon: <FaBuilding /> },
+        { title: "Travel & Tourism", href: "/industries/travel", icon: <FaPlane /> },
+        { title: "Food & Restaurant", href: "/industries/restaurant", icon: <FaUtensils /> },
+        { title: "Fitness & Wellness", href: "/industries/fitness", icon: <FaDumbbell /> },
+        { title: "Retail & E-Commerce", href: "/industries/retail", icon: <FaStore /> },
+
+        { title: "Logistics/Transportation", href: "/industries/logistics", icon: <FaTruck /> },
+
+        // URL missing in your list -> fallback
+        { title: "Media & Entertainment", href: "/industries/entertainment", icon: <FaFilm /> },
+
+        { title: "Social Networking", href: "/industries/social-media", icon: <FaUsers /> },
+        { title: "Finance / FinTech", href: "/industries/fintech", icon: <FaDollarSign /> },
+        { title: "Automotive", href: "/industries/automotive", icon: <FaCar /> },
+        { title: "Construction", href: "/industries/construction", icon: <FaHammer /> },
+        { title: "Manufacturing", href: "/industries/manufacturing", icon: <FaFactory /> },
+        { title: "Sports", href: "/industries/sports", icon: <FaCalendarAlt /> },
+
+      ],
+    },
+
 
   ];
   const solutionsArray = [
-     // ✅ INDUSTRIES (main link: /industries)
-        {
-          id: "industry",
-          title: "Industry‑Specific Solutions",
+    // ✅ INDUSTRIES (main link: /industries)
+    {
+      id: "industry",
+      title: "Industry‑Specific Solutions",
       heading: "Industry‑Specific Solutions",
-          icon: <FaIndustry className="inline-block text-sky-600" />,
-    
-          href: "/industries",
-           description:
-            "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
-          items: [
-            { title: "Healthcare", href: "/solutions/healthcare-app-development", icon: <FaHeartbeat /> },
-            { title: "Education / E-Learning", href: "/solutions/elearning-app-development", icon: <FaGraduationCap /> },
-            { title: "Real Estate", href: "/solutions/real-estate-app-development", icon: <FaBuilding /> },
-            { title: "Travel & Tourism", href: "/solutions/travel-app-development", icon: <FaPlane /> },
-            { title: "Food & Restaurant", href: "/solutions/restaurant-app-development", icon: <FaUtensils /> },
-            { title: "Fitness & Wellness", href: "/solutions/fitness-app-development", icon: <FaDumbbell /> },
-            { title: "Retail & E-Commerce", href: "/solutions/ecommerce-app-development", icon: <FaStore /> },
-    
-            { title: "Logistics/Transportation", href: "/solutions/logistics-app-development", icon: <FaTruck /> },
-    
-            // URL missing in your list -> fallback
-            { title: "Media & Entertainment", href: "/solutions/media-app-development", icon: <FaFilm /> },
-    
-            { title: "Social Networking", href: "/solutions/social-media-app-development", icon: <FaUsers /> },
-            { title: "Finance / FinTech", href: "/solutions/fintech-app-development", icon: <FaDollarSign /> },
-            { title: "Automotive", href: "/solutions/automotive-app-development", icon: <FaCar /> },
-            { title: "Construction", href: "/solutions/construction-management-app-development", icon: <FaHammer /> },
-            { title: "Manufacturing", href: "/solutions/manufacturing-app-development", icon: <FaFactory /> },
-            { title: "Event Management", href: "/solutions/event-management-app-development", icon: <FaCalendarAlt /> },
-            // { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
-            { title: "Dating App", href: "/solutions/dating-app-development", icon: <FaUsers /> },
-            { title: "Astrology App", href: "/solutions/astrology-app-development", icon: <FaUsers /> },
-            { title: "Legal App", href: "/solutions/legal-app-development", icon: <FaUsers /> },
-          ],
-        },
-    
-      // ✅ ON DEMAND (main link: /solutions)
-      {
-        id: "ondemand",
-        title: "On‑Demand Solutions",
-        icon: <FaTruck className="inline-block text-sky-600" />,
-        heading: "On‑Demand & Real‑Time Solutions",
-        href: "/solutions",
-        description:
-          "Design on‑demand platforms for delivery, mobility and home services with real‑time tracking and optimized dispatch.",
-        items: [
-          { title: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
-          { title: "Grocery Delivery", href: "/solutions/grocery-delivery-app-development", icon: <FaShoppingBag /> },
-          { title: "Pickup & Delivery", href: "/solutions/pickup-delivery-app-development", icon: <FaTruck /> },
-          { title: "Taxi Booking", href: "/solutions/taxi-app-development", icon: <FaTaxi /> },
-          { title: "Fitness Trainer App", href: "/solutions/fitness-trainer-app-development", icon: <FaDumbbell /> },
-          { title: "Home Services", href: "/solutions/on-demand-home-service-app-development", icon: <FaHome /> },
-          { title: "Beauty & Salon Booking", href: "/solutions/salon-app-development", icon: <FaSpa /> },
-          { title: "Doctor & Medical App", href: "/solutions/ice-cream-delivery-app-development", icon: <FaHeartbeat /> },
-          { title: "Laundry Service", href: "/solutions/laundry-app-development", icon: <FaShoppingBag /> },
-          { title: "Restaurant management", href: "/solutions/restaurant-app-development", icon: <FaUtensils /> },
-          { title: "Pet Care App", href: "/solutions/pet-care-app-development", icon: <FaUsers /> },
-          { title: "Carpooling Apps", href: "/solutions/ride-sharing-app-development", icon: <FaCarSide /> },
-          { title: "Tutor App", href: "/solutions/tutor-app-development", icon: <FaUserGraduate /> },
-          { title: "Mechanics & Repair App", href: "/solutions/mechanic-app-development", icon: <FaWrench /> },
-          { title: "Car Wash App", href: "/solutions/car-wash-app-development", icon: <FaCarSide /> },
-        ],
-      },
-     // CLONE APPS (NEW)
-      {
-        id: "cloneapps",
-        title: "Clone App Solutions",
-        icon: <FaCopy className="inline-block text-sky-600" />,
-        heading: "Ready-made Clone App Solutions",
-        href: "/solutions",
-        description: "Proven clone app solutions for rapid market entry - Zomato, Uber, Airbnb clones with full source code, admin panels and multi-platform deployment.",
-        items: [
-          { title: "Amazon Clone", href: "/solutions/amazon-clone-app-development", icon: <FaShoppingCart /> },
-          { title: "Zomato Clone", href: "/solutions/zomato-clone-app-development", icon: <FaUtensils /> },
-          { title: "Uber Clone", href: "/solutions/uber-clone-app-development", icon: <FaCar /> },
-          { title: "Naukri Clone", href: "/solutions/naukri-clone-app-development", icon: <FaBriefcase /> },
-          { title: "Udemy Clone", href: "/solutions/udemy-clone-app-development", icon: <FaGraduationCap /> },
-          { title: "Oyo Clone", href: "/solutions/oyo-clone-app-development", icon: <FaBed /> },
-          { title: "Bigbasket Clone", href: "/solutions/bigbasket-clone-app-development", icon: <FaShoppingBag /> },
-          { title: "Urban Company", href: "/solutions/urban-company-clone-app-development", icon: <FaHome /> },
-          { title: "Tinder Clone", href: "/solutions/tinder-clone-app-development", icon: <FaHeart /> },
-          { title: "Instagram Clone", href: "/solutions/instagram-clone-app-development", icon: <FaCamera /> },
-          { title: "Quora Clone", href: "/solutions/quora-clone-app-development", icon: <FaQuestionCircle /> },
-          { title: "Soundcloud Clone", href: "/solutions/soundcloud-clone-app-development", icon: <FaMusic /> },
-          { title: "Spotify Clone", href: "/solutions/spotify-clone-app-development", icon: <FaSpotify /> },
-          { title: "Ghost Lens Clone", href: "/solutions/ghost-lens-clone-app-development", icon: <FaCameraRetro /> },
-          { title: "Olx/Airbnb Clone", href: "/solutions/olx-clone-app-development", icon: <FaHome /> },
-        ],
-      },
-      // ✅ BUSINESS MODEL (main link: /solutions)
-      {
-        id: "businessmodel",
-        title: "Business‑Model Solutions",
-        icon: <FaProjectDiagram className="inline-block text-sky-600" />,
-        heading: "Business‑Model Based Solutions",
-        href: "/solutions",
-        description:
-          "Launch subscription, freemium, on‑demand or marketplace products with billing, entitlements and reporting built‑in.",
-        items: [
-          { title: "Marketplace App", href: "/solutions/marketplace-app-development", icon: <FaStore /> },
-          { title: "Subscription Software", href: "/solutions/subscription-platform-development", icon: <FaCoins /> },
-          { title: "B2B Commerce", href: "/solutions/b2b-ecommerce-development", icon: <FaStore /> },
-          { title: "SaaS Product Development", href: "/solutions/saas-product-development", icon: <FaCloud /> },
-          { title: "CRM Software", href: "/solutions/crm-software-development", icon: <FaProjectDiagram /> },
-          { title: "ERP Software", href: "/solutions/erp-software-development", icon: <FaProjectDiagram /> },
-          { title: "Booking System", href: "/solutions/online-booking-system-development", icon: <FaCalendarAlt /> },
-          { title: "Membership / Loyalty", href: "/solutions/loyalty-membership-platform-development", icon: <FaCoins /> },
-          { title: "HR Management", href: "/solutions/hr-software-development", icon: <FaUsers /> },
-          { title: "Inventory Management", href: "/solutions/inventory-management-software-development", icon: <FaStore /> },
-        ],
-      },
+      icon: <FaIndustry className="inline-block text-sky-600" />,
+
+      href: "/industries",
+      description:
+        "We build tailored digital products for high‑impact industries like education, healthcare, finance and retail, aligned with domain workflows.",
+      items: [
+        { title: "Healthcare", href: "/solutions/healthcare-app-development", icon: <FaHeartbeat /> },
+        { title: "Education / E-Learning", href: "/solutions/elearning-app-development", icon: <FaGraduationCap /> },
+        { title: "Real Estate", href: "/solutions/real-estate-app-development", icon: <FaBuilding /> },
+        { title: "Travel & Tourism", href: "/solutions/travel-app-development", icon: <FaPlane /> },
+        { title: "Food & Restaurant", href: "/solutions/restaurant-app-development", icon: <FaUtensils /> },
+        { title: "Fitness & Wellness", href: "/solutions/fitness-app-development", icon: <FaDumbbell /> },
+        { title: "Retail & E-Commerce", href: "/solutions/ecommerce-app-development", icon: <FaStore /> },
+
+        { title: "Logistics/Transportation", href: "/solutions/logistics-app-development", icon: <FaTruck /> },
+
+        // URL missing in your list -> fallback
+        { title: "Media & Entertainment", href: "/solutions/media-app-development", icon: <FaFilm /> },
+
+        { title: "Social Networking", href: "/solutions/social-media-app-development", icon: <FaUsers /> },
+        { title: "Finance / FinTech", href: "/solutions/fintech-app-development", icon: <FaDollarSign /> },
+        { title: "Automotive", href: "/solutions/automotive-app-development", icon: <FaCar /> },
+        { title: "Construction", href: "/solutions/construction-management-app-development", icon: <FaHammer /> },
+        { title: "Manufacturing", href: "/solutions/manufacturing-app-development", icon: <FaFactory /> },
+        { title: "Event Management", href: "/solutions/event-management-app-development", icon: <FaCalendarAlt /> },
+        // { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
+        { title: "Dating App", href: "/solutions/dating-app-development", icon: <FaUsers /> },
+        { title: "Astrology App", href: "/solutions/astrology-app-development", icon: <FaUsers /> },
+        { title: "Legal App", href: "/solutions/legal-app-development", icon: <FaUsers /> },
+      ],
+    },
+
+    // ✅ ON DEMAND (main link: /solutions)
+    {
+      id: "ondemand",
+      title: "On‑Demand Solutions",
+      icon: <FaTruck className="inline-block text-sky-600" />,
+      heading: "On‑Demand & Real‑Time Solutions",
+      href: "/solutions",
+      description:
+        "Design on‑demand platforms for delivery, mobility and home services with real‑time tracking and optimized dispatch.",
+      items: [
+        { title: "Food Delivery", href: "/solutions/food-delivery-app-development", icon: <FaUtensils /> },
+        { title: "Grocery Delivery", href: "/solutions/grocery-delivery-app-development", icon: <FaShoppingBag /> },
+        { title: "Pickup & Delivery", href: "/solutions/pickup-delivery-app-development", icon: <FaTruck /> },
+        { title: "Taxi Booking", href: "/solutions/taxi-app-development", icon: <FaTaxi /> },
+        { title: "Fitness Trainer App", href: "/solutions/fitness-trainer-app-development", icon: <FaDumbbell /> },
+        { title: "Home Services", href: "/solutions/on-demand-home-service-app-development", icon: <FaHome /> },
+        { title: "Beauty & Salon Booking", href: "/solutions/salon-app-development", icon: <FaSpa /> },
+        { title: "Doctor & Medical App", href: "/solutions/ice-cream-delivery-app-development", icon: <FaHeartbeat /> },
+        { title: "Laundry Service", href: "/solutions/laundry-app-development", icon: <FaShoppingBag /> },
+        { title: "Restaurant management", href: "/solutions/restaurant-app-development", icon: <FaUtensils /> },
+        { title: "Pet Care App", href: "/solutions/pet-care-app-development", icon: <FaUsers /> },
+        { title: "Carpooling Apps", href: "/solutions/ride-sharing-app-development", icon: <FaCarSide /> },
+        { title: "Tutor App", href: "/solutions/tutor-app-development", icon: <FaUserGraduate /> },
+        { title: "Mechanics & Repair App", href: "/solutions/mechanic-app-development", icon: <FaWrench /> },
+        { title: "Car Wash App", href: "/solutions/car-wash-app-development", icon: <FaCarSide /> },
+      ],
+    },
+    // CLONE APPS (NEW)
+    {
+      id: "cloneapps",
+      title: "Clone App Solutions",
+      icon: <FaCopy className="inline-block text-sky-600" />,
+      heading: "Ready-made Clone App Solutions",
+      href: "/solutions",
+      description: "Proven clone app solutions for rapid market entry - Zomato, Uber, Airbnb clones with full source code, admin panels and multi-platform deployment.",
+      items: [
+        { title: "Amazon Clone", href: "/solutions/amazon-clone-app-development", icon: <FaShoppingCart /> },
+        { title: "Zomato Clone", href: "/solutions/zomato-clone-app-development", icon: <FaUtensils /> },
+        { title: "Uber Clone", href: "/solutions/uber-clone-app-development", icon: <FaCar /> },
+        { title: "Naukri Clone", href: "/solutions/naukri-clone-app-development", icon: <FaBriefcase /> },
+        { title: "Udemy Clone", href: "/solutions/udemy-clone-app-development", icon: <FaGraduationCap /> },
+        { title: "Oyo Clone", href: "/solutions/oyo-clone-app-development", icon: <FaBed /> },
+        { title: "Bigbasket Clone", href: "/solutions/bigbasket-clone-app-development", icon: <FaShoppingBag /> },
+        { title: "Urban Company", href: "/solutions/urban-company-clone-app-development", icon: <FaHome /> },
+        { title: "Tinder Clone", href: "/solutions/tinder-clone-app-development", icon: <FaHeart /> },
+        { title: "Instagram Clone", href: "/solutions/instagram-clone-app-development", icon: <FaCamera /> },
+        { title: "Quora Clone", href: "/solutions/quora-clone-app-development", icon: <FaQuestionCircle /> },
+        { title: "Soundcloud Clone", href: "/solutions/soundcloud-clone-app-development", icon: <FaMusic /> },
+        { title: "Spotify Clone", href: "/solutions/spotify-clone-app-development", icon: <FaSpotify /> },
+        { title: "Ghost Lens Clone", href: "/solutions/ghost-lens-clone-app-development", icon: <FaCameraRetro /> },
+        { title: "Olx/Airbnb Clone", href: "/solutions/olx-clone-app-development", icon: <FaHome /> },
+      ],
+    },
+    // ✅ BUSINESS MODEL (main link: /solutions)
+    {
+      id: "businessmodel",
+      title: "Business‑Model Solutions",
+      icon: <FaProjectDiagram className="inline-block text-sky-600" />,
+      heading: "Business‑Model Based Solutions",
+      href: "/solutions",
+      description:
+        "Launch subscription, freemium, on‑demand or marketplace products with billing, entitlements and reporting built‑in.",
+      items: [
+        { title: "Marketplace App", href: "/solutions/marketplace-app-development", icon: <FaStore /> },
+        { title: "Subscription Software", href: "/solutions/subscription-platform-development", icon: <FaCoins /> },
+        { title: "B2B Commerce", href: "/solutions/b2b-ecommerce-development", icon: <FaStore /> },
+        { title: "SaaS Product Development", href: "/solutions/saas-product-development", icon: <FaCloud /> },
+        { title: "CRM Software", href: "/solutions/crm-software-development", icon: <FaProjectDiagram /> },
+        { title: "ERP Software", href: "/solutions/erp-software-development", icon: <FaProjectDiagram /> },
+        { title: "Booking System", href: "/solutions/online-booking-system-development", icon: <FaCalendarAlt /> },
+        { title: "Membership / Loyalty", href: "/solutions/loyalty-membership-platform-development", icon: <FaCoins /> },
+        { title: "HR Management", href: "/solutions/hr-software-development", icon: <FaUsers /> },
+        { title: "Inventory Management", href: "/solutions/inventory-management-software-development", icon: <FaStore /> },
+      ],
+    },
 
     // ✅ TECHNOLOGY (main link: /solutions)
     // {
@@ -862,9 +868,9 @@ const SideBar = () => {
     //     { title: "AR/VR", href: "/solutions/ar-vr-app-development", icon: <FaVrCardboard /> },
     //   ],
     // },
-   
-    
-    
+
+
+
   ];
 
   const SolutionsMenuItems = [
@@ -874,7 +880,7 @@ const SideBar = () => {
       href: "/solutions",
       items: solutionsArray[0].items
     },
-    
+
     {
       id: "ondemand",
       title: "On-Demand Solutions",
@@ -899,8 +905,8 @@ const SideBar = () => {
     //   href: "/solutions",
     //   items: solutionsArray[4].items
     // },
-     
-     
+
+
   ];
 
   const insightItems = [
@@ -988,27 +994,27 @@ const SideBar = () => {
         {/* About Us Section */}
         <li
           className={`left ${openMenu === "about" ||
-              openMenu === "services" ||
-              openMenu === "hireResources" ||
-              openMenu === "solutions" ||
-              openMenu === "industries" ||
-              openMenu === "resources"
-              ? "active"
-              : ""
+            openMenu === "services" ||
+            openMenu === "hireResources" ||
+            openMenu === "solutions" ||
+            openMenu === "industries" ||
+            openMenu === "resources"
+            ? "active"
+            : ""
             }`}
         >
- {/* logo */}
-              <li className="menu-item flex items-center space-x-4">
-                <Link href="/" className="menu-link ">
-                  <Image
-                    alt="Softkingo"
-                    src={Slogo.src}
-                    height={58}
-                    width={161}
-                    className="w-[8rem] md:w-[9rem] lg:w-[14rem]"
-                  />
-                </Link>
-              </li>
+          {/* logo */}
+          <li className="menu-item flex items-center space-x-4">
+            <Link href="/" className="menu-link ">
+              <Image
+                alt="Softkingo"
+                src={Slogo.src}
+                height={58}
+                width={161}
+                className="w-[8rem] md:w-[9rem] lg:w-[14rem]"
+              />
+            </Link>
+          </li>
           {/* Updated About Us Section - Sidebar */}
           <li className="menu-item">
             <div
@@ -1027,25 +1033,25 @@ const SideBar = () => {
                 </span>
               </li>
               <li className="submenu-item">
-                <Link href="/about">About Us</Link>
+                <Link onClick={handleLinkClick} href="/about">About Us</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/our-team">Our Team</Link>
+                <Link onClick={handleLinkClick} href="/our-team">Our Team</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/testimonials">Testimonials</Link>
+                <Link onClick={handleLinkClick} href="/testimonials">Testimonials</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/careers">Career</Link>
+                <Link onClick={handleLinkClick} href="/careers">Career</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/blog">Insights</Link>
+                <Link onClick={handleLinkClick} href="/blog">Insights</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/portfolio">Portfolio</Link>
+                <Link onClick={handleLinkClick} href="/portfolio">Portfolio</Link>
               </li>
               <li className="submenu-item">
-                <Link href="/gallery">Gallery</Link>
+                <Link onClick={handleLinkClick} href="/gallery">Gallery</Link>
               </li>
             </ul>
           </li>
@@ -1091,13 +1097,13 @@ const SideBar = () => {
                       </span>
                     </li>
                     <li className="submenu-item">
-                      <Link href={service.pageHref}>
+                      <Link onClick={handleLinkClick} href={service.pageHref}>
                         <b>{service.heading}</b>
                       </Link>
                     </li>
                     {service.links.map((link, linkIndex) => (
                       <li key={linkIndex} className="submenu-item cursor-pointer">
-                        <Link href={link.href}>{link.title}</Link>
+                        <Link onClick={handleLinkClick} href={link.href}>{link.title}</Link>
                       </li>
                     ))}
                   </ul>
@@ -1159,7 +1165,7 @@ const SideBar = () => {
           </li>
 
 
-{/* Solutions Section - Perfect 3-Level Structure */}
+          {/* Solutions Section - Perfect 3-Level Structure */}
           <li className="menu-item">
             <div
               className="menu-link items-center justify-between w-full cursor-pointer flex"
@@ -1196,7 +1202,7 @@ const SideBar = () => {
                     </li>
                     {solutionCategory.items.map((solution, solIndex) => (
                       <li key={solIndex} className="submenu-item cursor-pointer">
-                        <Link href={solution.href}>{solution.title}</Link>
+                        <Link onClick={handleLinkClick} href={solution.href}>{solution.title}</Link>
                       </li>
                     ))}
                   </ul>
@@ -1226,13 +1232,13 @@ const SideBar = () => {
 
               {industriestabs[0].items.map((industry, index) => (
                 <li key={index} className="submenu-item cursor-pointer">
-                  <Link href={industry.href}>{industry.title}</Link>
+                  <Link onClick={handleLinkClick} href={industry.href}>{industry.title}</Link>
                 </li>
               ))}
             </ul>
           </li>
 
-          
+
 
           {/* FIXED Insights Section - Proper toggleMenu("resources") */}
           <li className="menu-item">
@@ -1255,7 +1261,7 @@ const SideBar = () => {
 
               {insightItems.map((insight, index) => (
                 <li key={insight.key} className="submenu-item cursor-pointer">
-                  <Link href={insight.href}>{insight.title}</Link>
+                  <Link onClick={handleLinkClick} href={insight.href}>{insight.title}</Link>
                 </li>
               ))}
             </ul>
@@ -1265,7 +1271,10 @@ const SideBar = () => {
           <li className="menu-item">
             <span
               className="menu-link"
-              onClick={() => (window.location.href = "/portfolio")}
+              onClick={() => {
+                handleLinkClick();
+                window.location.href = "/portfolio";
+              }}
             >
               Portfolio
             </span>
@@ -1275,7 +1284,10 @@ const SideBar = () => {
           <li className="menu-item">
             <span
               className="menu-link"
-              onClick={() => (window.location.href = "/contact")}
+              onClick={() => {
+                handleLinkClick();
+                window.location.href = "/portfolio";
+              }}
             >
               Contact Us
             </span>
@@ -1286,7 +1298,7 @@ const SideBar = () => {
 
 
         <li className="contact-list pt-0 w-full">
-         {/* Compact Social Icons */}
+          {/* Compact Social Icons */}
           <div className="flex items-center justify-center py-2 px-0 gap-2 border-t border-gray-200">
             <a href="https://www.facebook.com/softkingo" target="_blank" rel="noopener noreferrer" className="p-1.5 hover:scale-110 transition-transform">
               <FaFacebook className="w-4 h-4 text-gray-700 hover:text-blue-600" />
@@ -1312,11 +1324,11 @@ const SideBar = () => {
           {/* { flag: "/images/flags/canada.png", country: "Canada - Toronto", phone: "+1 647-793-9201" } */},
           {[
             { flag: "/images/flags/india.png", country: "India - New Delhi", phone: "+91-7428750870" },
-           
+
             { flag: "/images/flags/usa.png", country: "USA - Los Angeles", phone: "+1 323-908-3492" },
-             { flag: "/images/flags/india.png", country: "India - Noida", phone: "+91-120-636-7890" },
+            { flag: "/images/flags/india.png", country: "India - Noida", phone: "+91-120-636-7890" },
             { flag: "/images/flags/uk.png", country: "UK - London", phone: "+44 (0)20-7993-2188" },
-          
+
 
           ].map((office, index) => (
             <a
@@ -1332,7 +1344,7 @@ const SideBar = () => {
             </a>
           ))}
 
-         
+
         </li>
 
 
