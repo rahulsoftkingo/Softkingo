@@ -614,6 +614,17 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
             <SectionWrapper id="pricingCards" icon={CheckCircle2} title="8.  Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
 
+                {/* HEADING + SUBTITLE */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Heading</label>
+                        <input className={inputStyle} placeholder="Simple, transparent pricing" value={content.pricingCards?.heading || ''} onChange={e => updateField('content.pricingCards.heading', e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Subtitle</label>
+                        <input className={inputStyle} placeholder="Choose the plan that fits your team" value={content.pricingCards?.subtitle || ''} onChange={e => updateField('content.pricingCards.subtitle', e.target.value)} />
+                    </div>
+                </div>
                 {/* TOP TEXT + BILLING TOGGLE LABELS */}
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
@@ -708,7 +719,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
                             <label className="flex items-center gap-2 text-xs font-bold text-slate-500">
                                 <input type="checkbox" checked={!!plan.highlighted} onChange={e => updateField(`content.pricingCards.plans.${i}.highlighted`, e.target.checked)} />
-                                Highlighted Card (blue border, jaise Professional)
+                                Highlighted Card (blue border, like Professional)
                             </label>
 
                             {/* Feature List (checklist per card) */}

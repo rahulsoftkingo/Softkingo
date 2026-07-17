@@ -16,6 +16,7 @@ import {
   Globe,
   Layers,
 } from "lucide-react";
+import CommonTitle from '@/components/ui/CommonTitle';
 
 /* -------------------------------------------------------------------------
  * Icons
@@ -49,6 +50,40 @@ const badgeStyles = {
   skyDark: "bg-sky-100 text-sky-800 border border-sky-300",
   pink: "bg-pink-50 text-pink-600 border border-pink-200",
 };
+
+/* -------------------------------------------------------------------------
+ * Currency helpers
+ * ---------------------------------------------------------------------- */
+// Backend prices are always in USD. Adjust this rate as needed,
+// or wire it up to a live FX API later.
+const USD_TO_INR_RATE = 83;
+
+/**
+ * Takes a raw price string from the backend (assumed USD, e.g. "$79",
+ * "79", "79/mo", "Custom") and returns it formatted in the selected
+ * currency. Non-numeric prices (like "Custom" / "Free") are returned
+ * unchanged.
+ */
+function formatPrice(rawPrice, currency) {
+  if (!rawPrice) return rawPrice;
+  const str = String(rawPrice).trim();
+
+  const match = str.match(/[\d,]+(\.\d+)?/);
+  if (!match) return str; // e.g. "Custom", "Contact us"
+
+  const numeric = parseFloat(match[0].replace(/,/g, ""));
+  if (isNaN(numeric)) return str;
+
+  // anything after the number, e.g. "/mo", "/seat"
+  const suffix = str.slice(match.index + match[0].length).trim();
+
+  if (currency === "inr") {
+    const converted = Math.round(numeric * USD_TO_INR_RATE);
+    return `₹${converted.toLocaleString("en-IN")}${suffix ? ` ${suffix}` : ""}`;
+  }
+
+  return `$${numeric.toLocaleString("en-US")}${suffix ? ` ${suffix}` : ""}`;
+}
 
 /* -------------------------------------------------------------------------
  * Default fallback data
@@ -258,6 +293,8 @@ export default function PricingPage({
   pricing = DEFAULT_PRICING,
   pricingCards = DEFAULT_PRICING_CARDS,
 }) {
+
+
   // Merge onto defaults to secure correct formatting constraints
   const safePricing = {
     ...DEFAULT_PRICING,
@@ -279,6 +316,7 @@ export default function PricingPage({
   };
 
   const [billing, setBilling] = useState("annual");
+  const [currency, setCurrency] = useState("usd"); // "usd" | "inr"
   const [activeTabId, setActiveTabId] = useState(safePricingCards.solutionTabs[0]?.id);
 
   const [openSections, setOpenSections] = useState(() => {
@@ -325,8 +363,16 @@ export default function PricingPage({
     <div className="bg-white">
       {/* ============================= PRICING ============================= */}
       <section className="bg-gradient-to-br from-white via-sky-50 to-sky-200 py-20 px-4 sm:px-6 lg:px-8">
+        
+         <CommonTitle
+                   align="center"
+                   pill={false}
+                  //  title={}
+                   gradientText={pricingCards.heading}
+                   subtitle={pricingCards.subtitle}
+                 />
         <div className="mx-auto max-w-7xl">
-          {(safePricing.title || safePricing.highlight || safePricing.subtitle) && (
+          {/* {(safePricing.title || safePricing.highlight || safePricing.subtitle) && (
             <div className="mb-6 text-center">
               <h2 className="text-3xl font-semibold text-slate-900">
                 {safePricing.title}
@@ -338,13 +384,35 @@ export default function PricingPage({
                 <p className="mt-2 text-sm text-slate-500">{safePricing.subtitle}</p>
               )}
             </div>
-          )}
+          )} */}
 
           <p className="ml-auto max-w-md text-right text-sm leading-relaxed text-slate-600">
             {safePricingCards.topText}
           </p>
 
-          <div className="mt-4 flex justify-end">
+          {/* CURRENCY TOGGLE (left) + BILLING TOGGLE (right) */}
+          <div className="mt-4 flex items-center justify-between">
+            <div className="inline-flex items-center rounded-full border border-slate-200 p-1">
+              <button
+                type="button"
+                onClick={() => setCurrency("usd")}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  currency === "usd" ? "bg-slate-900 text-white" : "text-slate-600"
+                }`}
+              >
+                $ USD
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrency("inr")}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+                  currency === "inr" ? "bg-slate-900 text-white" : "text-slate-600"
+                }`}
+              >
+                ₹ INR
+              </button>
+            </div>
+
             <div className="inline-flex items-center rounded-full border border-slate-200 p-1">
               <button
                 type="button"
@@ -421,7 +489,9 @@ export default function PricingPage({
                   {plan.description}
                 </p>
 
-                <p className="mt-4 text-3xl font-medium text-slate-900">{plan.price}</p>
+                <p className="mt-4 text-3xl font-medium text-slate-900">
+                  {formatPrice(plan.price, currency)}
+                </p>
                 <p className="mt-1 min-h-[32px] text-xs leading-relaxed text-slate-500">
                   {plan.priceNote}
                 </p>
@@ -459,15 +529,6 @@ export default function PricingPage({
 
                 {plan.trialText && (
                   <p className="mt-2 text-center text-xs text-slate-500">{plan.trialText}</p>
-                )}
-
-                {plan.secondaryButton && (
-                  <Link
-                    href={plan.secondaryButton.link || "#"}
-                    className="mt-2 block rounded-md border border-slate-300 px-4 py-2 text-center text-sm font-medium text-slate-900 transition-colors hover:bg-slate-50"
-                  >
-                    {plan.secondaryButton.label}
-                  </Link>
                 )}
 
                 <ul className="mt-5 divide-y divide-slate-100 border-t border-slate-100">
@@ -520,7 +581,9 @@ export default function PricingPage({
                     )}
                   </div>
 
-                  <p className="mt-2 text-2xl font-medium text-slate-900">{plan.price}</p>
+                  <p className="mt-2 text-2xl font-medium text-slate-900">
+                    {formatPrice(plan.price, currency)}
+                  </p>
 
                   {plan.priceNote && (
                     <p className="mt-2 min-h-[32px] text-xs leading-relaxed text-slate-500">
