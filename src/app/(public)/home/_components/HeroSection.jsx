@@ -148,72 +148,66 @@ const HeroSection = () => {
       </div>
 
       {/* MAIN CONTENT: mobile par video ke NICHE content flow me, desktop par flex centering */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 text-center bg-white md:bg-transparent md:h-screen md:flex md:flex-col md:items-center md:justify-center">
-
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 text-center bg-black md:bg-transparent md:h-screen md:flex md:flex-col md:items-center md:justify-center">
+        
         {/* Mobile version: plain elements, zero motion, video ke niche structure format */}
         <div className="flex md:hidden flex-col items-center pt-8 pb-12">
           {/* Badge */}
-          <div className="bg-sky-50 text-slate-900 px-6 py-2 rounded-full mb-6 border border-sky-100 text-xs shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block mr-2" />
+          <div className="bg-sky-50/10 backdrop-blur-sm text-white px-6 py-2 rounded-full mb-6 border border-white/20 text-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block mr-2" />
             #1 Software Development Company
           </div>
 
           {/* Heading */}
-          <h1 className="text-2xl font-bold mb-6 text-slate-900 leading-normal">
-            <h1 className="flex whitespace-nowrap">
-              <span>AI-Driven&nbsp;</span>
-              <span className="bg-gradient-to-r from-sky-600 to-sky-400 bg-clip-text text-transparent">
-                Digital Solutions
-              </span>
-            </h1>
-            {/* <span>AI-Driven  </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
+          <h1 className="text-3xl font-bold mb-6 text-white leading-normal">
+            <span>AI-Driven  </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
               Digital Solutions
-            </span> */}
-            <span className="block mt-3 text-xl text-slate-900 font-medium">
+            </span>
+            <span className="block mt-3 text-xl text-white font-medium">
               for Apps, Web & Digital Marketing
             </span>
           </h1>
 
           {/* Stats List */}
-          <div className="flex flex-col items-start gap-3 mb-8 text-slate-900 text-sm w-full max-w-xs mx-auto">
+          <div className="flex flex-col items-start gap-3 mb-8 text-white text-sm w-full max-w-xs mx-auto">
             <div className="flex items-center gap-3">
               <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-semibold text-slate-900'>400+ Projects Delivered</span>
+              <span className='font-semibold text-white'>400+ Projects Delivered</span>
             </div>
 
             <div className="flex items-center gap-3">
               <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-semibold text-slate-900'>Trusted by 350+ Global Clients</span>
+              <span className='font-semibold text-white'>Trusted by 350+ Global Clients</span>
             </div>
 
             <div className="flex items-center gap-3">
               <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-semibold text-slate-900'>6+ Years of Innovation</span>
+              <span className='font-semibold text-white'>6+ Years of Innovation</span>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm text-slate-600 mb-8 px-2">
+          <p className="text-sm text-gray-300 mb-8 px-2">
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-row flex-nowrap justify-center items-center gap-x-6 px-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 w-full px-4">
             <button
               onClick={() => setShowModal(true)}
-              className="px-4 py-2 h-[40px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-xs font-medium shadow-lg inline-flex items-center justify-center gap-2 whitespace-nowrap"
+              className="w-full sm:w-auto px-6 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center justify-center gap-3"
             >
               Get A Quote
-              <FaArrowRight className="text-xs" />
-              <span className="w-5 h-5 rounded-full bg-white flex items-center justify-center">
-                <FaPhoneAlt className="text-black text-[10px]" />
+              <FaArrowRight />
+              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+                <FaPhoneAlt className="text-black text-xs" />
               </span>
             </button>
 
@@ -221,11 +215,11 @@ const HeroSection = () => {
               href="https://calendly.com/paramhans-softkingo/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 h-[40px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-xs font-medium shadow-lg inline-flex items-center justify-center gap-2 whitespace-nowrap"
+              className="w-full sm:w-auto px-6 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center justify-center gap-3"
             >
               Book A Meeting
-              <span className="w-5 h-5 rounded-full bg-white flex items-center justify-center">
-                <FaBook className="text-black text-[10px]" />
+              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+                <FaBook className="text-black text-xs" />
               </span>
             </Link>
           </div>
@@ -239,49 +233,49 @@ const HeroSection = () => {
           className="hidden md:flex flex-col items-center"
         >
           {/* Badge */}
-          <motion.div className="bg-sky-50 text-slate-900 px-6 py-2 rounded-full mb-6 border border-sky-100 text-xs md:text-md shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block mr-2" />
+          <motion.div className="bg-sky-50/10 backdrop-blur-sm text-white px-6 py-2 rounded-full mb-6 border border-white/20 text-xs md:text-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block mr-2" />
             #1 Software Development Company
           </motion.div>
 
           {/* Heading */}
-          <motion.h1 className="text-3xl md:text-6xl font-bold mb-6 text-slate-900 leading-normal">
+          <motion.h1 className="text-3xl md:text-6xl font-bold mb-6 text-white leading-normal">
             <span>AI-Driven  </span>
 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
               Digital Solutions
             </span>
 
-            <span className="block mt-3 text-2xl md:text-4xl text-slate-900">
+            <span className="block mt-3 text-2xl md:text-4xl text-white">
               for Apps, Web & Digital Marketing
             </span>
           </motion.h1>
 
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-5 md:gap-y-4 mb-8 md:mb-4 text-slate-900 text-sm md:text-base">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-5 md:gap-y-4 mb-8 md:mb-4 text-white text-sm md:text-base">
             <div className="flex items-center gap-1 md:gap-2">
               <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
                 ✓
               </span>
-              <span className='font-extrabold text-2lg text-slate-900'>400+ Projects Delivered</span>
+              <span className='font-extrabold text-2lg text-white'>400+ Projects Delivered</span>
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
               <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
                 ✓
               </span>
-              <span className='font-extrabold text-2lg text-slate-900'>Trusted by 350+ Global Clients</span>
+              <span className='font-extrabold text-2lg text-white'>Trusted by 350+ Global Clients</span>
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
               <span className="w-6 h-6 flex items-center justify-center bg-sky-600 rounded-full text-white text-sm font-bold">
                 ✓
               </span>
-              <span className='font-extrabold text-2lg text-slate-900'>6+ Years of Innovation</span>
+              <span className='font-extrabold text-2lg text-white'>6+ Years of Innovation</span>
             </div>
           </div>
 
           {/* Description */}
-          <motion.p className="text-sm md:text-lg text-slate-600 mb-10 max-w-2xl">
+          <motion.p className="text-sm md:text-lg text-gray-200 mb-10 max-w-2xl">
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </motion.p>
 
@@ -312,6 +306,7 @@ const HeroSection = () => {
           </motion.div>
         </motion.div>
       </div>
+
       <PopupQuoteModal
         open={showModal}
         onClose={() => setShowModal(false)}
