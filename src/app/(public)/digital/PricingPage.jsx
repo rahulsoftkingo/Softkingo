@@ -307,6 +307,7 @@ export default function PricingPage({
   const [currency, setCurrency] = useState("usd");
   const [activeTabId, setActiveTabId] = useState(safePricingCards.solutionTabs[0]?.id);
 
+
   // NEW: index of the currently active tab within solutionTabs.
   // featuresByTab is a positional array, so we need the index, not the id.
   const activeTabIndex = safePricingCards.solutionTabs.findIndex((t) => t.id === activeTabId);

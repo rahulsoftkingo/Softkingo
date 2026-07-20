@@ -523,10 +523,6 @@ const resolveActiveSections = (data, sections) => {
 
 export default function DigitalPageEditor({ data, onBack }) {
 
-
-    const data1=JSON.parse(data.contentJson);
-    console.log(data1);
-
     // --- CONFIGURATION ---
     const config = {
         label: 'Digital Page',       // set to whatever this editor's title should be
