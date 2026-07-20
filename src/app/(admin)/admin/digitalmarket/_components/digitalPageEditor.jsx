@@ -481,38 +481,51 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
     </div>
 );
 
-// --- Helper: contentJson (string) ko safely parse karke content object nikalta hai ---
-const resolveContent = (data) => {
-    // Case 1: direct content object already present
-    if (data?.content && typeof data.content === 'object') {
-        return data.content;
-    }
-    // Case 2: contentJson string se parse karna hai (edit mode / API se aaya data)
+// --- Helper: contentJson (string) ko ek hi baar safely parse karta hai ---
+const parseContentJson = (data) => {
     if (typeof data?.contentJson === "string") {
         try {
-            const parsed = JSON.parse(data.contentJson);
-            return parsed?.content || parsed || {};
+            return JSON.parse(data.contentJson);
         } catch (e) {
             console.error("Failed to parse contentJson:", e);
             return {};
         }
     }
-    // Case 3: contentJson already an object (not stringified)
     if (data?.contentJson && typeof data.contentJson === 'object') {
-        return data.contentJson.content || data.contentJson || {};
+        return data.contentJson;
     }
     return {};
 };
 
-const resolveActiveSections = (data, sections) => {
-    const saved = data?.activeSections;
-    if (Array.isArray(saved) && saved.length > 0) {
-        return saved;
+const resolveContent = (data) => {
+    // Case 1: direct content object already present at top-level
+    if (data?.content && typeof data.content === 'object') {
+        return data.content;
     }
+    // Case 2: content lives inside contentJson
+    const parsed = parseContentJson(data);
+    return parsed?.content || parsed || {};
+};
+
+const resolveActiveSections = (data, sections) => {
+    // Case 1: activeSections directly on data (top-level)
+    if (Array.isArray(data?.activeSections)) {
+        return data.activeSections;
+    }
+    // Case 2: activeSections lives inside contentJson
+    const parsed = parseContentJson(data);
+    if (Array.isArray(parsed?.activeSections)) {
+        return parsed.activeSections;
+    }
+    // Case 3: nothing saved yet -> default all ON
     return sections.map(s => s.id);
 };
 
 export default function DigitalPageEditor({ data, onBack }) {
+
+
+    const data1=JSON.parse(data.contentJson);
+    console.log(data1);
 
     // --- CONFIGURATION ---
     const config = {
@@ -652,6 +665,7 @@ export default function DigitalPageEditor({ data, onBack }) {
 
             const result = await res.json();
 
+
             if (!res.ok) {
                 if (res.status === 409) {
                     alert("⚠️ " + (result.message || "Conflict error"));
@@ -752,7 +766,7 @@ export default function DigitalPageEditor({ data, onBack }) {
                     <div className="space-y-2">
                         <label className="text-[10px] font-bold text-slate-400 block">SECTIONS</label>
                         {config.sections.map((section) => {
-                            const isActive = formData.activeSections?.includes(section.id);
+                           const isActive = formData.activeSections?.includes(section.id);
                             return (
                                 <button key={section.id} onClick={() => {
                                     setFormData(prev => {
