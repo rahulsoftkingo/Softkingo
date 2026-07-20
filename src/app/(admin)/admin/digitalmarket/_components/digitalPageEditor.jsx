@@ -504,6 +504,14 @@ const resolveContent = (data) => {
     return {};
 };
 
+const resolveActiveSections = (data, sections) => {
+    const saved = data?.activeSections;
+    if (Array.isArray(saved) && saved.length > 0) {
+        return saved;
+    }
+    return sections.map(s => s.id);
+};
+
 export default function DigitalPageEditor({ data, onBack }) {
 
     // --- CONFIGURATION ---
@@ -533,7 +541,7 @@ export default function DigitalPageEditor({ data, onBack }) {
         title: '',
         slug: '',
         ...data,
-        activeSections: data?.activeSections || config.sections.map(s => s.id),
+        activeSections: resolveActiveSections(data, config.sections),
         content: resolveContent(data)
     }));
 
@@ -544,8 +552,7 @@ export default function DigitalPageEditor({ data, onBack }) {
                 title: '',
                 slug: '',
                 ...data,
-                activeSections:
-                    data?.activeSections || config.sections.map(s => s.id),
+                activeSections: resolveActiveSections(data, config.sections),
                 content: resolveContent(data)
             });
         }

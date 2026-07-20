@@ -24,7 +24,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 const ICON_MAP = {
   outbound: Megaphone,
   megaphone: Megaphone,
-  megaphor: Megaphone, // tolerate the "Megaphor" typo from source data
+  megaphor: Megaphone,
   inbound: Inbox,
   inbox: Inbox,
   enrichment: Sparkles,
@@ -54,27 +54,23 @@ const badgeStyles = {
 /* -------------------------------------------------------------------------
  * Currency helpers
  * ---------------------------------------------------------------------- */
-// Backend prices are always in USD. Adjust this rate as needed,
-// or wire it up to a live FX API later.
 const USD_TO_INR_RATE = 83;
 
-/**
- * Takes a raw price string from the backend (assumed USD, e.g. "$79",
- * "79", "79/mo", "Custom") and returns it formatted in the selected
- * currency. Non-numeric prices (like "Custom" / "Free") are returned
- * unchanged.
- */
-function formatPrice(rawPrice, currency) {
+function formatPrice(rawPrice, currency, billing = "annual", discountPercent = 0) {
   if (!rawPrice) return rawPrice;
   const str = String(rawPrice).trim();
 
   const match = str.match(/[\d,]+(\.\d+)?/);
-  if (!match) return str; // e.g. "Custom", "Contact us"
+  if (!match) return str;
 
-  const numeric = parseFloat(match[0].replace(/,/g, ""));
+  let numeric = parseFloat(match[0].replace(/,/g, ""));
   if (isNaN(numeric)) return str;
 
-  // anything after the number, e.g. "/mo", "/seat"
+  if (billing === "monthly" && discountPercent > 0) {
+    numeric = numeric / (1 - discountPercent / 100);
+  }
+  numeric = Math.round(numeric);
+
   const suffix = str.slice(match.index + match[0].length).trim();
 
   if (currency === "inr") {
@@ -92,32 +88,43 @@ const DEFAULT_PRICING = {
   title: "Pricing ",
   highlight: "Plans",
   subtitle: "sectino subutile ",
-
   featureGroups: [
     {
       id: "1",
-      title: "outbound ",
+      title: "Outbound",
       description: "descrption ",
       features: [
+        { name: "feature 1", badge: "Badge", tone: "", values: ["check ", "check "], children: [] },
+        { name: "feature 2", badge: "Badge ", tone: "", values: ["check", "check"], children: [] },
+      ],
+    },
+    {
+      id: "2",
+      title: "Inbound",
+      description: "Capture and route every inbound lead automatically.",
+      features: [
         {
-          name: "feature 1",
-          badge: "Badge",
+          name: "Lead capture",
+          badge: "",
           tone: "",
-          values: ["check ", "check "],
-          children: [],
+          values: ["check", "check", "check", "check"],
+          children: [
+            { name: "Web forms", values: ["check", "check", "check", "check"] },
+            { name: "Live chat capture", values: [null, "check", "check", "check"] },
+            { name: "Email capture", values: ["check", "check", "check", "check"] },
+            { name: "Call routing", values: [null, null, "check", "check"] },
+            { name: "Auto assignment rules", values: [null, "check", "check", "check"] },
+          ],
         },
-        {
-          name: "feature 2",
-          badge: "Badge ",
-          tone: "",
-          values: ["check", "check"],
-          children: [],
-        },
+        { name: "Routing rules", badge: "", tone: "", values: [null, "check", "check", "check"], children: [] },
       ],
     },
   ],
 };
 
+// NOTE: featuresByTab is now an ARRAY, index-aligned with solutionTabs.
+// e.g. featuresByTab[0] -> features for solutionTabs[0], featuresByTab[1] -> solutionTabs[1], etc.
+// Entries can be null/undefined if that plan has nothing to show for that tab.
 const DEFAULT_PRICING_CARDS = {
   topText: "Build Pipelines ",
   annualLabel: "Annual Billing ",
@@ -127,8 +134,8 @@ const DEFAULT_PRICING_CARDS = {
   tabsSubtitle: "Tabs Bar Subsutein ",
 
   solutionTabs: [
-    { id: "1", label: "outbound", iconName: "Megaphor" },
-    { id: "2", label: "outbound", iconName: "Megaphor" },
+    { id: "1", label: "Outbound", iconName: "Megaphor" },
+    { id: "2", label: "Inbound", iconName: "Inbound" },
     { id: "3", label: "outbound", iconName: "Megaphos" },
   ],
 
@@ -146,10 +153,10 @@ const DEFAULT_PRICING_CARDS = {
       highlighted: true,
       primaryButton: { label: "label ", link: "link " },
       secondaryButton: { label: "link", link: "link " },
-      features: [
-        { text: "feature ", badge: "badge " },
-        { text: "feature 2 ", badge: "badge" },
-        { text: "feature 3", badge: "badge" },
+      featuresByTab: [
+        [{ text: "feature ", badge: "badge " }, { text: "feature 2 ", badge: "badge" }],
+        null,
+        null,
       ],
       compareAllText: "compare all plans ",
     },
@@ -167,11 +174,10 @@ function FeatureItem({ feature }) {
         {feature.text}
         {feature.badge && (
           <span
-            className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-              feature.badge === "BETA"
+            className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${feature.badge === "BETA"
                 ? "bg-sky-100 text-sky-800"
                 : "bg-sky-50 text-sky-700 border border-sky-200"
-            }`}
+              }`}
           >
             {feature.badge}
           </span>
@@ -225,36 +231,20 @@ function FeatureRow({ feature, groupId, index, plans, openFeatures, toggleFeatur
       <div className="grid items-center gap-4 border-b border-slate-100 px-4 py-3.5" style={gridStyle}>
         <div className="flex items-center gap-2" style={{ paddingLeft: depth * 20 }}>
           {hasChildren ? (
-            <button
-              type="button"
-              onClick={() => toggleFeature(rowKey)}
-              className="flex items-center gap-1.5 text-left"
-            >
+            <button type="button" onClick={() => toggleFeature(rowKey)} className="flex items-center gap-1.5 text-left">
               <p className={labelClass}>{feature.name}</p>
               {feature.badge && (
-                <span
-                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    badgeStyles[feature.tone] || badgeStyles.sky
-                  }`}
-                >
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${badgeStyles[feature.tone] || badgeStyles.sky}`}>
                   {feature.badge}
                 </span>
               )}
-              {isOpen ? (
-                <ChevronUp className="h-3.5 w-3.5 shrink-0 text-slate-400" />
-              ) : (
-                <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400" />
-              )}
+              {isOpen ? <ChevronUp className="h-3.5 w-3.5 shrink-0 text-slate-400" /> : <ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400" />}
             </button>
           ) : (
             <>
               <p className={labelClass}>{feature.name}</p>
               {feature.badge && (
-                <span
-                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    badgeStyles[feature.tone] || badgeStyles.sky
-                  }`}
-                >
+                <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${badgeStyles[feature.tone] || badgeStyles.sky}`}>
                   {feature.badge}
                 </span>
               )}
@@ -294,30 +284,32 @@ export default function PricingPage({
   pricingCards = DEFAULT_PRICING_CARDS,
 }) {
 
+  function getDiscountPercent(annualBadge) {
+    if (!annualBadge) return 0;
+    const match = String(annualBadge).match(/(\d+(\.\d+)?)\s*%/);
+    return match ? parseFloat(match[1]) : 0;
+  }
 
-  // Merge onto defaults to secure correct formatting constraints
   const safePricing = {
     ...DEFAULT_PRICING,
     ...pricing,
-    featureGroups: Array.isArray(pricing?.featureGroups)
-      ? pricing.featureGroups
-      : DEFAULT_PRICING.featureGroups,
+    featureGroups: Array.isArray(pricing?.featureGroups) ? pricing.featureGroups : DEFAULT_PRICING.featureGroups,
   };
 
   const safePricingCards = {
     ...DEFAULT_PRICING_CARDS,
     ...pricingCards,
-    solutionTabs: Array.isArray(pricingCards?.solutionTabs)
-      ? pricingCards.solutionTabs
-      : DEFAULT_PRICING_CARDS.solutionTabs,
-    plans: Array.isArray(pricingCards?.plans)
-      ? pricingCards.plans
-      : DEFAULT_PRICING_CARDS.plans,
+    solutionTabs: Array.isArray(pricingCards?.solutionTabs) ? pricingCards.solutionTabs : DEFAULT_PRICING_CARDS.solutionTabs,
+    plans: Array.isArray(pricingCards?.plans) ? pricingCards.plans : DEFAULT_PRICING_CARDS.plans,
   };
 
   const [billing, setBilling] = useState("annual");
-  const [currency, setCurrency] = useState("usd"); // "usd" | "inr"
+  const [currency, setCurrency] = useState("usd");
   const [activeTabId, setActiveTabId] = useState(safePricingCards.solutionTabs[0]?.id);
+
+  // NEW: index of the currently active tab within solutionTabs.
+  // featuresByTab is a positional array, so we need the index, not the id.
+  const activeTabIndex = safePricingCards.solutionTabs.findIndex((t) => t.id === activeTabId);
 
   const [openSections, setOpenSections] = useState(() => {
     const initial = {};
@@ -340,7 +332,6 @@ export default function PricingPage({
     setOpenFeatures((prev) => ({ ...prev, [key]: !prev[key] }));
   }
 
-  // Smooth scrolls to compare table
   function goToCompare(targetId) {
     setActiveTabId(targetId);
     setOpenSections((prev) => {
@@ -359,40 +350,37 @@ export default function PricingPage({
     });
   }
 
+  const discountPercent = getDiscountPercent(safePricingCards.annualBadge);
+
   return (
     <div className="bg-white">
       {/* ============================= PRICING ============================= */}
       <section className="bg-gradient-to-br from-white via-sky-50 to-sky-200 py-20 px-4 sm:px-6 lg:px-8">
-        
-         <CommonTitle
-                   align="center"
-                   pill={false}
-                   gradientText={pricingCards.heading}
-                   subtitle={pricingCards.subtitle}
-                 />
+
+        <CommonTitle
+          align="center"
+          pill={false}
+          gradientText={pricingCards.heading}
+          subtitle={pricingCards.subtitle}
+        />
         <div className="mx-auto max-w-7xl">
           <p className="ml-auto max-w-md text-right text-sm leading-relaxed text-slate-600">
             {safePricingCards.topText}
           </p>
 
-          {/* CURRENCY TOGGLE (left) + BILLING TOGGLE (right) */}
           <div className="mt-4 flex items-center justify-between">
             <div className="inline-flex items-center rounded-full border border-slate-200 p-1">
               <button
                 type="button"
                 onClick={() => setCurrency("usd")}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  currency === "usd" ? "bg-slate-900 text-white" : "text-slate-600"
-                }`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${currency === "usd" ? "bg-slate-900 text-white" : "text-slate-600"}`}
               >
                 $ USD
               </button>
               <button
                 type="button"
                 onClick={() => setCurrency("inr")}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  currency === "inr" ? "bg-slate-900 text-white" : "text-slate-600"
-                }`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${currency === "inr" ? "bg-slate-900 text-white" : "text-slate-600"}`}
               >
                 ₹ INR
               </button>
@@ -402,9 +390,7 @@ export default function PricingPage({
               <button
                 type="button"
                 onClick={() => setBilling("annual")}
-                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  billing === "annual" ? "bg-slate-900 text-white" : "text-slate-600"
-                }`}
+                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${billing === "annual" ? "bg-slate-900 text-white" : "text-slate-600"}`}
               >
                 {safePricingCards.annualLabel}
                 {safePricingCards.annualBadge && (
@@ -416,9 +402,7 @@ export default function PricingPage({
               <button
                 type="button"
                 onClick={() => setBilling("monthly")}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
-                  billing === "monthly" ? "bg-slate-900 text-white" : "text-slate-600"
-                }`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${billing === "monthly" ? "bg-slate-900 text-white" : "text-slate-600"}`}
               >
                 {safePricingCards.monthlyLabel}
               </button>
@@ -439,11 +423,10 @@ export default function PricingPage({
                     key={tab.id}
                     type="button"
                     onClick={() => setActiveTabId(tab.id)}
-                    className={`flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
-                      active
+                    className={`flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${active
                         ? "border-yellow-300 bg-yellow-50 text-slate-900"
                         : "border-slate-100 text-slate-500 hover:text-slate-900"
-                    }`}
+                      }`}
                   >
                     <Icon className="h-4 w-4" />
                     {tab.label}
@@ -454,84 +437,92 @@ export default function PricingPage({
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-4">
-            {safePricingCards.plans.map((plan, i) => (
-              <div
-                key={i}
-                className={`relative flex flex-col rounded-2xl border p-5 ${
-                  plan.highlighted
-                    ? "border-sky-400 bg-sky-100 shadow-md"
-                    : "border-slate-200 bg-white"
-                }`}
-              >
-                {plan.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-slate-900 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
-                    {plan.badge}
-                  </span>
-                )}
+            {safePricingCards.plans.map((plan, i) => {
+              // NEW: pull this plan's feature list for the currently active tab,
+              // by position (activeTabIndex), not by id. Guard against null/undefined.
+              const activeFeatures = Array.isArray(plan.featuresByTab)
+                ? plan.featuresByTab[activeTabIndex] || []
+                : [];
 
-                <p className="text-md font-medium text-slate-900">{plan.name}</p>
-                <p className="mt-1.5 min-h-[36px] text-xs leading-relaxed text-slate-500">
-                  {plan.description}
-                </p>
-
-                <p className="mt-4 text-3xl font-medium text-slate-900">
-                  {formatPrice(plan.price, currency)}
-                </p>
-                <p className="mt-1 min-h-[32px] text-xs leading-relaxed text-slate-500">
-                  {plan.priceNote}
-                </p>
-
-                <div className="mt-3 flex items-start gap-1.5 text-xs text-slate-500">
-                  <Waypoints className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                  <span>
-                    <span className="font-medium text-slate-700">{plan.credits}</span>
-                    <br />
-                    {plan.creditsNote}
-                    <br />
-                    {plan.learnMoreLink && (
-                      <Link
-                        href={plan.learnMoreLink}
-                        className="underline underline-offset-2 hover:text-slate-700"
-                      >
-                        Learn more
-                      </Link>
-                    )}
-                  </span>
-                </div>
-
-                {plan.primaryButton && (
-                  <Link
-                    href={plan.primaryButton.link || "#"}
-                    className={`mt-4 block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
-                      plan.highlighted
-                        ? "bg-slate-900 text-white hover:bg-slate-800"
-                        : "bg-sky-500 text-white hover:bg-sky-600"
+              return (
+                <div
+                  key={i}
+                  className={`relative flex flex-col rounded-2xl border p-5 ${plan.highlighted
+                      ? "border-sky-400 bg-sky-100 shadow-md"
+                      : "border-slate-200 bg-white"
                     }`}
-                  >
-                    {plan.primaryButton.label}
-                  </Link>
-                )}
-
-                {plan.trialText && (
-                  <p className="mt-2 text-center text-xs text-slate-500">{plan.trialText}</p>
-                )}
-
-                <ul className="mt-5 divide-y divide-slate-100 border-t border-slate-100">
-                  {(plan.features || []).map((feature, j) => (
-                    <FeatureItem key={j} feature={feature} />
-                  ))}
-                </ul>
-
-                <button
-                  type="button"
-                  onClick={() => goToCompare(activeTabId)}
-                  className="mt-4 flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900"
                 >
-                  {plan.compareAllText}
-                  <ChevronDown className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ))}
+                  {plan.badge && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-slate-900 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white">
+                      {plan.badge}
+                    </span>
+                  )}
+
+                  <p className="text-md font-medium text-slate-900">{plan.name}</p>
+                  <p className="mt-1.5 min-h-[36px] text-xs leading-relaxed text-slate-500">
+                    {plan.description}
+                  </p>
+
+                  <p className="mt-4 text-3xl font-medium text-slate-900">
+                    {formatPrice(plan.price, currency, billing, discountPercent)}
+                  </p>
+                  <p className="mt-1 min-h-[32px] text-xs leading-relaxed text-slate-500">
+                    {plan.priceNote}
+                  </p>
+
+                  <div className="mt-3 flex items-start gap-1.5 text-xs text-slate-500">
+                    <Waypoints className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                    <span>
+                      <span className="font-medium text-slate-700">{plan.credits}</span>
+                      <br />
+                      {plan.creditsNote}
+                      <br />
+                      {plan.learnMoreLink && (
+                        <Link href={plan.learnMoreLink} className="underline underline-offset-2 hover:text-slate-700">
+                          Learn more
+                        </Link>
+                      )}
+                    </span>
+                  </div>
+
+                  {plan.primaryButton && (
+                    <Link
+                      href={plan.primaryButton.link || "#"}
+                      className={`mt-4 block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${plan.highlighted
+                          ? "bg-slate-900 text-white hover:bg-slate-800"
+                          : "bg-sky-500 text-white hover:bg-sky-600"
+                        }`}
+                    >
+                      {plan.primaryButton.label}
+                    </Link>
+                  )}
+
+                  {plan.trialText && (
+                    <p className="mt-2 text-center text-xs text-slate-500">{plan.trialText}</p>
+                  )}
+
+                  {/* Feature list now reacts to activeTabId/activeTabIndex */}
+                  <ul className="mt-5 min-h-[40px] divide-y divide-slate-100 border-t border-slate-100">
+                    {activeFeatures.length > 0 ? (
+                      activeFeatures.map((feature, j) => <FeatureItem key={j} feature={feature} />)
+                    ) : (
+                      <li className="py-2 text-xs italic text-slate-400">
+                        No features listed for this solution.
+                      </li>
+                    )}
+                  </ul>
+
+                  <button
+                    type="button"
+                    onClick={() => goToCompare(activeTabId)}
+                    className="mt-4 flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900"
+                  >
+                    {plan.compareAllText}
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           <p className="mt-8 text-center text-xs text-slate-400">
@@ -550,10 +541,7 @@ export default function PricingPage({
           </div>
 
           <div className="sticky top-[73px] z-30 mt-6 bg-white pb-4 pt-2">
-            <div
-              className="grid gap-4"
-              style={{ gridTemplateColumns: `1.6fr repeat(${safePricingCards.plans.length}, 1fr)` }}
-            >
+            <div className="grid gap-4" style={{ gridTemplateColumns: `1.6fr repeat(${safePricingCards.plans.length}, 1fr)` }}>
               <div />
               {safePricingCards.plans.map((plan, i) => (
                 <div key={i} className="flex flex-col">
@@ -567,7 +555,7 @@ export default function PricingPage({
                   </div>
 
                   <p className="mt-2 text-2xl font-medium text-slate-900">
-                    {formatPrice(plan.price, currency)}
+                    {formatPrice(plan.price, currency, billing, discountPercent)}
                   </p>
 
                   {plan.priceNote && (
@@ -594,11 +582,10 @@ export default function PricingPage({
                   {plan.primaryButton && (
                     <Link
                       href={plan.primaryButton.link || "#"}
-                      className={`mt-4 inline-block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${
-                        plan.highlighted
+                      className={`mt-4 inline-block rounded-md px-4 py-2 text-center text-sm font-medium transition-colors ${plan.highlighted
                           ? "bg-slate-900 text-white hover:bg-slate-800"
                           : "bg-sky-300 text-slate-900 hover:bg-sky-400"
-                      }`}
+                        }`}
                     >
                       {plan.primaryButton.label}
                     </Link>
@@ -618,9 +605,7 @@ export default function PricingPage({
                 <div
                   key={group.id}
                   ref={(el) => (sectionRefs.current[group.id] = el)}
-                  className={`scroll-mt-24 rounded-lg border overflow-hidden transition-shadow ${
-                    isFlashing ? "border-yellow-300 ring-2 ring-yellow-200" : "border-slate-100"
-                  }`}
+                  className={`scroll-mt-24 rounded-lg border overflow-hidden transition-shadow ${isFlashing ? "border-yellow-300 ring-2 ring-yellow-200" : "border-slate-100"}`}
                 >
                   <button
                     type="button"
@@ -640,11 +625,7 @@ export default function PricingPage({
                         )}
                       </div>
                     </div>
-                    {isOpen ? (
-                      <ChevronUp className="h-4 w-4 shrink-0 text-slate-500" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 shrink-0 text-slate-500" />
-                    )}
+                    {isOpen ? <ChevronUp className="h-4 w-4 shrink-0 text-slate-500" /> : <ChevronDown className="h-4 w-4 shrink-0 text-slate-500" />}
                   </button>
 
                   {isOpen && (

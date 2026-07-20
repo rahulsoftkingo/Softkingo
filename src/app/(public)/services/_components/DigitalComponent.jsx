@@ -10,16 +10,19 @@ import TrustedByCard from "../../digital/TrustedByCard";
 import PricingPage from "../../digital/PricingPage";
 import CuttingEdgeTech from "../../digital/CuttingEdgeTech";
 import ServicesByCompany from "../../digital/ServicesByCompany"
-import WorkflowAddOns from "../../digital/WorkFlowAddons";
+import WorkflowAddOns from "../../digital/WorkFlowAddons";  
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
 
 
 
-export default function DigitalComponent({ content }) {
+export default function DigitalComponent({ content,section }) {
 
-  console.log("Rahul content",content)
+
+  console.log("section of the things :",section)
+
+
   return (
     <div>
 

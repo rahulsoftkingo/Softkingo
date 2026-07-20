@@ -734,7 +734,7 @@ export default async function ServicePage({ params }) {
 
     data.slug = slug;
     if (digitalPage && digitalPage.status === "published") {
-      return <DigitalComponent content={data} />;
+      return <DigitalComponent content={data} section={digitalPage} />;
     }
 
     return notFound();
