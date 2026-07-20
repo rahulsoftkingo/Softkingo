@@ -153,13 +153,13 @@ const HeroSection = () => {
         {/* Mobile version: plain elements, zero motion, video ke upar structure format */}
         <div className="flex md:hidden flex-col items-center pt-8 pb-12">
           {/* Badge */}
-          <div className="bg-sky-50 text-sky-700 px-6 py-2 rounded-full mb-6 border border-sky-200 text-xs">
+          <div className="w-fit bg-sky-50 text-sky-700 px-6 py-2 rounded-full mb-6 border border-sky-200 text-xs text-left mr-auto">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block mr-2" />
             #1 Software Development Company
           </div>
 
           {/* Heading */}
-          <h1 className="text-3xl font-bold mb-6 text-gray-900 leading-normal">
+          <h1 className="text-3xl font-bold mb-6 text-gray-900 leading-normal text-left">
             <span>AI-Driven  </span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
               Digital Solutions
@@ -194,7 +194,7 @@ const HeroSection = () => {
           </div>
 
           {/* Description */}
-          <p className="text-sm text-gray-600 mb-8 px-2">
+          <p className="text-sm text-gray-600 mb-8 px-2 text-left">
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </p>
 
@@ -275,7 +275,7 @@ const HeroSection = () => {
           </div>
 
           {/* Description */}
-          <motion.p className="text-sm md:text-lg text-gray-200 mb-10 max-w-2xl">
+          <motion.p className="text-sm md:text-lg text-gray-200 mb-10 max-w-2xl align-left">
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </motion.p>
 
