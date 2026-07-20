@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
 import CommonTitle from "@/components/ui/CommonTitle";
 
@@ -153,26 +152,13 @@ export const AI_SERVICES_DEFAULT = [
     }
 ];
 
-// ─── Sticky Service Card Component ───────────────────────────────────────────
-function StickyServiceCard({ service, index }) {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start end", "start start"],
-    });
-
-    const scale = useTransform(scrollYProgress, [0, 0.8, 1], [0.95, 1, 1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
-
+// ─── Tailwind Service Card Component ─────────────────────────────────────────
+function TailwindServiceCard({ service, index }) {
     return (
-        <motion.div
-            ref={ref}
-            style={{ scale, opacity }}
-            className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative"
-        >
+        <div className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative w-full shadow-xl animate-card-fade-in">
             <Link href={service?.link || "/contact"} className="block h-full w-full p-6 md:p-10 relative z-10">
                 {/* Navigation Arrow Top Right */}
-                <div className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 group-hover:bg-white group-hover:text-sky-500 transition-all duration-500 z-20 shadow-lg">
+                <div className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 group-hover:bg-white group-hover:text-sky-50 transition-all duration-500 z-20 shadow-lg">
                     <FaArrowRight className="text-xl" />
                 </div>
 
@@ -201,7 +187,9 @@ function StickyServiceCard({ service, index }) {
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             {(service?.capabilities || []).map((cap, i) => (
                                 <li key={i} className="flex items-start gap-3 text-base text-white opacity-90 font-medium">
-                                    <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1"> <FaArrowRight className="h-2 w-2" /> </span>
+                                    <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1"> 
+                                        <FaArrowRight className="h-2 w-2" /> 
+                                    </span>
                                     {cap}
                                 </li>
                             ))}
@@ -211,7 +199,7 @@ function StickyServiceCard({ service, index }) {
                     {/* Technologies (HORIZONTAL SCROLL) */}
                     <div className="space-y-4">
                         <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Technologies We Use</h4>
-                        <div className="flex flex-row gap-4 overflow-x-auto hide-scrollbar whitespace-nowrap pb-4 px-1">
+                        <div className="flex flex-row gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap pb-4 px-1">
                             {(service?.tech || service?.technologies || []).map((t, idx) => (
                                 <div key={idx} className="group/tech relative w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl p-2.5 shadow-lg shadow-sky-900/10 transition-all duration-300 flex items-center justify-center hover:scale-110 shrink-0">
                                     <div className="relative w-full h-full">
@@ -231,7 +219,7 @@ function StickyServiceCard({ service, index }) {
                     </div>
                 </div>
             </Link>
-        </motion.div>
+        </div>
     );
 }
 
@@ -244,70 +232,61 @@ export default function CoreServicesSection({
     bgClass = "bg-white",
 }) {
     const [activeIndex, setActiveIndex] = useState(0);
-    const scrollContainerRef = useRef(null);
+    const mobileScrollRef = useRef(null);
 
-    // Intersection Observer for sidebar highlight
-    useEffect(() => {
-        const observerOptions = {
-            root: null,
-            rootMargin: '-20% 0px -50% 0px',
-            threshold: 0.1
-        };
-
-        const observerCallback = (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const index = parseInt(entry.target.id.split('-')[1]);
-                    if (!isNaN(index)) {
-                        setActiveIndex(index);
-                        // Sync mobile scroll
-                        const btn = document.getElementById(`nav-btn-${index}`);
-                        if (btn && scrollContainerRef.current) {
-                            const container = scrollContainerRef.current;
-                            container.scrollTo({
-                                left: btn.offsetLeft - (container.offsetWidth / 2) + (btn.offsetWidth / 2),
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                }
+    const handleTabChange = (index) => {
+        setActiveIndex(index);
+        
+        // Auto-center current selection inside mobile nav container
+        const btn = document.getElementById(`nav-btn-${index}`);
+        if (btn && mobileScrollRef.current) {
+            const container = mobileScrollRef.current;
+            container.scrollTo({
+                left: btn.offsetLeft - (container.offsetWidth / 2) + (btn.offsetWidth / 2),
+                behavior: 'smooth'
             });
-        };
-
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-        const serviceElements = document.querySelectorAll('[id^="service-"]');
-        serviceElements.forEach((el) => observer.observe(el));
-
-        return () => observer.disconnect();
-    }, [services]);
-
-    const scrollToService = (index) => {
-        const el = document.getElementById(`service-${index}`);
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
 
     return (
         <section id={sectionId} className={`${bgClass} relative`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-1">
+            {/* Fine-tuned, extra smooth cubic-bezier transition exclusively for the right card */}
+            <style jsx global>{`
+                @keyframes cardFadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(12px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .animate-card-fade-in {
+                    animation: cardFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                }
+            `}</style>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
                 <CommonTitle align="center" title={title} subtitle={subtitle} />
 
-                {/* Mobile / Tablet Horizontal Navigation (NEW) */}
+                {/* Mobile / Tablet Horizontal Navigation Header */}
                 <div className="lg:hidden mt-10 mb-8 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
                     <div
-                        ref={scrollContainerRef}
-                        className="flex flex-row gap-3 overflow-x-auto hide-scrollbar whitespace-nowrap"
+                        ref={mobileScrollRef}
+                        className="flex flex-row gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap"
                     >
                         {services.map((s, idx) => (
                             <button
                                 key={idx}
                                 id={`nav-btn-${idx}`}
-                                onClick={() => scrollToService(idx)}
-                                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all shrink-0 border ${activeIndex === idx
-                                    ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
-                                    : "bg-white text-sky-600 border-sky-100 hover:border-sky-300"
-                                    }`}
+                                onClick={() => handleTabChange(idx)}
+                                onMouseEnter={() => handleTabChange(idx)}
+                                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shrink-0 border ${
+                                    activeIndex === idx
+                                        ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
+                                        : "bg-white text-sky-600 border-sky-100 hover:border-sky-300"
+                                }`}
                             >
                                 {s?.title || s?.name || `Service ${idx + 1}`}
                             </button>
@@ -316,25 +295,26 @@ export default function CoreServicesSection({
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12 lg:mt-20 items-start">
-                    {/* Dashboard Navigation Sidebar (Left Side Sticky) */}
+                    {/* Dashboard Navigation Sidebar (Left Sticky Container) */}
                     <div className="hidden lg:block w-80 shrink-0 sticky top-32 self-start rounded-3xl border border-sky-200/20 bg-white/5 backdrop-blur-xl shadow-2xl shadow-sky-900/10 overflow-hidden">
                         <div className="divide-y divide-sky-200/15">
                             {services.map((s, idx) => (
                                 <button
                                     key={idx}
-                                    onClick={() => scrollToService(idx)}
-                                    className={`w-full text-left px-7 py-6 transition-all duration-300 group ${activeIndex === idx
-                                            ? "bg-white/10"
-                                            : "hover:bg-white/5"
-                                        }`}
+                                    onClick={() => setActiveIndex(idx)}
+                                    onMouseEnter={() => setActiveIndex(idx)}
+                                    className={`w-full text-left px-7 py-6 transition-all duration-300 group ${
+                                        activeIndex === idx ? "bg-white/10" : "hover:bg-white/5"
+                                    }`}
                                 >
                                     <div className="flex items-start gap-5">
                                         {/* Number */}
                                         <div
-                                            className={`text-lg font-bold transition-all ${activeIndex === idx
+                                            className={`text-lg font-bold transition-all duration-300 ${
+                                                activeIndex === idx
                                                     ? "text-sky-500"
                                                     : "text-sky-300 group-hover:text-sky-400"
-                                                }`}
+                                            }`}
                                         >
                                             {String(idx + 1).padStart(2, "0")}
                                         </div>
@@ -342,10 +322,11 @@ export default function CoreServicesSection({
                                         {/* Content */}
                                         <div>
                                             <h4
-                                                className={`text-xl font-semibold leading-tight transition-all ${activeIndex === idx
+                                                className={`text-xl font-semibold leading-tight transition-all duration-300 ${
+                                                    activeIndex === idx
                                                         ? "text-sky-500"
                                                         : "text-sky-300 group-hover:text-sky-400"
-                                                    }`}
+                                                }`}
                                             >
                                                 {s?.title || s?.name || `Service ${idx + 1}`}
                                             </h4>
@@ -356,18 +337,15 @@ export default function CoreServicesSection({
                         </div>
                     </div>
 
-                    {/* Cards Stack (Right Side) */}
-                    <div className="flex-1 w-full space-y-8">
-                        {services.map((service, index) => (
-                            <div
-                                key={index}
-                                id={`service-${index}`}
-                                style={{ zIndex: index + 1 }}
-                                className="sticky top-32"
-                            >
-                                <StickyServiceCard service={service} index={index} />
-                            </div>
-                        ))}
+                    {/* Active Component Wrapper (Right Side Content Container) */}
+                    <div className="flex-1 w-full min-h-[450px]">
+                        {services[activeIndex] && (
+                            <TailwindServiceCard 
+                                key={activeIndex} 
+                                service={services[activeIndex]} 
+                                index={activeIndex} 
+                            />
+                        )}
                     </div>
                 </div>
             </div>

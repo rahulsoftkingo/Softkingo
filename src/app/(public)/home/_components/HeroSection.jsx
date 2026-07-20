@@ -49,8 +49,8 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative flex flex-col md:block overflow-hidden md:min-h-screen"
     >
-      {/* MEDIA BLOCK: mobile par normal flow me top pe (fixed height), desktop par absolute background */}
-      <div className="relative w-full h-[40vh] sm:h-[45vh] md:absolute md:inset-0 md:h-full z-0">
+      {/* MEDIA BLOCK: mobile par normal flow me content ke NICHE (fixed height), desktop par absolute background */}
+      <div className="order-2 md:order-none relative w-full h-[40vh] sm:h-[45vh] md:absolute md:inset-0 md:h-full z-0">
         <img
           src="/videos/frame.webp"
           alt="Softkingo"
@@ -147,66 +147,66 @@ const HeroSection = () => {
           ))}
       </div>
 
-      {/* MAIN CONTENT: mobile par video ke NICHE content flow me, desktop par flex centering */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 text-center bg-black md:bg-transparent md:h-screen md:flex md:flex-col md:items-center md:justify-center">
-        
-        {/* Mobile version: plain elements, zero motion, video ke niche structure format */}
+      {/* MAIN CONTENT: mobile par video ke UPAR content flow me, desktop par flex centering */}
+      <div className="order-1 md:order-none relative z-10 w-full max-w-7xl mx-auto px-4 text-center bg-white md:bg-transparent md:h-screen md:flex md:flex-col md:items-center md:justify-center">
+
+        {/* Mobile version: plain elements, zero motion, video ke upar structure format */}
         <div className="flex md:hidden flex-col items-center pt-8 pb-12">
           {/* Badge */}
-          <div className="bg-sky-50/10 backdrop-blur-sm text-white px-6 py-2 rounded-full mb-6 border border-white/20 text-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block mr-2" />
+          <div className="bg-sky-50 text-sky-700 px-6 py-2 rounded-full mb-6 border border-sky-200 text-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block mr-2" />
             #1 Software Development Company
           </div>
 
           {/* Heading */}
-          <h1 className="text-3xl font-bold mb-6 text-white leading-normal">
+          <h1 className="text-3xl font-bold mb-6 text-gray-900 leading-normal">
             <span>AI-Driven  </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 to-sky-400">
               Digital Solutions
             </span>
-            <span className="block mt-3 text-xl text-white font-medium">
+            <span className="block mt-3 text-xl text-gray-800 font-medium">
               for Apps, Web & Digital Marketing
             </span>
           </h1>
 
           {/* Stats List */}
-          <div className="flex flex-col items-start gap-3 mb-8 text-white text-sm w-full max-w-xs mx-auto">
+          <div className="flex flex-col items-start gap-3 mb-8 text-gray-800 text-sm w-full max-w-xs mx-auto">
             <div className="flex items-center gap-3">
               <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-semibold text-white'>400+ Projects Delivered</span>
+              <span className='font-semibold text-gray-800'>400+ Projects Delivered</span>
             </div>
 
             <div className="flex items-center gap-3">
               <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-semibold text-white'>Trusted by 350+ Global Clients</span>
+              <span className='font-semibold text-gray-800'>Trusted by 350+ Global Clients</span>
             </div>
 
             <div className="flex items-center gap-3">
               <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
               </span>
-              <span className='font-semibold text-white'>6+ Years of Innovation</span>
+              <span className='font-semibold text-gray-800'>6+ Years of Innovation</span>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm text-gray-300 mb-8 px-2">
+          <p className="text-sm text-gray-600 mb-8 px-2">
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </p>
 
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 w-full px-4">
+          {/* Buttons - both in one row */}
+          <div className="flex flex-row justify-center gap-3 w-full px-2">
             <button
               onClick={() => setShowModal(true)}
-              className="w-full sm:w-auto px-6 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center justify-center gap-3"
+              className="flex-1 px-4 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-xs sm:text-sm font-medium shadow-lg inline-flex items-center justify-center gap-2"
             >
               Get A Quote
               <FaArrowRight />
-              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center shrink-0">
                 <FaPhoneAlt className="text-black text-xs" />
               </span>
             </button>
@@ -215,10 +215,10 @@ const HeroSection = () => {
               href="https://calendly.com/paramhans-softkingo/30min"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-6 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center justify-center gap-3"
+              className="flex-1 px-4 py-3 h-[48px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-xs sm:text-sm font-medium shadow-lg inline-flex items-center justify-center gap-2"
             >
               Book A Meeting
-              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+              <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center shrink-0">
                 <FaBook className="text-black text-xs" />
               </span>
             </Link>
@@ -279,7 +279,6 @@ const HeroSection = () => {
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </motion.p>
 
-          {/* Buttons */}
           <motion.div className="flex flex-wrap justify-center gap-4 mb-10">
             <button
               onClick={() => setShowModal(true)}
