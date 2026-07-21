@@ -18,7 +18,7 @@ export default function FeatureSection({
     branding,
     isDark = false
 }) {
-    const { primaryColor, secondaryColor, accentColor } = branding;
+    const { primaryColor, secondaryColor, accentColor, colors } = branding;
     const [activeFeat, setActiveFeat] = useState(0);
 
     // Premium Light Design strategy for consistency and readability
@@ -61,6 +61,27 @@ export default function FeatureSection({
                             <p className="text-lg leading-relaxed font-bold font-sans text-slate-600">
                                 {description}
                             </p>
+                        )}
+                        {title === "Project Overview" && colors?.length > 0 && (
+                            <div className="flex flex-wrap gap-6 pt-6">
+                                {colors.map((color, index) => (
+                                    <div key={index} className="flex flex-col items-center">
+                                        <div className="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center shadow-lg">
+                                            <div
+                                                className="w-14 h-14 rounded-full border-4 border-white shadow-md"
+                                                style={{ backgroundColor: color.hex }}
+                                            />
+                                        </div>
+
+                                        <p className="mt-3 text-xs font-semibold text-slate-500 uppercase">
+                                            {color.name}
+                                        </p>
+                                        <p className="text-[11px] text-slate-400">
+                                            {color.hex}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
                         )}
                         {listItems && listItems.length > 0 && (
                             <div className="lg:max-h-[550px] overflow-y-auto pr-4 custom-scrollbar-stylish scroll-smooth">

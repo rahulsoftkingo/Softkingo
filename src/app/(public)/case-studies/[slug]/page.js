@@ -14,6 +14,8 @@ import FindYourApp from './_components/FindYourApp';
 import AppScreensShowcase from './_components/AppScreensShowcase';
 import ChallengesSolutions from './_components/ChallengesSolutions';
 import TestimonialSection from './_components/TestimonialSection';
+import DevelopmentApproach from './_components/DevelopmentApproach';
+import ContentBanner from './_components/ContentBanner';
 
 // ---------- helpers ----------
 function parseJson(value, fallback) {
@@ -246,6 +248,15 @@ export default async function CaseStudyPage({ params }) {
           imagePosition="right"
           isDark={false}
         />
+{/* 
+        <ContentBanner
+         title="Goals & Objectives"
+          listItems={data.goals.items}
+          bgImage={data.goals.backgroundImage}
+          branding={branding}
+          imagePosition="right"
+          isDark={false}
+        /> */}
 
         <ChallengesSolutions
           data={data}
@@ -254,9 +265,21 @@ export default async function CaseStudyPage({ params }) {
 
         <AppScreensShowcase data={data.appScreens} branding={branding} />
 
-        <Results results={data.results} branding={branding} />
+       <Results
+  results={[
+    {
+      ...data.results[0],
+      description: "Since launch, the platform has delivered measurable impact across every stage of the workflow. Early feedback from internal teams and stakeholders has been overwhelmingly positive, with the solution providing a strong, scalable foundation for continued growth. Significant operational efficiencies and strategic benefits have already been realized, setting the stage for long-term success.",
+    },
+  ]}
+  branding={branding}
+/>
 
-        <FindYourApp data={data} branding={branding} />
+        {/* <FindYourApp data={data} branding={branding} /> */}
+
+        <DevelopmentApproach branding={branding}/>
+
+        <ContentBanner  data={data} branding={branding}/>
 
         <TestimonialSection
           data={data.client}

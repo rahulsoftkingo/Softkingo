@@ -80,7 +80,7 @@ export default function BlogSection({
 
                         <Link
                             href={`/blog/category/${category}`}
-                            className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0"
+                            className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0 md:ml-10"
                         >
                             <div className="relative flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
                                 <FaArrowRight className="text-lg md:text-xl text-slate-700 group-hover:text-sky-500 transition-colors duration-500 group-hover:translate-x-1" />
