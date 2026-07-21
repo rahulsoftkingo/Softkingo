@@ -612,10 +612,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
   as in your original code.
 */}
 
-            {/* Pricing Cards Sections */}
             {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
-            {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
-            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="8.  Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
+            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="8. Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
 
                 {/* HEADING + SUBTITLE */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -651,153 +649,165 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                     </div>
                 </div>
 
-                {/* SOLUTION TABS BAR */}
-                <div className="space-y-3 pt-4 border-t border-slate-100">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <input className={inputStyle} placeholder="Tabs Bar Title (e.g. Explore features by solutions:)" value={content.pricingCards?.tabsTitle || ''} onChange={e => updateField('content.pricingCards.tabsTitle', e.target.value)} />
-                        <input className={inputStyle} placeholder="Tabs Bar Subtitle (e.g. All tiers include every solution)" value={content.pricingCards?.tabsSubtitle || ''} onChange={e => updateField('content.pricingCards.tabsSubtitle', e.target.value)} />
-                    </div>
-
-                    <label className={labelStyle}>Solution Tabs (e.g. Outbound, Inbound, Data Enrichment...)</label>
-                    <div className="space-y-2">
-                        {(content.pricingCards?.solutionTabs || []).map((tab, i) => (
-                            <div key={i} className="flex gap-2 items-center bg-slate-50 p-2 rounded-lg border border-slate-200">
-                                <input className="flex-1 p-2 bg-white border rounded text-xs font-bold" placeholder="Tab Label (e.g. Outbound)" value={tab.label || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${i}.label`, e.target.value)} />
-                                <input className="w-40 p-2 bg-white border rounded text-xs" placeholder="Icon Name (e.g. Megaphone)" value={tab.iconName || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${i}.iconName`, e.target.value)} />
-                                <input
-                                    className="w-32 p-2 bg-amber-50 border border-amber-200 rounded text-xs font-mono"
-                                    placeholder="Link ID (e.g. inbound)"
-                                    title="Must match a Feature Group's Link ID below so 'Compare all plans' opens the right section. Also used as the key for this tab's per-card feature list."
-                                    value={tab.id || ''}
-                                    onChange={e => updateField(`content.pricingCards.solutionTabs.${i}.id`, e.target.value)}
-                                />
-                                <button type="button" onClick={() => updateField('content.pricingCards.solutionTabs', (prev) => prev.filter((_, idx) => idx !== i))}><X size={16} className="text-rose-400" /></button>
-                            </div>
-                        ))}
-                        <button type="button" onClick={() => updateField('content.pricingCards.solutionTabs', (prev) => [...(prev || []), { label: "", iconName: "", id: "" }])} className="text-[10px] font-bold text-sky-600">+ Add Solution Tab</button>
-                    </div>
+                {/* TABS BAR TITLE/SUBTITLE */}
+                <div className="grid md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                    <input className={inputStyle} placeholder="Tabs Bar Title (e.g. Explore features by solutions:)" value={content.pricingCards?.tabsTitle || ''} onChange={e => updateField('content.pricingCards.tabsTitle', e.target.value)} />
+                    <input className={inputStyle} placeholder="Tabs Bar Subtitle (e.g. All tiers include every solution)" value={content.pricingCards?.tabsSubtitle || ''} onChange={e => updateField('content.pricingCards.tabsSubtitle', e.target.value)} />
                 </div>
 
-                {/* PLAN CARDS */}
+                {/* SOLUTION TABS — har tab ka apna independent Plan Cards set */}
                 <div className="space-y-6 pt-6 border-t border-slate-100">
-                    <label className={labelStyle}>Plan Cards</label>
-                    {(content.pricingCards?.plans || []).map((plan, i) => {
-                        const tabs = content.pricingCards?.solutionTabs || [];
+                    <label className={labelStyle}>Solution Tabs — har tab ke apne Plan Cards</label>
+
+                    {(content.pricingCards?.solutionTabs || []).map((tab, ti) => {
+                        const tabPlans = tab.plans || [];
                         return (
-                            <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
-                                <button type="button" onClick={() => updateField('content.pricingCards.plans', (prev) => prev.filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg"><X size={18} /></button>
+                            <div key={ti} className="bg-slate-50 p-6 rounded-2xl border-2 border-sky-100 relative space-y-5">
+                                <button
+                                    type="button"
+                                    onClick={() => updateField('content.pricingCards.solutionTabs', (prev) => (prev || []).filter((_, idx) => idx !== ti))}
+                                    className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg"
+                                >
+                                    <X size={18} />
+                                </button>
 
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <input className={inputStyle} placeholder="Plan Name (e.g. Professional)" value={plan.name || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.name`, e.target.value)} />
-                                    <input className={inputStyle} placeholder="Badge (e.g. MOST POPULAR)" value={plan.badge || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.badge`, e.target.value)} />
+                                {/* Tab meta */}
+                                <div className="grid md:grid-cols-3 gap-3">
+                                    <input className="p-2 bg-white border rounded text-xs font-bold" placeholder="Tab Label (e.g. Outbound)" value={tab.label || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.label`, e.target.value)} />
+                                    <input className="p-2 bg-white border rounded text-xs" placeholder="Icon Name (e.g. Megaphone)" value={tab.iconName || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.iconName`, e.target.value)} />
+                                    <input
+                                        className="p-2 bg-amber-50 border border-amber-200 rounded text-xs font-mono"
+                                        placeholder="Link ID (e.g. inbound)"
+                                        value={tab.id || ''}
+                                        onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.id`, e.target.value)}
+                                    />
                                 </div>
 
-                                <textarea className={inputStyle} rows={2} placeholder="Short Description (e.g. Optimize your sales process...)" value={plan.description || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.description`, e.target.value)} />
-
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <input className={inputStyle} placeholder="Price (e.g. $79)" value={plan.price || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.price`, e.target.value)} />
-                                    <input className={inputStyle} placeholder="Price Note (e.g. Per seat per month, billed annually)" value={plan.priceNote || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.priceNote`, e.target.value)} />
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <input className={inputStyle} placeholder="Credits (e.g. 48,000 credits)" value={plan.credits || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.credits`, e.target.value)} />
-                                    <input className={inputStyle} placeholder="Credits Note" value={plan.creditsNote || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.creditsNote`, e.target.value)} />
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <input className={inputStyle} placeholder="Learn More Link" value={plan.learnMoreLink || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.learnMoreLink`, e.target.value)} />
-                                    <input className={inputStyle} placeholder="Trial Text (e.g. Start 14-day trial)" value={plan.trialText || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.trialText`, e.target.value)} />
-                                </div>
-
-                                {/* Primary + Secondary Buttons */}
-                                <div className="grid md:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-slate-100">
-                                    <div className="space-y-2">
-                                        <label className={labelStyle}>Primary Button</label>
-                                        <input className={inputStyle} placeholder="Label (e.g. Buy now / Get started)" value={plan.primaryButton?.label || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.primaryButton.label`, e.target.value)} />
-                                        <input className={inputStyle} placeholder="Link" value={plan.primaryButton?.link || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.primaryButton.link`, e.target.value)} />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className={labelStyle}>Secondary Button (optional, e.g. Talk to Sales)</label>
-                                        <input className={inputStyle} placeholder="Label" value={plan.secondaryButton?.label || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.secondaryButton.label`, e.target.value)} />
-                                        <input className={inputStyle} placeholder="Link" value={plan.secondaryButton?.link || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.secondaryButton.link`, e.target.value)} />
-                                    </div>
-                                </div>
-
-                                <label className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                                    <input type="checkbox" checked={!!plan.highlighted} onChange={e => updateField(`content.pricingCards.plans.${i}.highlighted`, e.target.checked)} />
-                                    Highlighted Card (blue border, like Professional)
+                                {/* Visibility toggle */}
+                                <label className="flex items-center gap-2 text-xs font-bold text-slate-600 bg-white p-3 rounded-lg border border-slate-200 w-fit">
+                                    <input
+                                        type="checkbox"
+                                        checked={tab.visible !== false}
+                                        onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.visible`, e.target.checked)}
+                                    />
+                                    Show this tab on frontend
                                 </label>
 
-                                {/* FEATURE LIST — now split PER SOLUTION TAB, keyed by tab.id */}
-                                <div className="space-y-4 bg-white p-4 rounded-xl border border-slate-100">
-                                    <label className={labelStyle}>Feature List (checkmarks) — different per Solution Tab</label>
+                                {/* IS TAB KE APNE PLAN CARDS */}
+                                <div className="space-y-4 bg-white p-4 rounded-xl border border-slate-200">
+                                    <label className={labelStyle}>Plan Cards for "{tab.label || `Tab ${ti + 1}`}"</label>
 
-                                    {tabs.length === 0 && (
-                                        <p className="text-[11px] text-amber-600 italic">
-                                            Add at least one Solution Tab above first — feature lists are grouped by tab so this card can show different checkmarks per tab.
-                                        </p>
-                                    )}
+                                    {tabPlans.map((plan, pi) => (
+                                        <div key={pi} className="bg-slate-50 p-5 rounded-xl border border-slate-200 relative space-y-3">
+                                            <button
+                                                type="button"
+                                                onClick={() => updateField(`content.pricingCards.solutionTabs.${ti}.plans`, (prev) => (prev || []).filter((_, idx) => idx !== pi))}
+                                                className="absolute top-3 right-3 text-rose-500 hover:bg-rose-50 p-1 rounded-lg"
+                                            >
+                                                <X size={16} />
+                                            </button>
 
-                                    {tabs.map((tab, ti) => {
-                                        const tabKey = tab.id || `tab_${ti}`;
-                                        const tabFeatures = plan.featuresByTab?.[tabKey] || [];
-                                        return (
-                                            <div key={tabKey} className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-[10px] font-bold text-sky-700 uppercase tracking-wide">
-                                                        {tab.label || `Tab ${ti + 1}`} {!tab.id && <span className="text-rose-400 normal-case font-normal">(set a Link ID above)</span>}
-                                                    </span>
+                                            <div className="grid md:grid-cols-2 gap-3">
+                                                <input className={inputStyle} placeholder="Plan Name (e.g. Professional)" value={plan.name || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.name`, e.target.value)} />
+                                                <input className={inputStyle} placeholder="Badge (e.g. MOST POPULAR)" value={plan.badge || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.badge`, e.target.value)} />
+                                            </div>
+
+                                            <textarea className={inputStyle} rows={2} placeholder="Short Description" value={plan.description || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.description`, e.target.value)} />
+
+                                            <div className="grid md:grid-cols-2 gap-3">
+                                                <input className={inputStyle} placeholder="Price (e.g. $79)" value={plan.price || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.price`, e.target.value)} />
+                                                <input className={inputStyle} placeholder="Price Note" value={plan.priceNote || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.priceNote`, e.target.value)} />
+                                            </div>
+
+                                            <div className="grid md:grid-cols-2 gap-3">
+                                                <input className={inputStyle} placeholder="Credits (e.g. 48,000 credits)" value={plan.credits || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.credits`, e.target.value)} />
+                                                <input className={inputStyle} placeholder="Credits Note" value={plan.creditsNote || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.creditsNote`, e.target.value)} />
+                                            </div>
+
+                                            <div className="grid md:grid-cols-2 gap-3">
+                                                <input className={inputStyle} placeholder="Learn More Link" value={plan.learnMoreLink || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.learnMoreLink`, e.target.value)} />
+                                                <input className={inputStyle} placeholder="Trial Text" value={plan.trialText || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.trialText`, e.target.value)} />
+                                            </div>
+
+                                            <div className="grid md:grid-cols-2 gap-4 bg-white p-3 rounded-xl border border-slate-100">
+                                                <div className="space-y-2">
+                                                    <label className={labelStyle}>Primary Button</label>
+                                                    <input className={inputStyle} placeholder="Label" value={plan.primaryButton?.label || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.primaryButton.label`, e.target.value)} />
+                                                    <input className={inputStyle} placeholder="Link" value={plan.primaryButton?.link || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.primaryButton.link`, e.target.value)} />
                                                 </div>
+                                                <div className="space-y-2">
+                                                    <label className={labelStyle}>Secondary Button (optional)</label>
+                                                    <input className={inputStyle} placeholder="Label" value={plan.secondaryButton?.label || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.secondaryButton.label`, e.target.value)} />
+                                                    <input className={inputStyle} placeholder="Link" value={plan.secondaryButton?.link || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.secondaryButton.link`, e.target.value)} />
+                                                </div>
+                                            </div>
 
-                                                {tabFeatures.map((feat, j) => (
-                                                    <div key={j} className="flex gap-2 items-center">
+                                            <label className="flex items-center gap-2 text-xs font-bold text-slate-500">
+                                                <input type="checkbox" checked={!!plan.highlighted} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.highlighted`, e.target.checked)} />
+                                                Highlighted Card
+                                            </label>
+
+                                            {/* FEATURES — ab simple hai, ab per-tab feature keying ki zaroorat nahi */}
+                                            <div className="space-y-2 bg-white p-3 rounded-lg border border-slate-100">
+                                                <label className={labelStyle}>Feature List (checkmarks)</label>
+                                                {(plan.features || []).map((feat, fi) => (
+                                                    <div key={fi} className="flex gap-2 items-center">
                                                         <input
-                                                            className="flex-1 p-2 bg-white border border-slate-100 rounded text-xs"
+                                                            className="flex-1 p-2 bg-slate-50 border border-slate-100 rounded text-xs"
                                                             placeholder="Feature text"
                                                             value={feat.text || ''}
-                                                            onChange={e => updateField(`content.pricingCards.plans.${i}.featuresByTab.${tabKey}.${j}.text`, e.target.value)}
+                                                            onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.features.${fi}.text`, e.target.value)}
                                                         />
                                                         <input
-                                                            className="w-40 p-2 bg-white border border-slate-100 rounded text-xs"
+                                                            className="w-40 p-2 bg-slate-50 border border-slate-100 rounded text-xs"
                                                             placeholder="Badge (optional)"
                                                             value={feat.badge || ''}
-                                                            onChange={e => updateField(`content.pricingCards.plans.${i}.featuresByTab.${tabKey}.${j}.badge`, e.target.value)}
+                                                            onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.features.${fi}.badge`, e.target.value)}
                                                         />
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => updateField(`content.pricingCards.plans.${i}.featuresByTab.${tabKey}`, (prev) => (prev || []).filter((_, idx) => idx !== j))}
-                                                        >
+                                                        <button type="button" onClick={() => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.features`, (prev) => (prev || []).filter((_, idx) => idx !== fi))}>
                                                             <X size={14} className="text-slate-300" />
                                                         </button>
                                                     </div>
                                                 ))}
-
                                                 <button
                                                     type="button"
-                                                    onClick={() => updateField(`content.pricingCards.plans.${i}.featuresByTab.${tabKey}`, (prev) => [...(prev || []), { text: "", badge: "" }])}
+                                                    onClick={() => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.features`, (prev) => [...(prev || []), { text: "", badge: "" }])}
                                                     className="text-[10px] font-bold text-sky-600"
                                                 >
-                                                    + Add Feature Line for {tab.label || `Tab ${ti + 1}`}
+                                                    + Add Feature Line
                                                 </button>
                                             </div>
-                                        );
-                                    })}
-                                </div>
 
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>"Compare all plans" Link Text (optional, usually only on Free plan)</label>
-                                    <input className={inputStyle} placeholder="Compare all plans" value={plan.compareAllText || ''} onChange={e => updateField(`content.pricingCards.plans.${i}.compareAllText`, e.target.value)} />
+                                            <div className="space-y-1">
+                                                <label className={labelStyle}>"Compare all plans" Link Text (optional)</label>
+                                                <input className={inputStyle} placeholder="Compare all plans" value={plan.compareAllText || ''} onChange={e => updateField(`content.pricingCards.solutionTabs.${ti}.plans.${pi}.compareAllText`, e.target.value)} />
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    <button
+                                        type="button"
+                                        onClick={() => updateField(`content.pricingCards.solutionTabs.${ti}.plans`, (prev) => [...(prev || []), {
+                                            name: "", badge: "", description: "", price: "", priceNote: "", credits: "", creditsNote: "",
+                                            learnMoreLink: "", trialText: "", highlighted: false,
+                                            primaryButton: { label: "", link: "" }, secondaryButton: { label: "", link: "" },
+                                            features: [], compareAllText: ""
+                                        }])}
+                                        className="w-full py-3 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold text-sm"
+                                    >
+                                        <Plus size={16} /> Add Plan Card to "{tab.label || `Tab ${ti + 1}`}"
+                                    </button>
                                 </div>
                             </div>
                         );
                     })}
-                    <button type="button" onClick={() => updateField('content.pricingCards.plans', (prev) => [...(prev || []), {
-                        name: "", badge: "", description: "", price: "", priceNote: "", credits: "", creditsNote: "",
-                        learnMoreLink: "", trialText: "", highlighted: false,
-                        primaryButton: { label: "", link: "" }, secondaryButton: { label: "", link: "" },
-                        featuresByTab: {}, compareAllText: ""
-                    }])} className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold">
-                        <Plus size={20} /> Add Plan Card
+
+                    <button
+                        type="button"
+                        onClick={() => updateField('content.pricingCards.solutionTabs', (prev) => [...(prev || []), { label: "", iconName: "", id: "", visible: true, plans: [] }])}
+                        className="w-full py-4 border-2 border-dashed border-sky-200 rounded-2xl flex items-center justify-center gap-2 text-sky-600 hover:bg-sky-50 transition-all font-bold"
+                    >
+                        <Plus size={20} /> Add Solution Tab
                     </button>
                 </div>
             </SectionWrapper>

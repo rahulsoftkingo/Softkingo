@@ -16,7 +16,8 @@ export default function FeatureSection({
     bgImage,
     imagePosition = 'right',
     branding,
-    isDark = false
+    isDark = false,
+    client,
 }) {
     const { primaryColor, secondaryColor, accentColor, colors } = branding;
     const [activeFeat, setActiveFeat] = useState(0);
@@ -83,6 +84,33 @@ export default function FeatureSection({
                                 ))}
                             </div>
                         )}
+                        {/* {title === "Project Overview" && client && (
+                            <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                                <div className="flex items-center gap-4">
+                                    <Image
+                                        src={client.avatar}
+                                        alt={client.name}
+                                        width={60}
+                                        height={60}
+                                        className="rounded-full object-cover"
+                                    />
+
+                                    <div>
+                                        <h4 className="text-lg font-bold text-slate-900">
+                                            {client.name}
+                                        </h4>
+
+                                        <p className="text-sm text-slate-500">
+                                            {client.designation}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <p className="mt-4 text-slate-600 italic leading-relaxed">
+                                    "{client.review}"
+                                </p>
+                            </div>
+                        )} */}
                         {listItems && listItems.length > 0 && (
                             <div className="lg:max-h-[550px] overflow-y-auto pr-4 custom-scrollbar-stylish scroll-smooth">
                                 <ul className="space-y-4">

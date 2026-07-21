@@ -228,6 +228,7 @@ export default async function CaseStudyPage({ params }) {
           mockup={data.overview.mockup}
           branding={branding}
           imagePosition="right"
+          client={data.client}
         />
 
         <FeatureSection

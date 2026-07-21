@@ -335,7 +335,7 @@ const OurTeamClient = ({
                     </div>
 
                     {/* TEAM SECTION - now stacked BELOW achievements, on its own row */}
-                    <div className="flex flex-col lg:flex-row items-center gap-8 mt-16">
+                    <div className="flex flex-col lg:flex-row items-start gap-8 mt-16">
                         {/* LEFT: Ribbon Container */}
                         <div className="relative inline-block mb-4 md:mb-0">
                             <div className="bg-gradient-to-r from-cyan-500 to-sky-600 text-white py-6 pl-8 pr-20 rounded-r-full shadow-xl relative z-10 transform -skew-x-6 origin-bottom-left">
@@ -371,10 +371,10 @@ const OurTeamClient = ({
                                 {marqueeTeam.map((member, i) => (
                                     <div
                                         key={i}
-                                        className="w-full max-w-[330px] bg-[#F7F7F7] border border-sky-500 rounded-[36px] p-6 shadow-md hover:shadow-xl transition-all duration-300 bg-white shadow-md"
+                                        className="w-full max-w-[330px] bg-[#F7F7F7] border border-sky-500 rounded-[36px] p-6 shadow-md hover:shadow-xl transition-all duration-300  shadow-md bg-slate-100"
                                     >
                                         {/* Image */}
-                                        <div className="relative w-full aspect-[4/4] rounded-[28px] overflow-hidden bg-gray-100">
+                                        <div className="relative w-full aspect-[4/4] rounded-[28px] overflow-hidden bg-slate-300">
                                             <Image
                                                 src={member.image || "/images/placeholder-user.jpg"}
                                                 alt={member.name}
@@ -572,7 +572,7 @@ const OurTeamClient = ({
                     <CommonTitle
                         align="center"
                         // pill="Culture"
-                        title="Life at Softkingo"
+                        title="Life @ Softkingo"
                         subtitle="We believe that happy teams build better products. Get a glimpse of our culture."
                     />
 
