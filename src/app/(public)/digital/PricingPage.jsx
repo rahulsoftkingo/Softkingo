@@ -17,6 +17,7 @@ import {
   Layers,
 } from "lucide-react";
 import CommonTitle from '@/components/ui/CommonTitle';
+import WorkflowAddOns from "./WorkFlowAddons";
 
 /* -------------------------------------------------------------------------
  * Icons
@@ -264,6 +265,7 @@ function FeatureRow({ feature, groupId, index, plans, openFeatures, toggleFeatur
 export default function PricingPage({
   pricing = DEFAULT_PRICING,
   pricingCards = DEFAULT_PRICING_CARDS,
+  data
 }) {
 
   function getDiscountPercent(annualBadge) {
@@ -338,11 +340,15 @@ export default function PricingPage({
   }
 
   const discountPercent = getDiscountPercent(safePricingCards.annualBadge);
+  
 
   // If there are no visible tabs at all, don't render the pricing section.
   if (visibleSolutionTabs.length === 0) {
     return null;
   }
+
+  const referenceTab = rawSolutionTabs.find((t) => t.id === pricing?.referenceTabId) || visibleSolutionTabs[0];
+const comparePlans = Array.isArray(referenceTab?.plans) ? referenceTab.plans : [];
 
   return (
     <div className="bg-white">
@@ -520,6 +526,9 @@ export default function PricingPage({
           </p>
         </div>
       </section>
+
+
+      <WorkflowAddOns  data={data} />
 
       {/* ============================= COMPARE ============================= */}
       <section ref={compareRef} className="scroll-mt-6 bg-white px-4 py-8 sm:px-6 lg:px-8">

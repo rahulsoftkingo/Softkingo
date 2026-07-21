@@ -87,9 +87,9 @@ export default function DigitalComponent({ content,section }) {
 
         <CuttingEdgeTech data={content.tech} />
 
-        <PricingPage pricing={content.pricing} pricingCards={content.pricingCards} />
+        <PricingPage data={content.workflowAddOns} pricing={content.pricing} pricingCards={content.pricingCards} />
         
-        <WorkflowAddOns data={content.workflowAddOns}  />
+        
 
         <ConsultationCTA
           title={content.consultation?.title}
