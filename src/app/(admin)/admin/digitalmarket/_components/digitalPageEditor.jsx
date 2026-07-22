@@ -539,7 +539,8 @@ export default function DigitalPageEditor({ data, onBack }) {
             { id: 'pricingCards', label: '8. Pricing Cards Tabs', icon: CheckCircle2 },
             { id: 'pricing', label: '9. Pricing / Compare Plans', icon: DollarSign },
             { id: 'workflowAddOns', label: '10. Workflow Add-Ons', icon: Puzzle },
-            { id: 'faq', label: '11. FAQ Section', icon: HelpCircle }
+            { id: 'faq', label: '11. FAQ Section', icon: HelpCircle },
+            { id: 'tech', label: '9. Tech Stack', icon: HelpCircle }
         ]
     };
 

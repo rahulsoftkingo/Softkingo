@@ -246,6 +246,28 @@ model Ebook {
   @@map("ebook")
 }
 
+model Podcast {
+  id             String    @id @default(cuid())
+  title          String
+  slug           String    @unique
+  episodeNumber  Int?
+  hostName       String?
+  hostRole       String?
+  guestName      String?
+  coverImage     String?
+  category       String?
+  description    String?
+  durationText   String?
+  summary        String?
+  segmentsJson   String?
+  audioUrl       String?
+  status         String    @default("draft")
+  publishedAt    DateTime?
+  playCount      Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
 model ContentItem {
   id             Int       @id @default(autoincrement())
   type           String

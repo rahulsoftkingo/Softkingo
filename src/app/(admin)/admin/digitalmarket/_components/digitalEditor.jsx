@@ -400,7 +400,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
             {/* 9. TECH STACK / TECHNOLOGIES USED */}
-            {/* <SectionWrapper id="tech" icon={Code} title="9. Tech Stack" activeSections={activeSections}>
+            <SectionWrapper id="tech" icon={Code} title="9. Tech Stack" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.tech?.subtitle || ''} onChange={e => updateField('content.tech.subtitle', e.target.value)} />
@@ -426,7 +426,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                     ))}
                     <button type="button" onClick={() => updateField('content.tech.items', (prev) => [...(prev || []), { name: "", category: "", description: "", icon: "" }])} className="text-sm font-bold text-sky-600">+ Add Technology</button>
                 </div>
-            </SectionWrapper> */}
+            </SectionWrapper>
 
             {/* 4. Industries with we works */}
             <SectionWrapper
