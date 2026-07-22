@@ -169,7 +169,7 @@ export default function PodcastForm({ mode, podcast }) {
         throw new Error(data.error || "Failed to save");
       }
 
-      router.push("/admin/podcasts");
+      router.push("/admin/podcast");
       router.refresh();
     } catch (err) {
       setError(err.message);

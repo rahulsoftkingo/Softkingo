@@ -11,7 +11,7 @@ async function deleteEpisode(formData) {
   const id = formData.get("id");
   if (!id) return;
   await prisma.podcast.delete({ where: { id } });
-  revalidatePath("/admin/podcasts");
+  revalidatePath("/admin/podcast");
 }
 
 export default async function AdminPodcastsListPage() {
@@ -73,7 +73,7 @@ export default async function AdminPodcastsListPage() {
               </div>
             </div>
             <Link
-              href="/admin/podcasts/new"
+              href="/admin/podcast/new"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-violet-500/25"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -240,7 +240,7 @@ export default async function AdminPodcastsListPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Link
-                        href={`/podcasts/${episode.slug}`}
+                        href={`/podcast/${episode.slug}`}
                         target="_blank"
                         className="p-2 text-slate-400 hover:text-slate-600 transition-colors duration-200"
                         title="Preview"
@@ -251,7 +251,7 @@ export default async function AdminPodcastsListPage() {
                         </svg>
                       </Link>
                       <Link
-                        href={`/admin/podcasts/${episode.id}`}
+                        href={`/admin/podcast/${episode.id}`}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors duration-200"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,7 +289,7 @@ export default async function AdminPodcastsListPage() {
               Get started by publishing your first podcast episode to share with your audience.
             </p>
             <Link
-              href="/admin/podcasts/new"
+              href="/admin/podcast/new"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white font-semibold rounded-xl transition-all duration-200"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

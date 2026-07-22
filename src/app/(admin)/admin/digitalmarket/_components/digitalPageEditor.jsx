@@ -535,12 +535,13 @@ export default function DigitalPageEditor({ data, onBack }) {
             { id: 'services', label: '4. Service Categories', icon: Layout },
             { id: 'servicesList', label: '5. Extensive Services', icon: Briefcase },
             { id: 'industries', label: '6. Industries We Serve', icon: Layers },
-            { id: 'features', label: '7. Core Features Grid', icon: Database },          
-            { id: 'pricingCards', label: '8. Pricing Cards Tabs', icon: CheckCircle2 },
-            { id: 'pricing', label: '9. Pricing / Compare Plans', icon: DollarSign },
-            { id: 'workflowAddOns', label: '10. Workflow Add-Ons', icon: Puzzle },
-            { id: 'faq', label: '11. FAQ Section', icon: HelpCircle },
-            { id: 'tech', label: '9. Tech Stack', icon: HelpCircle }
+            { id: 'features', label: '7. Core Features Grid', icon: Database },  
+            { id: 'tech', label: '8. Tech Stack', icon: HelpCircle },        
+            { id: 'pricingCards', label: '9. Pricing Cards Tabs', icon: CheckCircle2 },
+            { id: 'pricing', label: '10. Pricing / Compare Plans', icon: DollarSign },
+            { id: 'workflowAddOns', label: '11. Workflow Add-Ons', icon: Puzzle },
+            { id: 'faq', label: '12. FAQ Section', icon: HelpCircle },
+            
         ]
     };
 

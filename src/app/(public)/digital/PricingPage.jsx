@@ -18,6 +18,15 @@ import {
 } from "lucide-react";
 import CommonTitle from '@/components/ui/CommonTitle';
 import WorkflowAddOns from "./WorkFlowAddons";
+import WhyChooseUs from "./WhyChooseUs";
+import SeoIndustries from "./SeoIndustries"
+import SeoServicesSlider from "./SeoServicesSlider"
+import CuttingEdgeTech from "./CuttingEdgeTech";
+import AppFeatures from "./AppFeatures"
+
+
+
+
 
 /* -------------------------------------------------------------------------
  * Icons
@@ -265,7 +274,11 @@ function FeatureRow({ feature, groupId, index, plans, openFeatures, toggleFeatur
 export default function PricingPage({
   pricing = DEFAULT_PRICING,
   pricingCards = DEFAULT_PRICING_CARDS,
-  data
+  data,
+  whychooseData,
+  industries,
+  features,
+  tech
 }) {
 
   function getDiscountPercent(annualBadge) {
@@ -280,27 +293,40 @@ export default function PricingPage({
     featureGroups: Array.isArray(pricing?.featureGroups) ? pricing.featureGroups : DEFAULT_PRICING.featureGroups,
   };
 
-  const rawSolutionTabs = Array.isArray(pricingCards?.solutionTabs)
+  // ALL tabs from the backend, regardless of their `visible` flag.
+  // This is now the single source of truth used for cards/compare data,
+  // so data never disappears even if every tab is marked invisible.
+  const rawSolutionTabs = Array.isArray(pricingCards?.solutionTabs) && pricingCards.solutionTabs.length > 0
     ? pricingCards.solutionTabs
     : DEFAULT_PRICING_CARDS.solutionTabs;
 
-  // NEW: only tabs explicitly marked visible (or missing the flag, treated as visible)
-  // are shown on the frontend. Tabs with visible === false are fully hidden.
+  // Only used to decide which tabs appear as buttons in the switcher.
+  // Tabs with visible === false are excluded from the switcher only,
+  // NOT from the data used for cards/compare.
   const visibleSolutionTabs = rawSolutionTabs.filter((t) => t.visible !== false);
 
   const safePricingCards = {
     ...DEFAULT_PRICING_CARDS,
     ...pricingCards,
-    solutionTabs: visibleSolutionTabs,
+    // solutionTabs here intentionally stays as the FULL list (raw), so that
+    // activeTab / activePlans always have data to fall back on.
+    solutionTabs: rawSolutionTabs,
   };
 
   const [billing, setBilling] = useState("annual");
   const [currency, setCurrency] = useState("usd");
-  const [activeTabId, setActiveTabId] = useState(safePricingCards.solutionTabs[0]?.id);
+  const [activeTabId, setActiveTabId] = useState(rawSolutionTabs[0]?.id);
 
-  // NEW: plans now come from the currently active tab, not a global array.
+  // Plans come from the currently active tab (searched across ALL tabs, visible or not).
+  // If nothing matches activeTabId, fall back to the first tab so a plan/price
+  // card always renders — data never disappears.
   const activeTab = safePricingCards.solutionTabs.find((t) => t.id === activeTabId) || safePricingCards.solutionTabs[0];
   const activePlans = Array.isArray(activeTab?.plans) ? activeTab.plans : [];
+
+  // Switcher (tab buttons) only shows when there's at least one VISIBLE tab.
+  // If every tab is marked invisible, the switcher hides completely,
+  // but cards/compare table above keep rendering from the fallback tab.
+  const showTabSwitcher = visibleSolutionTabs.length > 0;
 
   const [openSections, setOpenSections] = useState(() => {
     const initial = {};
@@ -332,23 +358,23 @@ export default function PricingPage({
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const node = sectionRefs.current[targetGroupId] || compareRef.current;
-        node?.scrollIntoView({ behavior: "smooth", block: "start" });
+        compareRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         setTimeout(() => setJustJumped(null), 1400);
       });
     });
   }
 
   const discountPercent = getDiscountPercent(safePricingCards.annualBadge);
-  
 
-  // If there are no visible tabs at all, don't render the pricing section.
-  if (visibleSolutionTabs.length === 0) {
+  // Only bail out if there are literally NO tabs at all in the data
+  // (not just "no visible ones") — this keeps the whole pricing section
+  // rendering even when every tab is set to invisible.
+  if (rawSolutionTabs.length === 0) {
     return null;
   }
 
-  const referenceTab = rawSolutionTabs.find((t) => t.id === pricing?.referenceTabId) || visibleSolutionTabs[0];
-const comparePlans = Array.isArray(referenceTab?.plans) ? referenceTab.plans : [];
+  const referenceTab = rawSolutionTabs.find((t) => t.id === pricing?.referenceTabId) || rawSolutionTabs[0];
+  const comparePlans = Array.isArray(referenceTab?.plans) ? referenceTab.plans : [];
 
   return (
     <div className="bg-white">
@@ -407,15 +433,18 @@ const comparePlans = Array.isArray(referenceTab?.plans) ? referenceTab.plans : [
             </div>
           </div>
 
-          {/* Solution Tabs — only visible ones render here */}
-          {activeTabId && (
+          {/* Solution Tabs — sirf tab switcher dikhao jab kam se kam ek
+              tab "visible" ho. Agar SAARE tabs invisible/inactive hain,
+              switcher poora hide, lekin neeche plan cards / compare table
+              fallback tab ke data se bilkul normal render hote rahte hain. */}
+          {showTabSwitcher && (
             <div className="mt-10 rounded-xl border border-slate-200 p-4">
               <p className="text-xs text-slate-500">
                 {safePricingCards.tabsTitle}
                 <span className="block text-[11px] text-slate-400">{safePricingCards.tabsSubtitle}</span>
               </p>
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {safePricingCards.solutionTabs.map((tab) => {
+                {visibleSolutionTabs.map((tab) => {
                   const Icon = getIcon(tab.iconName);
                   const active = activeTabId === tab.id;
                   return (
@@ -424,8 +453,8 @@ const comparePlans = Array.isArray(referenceTab?.plans) ? referenceTab.plans : [
                       type="button"
                       onClick={() => setActiveTabId(tab.id)}
                       className={`flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors cursor-pointer ${active
-                          ? "border-yellow-300 bg-yellow-50 text-slate-900"
-                          : "border-slate-100 text-slate-500 hover:text-slate-900"
+                        ? "border-yellow-300 bg-yellow-50 text-slate-900"
+                        : "border-slate-100 text-slate-500 hover:text-slate-900"
                         }`}
                     >
                       <Icon className="h-4 w-4" />
@@ -528,7 +557,13 @@ const comparePlans = Array.isArray(referenceTab?.plans) ? referenceTab.plans : [
       </section>
 
 
-      <WorkflowAddOns  data={data} />
+      <WorkflowAddOns data={data} />
+
+      <WhyChooseUs data={whychooseData} />
+      <SeoIndustries data={industries} />
+      <SeoServicesSlider data={features} />
+      <CuttingEdgeTech data={tech} />
+      <AppFeatures data={features} />
 
       {/* ============================= COMPARE ============================= */}
       <section ref={compareRef} className="scroll-mt-6 bg-white px-4 py-8 sm:px-6 lg:px-8">

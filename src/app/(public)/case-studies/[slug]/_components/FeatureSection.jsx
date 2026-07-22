@@ -63,7 +63,7 @@ export default function FeatureSection({
                                 {description}
                             </p>
                         )}
-                        {title === "Project Overview" && colors?.length > 0 && (
+                        {/* {title === "Project Overview" && colors?.length > 0 && (
                             <div className="flex flex-wrap gap-6 pt-6">
                                 {colors.map((color, index) => (
                                     <div key={index} className="flex flex-col items-center">
@@ -83,7 +83,7 @@ export default function FeatureSection({
                                     </div>
                                 ))}
                             </div>
-                        )}
+                        )} */}
                         {/* {title === "Project Overview" && client && (
                             <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
                                 <div className="flex items-center gap-4">

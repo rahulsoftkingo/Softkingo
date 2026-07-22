@@ -80,7 +80,7 @@ export async function POST(req) {
     }
 
     return NextResponse.json(
-      { error: "Something went wrong while creating the episode" },
+      { error: "Something went wrong while creating the episode" ,err},
       { status: 500 }
     );
   }

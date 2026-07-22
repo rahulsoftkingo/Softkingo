@@ -399,35 +399,6 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
 
-            {/* 9. TECH STACK / TECHNOLOGIES USED */}
-            <SectionWrapper id="tech" icon={Code} title="9. Tech Stack" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.tech?.subtitle || ''} onChange={e => updateField('content.tech.subtitle', e.target.value)} />
-                </div>
-                <div className="space-y-4">
-                    {(content.tech?.items || []).map((item, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
-                            <button type="button" onClick={() => updateField('content.tech.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
-
-                            <div className="grid md:grid-cols-2 gap-3 mb-2">
-                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Technology Name (e.g. React)" value={item.name || ''} onChange={e => updateField(`content.tech.items.${i}.name`, e.target.value)} />
-                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Category (e.g. Frontend)" value={item.category || ''} onChange={e => updateField(`content.tech.items.${i}.category`, e.target.value)} />
-                            </div>
-
-                            <textarea className="w-full p-2 bg-white border rounded text-sm mb-3" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.tech.items.${i}.description`, e.target.value)} />
-
-                            <MediaInput
-                                label="Technology Icon / Logo"
-                                value={item.icon}
-                                path={`content.tech.items.${i}.icon`}
-                            />
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.tech.items', (prev) => [...(prev || []), { name: "", category: "", description: "", icon: "" }])} className="text-sm font-bold text-sky-600">+ Add Technology</button>
-                </div>
-            </SectionWrapper>
-
             {/* 4. Industries with we works */}
             <SectionWrapper
                 id="industries"
@@ -611,9 +582,36 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
   DollarSign, X, Plus) are already available in this file's scope, exactly
   as in your original code.
 */}
+               {/* 9. TECH STACK / TECHNOLOGIES USED */}
+            <SectionWrapper id="tech" icon={Code} title="8. Tech Stack" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Section Subtitle" value={content.tech?.subtitle || ''} onChange={e => updateField('content.tech.subtitle', e.target.value)} />
+                </div>
+                <div className="space-y-4">
+                    {(content.tech?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button type="button" onClick={() => updateField('content.tech.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
 
+                            <div className="grid md:grid-cols-2 gap-3 mb-2">
+                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Technology Name (e.g. React)" value={item.name || ''} onChange={e => updateField(`content.tech.items.${i}.name`, e.target.value)} />
+                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Category (e.g. Frontend)" value={item.category || ''} onChange={e => updateField(`content.tech.items.${i}.category`, e.target.value)} />
+                            </div>
+
+                            <textarea className="w-full p-2 bg-white border rounded text-sm mb-3" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.tech.items.${i}.description`, e.target.value)} />
+
+                            <MediaInput
+                                label="Technology Icon / Logo"
+                                value={item.icon}
+                                path={`content.tech.items.${i}.icon`}
+                            />
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.tech.items', (prev) => [...(prev || []), { name: "", category: "", description: "", icon: "" }])} className="text-sm font-bold text-sky-600">+ Add Technology</button>
+                </div>
+            </SectionWrapper>
             {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
-            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="8. Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
+            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="9. Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
 
                 {/* HEADING + SUBTITLE */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -814,7 +812,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
             {/* PRICING / COMPARE PLANS SECTION */}
             {/* PRICING / COMPARE PLANS SECTION */}
-            <SectionWrapper id="pricing" icon={DollarSign} title="9. Pricing / Compare Plans" activeSections={activeSections}>
+            <SectionWrapper id="pricing" icon={DollarSign} title="10. Pricing / Compare Plans" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Title (e.g. Compare)" value={content.pricing?.title || ''} onChange={e => updateField('content.pricing.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Highlight Text (e.g. Plans)" value={content.pricing?.highlight || ''} onChange={e => updateField('content.pricing.highlight', e.target.value)} />
@@ -1333,7 +1331,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper> */}
 
             {/* 18. WORKFLOW ADD-ONS SECTION */}
-            <SectionWrapper id="workflowAddOns" icon={Puzzle} title="10. Workflow Add-Ons" activeSections={activeSections}>
+            <SectionWrapper id="workflowAddOns" icon={Puzzle} title="11. Workflow Add-Ons" activeSections={activeSections}>
 
                 {/* HEADER TEXT */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -1528,7 +1526,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
             {/* 15. FAQ Section */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="11. FAQ Section" activeSections={activeSections}>
+            <SectionWrapper id="faq" icon={HelpCircle} title="12. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>

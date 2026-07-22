@@ -14,6 +14,7 @@ import WorkflowAddOns from "../../digital/WorkFlowAddons";
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
+import ComparePlansSection from "../../digital/ComparePlansSection";
 
 
 
@@ -77,20 +78,26 @@ export default function DigitalComponent({ content,section }) {
 
         <DigitalMarketingServices data={content.services} />
 
-        <WhyChooseUs data={content.servicesList} />
+        <PricingPage data={content.workflowAddOns} pricing={content.pricing} whychooseData={content.servicesList}
+         pricingCards={content.pricingCards} industries={content.industries} 
+         features={content.features}
+         tech={content.tech}
+         />
 
-        <SeoIndustries data={content.industries} />
-
-        <SeoServicesSlider data={content.features} />
-
-        <AppFeatures data={content.features} />
-
-        <CuttingEdgeTech data={content.tech} />
-
-        <PricingPage data={content.workflowAddOns} pricing={content.pricing} pricingCards={content.pricingCards} />
-        
         
 
+
+
+        {/* <SeoIndustries data={content.industries} /> */}
+
+        {/* <SeoServicesSlider data={features} /> */}
+
+        {/* <AppFeatures data={content.features} /> */}
+
+        {/* <CuttingEdgeTech data={content.tech} /> */}
+
+        
+        {/* <ComparePlansSection pricing={content.pricing}/> */}
         <ConsultationCTA
           title={content.consultation?.title}
           subtitle={content.consultation?.subtitle}
