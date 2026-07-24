@@ -535,13 +535,14 @@ export default function DigitalPageEditor({ data, onBack }) {
             { id: 'services', label: '4. Service Categories', icon: Layout },
             { id: 'servicesList', label: '5. Extensive Services', icon: Briefcase },
             { id: 'industries', label: '6. Industries We Serve', icon: Layers },
-            { id: 'features', label: '7. Core Features Grid', icon: Database },  
-            { id: 'tech', label: '8. Tech Stack', icon: HelpCircle },        
+            { id: 'features', label: '7. Core Features Grid', icon: Database },
+            { id: 'tech', label: '8. Tech Stack', icon: HelpCircle },
             { id: 'pricingCards', label: '9. Pricing Cards Tabs', icon: CheckCircle2 },
             { id: 'pricing', label: '10. Pricing / Compare Plans', icon: DollarSign },
             { id: 'workflowAddOns', label: '11. Workflow Add-Ons', icon: Puzzle },
             { id: 'faq', label: '12. FAQ Section', icon: HelpCircle },
-            
+            { id: 'feat', label: '13. Mobile Section', icon: Puzzle },
+
         ]
     };
 
@@ -568,6 +569,11 @@ export default function DigitalPageEditor({ data, onBack }) {
             });
         }
     }, [data]);
+
+
+    useEffect(() => {
+        console.log("Active Sections:", formData.activeSections);
+    }, [formData.activeSections]);
 
     const [loading, setLoading] = useState(false);
     const [portfolioCategories, setPortfolioCategories] = useState([]);
@@ -764,7 +770,7 @@ export default function DigitalPageEditor({ data, onBack }) {
                     <div className="space-y-2">
                         <label className="text-[10px] font-bold text-slate-400 block">SECTIONS</label>
                         {config.sections.map((section) => {
-                           const isActive = formData.activeSections?.includes(section.id);
+                            const isActive = formData.activeSections?.includes(section.id);
                             return (
                                 <button key={section.id} onClick={() => {
                                     setFormData(prev => {

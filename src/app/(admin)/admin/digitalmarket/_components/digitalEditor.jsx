@@ -5,9 +5,8 @@ import {
     Smartphone, Layout, Database, Code, Settings, Zap,
     BarChart3, ShieldCheck, DollarSign, Plus, X, Trash2,
     HelpCircle, Briefcase, MousePointerClick, Award, MessageSquare, Globe, Search,
-    Image as ImageIcon, TrendingUp, Layers, BookOpen, CheckCircle2, Puzzle, Share2
+    Image, TrendingUp, Layers, BookOpen, CheckCircle2, Puzzle, Share2
 } from "lucide-react";
-
 import { COMMON_TECH } from '../../solutions/_components/TechConstants';
 
 // --- 1. GLOBAL STYLES ---
@@ -582,7 +581,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
   DollarSign, X, Plus) are already available in this file's scope, exactly
   as in your original code.
 */}
-               {/* 9. TECH STACK / TECHNOLOGIES USED */}
+            {/* 9. TECH STACK / TECHNOLOGIES USED */}
             <SectionWrapper id="tech" icon={Code} title="8. Tech Stack" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
@@ -1307,6 +1306,105 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
 
+
+            {/* 17. BLOG SECTION */}
+            <SectionWrapper id="feat" icon={MessageSquare} title="Blog Section" activeSections={activeSections}>
+                {/* Core Fields: Title, Subtitle, Button Text, Button Link */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Title</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="e.g. Latest Insights & Blogs"
+                            value={content.blogTitle || ''}
+                            onChange={e => updateField('content.blogTitle', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Blog Section Subtitle</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Explore our latest thoughts, updates, and articles..."
+                            value={content.blogSubtitle || ''}
+                            onChange={e => updateField('content.blogSubtitle', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Button Text</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="e.g. View All Posts"
+                            value={content.blogButtonText || ''}
+                            onChange={e => updateField('content.blogButtonText', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Button URL / Link</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="e.g. /blog"
+                            value={content.blogButtonLink || ''}
+                            onChange={e => updateField('content.blogButtonLink', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                {/* Features Input List (Max 4 Items) */}
+                <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                        <label className={labelStyle}>
+                            Blog Features <span className="text-xs text-slate-400 font-normal">(Max 4)</span>
+                        </label>
+
+                        {(content.blogFeatures || []).length < 4 && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const currentFeatures = content.blogFeatures || [];
+                                    if (currentFeatures.length < 4) {
+                                        updateField('content.blogFeatures', [...currentFeatures, '']);
+                                    }
+                                }}
+                                className="text-xs font-semibold text-sky-600 hover:text-sky-700 hover:underline"
+                            >
+                                + Add Feature
+                            </button>
+                        )}
+                    </div>
+
+                    {(content.blogFeatures || []).map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                            <input
+                                className={inputStyle}
+                                placeholder={`Feature ${idx + 1}`}
+                                value={feature}
+                                onChange={e => {
+                                    const updated = [...(content.blogFeatures || [])];
+                                    updated[idx] = e.target.value;
+                                    updateField('content.blogFeatures', updated);
+                                }}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const updated = (content.blogFeatures || []).filter((_, i) => i !== idx);
+                                    updateField('content.blogFeatures', updated);
+                                }}
+                                className="p-2 text-rose-500 hover:bg-rose-50 rounded-md transition-colors text-xs font-semibold"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+
+                    {(!content.blogFeatures || content.blogFeatures.length === 0) && (
+                        <p className="text-xs text-slate-400 italic">No features added. Click "+ Add Feature" to add up to 4 features.</p>
+                    )}
+                </div>
+            </SectionWrapper>
             {/* 17. BLOG SECTION */}
             {/* <SectionWrapper id="blogs" icon={MessageSquare} title="17. Blog Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -1551,6 +1649,122 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                         </div>
                     ))}
                     <button type="button" onClick={() => updateField('content.faq.items', (prev) => [...(prev || []), { q: "", a: "" }])} className="text-xs font-bold text-sky-600 p-1">+ Add FAQ Item</button>
+                </div>
+            </SectionWrapper>
+
+            {/* 17. MOBILE FEATURES SECTION */}
+            <SectionWrapper
+                id="feat"
+                icon={ Puzzle}
+                title="13. Mobile Section"
+                description="Manage the Mobile Features section content and feature list."
+            >
+                {/* Core Fields */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Mobile Features Section Title</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="e.g. Powerful Mobile Features"
+                            value={content.mobileFeaturesTitle || ''}
+                            onChange={e => updateField('content.mobileFeaturesTitle', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Mobile Features Section Subtitle</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Discover the powerful features of our mobile app..."
+                            value={content.mobileFeaturesSubtitle || ''}
+                            onChange={e => updateField('content.mobileFeaturesSubtitle', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Button Text</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="e.g. Explore Features"
+                            value={content.mobileFeaturesButtonText || ''}
+                            onChange={e => updateField('content.mobileFeaturesButtonText', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Button URL / Link</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="e.g. /features"
+                            value={content.mobileFeaturesButtonLink || ''}
+                            onChange={e => updateField('content.mobileFeaturesButtonLink', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                {/* Features Input List (Max 4 Items) */}
+                <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                        <label className={labelStyle}>
+                            Mobile Features{" "}
+                            <span className="text-xs text-slate-400 font-normal">
+                                (Max 4)
+                            </span>
+                        </label>
+
+                        {(content.mobileFeatures || []).length < 4 && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const currentFeatures = content.mobileFeatures || [];
+                                    if (currentFeatures.length < 4) {
+                                        updateField("content.mobileFeatures", [
+                                            ...currentFeatures,
+                                            "",
+                                        ]);
+                                    }
+                                }}
+                                className="text-xs font-semibold text-sky-600 hover:text-sky-700 hover:underline"
+                            >
+                                + Add Feature
+                            </button>
+                        )}
+                    </div>
+
+                    {(content.mobileFeatures || []).map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                            <input
+                                className={inputStyle}
+                                placeholder={`Feature ${idx + 1}`}
+                                value={feature}
+                                onChange={e => {
+                                    const updated = [...(content.mobileFeatures || [])];
+                                    updated[idx] = e.target.value;
+                                    updateField("content.mobileFeatures", updated);
+                                }}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const updated = (content.mobileFeatures || []).filter(
+                                        (_, i) => i !== idx
+                                    );
+                                    updateField("content.mobileFeatures", updated);
+                                }}
+                                className="p-2 text-rose-500 hover:bg-rose-50 rounded-md transition-colors text-xs font-semibold"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+
+                    {(!content.mobileFeatures ||
+                        content.mobileFeatures.length === 0) && (
+                            <p className="text-xs text-slate-400 italic">
+                                No features added. Click "+ Add Feature" to add up to 4
+                                features.
+                            </p>
+                        )}
                 </div>
             </SectionWrapper>
 

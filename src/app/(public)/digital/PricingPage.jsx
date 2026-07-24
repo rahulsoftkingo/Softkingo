@@ -278,7 +278,8 @@ export default function PricingPage({
   whychooseData,
   industries,
   features,
-  tech
+  tech,
+  activeSections
 }) {
 
   function getDiscountPercent(annualBadge) {
@@ -559,10 +560,23 @@ export default function PricingPage({
 
       <WorkflowAddOns data={data} />
 
-      <WhyChooseUs data={whychooseData} />
-      <SeoIndustries data={industries} />
-      <SeoServicesSlider data={features} />
-      <CuttingEdgeTech data={tech} />
+
+      {activeSections?.includes("servicesList") && (
+        <WhyChooseUs data={whychooseData} />
+      )}
+
+      {activeSections?.includes("industries") && (
+        <SeoIndustries data={industries} />
+      )}
+
+      {activeSections?.includes("features") && (
+        <SeoServicesSlider data={features} />
+      )}
+
+      {activeSections?.includes("tech") && (
+        <CuttingEdgeTech data={tech} />
+      )}
+      
       <AppFeatures data={features} />
 
       {/* ============================= COMPARE ============================= */}
@@ -641,7 +655,7 @@ export default function PricingPage({
                 <div
                   key={group.id}
                   ref={(el) => (sectionRefs.current[group.id] = el)}
-                  className={`scroll-mt-24 rounded-lg border overflow-hidden transition-shadow ${isFlashing ? "border-yellow-300 ring-2 ring-yellow-200" : "border-slate-100"}`}
+                  className={`scroll-mt-24 rounded-lg border overflow-hidden transition-shadow ${isFlashing ? "ring-2 ring-yellow-200" : "border-slate-100"}`}
                 >
                   <button
                     type="button"

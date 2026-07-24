@@ -976,7 +976,7 @@ const SideBar = ({ onClose }) => {
     },
     {
       key: "podcast",
-      href: "/podcasts",
+      href: "/podcast",
       title: "Podcasts",
       description:
         "Conversations with founders, CTOs and leaders on building and scaling products.",

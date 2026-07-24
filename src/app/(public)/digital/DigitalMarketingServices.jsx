@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CommonTitle from "@/components/ui/CommonTitle";
 
 // Fallback data used when no `data` prop (or an empty one) is passed in
@@ -15,8 +15,7 @@ const defaultData = {
       fullTitle: "Search Engine Optimization",
       fullDesc:
         "<p>We improve your site's visibility on search engines through on-page optimization, technical audits, content strategy, and link building — driving sustainable organic traffic.</p><ul><li>On-page &amp; technical audits</li><li>Content &amp; keyword strategy</li><li>Authority link building</li></ul>",
-      image:
-        "",
+      image: "",
     },
     {
       shortTitle: "Social Media\nMarketing",
@@ -24,8 +23,7 @@ const defaultData = {
       fullTitle: "Social Media Marketing",
       fullDesc:
         "<p>We craft platform-specific strategies for Instagram, LinkedIn, X, and more — creating content that builds community and turns followers into customers.</p><ul><li>Platform-specific content</li><li>Community management</li><li>Influencer collaborations</li></ul>",
-      image:
-        "",
+      image: "",
     },
     {
       shortTitle: "PPC\nAdvertising",
@@ -33,8 +31,7 @@ const defaultData = {
       fullTitle: "Pay-Per-Click Advertising",
       fullDesc:
         "<p>We run targeted ad campaigns across Google, Meta, and LinkedIn, optimizing bids and creatives continuously to maximize your return on ad spend.</p><ul><li>Google &amp; Meta ad management</li><li>Continuous bid optimization</li><li>Creative testing &amp; iteration</li></ul>",
-      image:
-        "",
+      image: "",
     },
     {
       shortTitle: "Content\nMarketing",
@@ -42,8 +39,7 @@ const defaultData = {
       fullTitle: "Content Marketing",
       fullDesc:
         "<p>We produce blogs, videos, and guides that establish authority in your industry, nurture leads, and support every stage of the buyer's journey.</p><ul><li>Blogs, guides &amp; video</li><li>Thought-leadership content</li><li>Full-funnel lead nurturing</li></ul>",
-      image:
-        "",
+      image: "",
     },
     {
       shortTitle: "Email\nMarketing",
@@ -51,8 +47,7 @@ const defaultData = {
       fullTitle: "Email Marketing",
       fullDesc:
         "<p>We design automated email flows and campaigns that keep your audience engaged, from welcome sequences to re-engagement and post-purchase nurturing.</p><ul><li>Automated email flows</li><li>Segmentation &amp; personalization</li><li>Re-engagement campaigns</li></ul>",
-      image:
-        "",
+      image: "",
     },
     {
       shortTitle: "Web\nAnalytics",
@@ -60,8 +55,7 @@ const defaultData = {
       fullTitle: "Web Analytics",
       fullDesc:
         "<p>We set up dashboards and tracking that reveal how visitors interact with your site, helping you make informed decisions about where to invest next.</p><ul><li>Custom dashboards</li><li>Conversion &amp; funnel tracking</li><li>Data-backed recommendations</li></ul>",
-      image:
-        "",
+      image: "",
     },
     {
       shortTitle: "Branding &\nDesign",
@@ -69,14 +63,15 @@ const defaultData = {
       fullTitle: "Branding & Design",
       fullDesc:
         "<p>We build cohesive visual identities — logos, color systems, and guidelines — so your brand looks consistent and professional everywhere it appears.</p><ul><li>Logo &amp; visual identity</li><li>Brand guidelines</li><li>Consistent cross-channel design</li></ul>",
-      image:
-        "",
-    }
+      image: "",
+    },
   ],
 };
 
+const DESCRIPTION_CLASS =
+  "mt-3 sm:mt-4 text-sm sm:text-base text-white/90 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:mt-3 [&_ul]:space-y-2 [&_ul]:list-none [&_ul]:pl-0 [&_li]:relative [&_li]:pl-5 [&_li]:before:content-[''] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-2 [&_li]:before:h-1.5 [&_li]:before:w-1.5 [&_li]:before:rounded-full [&_li]:before:bg-white";
+
 export default function DigitalMarketingServices({ data }) {
-  // Agar data missing hai ya categories empty hain, to defaultData fallback ho jayega
   const source =
     data && Array.isArray(data.categories) && data.categories.length > 0
       ? data
@@ -85,12 +80,28 @@ export default function DigitalMarketingServices({ data }) {
   const categories = source.categories || [];
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const tabsRef = useRef(null);
 
   useEffect(() => {
     setActiveIndex(0);
   }, [categories]);
 
   const active = categories[activeIndex];
+
+  function handleSelect(index) {
+    setActiveIndex(index);
+    const container = tabsRef.current;
+    const btn = container?.children?.[index];
+    if (container && btn) {
+      const containerWidth = container.offsetWidth;
+      const btnLeft = btn.offsetLeft;
+      const btnWidth = btn.offsetWidth;
+      container.scrollTo({
+        left: btnLeft - containerWidth / 2 + btnWidth / 2,
+        behavior: "smooth",
+      });
+    }
+  }
 
   return (
     <section className="py-12 sm:py-16 bg-white">
@@ -102,14 +113,23 @@ export default function DigitalMarketingServices({ data }) {
 
         {/* Content */}
         <div className="mt-10 sm:mt-12 flex flex-col gap-6 lg:flex-row">
-          {/* Buttons grid: 1 col on mobile, 2 cols on sm+, fixed width on lg */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:w-[36rem] shrink-0">
+          {/* MOBILE: horizontal scrollable tab strip | SM+: original grid */}
+          <div
+            ref={tabsRef}
+            className="dms-tab-scroll flex gap-3 overflow-x-auto pb-1 -mx-4 px-4 snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0 lg:w-[36rem] shrink-0"
+            style={{
+              // NEW: inline fallback — ye hamesha apply hoga, styled-jsx
+              // scoping/specificity issue se independent
+              scrollbarWidth: "none", // Firefox
+              msOverflowStyle: "none", // old Edge/IE
+            }}
+          >
             {categories.map((service, index) => (
               <ServiceButton
                 key={index}
                 service={service}
                 isActive={activeIndex === index}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => handleSelect(index)}
               />
             ))}
           </div>
@@ -133,14 +153,7 @@ export default function DigitalMarketingServices({ data }) {
                 </h3>
 
                 <div
-                  className="mt-3 sm:mt-4 text-sm sm:text-base text-white/90 leading-relaxed
-                    [&_p]:mb-3 [&_p:last-child]:mb-0
-                    [&_ul]:mt-3 [&_ul]:space-y-2 [&_ul]:list-none [&_ul]:pl-0
-                    [&_li]:relative [&_li]:pl-5
-                    [&_li]:before:content-['']
-                    [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:top-2
-                    [&_li]:before:h-1.5 [&_li]:before:w-1.5
-                    [&_li]:before:rounded-full [&_li]:before:bg-white"
+                  className={DESCRIPTION_CLASS}
                   dangerouslySetInnerHTML={{
                     __html: active.fullDesc || "",
                   }}
@@ -154,6 +167,20 @@ export default function DigitalMarketingServices({ data }) {
           </div>
         </div>
       </div>
+
+      {/* Scoped CSS to hide the mobile tab-strip's webkit scrollbar (Chrome/Safari) */}
+      <style jsx>{`
+        .dms-tab-scroll::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+          background: transparent !important;
+        }
+        .dms-tab-scroll {
+          -ms-overflow-style: none !important;
+          scrollbar-width: none !important;
+        }
+      `}</style>
     </section>
   );
 }
@@ -164,7 +191,8 @@ function ServiceButton({ service, isActive, onClick }) {
       type="button"
       onClick={onClick}
       className={[
-        "w-full rounded-2xl border px-5 py-4 sm:py-5 text-center transition-all duration-300",
+        "shrink-0 w-40 sm:w-full snap-start",
+        "rounded-2xl border px-5 py-4 sm:py-5 text-center transition-all duration-300",
         isActive
           ? "border-sky-500 bg-sky-500 text-white shadow-md"
           : "border-slate-200 bg-white text-slate-800 hover:border-sky-300 hover:bg-sky-50",

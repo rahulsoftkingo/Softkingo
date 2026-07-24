@@ -155,70 +155,71 @@ export const AI_SERVICES_DEFAULT = [
 // ─── Tailwind Service Card Component ─────────────────────────────────────────
 function TailwindServiceCard({ service, index }) {
     return (
-        <div className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative w-full shadow-xl animate-card-fade-in">
-            <Link href={service?.link || "/contact"} className="block h-full w-full p-6 md:p-10 relative z-10">
-                {/* Navigation Arrow Top Right */}
-                <div className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 group-hover:bg-white group-hover:text-sky-50 transition-all duration-500 z-20 shadow-lg">
-                    <FaArrowRight className="text-xl" />
-                </div>
-
-                {/* Decorative Background Elements */}
-                <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl opacity-30 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-300/10 rounded-full -ml-32 -mb-32 blur-3xl opacity-20 pointer-events-none"></div>
-
-                <div className="space-y-4 flex-1">
-                    <div className="flex items-center gap-5">
-                        <div className="w-14 h-14 flex items-center justify-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl shrink-0">
-                            {String(index + 1).padStart(2, "0")}
-                        </div>
-                        <h3 className="text-white font-bold text-2xl md:text-3xl lg:text-4xl pr-16 md:pr-20">
-                            {service?.title || service?.name || "Service"}
-                        </h3>
-                    </div>
-
-                    <div
-                        className="text-sm md:text-md text-sky-50 max-w-4xl opacity-90 rich-text mb-8"
-                        dangerouslySetInnerHTML={{ __html: service?.description || service?.desc || "" }}
-                    />
-
-                    {/* Capabilities */}
-                    <div className="space-y-4 mb-8">
-                        <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Key Capabilities</h4>
-                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {(service?.capabilities || []).map((cap, i) => (
-                                <li key={i} className="flex items-start gap-3 text-base text-white opacity-90 font-medium">
-                                    <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1"> 
-                                        <FaArrowRight className="h-2 w-2" /> 
-                                    </span>
-                                    {cap}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Technologies (HORIZONTAL SCROLL) */}
-                    <div className="space-y-4">
-                        <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Technologies We Use</h4>
-                        <div className="flex flex-row gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap pb-4 px-1">
-                            {(service?.tech || service?.technologies || []).map((t, idx) => (
-                                <div key={idx} className="group/tech relative w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl p-2.5 shadow-lg shadow-sky-900/10 transition-all duration-300 flex items-center justify-center hover:scale-110 shrink-0">
-                                    <div className="relative w-full h-full">
-                                        <Image
-                                            src={typeof t === 'string' ? `/images/tech/${t}.png` : (t.img || t.image)}
-                                            alt={typeof t === 'string' ? t : t.name}
-                                            fill
-                                            className="object-contain"
-                                        />
-                                    </div>
-                                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-sky-600 font-bold text-[10px] py-1 px-2 rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-30 shadow-lg">
-                                        {typeof t === 'string' ? t : t.name}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+        <div className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative w-full shadow-xl animate-card-fade-in p-6 md:p-10">
+            {/* Navigation Arrow Top Right - Only this element triggers navigation */}
+            <Link 
+                href={service?.link || "/contact"} 
+                className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 transition-all duration-500 z-20 shadow-lg hover:border-white"
+            >
+                <FaArrowRight className="text-xl" />
             </Link>
+
+            {/* Decorative Background Elements */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl opacity-30 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-300/10 rounded-full -ml-32 -mb-32 blur-3xl opacity-20 pointer-events-none"></div>
+
+            <div className="space-y-4 flex-1 relative z-10">
+                <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 flex items-center justify-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl shrink-0">
+                        {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <h3 className="text-white font-bold text-2xl md:text-3xl lg:text-4xl pr-16 md:pr-20">
+                        {service?.title || service?.name || "Service"}
+                    </h3>
+                </div>
+
+                <div
+                    className="text-sm md:text-md text-sky-50 max-w-4xl opacity-90 rich-text mb-8"
+                    dangerouslySetInnerHTML={{ __html: service?.description || service?.desc || "" }}
+                />
+
+                {/* Capabilities */}
+                <div className="space-y-4 mb-8">
+                    <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Key Capabilities</h4>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {(service?.capabilities || []).map((cap, i) => (
+                            <li key={i} className="flex items-start gap-3 text-base text-white opacity-90 font-medium">
+                                <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1"> 
+                                    <FaArrowRight className="h-2 w-2" /> 
+                                </span>
+                                {cap}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                {/* Technologies (HORIZONTAL SCROLL) */}
+                <div className="space-y-4">
+                    <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Technologies We Use</h4>
+                    <div className="flex flex-row gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap pb-4 px-1">
+                        {(service?.tech || service?.technologies || []).map((t, idx) => (
+                            <div key={idx} className="group/tech relative w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl p-2.5 shadow-lg shadow-sky-900/10 transition-all duration-300 flex items-center justify-center hover:scale-110 shrink-0">
+                                <div className="relative w-full h-full">
+                                    <Image
+                                        src={typeof t === 'string' ? `/images/tech/${t}.png` : (t.img || t.image)}
+                                        alt={typeof t === 'string' ? t : t.name}
+                                        fill
+                                        className="object-contain"
+                                    />
+                                </div>
+                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-sky-600 font-bold text-[10px] py-1 px-2 rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-30 shadow-lg">
+                                    {typeof t === 'string' ? t : t.name}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
