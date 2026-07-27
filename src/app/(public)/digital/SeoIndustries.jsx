@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -14,31 +15,43 @@ const defaultData = {
       title: "Healthcare",
       description:
         "Secure, compliant platforms that help providers manage patients, records, and care delivery.",
+      icon: "/icons/healthcare.svg",
+      link: "/industries/healthcare",
     },
     {
       title: "Banking & Finance",
       description:
         "Robust systems for payments, lending, and risk management built with security at the core.",
+      icon: "/icons/banking.svg",
+      link: "/industries/banking-finance",
     },
     {
       title: "Retail & E-commerce",
       description:
         "Scalable storefronts and inventory tools that turn browsers into loyal customers.",
+      icon: "/icons/retail.svg",
+      link: "/industries/retail-ecommerce",
     },
     {
       title: "Education",
       description:
         "Engaging learning platforms that connect students, teachers, and content seamlessly.",
+      icon: "/icons/education.svg",
+      link: "/industries/education",
     },
     {
       title: "Logistics",
       description:
         "Real-time tracking and route optimization to keep goods moving efficiently.",
+      icon: "/icons/logistics.svg",
+      link: "/industries/logistics",
     },
     {
       title: "Manufacturing",
       description:
         "Smart automation and monitoring tools that streamline production at every stage.",
+      icon: "/icons/manufacturing.svg",
+      link: "/industries/manufacturing",
     },
   ],
 };
@@ -166,14 +179,13 @@ export default function IndustriesWeWorkWith({ data }) {
                   {item.description}
                 </p>
 
-                {/* Arrow */}
-                <button
-                  type="button"
+                <Link
+                  href={item.link || "#"}
                   aria-label={`Learn more about ${item.title}`}
                   className="mt-auto flex h-10 w-10 items-center justify-center self-end rounded-full bg-white text-sky-500 shadow-sm transition-transform hover:scale-105"
                 >
-                  <ArrowRight className="h-4 w-4" />
-                </button>
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
               </div>
             ))}
           </div>
@@ -205,13 +217,13 @@ export default function IndustriesWeWorkWith({ data }) {
                 </p>
 
                 {/* Arrow */}
-                <button
-                  type="button"
+                <Link
+                  href={item.link || "#"}
                   aria-label={`Learn more about ${item.title}`}
                   className="mt-auto flex h-10 w-10 items-center justify-center self-end rounded-full bg-white text-sky-500 shadow-sm transition-transform hover:scale-105"
                 >
-                  <ArrowRight className="h-4 w-4" />
-                </button>
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
               </div>
             ))}
           </div>

@@ -541,7 +541,7 @@ export default function DigitalPageEditor({ data, onBack }) {
             { id: 'pricing', label: '10. Pricing / Compare Plans', icon: DollarSign },
             { id: 'workflowAddOns', label: '11. Workflow Add-Ons', icon: Puzzle },
             { id: 'faq', label: '12. FAQ Section', icon: HelpCircle },
-            { id: 'feat', label: '13. Mobile Section', icon: Puzzle },
+            { id: 'mobileFeatures', label: '13. Mobile Section', icon: Puzzle },
 
         ]
     };

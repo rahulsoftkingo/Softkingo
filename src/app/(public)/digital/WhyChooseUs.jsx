@@ -35,7 +35,7 @@ const DEFAULT_DATA = {
   ],
 };
 
-const CARD_HEIGHT = 220;
+const CARD_HEIGHT = 150;
 const CARD_GAP = 20;
 const VIEWPORT_HEIGHT = 420;
 const TRACK_HEIGHT = 320;

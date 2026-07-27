@@ -41,10 +41,10 @@ export default function TaxiHero({ data }) {
         style={
           heroBg
             ? {
-                backgroundImage: `linear-gradient(rgba(11,31,42,0.85), rgba(11,31,42,0.85)), url(${heroBg})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
+              backgroundImage: `linear-gradient(rgba(11,31,42,0.85), rgba(11,31,42,0.85)), url(${heroBg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
             : undefined
         }
       >
@@ -54,17 +54,27 @@ export default function TaxiHero({ data }) {
             <div className="md:col-span-2 text-white space-y-4 animate-fadeInLeft">
               {/* Breadcrumb */}
               <nav className="flex items-center space-x-2 text-xs md:text-sm animate-fadeInUp">
-                <Link href="/" className="hover:text-cyan-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Home
                 </Link>
-                <span className="text-gray-400">&gt;</span>
-                <Link href="/services" className="hover:text-cyan-400 transition-colors">
+
+                <span className="text-gray-400">›</span>
+
+                <Link
+                  href="/services"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Our Services
                 </Link>
-                 <span className="text-gray-400">&gt;</span>
-                  <Link href="/services" className="hover:text-cyan-400 transition-colors">
-                 {data.slug}
-                </Link>
+
+                <span className="text-gray-400">›</span>
+
+                <span className="text-cyan-400">
+                  {data.slug}
+                </span>
               </nav>
 
               {/* Heading & Description */}

@@ -279,7 +279,8 @@ export default function PricingPage({
   industries,
   features,
   tech,
-  activeSections
+  activeSections,
+  mobileFeatures
 }) {
 
   function getDiscountPercent(annualBadge) {
@@ -577,7 +578,7 @@ export default function PricingPage({
         <CuttingEdgeTech data={tech} />
       )}
       
-      <AppFeatures data={features} />
+      <AppFeatures  data={mobileFeatures} />
 
       {/* ============================= COMPARE ============================= */}
       <section ref={compareRef} className="scroll-mt-6 bg-white px-4 py-8 sm:px-6 lg:px-8">
@@ -590,7 +591,7 @@ export default function PricingPage({
 
           {/* Compare table columns now use the ACTIVE tab's plans, so it always matches
               whichever solution the person is currently looking at. */}
-          <div className="sticky top-[73px] z-0 mt-6 bg-white pb-4 pt-2">
+          <div className="sticky top-[73px] z-0 mt-6 bg-white pb-4 pt-2 overflow-x-auto scrollbar-hide">
             <div className="grid gap-4" style={{ gridTemplateColumns: `1.6fr repeat(${activePlans.length}, 1fr)` }}>
               <div />
               {activePlans.map((plan, i) => (

@@ -484,6 +484,21 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                     }
                                 />
                             </div>
+                            {/* NEW: Link field */}
+                            <div className="space-y-2">
+                                <label className={labelStyle}>Link (URL / Slug)</label>
+                                <input
+                                    className={inputStyle}
+                                    placeholder="e.g. /industries/healthcare"
+                                    value={item.link || ""}
+                                    onChange={(e) =>
+                                        updateField(
+                                            `content.industries.items.${i}.link`,
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </div>
                         </div>
                     ))}
 
@@ -496,6 +511,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                     title: "",
                                     description: "",
                                     icon: "",
+                                    link: "",
                                 },
                             ])
                         }
@@ -1308,103 +1324,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
 
             {/* 17. BLOG SECTION */}
-            <SectionWrapper id="feat" icon={MessageSquare} title="Blog Section" activeSections={activeSections}>
-                {/* Core Fields: Title, Subtitle, Button Text, Button Link */}
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Blog Section Title</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="e.g. Latest Insights & Blogs"
-                            value={content.blogTitle || ''}
-                            onChange={e => updateField('content.blogTitle', e.target.value)}
-                        />
-                    </div>
 
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Blog Section Subtitle</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="Explore our latest thoughts, updates, and articles..."
-                            value={content.blogSubtitle || ''}
-                            onChange={e => updateField('content.blogSubtitle', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Button Text</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="e.g. View All Posts"
-                            value={content.blogButtonText || ''}
-                            onChange={e => updateField('content.blogButtonText', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Button URL / Link</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="e.g. /blog"
-                            value={content.blogButtonLink || ''}
-                            onChange={e => updateField('content.blogButtonLink', e.target.value)}
-                        />
-                    </div>
-                </div>
-
-                {/* Features Input List (Max 4 Items) */}
-                <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
-                    <div className="flex items-center justify-between">
-                        <label className={labelStyle}>
-                            Blog Features <span className="text-xs text-slate-400 font-normal">(Max 4)</span>
-                        </label>
-
-                        {(content.blogFeatures || []).length < 4 && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const currentFeatures = content.blogFeatures || [];
-                                    if (currentFeatures.length < 4) {
-                                        updateField('content.blogFeatures', [...currentFeatures, '']);
-                                    }
-                                }}
-                                className="text-xs font-semibold text-sky-600 hover:text-sky-700 hover:underline"
-                            >
-                                + Add Feature
-                            </button>
-                        )}
-                    </div>
-
-                    {(content.blogFeatures || []).map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                            <input
-                                className={inputStyle}
-                                placeholder={`Feature ${idx + 1}`}
-                                value={feature}
-                                onChange={e => {
-                                    const updated = [...(content.blogFeatures || [])];
-                                    updated[idx] = e.target.value;
-                                    updateField('content.blogFeatures', updated);
-                                }}
-                            />
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const updated = (content.blogFeatures || []).filter((_, i) => i !== idx);
-                                    updateField('content.blogFeatures', updated);
-                                }}
-                                className="p-2 text-rose-500 hover:bg-rose-50 rounded-md transition-colors text-xs font-semibold"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-
-                    {(!content.blogFeatures || content.blogFeatures.length === 0) && (
-                        <p className="text-xs text-slate-400 italic">No features added. Click "+ Add Feature" to add up to 4 features.</p>
-                    )}
-                </div>
-            </SectionWrapper>
             {/* 17. BLOG SECTION */}
             {/* <SectionWrapper id="blogs" icon={MessageSquare} title="17. Blog Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -1654,10 +1574,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
 
             {/* 17. MOBILE FEATURES SECTION */}
             <SectionWrapper
-                id="feat"
-                icon={ Puzzle}
+                id="mobileFeatures"
+                icon={Puzzle}
                 title="13. Mobile Section"
-                description="Manage the Mobile Features section content and feature list."
+                activeSections={activeSections}
             >
                 {/* Core Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1680,29 +1600,9 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                             onChange={e => updateField('content.mobileFeaturesSubtitle', e.target.value)}
                         />
                     </div>
-
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Button Text</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="e.g. Explore Features"
-                            value={content.mobileFeaturesButtonText || ''}
-                            onChange={e => updateField('content.mobileFeaturesButtonText', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Button URL / Link</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="e.g. /features"
-                            value={content.mobileFeaturesButtonLink || ''}
-                            onChange={e => updateField('content.mobileFeaturesButtonLink', e.target.value)}
-                        />
-                    </div>
                 </div>
 
-                {/* Features Input List (Max 4 Items) */}
+                {/* Features Input List (Max 4 Items) — ab har item ka apna Header + Description hai */}
                 <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
                     <div className="flex items-center justify-between">
                         <label className={labelStyle}>
@@ -1720,7 +1620,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                     if (currentFeatures.length < 4) {
                                         updateField("content.mobileFeatures", [
                                             ...currentFeatures,
-                                            "",
+                                            { header: "", description: "" },
                                         ]);
                                     }
                                 }}
@@ -1732,17 +1632,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                     </div>
 
                     {(content.mobileFeatures || []).map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                            <input
-                                className={inputStyle}
-                                placeholder={`Feature ${idx + 1}`}
-                                value={feature}
-                                onChange={e => {
-                                    const updated = [...(content.mobileFeatures || [])];
-                                    updated[idx] = e.target.value;
-                                    updateField("content.mobileFeatures", updated);
-                                }}
-                            />
+                        <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-200 relative space-y-2">
                             <button
                                 type="button"
                                 onClick={() => {
@@ -1751,10 +1641,33 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                                     );
                                     updateField("content.mobileFeatures", updated);
                                 }}
-                                className="p-2 text-rose-500 hover:bg-rose-50 rounded-md transition-colors text-xs font-semibold"
+                                className="absolute top-2 right-2 text-rose-500 hover:bg-rose-50 p-1 rounded-md transition-colors"
                             >
-                                Remove
+                                <X size={14} />
                             </button>
+
+                            <input
+                                className={inputStyle}
+                                placeholder={`Feature ${idx + 1} Header`}
+                                value={feature?.header || ''}
+                                onChange={e => {
+                                    const updated = [...(content.mobileFeatures || [])];
+                                    updated[idx] = { ...updated[idx], header: e.target.value };
+                                    updateField("content.mobileFeatures", updated);
+                                }}
+                            />
+
+                            <textarea
+                                className={inputStyle}
+                                rows={2}
+                                placeholder={`Feature ${idx + 1} Description`}
+                                value={feature?.description || ''}
+                                onChange={e => {
+                                    const updated = [...(content.mobileFeatures || [])];
+                                    updated[idx] = { ...updated[idx], description: e.target.value };
+                                    updateField("content.mobileFeatures", updated);
+                                }}
+                            />
                         </div>
                     ))}
 

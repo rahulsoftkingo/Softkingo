@@ -15,6 +15,7 @@ import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
 import ComparePlansSection from "../../digital/ComparePlansSection";
+import AwardsSection from "../../digital/AwardsSection";
 
 
 
@@ -99,6 +100,7 @@ export default function DigitalComponent({ content, section }) {
           pricingCards={content.pricingCards} industries={content.industries}
           features={content.features}
           tech={content.tech}
+          mobileFeatures={content.mobileFeatures}
           activeSections={activeSections}
         />)}
 
@@ -113,7 +115,7 @@ export default function DigitalComponent({ content, section }) {
         {/* <AppFeatures data={content.features} /> */}
 
         {/* <CuttingEdgeTech data={content.tech} /> */}
-
+        <AwardsSection/>
 
         {/* <ComparePlansSection pricing={content.pricing}/> */}
         <ConsultationCTA

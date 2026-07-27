@@ -12,7 +12,8 @@ import {
   Wand2,
 } from "lucide-react";
 
-const leftFeatures = [
+// --- Original hardcoded fallback ---
+const defaultLeftFeatures = [
   {
     title: "Daily Horoscopes",
     description:
@@ -33,7 +34,7 @@ const leftFeatures = [
   },
 ];
 
-const rightFeatures = [
+const defaultRightFeatures = [
   {
     title: "Live Consultations",
     description:
@@ -50,6 +51,32 @@ const rightFeatures = [
       "It is safe to pay for consultations, reports, and other high-end services in various ways.",
   },
 ];
+
+// --- Helper: data (array of { header, description }) se features merge karta hai ---
+// header -> title ki jagah replace hoga, description -> description ki jagah
+function buildFeatures(data) {
+  const safeData = Array.isArray(data) ? data : [];
+
+  const leftFeatures = defaultLeftFeatures.map((f, i) => {
+    const item = safeData[i];
+    return {
+      ...f,
+      title: item?.header?.trim() ? item.header : f.title,
+      description: item?.description?.trim() ? item.description : f.description,
+    };
+  });
+
+  const rightFeatures = defaultRightFeatures.map((f, i) => {
+    const item = safeData[i + 3];
+    return {
+      ...f,
+      title: item?.header?.trim() ? item.header : f.title,
+      description: item?.description?.trim() ? item.description : f.description,
+    };
+  });
+
+  return { leftFeatures, rightFeatures };
+}
 
 function FeatureCard({ title, description, active }) {
   return (
@@ -208,7 +235,10 @@ function PhoneMockup() {
   );
 }
 
-export default function AstrologyAppFeatures() {
+// --- data prop: array of { header, description } ---
+export default function AstrologyAppFeatures({ data }) {
+  const { leftFeatures, rightFeatures } = buildFeatures(data);
+
   return (
     <section className="hidden lg:block bg-sky-50 py-8 lg:py-18 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">

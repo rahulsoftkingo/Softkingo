@@ -149,7 +149,7 @@ export default function CuttingEdgeTech({ data }) {
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                     }`}
                   >
-                    {tech.tag}
+                    {tech.title}
                   </button>
                 );
               })}
@@ -186,7 +186,7 @@ export default function CuttingEdgeTech({ data }) {
                 </span>
 
                 <h3 className="text-xl md:text-2xl font-bold text-slate-900">
-                  {activeTech.title}
+                  {activeTech.tag}
                 </h3>
 
                 <p className="max-w-2xl leading-7 md:leading-8 text-sm md:text-base text-slate-600">
