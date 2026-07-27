@@ -61,7 +61,7 @@ export default function EnterpriseDigitalMarketing({ data }) {
   const ringImage = source.ringImage;
 
   return (
-    <section className="py-16 sm:py-20 bg-white">
+    <section className="py-16 sm:py-20 bg-white md:px-2">
       <div className="mx-auto max-w-7xl lg:px-8">
         {/* Title + copy + image share one aligned row */}
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">

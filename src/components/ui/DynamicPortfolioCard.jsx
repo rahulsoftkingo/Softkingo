@@ -126,7 +126,8 @@ export default function DynamicPortfolioCard({
 
 /* ─── Sticky Project Card with scroll-based scale/opacity — like h4-service ─── */
 function StickyProjectCard({ p, index, total, onContact }) {
-
+   
+   console.log("Project Data:", p);
 
   const ref = useRef(null);
 
@@ -213,7 +214,7 @@ function StickyProjectCard({ p, index, total, onContact }) {
                 </Link>
               )}
               <Link
-                href={`/case-studies/${p.id}`}
+                href={`/case-studies/${p.key}`}
                 className="w-fit inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-black text-white hover:bg-white hover:text-black transition px-3 text-sm whitespace-nowrap border border-transparent hover:border-gray-400"
               >
                 Case Study <ArrowRight className="h-4 w-4" />

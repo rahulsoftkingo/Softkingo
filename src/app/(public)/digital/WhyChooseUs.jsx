@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import {
   Rocket,
@@ -44,8 +44,45 @@ const TRACK_HEIGHT = 320;
 // Jitna zyada, utna slow/halka feel aayega per card.
 const SCROLL_ROOM_PER_CARD = 260;
 
+// Simple hook: sirf lg breakpoint (1024px) check karta hai
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(true); // default true = SSR-safe fallback to desktop markup
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  return isDesktop;
+}
+
+function FeatureCard({ item, i, style }) {
+  const Icon = icons[i % icons.length];
+  return (
+    <div
+      className="flex items-start gap-3 rounded-2xl bg-[#123247] p-5 text-white shadow-lg"
+      style={style}
+    >
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10">
+        <Icon className="h-5 w-5 text-sky-300" strokeWidth={2} />
+      </span>
+
+      <div>
+        <h3 className="text-md font-bold leading-normal">{item.title}</h3>
+        <p className="mt-1.5 text-sm leading-relaxed text-slate-300">
+          {item.description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function WhyChooseUs({ data }) {
   const containerRef = useRef(null);
+  const isDesktop = useIsDesktop();
 
   const title = data?.title || DEFAULT_DATA.title;
   const subtitle = data?.subtitle || DEFAULT_DATA.subtitle;
@@ -82,6 +119,39 @@ export default function WhyChooseUs({ data }) {
 
   const thumbTop = useTransform(smoothProgress, [0, 1], [0, TRACK_HEIGHT - thumbHeight]);
 
+  // ---------- MOBILE / TABLET: clean static version, no scroll-jacking ----------
+  if (!isDesktop) {
+    return (
+      <section className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200 px-4 py-12 sm:px-6">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+          >
+            <CommonTitle title={title} subtitle={subtitle} align="left" />
+          </motion.div>
+
+          <div className="flex flex-col gap-4">
+            {features.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+              >
+                <FeatureCard item={item} i={i} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // ---------- DESKTOP: original scroll-jacking version, unchanged ----------
   return (
     <section
       ref={containerRef}
@@ -128,33 +198,17 @@ export default function WhyChooseUs({ data }) {
             style={{ height: VIEWPORT_HEIGHT }}
           >
             <motion.div style={{ y }} className="flex flex-col">
-              {features.map((item, i) => {
-                const Icon = icons[i % icons.length];
-
-                return (
-                  <div
-                    key={i}
-                    className="flex items-start gap-3 rounded-2xl bg-[#123247] p-5 text-white shadow-lg"
-                    style={{
-                      height: CARD_HEIGHT,
-                      marginBottom: i === features.length - 1 ? 0 : CARD_GAP,
-                    }}
-                  >
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10">
-                      <Icon className="h-5 w-5 text-sky-300" strokeWidth={2} />
-                    </span>
-
-                    <div>
-                      <h3 className="text-md font-bold leading-normal">
-                        {item.title}
-                      </h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-slate-300">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+              {features.map((item, i) => (
+                <FeatureCard
+                  key={i}
+                  item={item}
+                  i={i}
+                  style={{
+                    height: CARD_HEIGHT,
+                    marginBottom: i === features.length - 1 ? 0 : CARD_GAP,
+                  }}
+                />
+              ))}
             </motion.div>
           </div>
 
