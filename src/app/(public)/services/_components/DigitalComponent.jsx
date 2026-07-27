@@ -102,6 +102,8 @@ export default function DigitalComponent({ content, section }) {
           tech={content.tech}
           mobileFeatures={content.mobileFeatures}
           activeSections={activeSections}
+          appfeaturebasixtext={content.mobileFeaturesTitle}
+          appfeaturebasixgradient={content.mobileFeaturesSubtitle}
         />)}
 
 

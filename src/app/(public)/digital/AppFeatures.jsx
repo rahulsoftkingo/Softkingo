@@ -236,7 +236,7 @@ function PhoneMockup() {
 }
 
 // --- data prop: array of { header, description } ---
-export default function AstrologyAppFeatures({ data }) {
+export default function AstrologyAppFeatures({ data,appfeaturebasixtext,appfeaturebasixgradient }) {
   const { leftFeatures, rightFeatures } = buildFeatures(data);
 
   return (
@@ -244,9 +244,9 @@ export default function AstrologyAppFeatures({ data }) {
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
         <h2 className="text-center text-2xl md:text-3xl lg:text-4xl font-bold leading-normal text-slate-900">
-          Impeccable Features of, <span className="text-sky-500">AI Powered</span>
+          {appfeaturebasixtext}
           <br />
-          <span className="text-sky-500">Astrology app Development</span>
+          <span className="text-sky-500">{appfeaturebasixgradient}</span>
         </h2>
 
         {/* Content */}

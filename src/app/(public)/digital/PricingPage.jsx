@@ -280,7 +280,9 @@ export default function PricingPage({
   features,
   tech,
   activeSections,
-  mobileFeatures
+  mobileFeatures,
+  appfeaturebasixtext,
+  appfeaturebasixgradient
 }) {
 
   function getDiscountPercent(annualBadge) {
@@ -578,7 +580,7 @@ export default function PricingPage({
         <CuttingEdgeTech data={tech} />
       )}
       
-      <AppFeatures  data={mobileFeatures} />
+      <AppFeatures  data={mobileFeatures} appfeaturebasixtext={appfeaturebasixtext} appfeaturebasixgradient={appfeaturebasixgradient}/>
 
       {/* ============================= COMPARE ============================= */}
       <section ref={compareRef} className="scroll-mt-6 bg-white px-4 py-8 sm:px-6 lg:px-8">
