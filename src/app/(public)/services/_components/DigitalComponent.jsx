@@ -15,6 +15,7 @@ import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
 import ComparePlansSection from "../../digital/ComparePlansSection";
+import CaseStudiesSection from "../../digital/CaseStudiesSection";
 import AwardsSection from "../../digital/AwardsSection";
 
 
@@ -32,7 +33,9 @@ export default function DigitalComponent({ content, section }) {
 
   return (
     <div>
-
+      <div>
+      
+      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -66,6 +69,7 @@ export default function DigitalComponent({ content, section }) {
       <div>
         {activeSections?.includes("hero") && (
           <>
+         
             <TaxiHero
               data={{
                 heroTitle: content.heroTitle,
@@ -106,7 +110,7 @@ export default function DigitalComponent({ content, section }) {
           appfeaturebasixgradient={content.mobileFeaturesSubtitle}
         />)}
 
-
+         <CaseStudiesSection/>
 
 
 

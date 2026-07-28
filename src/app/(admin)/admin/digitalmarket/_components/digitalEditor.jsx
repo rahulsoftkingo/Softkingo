@@ -379,254 +379,8 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 3. EXTENSIVE SERVICES PROVIDED */}
-            <SectionWrapper id="servicesList" icon={Briefcase} title="5. Extensive Services Provided" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.servicesList?.title || ''} onChange={e => updateField('content.servicesList.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.servicesList?.subtitle || ''} onChange={e => updateField('content.servicesList.subtitle', e.target.value)} />
-                </div>
-                <div className="space-y-4">
-                    {(content.servicesList?.items || []).map((item, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
-                            <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
-                            <input className="w-full p-2 bg-white border rounded text-sm font-bold mb-2" placeholder="Service Name" value={item.title || ''} onChange={e => updateField(`content.servicesList.items.${i}.title`, e.target.value)} />
-                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.servicesList.items.${i}.description`, e.target.value)} />
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-sm font-bold text-sky-600">+ Add Service Item</button>
-                </div>
-            </SectionWrapper>
-
-
-            {/* 4. Industries with we works */}
-            <SectionWrapper
-                id="industries"
-                icon={Layers}
-                title="6. Industries We Serve"
-                activeSections={activeSections}
-            >
-                <div className="grid md:grid-cols-2 gap-4 mb-6">
-                    <input
-                        className={inputStyle}
-                        placeholder="Section Title"
-                        value={content.industries?.title || ""}
-                        onChange={(e) =>
-                            updateField("content.industries.title", e.target.value)
-                        }
-                    />
-
-                    <input
-                        className={inputStyle}
-                        placeholder="Section Subtitle"
-                        value={content.industries?.subtitle || ""}
-                        onChange={(e) =>
-                            updateField("content.industries.subtitle", e.target.value)
-                        }
-                    />
-                </div>
-
-                <div className="space-y-6">
-                    {(content.industries?.items || []).map((item, i) => (
-                        <div
-                            key={i}
-                            className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4"
-                        >
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    updateField("content.industries.items", (prev) =>
-                                        (prev || []).filter((_, idx) => idx !== i)
-                                    )
-                                }
-                                className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-2 rounded-lg"
-                            >
-                                <X size={18} />
-                            </button>
-
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label className={labelStyle}>Industry Name</label>
-                                    <input
-                                        className={inputStyle}
-                                        placeholder="e.g. Healthcare"
-                                        value={item.title || ""}
-                                        onChange={(e) =>
-                                            updateField(
-                                                `content.industries.items.${i}.title`,
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    {/* <label className={labelStyle}>Industry Icon</label> */}
-                                    <MediaInput
-                                        label="Industry Icon"
-                                        value={item.icon}
-                                        path={`content.industries.items.${i}.icon`}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className={labelStyle}>Description</label>
-                                <textarea
-                                    className={inputStyle}
-                                    rows={3}
-                                    placeholder="Brief Description"
-                                    value={item.description || ""}
-                                    onChange={(e) =>
-                                        updateField(
-                                            `content.industries.items.${i}.description`,
-                                            e.target.value
-                                        )
-                                    }
-                                />
-                            </div>
-                            {/* NEW: Link field */}
-                            <div className="space-y-2">
-                                <label className={labelStyle}>Link (URL / Slug)</label>
-                                <input
-                                    className={inputStyle}
-                                    placeholder="e.g. /industries/healthcare"
-                                    value={item.link || ""}
-                                    onChange={(e) =>
-                                        updateField(
-                                            `content.industries.items.${i}.link`,
-                                            e.target.value
-                                        )
-                                    }
-                                />
-                            </div>
-                        </div>
-                    ))}
-
-                    <button
-                        type="button"
-                        onClick={() =>
-                            updateField("content.industries.items", (prev) => [
-                                ...(prev || []),
-                                {
-                                    title: "",
-                                    description: "",
-                                    icon: "",
-                                    link: "",
-                                },
-                            ])
-                        }
-                        className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
-                    >
-                        <Plus size={20} />
-                        Add Industry Item
-                    </button>
-                </div>
-            </SectionWrapper>
-
-
-            {/* 4. CORE FEATURES GRID */}
-            <SectionWrapper id="features" icon={Database} title="7. Core Features Grid" activeSections={activeSections}>
-                <SectionHeader section={content.features} path="content.features" updateField={updateField} />
-                <div className="space-y-4">
-                    <label className={labelStyle}>Feature Cards</label>
-                    {(content.features?.items || []).map((item, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
-                            <button
-                                type="button"
-                                onClick={() => updateField('content.features.items', (prev) => (prev || []).filter((_, idx) => idx !== i))}
-                                className="absolute top-2 right-2 text-rose-500"
-                            >
-                                <X size={18} />
-                            </button>
-                            <div className="grid gap-3">
-                                <input
-                                    className="w-full p-2 bg-white border rounded text-sm font-bold"
-                                    placeholder="Feature Title"
-                                    value={item.title || ''}
-                                    onChange={e => updateField(`content.features.items.${i}.title`, e.target.value)}
-                                />
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Feature Description</label>
-                                    <MiniRichTextEditor
-                                        value={item.description || ''}
-                                        onChange={val => updateField(`content.features.items.${i}.description`, val)}
-                                    />
-                                </div>
-                                <MediaInput
-                                    label="Icon"
-                                    value={item.image}
-                                    path={`content.features.items.${i}.image`}
-                                />
-                            </div>
-                        </div>
-                    ))}
-                    <button
-                        type="button"
-                        onClick={() => updateField('content.features.items', (prev) => [...(prev || []), { title: "", description: "", image: "" }])}
-                        className="text-sm font-bold text-sky-600"
-                    >
-                        + Add Feature Card
-                    </button>
-                </div>
-            </SectionWrapper>
-
-
-
-
-            {/*
-  Drop-in replacement for your two SectionWrapper blocks ("7. Pricing Cards"
-  and "8. Pricing / Compare Plans"). Everything you already had still works
-  the same way — I only added the pieces needed to support what the live
-  page now does:
-
-    1. A "Link ID" field on Solution Tabs AND on Feature Groups. These two
-       must match (e.g. both "inbound") — that's what makes clicking
-       "Compare all plans" jump to and open the right accordion section.
-
-    2. A "Badge Tone" selector per feature row (sky / skyDark / pink), so
-       you can make badges like "New" (sky), "Enterprise" (skyDark), or
-       "COMING SOON" (pink) without touching code.
-
-    3. A "Sub-rows" editor under each feature row — this is the nested
-       accordion-inside-accordion (like "Forms" under Inbound, or
-       "Sequences" under Outbound). Each sub-row has its own name, badge,
-       tone, and per-plan values, same shape as its parent row.
-
-  This assumes `SectionWrapper`, `labelStyle`, `inputStyle`, `updateField`,
-  `content`, `activeSections`, and the lucide icons (CheckCircle2,
-  DollarSign, X, Plus) are already available in this file's scope, exactly
-  as in your original code.
-*/}
-            {/* 9. TECH STACK / TECHNOLOGIES USED */}
-            <SectionWrapper id="tech" icon={Code} title="8. Tech Stack" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
-                    <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
-                    <input className={inputStyle} placeholder="Section Subtitle" value={content.tech?.subtitle || ''} onChange={e => updateField('content.tech.subtitle', e.target.value)} />
-                </div>
-                <div className="space-y-4">
-                    {(content.tech?.items || []).map((item, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
-                            <button type="button" onClick={() => updateField('content.tech.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
-
-                            <div className="grid md:grid-cols-2 gap-3 mb-2">
-                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Technology Name (e.g. React)" value={item.name || ''} onChange={e => updateField(`content.tech.items.${i}.name`, e.target.value)} />
-                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Category (e.g. Frontend)" value={item.category || ''} onChange={e => updateField(`content.tech.items.${i}.category`, e.target.value)} />
-                            </div>
-
-                            <textarea className="w-full p-2 bg-white border rounded text-sm mb-3" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.tech.items.${i}.description`, e.target.value)} />
-
-                            <MediaInput
-                                label="Technology Icon / Logo"
-                                value={item.icon}
-                                path={`content.tech.items.${i}.icon`}
-                            />
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.tech.items', (prev) => [...(prev || []), { name: "", category: "", description: "", icon: "" }])} className="text-sm font-bold text-sky-600">+ Add Technology</button>
-                </div>
-            </SectionWrapper>
-            {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
-            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="9. Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
+                 {/* PRICING CARDS / SOLUTIONS COMPARE SECTION */}
+            <SectionWrapper id="pricingCards" icon={CheckCircle2} title="5. Pricing Cards (Solutions Tabs)" activeSections={activeSections}>
 
                 {/* HEADING + SUBTITLE */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -825,9 +579,561 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
+                {/* 18. WORKFLOW ADD-ONS SECTION */}
+            <SectionWrapper id="workflowAddOns" icon={Puzzle} title="6. Workflow Add-Ons" activeSections={activeSections}>
+
+                {/* HEADER TEXT */}
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Lead (e.g. Add more power)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Add more power"
+                            value={content.workflowAddOns?.titleLead || ''}
+                            onChange={(e) => updateField('content.workflowAddOns.titleLead', e.target.value)}
+                        />
+                    </div>
+                    <div className="space-y-1">
+                        <label className={labelStyle}>Title Accent (highlighted, e.g. to your workflow)</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="to your workflow"
+                            value={content.workflowAddOns?.titleAccent || ''}
+                            onChange={(e) => updateField('content.workflowAddOns.titleAccent', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-1">
+                    <label className={labelStyle}>Footnote</label>
+                    <textarea
+                        className={inputStyle}
+                        rows={2}
+                        placeholder="Select your paid plan first, then add any add-on in-app..."
+                        value={content.workflowAddOns?.footnote || ''}
+                        onChange={(e) => updateField('content.workflowAddOns.footnote', e.target.value)}
+                    />
+                </div>
+
+                {/* CARDS */}
+                <div className="space-y-6 pt-4 border-t border-slate-100">
+                    <label className={labelStyle}>Add-on Cards</label>
+
+                    {(content.workflowAddOns?.cards || []).map((card, i) => (
+                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    updateField('content.workflowAddOns.cards', (prev) =>
+                                        (prev || []).filter((_, idx) => idx !== i)
+                                    )
+                                }
+                                className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+
+                            {/* Card header fields */}
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Eyebrow (e.g. Add-on)</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="Add-on"
+                                        value={card.eyebrow || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.eyebrow`, e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Card Name</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="e.g. Inbound"
+                                        value={card.name || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.name`, e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Pricing fields */}
+                            <div className="grid md:grid-cols-3 gap-4">
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Price (e.g. $119)</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="$119"
+                                        value={card.price || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.price`, e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Price Unit</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="Per team, per month"
+                                        value={card.priceUnit || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.priceUnit`, e.target.value)}
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Price Note</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="billed annually"
+                                        value={card.priceNote || ''}
+                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.priceNote`, e.target.value)}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Features list */}
+                            <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
+                                <label className={labelStyle}>Features</label>
+
+                                {(card.features || []).map((feature, j) => (
+                                    <div key={j} className="bg-slate-50 p-3 rounded-lg border border-slate-200 relative space-y-2">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                updateField(`content.workflowAddOns.cards.${i}.features`, (prev) =>
+                                                    (prev || []).filter((_, idx) => idx !== j)
+                                                )
+                                            }
+                                            className="absolute top-2 right-2 text-slate-300 hover:text-rose-500"
+                                        >
+                                            <X size={14} />
+                                        </button>
+
+                                        <div className="grid md:grid-cols-2 gap-2">
+                                            <input
+                                                className="p-2 bg-white border rounded text-xs font-bold"
+                                                placeholder="Feature Title"
+                                                value={feature.title || ''}
+                                                onChange={(e) =>
+                                                    updateField(`content.workflowAddOns.cards.${i}.features.${j}.title`, e.target.value)
+                                                }
+                                            />
+                                            <input
+                                                className="p-2 bg-white border rounded text-xs"
+                                                placeholder="Badge (optional, e.g. Coming soon)"
+                                                value={feature.badge || ''}
+                                                onChange={(e) =>
+                                                    updateField(`content.workflowAddOns.cards.${i}.features.${j}.badge`, e.target.value)
+                                                }
+                                            />
+                                        </div>
+
+                                        <textarea
+                                            className="w-full p-2 bg-white border rounded text-xs"
+                                            rows={2}
+                                            placeholder="Feature description"
+                                            value={feature.description || ''}
+                                            onChange={(e) =>
+                                                updateField(`content.workflowAddOns.cards.${i}.features.${j}.description`, e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                ))}
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        updateField(`content.workflowAddOns.cards.${i}.features`, (prev) => [
+                                            ...(prev || []),
+                                            { title: "", description: "", badge: "" },
+                                        ])
+                                    }
+                                    className="text-[10px] font-bold text-sky-600"
+                                >
+                                    + Add Feature
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            updateField('content.workflowAddOns.cards', (prev) => [
+                                ...(prev || []),
+                                {
+                                    eyebrow: "Add-on",
+                                    name: "",
+                                    price: "",
+                                    priceUnit: "",
+                                    priceNote: "",
+                                    features: [],
+                                },
+                            ])
+                        }
+                        className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
+                    >
+                        <Plus size={20} /> Add New Card
+                    </button>
+                </div>
+            </SectionWrapper>
+
+
+              {/* 3. EXTENSIVE SERVICES PROVIDED */}
+            <SectionWrapper id="servicesList" icon={Briefcase} title="7. Extensive Services Provided" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title" value={content.servicesList?.title || ''} onChange={e => updateField('content.servicesList.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Section Subtitle" value={content.servicesList?.subtitle || ''} onChange={e => updateField('content.servicesList.subtitle', e.target.value)} />
+                </div>
+                <div className="space-y-4">
+                    {(content.servicesList?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
+                            <input className="w-full p-2 bg-white border rounded text-sm font-bold mb-2" placeholder="Service Name" value={item.title || ''} onChange={e => updateField(`content.servicesList.items.${i}.title`, e.target.value)} />
+                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.servicesList.items.${i}.description`, e.target.value)} />
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-sm font-bold text-sky-600">+ Add Service Item</button>
+                </div>
+            </SectionWrapper>
+
+            {/* 4. Industries with we works */}
+            <SectionWrapper
+                id="industries"
+                icon={Layers}
+                title="8. Industries We Serve"
+                activeSections={activeSections}
+            >
+                <div className="grid md:grid-cols-2 gap-4 mb-6">
+                    <input
+                        className={inputStyle}
+                        placeholder="Section Title"
+                        value={content.industries?.title || ""}
+                        onChange={(e) =>
+                            updateField("content.industries.title", e.target.value)
+                        }
+                    />
+
+                    <input
+                        className={inputStyle}
+                        placeholder="Section Subtitle"
+                        value={content.industries?.subtitle || ""}
+                        onChange={(e) =>
+                            updateField("content.industries.subtitle", e.target.value)
+                        }
+                    />
+                </div>
+
+                <div className="space-y-6">
+                    {(content.industries?.items || []).map((item, i) => (
+                        <div
+                            key={i}
+                            className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4"
+                        >
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    updateField("content.industries.items", (prev) =>
+                                        (prev || []).filter((_, idx) => idx !== i)
+                                    )
+                                }
+                                className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-2 rounded-lg"
+                            >
+                                <X size={18} />
+                            </button>
+
+                            <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <label className={labelStyle}>Industry Name</label>
+                                    <input
+                                        className={inputStyle}
+                                        placeholder="e.g. Healthcare"
+                                        value={item.title || ""}
+                                        onChange={(e) =>
+                                            updateField(
+                                                `content.industries.items.${i}.title`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    {/* <label className={labelStyle}>Industry Icon</label> */}
+                                    <MediaInput
+                                        label="Industry Icon"
+                                        value={item.icon}
+                                        path={`content.industries.items.${i}.icon`}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className={labelStyle}>Description</label>
+                                <textarea
+                                    className={inputStyle}
+                                    rows={3}
+                                    placeholder="Brief Description"
+                                    value={item.description || ""}
+                                    onChange={(e) =>
+                                        updateField(
+                                            `content.industries.items.${i}.description`,
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </div>
+                            {/* NEW: Link field */}
+                            <div className="space-y-2">
+                                <label className={labelStyle}>Link (URL / Slug)</label>
+                                <input
+                                    className={inputStyle}
+                                    placeholder="e.g. /industries/healthcare"
+                                    value={item.link || ""}
+                                    onChange={(e) =>
+                                        updateField(
+                                            `content.industries.items.${i}.link`,
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </div>
+                        </div>
+                    ))}
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            updateField("content.industries.items", (prev) => [
+                                ...(prev || []),
+                                {
+                                    title: "",
+                                    description: "",
+                                    icon: "",
+                                    link: "",
+                                },
+                            ])
+                        }
+                        className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
+                    >
+                        <Plus size={20} />
+                        Add Industry Item
+                    </button>
+                </div>
+            </SectionWrapper>
+
+
+            {/* 4. CORE FEATURES GRID */}
+            <SectionWrapper id="features" icon={Database} title="9. Core Features Grid" activeSections={activeSections}>
+                <SectionHeader section={content.features} path="content.features" updateField={updateField} />
+                <div className="space-y-4">
+                    <label className={labelStyle}>Feature Cards</label>
+                    {(content.features?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button
+                                type="button"
+                                onClick={() => updateField('content.features.items', (prev) => (prev || []).filter((_, idx) => idx !== i))}
+                                className="absolute top-2 right-2 text-rose-500"
+                            >
+                                <X size={18} />
+                            </button>
+                            <div className="grid gap-3">
+                                <input
+                                    className="w-full p-2 bg-white border rounded text-sm font-bold"
+                                    placeholder="Feature Title"
+                                    value={item.title || ''}
+                                    onChange={e => updateField(`content.features.items.${i}.title`, e.target.value)}
+                                />
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Feature Description</label>
+                                    <MiniRichTextEditor
+                                        value={item.description || ''}
+                                        onChange={val => updateField(`content.features.items.${i}.description`, val)}
+                                    />
+                                </div>
+                                <MediaInput
+                                    label="Icon"
+                                    value={item.image}
+                                    path={`content.features.items.${i}.image`}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        onClick={() => updateField('content.features.items', (prev) => [...(prev || []), { title: "", description: "", image: "" }])}
+                        className="text-sm font-bold text-sky-600"
+                    >
+                        + Add Feature Card
+                    </button>
+                </div>
+            </SectionWrapper>
+
+
+
+
+            {/*
+  Drop-in replacement for your two SectionWrapper blocks ("7. Pricing Cards"
+  and "8. Pricing / Compare Plans"). Everything you already had still works
+  the same way — I only added the pieces needed to support what the live
+  page now does:
+
+    1. A "Link ID" field on Solution Tabs AND on Feature Groups. These two
+       must match (e.g. both "inbound") — that's what makes clicking
+       "Compare all plans" jump to and open the right accordion section.
+
+    2. A "Badge Tone" selector per feature row (sky / skyDark / pink), so
+       you can make badges like "New" (sky), "Enterprise" (skyDark), or
+       "COMING SOON" (pink) without touching code.
+
+    3. A "Sub-rows" editor under each feature row — this is the nested
+       accordion-inside-accordion (like "Forms" under Inbound, or
+       "Sequences" under Outbound). Each sub-row has its own name, badge,
+       tone, and per-plan values, same shape as its parent row.
+
+  This assumes `SectionWrapper`, `labelStyle`, `inputStyle`, `updateField`,
+  `content`, `activeSections`, and the lucide icons (CheckCircle2,
+  DollarSign, X, Plus) are already available in this file's scope, exactly
+  as in your original code.
+*/}
+            {/* 9. TECH STACK / TECHNOLOGIES USED */}
+            <SectionWrapper id="tech" icon={Code} title="10. Tech Stack" activeSections={activeSections}>
+                <div className="grid md:grid-cols-2 gap-4">
+                    <input className={inputStyle} placeholder="Section Title" value={content.tech?.title || ''} onChange={e => updateField('content.tech.title', e.target.value)} />
+                    <input className={inputStyle} placeholder="Section Subtitle" value={content.tech?.subtitle || ''} onChange={e => updateField('content.tech.subtitle', e.target.value)} />
+                </div>
+                <div className="space-y-4">
+                    {(content.tech?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button type="button" onClick={() => updateField('content.tech.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
+
+                            <div className="grid md:grid-cols-2 gap-3 mb-2">
+                                <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Technology Name (e.g. React)" value={item.name || ''} onChange={e => updateField(`content.tech.items.${i}.name`, e.target.value)} />
+                                <input className="w-full p-2 bg-white border rounded text-sm" placeholder="Category (e.g. Frontend)" value={item.category || ''} onChange={e => updateField(`content.tech.items.${i}.category`, e.target.value)} />
+                            </div>
+
+                            <textarea className="w-full p-2 bg-white border rounded text-sm mb-3" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.tech.items.${i}.description`, e.target.value)} />
+
+                            <MediaInput
+                                label="Technology Icon / Logo"
+                                value={item.icon}
+                                path={`content.tech.items.${i}.icon`}
+                            />
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.tech.items', (prev) => [...(prev || []), { name: "", category: "", description: "", icon: "" }])} className="text-sm font-bold text-sky-600">+ Add Technology</button>
+                </div>
+            </SectionWrapper>
+
+
+              {/* 17. MOBILE FEATURES SECTION */}
+            <SectionWrapper
+                id="mobileFeatures"
+                icon={Puzzle}
+                title="11. Mobile Section"
+                activeSections={activeSections}
+            >
+                {/* Core Fields */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Mobile Features Section Title</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="e.g. Powerful Mobile Features"
+                            value={content.mobileFeaturesTitle || ''}
+                            onChange={e => updateField('content.mobileFeaturesTitle', e.target.value)}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className={labelStyle}>Mobile Features Section Subtitle</label>
+                        <input
+                            className={inputStyle}
+                            placeholder="Discover the powerful features of our mobile app..."
+                            value={content.mobileFeaturesSubtitle || ''}
+                            onChange={e => updateField('content.mobileFeaturesSubtitle', e.target.value)}
+                        />
+                    </div>
+                </div>
+
+                {/* Features Input List (Max 4 Items) — ab har item ka apna Header + Description hai */}
+                <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
+                    <div className="flex items-center justify-between">
+                        <label className={labelStyle}>
+                            Mobile Features{" "}
+                            <span className="text-xs text-slate-400 font-normal">
+                                (Max 4)
+                            </span>
+                        </label>
+
+                        {(content.mobileFeatures || []).length < 4 && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const currentFeatures = content.mobileFeatures || [];
+                                    if (currentFeatures.length < 4) {
+                                        updateField("content.mobileFeatures", [
+                                            ...currentFeatures,
+                                            { header: "", description: "" },
+                                        ]);
+                                    }
+                                }}
+                                className="text-xs font-semibold text-sky-600 hover:text-sky-700 hover:underline"
+                            >
+                                + Add Feature
+                            </button>
+                        )}
+                    </div>
+
+                    {(content.mobileFeatures || []).map((feature, idx) => (
+                        <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-200 relative space-y-2">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const updated = (content.mobileFeatures || []).filter(
+                                        (_, i) => i !== idx
+                                    );
+                                    updateField("content.mobileFeatures", updated);
+                                }}
+                                className="absolute top-2 right-2 text-rose-500 hover:bg-rose-50 p-1 rounded-md transition-colors"
+                            >
+                                <X size={14} />
+                            </button>
+
+                            <input
+                                className={inputStyle}
+                                placeholder={`Feature ${idx + 1} Header`}
+                                value={feature?.header || ''}
+                                onChange={e => {
+                                    const updated = [...(content.mobileFeatures || [])];
+                                    updated[idx] = { ...updated[idx], header: e.target.value };
+                                    updateField("content.mobileFeatures", updated);
+                                }}
+                            />
+
+                            <textarea
+                                className={inputStyle}
+                                rows={2}
+                                placeholder={`Feature ${idx + 1} Description`}
+                                value={feature?.description || ''}
+                                onChange={e => {
+                                    const updated = [...(content.mobileFeatures || [])];
+                                    updated[idx] = { ...updated[idx], description: e.target.value };
+                                    updateField("content.mobileFeatures", updated);
+                                }}
+                            />
+                        </div>
+                    ))}
+
+                    {(!content.mobileFeatures ||
+                        content.mobileFeatures.length === 0) && (
+                            <p className="text-xs text-slate-400 italic">
+                                No features added. Click "+ Add Feature" to add up to 4
+                                features.
+                            </p>
+                        )}
+                </div>
+            </SectionWrapper>
+
+       
             {/* PRICING / COMPARE PLANS SECTION */}
             {/* PRICING / COMPARE PLANS SECTION */}
-            <SectionWrapper id="pricing" icon={DollarSign} title="10. Pricing / Compare Plans" activeSections={activeSections}>
+            <SectionWrapper id="pricing" icon={DollarSign} title="12. Pricing / Compare Plans" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Title (e.g. Compare)" value={content.pricing?.title || ''} onChange={e => updateField('content.pricing.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Highlight Text (e.g. Plans)" value={content.pricing?.highlight || ''} onChange={e => updateField('content.pricing.highlight', e.target.value)} />
@@ -1348,203 +1654,10 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper> */}
 
-            {/* 18. WORKFLOW ADD-ONS SECTION */}
-            <SectionWrapper id="workflowAddOns" icon={Puzzle} title="11. Workflow Add-Ons" activeSections={activeSections}>
-
-                {/* HEADER TEXT */}
-                <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Title Lead (e.g. Add more power)</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="Add more power"
-                            value={content.workflowAddOns?.titleLead || ''}
-                            onChange={(e) => updateField('content.workflowAddOns.titleLead', e.target.value)}
-                        />
-                    </div>
-                    <div className="space-y-1">
-                        <label className={labelStyle}>Title Accent (highlighted, e.g. to your workflow)</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="to your workflow"
-                            value={content.workflowAddOns?.titleAccent || ''}
-                            onChange={(e) => updateField('content.workflowAddOns.titleAccent', e.target.value)}
-                        />
-                    </div>
-                </div>
-
-                <div className="space-y-1">
-                    <label className={labelStyle}>Footnote</label>
-                    <textarea
-                        className={inputStyle}
-                        rows={2}
-                        placeholder="Select your paid plan first, then add any add-on in-app..."
-                        value={content.workflowAddOns?.footnote || ''}
-                        onChange={(e) => updateField('content.workflowAddOns.footnote', e.target.value)}
-                    />
-                </div>
-
-                {/* CARDS */}
-                <div className="space-y-6 pt-4 border-t border-slate-100">
-                    <label className={labelStyle}>Add-on Cards</label>
-
-                    {(content.workflowAddOns?.cards || []).map((card, i) => (
-                        <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative space-y-4">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    updateField('content.workflowAddOns.cards', (prev) =>
-                                        (prev || []).filter((_, idx) => idx !== i)
-                                    )
-                                }
-                                className="absolute top-4 right-4 text-rose-500 hover:bg-rose-50 p-1 rounded-lg transition-colors"
-                            >
-                                <X size={20} />
-                            </button>
-
-                            {/* Card header fields */}
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Eyebrow (e.g. Add-on)</label>
-                                    <input
-                                        className={inputStyle}
-                                        placeholder="Add-on"
-                                        value={card.eyebrow || ''}
-                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.eyebrow`, e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Card Name</label>
-                                    <input
-                                        className={inputStyle}
-                                        placeholder="e.g. Inbound"
-                                        value={card.name || ''}
-                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.name`, e.target.value)}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Pricing fields */}
-                            <div className="grid md:grid-cols-3 gap-4">
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Price (e.g. $119)</label>
-                                    <input
-                                        className={inputStyle}
-                                        placeholder="$119"
-                                        value={card.price || ''}
-                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.price`, e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Price Unit</label>
-                                    <input
-                                        className={inputStyle}
-                                        placeholder="Per team, per month"
-                                        value={card.priceUnit || ''}
-                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.priceUnit`, e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className={labelStyle}>Price Note</label>
-                                    <input
-                                        className={inputStyle}
-                                        placeholder="billed annually"
-                                        value={card.priceNote || ''}
-                                        onChange={(e) => updateField(`content.workflowAddOns.cards.${i}.priceNote`, e.target.value)}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Features list */}
-                            <div className="space-y-3 bg-white p-4 rounded-xl border border-slate-100">
-                                <label className={labelStyle}>Features</label>
-
-                                {(card.features || []).map((feature, j) => (
-                                    <div key={j} className="bg-slate-50 p-3 rounded-lg border border-slate-200 relative space-y-2">
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                updateField(`content.workflowAddOns.cards.${i}.features`, (prev) =>
-                                                    (prev || []).filter((_, idx) => idx !== j)
-                                                )
-                                            }
-                                            className="absolute top-2 right-2 text-slate-300 hover:text-rose-500"
-                                        >
-                                            <X size={14} />
-                                        </button>
-
-                                        <div className="grid md:grid-cols-2 gap-2">
-                                            <input
-                                                className="p-2 bg-white border rounded text-xs font-bold"
-                                                placeholder="Feature Title"
-                                                value={feature.title || ''}
-                                                onChange={(e) =>
-                                                    updateField(`content.workflowAddOns.cards.${i}.features.${j}.title`, e.target.value)
-                                                }
-                                            />
-                                            <input
-                                                className="p-2 bg-white border rounded text-xs"
-                                                placeholder="Badge (optional, e.g. Coming soon)"
-                                                value={feature.badge || ''}
-                                                onChange={(e) =>
-                                                    updateField(`content.workflowAddOns.cards.${i}.features.${j}.badge`, e.target.value)
-                                                }
-                                            />
-                                        </div>
-
-                                        <textarea
-                                            className="w-full p-2 bg-white border rounded text-xs"
-                                            rows={2}
-                                            placeholder="Feature description"
-                                            value={feature.description || ''}
-                                            onChange={(e) =>
-                                                updateField(`content.workflowAddOns.cards.${i}.features.${j}.description`, e.target.value)
-                                            }
-                                        />
-                                    </div>
-                                ))}
-
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        updateField(`content.workflowAddOns.cards.${i}.features`, (prev) => [
-                                            ...(prev || []),
-                                            { title: "", description: "", badge: "" },
-                                        ])
-                                    }
-                                    className="text-[10px] font-bold text-sky-600"
-                                >
-                                    + Add Feature
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-
-                    <button
-                        type="button"
-                        onClick={() =>
-                            updateField('content.workflowAddOns.cards', (prev) => [
-                                ...(prev || []),
-                                {
-                                    eyebrow: "Add-on",
-                                    name: "",
-                                    price: "",
-                                    priceUnit: "",
-                                    priceNote: "",
-                                    features: [],
-                                },
-                            ])
-                        }
-                        className="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl flex items-center justify-center gap-2 text-slate-400 hover:text-sky-600 hover:border-sky-300 transition-all font-bold"
-                    >
-                        <Plus size={20} /> Add New Card
-                    </button>
-                </div>
-            </SectionWrapper>
-
+        
 
             {/* 15. FAQ Section */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="12. FAQ Section" activeSections={activeSections}>
+            <SectionWrapper id="faq" icon={HelpCircle} title="13. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -1572,115 +1685,7 @@ export default function DigitalEditor({ formData, updateField, MediaInput, TipTa
                 </div>
             </SectionWrapper>
 
-            {/* 17. MOBILE FEATURES SECTION */}
-            <SectionWrapper
-                id="mobileFeatures"
-                icon={Puzzle}
-                title="13. Mobile Section"
-                activeSections={activeSections}
-            >
-                {/* Core Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Mobile Features Section Title</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="e.g. Powerful Mobile Features"
-                            value={content.mobileFeaturesTitle || ''}
-                            onChange={e => updateField('content.mobileFeaturesTitle', e.target.value)}
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className={labelStyle}>Mobile Features Section Subtitle</label>
-                        <input
-                            className={inputStyle}
-                            placeholder="Discover the powerful features of our mobile app..."
-                            value={content.mobileFeaturesSubtitle || ''}
-                            onChange={e => updateField('content.mobileFeaturesSubtitle', e.target.value)}
-                        />
-                    </div>
-                </div>
-
-                {/* Features Input List (Max 4 Items) — ab har item ka apna Header + Description hai */}
-                <div className="space-y-3 mt-6 pt-4 border-t border-slate-100">
-                    <div className="flex items-center justify-between">
-                        <label className={labelStyle}>
-                            Mobile Features{" "}
-                            <span className="text-xs text-slate-400 font-normal">
-                                (Max 4)
-                            </span>
-                        </label>
-
-                        {(content.mobileFeatures || []).length < 4 && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const currentFeatures = content.mobileFeatures || [];
-                                    if (currentFeatures.length < 4) {
-                                        updateField("content.mobileFeatures", [
-                                            ...currentFeatures,
-                                            { header: "", description: "" },
-                                        ]);
-                                    }
-                                }}
-                                className="text-xs font-semibold text-sky-600 hover:text-sky-700 hover:underline"
-                            >
-                                + Add Feature
-                            </button>
-                        )}
-                    </div>
-
-                    {(content.mobileFeatures || []).map((feature, idx) => (
-                        <div key={idx} className="bg-slate-50 p-3 rounded-lg border border-slate-200 relative space-y-2">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const updated = (content.mobileFeatures || []).filter(
-                                        (_, i) => i !== idx
-                                    );
-                                    updateField("content.mobileFeatures", updated);
-                                }}
-                                className="absolute top-2 right-2 text-rose-500 hover:bg-rose-50 p-1 rounded-md transition-colors"
-                            >
-                                <X size={14} />
-                            </button>
-
-                            <input
-                                className={inputStyle}
-                                placeholder={`Feature ${idx + 1} Header`}
-                                value={feature?.header || ''}
-                                onChange={e => {
-                                    const updated = [...(content.mobileFeatures || [])];
-                                    updated[idx] = { ...updated[idx], header: e.target.value };
-                                    updateField("content.mobileFeatures", updated);
-                                }}
-                            />
-
-                            <textarea
-                                className={inputStyle}
-                                rows={2}
-                                placeholder={`Feature ${idx + 1} Description`}
-                                value={feature?.description || ''}
-                                onChange={e => {
-                                    const updated = [...(content.mobileFeatures || [])];
-                                    updated[idx] = { ...updated[idx], description: e.target.value };
-                                    updateField("content.mobileFeatures", updated);
-                                }}
-                            />
-                        </div>
-                    ))}
-
-                    {(!content.mobileFeatures ||
-                        content.mobileFeatures.length === 0) && (
-                            <p className="text-xs text-slate-400 italic">
-                                No features added. Click "+ Add Feature" to add up to 4
-                                features.
-                            </p>
-                        )}
-                </div>
-            </SectionWrapper>
-
+          
         </div>
     );
 }

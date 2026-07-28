@@ -36,6 +36,17 @@ async function getCaseStudy(slug) {
 
   if (!row) return null;
 
+  const matchedProject = await prisma.portfolioProject.findFirst({
+    where: {
+      title: row.title,
+    },
+  });
+
+  const badges = matchedProject?.badgesJson
+    ? JSON.parse(matchedProject.badgesJson)
+    : {};
+
+
   const branding = parseJson(
     row.brandingJson,
     {
@@ -155,20 +166,20 @@ async function getCaseStudy(slug) {
         row.heroMockups || '/images/case-studies/screen1.png',
       ],
     },
-    downloads: parseJson(row.portfolioProjects?.[0]?.badgesJson, {
+    downloads: {
       googlePlay: {
-        url: '#',
-        image: '/images/badges/google-play.png',
+        url: badges?.play?.url || "",
+        image: badges?.play?.image || "/images/badges/google-play.png",
       },
       appStore: {
-        url: '#',
-        image: '/images/badges/app-store.png',
+        url: badges?.app?.url || "",
+        image: badges?.app?.image || "/images/badges/app-store.png",
       },
       web: {
-        url: '#',
-        image: '/images/badges/web-badge.png',
+        url: badges?.web?.url || "",
+        image: badges?.web?.image || "/images/badges/web-badge.png",
       },
-    }),
+    },
     branding,
     team,
     client,
@@ -249,7 +260,7 @@ export default async function CaseStudyPage({ params }) {
           imagePosition="right"
           isDark={false}
         />
-{/* 
+        {/* 
         <ContentBanner
          title="Goals & Objectives"
           listItems={data.goals.items}
@@ -266,21 +277,21 @@ export default async function CaseStudyPage({ params }) {
 
         <AppScreensShowcase data={data.appScreens} branding={branding} />
 
-       <Results
-  results={[
-    {
-      ...data.results[0],
-      description: "Since launch, the platform has delivered measurable impact across every stage of the workflow. Early feedback from internal teams and stakeholders has been overwhelmingly positive, with the solution providing a strong, scalable foundation for continued growth. Significant operational efficiencies and strategic benefits have already been realized, setting the stage for long-term success.",
-    },
-  ]}
-  branding={branding}
-/>
+        <Results
+          results={[
+            {
+              ...data.results[0],
+              description: "Since launch, the platform has delivered measurable impact across every stage of the workflow. Early feedback from internal teams and stakeholders has been overwhelmingly positive, with the solution providing a strong, scalable foundation for continued growth. Significant operational efficiencies and strategic benefits have already been realized, setting the stage for long-term success.",
+            },
+          ]}
+          branding={branding}
+        />
 
         {/* <FindYourApp data={data} branding={branding} /> */}
 
-        <DevelopmentApproach branding={branding}/>
+        <DevelopmentApproach branding={branding} />
 
-        <ContentBanner  data={data} branding={branding}/>
+        <ContentBanner data={data} branding={branding} />
 
         <TestimonialSection
           data={data.client}

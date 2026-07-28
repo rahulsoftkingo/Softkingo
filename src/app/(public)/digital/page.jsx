@@ -18,6 +18,7 @@ import InquirySection from "@/components/footer/InquirySection";
 import OurProcessRadial from "./OurProcessRadial";
 import WorkflowAddOns from "./WorkFlowAddons";
 import TrustedByCard from "./TrustedByCard";
+import CaseStudiesSection from "./CaseStudiesSection";
 
 
 
@@ -29,6 +30,9 @@ export default function Page() {
             </div>
             <div className="relative bg-white">
                 <TrustedByCard />
+            </div>
+            <div>
+                <CaseStudiesSection/>
             </div>
 
             <div>
@@ -77,7 +81,6 @@ export default function Page() {
             <div>
                 <InquirySection />
             </div>
-
         </div>
 
     );

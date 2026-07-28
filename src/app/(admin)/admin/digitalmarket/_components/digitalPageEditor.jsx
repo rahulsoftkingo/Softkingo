@@ -531,18 +531,18 @@ export default function DigitalPageEditor({ data, onBack }) {
         sections: [
             { id: 'hero', label: '1. Hero Section', icon: Smartphone },
             { id: 'seo', label: '2. SEO Settings', icon: Search },
-            { id: 'enterpriseMarketing', label: '3. Enterprise Digital', icon: Share2 },
+            { id: 'enterpriseMarketing', label: '3. Enterprise Digital', icon: Share2 },         
             { id: 'services', label: '4. Service Categories', icon: Layout },
-            { id: 'servicesList', label: '5. Extensive Services', icon: Briefcase },
-            { id: 'industries', label: '6. Industries We Serve', icon: Layers },
-            { id: 'features', label: '7. Core Features Grid', icon: Database },
-            { id: 'tech', label: '8. Tech Stack', icon: HelpCircle },
-            { id: 'pricingCards', label: '9. Pricing Cards Tabs', icon: CheckCircle2 },
-            { id: 'pricing', label: '10. Pricing / Compare Plans', icon: DollarSign },
-            { id: 'workflowAddOns', label: '11. Workflow Add-Ons', icon: Puzzle },
-            { id: 'faq', label: '12. FAQ Section', icon: HelpCircle },
-            { id: 'mobileFeatures', label: '13. Mobile Section', icon: Puzzle },
-
+             { id: 'pricing', label: '5. Pricing / Compare Plans', icon: DollarSign },
+            { id: 'workflowAddOns', label: '6. Workflow Add-Ons', icon: Puzzle },
+            { id: 'servicesList', label: '7. Extensive Services', icon: Briefcase },
+            { id: 'industries', label: '8. Industries We Serve', icon: Layers },
+            { id: 'features', label: '9. Core Features Grid', icon: Database },
+            { id: 'tech', label: '10. Tech Stack', icon: HelpCircle },
+            { id: 'mobileFeatures', label: '11. Mobile Section', icon: Puzzle },
+            { id: 'pricingCards', label: '12. Pricing Cards Tabs', icon: CheckCircle2 },
+            { id: 'faq', label: '13. FAQ Section', icon: HelpCircle },
+            
         ]
     };
 
