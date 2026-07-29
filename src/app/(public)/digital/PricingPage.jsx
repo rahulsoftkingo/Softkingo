@@ -332,9 +332,14 @@ export default function PricingPage({
   // but cards/compare table above keep rendering from the fallback tab.
   const showTabSwitcher = visibleSolutionTabs.length > 0;
 
+  // FIX: key by `${group.id}-${index}` instead of just `group.id`.
+  // If featureGroups data ever contains duplicate or missing `id` values,
+  // plain `group.id` keys collide and opening one accordion opens every
+  // other group sharing that id. The composite key guarantees uniqueness
+  // regardless of what the backend sends.
   const [openSections, setOpenSections] = useState(() => {
     const initial = {};
-    safePricing.featureGroups.forEach((g, i) => (initial[g.id] = i === 0));
+    safePricing.featureGroups.forEach((g, i) => (initial[`${g.id}-${i}`] = i === 0));
     return initial;
   });
 
@@ -344,8 +349,8 @@ export default function PricingPage({
   const compareRef = useRef(null);
   const sectionRefs = useRef({});
 
-  function toggleSection(id) {
-    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
+  function toggleSection(key) {
+    setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   }
 
   function toggleFeature(key) {
@@ -355,7 +360,7 @@ export default function PricingPage({
   function goToCompare(targetGroupId) {
     setOpenSections((prev) => {
       const next = {};
-      safePricing.featureGroups.forEach((g) => (next[g.id] = g.id === targetGroupId));
+      safePricing.featureGroups.forEach((g, i) => (next[`${g.id}-${i}`] = g.id === targetGroupId));
       return next;
     });
     setJustJumped(targetGroupId);
@@ -650,19 +655,20 @@ export default function PricingPage({
 
           <div className="mt-6 space-y-4">
             {safePricing.featureGroups.map((group, gi) => {
+              const groupKey = `${group.id}-${gi}`;
               const IconComponent = GROUP_ICONS[gi % GROUP_ICONS.length];
-              const isOpen = openSections[group.id];
+              const isOpen = openSections[groupKey];
               const isFlashing = justJumped === group.id;
 
               return (
                 <div
-                  key={group.id}
-                  ref={(el) => (sectionRefs.current[group.id] = el)}
+                  key={groupKey}
+                  ref={(el) => (sectionRefs.current[groupKey] = el)}
                   className={`scroll-mt-24 rounded-lg border overflow-hidden transition-shadow ${isFlashing ? "ring-2 ring-yellow-200" : "border-slate-100"}`}
                 >
                   <button
                     type="button"
-                    onClick={() => toggleSection(group.id)}
+                    onClick={() => toggleSection(groupKey)}
                     className="flex w-full items-center justify-between gap-3 bg-slate-50 px-4 py-4 transition-colors hover:bg-slate-100/70"
                   >
                     <div className="flex items-center gap-3">
