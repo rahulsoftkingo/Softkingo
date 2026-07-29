@@ -346,7 +346,7 @@ export default function CaseStudiesSection({ title, data }) {
 
   return (
     <section className="overflow-hidden bg-white py-12">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-0">
         <div className="flex items-start justify-between gap-6">
           <CommonTitle align="left" pill={false} title={heading} />
 
@@ -377,7 +377,7 @@ export default function CaseStudiesSection({ title, data }) {
         */}
         <div
           ref={containerRef}
-          className="mt-8 mr-[calc(50%-50vw)] [clip-path:inset(0_-100vw_0_0)]"
+          className="mr-[calc(50%-50vw)] [clip-path:inset(0_-100vw_0_0)]"
         >
           <motion.div
             className="flex cursor-grab gap-5 pb-4 select-none active:cursor-grabbing"

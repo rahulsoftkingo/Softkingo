@@ -450,7 +450,7 @@ export default function OptimizedChatWidget() {
           onClick={() => setIsOpen(true)}
           className="relative group flex items-center justify-center transition-all duration-500"
         >
-          {/* Subtle Attention Ping */}s
+          {/* Subtle Attention Ping */}
           <span className="absolute inset-0 rounded-full bg-sky-400/20 animate-ping duration-1000"></span>
 
           {/* Main Button Body - Clean & Premium */}
