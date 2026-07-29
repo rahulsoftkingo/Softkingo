@@ -67,7 +67,7 @@ export const homePortfolioData = [
             techStack: 'Next.js, Python, PostgreSQL',
         },
         playStoreUrl: 'https://play.google.com/store/apps/details?id=com.ezydash&hl=en_IN',
-        appStoreUrl: 'https://apps.apple.com/in/app/ezydash/id6749002165',
+        appStoreUrl: 'https://apps.apple.com/in/app/ezydash/id67490021655',
         webUrl: 'https://www.ezydash.com/',
         caseStudyUrl: '/case-studies/ezydash',
     },

@@ -411,7 +411,7 @@ const SideBar = ({ onClose }) => {
         "Automate deployment pipelines, improve reliability and ship faster with our DevOps & cloud engineering team.",
       links: [
         {
-          href: "/services/seo-services",
+          href: "/services/seo",
           title: "Seo Services",
           icon: <FaMobileAlt />,
         },
