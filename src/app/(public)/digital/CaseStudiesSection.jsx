@@ -228,6 +228,7 @@ function CaseStudyCard({ study }) {
         <CardLogo study={study} />
 
         <Link
+          target="_blank"
           href={study.link}
           aria-label={`Visit ${study.id}`}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white/25"

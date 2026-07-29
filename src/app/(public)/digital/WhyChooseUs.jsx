@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   Rocket,
   Tag,
@@ -40,13 +40,8 @@ const CARD_GAP = 20;
 const VIEWPORT_HEIGHT = 420;
 const TRACK_HEIGHT = 320;
 
-// NEW: har card ke scroll-through ke liye extra "scroll room".
-// Jitna zyada, utna slow/halka feel aayega per card.
-const SCROLL_ROOM_PER_CARD = 260;
-
-// Simple hook: sirf lg breakpoint (1024px) check karta hai
 function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(true); // default true = SSR-safe fallback to desktop markup
+  const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -81,7 +76,6 @@ function FeatureCard({ item, i, style }) {
 }
 
 export default function WhyChooseUs({ data }) {
-  const containerRef = useRef(null);
   const isDesktop = useIsDesktop();
 
   const title = data?.title || DEFAULT_DATA.title;
@@ -89,37 +83,21 @@ export default function WhyChooseUs({ data }) {
   const features =
     data?.items && data.items.length > 0 ? data.items : DEFAULT_DATA.items;
 
-  // NEW: section ki total height ab content ke hisaab se lambi hai,
-  // taaki scroll progress (0 -> 1) dheere-dheere cover ho, jaldi nahi.
-  const sectionHeight = VIEWPORT_HEIGHT + features.length * SCROLL_ROOM_PER_CARD;
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Softer spring: kam stiffness + zyada damping = halka, lag-y, smooth feel
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 45,
-    damping: 20,
-    mass: 0.8,
-  });
-
   const totalStackHeight =
     features.length * (CARD_HEIGHT + CARD_GAP) - CARD_GAP;
 
-  const scrollDistance = Math.max(0, totalStackHeight - VIEWPORT_HEIGHT);
-
-  const y = useTransform(smoothProgress, [0, 1], [0, -scrollDistance]);
+  const [cardsBoxRef, setCardsBoxRef] = useState(null);
+  const { scrollYProgress } = useScroll({
+    container: cardsBoxRef ? { current: cardsBoxRef } : undefined,
+  });
 
   const thumbHeight = Math.max(
     48,
     (VIEWPORT_HEIGHT / (totalStackHeight || 1)) * TRACK_HEIGHT
   );
 
-  const thumbTop = useTransform(smoothProgress, [0, 1], [0, TRACK_HEIGHT - thumbHeight]);
+  const thumbTop = useTransform(scrollYProgress, [0, 1], [0, TRACK_HEIGHT - thumbHeight]);
 
-  // ---------- MOBILE / TABLET: clean static version, no scroll-jacking ----------
   if (!isDesktop) {
     return (
       <section className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200 px-4 py-12 sm:px-6">
@@ -151,20 +129,15 @@ export default function WhyChooseUs({ data }) {
     );
   }
 
-  // ---------- DESKTOP: original scroll-jacking version, unchanged ----------
   return (
-    <section
-      ref={containerRef}
-      className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200"
-      style={{ height: sectionHeight }} // NEW: lambi scroll-height
-    >
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden px-4 sm:px-6 lg:px-8">
+    <section className="relative bg-gradient-to-br from-white via-sky-50 to-sky-200 py-16">
+      <div className="flex items-center px-4 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-12 lg:flex-row lg:items-center">
 
-          {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6 }}
             className="flex flex-1 flex-col justify-center"
           >
@@ -175,29 +148,12 @@ export default function WhyChooseUs({ data }) {
             />
           </motion.div>
 
-          {/* Progress Bar */}
-          <div className="hidden items-center justify-center lg:flex lg:shrink-0">
-            <div
-              className="relative rounded-full bg-slate-200"
-              style={{ height: TRACK_HEIGHT, width: 2 }}
-            >
-              <motion.div
-                className="absolute left-0 rounded-full bg-slate-900"
-                style={{
-                  height: thumbHeight,
-                  top: thumbTop,
-                  width: 2,
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Cards */}
           <div
-            className="relative flex-1 overflow-hidden"
+            ref={setCardsBoxRef}
+            className="whychoose-scroll relative flex-1 overflow-y-auto"
             style={{ height: VIEWPORT_HEIGHT }}
           >
-            <motion.div style={{ y }} className="flex flex-col">
+            <div className="flex flex-col mr-2">
               {features.map((item, i) => (
                 <FeatureCard
                   key={i}
@@ -209,11 +165,32 @@ export default function WhyChooseUs({ data }) {
                   }}
                 />
               ))}
-            </motion.div>
+            </div>
           </div>
 
         </div>
       </div>
+
+      <style jsx global>{`
+        .whychoose-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: #28afdf #f1f5f9;
+        }
+        .whychoose-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .whychoose-scroll::-webkit-scrollbar-track {
+          background: #f1f5f9;
+          border-radius: 8px;
+        }
+        .whychoose-scroll::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #28afdf, #06465d);
+          border-radius: 8px;
+        }
+        .whychoose-scroll::-webkit-scrollbar-thumb:hover {
+          background: #06465d;
+        }
+      `}</style>
     </section>
   );
 }

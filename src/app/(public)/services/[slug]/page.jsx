@@ -571,7 +571,6 @@
 //   );
 // }
 
-
 // // src/app/(public)/services/[slug]/page.jsx
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
@@ -580,6 +579,7 @@ import Link from "next/link";
 import LeadForm from "@/components/public/LeadForm";
 import TechView from "@/components/common/TechView";
 import MethodologySection from "@/components/common/MethodologySection";
+import probe from "probe-image-size"; // NEW
 import {
   FaMobileAlt,
   FaHandSparkles,
@@ -653,11 +653,22 @@ const iconMap = {
   FaRegFileCode,
 };
 
+// NEW: server-side helper — remote URL se real width/height nikalta hai
+// (bina poori image download kiye, sirf headers/metadata parse karta hai)
+async function getImageDimensions(url) {
+  try {
+    const result = await probe(url);
+    return { width: result.width, height: result.height };
+  } catch (err) {
+    console.error(`Failed to probe dimensions for ${url}:`, err.message);
+    return { width: 1200, height: 630 }; // fallback agar fetch fail ho jaye
+  }
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   console.log("Generating metadata for slug:", slug);
 
-  // DB call now happens at request-time (SSR), not at build-time
   let service = await prisma.page.findUnique({
     where: { slug, type: "service" },
     select: {
@@ -668,7 +679,6 @@ export async function generateMetadata({ params }) {
     },
   });
 
-  // ✅ Agar "service" type na mile, to "digital" type check karo
   if (!service) {
     service = await prisma.page.findUnique({
       where: { slug, type: "digital" },
@@ -712,25 +722,23 @@ export default async function ServicePage({ params }) {
     },
   });
 
-
   if (!service || service.status !== "published") {
     const digitalPage = await prisma.page.findUnique({
-      where: { slug, type: "digital" , status: "published"},
+      where: { slug, type: "digital", status: "published" },
     });
 
+    if (!digitalPage) {
+      return notFound();
+    }
 
-  if (!digitalPage) {
-    return notFound();
-  }
+    const jsonContent = digitalPage.contentJson
+      ? JSON.parse(digitalPage.contentJson)
+      : {};
 
-  const jsonContent = digitalPage.contentJson
-    ? JSON.parse(digitalPage.contentJson)
-    : {};
-
-  const data =
-    jsonContent.content && Object.keys(jsonContent.content).length > 0
-      ? jsonContent.content
-      : jsonContent;
+    const data =
+      jsonContent.content && Object.keys(jsonContent.content).length > 0
+        ? jsonContent.content
+        : jsonContent;
 
     data.slug = slug;
     if (digitalPage && digitalPage.status === "published") {
@@ -741,84 +749,115 @@ export default async function ServicePage({ params }) {
   }
 
   const jsonContent = service.contentJson ? JSON.parse(service.contentJson) : {};
-  console.log("JSON Content ",jsonContent)
+  console.log("JSON Content ", jsonContent);
 
-
-  function extractAllImages(obj) {
+  // CHANGED: ab async hai, aur real dimensions fetch karta hai
+  async function extractAllImages(obj) {
     const images = [];
 
-    function traverse(value) {
-      if (!value) return;
+    function isImagePath(str) {
+      return (
+        typeof str === "string" &&
+        str.trim() !== "" &&
+        /\.(png|jpg|jpeg|webp|svg|gif)(\?.*)?$/i.test(str.trim())
+      );
+    }
 
-      // image object found
+    function traverse(value) {
+      if (value === null || value === undefined) return;
+
+      // Case 1: plain string that looks like an image path
+      if (isImagePath(value)) {
+        images.push({ src: value });
+        return;
+      }
+
+      // Case 2: object with a `src` property that looks like an image path
       if (
         typeof value === "object" &&
-        value.src &&
-        typeof value.src === "string" &&
-        value.src.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+        !Array.isArray(value) &&
+        isImagePath(value.src)
       ) {
         images.push({
           src: value.src,
-          width: value.width || 1200,
-          height: value.height || 630,
+          width: value.width,
+          height: value.height,
         });
       }
 
       if (Array.isArray(value)) {
         value.forEach(traverse);
-      } else if (typeof value === "object") {
+        return;
+      }
+
+      if (typeof value === "object") {
         Object.values(value).forEach(traverse);
       }
     }
 
     traverse(obj);
 
-    // remove duplicates
-    return images.filter(
-      (img, index, self) =>
-        index === self.findIndex((i) => i.src === img.src)
+    // remove duplicates (by src)
+    const uniqueImages = images.filter(
+      (img, index, self) => index === self.findIndex((i) => i.src === img.src)
     );
+
+    // NEW: jin images ki width/height already data me nahi hai, unke liye
+    // real dimensions URL se fetch karo (sab parallel me, fast rahega)
+    const withDimensions = await Promise.all(
+      uniqueImages.map(async (img) => {
+        if (img.width && img.height) {
+          return { src: img.src, width: img.width, height: img.height };
+        }
+
+        // relative path ho to full domain jodo
+        const fullUrl = img.src.startsWith("http")
+          ? img.src
+          : `https://www.softkingo.com${img.src}`;
+
+        const dims = await getImageDimensions(fullUrl);
+        return { src: img.src, width: dims.width, height: dims.height };
+      })
+    );
+
+    return withDimensions;
   }
 
+  // CHANGED: ab await zaroori hai kyunki function async hai
+  const pageImages = await extractAllImages(jsonContent.content);
 
-  const pageImages = extractAllImages(jsonContent);
+  console.log("show all the images url in this", pageImages);
 
-
-
-  // ✅ ImageObject array banana
+  // ImageObject array banana
   const imageObjects = [
-    // seoImage ko pehle add karo (agar ho)
     ...(service.seoImage
       ? [{
         "@type": "ImageObject",
         "url": `https://www.softkingo.com${service.seoImage}`,
-        "width": 1200,   // seoImage ka standard OG size
+        "width": 1200,
         "height": 630,
       }]
       : []
     ),
-    // contentJson ki saari images
     ...pageImages.map(img => ({
       "@type": "ImageObject",
-      "url": `https://www.softkingo.com${img.src}`,
+      "url": img.src.startsWith("http") ? img.src : `https://www.softkingo.com${img.src}`,
       "width": img.width,
       "height": img.height,
     }))
   ];
-  // If activeSections is missing OR empty, default to showing everything
+
   const defaultSections = ['hero', 'stats', 'services', 'consultation', 'tech', 'process', 'highlight', 'portfolio', 'solutions', 'industries', 'user-guide', 'faq', 'seo'];
   const activeSections = (jsonContent.activeSections && jsonContent.activeSections.length > 0)
     ? jsonContent.activeSections
     : defaultSections;
 
-  // Fallback to jsonContent itself if 'content' object is missing (old structure)
   const content = (jsonContent.content && Object.keys(jsonContent.content).length > 0)
     ? jsonContent.content
     : jsonContent;
 
   const show = (section) => activeSections.includes(section);
 
-  // ADD THIS RIGHT HERE ↓
   const faqSchema = show('faq') && content.faq?.items?.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -878,14 +917,12 @@ export default async function ServicePage({ params }) {
         }}
       />
 
-      {/* ADD THIS RIGHT HERE ↓ */}
       {faqSchema && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-
 
       {/* Hero Section with Lead Form */}
       {show('hero') && (
@@ -903,9 +940,7 @@ export default async function ServicePage({ params }) {
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 lg:py-18 w-full">
             <div className="grid md:grid-cols-3 gap-10 lg:gap-16 items-center">
-              {/* Left Content */}
               <div className="md:col-span-2 text-white space-y-4 animate-fadeInLeft">
-                {/* Breadcrumb */}
                 <nav className="flex items-center space-x-2 text-xs md:text-sm animate-fadeInUp">
                   <Link href="/" className="hover:text-cyan-400 transition-colors">
                     Home
@@ -918,7 +953,6 @@ export default async function ServicePage({ params }) {
                   <span className="text-cyan-400 ">{service.title}</span>
                 </nav>
 
-                {/* Heading & Description */}
                 <div className="space-y-6">
                   <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal animate-fadeInUp">
                     {content.heroTitle}
@@ -939,7 +973,6 @@ export default async function ServicePage({ params }) {
                   </Link>
                 </div>
 
-                {/* Trusted By Section */}
                 <div className="pt-4 md:pt-6 animate-fadeInUp animation-delay-800  ">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
@@ -983,7 +1016,6 @@ export default async function ServicePage({ params }) {
                 </div>
               </div>
 
-              {/* Right - Lead Form Component */}
               <div className="md:col-span-1 md:ml-auto w-full max-w-md mx-auto md:mx-0 animate-fadeInRight">
                 <LeadForm
                   formType="service"
@@ -1024,7 +1056,6 @@ export default async function ServicePage({ params }) {
       {/* Stats Section */}
       {show('stats') && (
         <section className="relative overflow-hidden bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400">
-          {/* Decorative mesh-like blurs */}
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl -mt-32 opacity-30"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl -mb-48 opacity-20"></div>
 
@@ -1063,10 +1094,7 @@ export default async function ServicePage({ params }) {
           awards={content.awards?.items}
         />
       )}
-      {/* Services Section - CoreServicesSection Component */}
       {show('services') && (() => {
-        // Map admin categories to the component's 'services' shape
-        // Admin uses 'expertise' for capabilities and 'products' for technologies
         const adminCategories = content.services?.categories || [];
         const mappedServices = adminCategories.length > 0
           ? adminCategories.map((cat, idx) => ({
@@ -1079,7 +1107,7 @@ export default async function ServicePage({ params }) {
               img: prod.image || "/images/placeholder.jpg"
             })),
           }))
-          : undefined; // undefined = component will use AI_SERVICES_DEFAULT
+          : undefined;
 
         return (
           <CoreServicesSection
@@ -1092,7 +1120,6 @@ export default async function ServicePage({ params }) {
         );
       })()}
 
-      {/* Consultation CTA Section */}
       {show('consultation') && (
         <ConsultationCTA
           title={content.consultation?.title}
@@ -1103,17 +1130,14 @@ export default async function ServicePage({ params }) {
         />
       )}
 
-      {/* Tech Stack Section */}
       {show('tech') && (
         <CloneTechStack data={content.techStack || content.tech} />
       )}
 
-      {/* Process Section */}
       {show('process') && (
         <ServiceProcess data={content.process} />
       )}
 
-      {/* Solution Highlight Section */}
       {show('highlight') && (
         <SolutionHighlight data={content.highlight} />
       )}
@@ -1127,22 +1151,18 @@ export default async function ServicePage({ params }) {
         />
       )}
 
-      {/* Industry Solutions Section */}
       {show('solutions') && (
         <IndustrySolutions data={content.solutions} />
       )}
 
-      {/* Industries Section */}
       {show('industries') && (
         <IndustriesSection data={content.industrySection} />
       )}
 
-      {/* User Guide Section */}
       {show('user-guide') && (
         <UserGuide data={content.userGuide} />
       )}
 
-      {/* FAQ Section */}
       {show('faq') && (
         <FAQAccordion data={content.faq} />
       )}
@@ -1164,14 +1184,10 @@ export default async function ServicePage({ params }) {
   );
 }
 
-// Stat Item Component for the new bar design
 function StatItem({ icon, value, label }) {
   return (
     <div className="flex flex-col items-center text-center group cursor-default">
       <div className="flex items-center gap-4 mb-2">
-        {/* <span className="text-white/80 scale-90 group-hover:scale-110 group-hover:text-white transition-all duration-500 transform-gpu">
-          {icon}
-        </span> */}
         <span className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter text-white drop-shadow-md">
           {value}
         </span>

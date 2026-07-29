@@ -266,7 +266,12 @@ export default function IndustriesSection({ data, industries }) {
                                         className="inline-block"
                                     >
                                         <Link
-                                            href={`/industries/${activeIndustry.buttonLink || activeIndustry.slug || 'it-consulting'}`}
+                                            href={`/industries/${activeIndustry.slug ||
+                                                (activeIndustry.itemTitle === "E-Commerce & Retails"
+                                                    ? "retail"
+                                                    : activeIndustry.slug) ||
+                                                "it-consulting"
+                                                }`}
                                             className="px-6 py-3 rounded-xl bg-[#1EAEDB] text-white font-bold text-sm md:text-base transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] flex items-center gap-2"
                                         >
                                             {activeIndustry.title || activeIndustry.itemTitle}
