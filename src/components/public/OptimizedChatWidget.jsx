@@ -450,11 +450,11 @@ export default function OptimizedChatWidget() {
           onClick={() => setIsOpen(true)}
           className="relative group flex items-center justify-center transition-all duration-500"
         >
-          {/* Subtle Attention Ping */}
+          {/* Subtle Attention Ping */}s
           <span className="absolute inset-0 rounded-full bg-sky-400/20 animate-ping duration-1000"></span>
 
           {/* Main Button Body - Clean & Premium */}
-          <div className="relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-all duration-500 hover:scale-110 active:scale-95 overflow-visible ">
+          <div className="relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-all duration-500 hover:scale-110 active:scale-95 overflow-visible">
 
             {/* Subtle Blue Border Inner Ring */}
             <div className="absolute inset-0 rounded-full border-2 border-sky-500/10 group-hover:border-sky-500/30 transition-all duration-500"></div>
