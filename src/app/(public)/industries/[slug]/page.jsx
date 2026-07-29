@@ -1,6 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/db';
+import probe from "probe-image-size";
 import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
@@ -20,6 +21,17 @@ import IndustryProcess from '@/components/public/industries/IndustryProcess';
 import BlogSection from '@/components/common/BlogSection';
 import TestimonialsCarousel from '@/components/public/TestimonialCarousel2';
 import FooterForm from "@/components/footer/InquirySection";
+
+
+async function getImageDimensions(url) {
+    try {
+        const result = await probe(url);
+        return { width: result.width, height: result.height };
+    } catch (err) {
+        console.error(`Failed to probe dimensions for ${url}:`, err.message);
+        return { width: 1200, height: 630 };
+    }
+}
 // --- 1. FETCH DATA HELPER ---
 async function getIndustryPage(slug) {
     try {
@@ -34,33 +46,33 @@ async function getIndustryPage(slug) {
         function extractAllImages(obj) {
             const images = [];
 
-            function traverse(value) {
-                if (!value) return;
+            function isImagePath(str) {
+                return (
+                    typeof str === "string" &&
+                    str.trim() !== "" &&
+                    /\.(png|jpg|jpeg|webp|svg|gif)(\?.*)?$/i.test(str.trim())
+                );
+            }
 
-                // New image object format
+            function traverse(value) {
+                if (value === null || value === undefined) return;
+
+                // New image object format: { src, width, height }
                 if (
                     typeof value === "object" &&
-                    value.src &&
-                    typeof value.src === "string" &&
-                    value.src.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+                    !Array.isArray(value) &&
+                    isImagePath(value.src)
                 ) {
                     images.push({
                         src: value.src,
-                        width: value.width || 1200,
-                        height: value.height || 630,
+                        width: value.width,
+                        height: value.height,
                     });
                 }
 
                 // Old string image format
-                else if (
-                    typeof value === "string" &&
-                    value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
-                ) {
-                    images.push({
-                        src: value,
-                        width: 1200,
-                        height: 630,
-                    });
+                else if (isImagePath(value)) {
+                    images.push({ src: value });
                 }
 
                 if (Array.isArray(value)) {
@@ -80,6 +92,22 @@ async function getIndustryPage(slug) {
 
         const pageImages = extractAllImages(jsonContent);
 
+        // NEW: The images which have not  width/height in the data can get fetch 
+        // real dimensions from the url (in parallel which make fast)
+        const pageImagesWithDimensions = await Promise.all(
+            pageImages.map(async (img) => {
+                if (img.width && img.height) {
+                    return img;
+                }
+                const fullUrl = img.src.startsWith("http")
+                    ? img.src
+                    : `https://www.softkingo.com${img.src}`;
+                const dims = await getImageDimensions(fullUrl);
+                return { src: img.src, width: dims.width, height: dims.height };
+            })
+        );
+
+
         const imageObjects = [
             ...(page.seoImage
                 ? [{
@@ -91,13 +119,14 @@ async function getIndustryPage(slug) {
                 : []
             ),
 
-            ...pageImages.map(img => ({
+            ...pageImagesWithDimensions.map(img => ({
                 "@type": "ImageObject",
-                "url": `https://www.softkingo.com${img.src}`,
+                "url": img.src.startsWith("http") ? img.src : `https://www.softkingo.com${img.src}`,
                 "width": img.width,
                 "height": img.height,
             }))
         ];
+
         return {
             ...page,
             activeSections: jsonContent.activeSections || [],

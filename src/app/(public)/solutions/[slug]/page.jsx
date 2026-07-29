@@ -1,6 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/db'; // Database connection
+import probe from "probe-image-size";
 import { commonSchemas } from "@/lib/commonSchema2";
 // --- SOLUTIONS COMPONENTS (Existing) ---
 import SolutionsHero from '@/components/public/solutions/SolutionsHero';
@@ -46,6 +47,16 @@ import ConsultationCTA from '@/components/common/Consultation-Cta';
 import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 
+
+async function getImageDimensions(url) {
+    try {
+        const result = await probe(url);
+        return { width: result.width, height: result.height };
+    } catch (err) {
+        console.error(`Failed to probe dimensions for ${url}:`, err.message);
+        return { width: 1200, height: 630 };
+    }
+}
 // --- 1. HELPER: FETCH DATA FROM DB ---
 async function getSolutionPage(slug) {
     try {
@@ -53,41 +64,71 @@ async function getSolutionPage(slug) {
         if (!page) return null;
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
 
-        function extractAllImages(obj) {
+        async function extractAllImages(obj) {
             const images = [];
 
+            function isImagePath(str) {
+                return (
+                    typeof str === "string" &&
+                    str.trim() !== "" &&
+                    /\.(png|jpg|jpeg|webp|svg|gif)(\?.*)?$/i.test(str.trim())
+                );
+            }
+
             function traverse(value) {
-                if (!value) return;
+                if (value === null || value === undefined) return;
+
+                if (isImagePath(value)) {
+                    images.push({ src: value });
+                    return;
+                }
 
                 if (
                     typeof value === "object" &&
-                    value.src &&
-                    typeof value.src === "string" &&
-                    value.src.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)
+                    !Array.isArray(value) &&
+                    isImagePath(value.src)
                 ) {
                     images.push({
                         src: value.src,
-                        width: value.width || 1200,
-                        height: value.height || 630,
+                        width: value.width,
+                        height: value.height,
                     });
+                    return;
                 }
 
                 if (Array.isArray(value)) {
                     value.forEach(traverse);
-                } else if (typeof value === "object") {
+                    return;
+                }
+
+                if (typeof value === "object") {
                     Object.values(value).forEach(traverse);
                 }
             }
 
             traverse(obj);
 
-            return images.filter(
-                (img, index, self) =>
-                    index === self.findIndex(i => i.src === img.src)
+            const uniqueImages = images.filter(
+                (img, index, self) => index === self.findIndex(i => i.src === img.src)
             );
+
+            const withDimensions = await Promise.all(
+                uniqueImages.map(async (img) => {
+                    if (img.width && img.height) {
+                        return { src: img.src, width: img.width, height: img.height };
+                    }
+                    const fullUrl = img.src.startsWith("http")
+                        ? img.src
+                        : `https://www.softkingo.com${img.src}`;
+                    const dims = await getImageDimensions(fullUrl);
+                    return { src: img.src, width: dims.width, height: dims.height };
+                })
+            );
+
+            return withDimensions;
         }
 
-        const pageImages = extractAllImages(jsonContent);
+        const pageImages = await extractAllImages(jsonContent);
 
         const imageObjects = [
             ...(page.seoImage
@@ -102,7 +143,7 @@ async function getSolutionPage(slug) {
 
             ...pageImages.map(img => ({
                 "@type": "ImageObject",
-                "url": `https://www.softkingo.com${img.src}`,
+                "url": img.src.startsWith("http") ? img.src : `https://www.softkingo.com${img.src}`,
                 "width": img.width,
                 "height": img.height,
             }))

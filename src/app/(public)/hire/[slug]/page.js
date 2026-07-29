@@ -1,6 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
+import probe from "probe-image-size";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -62,10 +63,21 @@ function getIcon(key, size = 24, className = "") {
   return map[key] || <FaUser size={size} className={className} />;
 }
 
+async function getImageDimensions(url) {
+  try {
+    const result = await probe(url);
+    return { width: result.width, height: result.height };
+  } catch (err) {
+    console.error(`Failed to probe dimensions for ${url}:`, err.message);
+    return { width: 937, height: 937 }; // is file ka existing fallback size
+  }
+}
+
 // --- DATA NORMALIZER ---
-function normalizeHireContent(page) {
+async function normalizeHireContent(page) {
   const c = parseJsonSafe(page?.contentJson);
 
+  // ✅ Image extraction
   // ✅ Image extraction
   function extractAllImages(obj) {
     const images = [];
@@ -84,17 +96,30 @@ function normalizeHireContent(page) {
 
   const pageImageUrls = extractAllImages(c);
 
+
+
+  // NEW: har image ke liye real width/height fetch karo (parallel me, fast)
+  const pageImagesWithDimensions = await Promise.all(
+    pageImageUrls.map(async (img) => {
+      const fullUrl = img.startsWith("http")
+        ? img
+        : `https://www.softkingo.com${img}`;
+      const dims = await getImageDimensions(fullUrl);
+      return { src: img, width: dims.width, height: dims.height };
+    })
+  );
+
   // ✅ ImageObject array
   const imageObjects = [
     ...(page?.seoImage
       ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
       : []
     ),
-    ...pageImageUrls.map(img => ({
+    ...pageImagesWithDimensions.map(img => ({
       "@type": "ImageObject",
-      "url": `https://www.softkingo.com${img}`,
-      "width": 937,
-      "height": 937,
+      "url": img.src.startsWith("http") ? img.src : `https://www.softkingo.com${img.src}`,
+      "width": img.width,
+      "height": img.height,
     }))
   ];
 
@@ -213,7 +238,7 @@ export default async function HireSlugPage({ params }) {
 
   if (!page) notFound();
 
-  const content = normalizeHireContent(page);
+  const content = await normalizeHireContent(page);
 
   // ADD THIS ↓
   const faqSchema = content.activeSections?.includes('faq') && content.faq?.items?.length > 0 ? {
