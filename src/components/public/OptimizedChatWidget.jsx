@@ -445,6 +445,7 @@ export default function OptimizedChatWidget() {
   return (
     <div className="fixed bottom-[100px] lg:bottom-4 right-4 z-50 font-sans">
       {/* Chat Button - Refined White Theme */}
+      {/* Chat Button - Refined White Theme */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -454,7 +455,7 @@ export default function OptimizedChatWidget() {
           <span className="absolute inset-0 rounded-full bg-sky-400/20 animate-ping duration-1000"></span>
 
           {/* Main Button Body - Clean & Premium */}
-          <div className="relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-all duration-500 hover:scale-110 active:scale-95 overflow-visible">
+          <div className="chat-bubble-attention relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-shadow duration-500 active:scale-95 overflow-visible">
 
             {/* Subtle Blue Border Inner Ring */}
             <div className="absolute inset-0 rounded-full border-2 border-sky-500/10 group-hover:border-sky-500/30 transition-all duration-500"></div>
@@ -474,11 +475,32 @@ export default function OptimizedChatWidget() {
             <span className="absolute top-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-[0_0_8px_rgba(34,197,94,0.4)] animate-pulse"></span>
 
             {/* Floating Message Badge */}
-            <div className="absolute -top-11 right-0 bg-white text-slate-800 text-[10px]  px-3 py-1.5 rounded-xl shadow-xl border border-sky-50 whitespace-nowrap animate-bounce-slow">
+            <div className="absolute -top-11 right-0 bg-white text-slate-800 text-[10px] px-3 py-1.5 rounded-xl shadow-xl border border-sky-50 whitespace-nowrap animate-bounce-slow">
               Need help? Ask us
               <div className="absolute -bottom-1 right-5 w-2 h-2 bg-white border-r border-b border-sky-50 transform rotate-45"></div>
             </div>
           </div>
+
+          <style jsx>{`
+  @keyframes chatAttentionPulse {
+    0%   { transform: scale(1); }
+    10%  { transform: scale(1.1); }   /* big */
+    20%  { transform: scale(0.9); }    /* small */
+    30%  { transform: scale(1.1); }   /* big again, softer */
+    40%  { transform: scale(0.9); }    /* small again, softer */
+    50%  { transform: scale(1); }      /* settle */
+    100% { transform: scale(1); }      /* hold still until next loop */
+  }
+  .chat-bubble-attention {
+    animation: chatAttentionPulse 5s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+  .group:hover .chat-bubble-attention {
+    animation-play-state: paused;
+    transform: scale(1.1);
+  }
+`}</style>
         </button>
       )}
 

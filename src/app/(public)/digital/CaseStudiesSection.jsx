@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
 import { ArrowUpRight, ArrowLeft, ArrowRight, ImageOff } from "lucide-react";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import CommonTitle from "@/components/ui/CommonTitle";
 import Image from "next/image";
@@ -270,7 +270,7 @@ function CaseStudyCard({ study }) {
               src={study.mockupImage}
               alt={`${study.id} app mockup`}
               fill
-              className="pointer-events-none object-contain object-bottom"
+              className="pointer-events-none object-contain object-bottom select-none"
               sizes="415px"
               draggable={false}
               onError={() => setImageError(true)}
@@ -288,60 +288,40 @@ function CaseStudyCard({ study }) {
 }
 
 export default function CaseStudiesSection({ title, data }) {
-  const heading =
-    title ||
-    "Our Portfolio";
-
+  const heading = title || "Our Portfolio";
   const studies = data && data.length > 0 ? data : CASE_STUDIES;
   const count = studies.length;
 
+  const [index, setIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
-  const currentIndexRef = useRef(0);
   const x = useMotionValue(0);
 
-  const containerWidth = () => containerRef.current?.offsetWidth ?? 0;
-  const trackWidth = () => count * STEP - GAP;
+  const containerWidth = useCallback(() => containerRef.current?.offsetWidth ?? 0, []);
+  const trackWidth = useCallback(() => count * STEP - GAP, [count]);
 
   const minX = useCallback(() => {
     return Math.min(0, containerWidth() - trackWidth());
-  }, [count]);
+  }, [containerWidth, trackWidth]);
 
-  const snapTo = useCallback(
-    (index) => {
-      const clamped = Math.max(0, Math.min(index, count - 1));
-      currentIndexRef.current = clamped;
-      const target = Math.max(minX(), -clamped * STEP);
-      animate(x, target, { type: "spring", stiffness: 260, damping: 32 });
-    },
-    [count, x, minX]
-  );
+  // Handle smooth alignment on index change when not dragging
+  useEffect(() => {
+    if (!isDragging) {
+      const targetX = Math.max(minX(), -index * STEP);
+      animate(x, targetX, {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      });
+    }
+  }, [index, x, isDragging, minX]);
 
   const goRight = () => {
-    const next = (currentIndexRef.current + 1) % count;
-    snapTo(next);
+    setIndex((prev) => (prev + 1) % count);
   };
 
   const goLeft = () => {
-    const prev = (currentIndexRef.current - 1 + count) % count;
-    snapTo(prev);
-  };
-
-  const handleDragEnd = () => {
-    const current = x.get();
-    let nearest = Math.round(-current / STEP);
-    nearest = Math.max(0, Math.min(nearest, count - 1));
-    snapTo(nearest);
-  };
-
-  const handlePan = (_, info) => {
-    const min = minX();
-    const max = 0;
-    let next = x.get() + info.delta.x;
-
-    if (next > max) next = max + (next - max) * 0.35; // soft rubber-band past the first card
-    if (next < min) next = min + (next - min) * 0.35; // soft rubber-band past the last card
-
-    x.set(next);
+    setIndex((prev) => (prev - 1 + count) % count);
   };
 
   return (
@@ -370,20 +350,34 @@ export default function CaseStudiesSection({ title, data }) {
           </div>
         </div>
 
-        {/* 
-          1. mr-[calc(50%-50vw)] lets the cards stretch to the right edge.
-          2. [clip-path:inset(0_-100vw_0_0)] clips any card moving past the left edge (x = 0),
-             while leaving infinite (-100vw) visible area on the right.
-        */}
         <div
           ref={containerRef}
           className="mr-[calc(50%-50vw)] [clip-path:inset(0_-100vw_0_0)]"
         >
           <motion.div
             className="flex cursor-grab gap-5 pb-4 select-none active:cursor-grabbing"
+            drag="x"
+            dragElastic={0.2}
+            dragMomentum={false}
+            onDragStart={() => setIsDragging(true)}
+            onDragEnd={(e, info) => {
+              setIsDragging(false);
+              const offset = info.offset.x;
+              const velocity = info.velocity.x;
+              let newIndex = index;
+
+              // Fast flick/swipe check
+              if (Math.abs(velocity) > 500) {
+                newIndex = velocity > 0 ? index - 1 : index + 1;
+              } else if (Math.abs(offset) > CARD_WIDTH * 0.3) {
+                // Dragged past 30% threshold of card width
+                newIndex = offset > 0 ? index - 1 : index + 1;
+              }
+
+              newIndex = Math.max(0, Math.min(count - 1, newIndex));
+              setIndex(newIndex);
+            }}
             style={{ x, touchAction: "pan-y" }}
-            onPan={handlePan}
-            onPanEnd={handleDragEnd}
           >
             {studies.map((study) => (
               <CaseStudyCard key={study.id} study={study} />
