@@ -19,12 +19,24 @@ const HomePortfolio = () => {
     ];
     const totalItems = extendedData.length;
 
-    const PEEK = 18; 
-    const CARD_WIDTH = 100 - PEEK * 2; 
+    // Responsive peek: 0 on mobile (single full-width card, no side slivers),
+    // 18 on desktop (unchanged multi-peek layout)
+    const [peek, setPeek] = useState(18);
+
+    useEffect(() => {
+        const updatePeek = () => {
+            setPeek(window.innerWidth < 768 ? 0 : 18);
+        };
+        updatePeek();
+        window.addEventListener('resize', updatePeek);
+        return () => window.removeEventListener('resize', updatePeek);
+    }, []);
+
+    const CARD_WIDTH = 100 - peek * 2;
     const TRACK_WIDTH_VP = totalItems * CARD_WIDTH;
 
     const slideOffsetPercentOfTrack = (i) => {
-        const xVp = PEEK - i * CARD_WIDTH;
+        const xVp = peek - i * CARD_WIDTH;
         return (xVp / TRACK_WIDTH_VP) * 100;
     };
 
@@ -37,6 +49,14 @@ const HomePortfolio = () => {
     const xPercentage = useTransform(x, (val) => `${val}%`);
 
     const activeIndex = ((virtualIndex % realCount) + realCount) % realCount;
+
+    // Snap track to the correct offset whenever peek changes (e.g. resize crossing breakpoint)
+    useEffect(() => {
+        if (!isDragging) {
+            x.set(slideOffsetPercentOfTrack(virtualIndex));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [peek]);
 
     useEffect(() => {
         if (!isDragging) {
@@ -135,7 +155,7 @@ const HomePortfolio = () => {
                                     </div>
                                     
                                     <span className="text-[10px] md:text-xs font-medium text-white/90 whitespace-nowrap text-center">
-                                        {project.title}
+                                        {project.type}
                                     </span>
                                 </button>
                             );
@@ -145,7 +165,7 @@ const HomePortfolio = () => {
 
                 {/* CAROUSEL VIEWPORT AREA */}
                 <div className="w-full flex items-center relative py-2">
-                    <div ref={containerRef} className="w-full min-h-[460px] sm:min-h-[480px] md:h-[480px] lg:h-[500px] relative overflow-visible md:overflow-hidden cursor-default">
+                    <div ref={containerRef} className="w-full min-h-[460px] sm:min-h-[480px] md:h-[480px] lg:h-[500px] relative overflow-hidden cursor-default">
                         <motion.div
                             drag="x"
                             dragElastic={0.12}
@@ -165,14 +185,14 @@ const HomePortfolio = () => {
                                     >
                                         <div
                                             className={`relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] text-white w-full h-full flex flex-col md:flex-row border border-white/10 select-none transition-all duration-700 ease-out ${
-                                                isActive ? "opacity-100 scale-100" : "opacity-60 scale-[0.94]"
+                                                isActive ? "opacity-100 scale-100" : "opacity-100 scale-100 md:opacity-60 md:scale-[0.94]"
                                             }`}
                                             style={{
                                                 background: `linear-gradient(135deg, ${project.gradientColors[0]} 0%, ${project.gradientColors[1]} 50%, ${project.gradientColors[2]} 100%)`,
                                             }}
                                         >
                                             {!isActive && (
-                                                <div className="absolute inset-0 bg-black/40 z-20 transition-opacity duration-700 pointer-events-none" />
+                                                <div className="hidden md:block absolute inset-0 bg-black/40 z-20 transition-opacity duration-700 pointer-events-none" />
                                             )}
 
                                             {/* LEFT CONTENT AREA */}

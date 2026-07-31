@@ -2,6 +2,7 @@ export const homePortfolioData = [
     {
         id: 1,
         title: 'Practivoo',
+        type: 'E-Learning',
         description: 'Practivoo is a smart learning app that helps teachers track student progress with automatic reports while giving students a personal at-home tutor for practice, feedback, and improvement.',
         logo: '/images/portfolio/proctivoo-logo.svg',
         mockup: '/images/portfolio/prectivoo.svg',
@@ -20,6 +21,7 @@ export const homePortfolioData = [
     {
         id: 2,
         title: 'Moglix',
+        type: 'E-Commerce',
         description: 'Moglix is an Asia\'s largest B2B commerce company that specializes in B2B procurement of industrial products such as MRO, fasteners, electrical, hardware, and pneumatics.',
         logo: '/images/portfolio/moglix-logo.svg',
         mockup: '/images/portfolio/moblix.svg',
@@ -38,6 +40,7 @@ export const homePortfolioData = [
     {
         id: 3,
         title: 'Bumpy',
+        type: 'Social Dating',
         description: 'Bumpy is a social networking app that helps create networks of shared progress with focus on experts, and sharing abstracts approved at from theory to practice, feedback, and improvement.',
         logo: '/images/portfolio/bumpy-logo.svg',
         mockup: '/images/portfolio/bumpy.svg',
@@ -56,6 +59,7 @@ export const homePortfolioData = [
     {
         id: 4,
         title: 'Ezy Dash',
+        type: 'Campus Services',
         description: 'Ezydash is a next-generation branding app that helps create networks of shared progress with focus on experts, and sharing abstracts approved at from theory to practice and improvement.',
         logo: '/images/portfolio/ezydash-logo.svg',
         mockup: '/images/portfolio/ezydash.svg',
@@ -71,4 +75,28 @@ export const homePortfolioData = [
         webUrl: 'https://www.ezydash.com/',
         caseStudyUrl: '/case-studies/ezydash',
     },
+    // {
+    //     id: 5,
+    //     title: 'AnyTime Astro',
+    //     type: 'Astrology',
+    //     description:
+    //         'AnyTime Astro is an online astrology platform that connects users with professional astrologers for live consultations, personalized horoscope readings, tarot guidance, and spiritual wellness services.',
+    //     logo: '/images/portfolio/astro-anytime.png',
+    //     mockup: '/images/portfolio/astro-anytime.png',
+    //     gradientColors: [
+    //         'rgba(219, 39, 119, 0.7)',
+    //         'rgba(190, 24, 93, 0.9)',
+    //         'rgba(131, 24, 67, 1)',
+    //     ],
+    //     stats: {
+    //         category: 'Astrology',
+    //         platforms: 'iOS, Android, Web',
+    //         country: 'India',
+    //         techStack: 'Flutter, Node.js, MongoDB',
+    //     },
+    //     playStoreUrl: '',
+    //     appStoreUrl: 'https://apps.apple.com/in/app/anytime-astro/id67490021655', // Replace if different
+    //     webUrl: 'https://www.anytimeastro.com/',
+    //     caseStudyUrl: '/case-studies/anytime-astro',
+    // },
 ];
