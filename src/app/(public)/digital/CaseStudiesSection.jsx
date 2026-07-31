@@ -160,6 +160,32 @@ const CASE_STUDIES = [
   },
 ];
 
+// Logo image with its own lazy-load + error handling so a broken/slow
+// logo never shifts or breaks the card header layout.
+function LogoImage({ src, alt }) {
+  const [error, setError] = useState(false);
+
+  if (!src || error) {
+    return (
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/15">
+        <ImageOff className="h-4 w-4 text-white/70" />
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={44}
+      height={30}
+      loading="lazy"
+      className="h-6 w-auto object-contain w-[43px] h-[45px]"
+      onError={() => setError(true)}
+    />
+  );
+}
+
 function CardLogo({ study }) {
   if (study.logoType === "icon-truck") {
     return (
@@ -194,15 +220,7 @@ function CardLogo({ study }) {
 
   return (
     <div className="leading-tight">
-      {study.logoText && (
-        <Image
-          src={study.logoText}
-          alt="Logo"
-          width={44}
-          height={30}
-          className="h-6 w-auto object-contain w-[43px] h-[45px]"
-        />
-      )}
+      {study.logoText && <LogoImage src={study.logoText} alt="Logo" />}
 
       {study.logoSubText && (
         <p className="mt-3 text-sm font-bold tracking-wide text-white">
@@ -270,6 +288,7 @@ function CaseStudyCard({ study }) {
               src={study.mockupImage}
               alt={`${study.id} app mockup`}
               fill
+              loading="lazy"
               className="pointer-events-none object-contain object-bottom select-none"
               sizes="415px"
               draggable={false}
