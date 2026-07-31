@@ -49,8 +49,8 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative flex flex-col md:block overflow-hidden md:min-h-screen"
     >
-      {/* MEDIA BLOCK: mobile par normal flow me content ke NICHE (fixed height), desktop par absolute background */}
-      <div className="order-2 md:order-none relative w-full h-[40vh] sm:h-[45vh] md:absolute md:inset-0 md:h-full z-0">
+      {/* MEDIA BLOCK: Hidden on mobile, visible only on desktop/laptop */}
+      <div className="hidden md:block order-2 md:order-none relative w-full h-[40vh] sm:h-[45vh] md:absolute md:inset-0 md:h-full z-0">
         <img
           src="/videos/frame.webp"
           alt="Softkingo"
@@ -147,10 +147,10 @@ const HeroSection = () => {
           ))}
       </div>
 
-      {/* MAIN CONTENT: mobile par video ke UPAR content flow me, desktop par flex centering */}
+      {/* MAIN CONTENT: mobile par simple white container, desktop par flex centering over video */}
       <div className="order-1 md:order-none relative z-10 w-full max-w-7xl mx-auto px-4 text-center bg-white md:bg-transparent md:h-screen md:flex md:flex-col md:items-center md:justify-center">
 
-        {/* Mobile version: plain elements, zero motion, video ke upar structure format */}
+        {/* Mobile version: plain elements, zero motion */}
         <div className="flex md:hidden flex-col items-center pt-8 pb-12">
           {/* Badge */}
           <div className="w-fit bg-sky-50 text-sky-700 px-6 py-2 rounded-full mb-6 border border-sky-200 text-xs text-left mr-auto">
@@ -225,8 +225,8 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Desktop/tablet version: with motion - EXACTLY same as before */}
-        <motion.div
+        {/* Desktop/tablet version: with motion */}
+        <div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
@@ -239,7 +239,7 @@ const HeroSection = () => {
           </motion.div>
 
           {/* Heading */}
-          <motion.h1 className="text-3xl md:text-6xl font-bold mb-6 text-white leading-normal">
+          <h1 className="text-3xl md:text-6xl font-bold mb-6 text-white leading-normal">
             <span>AI-Driven  </span>
 
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-sky-200">
@@ -249,7 +249,7 @@ const HeroSection = () => {
             <span className="block mt-3 text-2xl md:text-4xl text-white">
               for Apps, Web & Digital Marketing
             </span>
-          </motion.h1>
+          </h1>
 
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 md:gap-x-5 md:gap-y-4 mb-8 md:mb-4 text-white text-sm md:text-base">
             <div className="flex items-center gap-1 md:gap-2">
@@ -303,7 +303,7 @@ const HeroSection = () => {
               </span>
             </Link>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
 
       <PopupQuoteModal

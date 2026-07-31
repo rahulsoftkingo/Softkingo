@@ -182,7 +182,7 @@ const InquirySection = ({
   const prev = () => setCurrentIndex((prev) => (prev - 1 + contactNumbers.length) % contactNumbers.length);
 
   return (
-    <section className="relative w-full bg-gradient-to-br from-white via-sky-50/30 to-sky-50/20 overflow-hidden">
+    <section className="relative w-full bg-white via-sky-50/30 to-sky-50/20 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-sky-300/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-sky-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
