@@ -8,7 +8,7 @@ export default function SolutionsServicesList({ data }) {
     if (!data) return null;
 
     // Use tabs, items or data directly
-    const services = data.tabs || data.items || [];
+    const services = data.items || data.tabs || [];
     const sectionTitle = data.title || "Our Comprehensive Services";
     const sectionSubtitle = data.subtitle || data.description || "End-to-end solutions designed to scale your business.";
 

@@ -206,6 +206,8 @@ export default async function DynamicSolutionPage(props) {
 
     if (!data) return notFound();
 
+    console.log("Fetched solution page data:", data); // Debug log
+
     // Helper to check active sections
     const show = (id) => data.activeSections.includes(id);
 
