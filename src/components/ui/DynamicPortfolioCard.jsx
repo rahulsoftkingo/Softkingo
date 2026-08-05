@@ -95,7 +95,7 @@ export default function DynamicPortfolioCard({
               <CommonTitle align="left" title={displayTitle} subtitle={displaySubtitle} gradientText={gradientText} />
               <button
                 onClick={() => setShowModal(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-md shadow-sky-200 hover:scale-105 active:scale-95 transition-all duration-300 group"
+                className="inline-flex items-center ml-6 gap-2 px-6 py-3 rounded-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-md shadow-sky-200 hover:scale-105 active:scale-95 transition-all duration-300 group"
               >
                 Build your mobile App
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

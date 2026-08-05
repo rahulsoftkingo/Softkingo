@@ -118,8 +118,6 @@ export default function DigitalMarketingServices({ data }) {
             ref={tabsRef}
             className="dms-tab-scroll flex gap-3 overflow-x-auto pb-1 -mx-4 px-4 snap-x snap-mandatory sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0 lg:w-[36rem] shrink-0"
             style={{
-              // NEW: inline fallback — ye hamesha apply hoga, styled-jsx
-              // scoping/specificity issue se independent
               scrollbarWidth: "none", // Firefox
               msOverflowStyle: "none", // old Edge/IE
             }}
@@ -129,24 +127,31 @@ export default function DigitalMarketingServices({ data }) {
                 key={index}
                 service={service}
                 isActive={activeIndex === index}
-                onClick={() => handleSelect(index)}
+                onHover={() => handleSelect(index)}
               />
             ))}
           </div>
 
           {/* Right Panel */}
-          <div className="flex-1 overflow-hidden rounded-2xl bg-sky-500 p-4 sm:p-5 shadow-lg min-w-0">
+          <div className="flex-1 overflow-hidden rounded-2xl bg-sky-500 p-4 sm:p-5 shadow-lg min-w-0 flex flex-col">
             {active ? (
               <>
-                {active.image && (
-                  <div className="overflow-hidden rounded-xl">
+                {/* Fixed height image slot / placeholder to prevent layout shifts */}
+                <div className="h-44 sm:h-56 lg:h-64 w-full overflow-hidden rounded-xl shrink-0">
+                  {active.image ? (
                     <img
                       src={active.image}
                       alt={active.fullTitle}
-                      className="h-44 sm:h-56 lg:h-64 w-full object-cover"
+                      className="h-full w-full object-cover"
                     />
-                  </div>
-                )}
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-sky-600/50 border border-sky-400/30 rounded-xl p-6 text-center">
+                      <span className="text-lg font-semibold text-white/90">
+                        {active.fullTitle}
+                      </span>
+                    </div>
+                  )}
+                </div>
 
                 <h3 className="mt-4 sm:mt-5 text-xl sm:text-2xl font-bold text-white">
                   {active.fullTitle}
@@ -185,11 +190,12 @@ export default function DigitalMarketingServices({ data }) {
   );
 }
 
-function ServiceButton({ service, isActive, onClick }) {
+function ServiceButton({ service, isActive, onHover }) {
   return (
     <button
       type="button"
-      onClick={onClick}
+      onMouseEnter={onHover}
+      onFocus={onHover}
       className={[
         "shrink-0 w-40 sm:w-full snap-start",
         "rounded-2xl border px-5 py-4 sm:py-5 text-center transition-all duration-300",

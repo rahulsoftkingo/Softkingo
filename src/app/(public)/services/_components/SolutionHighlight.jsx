@@ -120,33 +120,33 @@ export default function SolutionHighlight({ data }) {
                                 </div>
 
                                 {/* Footer: Capabilities & Action */}
-                                <div className="mt-auto pt-8 border-t border-white/20 flex flex-col md:flex-row items-center justify-between gap-8">
+                                {/* <div className="mt-auto pt-8 border-t border-white/20 flex flex-col md:flex-row items-center justify-between gap-8"> */}
                                     {/* Tech/Capability Icons */}
-                                    <div className="flex flex-wrap items-center justify-center gap-6">
-                                        {(activeTab.icons || []).map((iconObj, iIdx) => {
-                                            const BottomIcon = iconMap[iconObj.iconName] || FaIcons.FaRobot;
-                                            return (
-                                                <div key={iIdx} className="flex flex-col items-center gap-2">
-                                                    <div className="p-2.5 bg-white/10 rounded-lg backdrop-blur-md border border-white/10">
-                                                        <BottomIcon size={20} />
-                                                    </div>
-                                                    <span className="text-[7px] font-bold text-white/60 text-center">
-                                                        {iconObj.label}
-                                                    </span>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
+                                    {/* <div className="flex flex-wrap items-center justify-center gap-6"> */}
+                                        {/* {(activeTab.icons || []).map((iconObj, iIdx) => { */}
+                                            {/* const BottomIcon = iconMap[iconObj.iconName] || FaIcons.FaRobot; */}
+                                            {/* return ( */}
+                                                {/* <div key={iIdx} className="flex flex-col items-center gap-2"> */}
+                                                    {/* <div className="p-2.5 bg-white/10 rounded-lg backdrop-blur-md border border-white/10"> */}
+                                                        {/* <BottomIcon size={20} /> */}
+                                                    {/* </div> */}
+                                                    {/* <span className="text-[7px] font-bold text-white/60 text-center"> */}
+                                                        {/* {iconObj.label} */}
+                                                    {/* </span> */}
+                                                {/* </div> */}
+                                            {/* ); */}
+                                        {/* })} */}
+                                    {/* </div> */}
 
                                     {/* Primary CTA */}
-                                    <Link
+                                    {/* <Link
                                         href="/contact"
                                         className="inline-flex items-center gap-3 bg-white text-sky-500 px-6 py-3.5 rounded-xl font-bold text-base hover:bg-sky-50 transition-all shadow-lg hover:-translate-y-1 active:scale-95 group"
-                                    >
-                                        Get In Touch
-                                        <ArrowRight size={18} strokeWidth={2.5} className="group-hover:translate-x-1 transition-transform" />
-                                    </Link>
-                                </div>
+                                    > */}
+                                        {/* Get In Touch
+                                        <ArrowRight size={18} strokeWidth={2.5} className="group-hover:translate-x-1 transition-transform" /> */}
+                                    {/* </Link> */}
+                                {/* </div> */}
                             </motion.div>
                         </AnimatePresence>
                     </div>

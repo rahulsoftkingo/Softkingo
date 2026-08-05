@@ -420,22 +420,34 @@ export default function PricingPage({
             </div>
 
             <div className="inline-flex items-center rounded-full border border-slate-200 p-1">
-              <button
-                type="button"
-                onClick={() => setBilling("annual")}
-                className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${billing === "annual" ? "bg-slate-900 text-white" : "text-slate-600"}`}
-              >
-                {safePricingCards.annualLabel}
+              {/* Annual Button */}
+              <div className="relative">
                 {safePricingCards.annualBadge && (
-                  <span className="rounded bg-yellow-300 px-1.5 py-0.5 text-[10px] font-bold text-slate-900">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-yellow-300 px-2 py-0.5 text-[10px] font-bold text-slate-900 shadow-sm whitespace-nowrap">
                     {safePricingCards.annualBadge}
                   </span>
                 )}
-              </button>
+
+                <button
+                  type="button"
+                  onClick={() => setBilling("annual")}
+                  className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${billing === "annual"
+                      ? "bg-slate-900 text-white"
+                      : "text-slate-600"
+                    }`}
+                >
+                  {safePricingCards.annualLabel}
+                </button>
+              </div>
+
+              {/* Monthly Button */}
               <button
                 type="button"
                 onClick={() => setBilling("monthly")}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${billing === "monthly" ? "bg-slate-900 text-white" : "text-slate-600"}`}
+                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${billing === "monthly"
+                    ? "bg-slate-900 text-white"
+                    : "text-slate-600"
+                  }`}
               >
                 {safePricingCards.monthlyLabel}
               </button>
@@ -584,8 +596,8 @@ export default function PricingPage({
       {activeSections?.includes("tech") && (
         <CuttingEdgeTech data={tech} />
       )}
-      
-      <AppFeatures  data={mobileFeatures} appfeaturebasixtext={appfeaturebasixtext} appfeaturebasixgradient={appfeaturebasixgradient}/>
+
+      <AppFeatures data={mobileFeatures} appfeaturebasixtext={appfeaturebasixtext} appfeaturebasixgradient={appfeaturebasixgradient} />
 
       {/* ============================= COMPARE ============================= */}
       <section ref={compareRef} className="scroll-mt-6 bg-white px-4 py-8 sm:px-6 lg:px-8">
