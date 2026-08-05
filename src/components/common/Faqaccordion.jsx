@@ -91,8 +91,7 @@ export default function FAQAccordion({ data }) {
 
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 
-  // Framer Motion Scroll Trigger logic — tracks scroll across the WHOLE section,
-  // which now includes the non-sticky title area + the sticky list/sidebar area
+  // Framer Motion Scroll Trigger logic
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
@@ -116,25 +115,18 @@ export default function FAQAccordion({ data }) {
     <section
       ref={sectionRef}
       className="relative bg-white"
-      // Extra height (50vh) added so the title has room to scroll normally
-      // before the sticky (pinned) block below takes over
-      style={{ height: `calc(${items.length * 35}vh + 50vh)` }}
+      style={{ height: `${items.length * 35}vh` }} // Dynamic height based on item count
     >
-      {/* Title now scrolls normally with the page — NOT sticky/pinned */}
-      <div className="max-w-7xl mx-auto px-6 w-full pt-16 md:pt-24 pb-8">
-        <CommonTitle
-          align="center"
-          title={title}
-          gradientText={gradientText}
-          subtitle={subtitle}
-        />
-      </div>
-
-      {/* Only this block becomes sticky — pinning starts once it hits the top,
-          i.e. after the title has scrolled past */}
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-8 md:py-16">
         <div className="max-w-7xl mx-auto px-6 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <CommonTitle
+            align="center"
+            title={title}
+            gradientText={gradientText}
+            subtitle={subtitle}
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12 items-start">
             {/* Scrollable list driven by Framer Motion */}
             <div className="lg:col-span-2 overflow-hidden h-[55vh] relative rounded-2xl">
               <motion.div style={{ y }} ref={listRef} className="space-y-4 pr-3">
