@@ -84,6 +84,25 @@ const HomePortfolio = () => {
         }
     }, [virtualIndex, isDragging, x, realCount]);
 
+    // KEYBOARD NAVIGATION HANDLER
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            // Avoid intercepting arrow key inputs if user is focused inside input elements
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+                return;
+            }
+
+            if (event.key === 'ArrowLeft') {
+                setVirtualIndex((prev) => prev - 1);
+            } else if (event.key === 'ArrowRight') {
+                setVirtualIndex((prev) => prev + 1);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
     const goToSlide = (idx) => {
         const currentReal = ((virtualIndex % realCount) + realCount) % realCount;
         const diff = idx - currentReal;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
@@ -233,7 +233,27 @@ export default function CoreServicesSection({
     bgClass = "bg-white",
 }) {
     const [activeIndex, setActiveIndex] = useState(0);
+    const containerRef = useRef(null);
     const mobileScrollRef = useRef(null);
+
+    // Lock page scroll & cycle through items on scroll
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!containerRef.current) return;
+            const rect = containerRef.current.getBoundingClientRect();
+            const totalScrollHeight = containerRef.current.offsetHeight - window.innerHeight;
+
+            if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
+                const scrolledDistance = -rect.top;
+                const progress = Math.min(Math.max(scrolledDistance / totalScrollHeight, 0), 0.999);
+                const nextIndex = Math.floor(progress * services.length);
+                setActiveIndex(nextIndex);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [services.length]);
 
     const handleTabChange = (index) => {
         setActiveIndex(index);
@@ -250,103 +270,111 @@ export default function CoreServicesSection({
     };
 
     return (
-        <section id={sectionId} className={`${bgClass} relative`}>
-            {/* Fine-tuned, extra smooth cubic-bezier transition exclusively for the right card */}
-            <style jsx global>{`
-                @keyframes cardFadeIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(12px);
+        <section 
+            id={sectionId} 
+            ref={containerRef}
+            style={{ height: `${services.length * 100}vh` }} 
+            className={`${bgClass} relative`}
+        >
+            {/* Sticky screen pin layer */}
+            <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+                {/* Fine-tuned, extra smooth cubic-bezier transition exclusively for the right card */}
+                <style jsx global>{`
+                    @keyframes cardFadeIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(12px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
                     }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
+                    .animate-card-fade-in {
+                        animation: cardFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                     }
-                }
-                .animate-card-fade-in {
-                    animation: cardFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                }
-            `}</style>
+                `}</style>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
-                <CommonTitle align="center" title={title} subtitle={subtitle} />
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 w-full">
+                    <CommonTitle align="center" title={title} subtitle={subtitle} />
 
-                {/* Mobile / Tablet Horizontal Navigation Header */}
-                <div className="lg:hidden mt-10 mb-8 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
-                    <div
-                        ref={mobileScrollRef}
-                        className="flex flex-row gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap"
-                    >
-                        {services.map((s, idx) => (
-                            <button
-                                key={idx}
-                                id={`nav-btn-${idx}`}
-                                onClick={() => handleTabChange(idx)}
-                                onMouseEnter={() => handleTabChange(idx)}
-                                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shrink-0 border ${
-                                    activeIndex === idx
-                                        ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
-                                        : "bg-white text-sky-600 border-sky-100 hover:border-sky-300"
-                                }`}
-                            >
-                                {s?.title || s?.name || `Service ${idx + 1}`}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12 lg:mt-20 items-start">
-                    {/* Dashboard Navigation Sidebar (Left Sticky Container) */}
-                    <div className="hidden lg:block w-80 shrink-0 sticky top-32 self-start rounded-3xl border border-sky-200/20 bg-white/5 backdrop-blur-xl shadow-2xl shadow-sky-900/10 overflow-hidden">
-                        <div className="divide-y divide-sky-200/15">
+                    {/* Mobile / Tablet Horizontal Navigation Header */}
+                    <div className="lg:hidden mt-10 mb-8 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
+                        <div
+                            ref={mobileScrollRef}
+                            className="flex flex-row gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap"
+                        >
                             {services.map((s, idx) => (
                                 <button
                                     key={idx}
-                                    onClick={() => setActiveIndex(idx)}
-                                    onMouseEnter={() => setActiveIndex(idx)}
-                                    className={`w-full text-left px-7 py-6 transition-all duration-300 group ${
-                                        activeIndex === idx ? "bg-white/10" : "hover:bg-white/5"
+                                    id={`nav-btn-${idx}`}
+                                    onClick={() => handleTabChange(idx)}
+                                    onMouseEnter={() => handleTabChange(idx)}
+                                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shrink-0 border ${
+                                        activeIndex === idx
+                                            ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
+                                            : "bg-white text-sky-600 border-sky-100 hover:border-sky-300"
                                     }`}
                                 >
-                                    <div className="flex items-start gap-5">
-                                        {/* Number */}
-                                        <div
-                                            className={`text-lg font-bold transition-all duration-300 ${
-                                                activeIndex === idx
-                                                    ? "text-sky-500"
-                                                    : "text-sky-300 group-hover:text-sky-400"
-                                            }`}
-                                        >
-                                            {String(idx + 1).padStart(2, "0")}
-                                        </div>
-
-                                        {/* Content */}
-                                        <div>
-                                            <h4
-                                                className={`text-xl font-semibold leading-tight transition-all duration-300 ${
-                                                    activeIndex === idx
-                                                        ? "text-sky-500"
-                                                        : "text-sky-300 group-hover:text-sky-400"
-                                                }`}
-                                            >
-                                                {s?.title || s?.name || `Service ${idx + 1}`}
-                                            </h4>
-                                        </div>
-                                    </div>
+                                    {s?.title || s?.name || `Service ${idx + 1}`}
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* Active Component Wrapper (Right Side Content Container) */}
-                    <div className="flex-1 w-full min-h-[450px]">
-                        {services[activeIndex] && (
-                            <TailwindServiceCard 
-                                key={activeIndex} 
-                                service={services[activeIndex]} 
-                                index={activeIndex} 
-                            />
-                        )}
+                    <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12 lg:mt-20 items-start">
+                        {/* Dashboard Navigation Sidebar (Left Sticky Container) */}
+                        <div className="hidden lg:block w-80 shrink-0 rounded-3xl border border-sky-200/20 bg-white/5 backdrop-blur-xl shadow-2xl shadow-sky-900/10 overflow-hidden">
+                            <div className="divide-y divide-sky-200/15">
+                                {services.map((s, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setActiveIndex(idx)}
+                                        onMouseEnter={() => setActiveIndex(idx)}
+                                        className={`w-full text-left px-7 py-6 transition-all duration-300 group ${
+                                            activeIndex === idx ? "bg-white/10" : "hover:bg-white/5"
+                                        }`}
+                                    >
+                                        <div className="flex items-start gap-5">
+                                            {/* Number */}
+                                            <div
+                                                className={`text-lg font-bold transition-all duration-300 ${
+                                                    activeIndex === idx
+                                                        ? "text-sky-500"
+                                                        : "text-sky-300 group-hover:text-sky-400"
+                                                }`}
+                                            >
+                                                {String(idx + 1).padStart(2, "0")}
+                                            </div>
+
+                                            {/* Content */}
+                                            <div>
+                                                <h4
+                                                    className={`text-xl font-semibold leading-tight transition-all duration-300 ${
+                                                        activeIndex === idx
+                                                            ? "text-sky-500"
+                                                            : "text-sky-300 group-hover:text-sky-400"
+                                                    }`}
+                                                >
+                                                    {s?.title || s?.name || `Service ${idx + 1}`}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Active Component Wrapper (Right Side Content Container) */}
+                        <div className="flex-1 w-full min-h-[450px]">
+                            {services[activeIndex] && (
+                                <TailwindServiceCard 
+                                    key={activeIndex} 
+                                    service={services[activeIndex]} 
+                                    index={activeIndex} 
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

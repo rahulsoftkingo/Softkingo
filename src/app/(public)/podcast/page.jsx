@@ -1,6 +1,6 @@
-// app/(public)/podcast/page.jsx
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import { FaSearch } from "react-icons/fa";
 import prisma from "@/lib/prisma";
 import InquirySection from "@/components/footer/InquirySection";
 
@@ -13,329 +13,397 @@ export const metadata = {
   alternates: { canonical: "/podcast" },
 };
 
+function safeImg(src, fallback = "/images/insights/hero-default.png") {
+  const s = (src || "").toString().trim();
+  if (!s) return fallback;
+  if (s.startsWith("/")) return s;
+  if (s.startsWith("http://") || s.startsWith("https://")) return s;
+  return fallback;
+}
+
 export default async function PodcastPage(props) {
   const searchParams = await props.searchParams;
   const q = (searchParams?.q || "").toString().trim();
+  const category = (searchParams?.category || "").toString().trim();
+
+  // Pagination setup
+  const pageSize = 12;
+  const page = Math.max(1, parseInt(searchParams?.page || "1", 10) || 1);
+  const skip = (page - 1) * pageSize;
+
+  const where = {
+    status: "published",
+    AND: [
+      ...(q
+        ? [
+            {
+              OR: [
+                { title: { contains: q, mode: "insensitive" } },
+                { description: { contains: q, mode: "insensitive" } },
+                { summary: { contains: q, mode: "insensitive" } },
+                { guestName: { contains: q, mode: "insensitive" } },
+              ],
+            },
+          ]
+        : []),
+      ...(category ? [{ category: { equals: category, mode: "insensitive" } }] : []),
+    ],
+  };
+
+  const totalCount = await prisma.podcast.count({ where });
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
   const episodes = await prisma.podcast.findMany({
-    where: {
-      status: "published",
-      ...(q
-        ? {
-            OR: [
-              { title: { contains: q, mode: "insensitive" } },
-              { category: { contains: q, mode: "insensitive" } },
-              { description: { contains: q, mode: "insensitive" } },
-              { summary: { contains: q, mode: "insensitive" } },
-              { guestName: { contains: q, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
-    orderBy: { publishedAt: "desc" },
+    where,
+    orderBy: [{ publishedAt: "desc" }, { createdAt: "desc" }],
+    skip,
+    take: pageSize,
   });
 
-  return (
-    <>
-      <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
-        <HeroSection q={q} total={episodes.length} />
-        <EpisodesSection episodes={episodes} />
-      </main>
-      <InquirySection />
-    </>
+  // Extract topics dynamically from published episodes
+  const allCategories = await prisma.podcast.findMany({
+    where: { status: "published" },
+    select: { category: true },
+  });
+  const topics = Array.from(
+    new Set(allCategories.map((item) => item.category).filter(Boolean))
   );
-}
 
-function HeroSection({ q, total }) {
+  const mostRead = episodes.slice(0, 3);
+
+  // 4 Podcast Platform Image URLs
+  const podcastPlatforms = [
+    { name: "Apple Podcast", src: "/images/podcast/apple-podcast.webp" },
+    { name: "Google Podcast", src: "/images/podcast/google-podcast.webp" },
+    { name: "Spotify Podcast", src: "/images/podcast/spotify-podcast.webp" },
+    { name: "SoundCloud", src: "/images/podcast/sound-cloud.webp" },
+  ];
+
+  const buildUrl = (nextQ, nextCategory, nextPage = 1) => {
+    const params = new URLSearchParams();
+    if (nextQ) params.set("q", nextQ);
+    if (nextCategory) params.set("category", nextCategory);
+    if (nextPage && nextPage !== 1) params.set("page", String(nextPage));
+    const query = params.toString();
+    return query ? `/podcast?${query}` : "/podcast";
+  };
+
+  function getPageItems(current, total, maxButtons = 5) {
+    if (total <= maxButtons) return Array.from({ length: total }, (_, i) => i + 1);
+
+    const items = [];
+    const half = Math.floor(maxButtons / 2);
+    let start = Math.max(1, current - half);
+    let end = Math.min(total, start + maxButtons - 1);
+
+    start = Math.max(1, end - maxButtons + 1);
+
+    if (start > 1) {
+      items.push(1);
+      if (start > 2) items.push("…");
+    }
+
+    for (let p = start; p <= end; p++) items.push(p);
+
+    if (end < total) {
+      if (end < total - 1) items.push("…");
+      items.push(total);
+    }
+
+    return items;
+  }
+
+  const hasPrev = page > 1;
+  const hasNext = page < totalPages;
+
   return (
-    <section className="relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-900/20 via-slate-900 to-slate-950" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(168,85,247,0.15),transparent_50%),radial-gradient(circle_at_80%_20%,rgba(217,70,239,0.1),transparent_50%)]" />
-      <div className="absolute top-1/4 -left-10 w-72 h-72 bg-violet-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -right-10 w-72 h-72 bg-fuchsia-500/10 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-slate-50">
+      {/* Hero Header Section */}
+      <header className="relative border-b border-slate-200 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src="/images/insights/hero-default.png"
+            alt="Podcast Header Background"
+            fill
+            priority
+            className="object-cover opacity-70"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-slate-900/70 to-slate-900/30" />
+        </div>
 
-      {/* Grid overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,0.6)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.6)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 text-slate-50">
+          {/* Breadcrumb Navigation */}
+          <nav className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-200 mb-4">
+            <Link href="/" className="hover:text-sky-300">
+              Home
+            </Link>
+            <span>/</span>
+            <span className="text-sky-300 font-medium">Podcast</span>
+          </nav>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-24 lg:pb-20">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-violet-200/80 mb-8">
-          <Link
-            href="/"
-            className="hover:text-fuchsia-300 transition-colors duration-200 flex items-center gap-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-            Home
-          </Link>
-          <span className="text-violet-400">›</span>
-          <span className="text-fuchsia-300 font-medium">Podcast</span>
-        </nav>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Text content */}
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <p className="text-sm tracking-[0.25em] uppercase text-fuchsia-400 font-semibold">
-                Conversations & Insights
+          {/* Header Layout Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Column: Text, Search, Chips */}
+            <div className="lg:col-span-8 xl:col-span-9 space-y-5">
+              <p className="text-[11px] sm:text-xs tracking-[0.24em] uppercase text-sky-300 font-semibold">
+                PODCAST & TALKS
               </p>
-              <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-normal">
-                Softkingo{" "}
-                <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                  Podcast
-                </span>
+
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-normal">
+                Deep dives into tech & architecture
               </h1>
-              <p className="text-xl text-violet-100/80 leading-relaxed max-w-2xl">
-                Founders, builders, and product leaders talking candidly about
-                what it actually takes to ship great digital products.
-              </p>
-            </div>
 
-            {/* Search form */}
-            <form action="/podcast" className="space-y-3">
-              <div className="relative max-w-xl">
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 rounded-2xl blur-sm" />
+              <p className="text-sm sm:text-base text-slate-100/90">
+                In-depth articles and discussions on cloud, AI, app architecture, performance and more.
+              </p>
+
+              {/* Search Bar */}
+              <form action="/podcast" className="max-w-md">
                 <div className="relative">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    <FaSearch className="h-3.5 w-3.5 text-slate-500" />
+                  </div>
                   <input
-                    type="text"
+                    type="search"
                     name="q"
                     defaultValue={q}
-                    placeholder="Search episodes by title, guest, or topic..."
-                    className="w-full rounded-2xl bg-slate-800/80 backdrop-blur-sm border border-slate-700/50 text-white placeholder-slate-400 text-base pl-6 pr-12 py-4 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent"
+                    placeholder="Search by title or topic..."
+                    className="w-full pl-9 pr-3 py-2.5 rounded-full bg-slate-900/70 border border-slate-500 text-sm text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
                   />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl bg-gradient-to-r from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg hover:shadow-fuchsia-500/25 transition-all duration-200"
-                  >
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </button>
+                  {category && <input type="hidden" name="category" value={category} />}
                 </div>
+              </form>
+
+              {/* Topic Filter Chips */}
+              <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 text-[11px] sm:text-xs pt-1">
+                <span className="text-slate-200 shrink-0">Browse by topic:</span>
+
+                <Link
+                  href={buildUrl(q, "", 1)}
+                  className={`px-3 py-1 rounded-full border ${
+                    !category
+                      ? "bg-sky-500 text-slate-900 border-sky-300 font-medium"
+                      : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
+                  } text-[11px] transition-colors shrink-0`}
+                >
+                  All
+                </Link>
+
+                {topics.map((t) => (
+                  <Link
+                    key={t}
+                    href={buildUrl(q, t, 1)}
+                    className={`px-3 py-1 rounded-full border shrink-0 ${
+                      category === t
+                        ? "bg-sky-500 text-slate-900 border-sky-300 font-medium"
+                        : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
+                    } text-[11px] transition-colors`}
+                  >
+                    {t}
+                  </Link>
+                ))}
               </div>
-              <p className="text-sm text-violet-200/70">
-                {total} episode{total !== 1 ? "s" : ""} available
-                {q && (
-                  <>
-                    {" "}
-                    matching{" "}
-                    <span className="font-semibold text-fuchsia-300">
-                      "{q}"
-                    </span>
-                  </>
-                )}
-              </p>
-            </form>
+            </div>
+
+            {/* Right Column: Vertical List of Podcast Platforms */}
+            <div className="lg:col-span-4 xl:col-span-3 flex flex-col items-start lg:items-end justify-center pt-4 lg:pt-0">
+              <div className="flex flex-col gap-2.5 w-full max-w-[200px]">
+                <span className="text-xs text-slate-300 font-medium mb-1 tracking-wide uppercase">
+                  Listen on:
+                </span>
+                {podcastPlatforms.map((platform, i) => (
+                  <div
+                    key={i}
+                    className="relative w-full h-11 bg-slate-900/80 border border-slate-700/80 rounded-xl p-1.5 flex items-center justify-center hover:border-sky-400 hover:bg-slate-800/90 transition-all backdrop-blur shadow-md shrink-0"
+                  >
+                    <Image
+                      src={safeImg(platform.src)}
+                      alt={platform.name}
+                      fill
+                      className="object-contain p-2"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+        </div>
+      </header>
 
-          {/* Hero visual */}
-          <div className="relative">
-            <div className="relative w-full max-w-64 mx-auto">
-              <div className="relative transform hover:scale-105 transition-transform duration-500">
-                <div className="absolute -inset-4 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 rounded-3xl blur-xl" />
+      {/* Main Content Body */}
+      <main className="bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
+          <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.9fr)_minmax(0,260px)] gap-6 lg:gap-8 items-start">
+            {/* Left Column: Grid Listing */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm sm:text-base font-semibold text-slate-800">
+                  All articles
+                </h2>
 
-                <div className="relative">
-                  <div className="absolute -bottom-6 -right-6 w-full h-full bg-slate-800 rounded-3xl transform rotate-3" />
-                  <div className="absolute -bottom-3 -right-3 w-full h-full bg-slate-700 rounded-3xl transform rotate-2" />
+                <p className="text-[11px] text-slate-500">
+                  {totalCount} article{totalCount !== 1 ? "s" : ""}
+                  {q && <> matching “{q}”</>}
+                  {category && <> in {category}</>}
+                  {totalPages > 1 && <> • page {page} of {totalPages}</>}
+                </p>
+              </div>
 
-                  <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700/50 shadow-2xl overflow-hidden aspect-square p-8 flex items-center justify-center">
-                    <svg
-                      className="w-24 h-24 text-fuchsia-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"
-                      />
-                    </svg>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {episodes.map((episode) => (
+                  <PodcastGridCard key={episode.slug} episode={episode} />
+                ))}
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                    <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-violet-500/20 to-transparent rounded-br-2xl" />
-                    <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-fuchsia-500/20 to-transparent rounded-tl-2xl" />
+                {!episodes.length && (
+                  <p className="text-sm text-slate-500 col-span-full py-8 text-center bg-white rounded-2xl border border-slate-200">
+                    No podcast episodes found.
+                  </p>
+                )}
+              </div>
+
+              {/* Pagination Bar */}
+              {totalPages > 1 && (
+                <nav className="mt-8 flex items-center justify-center gap-2" aria-label="Pagination">
+                  <Link
+                    aria-disabled={!hasPrev}
+                    href={hasPrev ? buildUrl(q, category, page - 1) : "#"}
+                    className={`px-3 py-2 rounded-lg border text-sm ${
+                      hasPrev
+                        ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                        : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
+                    }`}
+                  >
+                    Prev
+                  </Link>
+
+                  <div className="flex items-center gap-1">
+                    {getPageItems(page, totalPages, 5).map((it, idx) => {
+                      if (it === "…") {
+                        return (
+                          <span
+                            key={`dots-${idx}`}
+                            className="px-3 py-2 text-sm text-slate-400 select-none"
+                          >
+                            …
+                          </span>
+                        );
+                      }
+
+                      const p = it;
+                      const active = p === page;
+
+                      return (
+                        <Link
+                          key={p}
+                          href={buildUrl(q, category, p)}
+                          aria-current={active ? "page" : undefined}
+                          className={`min-w-9 text-center px-3 py-2 rounded-lg border text-sm ${
+                            active
+                              ? "bg-sky-600 border-sky-600 text-white font-medium"
+                              : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                          }`}
+                        >
+                          {p}
+                        </Link>
+                      );
+                    })}
+                  </div>
+
+                  <Link
+                    aria-disabled={!hasNext}
+                    href={hasNext ? buildUrl(q, category, page + 1) : "#"}
+                    className={`px-3 py-2 rounded-lg border text-sm ${
+                      hasNext
+                        ? "bg-white hover:bg-slate-50 border-slate-200 text-slate-700"
+                        : "bg-slate-100 border-slate-200 text-slate-400 pointer-events-none"
+                    }`}
+                  >
+                    Next
+                  </Link>
+                </nav>
+              )}
+            </div>
+
+            {/* Right Sidebar: MOST READ */}
+            <aside className="hidden md:flex flex-col gap-4 sticky top-24">
+              {mostRead.length > 0 && (
+                <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                  <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-[0.18em] mb-3">
+                    MOST READ
+                  </p>
+                  <div className="space-y-3">
+                    {mostRead.map((p) => (
+                      <PodcastCompactCard key={p.slug} episode={p} />
+                    ))}
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function EpisodesSection({ episodes }) {
-  return (
-    <section className="py-16 lg:py-24 bg-slate-950/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-            Latest{" "}
-            <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-              Episodes
-            </span>
-          </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            Real conversations on strategy, execution, and everything in
-            between
-          </p>
-        </div>
-
-        {episodes.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {episodes.map((episode, index) => (
-              <PodcastCard key={episode.slug} episode={episode} index={index} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16 lg:py-24">
-            <div className="w-24 h-24 bg-slate-800 rounded-3xl flex items-center justify-center mx-auto mb-6">
-              <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-3">
-              No Episodes Found
-            </h3>
-            <p className="text-slate-400 mb-8 max-w-md mx-auto">
-              We couldn't find any episodes matching your search. Try
-              different keywords or browse all episodes.
-            </p>
-            <Link
-              href="/podcast"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl transition-all duration-200 border border-slate-700 hover:border-slate-600"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-              View All Episodes
-            </Link>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
-export function PodcastCard({ episode, index }) {
-  return (
-    <article
-      className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-slate-700/50 hover:border-fuchsia-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-fuchsia-500/10"
-      style={{
-        animationDelay: `${index * 100}ms`,
-        animationFillMode: "both",
-      }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-fuchsia-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-
-      <div className="relative p-6">
-        {/* Category + duration */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1 min-w-0">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30 mb-3">
-              {episode.category || "Podcast"}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-1 text-xs text-slate-400 bg-slate-800/50 rounded-full px-2 py-1">
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {episode.durationText || "30-40 min"}
-          </div>
-        </div>
-
-        {/* Cover image */}
-        <div className="relative mb-6 transform group-hover:-translate-y-2 transition-transform duration-500">
-          <div className="absolute -inset-4 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-          <div className="relative w-full aspect-square overflow-hidden rounded-2xl">
-            <Image
-              src={episode.coverImage || "/images/podcasts/default.png"}
-              alt={episode.title}
-              fill
-              className="object-cover transform group-hover:scale-105 transition-transform duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-
-            {episode.episodeNumber && (
-              <div className="absolute bottom-3 right-3">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/90 text-slate-800">
-                  Ep. {episode.episodeNumber}
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="space-y-4">
-          {/* Host / guest */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-fuchsia-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-              {(episode.hostName || "SK")[0]}
-            </div>
-            <span className="text-sm text-slate-300">
-              {episode.hostName || "Softkingo Team"}
-              {episode.guestName && (
-                <span className="text-slate-500"> · with {episode.guestName}</span>
               )}
-            </span>
-          </div>
+            </aside>
+          </section>
+        </div>
 
-          {/* Title */}
-          <h3 className="text-xl font-bold text-white leading-normal group-hover:text-fuchsia-300 transition-colors duration-300 line-clamp-2">
+        {/* Footer Inquiry Section */}
+        <InquirySection />
+      </main>
+    </div>
+  );
+}
+
+{/* Grid Card Component */}
+function PodcastGridCard({ episode }) {
+  return (
+    <article className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-sky-300 transition-all flex flex-col group">
+      <div className="relative h-44 sm:h-48 bg-slate-100 overflow-hidden">
+        <Image
+          src={safeImg(episode.coverImage)}
+          alt={episode.title}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-500 text-slate-900 shadow-sm">
+          {episode.category || "Podcast"}
+        </span>
+      </div>
+
+      <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold text-slate-900 leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors">
             {episode.title}
           </h3>
-
-          {/* Description */}
-          <p className="text-slate-400 leading-relaxed line-clamp-2 text-sm">
+          <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
             {episode.description || episode.summary}
           </p>
+        </div>
 
-          {/* CTA */}
-          <div className="pt-2">
-            <Link
-              href={`/podcast/${episode.slug}`}
-              className="inline-flex items-center justify-between w-full px-4 py-3 bg-slate-800/50 hover:bg-slate-700/50 text-white font-semibold rounded-xl transition-all duration-300 border border-slate-700/50 hover:border-fuchsia-500/30 group/btn overflow-hidden"
-            >
-              <span className="text-sm">Listen Now</span>
-
-              <div className="flex items-center">
-                <span className="text-xs text-slate-400 group-hover/btn:text-fuchsia-300 mr-2 transition-colors duration-300">
-                  Play
-                </span>
-                <div className="w-6 h-6 rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-600 flex items-center justify-center transform group-hover/btn:translate-x-1 transition-transform duration-300">
-                  <svg
-                    className="w-3 h-3 text-white transform -rotate-45 group-hover/btn:rotate-0 transition-transform duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </div>
-              </div>
-
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000" />
-            </Link>
-          </div>
+        <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+          <span className="text-[11px] text-slate-400 font-medium">
+            {episode.durationText || "30 min"}
+          </span>
+          <Link
+            href={`/podcast/${episode.slug}`}
+            className="text-xs font-semibold text-sky-700 hover:text-sky-800 transition-colors"
+          >
+            Listen now →
+          </Link>
         </div>
       </div>
-
-      <div className="absolute top-0 left-0 w-12 h-12 bg-gradient-to-br from-violet-500/10 to-transparent rounded-br-2xl" />
-      <div className="absolute bottom-0 right-0 w-12 h-12 bg-gradient-to-tl from-fuchsia-500/10 to-transparent rounded-tl-2xl" />
     </article>
+  );
+}
+
+{/* Sidebar Compact Card Component */}
+function PodcastCompactCard({ episode }) {
+  return (
+    <div className="border-b border-slate-100 pb-2.5 last:border-0 last:pb-0">
+      <p className="text-[10px] font-medium text-sky-600 uppercase tracking-wide mb-1">
+        {episode.category || "Podcast"}
+      </p>
+      <Link
+        href={`/podcast/${episode.slug}`}
+        className="text-xs font-semibold text-slate-800 hover:text-sky-600 transition-colors line-clamp-2 leading-snug"
+      >
+        {episode.title}
+      </Link>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowUpRight, ArrowLeft, ArrowRight, ImageOff } from "lucide-react";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import CommonTitle from "@/components/ui/CommonTitle";
 import Image from "next/image";
@@ -160,8 +160,6 @@ const CASE_STUDIES = [
   },
 ];
 
-// Logo image with its own lazy-load + error handling so a broken/slow
-// logo never shifts or breaks the card header layout.
 function LogoImage({ src, alt }) {
   const [error, setError] = useState(false);
 
@@ -241,7 +239,6 @@ function CaseStudyCard({ study }) {
         background: `linear-gradient(160deg, ${study.gradientFrom} 0%, ${study.gradientTo} 100%)`,
       }}
     >
-      {/* Header: logo + arrow button */}
       <div className="flex items-start justify-between">
         <CardLogo study={study} />
 
@@ -255,12 +252,10 @@ function CaseStudyCard({ study }) {
         </Link>
       </div>
 
-      {/* Description */}
       <p className="mt-2 text-[11px] logoSubText text-white/90">
         {study.description}
       </p>
 
-      {/* Stats grid */}
       <div className="relative mt-6 grid grid-cols-2 gap-x-6 gap-y-5 pb-6">
         <div
           className="pointer-events-none absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-white"
@@ -280,7 +275,6 @@ function CaseStudyCard({ study }) {
         ))}
       </div>
 
-      {/* Mockup image */}
       <div className="relative mt-auto flex flex-1 items-end justify-center pt-6">
         <div className="relative h-[220px] w-full">
           {!imageError ? (
@@ -309,39 +303,58 @@ function CaseStudyCard({ study }) {
 export default function CaseStudiesSection({ title, data }) {
   const heading = title || "Our Portfolio";
   const studies = data && data.length > 0 ? data : CASE_STUDIES;
-  const count = studies.length;
+  const realCount = studies.length;
 
-  const [index, setIndex] = useState(0);
+  const extendedData = [...studies, ...studies, ...studies];
+
+  const [virtualIndex, setVirtualIndex] = useState(realCount);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
-  const x = useMotionValue(0);
+  const x = useMotionValue(-realCount * STEP);
 
-  const containerWidth = useCallback(() => containerRef.current?.offsetWidth ?? 0, []);
-  const trackWidth = useCallback(() => count * STEP - GAP, [count]);
-
-  const minX = useCallback(() => {
-    return Math.min(0, containerWidth() - trackWidth());
-  }, [containerWidth, trackWidth]);
-
-  // Handle smooth alignment on index change when not dragging
   useEffect(() => {
     if (!isDragging) {
-      const targetX = Math.max(minX(), -index * STEP);
-      animate(x, targetX, {
+      const targetX = -virtualIndex * STEP;
+      const controls = animate(x, targetX, {
         type: "spring",
-        stiffness: 300,
-        damping: 30,
+        stiffness: 260,
+        damping: 28,
+        onComplete: () => {
+          if (virtualIndex >= realCount * 2) {
+            const resetIndex = virtualIndex - realCount;
+            setVirtualIndex(resetIndex);
+            x.set(-resetIndex * STEP);
+          } else if (virtualIndex < realCount) {
+            const resetIndex = virtualIndex + realCount;
+            setVirtualIndex(resetIndex);
+            x.set(-resetIndex * STEP);
+          }
+        },
       });
+
+      return () => controls.stop();
     }
-  }, [index, x, isDragging, minX]);
+  }, [virtualIndex, isDragging, x, realCount]);
 
-  const goRight = () => {
-    setIndex((prev) => (prev + 1) % count);
-  };
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) {
+        return;
+      }
 
-  const goLeft = () => {
-    setIndex((prev) => (prev - 1 + count) % count);
-  };
+      if (event.key === "ArrowLeft") {
+        setVirtualIndex((prev) => prev - 1);
+      } else if (event.key === "ArrowRight") {
+        setVirtualIndex((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const goRight = () => setVirtualIndex((prev) => prev + 1);
+  const goLeft = () => setVirtualIndex((prev) => prev - 1);
 
   return (
     <section className="overflow-hidden bg-white py-12">
@@ -376,30 +389,27 @@ export default function CaseStudiesSection({ title, data }) {
           <motion.div
             className="flex cursor-grab gap-5 pb-4 select-none active:cursor-grabbing"
             drag="x"
-            dragElastic={0.2}
+            dragElastic={0.15}
             dragMomentum={false}
             onDragStart={() => setIsDragging(true)}
             onDragEnd={(e, info) => {
               setIsDragging(false);
               const offset = info.offset.x;
               const velocity = info.velocity.x;
-              let newIndex = index;
+              let newVirtualIndex = virtualIndex;
 
-              // Fast flick/swipe check
-              if (Math.abs(velocity) > 500) {
-                newIndex = velocity > 0 ? index - 1 : index + 1;
-              } else if (Math.abs(offset) > CARD_WIDTH * 0.3) {
-                // Dragged past 30% threshold of card width
-                newIndex = offset > 0 ? index - 1 : index + 1;
+              if (Math.abs(velocity) > 400) {
+                newVirtualIndex = velocity < 0 ? virtualIndex + 1 : virtualIndex - 1;
+              } else if (Math.abs(offset) > CARD_WIDTH * 0.25) {
+                newVirtualIndex = offset < 0 ? virtualIndex + 1 : virtualIndex - 1;
               }
 
-              newIndex = Math.max(0, Math.min(count - 1, newIndex));
-              setIndex(newIndex);
+              setVirtualIndex(newVirtualIndex);
             }}
             style={{ x, touchAction: "pan-y" }}
           >
-            {studies.map((study) => (
-              <CaseStudyCard key={study.id} study={study} />
+            {extendedData.map((study, idx) => (
+              <CaseStudyCard key={`${study.id}-clone-${idx}`} study={study} />
             ))}
           </motion.div>
         </div>
