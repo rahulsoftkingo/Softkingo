@@ -347,7 +347,7 @@ export default function IndustryTabsSection() {
   const active = industries[currentIndex];
 
   return (
-    <section className="relative bg-white pt-16 pb-20">
+    <section className="relative pt-0  bg-white sm:pt-16 pb-20">
 
       {/* SECTION HEADER */}
       <div className="text-center mb-8 px-4">

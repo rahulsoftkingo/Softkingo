@@ -150,7 +150,7 @@ const HomePortfolio = () => {
                                     key={project.id}
                                     type="button"
                                     onClick={() => goToSlide(idx)}
-                                    className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl min-w-[85px] sm:min-w-[120px] px-3 py-2 md:py-2.5 border transition-all duration-300 cursor-pointer shrink-0 ${
+                                    className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl min-w-[85px] sm:min-w-[120px] px-3 py-2 ml-2.5 md:py-2.5 border transition-all duration-300 cursor-pointer shrink-0 ${
                                         isActive
                                             ? "scale-105 border-white/20 shadow-md"
                                             : "bg-slate-900/90 border-white/10 hover:bg-slate-900 hover:scale-105"
@@ -184,7 +184,7 @@ const HomePortfolio = () => {
 
                 {/* CAROUSEL VIEWPORT AREA */}
                 <div className="w-full flex items-center relative py-2">
-                    <div ref={containerRef} className="w-full min-h-[460px] sm:min-h-[480px] md:h-[480px] lg:h-[500px] relative overflow-hidden cursor-default">
+                    <div ref={containerRef} className="w-full min-h-[370px] sm:min-h-[480px] md:h-[480px] lg:h-[500px] relative overflow-hidden cursor-default">
                         <motion.div
                             drag="x"
                             dragElastic={0.12}
