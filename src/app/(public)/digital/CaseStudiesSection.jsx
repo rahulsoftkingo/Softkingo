@@ -165,22 +165,24 @@ function LogoImage({ src, alt }) {
 
   if (!src || error) {
     return (
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/15">
+      <div className="flex h-[45px] w-[43px] shrink-0 items-center justify-center rounded-lg bg-white/15">
         <ImageOff className="h-4 w-4 text-white/70" />
       </div>
     );
   }
 
   return (
-    <Image
-      src={src}
-      alt={alt}
-      width={44}
-      height={30}
-      loading="lazy"
-      className="h-6 w-auto object-contain w-[43px] h-[45px]"
-      onError={() => setError(true)}
-    />
+    <div className="relative h-[45px] w-[43px] shrink-0">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        loading="lazy"
+        sizes="43px"
+        className="object-contain"
+        onError={() => setError(true)}
+      />
+    </div>
   );
 }
 
@@ -276,7 +278,7 @@ function CaseStudyCard({ study }) {
       </div>
 
       <div className="relative mt-auto flex flex-1 items-end justify-center pt-6">
-        <div className="relative h-[220px] w-full">
+        <div className="relative h-[220px] min-h-[220px] w-full overflow-hidden">
           {!imageError ? (
             <Image
               src={study.mockupImage}
@@ -357,7 +359,7 @@ export default function CaseStudiesSection({ title, data }) {
   const goLeft = () => setVirtualIndex((prev) => prev - 1);
 
   return (
-    <section className="overflow-hidden bg-white py-12">
+    <section className="relative overflow-x-hidden bg-white py-12">
       <div className="mx-auto max-w-7xl px-4 sm:px-0">
         <div className="flex items-start justify-between gap-6">
           <CommonTitle align="left" pill={false} title={heading} />
@@ -384,7 +386,7 @@ export default function CaseStudiesSection({ title, data }) {
 
         <div
           ref={containerRef}
-          className="mr-[calc(50%-50vw)] [clip-path:inset(0_-100vw_0_0)]"
+          className="overflow-hidden mr-[calc(50%-50vw)]"
         >
           <motion.div
             className="flex cursor-grab gap-5 pb-4 select-none active:cursor-grabbing"

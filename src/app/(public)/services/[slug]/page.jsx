@@ -723,6 +723,7 @@ export default async function ServicePage({ params }) {
   });
 
   if (!service || service.status !== "published") {
+
     const digitalPage = await prisma.page.findUnique({
       where: { slug, type: "digital", status: "published" },
     });

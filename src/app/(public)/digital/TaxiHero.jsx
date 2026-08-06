@@ -32,6 +32,7 @@ export default function TaxiHero({ data }) {
   const heroButtonLink2 = data?.heroButtonLink2 || DEFAULT_DATA.heroButtonLink2;
   const heroBullets = Array.isArray(data?.heroBullets) ? data.heroBullets : DEFAULT_DATA.heroBullets;
   const heroBg = data?.heroBg || DEFAULT_DATA.heroBg;
+  const endpoint = data?.endpoint || "";
 
 
   return (
@@ -73,7 +74,7 @@ export default function TaxiHero({ data }) {
                 <span className="text-gray-400">›</span>
 
                 <span className="text-cyan-400">
-                  {data.slug}
+                  {data.endpoint || "Digital Marketing"}
                 </span>
               </nav>
 
