@@ -86,12 +86,13 @@ export default function CloneTechStack({ data }) {
 
                 {/* Tech Grid Display (Limit Radius) */}
                 <div className="min-h-[200px]">
-                    <div className="flex justify-center">
-                        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-6xl animate-fadeIn">
+                    {/* Mobile: single-row horizontal scroll. Desktop (md+): unchanged wrap/center layout */}
+                    <div className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 md:overflow-visible md:pb-0 md:justify-center">
+                        <div className="flex flex-nowrap md:flex-wrap items-center justify-start md:justify-center gap-6 md:gap-8 max-w-6xl animate-fadeIn mx-auto">
                             {tabs?.[activeTab]?.items?.map((tech, idx) => (
                                 <div
                                     key={idx}
-                                    className="group flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-sky-500/10 hover:border-sky-200 transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
+                                    className="group flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-sky-500/10 hover:border-sky-200 transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px] flex-shrink-0 snap-center"
                                 >
                                     <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
                                         <Image

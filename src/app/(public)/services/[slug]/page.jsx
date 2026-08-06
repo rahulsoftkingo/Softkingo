@@ -974,15 +974,18 @@ export default async function ServicePage({ params }) {
                   </Link>
                 </div>
 
-                <div className="pt-4 md:pt-6 animate-fadeInUp animation-delay-800  ">
+                <div className="pt-4 md:pt-6 animate-fadeInUp animation-delay-800">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent md:hidden"></div>
+
                     <h3 className="text-sky-200 text-sm md:text-base font-semibold">
                       {content.trustedByText || "Trusted By Leading Brands"}
                     </h3>
+
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-sky-500/50 to-transparent"></div>
                   </div>
-                  <div className="flex items-center gap-6 md:gap-8 flex-wrap justify-center lg:justify-start">
+
+                  <div className="flex items-center justify-center lg:justify-start gap-3 md:gap-8 flex-nowrap">
                     <div className="flex flex-col items-center">
                       <p className="text-yellow-400 text-sm">★★★★★</p>
                       <Image
@@ -990,9 +993,10 @@ export default async function ServicePage({ params }) {
                         alt="Clutch"
                         width={100}
                         height={50}
-                        className="opacity-70 hover:opacity-100 transition-opacity"
+                        className="w-[70px] h-auto md:w-[100px] opacity-70 hover:opacity-100 transition-opacity"
                       />
                     </div>
+
                     <div className="flex flex-col items-center">
                       <p className="text-yellow-400 text-sm">★★★★★</p>
                       <Image
@@ -1000,9 +1004,10 @@ export default async function ServicePage({ params }) {
                         alt="GoodFirms"
                         width={120}
                         height={40}
-                        className="opacity-70 hover:opacity-100 transition-opacity"
+                        className="w-[85px] h-auto md:w-[120px] opacity-70 hover:opacity-100 transition-opacity"
                       />
                     </div>
+
                     <div className="flex flex-col items-center">
                       <p className="text-yellow-400 text-sm">★★★★★</p>
                       <Image
@@ -1010,7 +1015,7 @@ export default async function ServicePage({ params }) {
                         alt="Upwork"
                         width={90}
                         height={40}
-                        className="opacity-70 hover:opacity-100 transition-opacity"
+                        className="w-[65px] h-auto md:w-[90px] opacity-70 hover:opacity-100 transition-opacity"
                       />
                     </div>
                   </div>
@@ -1061,7 +1066,7 @@ export default async function ServicePage({ params }) {
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl -mb-48 opacity-20"></div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-6 relative z-10">
-            <div className="flex flex-wrap items-center justify-around gap-4 md:gap-12 text-white">
+            <div className="flex flex-nowrap items-center justify-around gap-2 md:gap-12 text-white">
               <StatItem
                 icon={<Clock className="w-8 h-8 md:w-10 md:h-10" />}
                 value={content.stats?.years}
