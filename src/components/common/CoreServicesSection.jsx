@@ -233,11 +233,24 @@ export default function CoreServicesSection({
     bgClass = "bg-white",
 }) {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isDesktop, setIsDesktop] = useState(false);
     const containerRef = useRef(null);
     const mobileScrollRef = useRef(null);
 
-    // Lock page scroll & cycle through items on scroll
+    // Track viewport: scroll-lock behavior is desktop (lg) only
     useEffect(() => {
+        const mql = window.matchMedia("(min-width: 1024px)");
+        const update = () => setIsDesktop(mql.matches);
+        update();
+        mql.addEventListener("change", update);
+        return () => mql.removeEventListener("change", update);
+    }, []);
+
+    // Lock page scroll & cycle through items on scroll — DESKTOP ONLY.
+    // Mobile relies purely on button taps (handleTabChange).
+    useEffect(() => {
+        if (!isDesktop) return;
+
         const handleScroll = () => {
             if (!containerRef.current) return;
             const rect = containerRef.current.getBoundingClientRect();
@@ -253,11 +266,11 @@ export default function CoreServicesSection({
 
         window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [services.length]);
+    }, [isDesktop, services.length]);
 
     const handleTabChange = (index) => {
         setActiveIndex(index);
-        
+
         // Auto-center current selection inside mobile nav container
         const btn = document.getElementById(`nav-btn-${index}`);
         if (btn && mobileScrollRef.current) {
@@ -270,14 +283,18 @@ export default function CoreServicesSection({
     };
 
     return (
-        <section 
-            id={sectionId} 
+        <section
+            id={sectionId}
             ref={containerRef}
-            style={{ height: `${services.length * 100}vh` }} 
+            style={isDesktop ? { height: `${services.length * 100}vh` } : undefined}
             className={`${bgClass} relative`}
         >
-            {/* Sticky screen pin layer */}
-            <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+            {/* Sticky screen-pin layer only kicks in on desktop; mobile is a normal flow section */}
+            <div
+                className={`${
+                    isDesktop ? "sticky top-0 h-screen" : "relative"
+                } flex flex-col justify-center overflow-hidden`}
+            >
                 {/* Fine-tuned, extra smooth cubic-bezier transition exclusively for the right card */}
                 <style jsx global>{`
                     @keyframes cardFadeIn {
@@ -298,7 +315,7 @@ export default function CoreServicesSection({
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16 w-full">
                     <CommonTitle align="center" title={title} subtitle={subtitle} />
 
-                    {/* Mobile / Tablet Horizontal Navigation Header */}
+                    {/* Mobile / Tablet Horizontal Navigation Header — pure button selection, no scroll-driven switching */}
                     <div className="lg:hidden mt-10 mb-8 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
                         <div
                             ref={mobileScrollRef}
@@ -308,8 +325,8 @@ export default function CoreServicesSection({
                                 <button
                                     key={idx}
                                     id={`nav-btn-${idx}`}
+                                    type="button"
                                     onClick={() => handleTabChange(idx)}
-                                    onMouseEnter={() => handleTabChange(idx)}
                                     className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shrink-0 border ${
                                         activeIndex === idx
                                             ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
@@ -323,12 +340,13 @@ export default function CoreServicesSection({
                     </div>
 
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12 lg:mt-20 items-start">
-                        {/* Dashboard Navigation Sidebar (Left Sticky Container) */}
+                        {/* Dashboard Navigation Sidebar (Left Sticky Container) — desktop only, hover still cycles on desktop */}
                         <div className="hidden lg:block w-80 shrink-0 rounded-3xl border border-sky-200/20 bg-white/5 backdrop-blur-xl shadow-2xl shadow-sky-900/10 overflow-hidden">
                             <div className="divide-y divide-sky-200/15">
                                 {services.map((s, idx) => (
                                     <button
                                         key={idx}
+                                        type="button"
                                         onClick={() => setActiveIndex(idx)}
                                         onMouseEnter={() => setActiveIndex(idx)}
                                         className={`w-full text-left px-7 py-6 transition-all duration-300 group ${

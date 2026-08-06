@@ -73,10 +73,22 @@ export default async function PodcastPage(props) {
 
   // 4 Podcast Platform Image URLs
   const podcastPlatforms = [
-    { name: "Apple Podcast", src: "/images/podcast/apple-podcast.webp" },
-    { name: "Google Podcast", src: "/images/podcast/google-podcast.webp" },
-    { name: "Spotify Podcast", src: "/images/podcast/spotify-podcast.webp" },
-    { name: "SoundCloud", src: "/images/podcast/sound-cloud.webp" },
+    {
+      name: "Google Podcasts",
+      src: "/images/podcast/google-podcast.webp",
+    },
+    {
+      name: "Spotify",
+      src: "/images/podcast/spotify-podcast.webp",
+    },
+    {
+      name: "Apple Podcasts",
+      src: "/images/podcast/apple-podcast.webp",
+    },
+    {
+      name: "Soundcloud",
+      src: "/images/podcast/sound-cloud.webp",
+    },
   ];
 
   const buildUrl = (nextQ, nextCategory, nextPage = 1) => {
@@ -131,7 +143,7 @@ export default async function PodcastPage(props) {
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-slate-900/70 to-slate-900/30" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 text-slate-50">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 text-slate-50 flex flex-col justify-between min-h-[340px]">
           {/* Breadcrumb Navigation */}
           <nav className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-200 mb-4">
             <Link href="/" className="hover:text-sky-300">
@@ -141,10 +153,10 @@ export default async function PodcastPage(props) {
             <span className="text-sky-300 font-medium">Podcast</span>
           </nav>
 
-          {/* Header Layout Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Header Main Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-end">
             {/* Left Column: Text, Search, Chips */}
-            <div className="lg:col-span-8 xl:col-span-9 space-y-5">
+            <div className="lg:col-span-6 xl:col-span-6 space-y-5">
               <p className="text-[11px] sm:text-xs tracking-[0.24em] uppercase text-sky-300 font-semibold">
                 PODCAST & TALKS
               </p>
@@ -205,25 +217,30 @@ export default async function PodcastPage(props) {
               </div>
             </div>
 
-            {/* Right Column: Vertical List of Podcast Platforms */}
-            <div className="lg:col-span-4 xl:col-span-3 flex flex-col items-start lg:items-end justify-center pt-4 lg:pt-0">
-              <div className="flex flex-col gap-2.5 w-full max-w-[200px]">
-                <span className="text-xs text-slate-300 font-medium mb-1 tracking-wide uppercase">
+            {/* Right Column: Compact Inline Row with Minimal Margins */}
+            <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-end items-start lg:items-end pt-2 lg:pt-0">
+              <div className="flex flex-col items-start lg:items-end gap-2 w-full">
+                <span className="text-[11px] text-slate-300 font-medium tracking-wide uppercase">
                   Listen on:
                 </span>
-                {podcastPlatforms.map((platform, i) => (
-                  <div
-                    key={i}
-                    className="relative w-full h-11 bg-slate-900/80 border border-slate-700/80 rounded-xl p-1.5 flex items-center justify-center hover:border-sky-400 hover:bg-slate-800/90 transition-all backdrop-blur shadow-md shrink-0"
-                  >
-                    <Image
-                      src={safeImg(platform.src)}
-                      alt={platform.name}
-                      fill
-                      className="object-contain p-2"
-                    />
-                  </div>
-                ))}
+
+                {/* Single Row Container with Compact Margins/Gaps */}
+                <div className="flex flex-row items-center justify-start lg:justify-end gap-1.5 sm:gap-2 w-full overflow-x-auto scrollbar-hide">
+                  {podcastPlatforms.map((platform, i) => (
+                    <div
+                      key={i}
+                      title={platform.name}
+                      className="relative w-[100px] sm:w-[125px] lg:w-[130px] h-10 sm:h-11 px-1.5 sm:px-2 py-1 flex items-center justify-center hover:-translate-y-0.5 transition-all shrink-0 bg-slate-900/50 rounded-xl border border-slate-700/60 backdrop-blur-sm"
+                    >
+                      <Image
+                        src={safeImg(platform.src)}
+                        alt={platform.name}
+                        fill
+                        className="object-contain p-1.5"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
