@@ -63,6 +63,7 @@ async function getSolutionPage(slug) {
         const page = await prisma.page.findUnique({ where: { slug: slug } });
         if (!page) return null;
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
+        jsonContent.content["endpoint"]=page.title;
 
         async function extractAllImages(obj) {
             const images = [];
@@ -156,6 +157,7 @@ async function getSolutionPage(slug) {
 
         return {
             ...page,
+            endpoint: jsonContent.endpoint,  
             activeSections: jsonContent.activeSections || [],
             sections: jsonContent.content || {},
             industryPages,
@@ -206,8 +208,6 @@ export default async function DynamicSolutionPage(props) {
 
     if (!data) return notFound();
 
-    console.log("Fetched solution page data:", data); // Debug log
-
     // Helper to check active sections
     const show = (id) => data.activeSections.includes(id);
 
@@ -216,6 +216,7 @@ export default async function DynamicSolutionPage(props) {
     // =========================================================
     if (data.type === 'clone') {
         const {
+            endpoint,
             hero, about, verticalSuite, aiFeatures, aiSolutions,
             investment, revenue, techStack, portfolio, process, faq
         } = data.sections;
@@ -393,6 +394,7 @@ export default async function DynamicSolutionPage(props) {
     // ✅ CASE B: STANDARD SOLUTION PAGE (Existing Logic)
     // =========================================================
     const {
+        endpoint,
         hero, stats, intro, features, awards, whyNeed,
         servicesList, appModules,
         aiCapabilities, portfolio, process, techStack,
@@ -401,6 +403,7 @@ export default async function DynamicSolutionPage(props) {
         cta, inquiry,
         userApp, vendorApp, adminPanel // Legacy fields as siblings
     } = data.sections;
+    
 
     // --- LEGACY SUPPORT: appModules ---
     let finalModules = appModules?.tabs || [];
@@ -481,7 +484,7 @@ export default async function DynamicSolutionPage(props) {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
                 />
             )}
-            {show('hero') && <section className='bg-sky-50'><SolutionsHero data={hero} /></section>}
+            {show('hero') && <section className='bg-sky-50'><SolutionsHero data={hero} endpoint={endpoint} /></section>}
             {show('stats') && <SolutionsStats data={stats} />}
             {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}

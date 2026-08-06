@@ -5,7 +5,8 @@ import { ArrowRight, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 
-export default function SolutionsHero({ data }) {
+export default function SolutionsHero({ data,endpoint }) {
+
   // 1. Initialize State
   const [imgSrc, setImgSrc] = useState(data?.image);
   const [showModal, setShowModal] = useState(false);
@@ -35,7 +36,7 @@ export default function SolutionsHero({ data }) {
                 Solutions
               </Link>
               <span>›</span>
-              <span className="text-sky-400 font-medium">{data.title}</span>
+              <span className="text-sky-400 font-medium">{endpoint}</span>
             </nav>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-sky-950 leading-[1.1] animate-fadeInUp delay-100">

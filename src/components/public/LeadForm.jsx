@@ -139,7 +139,7 @@ export default function LeadForm({
       checkbox: 'border-slate-700 text-cyan-500',
     },
     solid: {
-      container: 'bg-white border border-slate-200 shadow-xl',
+      container: 'bg-white border border-slate-200  w-[324px] sm:w-full shadow-xl',
       title: 'text-slate-900',
       subtitle: 'text-slate-600',
       subtitleIdle: 'text-slate-500',
