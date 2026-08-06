@@ -1,22 +1,14 @@
 "use client";
-import DigitalMarketingServices from "../../digital/DigitalMarketingServices";
-import AppFeatures from "../../digital/AppFeatures";
-import PlanFeatures from "../../digital/PlanFeatures";
-import WhyChooseUs from "../../digital/WhyChooseUs";
-import TaxiHero from "../../digital/TaxiHero";
-import SeoIndustries from "../../digital/SeoIndustries";
-import SeoServicesSlider from "../../digital/SeoServicesSlider";
-import TrustedByCard from "../../digital/TrustedByCard";
-import PricingPage from "../../digital/PricingPage";
-import CuttingEdgeTech from "../../digital/CuttingEdgeTech";
-import ServicesByCompany from "../../digital/ServicesByCompany"
-import WorkflowAddOns from "../../digital/WorkFlowAddons";
+import DigitalMarketingServices from "../_components/digicomponent/DigitalMarketingServices"
+import TaxiHero from "../_components/digicomponent/TaxiHero";
+import TrustedByCard from "../_components/digicomponent/TrustedByCard";
+import PricingPage from "../_components/digicomponent/PricingPage";
+import ServicesByCompany from "../_components/digicomponent/ServicesByCompany"
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
-import ComparePlansSection from "../../digital/ComparePlansSection";
-import CaseStudiesSection from "../../digital/CaseStudiesSection";
-import AwardsSection from "../../digital/AwardsSection";
+import CaseStudiesSection from "../_components/digicomponent/CaseStudiesSection";
+import AwardsSection from "../_components/digicomponent/AwardsSection";
 
 
 
