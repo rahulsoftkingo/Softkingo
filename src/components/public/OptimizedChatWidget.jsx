@@ -22,6 +22,7 @@ export default function OptimizedChatWidget() {
 
   // Initialize Socket.io
   useEffect(() => {
+    // Only initialize socket in browser
     if (typeof window !== 'undefined') {
       socketRef.current = io({
         transports: ['websocket']
@@ -29,31 +30,24 @@ export default function OptimizedChatWidget() {
 
       socketRef.current.on('connect', () => {
         console.log('Socket connected');
+        // We handle room joining in a separate effect that watches conversationId
       });
 
       socketRef.current.on('receive-message', (message) => {
         setMessages((prev) => {
-          if (
-            message.sender === 'visitor' &&
-            prev.some(
-              (m) =>
-                m.content === message.content &&
-                Math.abs(new Date(m.timestamp) - new Date(message.timestamp)) < 2000
-            )
-          ) {
+          // Prevent duplicates if the message was added locally
+          if (message.sender === 'visitor' && prev.some(m => m.content === message.content && Math.abs(new Date(m.timestamp) - new Date(message.timestamp)) < 2000)) {
             return prev;
           }
-          return [
-            ...prev,
-            {
-              ...message,
-              id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-              timestamp: new Date(message.timestamp)
-            }
-          ];
+          return [...prev, {
+            ...message,
+            id: Date.now() + Math.random(),
+            timestamp: new Date(message.timestamp)
+          }];
         });
         setIsTyping(false);
 
+        // Play sound if message is from admin/bot and not from self
         if (message.sender !== 'visitor') {
           playNotificationSound();
         }
@@ -70,13 +64,13 @@ export default function OptimizedChatWidget() {
     };
   }, []);
 
-  // Room Joining Logic
+  // Room Joining Logic (Handles refreshes and id changes)
   useEffect(() => {
     if (socketRef.current && conversationId) {
       socketRef.current.emit('join-conversation', conversationId);
       console.log('Joined room:', conversationId);
     }
-  }, [conversationId]);
+  }, [conversationId, socketRef.current]);
 
   // Load saved conversation and messages
   useEffect(() => {
@@ -93,10 +87,15 @@ export default function OptimizedChatWidget() {
       fetchMessages(data.conversationId || data.id);
       setOnboardingStep(null);
     } else {
+      // If no conversation but we have info, we can skip onboarding but still need to create conversation
+      // However, usually we start onboarding if no savedConversation exists.
       if (savedVisitorInfo) {
+        // We have info, just create the conversation
         const info = JSON.parse(savedVisitorInfo);
         createConversation(info);
       } else {
+        // Prepare onboarding step but don't add messages yet
+        // They will be added with animation in the auto-open logic or manual click
         setOnboardingStep('name');
       }
     }
@@ -104,6 +103,7 @@ export default function OptimizedChatWidget() {
 
   const [greetingTriggered, setGreetingTriggered] = useState(false);
 
+  // Track open status globally for mutual exclusion with Popup
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.__softkingo_chat_active = isOpen;
@@ -115,7 +115,7 @@ export default function OptimizedChatWidget() {
 
   const chatTriggeredRef = useRef(false);
 
-  // Auto-open logic after 10 seconds
+  // Auto-open logic after 10 seconds (Once per layout mount)
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -124,7 +124,9 @@ export default function OptimizedChatWidget() {
     const attemptChat = () => {
       if (chatTriggeredRef.current || isOpen) return;
 
+      // Don't open if a global popup is already active
       if (window.__softkingo_popup_active) {
+        console.log('Chat auto-open suppressed: Popup is active. Retrying in 5s...');
         chatTimer = setTimeout(attemptChat, 5000);
         return;
       }
@@ -138,11 +140,12 @@ export default function OptimizedChatWidget() {
     return () => clearTimeout(chatTimer);
   }, []);
 
-  // Animated Greeting Observer
+  // Animated Greeting Observer: Triggers when chat opens for the first time
   useEffect(() => {
     if (isOpen && !greetingTriggered && messages.length === 0 && onboardingStep === 'name') {
       setGreetingTriggered(true);
 
+      // Sequence: Short pause -> Typing -> Message + Sound -> Next Question
       setTimeout(() => {
         setIsTyping(true);
 
@@ -161,6 +164,7 @@ export default function OptimizedChatWidget() {
 
   const playNotificationSound = () => {
     try {
+      // Using the local user-provided sound file
       const audioUrl = "/audio/live-chat.mp3";
       const audio = new Audio(audioUrl);
       audio.volume = 0.4;
@@ -169,6 +173,8 @@ export default function OptimizedChatWidget() {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.catch(() => {
+            console.log("Autoplay blocked. Sound will trigger on first user interaction.");
+
             const playOnInteraction = () => {
               audio.play().catch(() => { });
               window.removeEventListener('click', playOnInteraction);
@@ -187,15 +193,12 @@ export default function OptimizedChatWidget() {
   };
 
   const addBotMessage = (content) => {
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        content,
-        sender: 'bot',
-        timestamp: new Date()
-      }
-    ]);
+    setMessages((prev) => [...prev, {
+      id: Date.now() + Math.random(),
+      content,
+      sender: 'bot',
+      timestamp: new Date()
+    }]);
   };
 
   const fetchMessages = async (id) => {
@@ -203,12 +206,10 @@ export default function OptimizedChatWidget() {
       const res = await fetch(`/api/chat/message?conversationId=${id}`);
       if (res.ok) {
         const data = await res.json();
-        setMessages(
-          data.map((m) => ({
-            ...m,
-            timestamp: new Date(m.createdAt)
-          }))
-        );
+        setMessages(data.map(m => ({
+          ...m,
+          timestamp: new Date(m.createdAt)
+        })));
       }
     } catch (error) {
       console.error('Fetch messages error:', error);
@@ -282,6 +283,7 @@ export default function OptimizedChatWidget() {
 
   const resetChat = async () => {
     if (window.confirm('Are you sure you want to end this chat and start a new one?')) {
+      // 1. If we have a conversationId, mark it as closed on the server
       if (conversationId) {
         try {
           await fetch('/api/chat/conversation', {
@@ -294,12 +296,18 @@ export default function OptimizedChatWidget() {
         }
       }
 
+      // 2. Clear local storage
       localStorage.removeItem('chatConversation');
+      // We keep visitorInfo (name/email) for convenience, 
+      // but clear conversation specific data.
+
+      // 3. Reset state
       setConversationId(null);
       setMessages([]);
       setOnboardingStep('name');
       addBotMessage("Chat has been reset. Let's start over! What is your full name?");
 
+      // 4. Leave the old room
       if (socketRef.current && conversationId) {
         socketRef.current.emit('leave-conversation', conversationId);
       }
@@ -311,18 +319,20 @@ export default function OptimizedChatWidget() {
 
     const content = newMessage.trim();
 
+    // Add user message locally immediately
     const localMsg = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: Date.now(),
       content: content,
       sender: 'visitor',
       timestamp: new Date(),
       image: attachedImage ? attachedImage.base64 : null
     };
 
-    setMessages((prev) => [...prev, localMsg]);
+    setMessages(prev => [...prev, localMsg]);
     setNewMessage('');
     setAttachedImage(null);
 
+    // Handle Onboarding Steps
     if (onboardingStep) {
       handleOnboarding(content);
       return;
@@ -332,6 +342,7 @@ export default function OptimizedChatWidget() {
 
     setIsTyping(true);
 
+    // Save to DB via standard API first (to keep history)
     try {
       await fetch('/api/chat/message', {
         method: 'POST',
@@ -348,6 +359,7 @@ export default function OptimizedChatWidget() {
       console.error('Failed to save to DB:', e);
     }
 
+    // Send via socket for AI response
     if (socketRef.current) {
       socketRef.current.emit('send-message', {
         conversationId,
@@ -363,6 +375,7 @@ export default function OptimizedChatWidget() {
     const trimmed = content.trim();
 
     if (onboardingStep === 'name') {
+      // Validate Name: Min 3 chars, letters only (roughly), not common short answers
       const isValid = trimmed.length >= 2 && /^[a-zA-Z\s.-]+$/.test(trimmed) && !['yes', 'no', 'ok', 'okay', 'hi', 'hello'].includes(trimmed.toLowerCase());
 
       if (!isValid) {
@@ -370,15 +383,17 @@ export default function OptimizedChatWidget() {
         return;
       }
 
-      setVisitorInfo((prev) => ({ ...prev, name: trimmed }));
+      setVisitorInfo(prev => ({ ...prev, name: trimmed }));
       setOnboardingStep('phone');
 
-      await createConversation({ name: trimmed, email: 'guest@example.com' });
+      const id = await createConversation({ name: trimmed, email: 'guest@example.com' });
 
       setTimeout(() => {
         addBotMessage(`Nice to meet you, ${trimmed}! Could you please share your mobile number?`);
       }, 500);
-    } else if (onboardingStep === 'phone') {
+    }
+    else if (onboardingStep === 'phone') {
+      // Validate Phone: At least 10 digits
       const digits = trimmed.replace(/\D/g, '');
       const isValid = digits.length >= 10;
 
@@ -387,7 +402,7 @@ export default function OptimizedChatWidget() {
         return;
       }
 
-      setVisitorInfo((prev) => ({ ...prev, phone: trimmed }));
+      setVisitorInfo(prev => ({ ...prev, phone: trimmed }));
       setOnboardingStep('email');
 
       if (conversationId) {
@@ -397,7 +412,9 @@ export default function OptimizedChatWidget() {
       setTimeout(() => {
         addBotMessage("Great! And finally, what is your email address?");
       }, 500);
-    } else if (onboardingStep === 'email') {
+    }
+    else if (onboardingStep === 'email') {
+      // Validate Email: Standard pattern
       const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
 
       if (!isValid) {
@@ -405,7 +422,7 @@ export default function OptimizedChatWidget() {
         return;
       }
 
-      setVisitorInfo((prev) => ({ ...prev, email: trimmed }));
+      setVisitorInfo(prev => ({ ...prev, email: trimmed }));
       setOnboardingStep(null);
 
       if (conversationId) {
@@ -427,7 +444,8 @@ export default function OptimizedChatWidget() {
 
   return (
     <div className="fixed bottom-[100px] lg:bottom-4 right-4 z-50 font-sans">
-      {/* Chat Button */}
+      {/* Chat Button - Refined White Theme */}
+      {/* Chat Button - Refined White Theme */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -436,9 +454,10 @@ export default function OptimizedChatWidget() {
           {/* Subtle Attention Ping */}
           <span className="absolute inset-0 rounded-full bg-sky-400/20 animate-ping duration-1000"></span>
 
-          {/* Main Button Body - Pulse animation via Tailwind inline style */}
-          <div className="relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-all duration-500 active:scale-95 overflow-visible group-hover:scale-110">
-            {/* Inner Ring */}
+          {/* Main Button Body - Clean & Premium */}
+          <div className="chat-bubble-attention relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-shadow duration-500 active:scale-95 overflow-visible">
+
+            {/* Subtle Blue Border Inner Ring */}
             <div className="absolute inset-0 rounded-full border-2 border-sky-500/10 group-hover:border-sky-500/30 transition-all duration-500"></div>
 
             {/* Avatar Container */}
@@ -452,15 +471,36 @@ export default function OptimizedChatWidget() {
               />
             </div>
 
-            {/* Status Dot */}
+            {/* Premium Status Dot */}
             <span className="absolute top-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-[0_0_8px_rgba(34,197,94,0.4)] animate-pulse"></span>
 
-            {/* Message Badge */}
-            <div className="absolute -top-11 right-0 bg-white text-slate-800 text-[10px] px-3 py-1.5 rounded-xl shadow-xl border border-sky-50 whitespace-nowrap animate-bounce">
+            {/* Floating Message Badge */}
+            <div className="absolute -top-11 right-0 bg-white text-slate-800 text-[10px] px-3 py-1.5 rounded-xl shadow-xl border border-sky-50 whitespace-nowrap animate-bounce-slow">
               Need help? Ask us
               <div className="absolute -bottom-1 right-5 w-2 h-2 bg-white border-r border-b border-sky-50 transform rotate-45"></div>
             </div>
           </div>
+
+          <style jsx>{`
+  @keyframes chatAttentionPulse {
+    0%   { transform: scale(1); }
+    10%  { transform: scale(1.1); }   /* big */
+    20%  { transform: scale(0.9); }    /* small */
+    30%  { transform: scale(1.1); }   /* big again, softer */
+    40%  { transform: scale(0.9); }    /* small again, softer */
+    50%  { transform: scale(1); }      /* settle */
+    100% { transform: scale(1); }      /* hold still until next loop */
+  }
+  .chat-bubble-attention {
+    animation: chatAttentionPulse 5s ease-in-out infinite;
+    transform-origin: center;
+    will-change: transform;
+  }
+  .group:hover .chat-bubble-attention {
+    animation-play-state: paused;
+    transform: scale(1.1);
+  }
+`}</style>
         </button>
       )}
 
@@ -522,11 +562,10 @@ export default function OptimizedChatWidget() {
                   className={`max-w-[85%] space-y-1 ${message.sender === 'visitor' ? 'items-end' : 'items-start'}`}
                 >
                   <div
-                    className={`p-3.5 rounded-2xl shadow-sm text-sm ${
-                      message.sender === 'visitor'
-                        ? 'bg-sky-600 text-white rounded-tr-none'
-                        : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
-                    }`}
+                    className={`p-3.5 rounded-2xl shadow-sm text-sm ${message.sender === 'visitor'
+                      ? 'bg-sky-600 text-white rounded-tr-none'
+                      : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
+                      }`}
                   >
                     {message.image && (
                       <div className="mb-2 rounded-lg overflow-hidden border border-white/20">
@@ -612,6 +651,7 @@ export default function OptimizedChatWidget() {
           </div>
         </div>
       )}
+
     </div>
   );
 }
