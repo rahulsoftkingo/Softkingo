@@ -294,7 +294,7 @@ export default function Industries() {
                   <div className="col-span-2">
                     <div className="flex items-center gap-2 md:gap-[20px]">
                       <div className="bg-white w-[60px] lg:w-[60px] lg:h-[60px] p-[6px] rounded-[20px] justify-center items-center flex">
-                        <img src={activeIndustry.logo} alt="" />
+                        <img src={activeIndustry.logo} alt="right" />
                       </div>
                       <p className="font-semibold text-xl md:text-2xl md:mt-4 text-sky-900">
                         {activeIndustry.title}

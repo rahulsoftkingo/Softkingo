@@ -469,7 +469,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                                                 onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { ...tech }])}
                                                 className="p-1 px-2 bg-slate-50 hover:bg-sky-50 hover:text-sky-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
                                             >
-                                                <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                                <img src={tech.image} className="w-3.5 h-3.5" alt="techimage" />
                                                 {tech.name}
                                             </button>
                                         ))}

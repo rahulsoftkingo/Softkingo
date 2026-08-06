@@ -60,7 +60,7 @@ export default function CloneProcess({ data }) {
                                             ${activeIndex === i ? 'bg-white/20' : 'bg-slate-50 group-hover:bg-sky-100'}
                                         `}>
                       {step.icon ? (
-                        <img src={step.icon} alt="" className="w-5 h-5 object-contain" />
+                        <img src={step.icon} alt="icon" className="w-5 h-5 object-contain" />
                       ) : (
                         <div className={`w-5 h-5 rounded-md ${activeIndex === i ? 'bg-white' : 'bg-sky-500'} opacity-50`}></div>
                       )}

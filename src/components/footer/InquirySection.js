@@ -326,6 +326,7 @@ const InquirySection = ({
 
                     <div className="relative h-full min-h-[250px] bg-gradient-to-br from-sky-100 to-blue-100">
                       <iframe
+                        title="inquiry-location-map"
                         key={currentIndex}
                         src={contactNumbers[currentIndex].map}
                         width="100%"
