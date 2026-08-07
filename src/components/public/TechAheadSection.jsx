@@ -1,7 +1,7 @@
 // components/TechAheadSection.jsx
 'use client';
 
-import TestimonialCarousel from "./TestimonialCarousel";
+import TestimonialCarousel3 from "./TestimonialCarousel3";
 
 export default function TechAheadSection({
   showTitle = true,
@@ -54,7 +54,7 @@ export default function TechAheadSection({
 
       {/* Testimonial Carousel */}
       <div className="mb-8 flex-1">
-        <TestimonialCarousel columns={testimonialColumns} />
+        <TestimonialCarousel3 columns={testimonialColumns} />
 
         {/* Contact Buttons - Conditional Rendering */}
         {showContact && (showEmail || showPhone) && (

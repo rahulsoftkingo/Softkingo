@@ -230,17 +230,27 @@ export default async function CaseStudyPage({ params }) {
 
         <Stats data={data} />
 
-        <Branding data={data} />
+        {/* <Branding data={data} /> */}
 
         <TechStack data={data} />
 
-        <FeatureSection
+        {/* <FeatureSection
           title="Project Overview"
           description={data.overview.description}
           mockup={data.overview.mockup}
           branding={branding}
           imagePosition="right"
           client={data.client}
+        /> */}
+
+           <FeatureSection1
+          title="Project Overview"
+          description={data.overview.description}
+          listItems={data.overview.listItems}
+          mockup={data.requirements.mockup}
+          branding={branding}
+          client={data.client}
+          contentPosition="left" // text left, branding right
         />
 
         <FeatureSection
@@ -253,16 +263,7 @@ export default async function CaseStudyPage({ params }) {
           isDark={false}
         />
 
-        <FeatureSection1
-          title="Project Overview"
-          description={data.overview.description}
-          listItems={data.overview.listItems}
-          mockup={data.requirements.mockup}
-          branding={branding}
-          client={data.client}
-          contentPosition="left" // text left, branding right
-        />
-
+      
         <FeatureSection
           title="Goals & Objectives"
           listItems={data.goals.items}

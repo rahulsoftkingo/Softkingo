@@ -1,11 +1,10 @@
 "use client";
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Star, Quote, X, MessageSquareQuote } from 'lucide-react';
 
 /**
- * FeatureSection1 = Branding (left) + FeatureSection text/list (middle) + Mockup image (right)
+ * FeatureSection1 = Branding (left) + FeatureSection text/list (right)
  */
 export default function FeatureSection1({
     title,
@@ -13,7 +12,7 @@ export default function FeatureSection1({
     listItems,
     mockup,
     bgImage,
-    branding,
+    branding = {},
     client,
     isDark = false,
 }) {
@@ -40,19 +39,21 @@ export default function FeatureSection1({
             )}
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
                     {/* LEFT: Branding Column */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="lg:col-span-3 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5"
+                        className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5"
                     >
                         <div className="relative">
-                            <div className="relative w-32 h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-50">
-                                {client?.avatar && (
-                                    <Image src={client.avatar} alt={client.name} fill className="object-cover" />
+                            <div className="relative w-32 h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-50 flex items-center justify-center font-bold text-2xl text-slate-400">
+                                {client?.avatar ? (
+                                    <img src={client.avatar} alt={client.name} className="w-full h-full object-cover" />
+                                ) : (
+                                    <span>{client?.name ? client.name.charAt(0) : "C"}</span>
                                 )}
                             </div>
                             <motion.button
@@ -120,12 +121,12 @@ export default function FeatureSection1({
                         )}
                     </motion.div>
 
-                    {/* MIDDLE: Text / Feature List */}
+                    {/* RIGHT: Text / Feature List */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="lg:col-span-5 space-y-6"
+                        className="lg:col-span-8 space-y-6"
                     >
                         <div className="space-y-3">
                             <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.1] tracking-tight text-slate-900">
@@ -153,15 +154,17 @@ export default function FeatureSection1({
                                                 viewport={{ once: true }}
                                                 transition={{ delay: idx * 0.05 }}
                                                 onMouseEnter={() => setActiveFeat(idx)}
-                                                className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer group ${isActive
+                                                className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer group ${
+                                                    isActive
                                                         ? 'bg-white shadow-xl border-slate-100 translate-x-1'
                                                         : 'bg-slate-50/50 border-transparent hover:bg-white hover:shadow-md'
-                                                    }`}
+                                                }`}
                                             >
                                                 <div className="flex gap-3">
                                                     <div
-                                                        className={`w-7 h-7 shrink-0 rounded-full flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-sky-500 text-white rotate-90 scale-110' : 'bg-slate-200 text-slate-500'
-                                                            }`}
+                                                        className={`w-7 h-7 shrink-0 rounded-full flex items-center justify-center transition-all duration-500 ${
+                                                            isActive ? 'bg-sky-500 text-white rotate-90 scale-110' : 'bg-slate-200 text-slate-500'
+                                                        }`}
                                                         style={isActive ? { backgroundColor: primaryColor } : {}}
                                                     >
                                                         <ChevronRight size={16} strokeWidth={3} />
@@ -185,42 +188,7 @@ export default function FeatureSection1({
                             </div>
                         )}
                     </motion.div>
-                    {/* RIGHT: Mockup Image + Background Image */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="lg:col-span-4 relative flex flex-col items-center gap-6"
-                    >
-                        {mockup && (
-                            <div className="relative">
-                                <div
-                                    className="absolute inset-[10%] blur-[100px] opacity-30 -z-10"
-                                    style={{ backgroundColor: primaryColor }}
-                                />
-                                <div className="relative h-[360px] sm:h-[440px] lg:h-[500px] w-auto aspect-[9/19]">
-                                    <Image
-                                        src={mockup}
-                                        alt={title}
-                                        fill
-                                        className="object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.15)]"
-                                    />
-                                </div>
-                            </div>
-                        )}
 
-                        {bgImage && (
-                            <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                                <Image src={bgImage} alt={title} fill className="object-cover" />
-                                <div
-                                    className="absolute inset-0 opacity-20"
-                                    style={{ backgroundColor: primaryColor, mixBlendMode: 'multiply' }}
-                                />
-                            </div>
-                        )}
-
-                        {!mockup && !bgImage && null}
-                    </motion.div>
                 </div>
             </div>
 
@@ -261,13 +229,12 @@ export default function FeatureSection1({
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-4 pt-8 border-t border-slate-100">
-                                    <div className="relative w-14 h-14 rounded-xl overflow-hidden border-2 border-slate-50 shadow-md">
-                                        <Image
-                                            src={client?.avatar || '/images/client-avatar.png'}
-                                            alt={client?.name}
-                                            fill
-                                            className="object-cover"
-                                        />
+                                    <div className="relative w-14 h-14 rounded-xl overflow-hidden border-2 border-slate-50 shadow-md bg-slate-50 flex items-center justify-center font-bold text-slate-400">
+                                        {client?.avatar ? (
+                                            <img src={client.avatar} alt={client.name} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <span>{client?.name ? client.name.charAt(0) : "C"}</span>
+                                        )}
                                     </div>
                                     <div>
                                         <h4 className="text-base font-bold text-slate-900">{client?.name}</h4>
