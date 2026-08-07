@@ -13,6 +13,7 @@ import AwardsSection from "../_components/digicomponent/AwardsSection";
 
 
 export default function DigitalComponent({ content, section }) {
+
   const parsedSection =
     typeof section.contentJson === "string"
       ? JSON.parse(section.contentJson)
@@ -20,7 +21,6 @@ export default function DigitalComponent({ content, section }) {
 
   const activeSections = parsedSection?.activeSections || [];
 
-  console.log("activeSections dikhana", activeSections);
 
 
   return (
@@ -72,7 +72,8 @@ export default function DigitalComponent({ content, section }) {
                 heroButtonLink2: content.heroButtonLink2,
                 heroBg: content.heroBg,
                 heroBullets: content.heroBullets,
-                slug: content.slug
+                slug: content.slug,
+                endpoint: section.title || "Digital Marketing",
               }}
             />
 
