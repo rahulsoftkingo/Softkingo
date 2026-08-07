@@ -14,7 +14,7 @@ const ReviewsSection = () => {
 
       <div className="max-w-7xl mx-auto relative z-10">
 
-        <div className="text-center mb-22">
+        {/* <div className="text-center mb-22">
           <motion.h2
             initial={{ opacity: 0, y: -18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -37,7 +37,7 @@ const ReviewsSection = () => {
           >
             Real feedback from teams we&apos;ve worked with—focused on delivery quality, communication, and outcomes.
           </motion.p>
-        </div>
+        </div> */}
         <TestimonialCarousel />
 
         {/* Stats section */}
