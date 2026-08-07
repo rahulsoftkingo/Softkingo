@@ -758,7 +758,7 @@ export default function CoreServicesSection({
                                             }`}
                                         >
                                             {/* Number Badge */}
-                                            <div
+                                            {/* <div
                                                 className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold transition-colors duration-300 shrink-0 ${
                                                     isActive
                                                         ? "bg-sky-500 text-white"
@@ -766,7 +766,7 @@ export default function CoreServicesSection({
                                                 }`}
                                             >
                                                 {String(idx + 1).padStart(2, "0")}
-                                            </div>
+                                            </div> */}
 
                                             {/* Service Title */}
                                             <div className="flex-1 min-w-0">

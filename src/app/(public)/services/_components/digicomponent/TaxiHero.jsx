@@ -1,7 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaArrowRight, FaCheckCircle } from "react-icons/fa";
-import LeadForm from "@/components/public/LeadForm";
+import LeadForm2 from "@/components/public/LeadForm2";
+import PopupQuoteModal from '@/components/PopupQuoteModal';
+import { ArrowRight } from 'lucide-react';
+import { useState } from 'react';
 
 const FEATURES = [
   "Real-time GPS Tracking & Live Fare Estimates",
@@ -24,6 +27,8 @@ const DEFAULT_DATA = {
 };
 
 export default function TaxiHero({ data }) {
+
+
   const heroTitle = data?.heroTitle || DEFAULT_DATA.heroTitle;
   const heroSubtitle = data?.heroSubtitle || DEFAULT_DATA.heroSubtitle;
   const heroButtonText = data?.heroButtonText || DEFAULT_DATA.heroButtonText;
@@ -33,6 +38,7 @@ export default function TaxiHero({ data }) {
   const heroBullets = Array.isArray(data?.heroBullets) ? data.heroBullets : DEFAULT_DATA.heroBullets;
   const heroBg = data?.heroBg || DEFAULT_DATA.heroBg;
   const endpoint = data?.endpoint || "";
+  const [showModal, setShowModal] = useState(false);
 
 
   return (
@@ -104,12 +110,19 @@ export default function TaxiHero({ data }) {
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4 pt-2 animate-fadeInUp animation-delay-400">
-                <Link
+                {/* <Link
                   href={heroButtonLink}
                   className="px-6 md:px-8 py-3 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-bold hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-xl shadow-sky-900/40 transition-all duration-300 items-center cursor-pointer inline-flex uppercase tracking-wider"
                 >
                   {heroButtonText} <FaArrowRight className="ml-2" />
-                </Link>
+                </Link> */}
+
+                <button
+                  onClick={() => setShowModal(true)}
+                  // href="/contact"
+                  className="w-fit px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2">
+                  Let's Work Together <ArrowRight size={18} />
+                </button>
 
                 {heroButtonText2 ? (
                   <Link
@@ -179,7 +192,7 @@ export default function TaxiHero({ data }) {
 
             {/* Right Image */}
             <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
-              <LeadForm
+              <LeadForm2
                 formType="service"
                 formKey="service"
                 serviceName="our service"
@@ -213,6 +226,7 @@ export default function TaxiHero({ data }) {
           .animation-delay-800 { animation-delay: 0.8s; opacity: 0; animation-fill-mode: forwards; }
         `}</style>
       </section>
+      <PopupQuoteModal  type="digital" open={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }

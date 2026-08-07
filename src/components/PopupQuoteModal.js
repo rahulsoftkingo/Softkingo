@@ -6,7 +6,7 @@ import { FaTimes } from "react-icons/fa";
 import InquiryForm from "@/components/public/InquiryForm";
 import TechAheadSection from "./public/TechAheadSection";
 
-const PopupQuoteModal = ({ open, onClose, isAutoTrigger }) => {
+const PopupQuoteModal = ({ open, onClose, isAutoTrigger ,type}) => {
   // Lock body scroll when modal open
   useEffect(() => {
     if (open) {
@@ -96,6 +96,7 @@ const PopupQuoteModal = ({ open, onClose, isAutoTrigger }) => {
                 tagline={isAutoTrigger ? "Exclusive Offer" : "Get A Quote"}
                 submitLabel="Submit & Get A Quote"
                 primaryColor="sky"
+                type={type}
                 formType={isAutoTrigger ? "Auto Inquiry" : "get In touch"}
                 formKey={isAutoTrigger ? "auto-popup-modal" : "popup-inquiry"}
               />

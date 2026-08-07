@@ -17,8 +17,6 @@ export default function FeatureSection1({
     client,
     isDark = false,
 }) {
-
-    console.log('FeatureSection1 props data:', mockup);
     const { primaryColor, secondaryColor, primaryFont, colors } = branding;
     const [activeFeat, setActiveFeat] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
