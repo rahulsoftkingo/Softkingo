@@ -251,11 +251,11 @@ export default async function PodcastPage(props) {
       <main className="bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 lg:py-14">
           <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.9fr)_minmax(0,260px)] gap-6 lg:gap-8 items-start">
-            {/* Left Column: Grid Listing */}
+            {/* Left Column: One-Row-Per-Episode Listing */}
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm sm:text-base font-semibold text-slate-800">
-                  All articles
+                  All Podcast Episodes
                 </h2>
 
                 <p className="text-[11px] text-slate-500">
@@ -266,13 +266,14 @@ export default async function PodcastPage(props) {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {/* Changed from a 3-col grid to a stacked list: one card = one full row */}
+              <div className="flex flex-col gap-6">
                 {episodes.map((episode) => (
-                  <PodcastGridCard key={episode.slug} episode={episode} />
+                  <PodcastRowCard key={episode.slug} episode={episode} />
                 ))}
 
                 {!episodes.length && (
-                  <p className="text-sm text-slate-500 col-span-full py-8 text-center bg-white rounded-2xl border border-slate-200">
+                  <p className="text-sm text-slate-500 py-8 text-center bg-white rounded-2xl border border-slate-200">
                     No podcast episodes found.
                   </p>
                 )}
@@ -341,7 +342,7 @@ export default async function PodcastPage(props) {
               )}
             </div>
 
-            {/* Right Sidebar: MOST READ */}
+            {/* Right Sidebar: MOST READ (kept as-is) */}
             <aside className="hidden md:flex flex-col gap-4 sticky top-24">
               {mostRead.length > 0 && (
                 <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
@@ -366,49 +367,75 @@ export default async function PodcastPage(props) {
   );
 }
 
-{/* Grid Card Component */}
-function PodcastGridCard({ episode }) {
+{/* Row Card Component — image left, title/host/play right, description spans full width below */}
+function PodcastRowCard({ episode }) {
+  const dateText = episode.publishedAt
+    ? new Date(episode.publishedAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "2-digit",
+      })
+    : null;
+
   return (
-    <article className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-sky-300 transition-all flex flex-col group">
-      <div className="relative h-44 sm:h-48 bg-slate-100 overflow-hidden">
-        <Image
-          src={safeImg(episode.coverImage)}
-          alt={episode.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-500 text-slate-900 shadow-sm">
+    <article className="bg-[#e7e7e7] border border-slate-200 p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all">
+      {/* Category + Date */}
+      <div className="flex items-center justify-between mb-4">
+        <span className="inline-block px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wide bg-[#1ed860] text-white">
           {episode.category || "Podcast"}
         </span>
+        {dateText && (
+          <span className="text-xs text-slate-500 font-medium">{dateText}</span>
+        )}
       </div>
 
-      <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
-        <div className="space-y-2">
-          <h3 className="text-sm font-semibold text-slate-900 leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors">
-            {episode.title}
-          </h3>
-          <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-            {episode.description || episode.summary}
-          </p>
+      {/* Image + Title/Host/Play */}
+      <div className="flex flex-col sm:flex-row gap-5 sm:gap-6">
+        <div className="relative w-full sm:w-80 h-44 sm:h-48 shrink-0 rounded-xl overflow-hidden bg-slate-100">
+          <Image
+            src={safeImg(episode.coverImage)}
+            alt={episode.title}
+            fill
+            className="object-cover"
+          />
         </div>
 
-        <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-          <span className="text-[11px] text-slate-400 font-medium">
-            {episode.durationText || "30 min"}
-          </span>
+        <div className="flex-1 flex flex-col justify-center gap-2">
           <Link
             href={`/podcast/${episode.slug}`}
-            className="text-xs font-semibold text-sky-700 hover:text-sky-800 transition-colors"
+            className="text-lg sm:text-xl lg:text-3xl font-bold text-slate-900 hover:text-sky-600 transition-colors leading-snug"
           >
-            Listen now →
+            {episode.title}
+          </Link>
+
+          {episode.guestName && (
+            <p className="text-sm text-slate-800">
+              - Hosted By{" "}
+              <span className="text-rose-500 font-medium">{episode.guestName}</span>
+            </p>
+          )}
+
+          <Link
+            href={`/podcast/${episode.slug}`}
+            aria-label="Play episode"
+            className="mt-2 inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-900 text-white hover:bg-sky-600 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 ml-0.5">
+              <path d="M8 5v14l11-7z" />
+            </svg>
           </Link>
         </div>
       </div>
+
+      {/* Description spans full row width */}
+      <p className="mt-4 text-sm text-slate-800 leading-relaxed line-clamp-2">
+        {episode.description || episode.summary}
+      </p>
     </article>
   );
 }
 
-{/* Sidebar Compact Card Component */}
+{/* Sidebar Compact Card Component (unchanged) */}
 function PodcastCompactCard({ episode }) {
   return (
     <div className="border-b border-slate-100 pb-2.5 last:border-0 last:pb-0">

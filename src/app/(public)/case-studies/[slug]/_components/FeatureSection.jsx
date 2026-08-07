@@ -22,6 +22,7 @@ export default function FeatureSection({
     const { primaryColor, secondaryColor, accentColor, colors } = branding;
     const [activeFeat, setActiveFeat] = useState(0);
 
+
     // Premium Light Design strategy for consistency and readability
     return (
         <section

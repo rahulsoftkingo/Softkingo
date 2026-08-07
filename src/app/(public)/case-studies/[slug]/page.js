@@ -16,6 +16,7 @@ import ChallengesSolutions from './_components/ChallengesSolutions';
 import TestimonialSection from './_components/TestimonialSection';
 import DevelopmentApproach from './_components/DevelopmentApproach';
 import ContentBanner from './_components/ContentBanner';
+import FeatureSection1 from './_components/FeatureSection1';
 
 // ---------- helpers ----------
 function parseJson(value, fallback) {
@@ -250,6 +251,16 @@ export default async function CaseStudyPage({ params }) {
           branding={branding}
           imagePosition="left"
           isDark={false}
+        />
+
+        <FeatureSection1
+          title="Project Overview"
+          description={data.overview.description}
+          listItems={data.overview.listItems}
+          mockup={data.requirements.mockup}
+          branding={branding}
+          client={data.client}
+          contentPosition="left" // text left, branding right
         />
 
         <FeatureSection

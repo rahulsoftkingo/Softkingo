@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import CommonTitle from "@/components/ui/CommonTitle";
 import PopupQuoteModal from "@/components/PopupQuoteModal";
@@ -27,9 +27,20 @@ const itemVariants = {
 export default function FAQAccordion({ data }) {
   const [openIndex, setOpenIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const sectionRef = useRef(null);
   const listRef = useRef(null);
+
+  // Detect mobile / below-lg viewport so we can switch to a simple,
+  // non-scroll-jacked accordion instead of the desktop scroll-driven one.
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 1023px)");
+    const handleChange = (e) => setIsMobile(e.matches);
+    setIsMobile(mql.matches);
+    mql.addEventListener("change", handleChange);
+    return () => mql.removeEventListener("change", handleChange);
+  }, []);
 
   const defaultItems = [
     {
@@ -91,17 +102,19 @@ export default function FAQAccordion({ data }) {
 
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 
-  // Framer Motion Scroll Trigger logic
+  // Framer Motion Scroll Trigger logic (desktop only)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
 
-  // Dynamically translate list upwards as the page scrolls
+  // Dynamically translate list upwards as the page scrolls (desktop only)
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
 
-  // Automatically open corresponding FAQ accordion based on scroll percentage
+  // Automatically open corresponding FAQ accordion based on scroll percentage.
+  // Disabled on mobile so the list behaves like a normal accordion.
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (isMobile) return;
     const calculatedIndex = Math.min(
       Math.floor(latest * items.length),
       items.length - 1
@@ -111,6 +124,123 @@ export default function FAQAccordion({ data }) {
     }
   });
 
+  const renderItem = (it, i) => {
+    const isOpen = i === openIndex;
+    return (
+      <motion.div
+        key={it.id || i}
+        variants={itemVariants}
+        className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${
+          isOpen
+            ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100"
+            : "bg-white"
+        }`}
+      >
+        <button
+          aria-expanded={isOpen}
+          aria-controls={`faq-panel-${it.id || i}`}
+          onClick={() => toggle(i)}
+          className="w-full flex items-start gap-4 px-6 py-5 text-left bg-transparent hover:bg-slate-50/50 transition-colors"
+        >
+          <div
+            className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors mt-0.5 ${
+              isOpen
+                ? "bg-sky-500 border-sky-500 text-white"
+                : "bg-white border-slate-200 text-slate-500"
+            }`}
+          >
+            {isOpen ? <Minus size={16} /> : <Plus size={16} />}
+          </div>
+          <h3
+            className={`text-lg font-bold flex-1 ${
+              isOpen ? "text-sky-900" : "text-slate-900"
+            }`}
+          >
+            {it.q}
+          </h3>
+        </button>
+
+        <div
+          id={`faq-panel-${it.id || i}`}
+          className={`grid transition-all duration-300 ease-in-out ${
+            isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <div
+              className="px-6 pb-6 pl-[4.5rem] text-sm md:text-base text-slate-600 leading-relaxed prose prose-sm max-w-none rich-text"
+              dangerouslySetInnerHTML={{ __html: it.a }}
+            />
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
+  const ctaCard = (
+    <motion.div
+      initial={{ opacity: 0, x: 0 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+      className="rounded-2xl bg-gradient-to-br from-[#28AFDF] to-[#06465D] p-8 shadow-xl text-center"
+    >
+      <div className="flex justify-center">
+        <div className="p-4 rounded-full bg-white/20 backdrop-blur-sm shadow-inner">
+          <MessageCircle className="w-10 h-10 text-white" />
+        </div>
+      </div>
+      <h4 className="text-white font-bold text-xl mt-6">
+        Have Different Questions?
+      </h4>
+      <p className="mt-3 text-sm text-sky-100 leading-relaxed">
+        Our team is ready to answer all your questions. We ensure a quick
+        response within 24 hours.
+      </p>
+      <div className="mt-8 flex justify-center">
+        <button
+          onClick={() => setShowModal(true)}
+          className="inline-flex items-center gap-2 bg-white text-sky-700 hover:bg-sky-50 hover:text-sky-800 px-6 py-3 rounded-full font-bold shadow-md transition-all transform hover:-translate-y-0.5"
+        >
+          Contact Us <ArrowRight size={18} />
+        </button>
+      </div>
+    </motion.div>
+  );
+
+  // ---------- MOBILE: simple, normal-flow accordion (no scroll-jacking) ----------
+  if (isMobile) {
+    return (
+      <section className="relative bg-white py-10">
+        <div className="max-w-7xl mx-auto px-6 w-full">
+          <CommonTitle
+            align="center"
+            title={title}
+            gradientText={gradientText}
+            subtitle={subtitle}
+          />
+
+          <div className="mt-10 space-y-4">
+            <motion.div
+              className="space-y-4"
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              {items.map((it, i) => renderItem(it, i))}
+            </motion.div>
+          </div>
+
+          <div className="mt-8">{ctaCard}</div>
+        </div>
+
+        <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
+      </section>
+    );
+  }
+
+  // ---------- DESKTOP: original scroll-driven sticky version (unchanged) ----------
   return (
     <section
       ref={sectionRef}
@@ -137,95 +267,13 @@ export default function FAQAccordion({ data }) {
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.2 }}
                 >
-                  {items.map((it, i) => {
-                    const isOpen = i === openIndex;
-                    return (
-                      <motion.div
-                        key={it.id || i}
-                        variants={itemVariants}
-                        className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${
-                          isOpen
-                            ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100"
-                            : "bg-white"
-                        }`}
-                      >
-                        <button
-                          aria-expanded={isOpen}
-                          aria-controls={`faq-panel-${it.id || i}`}
-                          onClick={() => toggle(i)}
-                          className="w-full flex items-start gap-4 px-6 py-5 text-left bg-transparent hover:bg-slate-50/50 transition-colors"
-                        >
-                          <div
-                            className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors mt-0.5 ${
-                              isOpen
-                                ? "bg-sky-500 border-sky-500 text-white"
-                                : "bg-white border-slate-200 text-slate-500"
-                            }`}
-                          >
-                            {isOpen ? <Minus size={16} /> : <Plus size={16} />}
-                          </div>
-                          <h3
-                            className={`text-lg font-bold flex-1 ${
-                              isOpen ? "text-sky-900" : "text-slate-900"
-                            }`}
-                          >
-                            {it.q}
-                          </h3>
-                        </button>
-
-                        <div
-                          id={`faq-panel-${it.id || i}`}
-                          className={`grid transition-all duration-300 ease-in-out ${
-                            isOpen
-                              ? "grid-rows-[1fr] opacity-100"
-                              : "grid-rows-[0fr] opacity-0"
-                          }`}
-                        >
-                          <div className="overflow-hidden">
-                            <div
-                              className="px-6 pb-6 pl-[4.5rem] text-sm md:text-base text-slate-600 leading-relaxed prose prose-sm max-w-none rich-text"
-                              dangerouslySetInnerHTML={{ __html: it.a }}
-                            />
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                  {items.map((it, i) => renderItem(it, i))}
                 </motion.div>
               </motion.div>
             </div>
 
             {/* Sidebar CTA */}
-            <aside className="w-full lg:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, x: 32 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-                className="rounded-2xl bg-gradient-to-br from-[#28AFDF] to-[#06465D] p-8 shadow-xl text-center"
-              >
-                <div className="flex justify-center">
-                  <div className="p-4 rounded-full bg-white/20 backdrop-blur-sm shadow-inner">
-                    <MessageCircle className="w-10 h-10 text-white" />
-                  </div>
-                </div>
-                <h4 className="text-white font-bold text-xl mt-6">
-                  Have Different Questions?
-                </h4>
-                <p className="mt-3 text-sm text-sky-100 leading-relaxed">
-                  Our team is ready to answer all your questions. We ensure a
-                  quick response within 24 hours.
-                </p>
-                <div className="mt-8 flex justify-center">
-                  <button
-                    onClick={() => setShowModal(true)}
-                    className="inline-flex items-center gap-2 bg-white text-sky-700 hover:bg-sky-50 hover:text-sky-800 px-6 py-3 rounded-full font-bold shadow-md transition-all transform hover:-translate-y-0.5"
-                  >
-                    Contact Us <ArrowRight size={18} />
-                  </button>
-                </div>
-              </motion.div>
-            </aside>
+            <aside className="w-full lg:col-span-1">{ctaCard}</aside>
           </div>
         </div>
       </div>
