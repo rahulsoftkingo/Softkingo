@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import CommonTitle from "@/components/ui/CommonTitle";
 import PopupQuoteModal from "@/components/PopupQuoteModal";
 import { Plus, Minus, MessageCircle, ArrowRight } from "lucide-react";
@@ -111,18 +111,9 @@ export default function FAQAccordion({ data }) {
   // Dynamically translate list upwards as the page scrolls (desktop only)
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
 
-  // Automatically open corresponding FAQ accordion based on scroll percentage.
-  // Disabled on mobile so the list behaves like a normal accordion.
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (isMobile) return;
-    const calculatedIndex = Math.min(
-      Math.floor(latest * items.length),
-      items.length - 1
-    );
-    if (calculatedIndex >= 0 && calculatedIndex !== openIndex) {
-      setOpenIndex(calculatedIndex);
-    }
-  });
+  // NOTE: Auto-opening the accordion item based on scroll position has been
+  // removed. The list still moves/scrolls via the `y` transform above, but
+  // which item is open is now controlled ONLY by clicking (see `toggle`).
 
   const renderItem = (it, i) => {
     const isOpen = i === openIndex;
@@ -240,7 +231,7 @@ export default function FAQAccordion({ data }) {
     );
   }
 
-  // ---------- DESKTOP: original scroll-driven sticky version (unchanged) ----------
+  // ---------- DESKTOP: scroll-driven sticky version, click-to-open only ----------
   return (
     <section
       ref={sectionRef}

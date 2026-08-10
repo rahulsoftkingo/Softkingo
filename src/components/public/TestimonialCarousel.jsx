@@ -363,7 +363,6 @@
 //   );
 // }
 
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -422,6 +421,46 @@ export default function TestimonialCarousel({
     );
   };
 
+  // Platform logo mapping for the rating badge
+  const logos = {
+    "Clutch review": "/images/award/clutch.png",
+    "DesignRush": "/images/award/designrush.png",
+    "Goodfirms": "/images/award/goodfirm.png",
+    "TechBehemoths": "/images/award/techbeheb.png",
+    "Trustpilot": "trustpilot-svg",
+    "Review": "/images/award/goodfirm.png"
+  };
+
+  const PlatformBadge = ({ testimonial }) => {
+    const logoSrc = logos[testimonial.source] || null;
+
+    return (
+      <div className="bg-white rounded-sm shadow-sm px-3 py-1.5 flex items-center gap-2 shrink-0">
+        {logoSrc === "trustpilot-svg" ? (
+          <div className="h-4 flex items-center">
+            <svg viewBox="0 0 100 100" className="h-full w-auto" xmlns="http://www.w3.org/2000/svg">
+              <path d="M100 38.5H61.8L50 2L38.2 38.5H0L30.9 61L19.1 97.5L50 75L80.9 97.5L69.1 61L100 38.5Z" fill="#00b67a" />
+            </svg>
+            <span className="ml-1 text-[9px] font-bold text-[#191919]">Trustpilot</span>
+          </div>
+        ) : logoSrc ? (
+          <div className="h-4 flex items-center">
+            <img src={logoSrc} alt={testimonial.source} className="h-full object-contain" />
+          </div>
+        ) : (
+          <span className="text-[10px] font-bold text-gray-900 uppercase tracking-tight">
+            {testimonial.source}
+          </span>
+        )}
+
+        <div className="flex items-center gap-0.5 bg-orange-50 px-1.5 py-0.5 rounded">
+          <span className="text-orange-500 text-[10px]">★</span>
+          <span className="text-[10px] font-extrabold text-[#0B3250]">5.0</span>
+        </div>
+      </div>
+    );
+  };
+
   const featured = testimonials[currentIndex];
   const upNext = testimonials[nextIndex];
 
@@ -465,14 +504,17 @@ export default function TestimonialCarousel({
           </div>
 
           <div className="flex items-end justify-between gap-6 mt-10">
-            <div className="flex items-center gap-4 min-w-0">
-              <Avatar testimonial={featured} index={currentIndex} />
-              <div className="min-w-0">
-                <h3 className="text-base font-bold text-gray-900 leading-tight truncate">
-                  {featured.name}
-                </h3>
-                <p className="text-sm text-gray-500 truncate">{featured.title}</p>
+            <div className="flex items-center justify-between gap-4 w-100">
+              <div className="flex items-center gap-4 min-w-0">
+                <Avatar testimonial={featured} index={currentIndex} />
+                <div className="min-w-0">
+                  <h3 className="text-base font-bold text-gray-900 leading-tight truncate">
+                    {featured.name}
+                  </h3>
+                  <p className="text-sm text-gray-500 truncate">{featured.title}</p>
+                </div>
               </div>
+              <PlatformBadge testimonial={featured} />
             </div>
 
             {featured.stat && (
@@ -506,6 +548,7 @@ export default function TestimonialCarousel({
                 </h3>
                 <p className="text-sm text-gray-500 truncate">{upNext.title}</p>
               </div>
+              <PlatformBadge testimonial={upNext} />
             </div>
           </div>
         </div>
