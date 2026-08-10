@@ -193,8 +193,8 @@ export default function TaxiHero({ data }) {
             {/* Right Image */}
             <div className="lg:ml-auto w-full max-w-md mx-auto lg:mx-0 animate-fadeInRight">
               <LeadForm2
-                formType="service"
-                formKey="service"
+                formType="digital"
+                formKey={heroTitle}
                 serviceName="our service"
                 title="Book a Free Consultation"
                 subtitle="Response within 1 Business Day!"

@@ -16,6 +16,7 @@ export default function LeadForm2({
   const [formData, setFormData] = useState({
     company: '',
     email: '',
+    message: '', // Added message to state
   });
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('idle');
@@ -39,6 +40,7 @@ export default function LeadForm2({
         name: formData.company, // company acts as the primary identifier here
         email: formData.email,
         company: formData.company,
+        message: formData.message, // Added message to API payload
         formType,
         formKey,
         source: 'website',
@@ -63,7 +65,7 @@ export default function LeadForm2({
 
       setStatus('success');
       setStatusMessage('🎉 Thank you! We will contact you within 24 hours.');
-      setFormData({ company: '', email: '' });
+      setFormData({ company: '', email: '', message: '' }); // Reset message on success
 
       if (window.gtag) {
         window.gtag('event', 'form_submission', {
@@ -173,6 +175,17 @@ export default function LeadForm2({
           onChange={handleChange}
           required
           className={`w-full ${style.input} rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition-all duration-200`}
+        />
+
+        {/* Added Textarea Field for Message */}
+        <textarea
+          name="message"
+          rows={3}
+          placeholder="How can we help you? (Message) *"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          className={`w-full ${style.input} rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 transition-all duration-200 resize-none`}
         />
 
         <button

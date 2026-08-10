@@ -42,49 +42,64 @@ export default function FeatureSection1({
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
 
                     {/* LEFT: Branding Column */}
+                    {/* LEFT: Branding Column */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5"
+                        className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5"
                     >
                         <div className="relative">
-                            <div className="relative w-32 h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-50 flex items-center justify-center font-bold text-2xl text-slate-400">
+                            <div className="relative w-40 h-40 lg:w-44 lg:h-44 rounded-2xl overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-50 flex items-center justify-center font-bold text-3xl text-slate-400">
                                 {client?.avatar ? (
-                                    <img src={client.avatar} alt={client.name} className="w-full h-full object-cover" />
+                                    <img
+                                        src={client.avatar}
+                                        alt={client.name}
+                                        className="w-full h-full object-cover"
+                                    />
                                 ) : (
                                     <span>{client?.name ? client.name.charAt(0) : "C"}</span>
                                 )}
                             </div>
+
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={() => setIsModalOpen(true)}
-                                className="absolute -bottom-2 -right-2 w-10 h-10 rounded-xl bg-white shadow-lg flex items-center justify-center border border-slate-100"
+                                className="absolute -bottom-2 -right-2 w-11 h-11 rounded-xl bg-white shadow-lg flex items-center justify-center border border-slate-100"
                                 style={{ color: primaryColor }}
                             >
-                                <MessageSquareQuote className="w-4 h-4" />
+                                <MessageSquareQuote className="w-5 h-5" />
                             </motion.button>
                         </div>
 
                         <div className="space-y-2">
-                            <h3 className="text-2xl font-extrabold tracking-tight text-slate-900">
+                            <h3 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-slate-900">
                                 {client?.name}
                             </h3>
-                            <div className="w-14 h-1 rounded-full mx-auto lg:mx-0" style={{ backgroundColor: primaryColor }} />
-                            <p className="text-sm font-bold tracking-wide" style={{ color: secondaryColor }}>
+
+                            <div
+                                className="w-16 h-1 rounded-full mx-auto lg:mx-0"
+                                style={{ backgroundColor: primaryColor }}
+                            />
+
+                            <p
+                                className="text-sm lg:text-base font-bold tracking-wide"
+                                style={{ color: secondaryColor }}
+                            >
                                 {client?.designation || client?.subtitle}
                             </p>
                         </div>
 
                         <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
                             {client?.location && (
-                                <span className="px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold tracking-wider uppercase text-slate-500">
+                                <span className="px-4 py-2 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold tracking-wider uppercase text-slate-500">
                                     {client.location}
                                 </span>
                             )}
+
                             {client?.industry && (
-                                <span className="px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold tracking-wider uppercase text-slate-500">
+                                <span className="px-4 py-2 rounded-lg bg-slate-50 border border-slate-100 text-[10px] font-bold tracking-wider uppercase text-slate-500">
                                     {client.industry}
                                 </span>
                             )}
@@ -92,15 +107,19 @@ export default function FeatureSection1({
 
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider hover:opacity-70 transition-opacity"
+                            className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:opacity-70 transition-opacity"
                             style={{ color: primaryColor }}
                         >
                             <span>View Testimonial</span>
-                            <div className="h-[2px] w-6 rounded-full" style={{ backgroundColor: primaryColor }} />
+
+                            <div
+                                className="h-[2px] w-8 rounded-full"
+                                style={{ backgroundColor: primaryColor }}
+                            />
                         </button>
 
                         {colors?.length > 0 && (
-                            <div className="grid grid-cols-3 gap-3 pt-2 w-full max-w-[200px]">
+                            <div className="grid grid-cols-3 gap-4 pt-2 w-full max-w-[280px]">
                                 {colors.map((color, idx) => (
                                     <motion.div
                                         key={idx}
@@ -111,10 +130,13 @@ export default function FeatureSection1({
                                         className="text-center"
                                     >
                                         <div
-                                            className="w-full aspect-square rounded-lg shadow-sm mb-1.5 border-2 border-slate-50"
+                                            className="w-full aspect-square rounded-xl shadow-sm mb-1.5 border-2 border-slate-50"
                                             style={{ backgroundColor: color.hex }}
                                         />
-                                        <p className="text-[8px] font-bold text-slate-400 tracking-wider uppercase">{color.hex}</p>
+
+                                        <p className="text-[9px] font-bold text-slate-400 tracking-wider uppercase">
+                                            {color.hex}
+                                        </p>
                                     </motion.div>
                                 ))}
                             </div>
@@ -126,7 +148,7 @@ export default function FeatureSection1({
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="lg:col-span-8 space-y-6"
+                        className="lg:col-span-7 space-y-6"
                     >
                         <div className="space-y-3">
                             <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.1] tracking-tight text-slate-900">
@@ -154,17 +176,15 @@ export default function FeatureSection1({
                                                 viewport={{ once: true }}
                                                 transition={{ delay: idx * 0.05 }}
                                                 onMouseEnter={() => setActiveFeat(idx)}
-                                                className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer group ${
-                                                    isActive
+                                                className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer group ${isActive
                                                         ? 'bg-white shadow-xl border-slate-100 translate-x-1'
                                                         : 'bg-slate-50/50 border-transparent hover:bg-white hover:shadow-md'
-                                                }`}
+                                                    }`}
                                             >
                                                 <div className="flex gap-3">
                                                     <div
-                                                        className={`w-7 h-7 shrink-0 rounded-full flex items-center justify-center transition-all duration-500 ${
-                                                            isActive ? 'bg-sky-500 text-white rotate-90 scale-110' : 'bg-slate-200 text-slate-500'
-                                                        }`}
+                                                        className={`w-7 h-7 shrink-0 rounded-full flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-sky-500 text-white rotate-90 scale-110' : 'bg-slate-200 text-slate-500'
+                                                            }`}
                                                         style={isActive ? { backgroundColor: primaryColor } : {}}
                                                     >
                                                         <ChevronRight size={16} strokeWidth={3} />

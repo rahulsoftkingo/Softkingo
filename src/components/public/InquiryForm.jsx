@@ -261,6 +261,7 @@
 //   );
 // }
 
+
 // app/(public)/components/InquiryForm.jsx
 
 "use client";
@@ -306,7 +307,7 @@ const InquiryForm = ({
   attachmentLabel = "Attachment (optional)",
   websiteLinkLabel = "Website Link",
   websiteLinkPlaceholder = "https://example.com",
-  type=""
+  type = "",
 }) => {
   const [phone, setPhone] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(countryList[0]);
@@ -370,10 +371,11 @@ const InquiryForm = ({
       formType,
       formKey,
       ndaAccepted: ndaChecked,
-      attachmentName: typeof formData.get("fileInput") === "object" && formData.get("fileInput")?.name
-        ? formData.get("fileInput").name
-        : fileName || null,
-      websiteLink: isDigital ? (formData.get("websiteLink") || websiteLink || null) : null,
+      attachmentName:
+        typeof formData.get("fileInput") === "object" && formData.get("fileInput")?.name
+          ? formData.get("fileInput").name
+          : fileName || null,
+      websiteLink: isDigital ? formData.get("websiteLink") || websiteLink || null : null,
     };
 
     try {
@@ -391,7 +393,7 @@ const InquiryForm = ({
       }
 
       setToast({ type: "success", message: "Thank you! Your inquiry has been submitted." });
-      
+
       // Store submission status to stop recurring popups
       if (typeof window !== "undefined") {
         localStorage.setItem("leadSubmitted", "true");
@@ -421,10 +423,22 @@ const InquiryForm = ({
       {/* Toast */}
       {toast && (
         <div className="pointer-events-none absolute inset-x-0 -top-10 flex justify-center z-10">
-          <div className={`pointer-events-auto rounded-full px-4 py-2 text-xs font-medium shadow-md flex items-center gap-2 ${toast.type === "success" ? "bg-emerald-50 text-emerald-700 border border-emerald-100" : "bg-rose-50 text-rose-700 border border-rose-100"}`}>
+          <div
+            className={`pointer-events-auto rounded-full px-4 py-2 text-xs font-medium shadow-md flex items-center gap-2 ${
+              toast.type === "success"
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                : "bg-rose-50 text-rose-700 border border-rose-100"
+            }`}
+          >
             <span className="w-1.5 h-1.5 rounded-full bg-current" />
             <span>{toast.message}</span>
-            <button type="button" onClick={() => setToast(null)} className="ml-1 text-[10px] text-slate-400 hover:text-slate-600">Close</button>
+            <button
+              type="button"
+              onClick={() => setToast(null)}
+              className="ml-1 text-[10px] text-slate-400 hover:text-slate-600"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
@@ -433,15 +447,25 @@ const InquiryForm = ({
         {showHeader && (
           <div className="px-5 pt-4 pb-3 border-b border-slate-100 text-center space-y-1">
             {tagline && <p className="text-[11px] uppercase tracking-[0.14em] text-slate-400">{tagline}</p>}
-            <h3 className="text-xl md:text-2xl font-semibold text-sky-700 rich-text" dangerouslySetInnerHTML={{ __html: title }} />
-            {subtitle && <div className="text-xs md:text-sm text-slate-500 max-w-sm mx-auto rich-text" dangerouslySetInnerHTML={{ __html: subtitle }} />}
+            <h3
+              className="text-xl md:text-2xl font-semibold text-sky-700 rich-text"
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+            {subtitle && (
+              <div
+                className="text-xs md:text-sm text-slate-500 max-w-sm mx-auto rich-text"
+                dangerouslySetInnerHTML={{ __html: subtitle }}
+              />
+            )}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="px-5 md:px-6 py-5 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {showName && <FloatingInput id="name" name="name" label={nameLabel} required placeholder={namePlaceholder} />}
-            {showEmail && <FloatingInput id="email" name="email" type="email" label={emailLabel} required placeholder={emailPlaceholder} />}
+            {showEmail && (
+              <FloatingInput id="email" name="email" type="email" label={emailLabel} required placeholder={emailPlaceholder} />
+            )}
 
             {showPhone && (
               <PhoneField
@@ -460,15 +484,26 @@ const InquiryForm = ({
           {showMessage && (
             <div className="rounded-lg border border-slate-300 bg-white px-3 pb-2">
               <label className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1" htmlFor="message">
-                {messageLabel}<span className="text-red-500">*</span>
+                {messageLabel}
+                <span className="text-red-500">*</span>
               </label>
-              <textarea id="message" name="message" placeholder={messagePlaceholder} rows={3} className="w-full border-none outline-none resize-none text-sm text-slate-700 bg-transparent pb-1 -mt-2" required />
+              <textarea
+                id="message"
+                name="message"
+                placeholder={messagePlaceholder}
+                rows={3}
+                className="w-full border-none outline-none resize-none text-sm text-slate-700 bg-transparent pb-1 -mt-2"
+                required
+              />
             </div>
           )}
 
           {isDigital ? (
             <div className="h-12 border border-slate-300 rounded-lg bg-white px-3 relative focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-200 transition-all">
-              <label htmlFor="websiteLink" className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1 font-medium">
+              <label
+                htmlFor="websiteLink"
+                className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1 font-medium"
+              >
                 {websiteLinkLabel}
               </label>
               <div className="flex items-center gap-2 relative -top-4">
@@ -487,9 +522,17 @@ const InquiryForm = ({
           ) : (
             showAttachment && (
               <div className="h-14 rounded-lg border border-slate-300 bg-white px-3 flex flex-col justify-center">
-                <label className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1 w-fit" htmlFor="fileInput">{attachmentLabel}</label>
+                <label className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1 w-fit" htmlFor="fileInput">
+                  {attachmentLabel}
+                </label>
                 <div className="relative -top-2 flex items-center gap-2 text-sm text-slate-600">
-                  <input type="file" id="fileInput" name="fileInput" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onChange={handleFileChange} />
+                  <input
+                    type="file"
+                    id="fileInput"
+                    name="fileInput"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    onChange={handleFileChange}
+                  />
                   <FaPaperclip className="text-slate-500" size={18} />
                   <span className="truncate">{fileName || "Choose a file..."}</span>
                 </div>
@@ -499,8 +542,16 @@ const InquiryForm = ({
 
           {showNDA && (
             <label className="mt-2 flex items-start gap-2 text-xs md:text-sm text-slate-700 max-w-lg cursor-pointer">
-              <input type="checkbox" className="mt-1 accent-[#00B7FF] cursor-pointer" checked={ndaChecked} onChange={(e) => setNdaChecked(e.target.checked)} />
-              <span>I agree to sign a mutual <span className="font-semibold">NDA</span> before sharing detailed project information.</span>
+              <input
+                type="checkbox"
+                className="mt-1 accent-[#00B7FF] cursor-pointer"
+                checked={ndaChecked}
+                onChange={(e) => setNdaChecked(e.target.checked)}
+              />
+              <span>
+                I agree to sign a mutual <span className="font-semibold">NDA</span> before sharing detailed project
+                information.
+              </span>
             </label>
           )}
 
@@ -509,23 +560,32 @@ const InquiryForm = ({
               <div className="flex flex-col gap-1">
                 <span className="text-sm text-slate-600">Prove you&apos;re not a robot</span>
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="w-10 h-10 flex items-center justify-center border border-slate-300 rounded-md text-slate-700 bg-white">{num1}</span>
+                  <span className="w-10 h-10 flex items-center justify-center border border-slate-300 rounded-md text-slate-700 bg-white">
+                    {num1}
+                  </span>
                   <span className="text-lg text-slate-700 font-semibold">+</span>
-                  <span className="w-10 h-10 flex items-center justify-center border border-slate-300 rounded-md text-slate-700 bg-white">{num2}</span>
+                  <span className="w-10 h-10 flex items-center justify-center border border-slate-300 rounded-md text-slate-700 bg-white">
+                    {num2}
+                  </span>
                   <span className="text-lg text-slate-700 font-semibold">=</span>
-                  <input type="number" className="w-16 h-10 border border-slate-300 rounded-md px-2 text-sm outline-none focus:ring-2 focus:ring-sky-300 bg-white" value={userAnswer} onChange={handleCaptchaChange} placeholder="?" />
+                  <input
+                    type="number"
+                    className="w-16 h-10 border border-slate-300 rounded-md px-2 text-sm outline-none focus:ring-2 focus:ring-sky-300 bg-white"
+                    value={userAnswer}
+                    onChange={handleCaptchaChange}
+                    placeholder="?"
+                  />
                 </div>
                 {touched && !isCorrect && <p className="text-xs text-red-500">Wrong answer! Try again.</p>}
                 {touched && isCorrect && <p className="text-xs text-emerald-600">Great! Captcha verified.</p>}
               </div>
             )}
-            {/* <button type="submit" disabled={submitDisabled} className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold transition-all w-full md:w-auto ${submitDisabled ? "bg-sky-200 text-sky-800 cursor-not-allowed" : `${colors.btn} text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5`}`}>
-              {submitting ? "Submitting…" : submitLabel}
-            </button> */}
             <button
               type="submit"
               disabled={submitting} // Only disable when actually submitting
-              className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold transition-all w-full md:w-auto text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer ${colors.btn} ${submitting ? 'opacity-70 cursor-wait' : ''}`}
+              className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold transition-all w-full md:w-auto text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 cursor-pointer ${colors.btn} ${
+                submitting ? "opacity-70 cursor-wait" : ""
+              }`}
             >
               {submitting ? "Submitting…" : submitLabel}
             </button>
@@ -544,9 +604,18 @@ function FloatingInput({ id, name, label, placeholder, type = "text", required }
   return (
     <div className="h-12 border border-slate-300 rounded-lg bg-white px-3 relative focus-within:border-sky-500 focus-within:ring-1 focus-within:ring-sky-200 transition-all">
       <label htmlFor={id} className="inline-block px-1 text-[11px] text-slate-500 bg-white relative -top-4 left-1 font-medium">
-        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
+        {label}
+        {required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
-      <input id={id} name={name || id} type={type} placeholder={placeholder} maxLength={70} required={required} className="w-full border-none outline-none bg-transparent text-sm text-slate-800 relative -top-4 placeholder:text-slate-400" />
+      <input
+        id={id}
+        name={name || id}
+        type={type}
+        placeholder={placeholder}
+        maxLength={70}
+        required={required}
+        className="w-full border-none outline-none bg-transparent text-sm text-slate-800 relative -top-4 placeholder:text-slate-400"
+      />
     </div>
   );
 }
