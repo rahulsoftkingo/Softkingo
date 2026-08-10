@@ -474,11 +474,12 @@ export default function TestimonialCarousel({
         {/* Left intro column */}
         <div className="flex flex-col justify-between py-2">
           <div>
-            {heading && (
-              <h2 className="text-4xl text-gray-900 leading-[1.1] mb-5">
-                {heading}
-              </h2>
-            )}
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-sky-900 leading-normal py-1">
+              What{" "}
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-700 to-sky-500 py-1">
+                Our Clients Say
+              </span>
+            </h2>
             {subheading && (
               <p className="text-gray-500 text-base leading-relaxed">
                 {subheading}
@@ -495,7 +496,7 @@ export default function TestimonialCarousel({
         </div>
 
         {/* Featured card */}
-        <div className="bg-[#f3f0ea] rounded-3xl p-10 flex flex-col justify-between min-h-[420px]">
+        <div className="bg-[#E4F4FF] rounded-3xl p-10 flex flex-col justify-between min-h-[420px]">
           <div>
             <span className="text-3xl text-gray-800 leading-none">&#8220;</span>
             <p className="text-gray-800 text-2xl leading-relaxed mt-2 line-clamp-6">
@@ -504,16 +505,21 @@ export default function TestimonialCarousel({
           </div>
 
           <div className="flex items-end justify-between gap-6 mt-10">
-            <div className="flex items-center justify-between gap-4 w-100">
+            <div className="flex items-center justify-between gap-4 w-full">
               <div className="flex items-center gap-4 min-w-0">
                 <Avatar testimonial={featured} index={currentIndex} />
+
                 <div className="min-w-0">
                   <h3 className="text-base font-bold text-gray-900 leading-tight truncate">
                     {featured.name}
                   </h3>
-                  <p className="text-sm text-gray-500 truncate">{featured.title}</p>
+
+                  <p className="text-sm text-gray-500 truncate">
+                    {featured.title}
+                  </p>
                 </div>
               </div>
+
               <PlatformBadge testimonial={featured} />
             </div>
 
@@ -533,7 +539,7 @@ export default function TestimonialCarousel({
 
         {/* Peek of the next card */}
         <div className="hidden lg:block overflow-hidden rounded-3xl">
-          <div className="bg-[#f3f0ea] rounded-3xl p-10 min-h-[420px] w-[420px] flex flex-col justify-between">
+          <div className="bg-[#E4F4FF] rounded-3xl p-10 min-h-[420px] w-[420px] flex flex-col justify-between">
             <div>
               <span className="text-3xl text-gray-800 leading-none">&#8220;</span>
               <p className="text-gray-800 text-xl leading-relaxed mt-2 line-clamp-6">

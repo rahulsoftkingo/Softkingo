@@ -96,7 +96,7 @@ export default function CloneTechStack({ data }) {
                                 >
                                     <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
                                         <Image
-                                            src={tech.image}
+                                            src={tech.image.toLowerCase()}
                                             alt={tech.name}
                                             fill
                                             className="object-contain transition-all duration-500"

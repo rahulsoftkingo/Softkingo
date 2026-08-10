@@ -34,7 +34,7 @@ import {
   FaCloud,
   FaCube,
 } from "react-icons/fa";
-import TestimonialCarousel from "@/components/public/TestimonialCarousel";
+import TestimonialCarousel3 from "@/components/public/TestimonialCarousel3";
 
 const tabs = [
   // ✅ INDUSTRIES (main link: /industries)
@@ -226,7 +226,7 @@ const IndustriesMenu = () => {
             <div className="hidden xl:block w-full h-full bg-white">
               <div className="h-full w-full border-l border-sky-100 bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200 px-6 py-8 flex items-start">
                {/* < /> */}
-               <TestimonialCarousel/>
+               <TestimonialCarousel3/>
               </div>
             </div>
             {/* Right end */}
