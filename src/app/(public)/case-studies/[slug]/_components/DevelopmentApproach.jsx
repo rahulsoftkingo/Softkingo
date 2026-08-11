@@ -9,6 +9,7 @@ import {
     Rocket,
     Settings2,
 } from 'lucide-react';
+import CommonTitle from "@/components/ui/CommonTitle";
 
 const groups = [
     {
@@ -82,10 +83,12 @@ export default function DevelopmentApproach({ branding }) {
                     viewport={{ once: true }}
                     className="text-center max-w-4xl mx-auto mb-16 md:mb-20"
                 >
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900">
-                        Our Development Approach
-                    </h2>
-                    <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
+                    <CommonTitle
+                        title="Our Development Approach"
+                        subtitle="At Softkingo, every project follows a well-defined development process to deliver high-quality digital solutions."
+                        alignment="center"
+                    />
+                    {/* <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
                         At Softkingo, every project follows a well-defined development process to
                         deliver high-quality digital solutions. From understanding business
                         requirements and designing intuitive user experiences to agile development,
@@ -93,7 +96,7 @@ export default function DevelopmentApproach({ branding }) {
                         scalable, secure, and performance-driven. Our collaborative approach helps
                         businesses achieve reliable results with modern technology and user-focused
                         innovation.
-                    </p>
+                    </p> */}
                 </motion.div>
 
                 {/* Timeline groups. Headings (EXPLORE/IMPLEMENT/EXECUTE) stay aligned

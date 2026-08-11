@@ -279,10 +279,15 @@ export default function CoreServicesSection({
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
                     {/* Title Section */}
-                    <div className="text-center max-w-3xl mx-auto mb-8">
+                    <CommonTitle
+                        title={title}
+                        subtitle={subtitle}
+                        alignment="center"
+                    />
+                    {/* <div className="text-center max-w-3xl mx-auto mb-8">
                         <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{title}</h2>
                         <p className="text-slate-600 text-base md:text-lg">{subtitle}</p>
-                    </div>
+                    </div> */}
 
                     {/* Mobile / Tablet Horizontal Navigation Header */}
                     <div className="lg:hidden mt-8 mb-6 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
