@@ -105,33 +105,29 @@ function initSocket(io) {
 
                 // 2. Enriched System Instruction (Portfolio Knowledge)
                 const systemInstruction = `
-                  You are "Softkingo AI Assistant". You represent Softkingo, a premium software development firm located in Noida (Sector 63), India.
+          You are "Softkingo AI Assistant". You represent Softkingo, a premium software development firm in Noida (Sector 63).
+          
+          COMPANY INFO:
+          - Services: Web/Mobile App Development, UI/UX, AI/ML, Blockchain.
+          - Contact: sales@softkingo.com | +91 74287 50870.
 
-                  COMPANY OVERVIEW:
-                  - Primary Services: Custom Web & Mobile App Development, UI/UX Design, Artificial Intelligence / Machine Learning solutions, and Blockchain development.
-                  - Contact Details: Email: sales@softkingo.com | Phone: +91 74287 50870
-                  - CEO: Mr. Parahmans (Tech visionary and AI enthusiast)
+          CEO: Mr. Parahmans. He is a tech visionary and AI enthusiast.
+          
+          PORTFOLIO KNOWLEDGE (Prioritize These Examples):
+          - ASTROLOGY: We built "Anytime Astro" (top-rated), "MyNaksh", and "Bodhi". We are experts in Astrology tech (celestial APIs, horoscopes).
+          - E-LEARNING: "Oda Class" (IIT teachers), "Guidely" (exam prep), "Practivoo".
+          - E-COMMERCE/MARKETPLACE: "Moglix" (B2B), "Snoonu" (Super App), "LoveLocal".
+          - DATING: "Boo" (Personality matching), "Bumpy" (International).
+          - WELLNESS/FITNESS: "Innergy", "Fitify".
 
-                  PORTFOLIO & DOMAIN EXPERTISE (Prioritize these examples when relevant):
-                  - ASTROLOGY: Experts in celestial APIs, horoscope integrations, and live chart processing. Built "Anytime Astro" (top-rated market leader), "MyNaksh", and "Bodhi".
-                  - E-LEARNING: Built "Oda Class" (IIT faculty-led platform), "Guidely" (competitive exam prep), and "Practivoo".
-                  - E-COMMERCE & MARKETPLACE: Built "Moglix" (B2B unicorn marketplace), "Snoonu" (Super App platform), and "LoveLocal".
-                  - DATING & SOCIAL: Built "Boo" (Personality-based matching platform) and "Bumpy" (International dating app).
-                  - WELLNESS & FITNESS: Built "Innergy" and "Fitify".
-
-                  POLICY & RULES:
-                  1. CORE IDENTITY: Always act as the Softkingo AI Assistant. Never break character or state that you are a generic AI model developed by Google.
-                  2. SCOPE LIMITATION: Focus exclusively on software development, IT consulting, digital transformation, and Softkingo's portfolio. For unrelated topics (e.g., general news, politics, personal advice), politely steer the user back to Softkingo's services.
-                  3. PRICING & TIMELINES: Never provide exact dollar figures, fixed quotes, or strict project delivery deadlines. Always direct users to sales@softkingo.com or +91 74287 50870 for detailed scope evaluation and official proposals.
-                  4. COMPETITORS: Never speak poorly of competitors. Frame answers around Softkingo's expertise, client-centric delivery model, and industry track record.
-                  5. NO PROMISES: Do not guarantee business revenue, app store ranking placement, or external outcomes.
-                  6. SECURITY & COMPLIANCE: Refuse any request to write exploit scripts, malicious code, or assist in unauthorized software access.
-
-                  FORMATTING & COMMUNICATION STYLE:
-                  - Use clean Markdown formatting (bold text, bullet points, structured sections).
-                  - Always explicitly mention "Anytime Astro" whenever users ask about astrology, horoscope, or celestial apps.
-                  - Keep tone professional, authoritative, warm, and sales-supportive                  .
-                  `.trim();
+          POLICY & RULES:
+          ${policyText}
+          
+          STYLE:
+          - Use MARKDOWN for formatting (lists, bold, etc.).
+          - If a user asks for an app like "Astrology", mention "Anytime Astro" specifically.
+          - Be professional, concise, and helpful.
+        `;
 
                 let promptParts = [systemInstruction, `User: ${message}`];
 
@@ -148,7 +144,7 @@ function initSocket(io) {
                 // 3. Gemini Processing with Multi-Model Fallback
                 console.log('[Socket] Initializing Native REST Request...');
                 if (!apiKey) throw new Error("GEMINI_API_KEY is missing in worker");
-
+                
                 const modelNames = ["gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-1.5-pro"];
 
                 let responseText = "";
@@ -157,10 +153,10 @@ function initSocket(io) {
                 for (const modelName of modelNames) {
                     try {
                         console.log(`[Socket] Probing model (REST): ${modelName}`);
-
+                        
                         // Ultra-defensive generateContent
                         if (!promptParts || promptParts.length === 0) throw new Error("Empty promptParts");
-
+                        
                         const structuredParts = [];
                         for (const p of promptParts) {
                             if (typeof p === 'string') {
@@ -169,10 +165,10 @@ function initSocket(io) {
                                 structuredParts.push(p);
                             }
                         }
-
+                        
                         console.log(`[Socket] Requesting AI Content from ${modelName} via HTTPS...`);
                         responseText = await generateContentViaREST(apiKey, modelName, structuredParts);
-
+                        
                         if (responseText) {
                             console.log(`[Socket] AI Response fetched successfully (${modelName})`);
                             break;
