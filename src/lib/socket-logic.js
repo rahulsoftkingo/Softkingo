@@ -120,6 +120,11 @@ function initSocket(io) {
           - DATING: "Boo" (Personality matching), "Bumpy" (International).
           - WELLNESS/FITNESS: "Innergy", "Fitify".
 
+          BEHAVIOR RULES:
+          - Directly answer the user's specific question first. Only mention portfolio projects or company overview if it's genuinely relevant to what they asked.
+          - Do NOT repeat the full company introduction or portfolio list in every response — only include what's relevant to the current question.
+          - If the user's message is a simple greeting (like "hi" or "hello"), give a short, warm welcome and ask what they need — do not dump the full company profile.
+
           POLICY & RULES:
           ${policyText}
           
@@ -144,7 +149,7 @@ function initSocket(io) {
                 // 3. Gemini Processing with Multi-Model Fallback
                 console.log('[Socket] Initializing Native REST Request...');
                 if (!apiKey) throw new Error("GEMINI_API_KEY is missing in worker");
-                
+
                 const modelNames = ["gemini-2.5-flash-lite", "gemini-pro-latest", "gemini-1.5-pro"];
 
                 let responseText = "";
@@ -153,10 +158,10 @@ function initSocket(io) {
                 for (const modelName of modelNames) {
                     try {
                         console.log(`[Socket] Probing model (REST): ${modelName}`);
-                        
+
                         // Ultra-defensive generateContent
                         if (!promptParts || promptParts.length === 0) throw new Error("Empty promptParts");
-                        
+
                         const structuredParts = [];
                         for (const p of promptParts) {
                             if (typeof p === 'string') {
@@ -165,10 +170,10 @@ function initSocket(io) {
                                 structuredParts.push(p);
                             }
                         }
-                        
+
                         console.log(`[Socket] Requesting AI Content from ${modelName} via HTTPS...`);
                         responseText = await generateContentViaREST(apiKey, modelName, structuredParts);
-                        
+
                         if (responseText) {
                             console.log(`[Socket] AI Response fetched successfully (${modelName})`);
                             break;

@@ -151,7 +151,7 @@ export default function OptimizedChatWidget() {
 
         setTimeout(() => {
           setIsTyping(false);
-          addBotMessage("Hii! Welcome to Softkingo. How can we help you today?");
+          addBotMessage("Hi, welcome to Softkingo! 👋 How can I help you today?");
           playNotificationSound();
 
           setTimeout(() => {
@@ -562,9 +562,9 @@ export default function OptimizedChatWidget() {
                   className={`max-w-[85%] space-y-1 ${message.sender === 'visitor' ? 'items-end' : 'items-start'}`}
                 >
                   <div
-                    className={`p-3.5 rounded-2xl shadow-sm text-sm ${message.sender === 'visitor'
+                    className={`p-3.5 rounded-2xl  text-sm ${message.sender === 'visitor'
                       ? 'bg-sky-600 text-white rounded-tr-none'
-                      : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
+                      : 'bg-[#e8e8e8] text-slate-800 rounded-tl-none'
                       }`}
                   >
                     {message.image && (
