@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { io } from 'socket.io-client';
 import ReactMarkdown from 'react-markdown';
@@ -8,6 +9,8 @@ import remarkGfm from 'remark-gfm';
 import { ImagePlus, X, Send, Paperclip, Loader2 } from 'lucide-react';
 
 export default function OptimizedChatWidget() {
+  const router = useRouter(); // NEW: for navigating to /careers on click
+
   const [isOpen, setIsOpen] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(null); // 'name', 'phone', 'email', null (complete)
   const [visitorInfo, setVisitorInfo] = useState({ name: '', email: '', phone: '' });
@@ -102,6 +105,7 @@ export default function OptimizedChatWidget() {
   }, []);
 
   const [greetingTriggered, setGreetingTriggered] = useState(false);
+  const [showChoice, setShowChoice] = useState(false); // NEW: shows "Looking for a Job / Send a Message" options
 
   // Track open status globally for mutual exclusion with Popup
   useEffect(() => {
@@ -145,7 +149,7 @@ export default function OptimizedChatWidget() {
     if (isOpen && !greetingTriggered && messages.length === 0 && onboardingStep === 'name') {
       setGreetingTriggered(true);
 
-      // Sequence: Short pause -> Typing -> Message + Sound -> Next Question
+      // Sequence: Short pause -> Typing -> Welcome Message + Sound -> Show Choice (Job / Send Message)
       setTimeout(() => {
         setIsTyping(true);
 
@@ -154,8 +158,10 @@ export default function OptimizedChatWidget() {
           addBotMessage("Hi, welcome to Softkingo! 👋 How can I help you today?");
           playNotificationSound();
 
+          // NEW: Show "Looking for a Job?" / "Send a Message" options.
+          // The name question waits until the user picks "Send a Message".
           setTimeout(() => {
-            addBotMessage("Before we start, could you please tell me your full name?");
+            setShowChoice(true);
           }, 1200);
         }, 1500);
       }, 600);
@@ -199,6 +205,18 @@ export default function OptimizedChatWidget() {
       sender: 'bot',
       timestamp: new Date()
     }]);
+  };
+
+  // NEW: "Looking for a Job?" option clicked -> go straight to the careers page.
+  const handleJobChoice = () => {
+    setShowChoice(false);
+    router.push('/careers');
+  };
+
+  // NEW: "Send a Message" option clicked -> continue the normal onboarding flow.
+  const handleSendMessageChoice = () => {
+    setShowChoice(false);
+    addBotMessage("Before we start, could you please tell me your full name?");
   };
 
   const fetchMessages = async (id) => {
@@ -584,6 +602,26 @@ export default function OptimizedChatWidget() {
                 </div>
               </div>
             ))}
+
+            {/* NEW: "Looking for a Job?" / "Send a Message" choice buttons */}
+            {showChoice && (
+              <div className="flex justify-start animate-in slide-in-from-bottom-2 duration-300">
+                <div className="flex flex-col gap-2 max-w-[85%]">
+                  <button
+                    onClick={handleJobChoice}
+                    className="flex items-center gap-2 bg-white border border-sky-200 text-slate-700 text-sm font-medium px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm hover:bg-sky-50 hover:border-sky-300 transition-colors text-left active:scale-95"
+                  >
+                    💼 Looking for a Job?
+                  </button>
+                  <button
+                    onClick={handleSendMessageChoice}
+                    className="flex items-center gap-2 bg-white border border-sky-200 text-slate-700 text-sm font-medium px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm hover:bg-sky-50 hover:border-sky-300 transition-colors text-left active:scale-95"
+                  >
+                    💬 Send a Message
+                  </button>
+                </div>
+              </div>
+            )}
 
             {isTyping && (
               <div className="flex justify-start animate-pulse">
