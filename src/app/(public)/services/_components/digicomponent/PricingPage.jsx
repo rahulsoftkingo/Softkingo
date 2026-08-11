@@ -15,6 +15,7 @@ import {
   Shield,
   Globe,
   Layers,
+  X
 } from "lucide-react";
 import CommonTitle from '@/components/ui/CommonTitle';
 import WorkflowAddOns from "./WorkFlowAddons";
@@ -189,12 +190,14 @@ function normalizeValue(raw) {
   if (str === "") return null;
   const lower = str.toLowerCase();
   if (lower === "check" || lower === "true" || lower === "yes") return true;
-  if (lower === "false" || lower === "no") return null;
+  if (lower === "blank" || lower === "cross" || lower === "false" || lower === "no") return "blank"; // <-- ADD THIS
   return str;
 }
 
 function Cell({ value }) {
   const normalized = normalizeValue(value);
+
+  // Checkmark Icon
   if (normalized === true) {
     return (
       <div className="flex justify-center">
@@ -204,6 +207,18 @@ function Cell({ value }) {
       </div>
     );
   }
+
+  // Cross/X Icon for "blank"
+  if (normalized === "blank") {
+    return (
+      <div className="flex justify-center">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-rose-100">
+          <X className="h-3.5 w-3.5 text-rose-600" strokeWidth={3} />
+        </span>
+      </div>
+    );
+  }
+
   if (normalized === null) return <div />;
   return <p className="text-center text-sm text-amber-700">{normalized}</p>;
 }
