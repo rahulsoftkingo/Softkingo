@@ -1,16 +1,9 @@
-
 "use client";
 
-
-
-import { useState, useRef, useEffect } from "react";
-
+import { useState, useRef } from "react";
 import Image from "next/image";
-
 import Link from "next/link";
-
 import { FaArrowRight } from "react-icons/fa";
-
 import CommonTitle from "@/components/ui/CommonTitle";
 
 // ─── Default AI Services Data ────────────────────────────────────────────────
@@ -284,10 +277,6 @@ export default function CoreServicesSection({
                         subtitle={subtitle}
                         alignment="center"
                     />
-                    {/* <div className="text-center max-w-3xl mx-auto mb-8">
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{title}</h2>
-                        <p className="text-slate-600 text-base md:text-lg">{subtitle}</p>
-                    </div> */}
 
                     {/* Mobile / Tablet Horizontal Navigation Header */}
                     <div className="lg:hidden mt-8 mb-6 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
@@ -314,9 +303,9 @@ export default function CoreServicesSection({
                     </div>
 
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-10 lg:mt-16 items-start">
-                        {/* ─── ENHANCED LEFT NAVIGATION SIDEBAR (DESKTOP) ───────────────── */}
-                        <div className="hidden lg:block w-80 shrink-0 rounded-2xl border border-sky-100 bg-slate-50/50 backdrop-blur-md shadow-lg shadow-sky-900/5 p-2">
-                            <div className="space-y-1.5">
+                        {/* ─── LEFT NAVIGATION SIDEBAR (DESKTOP) ───────────────── */}
+                        <div className="hidden lg:block w-80 shrink-0 rounded-2xl border-0 bg-slate-50/50 backdrop-blur-md shadow-lg shadow-sky-900/5 p-2">
+                            <div className="space-y-2.5">
                                 {services.map((s, idx) => {
                                     const isActive = activeIndex === idx;
                                     return (
@@ -325,33 +314,24 @@ export default function CoreServicesSection({
                                             type="button"
                                             onClick={() => setActiveIndex(idx)}
                                             onMouseEnter={() => setActiveIndex(idx)}
-                                            className={`w-full text-left px-5 py-4 rounded-xl transition-all duration-300 group relative flex items-center gap-4 ${
+                                            className={`w-full text-left px-5 py-6 min-h-[72px] rounded-xl transition-all duration-300 group relative flex items-center border-none outline-none ${
                                                 isActive
-                                                    ? "bg-white  shadow-md "
-                                                    : "text-slate-600 hover:bg-white/60 border-l-4 border-transparent"
+                                                    ? "bg-white shadow-md"
+                                                    : "text-slate-600 hover:bg-white/60"
                                             }`}
                                         >
                                             {/* Service Title */}
                                             <div className="flex-1 min-w-0">
                                                 <h4
-                                                    className={`text-base font-semibold truncate transition-colors duration-300 ${
+                                                    className={`text-base font-semibold leading-snug transition-colors duration-300 ${
                                                         isActive
-                                                            ? ""
+                                                            ? "text-sky-600 font-bold"
                                                             : "text-slate-700"
                                                     }`}
                                                 >
                                                     {s?.title || s?.name || `Service ${idx + 1}`}
                                                 </h4>
                                             </div>
-
-                                            {/* Hover/Active Arrow Indicator */}
-                                            <FaArrowRight
-                                                className={`text-xs transition-all duration-300 ${
-                                                    isActive
-                                                        ? "text-sky-500 opacity-100 translate-x-0"
-                                                        : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-sky-400"
-                                                }`}
-                                            />
                                         </button>
                                     );
                                 })}

@@ -126,8 +126,8 @@ export default function FeatureSection({
                                                 transition={{ delay: idx * 0.05 }}
                                                 onMouseEnter={() => setActiveFeat(idx)}
                                                 className={`p-5 rounded-2xl border transition-all duration-300 cursor-pointer group ${isActive
-                                                    ? 'bg-white shadow-xl border-slate-100 translate-x-1'
-                                                    : 'bg-slate-50/50 border-transparent hover:bg-white hover:shadow-md'
+                                                    ? 'bg-white  border-slate-100 translate-x-1'
+                                                    : 'bg-slate-50/50 border-transparent hover:bg-white'
                                                     }`}
                                             >
                                                 <div className="flex gap-4">
@@ -183,7 +183,7 @@ export default function FeatureSection({
                                 </div>
                             </div>
                         ) : bgImage ? (
-                            <div className="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                            <div className="relative w-full aspect-video rounded-3xl overflow-hidden border-4 border-white">
                                 <Image src={bgImage} alt={title} fill className="object-cover" />
                                 {/* Overlay Shadow for consistency */}
                                 <div

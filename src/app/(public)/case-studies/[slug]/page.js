@@ -232,7 +232,7 @@ export default async function CaseStudyPage({ params }) {
 
         {/* <Branding data={data} /> */}
 
-        <TechStack data={data} />
+       
 
         {/* <FeatureSection
           title="Project Overview"
@@ -252,6 +252,9 @@ export default async function CaseStudyPage({ params }) {
           client={data.client}
           contentPosition="left" // text left, branding right
         />
+
+
+         <TechStack data={data} />
 
         <FeatureSection
           title="Project Requirements"

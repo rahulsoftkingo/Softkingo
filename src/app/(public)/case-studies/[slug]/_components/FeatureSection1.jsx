@@ -39,18 +39,17 @@ export default function FeatureSection1({
             )}
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 
-                    {/* LEFT: Branding Column */}
                     {/* LEFT: Branding Column */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5"
+                        className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5"
                     >
                         <div className="relative">
-                            <div className="relative w-40 h-40 lg:w-44 lg:h-44 rounded-2xl overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-50 flex items-center justify-center font-bold text-3xl text-slate-400">
+                            <div className="relative w-48 h-48 lg:w-56 lg:h-56 rounded-2xl overflow-hidden border-4 border-slate-50 shadow-xl bg-slate-50 flex items-center justify-center font-bold text-3xl text-slate-400">
                                 {client?.avatar ? (
                                     <img
                                         src={client.avatar}
@@ -119,7 +118,7 @@ export default function FeatureSection1({
                         </button>
 
                         {colors?.length > 0 && (
-                            <div className="grid grid-cols-3 gap-4 pt-2 w-full max-w-[280px]">
+                            <div className="grid grid-cols-3 gap-3 pt-2 w-full max-w-[320px]">
                                 {colors.map((color, idx) => (
                                     <motion.div
                                         key={idx}
@@ -130,7 +129,7 @@ export default function FeatureSection1({
                                         className="text-center"
                                     >
                                         <div
-                                            className="w-full aspect-square rounded-xl shadow-sm mb-1.5 border-2 border-slate-50"
+                                            className="w-full aspect-square rounded-2xl shadow-sm mb-1.5 border-2 border-slate-50"
                                             style={{ backgroundColor: color.hex }}
                                         />
 
@@ -148,7 +147,7 @@ export default function FeatureSection1({
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="lg:col-span-7 space-y-6"
+                        className="lg:col-span-8 space-y-6 pt-2"
                     >
                         <div className="space-y-3">
                             <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.1] tracking-tight text-slate-900">
@@ -158,7 +157,7 @@ export default function FeatureSection1({
                         </div>
 
                         {description && (
-                            <p className="text-base lg:text-lg leading-relaxed font-semibold text-slate-600">
+                            <p className="text-base lg:text-lg leading-relaxed text-slate-600">
                                 {description}
                             </p>
                         )}
