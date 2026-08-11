@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { io } from 'socket.io-client';
 import ReactMarkdown from 'react-markdown';
@@ -9,8 +8,6 @@ import remarkGfm from 'remark-gfm';
 import { ImagePlus, X, Send, Paperclip, Loader2 } from 'lucide-react';
 
 export default function OptimizedChatWidget() {
-  const router = useRouter(); // NEW: for navigating to /careers on click
-
   const [isOpen, setIsOpen] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(null); // 'name', 'phone', 'email', null (complete)
   const [visitorInfo, setVisitorInfo] = useState({ name: '', email: '', phone: '' });
@@ -148,7 +145,7 @@ export default function OptimizedChatWidget() {
     if (isOpen && !greetingTriggered && messages.length === 0 && onboardingStep === 'name') {
       setGreetingTriggered(true);
 
-      // Sequence: Short pause -> Typing -> Message + Sound -> Job Quick-Reply -> Next Question
+      // Sequence: Short pause -> Typing -> Message + Sound -> Next Question
       setTimeout(() => {
         setIsTyping(true);
 
@@ -157,15 +154,8 @@ export default function OptimizedChatWidget() {
           addBotMessage("Hi, welcome to Softkingo! 👋 How can I help you today?");
           playNotificationSound();
 
-          // NEW: "Are you looking for a job?" quick-reply message
           setTimeout(() => {
-            addBotMessage("Are you looking for a job with us?", {
-              quickReply: { label: "View Open Positions", href: "/careers" }
-            });
-
-            setTimeout(() => {
-              addBotMessage("Before we start, could you please tell me your full name?");
-            }, 1200);
+            addBotMessage("Before we start, could you please tell me your full name?");
           }, 1200);
         }, 1500);
       }, 600);
@@ -202,14 +192,12 @@ export default function OptimizedChatWidget() {
     }
   };
 
-  // NEW: addBotMessage now optionally accepts a quickReply { label, href }
-  const addBotMessage = (content, options = {}) => {
+  const addBotMessage = (content) => {
     setMessages((prev) => [...prev, {
       id: Date.now() + Math.random(),
       content,
       sender: 'bot',
-      timestamp: new Date(),
-      quickReply: options.quickReply || null
+      timestamp: new Date()
     }]);
   };
 
@@ -589,16 +577,6 @@ export default function OptimizedChatWidget() {
                         {message.content}
                       </ReactMarkdown>
                     </div>
-
-                    {/* NEW: Quick-reply button (only renders when a message has one, e.g. "Are you looking for a job?") */}
-                    {message.quickReply && (
-                      <button
-                        onClick={() => router.push(message.quickReply.href)}
-                        className="mt-2 inline-flex items-center gap-1 bg-sky-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full hover:bg-sky-700 transition-colors shadow-sm active:scale-95"
-                      >
-                        {message.quickReply.label}
-                      </button>
-                    )}
                   </div>
                   <span className="text-[10px] text-slate-400 px-1">
                     {message.timestamp ? new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
