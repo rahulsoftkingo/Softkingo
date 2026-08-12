@@ -101,7 +101,7 @@ export default function BlogSection({
                         <div
                             ref={scrollRef}
                             onScroll={checkScroll}
-                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-8 sm:snap-x sm:snap-mandatory touch-pan-x cursor-grab active:cursor-grabbing w-full"
+                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-0 md:pb-8 sm:snap-x sm:snap-mandatory touch-pan-x cursor-grab active:cursor-grabbing w-full"
                         >
                             {blogs.map((blog, idx) => (
                                 <div key={blog.id} className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start">
@@ -174,7 +174,7 @@ function BlogCard({ blog, priority }) {
             </div>
 
             {/* Content */}
-            <div className="pt-6 pb-4 flex flex-col flex-1 space-y-4">
+            <div className="pt-6 pb-0 md:pb-4 flex flex-col flex-1 space-y-4">
                 {/* Meta */}
                 <div className="flex items-center justify-between text-[10px] font-bold tracking-wider">
                     <span className="text-rose-600 uppercase">{categoryName}</span>

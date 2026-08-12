@@ -7,7 +7,7 @@ import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 
 const ReviewsSection = () => {
   return (
-    <section className="relative w-full py-12 md:py-16 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-white overflow-hidden">
+    <section className="relative w-full py-6 md:py-16 px-4 sm:px-6 bg-gradient-to-br from-gray-50 to-white overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-10 right-10 w-80 h-80 bg-[#28AFDF]/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse"></div>
       <div className="absolute bottom-20 left-10 w-72 h-72 bg-[#28AFDF]/20 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse animation-delay-2000"></div>
