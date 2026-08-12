@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { testimonials } from "@/data/testimonials";
+import PopupQuoteModal from '@/components/PopupQuoteModal';
 
 export default function TestimonialCarousel({
   autoPlay = true,
@@ -14,10 +15,20 @@ export default function TestimonialCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [imageErrors, setImageErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCtaClick = () => {
+    setShowModal(true);
+    if (onCtaClick) onCtaClick();
+  };
 
   const total = testimonials.length;
   const nextIndex = (currentIndex + 1) % total;
 
+  const next = useCallback(() => setCurrentIndex((prev) => (prev + 1) % total), [total]);
+  const prev = useCallback(() => setCurrentIndex((prev) => (prev - 1 + total) % total), [total]);
+
+  // Autoplay timer logic
   useEffect(() => {
     if (!autoPlay || isHovered) return;
     const timer = setInterval(() => {
@@ -26,8 +37,27 @@ export default function TestimonialCarousel({
     return () => clearInterval(timer);
   }, [autoPlay, interval, isHovered, total]);
 
-  const next = () => setCurrentIndex((prev) => (prev + 1) % total);
-  const prev = () => setCurrentIndex((prev) => (prev - 1 + total) % total);
+  // Keyboard navigation for Left and Right arrow keys
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Do not interrupt navigation if modal is open or if user is typing in an input/textarea
+      if (
+        showModal || 
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
+      ) {
+        return;
+      }
+
+      if (e.key === 'ArrowRight') {
+        next();
+      } else if (e.key === 'ArrowLeft') {
+        prev();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [next, prev, showModal]);
 
   const handleImageError = (index) => {
     setImageErrors((prev) => ({ ...prev, [index]: true }));
@@ -105,7 +135,7 @@ export default function TestimonialCarousel({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* ===================== DESKTOP / LAPTOP LAYOUT (unchanged) ===================== */}
+      {/* ===================== DESKTOP / LAPTOP LAYOUT ===================== */}
       <div className="hidden lg:grid grid-cols-1 lg:grid-cols-[320px_1fr_140px] gap-6 items-stretch">
         {/* Left intro column */}
         <div className="flex flex-col justify-between py-2">
@@ -124,7 +154,7 @@ export default function TestimonialCarousel({
           </div>
 
           <button
-            onClick={onCtaClick}
+            onClick={handleCtaClick}
             className="mt-8 self-start px-6 py-3 rounded-full border border-gray-300 text-gray-900 text-sm font-medium hover:border-gray-900 transition-colors"
           >
             {ctaLabel}
@@ -218,7 +248,7 @@ export default function TestimonialCarousel({
         </button>
       </div>
 
-      {/* ===================== MOBILE LAYOUT: swipeable, all quotes visible ===================== */}
+      {/* ===================== MOBILE LAYOUT ===================== */}
       <div className="lg:hidden">
         <div className="mb-6">
           <h2 className="text-2xl font-bold mb-3 text-sky-900 leading-normal py-1">
@@ -234,7 +264,7 @@ export default function TestimonialCarousel({
           )}
         </div>
 
-        {/* Finger/touch swipe scroll - no arrow buttons on mobile */}
+        {/* Finger/touch swipe scroll */}
         <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-2">
           {testimonials.map((testimonial, index) => (
             <div
@@ -243,7 +273,6 @@ export default function TestimonialCarousel({
             >
               <div>
                 <span className="text-2xl text-gray-800 leading-none">&#8220;</span>
-                {/* full quote text, no line-clamp, smaller font on mobile */}
                 <p className="text-gray-800 text-sm leading-relaxed mt-2">
                   {testimonial.review}
                 </p>
@@ -253,7 +282,6 @@ export default function TestimonialCarousel({
                 <div className="flex items-center gap-3 min-w-0">
                   <Avatar testimonial={testimonial} index={index} size="w-11 h-11" />
 
-                  {/* name & title fully shown, not truncated */}
                   <div className="min-w-0">
                     <h3 className="text-sm font-bold text-gray-900 leading-tight">
                       {testimonial.name}
@@ -271,12 +299,14 @@ export default function TestimonialCarousel({
         </div>
 
         <button
-          onClick={onCtaClick}
+          onClick={handleCtaClick}
           className="mt-6 px-6 py-3 rounded-full border border-gray-300 text-gray-900 text-sm font-medium hover:border-gray-900 transition-colors"
         >
           {ctaLabel}
         </button>
       </div>
+
+      <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }

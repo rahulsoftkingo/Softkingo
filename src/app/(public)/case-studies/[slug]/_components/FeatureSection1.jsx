@@ -176,7 +176,7 @@ export default function FeatureSection1({
                             </p>
                         )}
 
-                        <button
+                        {/* <button
                             onClick={() => setIsModalOpen(true)}
                             className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:opacity-70 transition-opacity"
                             style={{ color: primaryColor }}
@@ -187,7 +187,7 @@ export default function FeatureSection1({
                                 className="h-[2px] w-8 rounded-full"
                                 style={{ backgroundColor: primaryColor }}
                             />
-                        </button>
+                        </button> */}
 
                         {listItems && listItems.length > 0 && (
                             <div className="lg:max-h-[500px] overflow-y-auto pr-3 custom-scrollbar-stylish scroll-smooth">
