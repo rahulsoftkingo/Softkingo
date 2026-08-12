@@ -164,26 +164,26 @@ export default function FeatureSection({
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className={`relative flex justify-center ${imagePosition === 'right' ? '' : 'lg:order-1'}`}
+                        className={`relative flex justify-center items-center w-full ${imagePosition === 'right' ? '' : 'lg:order-1'}`}
                     >
                         {mockup ? (
-                            <div className="relative">
+                            <div className="relative w-full max-w-md lg:max-w-lg flex justify-center">
                                 {/* Decorative Primary Glow Shadow */}
                                 <div
-                                    className="absolute inset-[10%] blur-[100px] opacity-30 -z-10"
+                                    className="absolute inset-[10%] blur-[80px] opacity-25 -z-10"
                                     style={{ backgroundColor: primaryColor }}
                                 />
-                                <div className="relative h-[400px] sm:h-[500px] md:h-[600px] w-auto aspect-[9/19]">
+                                <div className="relative w-full h-[450px] sm:h-[520px] md:h-[580px]">
                                     <Image
                                         src={mockup}
                                         alt={title}
                                         fill
-                                        className="object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.15)]"
+                                        className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.12)]"
                                     />
                                 </div>
                             </div>
                         ) : bgImage ? (
-                            <div className="relative w-full aspect-video rounded-3xl overflow-hidden border-4 border-white">
+                            <div className="relative w-full aspect-video rounded-3xl overflow-hidden border-4 border-white shadow-lg">
                                 <Image src={bgImage} alt={title} fill className="object-cover" />
                                 {/* Overlay Shadow for consistency */}
                                 <div

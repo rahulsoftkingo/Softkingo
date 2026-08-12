@@ -104,6 +104,27 @@ export default function FeatureSection1({
                             )}
                         </div>
 
+                          {primaryFont && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="bg-slate-50 rounded-2xl p-6 border border-slate-100 relative overflow-hidden w-full max-w-[320px]"
+                            >
+                                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                                    <span className="text-[80px] font-bold leading-none" style={{ color: primaryColor }}>
+                                        {primaryFont.charAt(0)}
+                                    </span>
+                                </div>
+
+                                <div className="relative z-10 space-y-2">
+                                    <p className="text-4xl font-bold" style={{ color: primaryColor }}>Aa</p>
+                                    <p className="text-base font-bold text-slate-800">{primaryFont}</p>
+                                    <div className="w-10 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
+                                </div>
+                            </motion.div>
+                        )}
+
                         {colors?.length > 0 && (
                             <div className="grid grid-cols-3 gap-3 pt-2 w-full max-w-[320px]">
                                 {colors.map((color, idx) => (
@@ -134,26 +155,7 @@ export default function FeatureSection1({
                         )}
 
                         {/* Typography Card - shows which font is used (mirrors Branding.js) */}
-                        {primaryFont && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                className="bg-slate-50 rounded-2xl p-6 border border-slate-100 relative overflow-hidden w-full max-w-[320px]"
-                            >
-                                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                                    <span className="text-[80px] font-bold leading-none" style={{ color: primaryColor }}>
-                                        {primaryFont.charAt(0)}
-                                    </span>
-                                </div>
-
-                                <div className="relative z-10 space-y-2">
-                                    <p className="text-4xl font-bold" style={{ color: primaryColor }}>Aa</p>
-                                    <p className="text-base font-bold text-slate-800">{primaryFont}</p>
-                                    <div className="w-10 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
-                                </div>
-                            </motion.div>
-                        )}
+                      
                     </motion.div>
 
                     {/* RIGHT: Text / Feature List */}

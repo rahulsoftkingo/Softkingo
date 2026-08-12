@@ -230,7 +230,7 @@ export default async function CaseStudyPage({ params }) {
 
         <Stats data={data} />
 
-        <Branding data={data} />
+        {/* <Branding data={data} /> */}
 
        
 
