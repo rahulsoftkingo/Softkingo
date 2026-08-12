@@ -135,7 +135,7 @@ export default function RootLayout({ children }) {
           `}
         </Script>
       </head>
-      <body className="antialiased" suppressHydrationWarning>
+      <body className="antialiased select-none" suppressHydrationWarning>
         {children}
       </body>
     </html>

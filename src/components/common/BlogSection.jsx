@@ -101,7 +101,7 @@ export default function BlogSection({
                         <div
                             ref={scrollRef}
                             onScroll={checkScroll}
-                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-0 md:pb-8 sm:snap-x sm:snap-mandatory touch-pan-x cursor-grab active:cursor-grabbing w-full"
+                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-0 md:pb-8 sm:snap-x sm:snap-mandatory cursor-grab active:cursor-grabbing w-full"
                         >
                             {blogs.map((blog, idx) => (
                                 <div key={blog.id} className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start">

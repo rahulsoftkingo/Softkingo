@@ -22,7 +22,7 @@ export default function ConsultationCTA({
 
   return (
     <section className="py-8 md:py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-6 pt-24">
+      <div className="max-w-7xl mx-auto px-6 pt-10 md:pt-24">
         <div className={`relative rounded-[28px]  ${isWhite
           ? "bg-white border border-slate-100 shadow-xl shadow-slate-200/50"
           : "bg-gradient-to-br from-[#28AFDF] to-[#06465D]"

@@ -59,7 +59,7 @@ export const homePortfolioData = [
     {
         id: 4,
         title: 'Ezy Dash',
-        type: 'Campus Services',
+        type: 'Market Place',
         description: 'Ezydash is a next-generation branding app that helps create networks of shared progress with focus on experts, and sharing abstracts approved at from theory to practice and improvement.',
         logo: '/images/portfolio/ezydash-logo.svg',
         mockup: '/images/portfolio/ezydash.svg',

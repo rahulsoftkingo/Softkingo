@@ -1,9 +1,11 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import CommonTitle from '@/components/ui/CommonTitle';
 import Image from 'next/image';
 
 export default function SolutionsFeatureGrid({ data }) {
+  const [flippedIdx, setFlippedIdx] = useState(null);
+
   if (!data) return null;
 
   return (
@@ -38,6 +40,9 @@ export default function SolutionsFeatureGrid({ data }) {
             // 1. Perspective Container
             <div
               key={idx}
+              onClick={() =>
+                setFlippedIdx((prev) => (prev === idx ? null : idx))
+              }
               className="
                 group [perspective:1000px] h-96 cursor-pointer
                 overflow-hidden rounded-3xl
@@ -46,7 +51,15 @@ export default function SolutionsFeatureGrid({ data }) {
               "
             >
               {/* 2. Inner Card (Rotates) */}
-              <div className="relative h-full w-full transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-3xl shadow-xl">
+              <div
+                className={`
+                  relative h-full w-full transition-all duration-700
+                  [transform-style:preserve-3d]
+                  sm:group-hover:[transform:rotateY(180deg)]
+                  rounded-3xl shadow-xl
+                  ${flippedIdx === idx ? "[transform:rotateY(180deg)]" : ""}
+                `}
+              >
 
                 {/* --- FRONT SIDE (Image + Title) --- */}
                 <div className="absolute inset-0 h-full w-full [backface-visibility:hidden] [-webkit-backface-visibility:hidden] rounded-3xl overflow-hidden bg-slate-900">
@@ -70,16 +83,29 @@ export default function SolutionsFeatureGrid({ data }) {
                 </div>
 
                 {/* --- BACK SIDE (Description) --- */}
-                <div className="absolute inset-0 h-full w-full [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)] bg-sky-600 rounded-3xl p-8 flex flex-col justify-center items-center text-center border-4 border-white/10 overflow-hidden">
+                <div
+                  className="
+                    absolute inset-0 h-full w-full
+                    [backface-visibility:hidden] [-webkit-backface-visibility:hidden]
+                    [transform:rotateY(180deg)]
+                    bg-sky-600 rounded-3xl
+                    p-6 sm:p-8
+                    flex flex-col
+                    justify-start sm:justify-center
+                    items-center text-center
+                    border-4 border-white/10
+                    overflow-y-auto sm:overflow-hidden
+                  "
+                >
                   {/* Repeating Title on Back for Context */}
-                  <h4 className="text-white font-bold text-xl mb-6 break-words">
+                  <h4 className="text-white font-bold text-lg sm:text-xl mb-4 sm:mb-6 break-words shrink-0">
                     {item.title || item.name || "Enterprise Feature"}
                   </h4>
 
-                  <div className="w-16 h-1 bg-white/30 rounded-full mb-6"></div>
+                  <div className="w-16 h-1 bg-white/30 rounded-full mb-4 sm:mb-6 shrink-0"></div>
 
                   <div
-                    className="text-sky-50 text-base leading-relaxed font-medium rich-text break-words overflow-hidden w-full"
+                    className="text-sky-50 text-sm sm:text-base leading-relaxed font-medium rich-text break-words w-full"
                     dangerouslySetInnerHTML={{
                       __html:
                         item.description ||

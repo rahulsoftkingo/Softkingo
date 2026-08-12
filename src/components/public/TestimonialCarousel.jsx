@@ -70,7 +70,7 @@ export default function TestimonialCarousel({
     const logoSrc = logos[testimonial.source] || null;
 
     return (
-      <div className="bg-white rounded-sm shadow-sm px-3 py-1.5 flex items-center gap-2 shrink-0">
+      <div className="bg-white rounded-sm shadow-sm px-3 py-1.5 flex items-center justify-between gap-4 w-32 shrink-0">
         {logoSrc === "trustpilot-svg" ? (
           <div className="h-4 flex items-center">
             <svg viewBox="0 0 100 100" className="h-full w-auto" xmlns="http://www.w3.org/2000/svg">
@@ -235,7 +235,7 @@ export default function TestimonialCarousel({
         </div>
 
         {/* Finger/touch swipe scroll - no arrow buttons on mobile */}
-        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-2 touch-pan-x">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-2">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
