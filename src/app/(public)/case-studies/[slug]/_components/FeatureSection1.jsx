@@ -104,19 +104,6 @@ export default function FeatureSection1({
                             )}
                         </div>
 
-                        <button
-                            onClick={() => setIsModalOpen(true)}
-                            className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:opacity-70 transition-opacity"
-                            style={{ color: primaryColor }}
-                        >
-                            <span>View Testimonial</span>
-
-                            <div
-                                className="h-[2px] w-8 rounded-full"
-                                style={{ backgroundColor: primaryColor }}
-                            />
-                        </button>
-
                         {colors?.length > 0 && (
                             <div className="grid grid-cols-3 gap-3 pt-2 w-full max-w-[320px]">
                                 {colors.map((color, idx) => (
@@ -136,9 +123,36 @@ export default function FeatureSection1({
                                         <p className="text-[9px] font-bold text-slate-400 tracking-wider uppercase">
                                             {color.hex}
                                         </p>
+                                        {color.name && (
+                                            <p className="text-[10px] font-semibold text-slate-600 mt-0.5 truncate">
+                                                {color.name}
+                                            </p>
+                                        )}
                                     </motion.div>
                                 ))}
                             </div>
+                        )}
+
+                        {/* Typography Card - shows which font is used (mirrors Branding.js) */}
+                        {primaryFont && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="bg-slate-50 rounded-2xl p-6 border border-slate-100 relative overflow-hidden w-full max-w-[320px]"
+                            >
+                                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                                    <span className="text-[80px] font-bold leading-none" style={{ color: primaryColor }}>
+                                        {primaryFont.charAt(0)}
+                                    </span>
+                                </div>
+
+                                <div className="relative z-10 space-y-2">
+                                    <p className="text-4xl font-bold" style={{ color: primaryColor }}>Aa</p>
+                                    <p className="text-base font-bold text-slate-800">{primaryFont}</p>
+                                    <div className="w-10 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
+                                </div>
+                            </motion.div>
                         )}
                     </motion.div>
 
@@ -161,6 +175,19 @@ export default function FeatureSection1({
                                 {description}
                             </p>
                         )}
+
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:opacity-70 transition-opacity"
+                            style={{ color: primaryColor }}
+                        >
+                            <span>View Testimonial</span>
+
+                            <div
+                                className="h-[2px] w-8 rounded-full"
+                                style={{ backgroundColor: primaryColor }}
+                            />
+                        </button>
 
                         {listItems && listItems.length > 0 && (
                             <div className="lg:max-h-[500px] overflow-y-auto pr-3 custom-scrollbar-stylish scroll-smooth">
