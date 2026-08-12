@@ -69,7 +69,7 @@ export default function BlogSection({
 
                     {/* Left Content - Header & CTA */}
                     <div className="lg:col-span-4  flex items-start justify- md:justify-center md:flex-col  md:items-start  spac-8">
-                        <div className="space-y-4 max-w-xs lg:max-w-none ">
+                        <div className="max-w-xs lg:max-w-none -mb-6 ">
                             <CommonTitle
                                 title={title}
                                 subtitle={subtitle}
@@ -108,6 +108,21 @@ export default function BlogSection({
                                     <BlogCard blog={blog} priority={idx < 2} />
                                 </div>
                             ))}
+
+                            {/* View All Card - shown at the end of scroll, mainly useful on mobile */}
+                            <div className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start flex items-center justify-center sm:hidden">
+                                <Link
+                                    href={`/blog/category/${category}`}
+                                    className="group flex flex-col items-center justify-center gap-4 w-full h-full min-h-[280px] rounded-sm border border-dashed border-slate-200 hover:border-sky-500 transition-all duration-300 bg-slate-50/50"
+                                >
+                                    <div className="relative flex items-center justify-center w-14 h-14 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
+                                        <FaArrowRight className="text-lg text-slate-700 group-hover:text-sky-500 transition-colors duration-500 group-hover:translate-x-1" />
+                                    </div>
+                                    <span className="text-sm font-bold text-slate-800 group-hover:text-sky-600 transition-colors duration-300">
+                                        View All Blogs
+                                    </span>
+                                </Link>
+                            </div>
                         </div>
 
                         {/* Navigation Arrows */}

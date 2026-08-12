@@ -28,6 +28,7 @@ export default function FAQAccordion({ data }) {
   const [openIndex, setOpenIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrollVh, setScrollVh] = useState(200); // ← add this
 
   const sectionRef = useRef(null);
   const listRef = useRef(null);
@@ -100,6 +101,25 @@ export default function FAQAccordion({ data }) {
   const subtitle = data?.subtitle;
   const gradientText = data?.gradientText || "";
 
+
+  useEffect(() => {
+    if (isMobile) return;
+
+    const calcHeight = () => {
+      if (!listRef.current) return;
+      const listHeight = listRef.current.scrollHeight;
+      const viewportH = window.innerHeight;
+      const visibleWindow = viewportH * 0.55;
+      const scrollDistance = Math.max(listHeight - visibleWindow, 0);
+      const vh = (scrollDistance / viewportH) * 100 + 100;
+      setScrollVh(vh);
+    };
+
+    calcHeight();
+    window.addEventListener("resize", calcHeight);
+    return () => window.removeEventListener("resize", calcHeight);
+  }, [isMobile, items]);
+
   const toggle = (i) => setOpenIndex((prev) => (prev === i ? -1 : i));
 
   // Framer Motion Scroll Trigger logic (desktop only)
@@ -121,11 +141,10 @@ export default function FAQAccordion({ data }) {
       <motion.div
         key={it.id || i}
         variants={itemVariants}
-        className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${
-          isOpen
-            ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100"
-            : "bg-white"
-        }`}
+        className={`border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 ${isOpen
+          ? "bg-slate-50 border-sky-100 ring-1 ring-sky-100"
+          : "bg-white"
+          }`}
       >
         <button
           aria-expanded={isOpen}
@@ -134,18 +153,16 @@ export default function FAQAccordion({ data }) {
           className="w-full flex items-start gap-4 px-6 py-5 text-left bg-transparent hover:bg-slate-50/50 transition-colors"
         >
           <div
-            className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors mt-0.5 ${
-              isOpen
-                ? "bg-sky-500 border-sky-500 text-white"
-                : "bg-white border-slate-200 text-slate-500"
-            }`}
+            className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-colors mt-0.5 ${isOpen
+              ? "bg-sky-500 border-sky-500 text-white"
+              : "bg-white border-slate-200 text-slate-500"
+              }`}
           >
             {isOpen ? <Minus size={16} /> : <Plus size={16} />}
           </div>
           <h3
-            className={`text-lg font-bold flex-1 ${
-              isOpen ? "text-sky-900" : "text-slate-900"
-            }`}
+            className={`text-lg font-bold flex-1 ${isOpen ? "text-sky-900" : "text-slate-900"
+              }`}
           >
             {it.q}
           </h3>
@@ -153,9 +170,8 @@ export default function FAQAccordion({ data }) {
 
         <div
           id={`faq-panel-${it.id || i}`}
-          className={`grid transition-all duration-300 ease-in-out ${
-            isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-          }`}
+          className={`grid transition-all duration-300 ease-in-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            }`}
         >
           <div className="overflow-hidden">
             <div
@@ -236,7 +252,7 @@ export default function FAQAccordion({ data }) {
     <section
       ref={sectionRef}
       className="relative bg-white"
-      style={{ height: `${items.length * 35}vh` }} // Dynamic height based on item count
+      style={{ height: `${scrollVh}vh` }}
     >
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-8 md:py-16">
         <div className="max-w-7xl mx-auto px-6 w-full">

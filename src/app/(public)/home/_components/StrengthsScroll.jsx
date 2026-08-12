@@ -87,7 +87,7 @@ export default function Strengths_Scroll({ scrollRef }) {
   return (
     <section
       ref={scrollRef}
-      className="w-full bg-gradient-to-br from-white via-50 to-sky-100 py-10 sm:py-12 px-4 sm:px-6"
+      className="w-full bg-gradient-to-br from-white via-50 to-sky-100 pb-10 pt-7 md:pt-10m pb-0 md:pb-7 mt-0 mb:mt-7 sm:py-12 px-4 sm:px-6"
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14">

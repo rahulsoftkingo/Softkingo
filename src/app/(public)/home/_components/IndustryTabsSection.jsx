@@ -347,10 +347,10 @@ export default function IndustryTabsSection() {
   const active = industries[currentIndex];
 
   return (
-    <section className="relative pt-0  bg-white sm:pt-16 pb-20">
+    <section className="relative pt-0  bg-white pb-8 sm:pt-16 sm:pb-20">
 
       {/* SECTION HEADER */}
-      <div className="text-center mb-8 px-4">
+      <div className="text-center mb-0 md:mb-8 px-4">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -379,11 +379,12 @@ export default function IndustryTabsSection() {
 
           {/* 1. TOP TABS BAR (SCROLLABLE) */}
           <div className="w-full mb-0 relative -bottom-12 z-20 overflow-x-auto scrollbar-hide pb-6">
-            <div className="flex items-start justify-between gap-6 min-w-max px-2 py-4">
+            <div className="flex items-start justify-between gap-6 min-w-max px-2 pt-0 md:py-4">
               {industries.map((item, idx) => (
                 <button
                   key={item.id}
                   onMouseEnter={() => setCurrentIndex(idx)}
+                  onClick={() => setCurrentIndex(idx)}
                   className={`flex flex-col items-center gap-3 transition-all duration-300 flex-shrink-0 group ${currentIndex === idx
                     ? 'bg-white rounded-lg p-3 shadow-lg scale-110 -translate-y-1 text-[#00B7EB]'
                     : 'text-sky-800 hover:text-black hover:scale-105'

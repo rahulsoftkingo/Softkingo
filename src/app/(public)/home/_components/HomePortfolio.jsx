@@ -61,7 +61,7 @@ const HomePortfolio = () => {
     useEffect(() => {
         if (!isDragging) {
             const targetX = slideOffsetPercentOfTrack(virtualIndex);
-            
+
             const controls = animate(x, targetX, {
                 type: 'spring',
                 stiffness: 160,
@@ -126,14 +126,14 @@ const HomePortfolio = () => {
     };
 
     return (
-        <section className="relative bg-white py-10 md:py-16 select-none overflow-hidden">
+        <section className="relative bg-white py-10 pt-6 md:py-16 select-none overflow-hidden">
             <div className="w-full bg-white flex flex-col">
 
                 {/* HEADER SECTION */}
                 <div className="w-full px-4 sm:px-6 md:px-10 lg:px-50 shrink-0 relative z-20 mb-6 md:mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    
+
                     {/* LEFT SIDE TITLE */}
-                    <div className="flex-1 min-w-0">
+                   <div className="flex-1 min-w-0 -mb-10 md:mb-0">
                         <CommonTitle
                             title="Our Portfolio"
                             gradientText=""
@@ -150,16 +150,15 @@ const HomePortfolio = () => {
                                     key={project.id}
                                     type="button"
                                     onClick={() => goToSlide(idx)}
-                                    className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl min-w-[85px] sm:min-w-[120px] px-3 py-2 ml-2.5 md:py-2.5 border transition-all duration-300 cursor-pointer shrink-0 ${
-                                        isActive
+                                    className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl min-w-[85px] sm:min-w-[120px] px-3 py-2 ml-2.5 md:py-2.5 border transition-all duration-300 cursor-pointer shrink-0 ${isActive
                                             ? "scale-105 border-white/20 shadow-md"
                                             : "bg-slate-900/90 border-white/10 hover:bg-slate-900 hover:scale-105"
-                                    }`}
+                                        }`}
                                     style={
                                         isActive
                                             ? {
                                                 background: `linear-gradient(135deg, ${project.gradientColors[0]}, ${project.gradientColors[1]})`,
-                                              }
+                                            }
                                             : undefined
                                     }
                                 >
@@ -172,7 +171,7 @@ const HomePortfolio = () => {
                                             className="object-contain filter brightness-0 invert pointer-events-none"
                                         />
                                     </div>
-                                    
+
                                     <span className="text-[10px] md:text-xs font-medium text-white/90 whitespace-nowrap text-center">
                                         {project.type}
                                     </span>
@@ -203,9 +202,8 @@ const HomePortfolio = () => {
                                         style={{ width: `${100 / totalItems}%` }}
                                     >
                                         <div
-                                            className={`relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] text-white w-full h-full flex flex-col md:flex-row border border-white/10 select-none transition-all duration-700 ease-out ${
-                                                isActive ? "opacity-100 scale-100" : "opacity-100 scale-100 md:opacity-60 md:scale-[0.94]"
-                                            }`}
+                                            className={`relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] text-white w-full h-full flex flex-col md:flex-row border border-white/10 select-none transition-all duration-700 ease-out ${isActive ? "opacity-100 scale-100" : "opacity-100 scale-100 md:opacity-60 md:scale-[0.94]"
+                                                }`}
                                             style={{
                                                 background: `linear-gradient(135deg, ${project.gradientColors[0]} 0%, ${project.gradientColors[1]} 50%, ${project.gradientColors[2]} 100%)`,
                                             }}
@@ -334,11 +332,10 @@ const HomePortfolio = () => {
                             <button
                                 key={idx}
                                 onClick={() => goToSlide(idx)}
-                                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 border cursor-pointer ${
-                                    activeIndex === idx
+                                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 border cursor-pointer ${activeIndex === idx
                                         ? "bg-[#00AEEF] border-[#00AEEF] scale-125"
                                         : "bg-[#00AEEF]/20 border-sky-300"
-                                }`}
+                                    }`}
                             />
                         ))}
                     </div>

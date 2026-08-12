@@ -151,7 +151,7 @@ const HeroSection = () => {
       <div className="order-1 md:order-none relative z-10 w-full max-w-7xl mx-auto px-4 text-center bg-white md:bg-transparent md:h-screen md:flex md:flex-col md:items-center md:justify-center">
 
         {/* Mobile version: plain elements, zero motion */}
-        <div className="flex md:hidden flex-col items-center pt-8 pb-12">
+        <div className="flex md:hidden flex-col items-start pt-8 pb-12">
           {/* Badge */}
           <div className="w-fit bg-sky-50 text-sky-700 px-6 py-2 rounded-full mb-6 border border-sky-200 text-xs text-left mr-auto">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block mr-2" />
@@ -170,7 +170,7 @@ const HeroSection = () => {
           </h1>
 
           {/* Stats List */}
-          <div className="flex flex-col items-start gap-3 mb-8 text-gray-800 text-sm w-full max-w-xs mx-auto">
+          <div className="w-full flex flex-col gap-3 mb-8 text-gray-800 text-sm">
             <div className="flex items-center gap-3">
               <span className="w-5 h-5 flex items-center justify-center bg-sky-600 rounded-full text-white text-xs font-bold shrink-0">
                 ✓
@@ -194,7 +194,7 @@ const HeroSection = () => {
           </div>
 
           {/* Description */}
-          <p className="text-sm text-gray-600 mb-8 px-2 text-left">
+          <p className="text-xs md:text-xl lg:text-[12px] text-gray-600 mb-8 px-0 md:px-2 text-left leading-normal">
             Softkingo is a trusted software development company helping businesses build scalable, AI-powered digital solutions. Trusted by 350+ clients worldwide, we deliver secure, innovative, and high-performance software that drives growth.
           </p>
 

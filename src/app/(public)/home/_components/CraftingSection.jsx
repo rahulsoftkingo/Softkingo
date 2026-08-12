@@ -38,7 +38,7 @@ function Crafting() {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className="bg-gradient-to-br from-white via-sky-50 to-sky-200 text-black  lg:h- flex justify-center  py-10 sm:py-12 px-4 sm:px-6">
+    <div className="bg-gradient-to-br from-white via-sky-50 to-sky-200 text-black  lg:h- flex justify-center  pb-8 sm:pb-10 pt-0 sm:py-12 px-4 sm:px-6">
       <div className='max-w-7xl mx-auto '>
 
         <h2 className="text-2xl sm:text-3xl md:text-4xl 2xl:text-5xl font-[700px] mb-1 leading-normal pt-8 text-center lg:hidden text-sky-900">
@@ -49,7 +49,7 @@ function Crafting() {
 
           , <br />At Scale
         </h2>
-        <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12  items-center py-4 lg:py-8 ">
+        <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12  items-center pb-0 pt-4 sm:py-4 lg:py-8 ">
           <div>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-[700px] mt-4 leading-normal pb-4 text-start hidden lg:block text-sky-900">
               Crafting
