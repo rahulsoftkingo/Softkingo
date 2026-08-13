@@ -494,6 +494,8 @@ export default async function DynamicSolutionPage(props) {
             )}
             {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
 
+            {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title={portfolio?.title} subtitle={portfolio?.subtitle} />}
+
              {show('servicesList') && <SolutionsServicesList data={servicesList} />}
 
             {show('process') && <SolutionsProcess data={process} />}
@@ -511,7 +513,7 @@ export default async function DynamicSolutionPage(props) {
             {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
            
            
-            {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title={portfolio?.title} subtitle={portfolio?.subtitle} />}
+          
         
             {show('monetization') && <SolutionsMonetization data={monetization} />}
             {show('whyChoose') && <SolutionsSecurity data={whyChoose} />}

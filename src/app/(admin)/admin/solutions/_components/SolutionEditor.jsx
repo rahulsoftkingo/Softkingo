@@ -342,10 +342,34 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
+              {/* 10. PORTFOLIO */}
+            <SectionWrapper id="portfolio" icon={Globe} title="8. Portfolio" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Category Filter (Slug)</label>
+                            <select
+                                className={inputStyle}
+                                value={content.portfolio?.category || ''}
+                                onChange={e => updateField('content.portfolio.category', e.target.value)}
+                            >
+                                <option value="">Default (Top 7 Projects)</option>
+                                {portfolioCategories?.map((cat) => (
+                                    <option key={cat} value={cat}>{cat}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
+                    <p className="text-[10px] text-slate-400">Leave category blank → shows top 7 projects by default.</p>
+                </div>
+            </SectionWrapper>
+
 
             
             {/* 7. SERVICES LIST */}
-            <SectionWrapper id="servicesList" icon={Briefcase} title="8. Extensive Services Provided" activeSections={activeSections}>
+            <SectionWrapper id="servicesList" icon={Briefcase} title="9. Extensive Services Provided" activeSections={activeSections}>
                 <SectionHeader section={content.servicesList} path="content.servicesList" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.servicesList?.items || []).map((item, i) => (
@@ -361,7 +385,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
 
              {/* 11. PROCESS */}
-            <SectionWrapper id="process" icon={Settings} title="9. Development Roadmap" activeSections={activeSections}>
+            <SectionWrapper id="process" icon={Settings} title="10. Development Roadmap" activeSections={activeSections}>
                 <SectionHeader section={content.process} path="content.process" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.process?.steps || []).map((step, i) => (
@@ -377,7 +401,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            <SectionWrapper id="techStack" icon={Code} title="10. Technology Stack (Tabbed)" activeSections={activeSections}>
+            <SectionWrapper id="techStack" icon={Code} title="11. Technology Stack (Tabbed)" activeSections={activeSections}>
                 <SectionHeader section={content.techStack} path="content.techStack" updateField={updateField} />
                 <div className="space-y-1 mb-4">
                     <label className={labelStyle}>Section Description (Rich Text)</label>
@@ -460,7 +484,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
 
 
             {/* 5. AWARDS */}
-            <SectionWrapper id="awards" icon={Award} title="11. Client Recognition / Awards" activeSections={activeSections}>
+            <SectionWrapper id="awards" icon={Award} title="12. Client Recognition / Awards" activeSections={activeSections}>
                 <SectionHeader section={content.awards} path="content.awards" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.awards?.items || []).map((item, i) => (
@@ -474,7 +498,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 6. WHY NEED */}
-            <SectionWrapper id="whyNeed" icon={HelpCircle} title="12. Growing Need / Why Choose" activeSections={activeSections}>
+            <SectionWrapper id="whyNeed" icon={HelpCircle} title="13. Growing Need / Why Choose" activeSections={activeSections}>
                 <SectionHeader section={content.whyNeed} path="content.whyNeed" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.whyNeed?.items || []).map((item, i) => (
@@ -505,29 +529,6 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            {/* 10. PORTFOLIO */}
-            <SectionWrapper id="portfolio" icon={Globe} title="13. Portfolio" activeSections={activeSections}>
-                <div className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
-                        <div className="space-y-1">
-                            <label className={labelStyle}>Category Filter (Slug)</label>
-                            <select
-                                className={inputStyle}
-                                value={content.portfolio?.category || ''}
-                                onChange={e => updateField('content.portfolio.category', e.target.value)}
-                            >
-                                <option value="">Default (Top 7 Projects)</option>
-                                {portfolioCategories?.map((cat) => (
-                                    <option key={cat} value={cat}>{cat}</option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
-                    <p className="text-[10px] text-slate-400">Leave category blank → shows top 7 projects by default.</p>
-                </div>
-            </SectionWrapper>
 
             {/* 13. MONETIZATION */}
             <SectionWrapper id="monetization" icon={DollarSign} title="14. Revenue Models" activeSections={activeSections}>

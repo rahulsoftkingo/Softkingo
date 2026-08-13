@@ -64,14 +64,17 @@ export default function SolutionsProcess({ data }) {
     return (
         <section className="py-8 md:py-16 bg-slate-50 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                {/* Header Container - Arrows shifted to right side */}
                 <div className="flex items-end justify-between gap-4 flex-wrap">
-                    <CommonTitle
-                        align="center"
-                        title={data.title || "Our Process"}
-                        subtitle={data.subtitle || "A step-by-step guide to our solutions"}
-                    />
+                    <div className="flex-1 min-w-[280px]">
+                        <CommonTitle
+                            align="left"
+                            title={data.title || "Our Process"}
+                            subtitle={data.subtitle || "A step-by-step guide to our solutions"}
+                        />
+                    </div>
 
-                    <div className="hidden sm:flex items-center gap-3 mb-2">
+                    <div className="hidden sm:flex items-center gap-3 mb-2 ml-auto">
                         <motion.button
                             type="button"
                             aria-label="Scroll left"
