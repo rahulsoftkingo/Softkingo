@@ -155,69 +155,8 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            {/* 5. AWARDS */}
-            <SectionWrapper id="awards" icon={Award} title="6. Client Recognition / Awards" activeSections={activeSections}>
-                <SectionHeader section={content.awards} path="content.awards" updateField={updateField} />
-                <div className="space-y-4">
-                    {(content.awards?.items || []).map((item, i) => (
-                        <div key={i} className="flex gap-4 items-center bg-slate-50 p-2 rounded-lg">
-                            <MediaInput label="Award Logo" value={item.image} path={`content.awards.items.${i}.image`} />
-                            <button type="button" onClick={() => updateField('content.awards.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-300"><X size={18} /></button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.awards.items', (prev) => [...(prev || []), { image: "" }])} className="text-xs font-bold text-sky-600">+ Add Award Logo</button>
-                </div>
-            </SectionWrapper>
-
-            {/* 6. WHY NEED */}
-            <SectionWrapper id="whyNeed" icon={HelpCircle} title="7. Growing Need / Why Choose" activeSections={activeSections}>
-                <SectionHeader section={content.whyNeed} path="content.whyNeed" updateField={updateField} />
-                <div className="space-y-4">
-                    {(content.whyNeed?.items || []).map((item, i) => (
-                        <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
-                            <div className="flex-1 space-y-2">
-                                <div className="grid grid-cols-2 gap-2">
-                                    <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Reason Title" value={item.title || ''} onChange={e => updateField(`content.whyNeed.items.${i}.title`, e.target.value)} />
-                                    <input className="w-full p-2 bg-white border rounded text-sm font-mono text-sky-600" placeholder="Lucide Icon (e.g. Zap)" value={item.icon || ''} onChange={e => updateField(`content.whyNeed.items.${i}.icon`, e.target.value)} />
-                                </div>
-                                <textarea className="w-full p-2 bg-white border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.whyNeed.items.${i}.description`, e.target.value)} />
-
-                                {/* Bullets */}
-                                <div className="p-2 bg-white rounded border border-slate-100">
-                                    <label className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block mb-1">Bullets (Optional Tags)</label>
-                                    {(item.bullets || []).map((bullet, bi) => (
-                                        <div key={bi} className="flex gap-2 mb-1">
-                                            <input className="flex-1 p-1.5 bg-slate-50 border rounded text-[11px]" value={bullet || ''} onChange={e => updateField(`content.whyNeed.items.${i}.bullets.${bi}`, e.target.value)} />
-                                            <button type="button" onClick={() => updateField(`content.whyNeed.items.${i}.bullets`, (prev) => (prev || []).filter((_, bidx) => bidx !== bi))} className="text-slate-300 hover:text-rose-500"><X size={12} /></button>
-                                        </div>
-                                    ))}
-                                    <button type="button" onClick={() => updateField(`content.whyNeed.items.${i}.bullets`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Bullet</button>
-                                </div>
-                            </div>
-                            <button type="button" onClick={() => updateField('content.whyNeed.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.whyNeed.items', (prev) => [...(prev || []), { title: "", description: "", icon: "Zap", bullets: [] }])} className="text-xs font-bold text-sky-600 p-1">+ Add New Reason</button>
-                </div>
-            </SectionWrapper>
-
-            {/* 7. SERVICES LIST */}
-            <SectionWrapper id="servicesList" icon={Briefcase} title="8. Extensive Services Provided" activeSections={activeSections}>
-                <SectionHeader section={content.servicesList} path="content.servicesList" updateField={updateField} />
-                <div className="space-y-4">
-                    {(content.servicesList?.items || []).map((item, i) => (
-                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
-                            <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
-                            <input className="w-full p-2 bg-white border rounded text-sm font-bold mb-2" placeholder="Service Name" value={item.title || ''} onChange={e => updateField(`content.servicesList.items.${i}.title`, e.target.value)} />
-                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.servicesList.items.${i}.description`, e.target.value)} />
-                        </div>
-                    ))}
-                    <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-sm font-bold text-sky-600">+ Add Service Item</button>
-                </div>
-            </SectionWrapper>
-
-            {/* 8. APP MODULES (Tabbed Editor) */}
-            <SectionWrapper id="appModules" icon={Smartphone} title="9. App Modules (Tab Style)" activeSections={activeSections}>
+                {/* 8. APP MODULES (Tabbed Editor) */}
+            <SectionWrapper id="appModules" icon={Smartphone} title="6. App Modules (Tab Style)" activeSections={activeSections}>
                 <div className="space-y-6">
                     {/* Section Header Inputs */}
                     <div className="grid md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
@@ -375,7 +314,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
             </SectionWrapper>
 
             {/* 9. AI FEATURES */}
-            <SectionWrapper id="aiCapabilities" icon={Zap} title="10. Advanced AI Capabilities" activeSections={activeSections}>
+            <SectionWrapper id="aiCapabilities" icon={Zap} title="7. Advanced AI Capabilities" activeSections={activeSections}>
                 <SectionHeader section={content.aiCapabilities} path="content.aiCapabilities" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.aiCapabilities?.items || []).map((item, i) => (
@@ -403,32 +342,26 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            {/* 10. PORTFOLIO */}
-            <SectionWrapper id="portfolio" icon={Globe} title="11. Portfolio" activeSections={activeSections}>
+
+            
+            {/* 7. SERVICES LIST */}
+            <SectionWrapper id="servicesList" icon={Briefcase} title="8. Extensive Services Provided" activeSections={activeSections}>
+                <SectionHeader section={content.servicesList} path="content.servicesList" updateField={updateField} />
                 <div className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
-                        <div className="space-y-1">
-                            <label className={labelStyle}>Category Filter (Slug)</label>
-                            <select
-                                className={inputStyle}
-                                value={content.portfolio?.category || ''}
-                                onChange={e => updateField('content.portfolio.category', e.target.value)}
-                            >
-                                <option value="">Default (Top 7 Projects)</option>
-                                {portfolioCategories?.map((cat) => (
-                                    <option key={cat} value={cat}>{cat}</option>
-                                ))}
-                            </select>
+                    {(content.servicesList?.items || []).map((item, i) => (
+                        <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-200 relative">
+                            <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute top-2 right-2 text-rose-500"><X size={18} /></button>
+                            <input className="w-full p-2 bg-white border rounded text-sm font-bold mb-2" placeholder="Service Name" value={item.title || ''} onChange={e => updateField(`content.servicesList.items.${i}.title`, e.target.value)} />
+                            <textarea className="w-full p-2 bg-white border rounded text-sm" rows={2} placeholder="Brief Description" value={item.description || ''} onChange={e => updateField(`content.servicesList.items.${i}.description`, e.target.value)} />
                         </div>
-                    </div>
-                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
-                    <p className="text-[10px] text-slate-400">Leave category blank → shows top 7 projects by default.</p>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.servicesList.items', (prev) => [...(prev || []), { title: "", description: "" }])} className="text-sm font-bold text-sky-600">+ Add Service Item</button>
                 </div>
             </SectionWrapper>
 
-            {/* 11. PROCESS */}
-            <SectionWrapper id="process" icon={Settings} title="12. Development Roadmap" activeSections={activeSections}>
+
+             {/* 11. PROCESS */}
+            <SectionWrapper id="process" icon={Settings} title="9. Development Roadmap" activeSections={activeSections}>
                 <SectionHeader section={content.process} path="content.process" updateField={updateField} />
                 <div className="space-y-4">
                     {(content.process?.steps || []).map((step, i) => (
@@ -444,7 +377,7 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                 </div>
             </SectionWrapper>
 
-            <SectionWrapper id="techStack" icon={Code} title="13. Technology Stack (Tabbed)" activeSections={activeSections}>
+            <SectionWrapper id="techStack" icon={Code} title="10. Technology Stack (Tabbed)" activeSections={activeSections}>
                 <SectionHeader section={content.techStack} path="content.techStack" updateField={updateField} />
                 <div className="space-y-1 mb-4">
                     <label className={labelStyle}>Section Description (Rich Text)</label>
@@ -522,6 +455,77 @@ export default function SolutionsEditor({ formData, updateField, MediaInput, act
                             <Plus size={18} /> Add Tech Category
                         </button>
                     </div>
+                </div>
+            </SectionWrapper>
+
+
+            {/* 5. AWARDS */}
+            <SectionWrapper id="awards" icon={Award} title="11. Client Recognition / Awards" activeSections={activeSections}>
+                <SectionHeader section={content.awards} path="content.awards" updateField={updateField} />
+                <div className="space-y-4">
+                    {(content.awards?.items || []).map((item, i) => (
+                        <div key={i} className="flex gap-4 items-center bg-slate-50 p-2 rounded-lg">
+                            <MediaInput label="Award Logo" value={item.image} path={`content.awards.items.${i}.image`} />
+                            <button type="button" onClick={() => updateField('content.awards.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-300"><X size={18} /></button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.awards.items', (prev) => [...(prev || []), { image: "" }])} className="text-xs font-bold text-sky-600">+ Add Award Logo</button>
+                </div>
+            </SectionWrapper>
+
+            {/* 6. WHY NEED */}
+            <SectionWrapper id="whyNeed" icon={HelpCircle} title="12. Growing Need / Why Choose" activeSections={activeSections}>
+                <SectionHeader section={content.whyNeed} path="content.whyNeed" updateField={updateField} />
+                <div className="space-y-4">
+                    {(content.whyNeed?.items || []).map((item, i) => (
+                        <div key={i} className="flex gap-2 items-start bg-slate-50 p-3 rounded-lg border border-slate-100">
+                            <div className="flex-1 space-y-2">
+                                <div className="grid grid-cols-2 gap-2">
+                                    <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Reason Title" value={item.title || ''} onChange={e => updateField(`content.whyNeed.items.${i}.title`, e.target.value)} />
+                                    <input className="w-full p-2 bg-white border rounded text-sm font-mono text-sky-600" placeholder="Lucide Icon (e.g. Zap)" value={item.icon || ''} onChange={e => updateField(`content.whyNeed.items.${i}.icon`, e.target.value)} />
+                                </div>
+                                <textarea className="w-full p-2 bg-white border rounded text-sm" placeholder="Description" value={item.description || ''} onChange={e => updateField(`content.whyNeed.items.${i}.description`, e.target.value)} />
+
+                                {/* Bullets */}
+                                <div className="p-2 bg-white rounded border border-slate-100">
+                                    <label className="text-[9px] font-bold text-slate-400 uppercase tracking-tight block mb-1">Bullets (Optional Tags)</label>
+                                    {(item.bullets || []).map((bullet, bi) => (
+                                        <div key={bi} className="flex gap-2 mb-1">
+                                            <input className="flex-1 p-1.5 bg-slate-50 border rounded text-[11px]" value={bullet || ''} onChange={e => updateField(`content.whyNeed.items.${i}.bullets.${bi}`, e.target.value)} />
+                                            <button type="button" onClick={() => updateField(`content.whyNeed.items.${i}.bullets`, (prev) => (prev || []).filter((_, bidx) => bidx !== bi))} className="text-slate-300 hover:text-rose-500"><X size={12} /></button>
+                                        </div>
+                                    ))}
+                                    <button type="button" onClick={() => updateField(`content.whyNeed.items.${i}.bullets`, (prev) => [...(prev || []), ""])} className="text-[10px] font-bold text-sky-600">+ Add Bullet</button>
+                                </div>
+                            </div>
+                            <button type="button" onClick={() => updateField('content.whyNeed.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="text-slate-400 hover:text-rose-500 p-1"><X size={16} /></button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => updateField('content.whyNeed.items', (prev) => [...(prev || []), { title: "", description: "", icon: "Zap", bullets: [] }])} className="text-xs font-bold text-sky-600 p-1">+ Add New Reason</button>
+                </div>
+            </SectionWrapper>
+
+            {/* 10. PORTFOLIO */}
+            <SectionWrapper id="portfolio" icon={Globe} title="13. Portfolio" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <input className={inputStyle} placeholder="Section Title" value={content.portfolio?.title || ''} onChange={e => updateField('content.portfolio.title', e.target.value)} />
+                        <div className="space-y-1">
+                            <label className={labelStyle}>Category Filter (Slug)</label>
+                            <select
+                                className={inputStyle}
+                                value={content.portfolio?.category || ''}
+                                onChange={e => updateField('content.portfolio.category', e.target.value)}
+                            >
+                                <option value="">Default (Top 7 Projects)</option>
+                                {portfolioCategories?.map((cat) => (
+                                    <option key={cat} value={cat}>{cat}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    <textarea className={inputStyle} rows={2} placeholder="Section Subtitle" value={content.portfolio?.subtitle || ''} onChange={e => updateField('content.portfolio.subtitle', e.target.value)} />
+                    <p className="text-[10px] text-slate-400">Leave category blank → shows top 7 projects by default.</p>
                 </div>
             </SectionWrapper>
 

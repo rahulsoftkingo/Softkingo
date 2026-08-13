@@ -53,3 +53,4 @@ prisma/*.log
 
 src/app/(admin)/admin/services/page.jsx
 src/app/(public)/seo/
+src/app/(public)/portfolioseo/

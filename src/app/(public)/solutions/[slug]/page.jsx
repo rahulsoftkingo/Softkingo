@@ -488,6 +488,19 @@ export default async function DynamicSolutionPage(props) {
             {show('stats') && <SolutionsStats data={stats} />}
             {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}
+             {/* /////////// */}
+             {show('appModules') && (
+                <SolutionsAppModuleTabs data={{ ...appModules, tabs: finalModules }} />
+            )}
+            {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
+
+             {show('servicesList') && <SolutionsServicesList data={servicesList} />}
+
+            {show('process') && <SolutionsProcess data={process} />}
+            {show('techStack') && <SolutionsTechStack data={finalTechStack} />}
+            {/* ///////////////////// */}
+
+
             {show('awards') && (
                 <AwardsSection
                     awards={awards?.items}
@@ -496,14 +509,10 @@ export default async function DynamicSolutionPage(props) {
                 />
             )}
             {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
-            {show('servicesList') && <SolutionsServicesList data={servicesList} />}
-            {show('appModules') && (
-                <SolutionsAppModuleTabs data={{ ...appModules, tabs: finalModules }} />
-            )}
-            {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
+           
+           
             {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title={portfolio?.title} subtitle={portfolio?.subtitle} />}
-            {show('process') && <SolutionsProcess data={process} />}
-            {show('techStack') && <SolutionsTechStack data={finalTechStack} />}
+        
             {show('monetization') && <SolutionsMonetization data={monetization} />}
             {show('whyChoose') && <SolutionsSecurity data={whyChoose} />}
             {show('consultation') && (
