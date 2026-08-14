@@ -40,6 +40,7 @@ function formatBytes(bytes) {
   return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`;
 }
 
+
 export default function PortfolioSeoEditPage() {
   const router = useRouter();
   const params = useParams();
@@ -183,11 +184,14 @@ export default function PortfolioSeoEditPage() {
     },
   });
 
+ // Extract id from params first (or use const id = params?.id above)
+  const id = params?.id;
+
   useEffect(() => {
     if (!isNew) {
       fetchPortfolioSeo();
     }
-  }, [params.id]);
+  }, [id]);
 
   useEffect(() => {
     if (showImageBrowser && currentFolder === '' && folderFiles.length === 0) {
@@ -195,9 +199,8 @@ export default function PortfolioSeoEditPage() {
     }
   }, [showImageBrowser]);
 
-
   useEffect(() => {
-    if (id === 'new') return; // Skip fetch if creating a new item
+    if (!id || id === 'new') return; // Skip fetch if creating a new item or if id isn't ready
 
     async function fetchCaseStudy() {
       try {
@@ -208,7 +211,7 @@ export default function PortfolioSeoEditPage() {
         if (data) {
           // ... existing state updates for title, slug, heroStatsJson, etc. ...
 
-          // 👇 PASTE HERE: Parse portfolioCardContent when existing record loads
+          // Parse portfolioCardContent when existing record loads
           if (data.portfolioCardContent) {
             const parsedCard = safeParse(data.portfolioCardContent, {});
 
@@ -234,7 +237,7 @@ export default function PortfolioSeoEditPage() {
 
     fetchCaseStudy();
   }, [id]);
-
+  
   async function fetchPortfolioSeo() {
     setLoading(true);
     const res = await fetch(`/api/admin/portfolio-seo/${params.id}`);
