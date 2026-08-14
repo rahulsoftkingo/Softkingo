@@ -349,6 +349,50 @@ model CaseStudy {
   @@map("casestudy")
 }
 
+model PortfolioSeo {
+  id                Int      @id @default(autoincrement())
+  slug              String   @unique(map: "PortfolioSeo_slug_key")
+  title             String
+  subtitle          String?
+  category          String?  // e.g. "Technical SEO • On-Page SEO • Content Strategy • Link Building"
+  heroBgImage       String?
+  seoImage          String?
+
+  // 1. Hero section
+  heroStatsJson     String?  @db.Text
+
+  // 2. Client Overview
+  clientOverviewJson String? @db.Text
+
+  // 3. Our SEO Strategy
+  strategyJson      String?  @db.Text
+
+  // 4. Before vs After Results
+  resultsJson       String?  @db.Text
+
+  // 5. SEO Performance Dashboard
+  performanceDashboardJson String? @db.Text
+
+  // 6. Technical SEO Improvements
+  technicalSeoJson  String?  @db.Text
+
+  // 7. Business Impact
+  businessImpactJson String? @db.Text
+
+  // 8. Tools & Technologies
+  toolsJson         String?  @db.Text
+
+  // 9. Portfolio Card Content
+  portfolioCardContent String? @db.Text
+
+  seoTitle          String?
+  seoDescription    String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("portfolioseo")
+}
+
 model Page {
   id             Int              @id @default(autoincrement())
   key            String
