@@ -238,10 +238,10 @@ export default function CaseStudiesList({ data }) {
                                 ))}
                             </div>
 
-                            <button className="flex items-center justify-between gap-3 min-w-[220px] rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:border-sky-400 hover:shadow-md">
+                            {/* <button className="flex items-center justify-between gap-3 min-w-[220px] rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:border-sky-400 hover:shadow-md">
                                 <span>All Industries</span>
                                 <ChevronDown size={18} className="text-slate-500" />
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 </div>
