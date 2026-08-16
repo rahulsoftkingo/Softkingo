@@ -1,9 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Rocket, ArrowRight } from "lucide-react";
+import PopupQuoteModal from "@/components/PopupQuoteModal";
+
 
 export default function SeoCtaBanner() {
+
+  const [showModal, setShowModal] = useState(false);
   return (
     <section className="py-8 md:pb-10 md:pt-0 bg-white overflow-hidden">
       <div className="mx-auto px-4 sm:px-8 lg:px-12">
@@ -26,11 +30,17 @@ export default function SeoCtaBanner() {
             </div>
           </div>
 
-          <button className="relative z-10 shrink-0 inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-400 transition-colors text-white text-sm font-bold px-5 sm:px-6 py-3 rounded-full">
+          <button
+            onClick={() => setShowModal(true)}
+            className="relative z-10 shrink-0 inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-400 transition-colors text-white text-sm font-bold px-5 sm:px-6 py-3 rounded-full">
             Start Your SEO Project
             <ArrowRight size={16} />
           </button>
         </div>
+        <PopupQuoteModal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+        />
       </div>
     </section>
   );
