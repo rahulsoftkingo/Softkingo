@@ -702,7 +702,7 @@ export default function PortfolioSeoEditPage() {
     setSaving(false);
     setSuccess('Saved successfully!');
     setTimeout(() => {
-      router.push('/admin/portfolio-seo');
+      router.push('/admin/case-studies');
     }, 1000);
   }
 
