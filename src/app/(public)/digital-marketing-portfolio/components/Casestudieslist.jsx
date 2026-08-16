@@ -140,7 +140,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                     </p>
 
                     <Link
-                        href={`/portfolioseo/${study.slug}`}
+                        href={`/digtial-marketing-portfolio/${study.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`mt-3 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold ${style.linkText} hover:gap-2.5 transition-all`}
