@@ -367,7 +367,7 @@ model PortfolioSeo {
   // 3. Our SEO Strategy
   strategyJson      String?  @db.Text
 
-  // 4. Before vs After Results
+   // 4. Before vs After Results
   resultsJson       String?  @db.Text
 
   // 5. SEO Performance Dashboard

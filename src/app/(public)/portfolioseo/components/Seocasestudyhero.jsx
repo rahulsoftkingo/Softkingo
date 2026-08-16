@@ -50,7 +50,7 @@ function CustomTooltip({ active, payload }) {
   return null;
 }
 
-export default function SeoCaseStudyHero({ endpoint = "Healthcare SEO" }) {
+export default function SeoCaseStudyHero({title,subtitle, endpoint = "Healthcare SEO" }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -68,15 +68,15 @@ export default function SeoCaseStudyHero({ endpoint = "Healthcare SEO" }) {
               </Link>
               <span>›</span>
               <Link href="/solutions" className="hover:text-sky-400 transition-colors">
-                Solutions
+                portfolioseo
               </Link>
               <span>›</span>
               <span className="text-sky-400 font-medium">{endpoint}</span>
             </nav>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15]">
-              Growing Organic Traffic for{" "}
-              <span className="text-sky-400">Healthcare</span> Brand
+              {title}
+              <span className="text-sky-400">SEO</span> Brand
             </h1>
 
             <p className="text-xs sm:text-sm md:text-base text-slate-300 font-medium flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -90,8 +90,7 @@ export default function SeoCaseStudyHero({ endpoint = "Healthcare SEO" }) {
             </p>
 
             <p className="text-xs sm:text-sm md:text-base text-slate-400 leading-[1.8] max-w-xl">
-              Our data-driven SEO strategy helped the client increase online
-              visibility, attract quality traffic and generate more leads.
+            {subtitle}
             </p>
 
             {/* CTAs styled after reference code */}

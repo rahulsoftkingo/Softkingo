@@ -52,6 +52,11 @@ export async function POST(request) {
     clientOverviewJson,
     strategyJson,
     resultsJson,
+    performanceDashboardJson,
+    technicalSeoJson,
+    businessImpactJson,
+    toolsJson,
+    portfolioCardContent, // 👈 card preview (image, short description, featuredTag, highlights)
     seoTitle,
     seoDescription,
     seoImage,
@@ -75,6 +80,11 @@ export async function POST(request) {
       clientOverviewJson: clientOverviewJson || null,
       strategyJson: strategyJson || null,
       resultsJson: resultsJson || null,
+      performanceDashboardJson: performanceDashboardJson || null,
+      technicalSeoJson: technicalSeoJson || null,
+      businessImpactJson: businessImpactJson || null,
+      toolsJson: toolsJson || null,
+      portfolioCardContent: portfolioCardContent || null, // 👈 saved here
       seoTitle: seoTitle || null,
       seoDescription: seoDescription || null,
       seoImage: seoImage || null,

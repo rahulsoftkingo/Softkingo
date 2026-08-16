@@ -40,6 +40,28 @@ function formatBytes(bytes) {
   return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`;
 }
 
+// technicalChecklist / contentChecklist / highlights may be saved as plain
+// string arrays; normalize to {text} objects for the form.
+// Moved to module scope so it can be reused by every loader function
+// (previously it was defined inline inside fetchPortfolioSeo, which made it
+// undefined everywhere else and crashed the page on load).
+function normalizeChecklist(arr, fallback) {
+  return arr?.length
+    ? arr.map((item) => (typeof item === 'string' ? { text: item } : item))
+    : fallback;
+}
+
+// Highlights need two independent fields: a stat "value" (e.g. "+250%")
+// and the descriptive "text" (e.g. "Organic Traffic growth"). Older saved
+// data may just be plain strings or {text} objects, so normalize those
+// into { value, text } shape as well.
+function normalizeHighlights(arr, fallback) {
+  if (!arr?.length) return fallback;
+  return arr.map((item) => {
+    if (typeof item === 'string') return { value: '', text: item };
+    return { value: item.value || '', text: item.text || '' };
+  });
+}
 
 export default function PortfolioSeoEditPage() {
   const router = useRouter();
@@ -177,18 +199,35 @@ export default function PortfolioSeoEditPage() {
     // SEO
     seoTitle: '',
     seoDescription: '',
+
+    // Portfolio listing card preview (portfolioCardContent)
     portfolioCardContent: {
+      cardImage: '',
+      logo: '',
+      url: '',
       shortDescription: '',
       featuredTag: 'Case Study',
-      highlights: [{ text: '' }, { text: '' }],
+      // Each highlight now stores its stat value (e.g. "+250%") and its
+      // content text (e.g. "Organic Traffic") as two separate fields.
+      highlights: [
+        { value: '', text: '' },
+        { value: '', text: '' },
+      ],
     },
   });
 
- // Extract id from params first (or use const id = params?.id above)
+  // Extract id from params
   const id = params?.id;
 
+  // Single source of truth for loading an existing case study.
+  // (Previously there were TWO competing useEffects/fetch functions here —
+  // fetchPortfolioSeo() and fetchCaseStudy() — both hitting the same
+  // endpoint, racing each other, and fetchCaseStudy() called an
+  // out-of-scope normalizeChecklist() which would throw a ReferenceError.
+  // That whole duplicate effect has been removed; everything now loads
+  // through fetchPortfolioSeo() below.)
   useEffect(() => {
-    if (!isNew) {
+    if (!isNew && id) {
       fetchPortfolioSeo();
     }
   }, [id]);
@@ -199,152 +238,124 @@ export default function PortfolioSeoEditPage() {
     }
   }, [showImageBrowser]);
 
-  useEffect(() => {
-    if (!id || id === 'new') return; // Skip fetch if creating a new item or if id isn't ready
-
-    async function fetchCaseStudy() {
-      try {
-        setLoading(true);
-        const res = await fetch(`/api/admin/portfolio-seo/${id}`);
-        const data = await res.json();
-
-        if (data) {
-          // ... existing state updates for title, slug, heroStatsJson, etc. ...
-
-          // Parse portfolioCardContent when existing record loads
-          if (data.portfolioCardContent) {
-            const parsedCard = safeParse(data.portfolioCardContent, {});
-
-            setForm((prev) => ({
-              ...prev,
-              portfolioCardContent: {
-                shortDescription: parsedCard.shortDescription || '',
-                featuredTag: parsedCard.featuredTag || 'Case Study',
-                highlights: normalizeChecklist(parsedCard.highlights, [
-                  { text: '' },
-                  { text: '' },
-                ]),
-              },
-            }));
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load portfolio data:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCaseStudy();
-  }, [id]);
-  
   async function fetchPortfolioSeo() {
     setLoading(true);
-    const res = await fetch(`/api/admin/portfolio-seo/${params.id}`);
-    if (res.ok) {
-      const data = await res.json();
-      const hero = safeParse(data.heroStatsJson, {});
-      const clientOverview = safeParse(data.clientOverviewJson, {});
-      const strategy = safeParse(data.strategyJson, {});
-      const results = safeParse(data.resultsJson, {});
-      const dashboard = safeParse(data.performanceDashboardJson, {});
-      const technical = safeParse(data.technicalSeoJson, {});
-      const impact = safeParse(data.businessImpactJson, {});
-      const toolsData = safeParse(data.toolsJson, {});
+    try {
+      const res = await fetch(`/api/admin/portfolio-seo/${id}`);
+      if (res.ok) {
+        const data = await res.json();
+        const hero = safeParse(data.heroStatsJson, {});
+        const clientOverview = safeParse(data.clientOverviewJson, {});
+        const strategy = safeParse(data.strategyJson, {});
+        const results = safeParse(data.resultsJson, {});
+        const dashboard = safeParse(data.performanceDashboardJson, {});
+        const technical = safeParse(data.technicalSeoJson, {});
+        const impact = safeParse(data.businessImpactJson, {});
+        const toolsData = safeParse(data.toolsJson, {});
+        const card = safeParse(data.portfolioCardContent, {});
 
-      // technicalChecklist / contentChecklist may be saved as plain string arrays;
-      // normalize to {text} / {label,value} objects for the form
-      const normalizeChecklist = (arr, fallback) =>
-        arr?.length
-          ? arr.map((item) => (typeof item === 'string' ? { text: item } : item))
-          : fallback;
+        const client = clientOverview.client || {};
+        const challenge = clientOverview.challenge || {};
+        const chart = hero.chart || {};
 
-      const client = clientOverview.client || {};
-      const challenge = clientOverview.challenge || {};
-      const chart = hero.chart || {};
+        setForm((prev) => ({
+          ...prev,
+          slug: data.slug || '',
+          title: data.title || '',
+          subtitle: data.subtitle || '',
+          category: data.category || '',
+          heroBgImage: data.heroBgImage || '',
+          seoImage: data.seoImage || '',
 
-      setForm((prev) => ({
-        ...prev,
-        slug: data.slug || '',
-        title: data.title || '',
-        subtitle: data.subtitle || '',
-        category: data.category || '',
-        heroBgImage: data.heroBgImage || '',
-        seoImage: data.seoImage || '',
+          heroBadges: hero.badges?.length ? hero.badges : prev.heroBadges,
+          chartTitle: chart.title || prev.chartTitle,
+          beforeLabel: chart.before?.label || prev.beforeLabel,
+          beforeValue: chart.before?.value ?? '',
+          beforeUnit: chart.before?.unit || prev.beforeUnit,
+          afterLabel: chart.after?.label || prev.afterLabel,
+          afterValue: chart.after?.value ?? '',
+          afterUnit: chart.after?.unit || prev.afterUnit,
+          afterGrowth: chart.after?.growth || '',
+          chartSeries: chart.series?.length ? chart.series : prev.chartSeries,
 
-        heroBadges: hero.badges?.length ? hero.badges : prev.heroBadges,
-        chartTitle: chart.title || prev.chartTitle,
-        beforeLabel: chart.before?.label || prev.beforeLabel,
-        beforeValue: chart.before?.value ?? '',
-        beforeUnit: chart.before?.unit || prev.beforeUnit,
-        afterLabel: chart.after?.label || prev.afterLabel,
-        afterValue: chart.after?.value ?? '',
-        afterUnit: chart.after?.unit || prev.afterUnit,
-        afterGrowth: chart.after?.growth || '',
-        chartSeries: chart.series?.length ? chart.series : prev.chartSeries,
+          clientName: client.client || '',
+          clientIndustry: client.industry || '',
+          clientWebsite: client.website || '',
+          clientLocation: client.location || '',
+          clientDuration: client.duration || '',
+          clientServices: client.services || '',
+          challengeHeading: challenge.heading || prev.challengeHeading,
+          challengeDescription: challenge.description || '',
+          challengePoints: challenge.points?.length ? challenge.points : prev.challengePoints,
 
-        clientName: client.client || '',
-        clientIndustry: client.industry || '',
-        clientWebsite: client.website || '',
-        clientLocation: client.location || '',
-        clientDuration: client.duration || '',
-        clientServices: client.services || '',
-        challengeHeading: challenge.heading || prev.challengeHeading,
-        challengeDescription: challenge.description || '',
-        challengePoints: challenge.points?.length ? challenge.points : prev.challengePoints,
+          strategyHeading: strategy.heading || prev.strategyHeading,
+          strategyDescription: strategy.description || '',
+          strategyCards: strategy.cards?.length ? strategy.cards : prev.strategyCards,
 
-        strategyHeading: strategy.heading || prev.strategyHeading,
-        strategyDescription: strategy.description || '',
-        strategyCards: strategy.cards?.length ? strategy.cards : prev.strategyCards,
+          resultsHeading: results.heading || prev.resultsHeading,
+          resultsDescription: results.description || prev.resultsDescription,
+          beforeSeoLabel: results.before?.label || prev.beforeSeoLabel,
+          afterSeoLabel: results.after?.label || prev.afterSeoLabel,
+          beforeMetrics: results.before?.metrics?.length ? results.before.metrics : prev.beforeMetrics,
+          afterMetrics: results.after?.metrics?.length ? results.after.metrics : prev.afterMetrics,
 
-        resultsHeading: results.heading || prev.resultsHeading,
-        resultsDescription: results.description || prev.resultsDescription,
-        beforeSeoLabel: results.before?.label || prev.beforeSeoLabel,
-        afterSeoLabel: results.after?.label || prev.afterSeoLabel,
-        beforeMetrics: results.before?.metrics?.length ? results.before.metrics : prev.beforeMetrics,
-        afterMetrics: results.after?.metrics?.length ? results.after.metrics : prev.afterMetrics,
+          dashboardHeading: dashboard.heading || prev.dashboardHeading,
+          dashboardStats: dashboard.stats?.length ? dashboard.stats : prev.dashboardStats,
+          keywordRankingHeading: dashboard.keywordRanking?.heading || prev.keywordRankingHeading,
+          keywordRankings: dashboard.keywordRanking?.rows?.length ? dashboard.keywordRanking.rows : prev.keywordRankings,
+          trafficChartHeading: dashboard.trafficChart?.heading || prev.trafficChartHeading,
+          trafficChartValue: dashboard.trafficChart?.value ?? prev.trafficChartValue,
+          trafficChartUnit: dashboard.trafficChart?.unit || prev.trafficChartUnit,
+          trafficChartSeries: dashboard.trafficChart?.series?.length ? dashboard.trafficChart.series : prev.trafficChartSeries,
 
-        dashboardHeading: dashboard.heading || prev.dashboardHeading,
-        dashboardStats: dashboard.stats?.length ? dashboard.stats : prev.dashboardStats,
-        keywordRankingHeading: dashboard.keywordRanking?.heading || prev.keywordRankingHeading,
-        keywordRankings: dashboard.keywordRanking?.rows?.length ? dashboard.keywordRanking.rows : prev.keywordRankings,
-        trafficChartHeading: dashboard.trafficChart?.heading || prev.trafficChartHeading,
-        trafficChartValue: dashboard.trafficChart?.value ?? prev.trafficChartValue,
-        trafficChartUnit: dashboard.trafficChart?.unit || prev.trafficChartUnit,
-        trafficChartSeries: dashboard.trafficChart?.series?.length ? dashboard.trafficChart.series : prev.trafficChartSeries,
+          technicalHeading: technical.heading || prev.technicalHeading,
+          issuesFound: technical.issues?.found ?? prev.issuesFound,
+          issuesFoundLabel: technical.issues?.foundLabel || prev.issuesFoundLabel,
+          issuesFixed: technical.issues?.fixed ?? prev.issuesFixed,
+          issuesFixedLabel: technical.issues?.fixedLabel || prev.issuesFixedLabel,
+          technicalChecklist: normalizeChecklist(technical.checklist, prev.technicalChecklist),
+          contentGrowthHeading: technical.contentGrowth?.heading || prev.contentGrowthHeading,
+          contentBeforeValue: technical.contentGrowth?.before?.value ?? prev.contentBeforeValue,
+          contentBeforeLabel: technical.contentGrowth?.before?.label || prev.contentBeforeLabel,
+          contentAfterValue: technical.contentGrowth?.after?.value ?? prev.contentAfterValue,
+          contentAfterLabel: technical.contentGrowth?.after?.label || prev.contentAfterLabel,
+          contentChecklist: technical.contentGrowth?.checklist?.length ? technical.contentGrowth.checklist : prev.contentChecklist,
 
-        technicalHeading: technical.heading || prev.technicalHeading,
-        issuesFound: technical.issues?.found ?? prev.issuesFound,
-        issuesFoundLabel: technical.issues?.foundLabel || prev.issuesFoundLabel,
-        issuesFixed: technical.issues?.fixed ?? prev.issuesFixed,
-        issuesFixedLabel: technical.issues?.fixedLabel || prev.issuesFixedLabel,
-        technicalChecklist: normalizeChecklist(technical.checklist, prev.technicalChecklist),
-        contentGrowthHeading: technical.contentGrowth?.heading || prev.contentGrowthHeading,
-        contentBeforeValue: technical.contentGrowth?.before?.value ?? prev.contentBeforeValue,
-        contentBeforeLabel: technical.contentGrowth?.before?.label || prev.contentBeforeLabel,
-        contentAfterValue: technical.contentGrowth?.after?.value ?? prev.contentAfterValue,
-        contentAfterLabel: technical.contentGrowth?.after?.label || prev.contentAfterLabel,
-        contentChecklist: technical.contentGrowth?.checklist?.length ? technical.contentGrowth.checklist : prev.contentChecklist,
+          impactHeading: impact.heading || prev.impactHeading,
+          impactSubheading: impact.subheading || prev.impactSubheading,
+          impactStats: impact.stats?.length ? impact.stats : prev.impactStats,
 
-        impactHeading: impact.heading || prev.impactHeading,
-        impactSubheading: impact.subheading || prev.impactSubheading,
-        impactStats: impact.stats?.length ? impact.stats : prev.impactStats,
+          toolsHeading: toolsData.heading || prev.toolsHeading,
+          tools: toolsData.tools?.length ? toolsData.tools : prev.tools,
 
-        toolsHeading: toolsData.heading || prev.toolsHeading,
-        tools: toolsData.tools?.length ? toolsData.tools : prev.tools,
+          seoTitle: data.seoTitle || '',
+          seoDescription: data.seoDescription || '',
 
-        seoTitle: data.seoTitle || '',
-        seoDescription: data.seoDescription || '',
-      }));
+          portfolioCardContent: {
+            cardImage: card.cardImage || '',
+            logo: card.logo || '',
+            url: card.url || '',
+            shortDescription: card.shortDescription || '',
+            featuredTag: card.featuredTag || 'Case Study',
+            highlights: normalizeHighlights(card.highlights, prev.portfolioCardContent.highlights),
+          },
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to load portfolio data:', err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
-  // Generic nested updater e.g. "heroBadges.0.value"
+  // Generic nested updater e.g. "heroBadges.0.value" or
+  // "portfolioCardContent.featuredTag" or "portfolioCardContent.highlights.0.text"
   const updateFormValue = (path, value) => {
     setForm((prev) => {
       const parts = path.split('.');
+
       if (parts.length === 1) return { ...prev, [path]: value };
+
       if (parts.length === 3) {
         const [arrayField, indexStr, subField] = parts;
         const index = parseInt(indexStr);
@@ -354,6 +365,33 @@ export default function PortfolioSeoEditPage() {
           return { ...prev, [arrayField]: copy };
         }
       }
+
+      // Handles nested object fields e.g. "portfolioCardContent.featuredTag"
+      if (parts.length === 2) {
+        const [objField, subField] = parts;
+        if (prev[objField] && typeof prev[objField] === 'object' && !Array.isArray(prev[objField])) {
+          return { ...prev, [objField]: { ...prev[objField], [subField]: value } };
+        }
+      }
+
+      // Handles nested array-of-objects e.g. "portfolioCardContent.highlights.0.text"
+      if (parts.length === 4) {
+        const [objField, arrayField, indexStr, subField] = parts;
+        const index = parseInt(indexStr);
+        if (
+          prev[objField] &&
+          Array.isArray(prev[objField][arrayField]) &&
+          !isNaN(index)
+        ) {
+          const copy = [...prev[objField][arrayField]];
+          copy[index] = { ...copy[index], [subField]: value };
+          return {
+            ...prev,
+            [objField]: { ...prev[objField], [arrayField]: copy },
+          };
+        }
+      }
+
       return prev;
     });
   };
@@ -458,6 +496,25 @@ export default function PortfolioSeoEditPage() {
       copy[index] = { ...copy[index], [key]: value };
       return { ...prev, [field]: copy };
     });
+
+  // ---------- Portfolio card highlight helpers (nested array) ----------
+  const addHighlight = () =>
+    setForm((prev) => ({
+      ...prev,
+      portfolioCardContent: {
+        ...prev.portfolioCardContent,
+        highlights: [...(prev.portfolioCardContent.highlights || []), { value: '', text: '' }],
+      },
+    }));
+
+  const removeHighlight = (index) =>
+    setForm((prev) => ({
+      ...prev,
+      portfolioCardContent: {
+        ...prev.portfolioCardContent,
+        highlights: (prev.portfolioCardContent.highlights || []).filter((_, i) => i !== index),
+      },
+    }));
 
   // ---------- Build JSON payloads ----------
   function buildHeroStatsJson() {
@@ -569,16 +626,24 @@ export default function PortfolioSeoEditPage() {
     });
   }
 
-  // Helper to build and clean portfolioCardContent JSON
+  // Helper to build and clean portfolioCardContent JSON.
+  // Highlights are now saved as { value, text } pairs (e.g. value: "+250%",
+  // text: "Organic Traffic") instead of a single combined string.
   function buildPortfolioCardContentJson() {
     const card = form.portfolioCardContent || {};
 
-    // Filter out empty highlight rows and ensure clean strings
     const cleanHighlights = (card.highlights || [])
-      .map((item) => (typeof item === 'object' ? item.text : item))
-      .filter((text) => text && text.trim() !== '');
+      .map((item) =>
+        typeof item === 'object'
+          ? { value: (item.value || '').trim(), text: (item.text || '').trim() }
+          : { value: '', text: String(item || '').trim() }
+      )
+      .filter((h) => h.value !== '' || h.text !== '');
 
     return JSON.stringify({
+      cardImage: card.cardImage || '',
+      logo: card.logo || '',
+      url: card.url || '',
       shortDescription: card.shortDescription || '',
       featuredTag: card.featuredTag || 'Case Study',
       highlights: cleanHighlights,
@@ -616,7 +681,7 @@ export default function PortfolioSeoEditPage() {
       technicalSeoJson: buildTechnicalSeoJson(),
       businessImpactJson: buildBusinessImpactJson(),
       toolsJson: buildToolsJson(),
-      portfolioCardContent: buildPortfolioCardContentJson(), // 👈 ADDED HERE
+      portfolioCardContent: buildPortfolioCardContentJson(),
       seoTitle: form.seoTitle || null,
       seoDescription: form.seoDescription || null,
     };
@@ -652,19 +717,26 @@ export default function PortfolioSeoEditPage() {
     );
   }
 
-  const ImageUploadField = ({ label, name, value, placeholder }) => (
+  const ImageUploadField = ({ label, name, value, placeholder, dark }) => (
     <div className="space-y-2">
-      <label className="block text-xs sm:text-sm font-medium text-slate-700">{label}</label>
+      <label className={`block text-xs sm:text-sm font-medium ${dark ? 'text-slate-300' : 'text-slate-700'}`}>{label}</label>
       <input
         type="text"
         name={name}
         value={value || ''}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
+        className={
+          dark
+            ? 'w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500 transition-all'
+            : 'w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all'
+        }
       />
       <div className="flex flex-wrap items-center gap-2">
-        <label className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 cursor-pointer transition-colors">
+        <label className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border text-[10px] sm:text-xs font-medium cursor-pointer transition-colors ${dark
+            ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200'
+            : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
+          }`}>
           {uploadingField === name ? (
             <>
               <Loader2 className="h-3 w-3 animate-spin" />
@@ -689,7 +761,10 @@ export default function PortfolioSeoEditPage() {
         <button
           type="button"
           onClick={() => openImageBrowser(name)}
-          className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 transition-colors"
+          className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border text-[10px] sm:text-xs font-medium transition-colors ${dark
+              ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200'
+              : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
+            }`}
         >
           <Folder className="h-3 w-3" />
           <span className="hidden sm:inline">Browse</span>
@@ -2174,36 +2249,72 @@ export default function PortfolioSeoEditPage() {
               </div>
             )}
 
-
+            {/* Card Preview */}
             {activeTab === 'card' && (
-              <div className="space-y-6 bg-slate-900/50 p-6 rounded-xl border border-slate-800">
-                <div className="border-b border-slate-800 pb-4">
-                  <h3 className="text-lg font-semibold text-white">Portfolio Card Content</h3>
-                  <p className="text-xs text-slate-400">
-                    Configures short description and badges shown on main portfolio listing cards.
+              <div className="space-y-3 xs:space-y-4 sm:space-y-5 md:space-y-6">
+                <div>
+                  <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-slate-900 mb-1">Portfolio Card Content</h3>
+                  <p className="text-[10px] xs:text-xs sm:text-sm text-slate-500">
+                    Configures the image, short description, and badges shown on main portfolio listing cards.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Featured Tag */}
-                  <div>
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
-                      Featured Tag / Badge
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Case Study, Featured"
-                      value={form.portfolioCardContent?.featuredTag || ''}
-                      onChange={(e) =>
-                        updateFormValue('portfolioCardContent.featuredTag', e.target.value)
-                      }
-                      className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
-                    />
+                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-sky-50 border border-sky-200 space-y-3 sm:space-y-4">
+                  {/* Card Image (new) */}
+                  <ImageUploadField
+                    label="Card Image"
+                    name="portfolioCardContent.cardImage"
+                    value={form.portfolioCardContent?.cardImage}
+                    placeholder="/images/portfolio-seo/card-thumbnail.jpg"
+                  />
+
+                  {/* Card Logo (new) */}
+                  <ImageUploadField
+                    label="Card Logo"
+                    name="portfolioCardContent.logo"
+                    value={form.portfolioCardContent?.logo}
+                    placeholder="/images/portfolio-seo/client-logo.png"
+                  />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    {/* Featured Tag */}
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                        Featured Tag / Badge
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Case Study, Featured"
+                        value={form.portfolioCardContent?.featuredTag || ''}
+                        onChange={(e) =>
+                          updateFormValue('portfolioCardContent.featuredTag', e.target.value)
+                        }
+                        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      />
+                    </div>
+
+                    {/* Project / Client URL (new) */}
+                    <div>
+                      <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                        Project / Client URL
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="https://clientwebsite.com"
+                        value={form.portfolioCardContent?.url || ''}
+                        onChange={(e) =>
+                          updateFormValue('portfolioCardContent.url', e.target.value)
+                        }
+                        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      />
+                    </div>
                   </div>
 
                   {/* Short Description */}
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-medium text-slate-300 mb-1">
+
+                  {/* Short Description */}
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
                       Card Short Description
                     </label>
                     <textarea
@@ -2213,49 +2324,53 @@ export default function PortfolioSeoEditPage() {
                       onChange={(e) =>
                         updateFormValue('portfolioCardContent.shortDescription', e.target.value)
                       }
-                      className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 resize-none"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm text-slate-900 resize-none focus:outline-none focus:ring-2 focus:ring-sky-500"
                     />
                   </div>
+                </div>
 
-                  {/* Highlights List */}
-                  <div className="md:col-span-2 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="block text-xs font-medium text-slate-300">
-                        Card Highlight Bullet Points
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const current = form.portfolioCardContent?.highlights || [];
-                          updateFormValue('portfolioCardContent.highlights', [...current, { text: '' }]);
-                        }}
-                        className="text-xs text-blue-400 hover:text-blue-300 font-medium"
-                      >
-                        + Add Highlight
-                      </button>
-                    </div>
+                {/* Highlights List — value (e.g. "+250%") and text/content are now
+                    separate fields instead of one combined input */}
+                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-slate-50 border border-slate-200 space-y-3 sm:space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs sm:text-sm font-semibold text-slate-900">Card Highlight Bullet Points</h4>
+                    <button
+                      type="button"
+                      onClick={addHighlight}
+                      className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white border border-slate-200 text-sky-700 hover:bg-sky-50 text-[10px] xs:text-xs font-medium transition-colors"
+                    >
+                      <Plus className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                      <span>Add Highlight</span>
+                    </button>
+                  </div>
 
+                  <div className="space-y-2">
                     {(form.portfolioCardContent?.highlights || []).map((highlight, index) => (
-                      <div key={index} className="flex items-center gap-2">
+                      <div key={index} className="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-white">
                         <input
                           type="text"
-                          placeholder={`Highlight #${index + 1} (e.g. +250% Organic Traffic)`}
-                          value={typeof highlight === 'object' ? highlight.text : highlight}
+                          placeholder="Value e.g. +250%"
+                          value={highlight.value || ''}
+                          onChange={(e) =>
+                            updateFormValue(`portfolioCardContent.highlights.${index}.value`, e.target.value)
+                          }
+                          className="w-28 sm:w-32 shrink-0 rounded-lg border border-emerald-200 px-2 sm:px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                        <input
+                          type="text"
+                          placeholder={`Content #${index + 1} (e.g. Organic Traffic)`}
+                          value={highlight.text || ''}
                           onChange={(e) =>
                             updateFormValue(`portfolioCardContent.highlights.${index}.text`, e.target.value)
                           }
-                          className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                          className="flex-1 rounded-lg border border-slate-200 px-2 sm:px-2.5 py-1.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                         />
                         <button
                           type="button"
-                          onClick={() => {
-                            const updated = [...(form.portfolioCardContent?.highlights || [])];
-                            updated.splice(index, 1);
-                            updateFormValue('portfolioCardContent.highlights', updated);
-                          }}
-                          className="p-2 text-slate-400 hover:text-red-400 transition-colors"
+                          onClick={() => removeHighlight(index)}
+                          className="text-rose-500 hover:text-rose-700"
                         >
-                          ✕
+                          <Trash2 className="h-3.5 w-3.5" />
                         </button>
                       </div>
                     ))}

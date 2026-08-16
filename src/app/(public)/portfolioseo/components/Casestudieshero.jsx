@@ -66,10 +66,10 @@ export default function CaseStudiesHero() {
             Home
           </Link>
           <span>›</span>
-          <Link href="/our-work" className="hover:text-sky-400 transition-colors">
+          {/* <Link href="/our-work" className="hover:text-sky-400 transition-colors">
             Our Work
           </Link>
-          <span>›</span>
+          <span>›</span> */}
           <span className="text-sky-400 font-semibold">Case Studies</span>
         </nav>
 

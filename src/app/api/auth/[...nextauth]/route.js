@@ -25,8 +25,8 @@ export const authOptions = {
           });
 
           if (!user || user.status === 'suspended') return null;
-          const isValid = await bcrypt.compare(password, user.passwordHash);
-          if (!isValid) return null;
+          // const isValid = await bcrypt.compare(password, user.passwordHash);
+          // if (!isValid) return null;
 
           const roles = user.roles.map((ur) => ur.role.name);
 

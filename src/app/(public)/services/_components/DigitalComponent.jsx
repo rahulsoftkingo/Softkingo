@@ -9,10 +9,15 @@ import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from "@/components/footer/InquirySection";
 import CaseStudiesSection from "../_components/digicomponent/CaseStudiesSection";
 import AwardsSection from "../_components/digicomponent/AwardsSection";
+import PortfolioSeo from "../_components/digicomponent/PortfolioSeo"
 
 
 
-export default function DigitalComponent({ content, section }) {
+export default function DigitalComponent({ content, section ,portfolioSeo}) {
+
+
+
+  console.log("portfolio seo decription",  portfolioSeo)
 
   const parsedSection =
     typeof section.contentJson === "string"
@@ -102,6 +107,8 @@ export default function DigitalComponent({ content, section }) {
           appfeaturebasixtext={content.mobileFeaturesTitle}
           appfeaturebasixgradient={content.mobileFeaturesSubtitle}
         />)}
+
+         {/* <PortfolioSeo title={"Our portfolio"} data={portfolioSeo}/> */}
 
          <CaseStudiesSection/>
 

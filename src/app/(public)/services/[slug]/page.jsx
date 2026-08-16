@@ -728,6 +728,21 @@ export default async function ServicePage({ params }) {
       where: { slug, type: "digital", status: "published" },
     });
 
+    const portfolioSeo = await prisma.portfolioSeo.findMany({
+      select: {
+        portfolioCardContent: true,
+      },
+    });
+
+    const portfolioSeoData = [];
+
+    for (const item of portfolioSeo) {
+      if (item.portfolioCardContent) {
+        portfolioSeoData.push(JSON.parse(item.portfolioCardContent));
+      }
+    }
+
+
     if (!digitalPage) {
       return notFound();
     }
@@ -743,7 +758,7 @@ export default async function ServicePage({ params }) {
 
     data.slug = slug;
     if (digitalPage && digitalPage.status === "published") {
-      return <DigitalComponent content={data} section={digitalPage} />;
+      return <DigitalComponent content={data} section={digitalPage} portfolioSeo={portfolioSeoData} />;
     }
 
     return notFound();
