@@ -14,34 +14,19 @@ import {
 } from "recharts";
 import PopupQuoteModal from "@/components/PopupQuoteModal";
 
-const stats = [
-  { icon: TrendingUp, value: "+185%", label: "Organic Traffic" },
-  { icon: KeyRound, value: "+127%", label: "Keywords Ranked" },
-  { icon: Users, value: "+94%", label: "Leads Generated" },
-  { icon: Target, value: "+68%", label: "Conversion Rate" },
-];
-
-const trafficData = [
-  { month: "Jan", visits: 3200 },
-  { month: "Feb", visits: 6800 },
-  { month: "Feb2", visits: 6400 },
-  { month: "Mar", visits: 10200 },
-  { month: "Mar2", visits: 9100 },
-  { month: "Apr", visits: 11800 },
-  { month: "Apr2", visits: 17600 },
-  { month: "May", visits: 18400 },
-  { month: "May2", visits: 20200 },
-  { month: "May3", visits: 25800 },
-  { month: "May4", visits: 26200 },
-  { month: "Jun", visits: 28600 },
-];
+const iconMap = {
+  "Organic Traffic": TrendingUp,
+  "Keywords Ranked": KeyRound,
+  "Leads Generated": Users,
+  "Conversion Rate": Target,
+};
 
 function CustomTooltip({ active, payload }) {
   if (active && payload && payload.length) {
     return (
       <div className="rounded-lg bg-slate-900 border border-slate-700 shadow-xl px-3 py-2 text-white">
         <p className="text-xs font-bold">
-          {payload[0].value.toLocaleString()}
+          {Number(payload[0].value).toLocaleString()}
         </p>
         <p className="text-[10px] text-slate-400 font-medium">Visits/Month</p>
       </div>
@@ -50,18 +35,42 @@ function CustomTooltip({ active, payload }) {
   return null;
 }
 
-export default function SeoCaseStudyHero({title,subtitle, endpoint = "Healthcare SEO" }) {
+export default function SeoCaseStudyHero({
+  title,
+  subtitle,
+  endpoint = "Healthcare SEO",
+  data = {},
+}) {
   const [showModal, setShowModal] = useState(false);
+
+  const badges = data?.badges || [];
+  const chartInfo = data?.chart || {};
+  const beforeData = chartInfo?.before || {};
+  const afterData = chartInfo?.after || {};
+  const seriesData = chartInfo?.series || [];
+
+  const rawBefore = Number(beforeData.value) || 0;
+  const rawAfter = Number(afterData.value) || 0;
+
+  const formattedChartSeries = seriesData.map((item) => ({
+    ...item,
+    visits: Number(item.visits ?? item.value) || 0,
+  }));
+
+  const maxVisitValue = Math.max(
+    ...formattedChartSeries.map((d) => d.visits),
+    rawAfter,
+    1000
+  );
+  const yAxisMax = Math.ceil(maxVisitValue / 1000) * 1000;
 
   return (
     <section className="relative bg-[#060913] text-slate-100 overflow-hidden py-10 lg:py-16">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* Asymmetric layout (5 cols vs 7 cols) gives the chart extra width */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
-          {/* LEFT COLUMN: Content & CTAs (5 Cols) */}
+          {/* LEFT COLUMN */}
           <div className="lg:col-span-5 space-y-6 z-20">
-            {/* Breadcrumb styling from reference code */}
             <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
               <Link href="/" className="hover:text-sky-400 transition-colors">
                 Home
@@ -76,7 +85,7 @@ export default function SeoCaseStudyHero({title,subtitle, endpoint = "Healthcare
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15]">
               {title}
-              <span className="text-sky-400">SEO</span> Brand
+              <span className="text-sky-400"> SEO</span> Brand
             </h1>
 
             <p className="text-xs sm:text-sm md:text-base text-slate-300 font-medium flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -90,10 +99,9 @@ export default function SeoCaseStudyHero({title,subtitle, endpoint = "Healthcare
             </p>
 
             <p className="text-xs sm:text-sm md:text-base text-slate-400 leading-[1.8] max-w-xl">
-            {subtitle}
+              {subtitle}
             </p>
 
-            {/* CTAs styled after reference code */}
             <div className="flex flex-wrap sm:flex-row gap-4 pt-2">
               <button
                 onClick={() => setShowModal(true)}
@@ -111,28 +119,28 @@ export default function SeoCaseStudyHero({title,subtitle, endpoint = "Healthcare
               </Link>
             </div>
 
-            {/* Stat Cards */}
+            {/* Dynamic Badge Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
-              {stats.map((stat, i) => {
-                const Icon = stat.icon;
+              {badges.map((badge, i) => {
+                const IconComponent = iconMap[badge.label] || TrendingUp;
                 return (
                   <div
                     key={i}
                     className="rounded-2xl bg-[#0d1326] border border-slate-800/80 p-3.5 flex flex-col justify-between"
                   >
                     <div className="flex items-center gap-1.5 text-green-400">
-                      <Icon size={16} />
+                      <IconComponent size={16} />
                       <span className="text-[10px] font-semibold tracking-wide">
-                        +85%
+                        {badge.value}
                       </span>
                     </div>
 
                     <p className="mt-2 text-lg sm:text-xl font-extrabold text-white tracking-tight">
-                      {stat.value}
+                      {badge.value}
                     </p>
 
                     <p className="mt-0.5 text-[11px] text-slate-400 font-medium leading-tight">
-                      {stat.label}
+                      {badge.label}
                     </p>
                   </div>
                 );
@@ -140,46 +148,50 @@ export default function SeoCaseStudyHero({title,subtitle, endpoint = "Healthcare
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Wider Rectangular Chart Wrapper (7 Cols) */}
+          {/* RIGHT COLUMN */}
           <div className="lg:col-span-7">
             <div className="rounded-3xl bg-white text-slate-900 shadow-2xl p-6 sm:p-8">
               <h3 className="text-base sm:text-lg font-bold text-slate-900">
-                Organic Traffic Growth
+                {chartInfo.title || "Organic Traffic Growth"}
               </h3>
 
-              {/* Before / After Stats */}
               <div className="flex items-center gap-10 mt-4 mb-6">
                 <div>
-                  <p className="text-xs text-slate-400 font-medium">Before</p>
+                  <p className="text-xs text-slate-400 font-medium">
+                    {beforeData.label || "Before"}
+                  </p>
                   <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">
-                    8,420
+                    {rawBefore.toLocaleString()}
                   </p>
                   <p className="text-[11px] text-slate-400 font-medium">
-                    Visits/Month
+                    {beforeData.unit || "Visits/Month"}
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-xs text-slate-400 font-medium">After</p>
+                  <p className="text-xs text-slate-400 font-medium">
+                    {afterData.label || "After"}
+                  </p>
                   <div className="flex items-center gap-2 mt-0.5">
                     <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                      24,680
+                      {rawAfter.toLocaleString()}
                     </p>
-                    <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
-                      +185%
-                    </span>
+                    {(afterData.growth || badges[0]?.value) && (
+                      <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+                        {afterData.growth || badges[0]?.value}
+                      </span>
+                    )}
                   </div>
                   <p className="text-[11px] text-slate-400 font-medium">
-                    Visits/Month
+                    {afterData.unit || "Visits/Month"}
                   </p>
                 </div>
               </div>
 
-              {/* Extended Rectangular Chart Area */}
               <div className="w-full h-[280px] sm:h-[320px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
-                    data={trafficData}
+                    data={formattedChartSeries}
                     margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
                   >
                     <defs>
@@ -214,17 +226,14 @@ export default function SeoCaseStudyHero({title,subtitle, endpoint = "Healthcare
                       tickLine={false}
                       axisLine={false}
                       tick={{ fontSize: 11, fill: "#94a3b8" }}
-                      interval="preserveStartEnd"
-                      ticks={["Jan", "Feb", "Mar", "Apr", "May", "Jun"]}
                     />
 
                     <YAxis
                       tickLine={false}
                       axisLine={false}
                       tick={{ fontSize: 11, fill: "#94a3b8" }}
-                      tickFormatter={(v) => (v === 0 ? "0" : `${v / 1000}K`)}
-                      domain={[0, 30000]}
-                      ticks={[0, 10000, 20000, 30000]}
+                      tickFormatter={(v) => (v === 0 ? "0" : v >= 1000 ? `${v / 1000}K` : v)}
+                      domain={[0, yAxisMax]}
                     />
 
                     <Tooltip content={<CustomTooltip />} />

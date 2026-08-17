@@ -37,7 +37,7 @@ export default async function Page({ params }) {
     <div className="min-h-screen bg-white text-gray-800">
       {/* ...other sections like Hero, SolutionsWhyNeed, etc. */}
 
-      <Seocasestudyhero title={caseStudy.title} subtitle={caseStudy.subtitle} endpoint={caseStudy.slug}/>
+      <Seocasestudyhero title={caseStudy.title} subtitle={caseStudy.subtitle} endpoint={caseStudy.slug} data={caseStudy.heroStatsJson ? JSON.parse(caseStudy.heroStatsJson) : {}}/>
       <SolutionsClientOverview data={clientOverviewJson}/>
       <SolutionsSeoStrategy data={strategyJson} />
       <BeforeAfterResults data={resultsJson}/>
