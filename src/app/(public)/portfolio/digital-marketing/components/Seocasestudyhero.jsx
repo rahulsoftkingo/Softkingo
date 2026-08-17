@@ -76,17 +76,21 @@ export default function SeoCaseStudyHero({
                 Home
               </Link>
               <span>›</span>
-              <Link href="/solutions" className="hover:text-sky-400 transition-colors">
-                portfolioseo
+              <Link href="/portfolio" className="hover:text-sky-400 transition-colors">
+                portfolio
+              </Link>
+              <span>›</span>
+               <Link href="/portfolio" className="hover:text-sky-400 transition-colors">
+                digital-marketing
               </Link>
               <span>›</span>
               <span className="text-sky-400 font-medium">{endpoint}</span>
             </nav>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15]">
+            {/* <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15]">
               {title}
               <span className="text-sky-400"> SEO</span> Brand
-            </h1>
+            </h1> */}
 
             <p className="text-xs sm:text-sm md:text-base text-slate-300 font-medium flex flex-wrap items-center gap-x-2 gap-y-1">
               <span>Technical SEO</span>
