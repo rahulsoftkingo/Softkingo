@@ -85,6 +85,8 @@ export async function PATCH(request, { params }) {
       ...(body.title !== undefined && { title: body.title }),
       ...(body.subtitle !== undefined && { subtitle: body.subtitle || null }),
       ...(body.category !== undefined && { category: body.category || null }),
+      ...(body.companyLogo !== undefined && { companyLogo: body.companyLogo || null }),
+      ...(body.companyDescription !== undefined && { companyDescription: body.companyDescription || null }),
       ...(body.heroBgImage !== undefined && { heroBgImage: body.heroBgImage || null }),
       ...(body.seoImage !== undefined && { seoImage: body.seoImage || null }),
       ...(body.seoTitle !== undefined && { seoTitle: body.seoTitle || null }),

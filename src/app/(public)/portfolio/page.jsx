@@ -109,7 +109,7 @@ export default async function PortfolioPage() {
               <div className="flex flex-wrap gap-3 pt-4">
                 <Link
                   href="/contact"
-                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex"
+                  className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2"
                 >
                   Get A Quote <ArrowRight className="h-4" />
                 </Link>
@@ -119,7 +119,7 @@ export default async function PortfolioPage() {
                   rel="noopener noreferrer"
                   className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center"
                 >
-                  <span className="font-semibold text-bas text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
+                  <span className="font-semibold text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
                     Meeting
                   </span>
                   <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -128,8 +128,18 @@ export default async function PortfolioPage() {
             </div>
 
             {/* Right: glass card with auto slider */}
-            <div className="hidden sm:block">
-              <HeroCarousel projects={projects} />
+            <div className="hidden sm:flex sm:flex-col sm:items-end gap-3">
+              {/* Digital Marketing Button */}
+              <Link
+                href="/digital-marketing-portfolio"
+                className="px-4 py-2 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs md:text-sm font-semibold hover:bg-cyan-500/30 hover:text-white transition-all duration-300 shadow-md backdrop-blur-sm inline-flex items-center gap-1.5"
+              >
+                Digital Marketing <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+
+              <div className="w-full">
+                <HeroCarousel projects={projects} />
+              </div>
             </div>
           </div>
         </div>

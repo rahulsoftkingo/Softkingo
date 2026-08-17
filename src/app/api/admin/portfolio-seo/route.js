@@ -47,6 +47,8 @@ export async function POST(request) {
     title,
     subtitle,
     category,
+    companyLogo,          // 👈 naya
+    companyDescription,   // 👈 naya
     heroBgImage,
     heroStatsJson,
     clientOverviewJson,
@@ -75,6 +77,8 @@ export async function POST(request) {
       title,
       subtitle: subtitle || null,
       category: category || null,
+      companyLogo: companyLogo || null,              
+      companyDescription: companyDescription || null,  
       heroBgImage: heroBgImage || null,
       heroStatsJson: heroStatsJson || null,
       clientOverviewJson: clientOverviewJson || null,
@@ -84,7 +88,7 @@ export async function POST(request) {
       technicalSeoJson: technicalSeoJson || null,
       businessImpactJson: businessImpactJson || null,
       toolsJson: toolsJson || null,
-      portfolioCardContent: portfolioCardContent || null, // 👈 saved here
+      portfolioCardContent: portfolioCardContent || null, 
       seoTitle: seoTitle || null,
       seoDescription: seoDescription || null,
       seoImage: seoImage || null,

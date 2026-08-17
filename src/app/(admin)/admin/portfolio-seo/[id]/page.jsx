@@ -90,6 +90,8 @@ export default function PortfolioSeoEditPage() {
     title: '',
     subtitle: '',
     category: '',
+    companyLogo: '',
+    companyDescription: '',
     heroBgImage: '',
     seoImage: '',
 
@@ -264,6 +266,8 @@ export default function PortfolioSeoEditPage() {
           title: data.title || '',
           subtitle: data.subtitle || '',
           category: data.category || '',
+          companyLogo: data.companyLogo || '',
+          companyDescription: data.companyDescription || '',
           heroBgImage: data.heroBgImage || '',
           seoImage: data.seoImage || '',
 
@@ -666,11 +670,13 @@ export default function PortfolioSeoEditPage() {
       : `/api/admin/portfolio-seo/${params.id}`;
     const method = isNew ? 'POST' : 'PATCH';
 
-    const payload = {
+   const payload = {
       slug: form.slug,
       title: form.title,
       subtitle: form.subtitle || null,
       category: form.category || null,
+      companyLogo: form.companyLogo || null,
+      companyDescription: form.companyDescription || null,
       heroBgImage: form.heroBgImage || null,
       seoImage: form.seoImage || null,
       heroStatsJson: buildHeroStatsJson(),
@@ -1118,6 +1124,28 @@ export default function PortfolioSeoEditPage() {
                       className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">Company Description</label>
+                    <textarea
+                      name="companyDescription"
+                      value={form.companyDescription}
+                      onChange={handleChange}
+                      rows={2}
+                      placeholder="Leading healthcare provider specializing in..."
+                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
+                    />
+                    <p className="text-[9px] xs:text-[10px] sm:text-xs text-slate-500 mt-1">
+                      Short description shown on the case-studies card list
+                    </p>
+                  </div>
+
+                  <ImageUploadField
+                    label="Company Logo"
+                    name="companyLogo"
+                    value={form.companyLogo}
+                    placeholder="/images/logos/healthcarebrand.png"
+                  />
 
                   <ImageUploadField
                     label="Hero Background Image"

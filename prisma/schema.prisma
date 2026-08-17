@@ -385,6 +385,9 @@ model PortfolioSeo {
   // 9. Portfolio Card Content
   portfolioCardContent String? @db.Text
 
+  companyLogo         String?          
+  companyDescription  String?
+
   seoTitle          String?
   seoDescription    String?
   createdAt         DateTime @default(now())

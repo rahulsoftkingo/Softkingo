@@ -26,6 +26,8 @@ export default async function CaseStudiesPage() {
         title: r.title,
         subtitle: r.subtitle,
         category: r.category,
+        companyLogo: r.companyLogo,               // 👈 naya
+        companyDescription: r.companyDescription,  // 👈 naya
         heroBgImage: r.heroBgImage,
         seoImage: r.seoImage,
         heroStats: safeParse(r.heroStatsJson),
