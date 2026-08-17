@@ -197,6 +197,13 @@ export default function PortfolioSeoEditPage() {
       { name: 'PageSpeed Insights', logo: '' },
       { name: 'Google Tag Manager', logo: '' },
     ],
+    // Client testimonial shown alongside Tools & Tech
+    testimonial: {
+      image: '',
+      name: '',
+      occupation: '',
+      description: '',
+    },
 
     // SEO
     seoTitle: '',
@@ -331,6 +338,12 @@ export default function PortfolioSeoEditPage() {
 
           toolsHeading: toolsData.heading || prev.toolsHeading,
           tools: toolsData.tools?.length ? toolsData.tools : prev.tools,
+          testimonial: {
+            image: toolsData.testimonial?.image || '',
+            name: toolsData.testimonial?.name || '',
+            occupation: toolsData.testimonial?.occupation || '',
+            description: toolsData.testimonial?.description || '',
+          },
 
           seoTitle: data.seoTitle || '',
           seoDescription: data.seoDescription || '',
@@ -627,9 +640,14 @@ export default function PortfolioSeoEditPage() {
     return JSON.stringify({
       heading: form.toolsHeading,
       tools: (form.tools || []).filter((t) => t.name),
+      testimonial: {
+        image: form.testimonial?.image || '',
+        name: form.testimonial?.name || '',
+        occupation: form.testimonial?.occupation || '',
+        description: form.testimonial?.description || '',
+      },
     });
   }
-
   // Helper to build and clean portfolioCardContent JSON.
   // Highlights are now saved as { value, text } pairs (e.g. value: "+250%",
   // text: "Organic Traffic") instead of a single combined string.
@@ -670,7 +688,7 @@ export default function PortfolioSeoEditPage() {
       : `/api/admin/portfolio-seo/${params.id}`;
     const method = isNew ? 'POST' : 'PATCH';
 
-   const payload = {
+    const payload = {
       slug: form.slug,
       title: form.title,
       subtitle: form.subtitle || null,
@@ -740,8 +758,8 @@ export default function PortfolioSeoEditPage() {
       />
       <div className="flex flex-wrap items-center gap-2">
         <label className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border text-[10px] sm:text-xs font-medium cursor-pointer transition-colors ${dark
-            ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200'
-            : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
+          ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200'
+          : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
           }`}>
           {uploadingField === name ? (
             <>
@@ -768,8 +786,8 @@ export default function PortfolioSeoEditPage() {
           type="button"
           onClick={() => openImageBrowser(name)}
           className={`inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border text-[10px] sm:text-xs font-medium transition-colors ${dark
-              ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200'
-              : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
+            ? 'border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200'
+            : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
             }`}
         >
           <Folder className="h-3 w-3" />
@@ -2210,6 +2228,56 @@ export default function PortfolioSeoEditPage() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+                {/* Client Testimonial */}
+                <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-emerald-50 border border-emerald-200 space-y-3 sm:space-y-4">
+                  <div>
+                    <h4 className="text-xs sm:text-sm font-semibold text-emerald-900">Client Testimonial</h4>
+                    <p className="text-[10px] xs:text-xs text-emerald-700/80 mt-0.5">
+                      Optional quote from the client shown alongside the tools used
+                    </p>
+                  </div>
+
+                  <ImageUploadField
+                    label="Testimonial Photo"
+                    name="testimonial.image"
+                    value={form.testimonial?.image}
+                    placeholder="/images/testimonials/client-photo.jpg"
+                  />
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                    <div>
+                      <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5">Name</label>
+                      <input
+                        type="text"
+                        value={form.testimonial?.name || ''}
+                        onChange={(e) => updateFormValue('testimonial.name', e.target.value)}
+                        placeholder="Jane Smith"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5">Occupation</label>
+                      <input
+                        type="text"
+                        value={form.testimonial?.occupation || ''}
+                        onChange={(e) => updateFormValue('testimonial.occupation', e.target.value)}
+                        placeholder="Marketing Director, Healthcare Brand"
+                        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5">Testimonial Description</label>
+                    <textarea
+                      rows={3}
+                      value={form.testimonial?.description || ''}
+                      onChange={(e) => updateFormValue('testimonial.description', e.target.value)}
+                      placeholder="Working with this team completely transformed our organic visibility..."
+                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
                   </div>
                 </div>
               </div>

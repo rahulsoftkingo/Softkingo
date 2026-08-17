@@ -5,6 +5,14 @@ import Image from "next/image";
 import { Quote } from "lucide-react";
 
 export default function BusinessImpactAndTestimonial({ data, data1 }) {
+
+  console.log("BusinessImpactAndTestimonial data:", data);
+  console.log("BusinessImpactAndTestimonial data1:", data1);
+
+  const testimonails = data1?.testimonial || [];
+  console.log("show me the testimonails", testimonails)
+
+
   // Safely normalize data
   const businessData = data || {};
   const toolsData = data1 || {};
@@ -41,7 +49,7 @@ export default function BusinessImpactAndTestimonial({ data, data1 }) {
               LEFT: BUSINESS IMPACT
           ========================== */}
           <div className="w-full lg:w-[calc(30%-1rem)] rounded-xl md:rounded-2xl border border-slate-100 bg-slate-50/60 p-5 sm:p-7 flex flex-col justify-between">
-            
+
             <div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900">
                 {businessData.heading || "Business Impact"}
@@ -81,6 +89,9 @@ export default function BusinessImpactAndTestimonial({ data, data1 }) {
           {/* =========================
               MIDDLE: TESTIMONIAL
           ========================== */}
+          {/* =========================
+    MIDDLE: TESTIMONIAL
+========================== */}
           <div className="w-full lg:w-[calc(30%-1rem)] rounded-xl md:rounded-2xl border border-slate-100 bg-slate-50/60 p-5 sm:p-7 flex flex-col">
 
             <h3 className="text-base sm:text-lg font-bold text-slate-900 text-center">
@@ -94,30 +105,52 @@ export default function BusinessImpactAndTestimonial({ data, data1 }) {
               fill="currentColor"
             />
 
-            <p className="mt-2 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed flex-1">
-              Softkingo's SEO strategy completely transformed our online
-              presence. Their team is professional, responsive and
-              results-driven. We saw a significant increase in traffic and
-              leads within just 6 months.
-            </p>
-
-            <div className="flex items-center gap-3 mt-6">
-              <img
-                src="https://i.pravatar.cc/100?img=13"
-                alt="John Smith"
-                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover"
-              />
-
-              <div>
-                <p className="text-sm font-bold text-slate-900">
-                  John Smith
+            {testimonails ? (
+              <>
+                <p className="mt-2 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed flex-1">
+                  {testimonails.description || "No testimonial available."}
                 </p>
 
-                <p className="text-xs text-slate-400 font-medium">
-                  CEO, Healthcare Brand
+                <div className="flex items-center gap-3 mt-6">
+                  {(() => {
+                    const imageSrc = getSafeImageSrc(testimonails.image);
+
+                    return imageSrc ? (
+                      <Image
+                        src={imageSrc}
+                        alt={testimonails.name || "Client"}
+                        width={44}
+                        height={44}
+                        className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-200 flex items-center justify-center">
+                        <span className="text-xs font-bold text-slate-500">
+                          {testimonails.name?.charAt(0) || "C"}
+                        </span>
+                      </div>
+                    );
+                  })()}
+
+                  <div>
+                    <p className="text-sm font-bold text-slate-900">
+                      {testimonails.name || "Unknown Client"}
+                    </p>
+
+                    <p className="text-xs text-slate-400 font-medium">
+                      {testimonails.occupation || "Client"}
+                    </p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="flex-1 flex items-center justify-center">
+                <p className="text-sm text-slate-400 text-center">
+                  No testimonial available.
                 </p>
               </div>
-            </div>
+            )}
+
           </div>
 
           {/* =========================
