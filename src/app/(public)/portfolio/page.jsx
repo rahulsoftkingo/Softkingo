@@ -1,4 +1,3 @@
-
 // app/(public)/portfolio/page.jsx
 import ConsultationCTA from '@/components/common/Consultation-Cta';
 import FAQAccordion from '@/components/common/Faqaccordion';
@@ -9,6 +8,7 @@ import HeroCarousel from './HeroCarousel';
 import prisma from '@/lib/prisma';
 import { FaArrowRight } from 'react-icons/fa6';
 import InquirySection from '@/components/footer/InquirySection';
+
 export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Our Portfolio - Successful Digital Projects by Softkingo',
@@ -52,17 +52,6 @@ export default async function PortfolioPage() {
     badges: mapBadges(p.badgesJson),
   }));
 
-  // const categories = [
-  //   'All',
-  //   'Astrology',
-  //   'Automotive',
-  //   'Dating',
-  //   'E-Commerce',
-  //   'Education',
-  //   'Fitness',
-  //   'Gaming',
-  //   'Healthcare',
-  // ];
   const categories = ['All', ...Array.from(
     new Set(records.map(p => p.category).filter(Boolean))
   ).sort()];
@@ -71,10 +60,6 @@ export default async function PortfolioPage() {
     <main className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-50 to-white text-slate-900">
       {/* Hero with breadcrumb, CTA buttons and right-side carousel */}
       <section
-        //  className="relative h-[20rem] md:h-[25rem] bg-cover bg-center"
-        //   style={{ backgroundImage: "url('/images/portfolio/web.jpg')" }}
-        // >
-        //   <div className="absolute inset-0 bg-gradient-to-r from-[#001322]/80 via-[#001322]/75 to-[#001322]/30" />
         className="relative h-[20rem] md:h-[25rem] overflow-hidden"
         style={{ background: "linear-gradient(135deg, #042c3eff 0%, #097db7ff 100%)" }}
       >
@@ -83,10 +68,10 @@ export default async function PortfolioPage() {
           className="absolute inset-0 opacity-80"
           style={{ backgroundImage: "url('/images/portfolio/bg-1.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}
         />
-        {/* <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent" /> */}
+        
         <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-8 w-full items-center">
-            {/* Left: text */}
+            {/* Left: text & buttons */}
             <div>
               <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-200/70 mb-3">
                 <Link
@@ -106,37 +91,39 @@ export default async function PortfolioPage() {
                 Our success stories define our expertise in developing
                 tech‑driven business solutions for startups and global brands.
               </p>
-              <div className="flex flex-wrap gap-3 pt-4">
+
+              {/* Horizontal button group */}
+              <div className="flex flex-wrap items-center gap-3 pt-4">
                 <Link
                   href="/contact"
                   className="px-4 md:px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 shadow-lg shadow-sky-900/30 transition-all duration-300 items-center cursor-pointer inline-flex gap-2"
                 >
                   Get A Quote <ArrowRight className="h-4" />
                 </Link>
+
                 <Link
                   href="https://calendly.com/paramhans-softkingo/30min"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-md inline-flex items-center justify-center"
+                  className="px-4 md:px-8 py-2.5 rounded-full bg-white text-[#28AFDF] border border-[#28AFDF] font-medium hover:bg-[#28AFDF]/10 transform hover:-translate-y-1 shadow-lg shadow-[#28AFDF]/30 transition-all duration-300 text-xs md:text-sm inline-flex items-center justify-center group"
                 >
-                  <span className="font-semibold text-xs md:text-md mr-3 group-hover:mr-4 transition-all">
+                  <span className="font-semibold mr-3 group-hover:mr-4 transition-all">
                     Meeting
                   </span>
                   <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+
+                <Link
+                  href="portfolio/digital-marketing"
+                  className="px-4 md:px-6 py-2.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs md:text-sm font-semibold hover:bg-cyan-500/30 hover:text-white transform hover:-translate-y-1 transition-all duration-300 shadow-md backdrop-blur-sm inline-flex items-center gap-1.5"
+                >
+                  Digital Marketing <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </div>
             </div>
 
             {/* Right: glass card with auto slider */}
-            <div className="hidden sm:flex sm:flex-col sm:items-end gap-3">
-              {/* Digital Marketing Button */}
-              <Link
-                href="/digital-marketing-portfolio"
-                className="px-4 py-2 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs md:text-sm font-semibold hover:bg-cyan-500/30 hover:text-white transition-all duration-300 shadow-md backdrop-blur-sm inline-flex items-center gap-1.5"
-              >
-                Digital Marketing <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-
+            <div className="hidden sm:flex sm:flex-col sm:items-end w-full">
               <div className="w-full">
                 <HeroCarousel projects={projects} />
               </div>

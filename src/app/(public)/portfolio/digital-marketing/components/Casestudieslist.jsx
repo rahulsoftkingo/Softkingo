@@ -69,9 +69,9 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
     const CategoryIcon = style.icon;
 
     return (
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-2 hover:shadow-lg hover:shadow-slate-200/60 transition-shadow duration-300">
-            {/* Grid items stretched */}
-            <div className="grid grid-cols-1 md:grid-cols-[140px_140px_1fr_300px] gap-5 md:gap-6 md:items-stretch">
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-3 hover:shadow-lg hover:shadow-slate-200/60 transition-shadow duration-300">
+            {/* Grid layout with 150px width for Image column on desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-[140px_150px_1fr_280px] gap-5 md:gap-6 md:items-stretch">
 
                 {/* Brand column */}
                 <div className="flex flex-col items-start gap-3">
@@ -91,8 +91,8 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                     </p>
                 </div>
 
-                {/* Image column (Original full height back) */}
-                <div className="relative w-full h-48 sm:h-50 md:h-56 rounded-lg overflow-hidden bg-slate-100 shrink-0">
+                {/* Image column - 150px Width */}
+                <div className="relative w-full h-48 sm:h-50 md:h-56 rounded-xl overflow-hidden bg-slate-100 shrink-0">
                     {study.image && (
                         <Image
                             src={study.image}
@@ -107,7 +107,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                 </div>
 
                 {/* Content column */}
-                <div className="min-w-0 flex flex-col justify-between">
+                <div className="min-w-0 flex flex-col justify-between pt-1 md:mt-1">
                     <div>
                         <span
                             className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full ${style.badgeBg} ${style.badgeText}`}
@@ -127,11 +127,11 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                         </div>
 
                         <p className="mt-2 text-xs sm:text-sm text-slate-500 font-medium leading-relaxed hidden sm:block">
-                            {study.description}
+                            {study.tagline || study.description || "No description available."}
                         </p>
 
                         <Link
-                            href={`/digital-marketing-portfolio/${study.slug}`}
+                            href={`/portfolio/digital-marketing/${study.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`mt-3 inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold ${style.linkText} hover:gap-2.5 transition-all`}
@@ -140,14 +140,11 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                             <ArrowRight size={14} />
                         </Link>
                     </div>
-
-
                 </div>
 
-                {/* Results column (Card ki full height pe stretched) */}
                 {/* Results column */}
                 <div
-                    className={`rounded-xl border ${style.resultsBorder} ${style.resultsBg} p-3 sm:p-4 w-full h-full flex flex-col`}
+                    className={`rounded-xl border ${style.resultsBorder} ${style.resultsBg} p-3 sm:p-4 w-full h-full flex flex-col justify-center`}
                 >
                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-3">
                         Results Achieved
@@ -160,14 +157,14 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 gap-x-2 gap-y-4">
+                        <div className="grid grid-cols-2 gap-x-2 gap-y-3">
                             {businessImpact.slice(0, 4).map((stat, i) => (
                                 <div
                                     key={i}
-                                    className="rounded-lg border border-white/80 bg-white/80 px-2.5 py-2.5 min-h-[75px] flex flex-col justify-center"
+                                    className="rounded-lg border border-white/80 bg-white/80 px-2 py-2 min-h-[70px] flex flex-col items-center justify-center text-center"
                                 >
                                     <p
-                                        className={`text-base sm:text-lg font-extrabold leading-none ${style.statText}`}
+                                        className={`text-sm sm:text-base font-extrabold leading-none ${style.statText}`}
                                     >
                                         {stat.value}
                                     </p>

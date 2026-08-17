@@ -1106,6 +1106,18 @@ export default function PortfolioSeoEditPage() {
                     <p className="text-[9px] xs:text-[10px] sm:text-xs text-slate-500 mt-1">URL-friendly identifier</p>
                   </div>
 
+
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">Category / Services Tag</label>
+                    <input
+                      name="category"
+                      value={form.category}
+                      onChange={handleChange}
+                      placeholder="Technical SEO • On-Page SEO • Content Strategy • Link Building"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
                       Title <span className="text-rose-500">*</span>
@@ -1121,7 +1133,7 @@ export default function PortfolioSeoEditPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">Subtitle</label>
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">Description</label>
                     <textarea
                       name="subtitle"
                       value={form.subtitle}
@@ -1131,17 +1143,13 @@ export default function PortfolioSeoEditPage() {
                       className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 resize-none"
                     />
                   </div>
+                  <ImageUploadField
+                    label="Company Logo"
+                    name="companyLogo"
+                    value={form.companyLogo}
+                    placeholder="/images/logos/healthcarebrand.png"
+                  />
 
-                  <div>
-                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">Category / Services Tag</label>
-                    <input
-                      name="category"
-                      value={form.category}
-                      onChange={handleChange}
-                      placeholder="Technical SEO • On-Page SEO • Content Strategy • Link Building"
-                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                    />
-                  </div>
 
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">Company Description</label>
@@ -1158,12 +1166,7 @@ export default function PortfolioSeoEditPage() {
                     </p>
                   </div>
 
-                  <ImageUploadField
-                    label="Company Logo"
-                    name="companyLogo"
-                    value={form.companyLogo}
-                    placeholder="/images/logos/healthcarebrand.png"
-                  />
+
 
                   <ImageUploadField
                     label="Hero Background Image"

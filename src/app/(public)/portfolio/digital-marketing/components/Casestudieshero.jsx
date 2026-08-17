@@ -70,7 +70,7 @@ export default function CaseStudiesHero() {
             Our Work
           </Link>
           <span>›</span> */}
-          <span className="text-sky-400 font-semibold">Case Studies</span>
+          <span className="text-sky-400 font-semibold">Digital Marketing Portfolio</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
