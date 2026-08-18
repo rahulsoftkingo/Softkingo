@@ -43,6 +43,7 @@ export default function SeoCaseStudyHero({
 }) {
   const [showModal, setShowModal] = useState(false);
 
+
   const badges = data?.badges || [];
   const chartInfo = data?.chart || {};
   const beforeData = chartInfo?.before || {};
@@ -71,7 +72,7 @@ export default function SeoCaseStudyHero({
           
           {/* LEFT COLUMN */}
           <div className="lg:col-span-5 space-y-6 z-20">
-            <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
+            {/* <nav className="flex items-center gap-2 text-xs md:text-sm text-slate-400">
               <Link href="/" className="hover:text-sky-400 transition-colors">
                 Home
               </Link>
@@ -85,7 +86,7 @@ export default function SeoCaseStudyHero({
               </Link>
               <span>›</span>
               <span className="text-sky-400 font-medium">{endpoint}</span>
-            </nav>
+            </nav> */}
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-[1.15]">
               {title}

@@ -23,7 +23,7 @@ export default async function Page({ params }) {
   console.log('PortfolioSeo data for slug', slug, ':', caseStudy); 
 
   // JSON text columns ko parse karke bhi dekhna ho to:
-  console.log('heroStatsJson:', JSON.parse(caseStudy.heroStatsJson || '{}'));
+  const heroStatsJson = JSON.parse(caseStudy.heroStatsJson || '{}');
   const clientOverviewJson=JSON.parse(caseStudy.clientOverviewJson || '{}');
   const strategyJson=JSON.parse(caseStudy.strategyJson || '{}');
   const resultsJson =JSON.parse(caseStudy.resultsJson || '{}');
@@ -37,12 +37,12 @@ export default async function Page({ params }) {
     <div className="min-h-screen bg-white text-gray-800">
       {/* ...other sections like Hero, SolutionsWhyNeed, etc. */}
 
-      <Seocasestudyhero title={caseStudy.title} subtitle={caseStudy.subtitle} endpoint={caseStudy.slug} data={caseStudy.heroStatsJson ? JSON.parse(caseStudy.heroStatsJson) : {}}/>
+      <Seocasestudyhero title={caseStudy.title} subtitle={caseStudy.subtitle} endpoint={caseStudy.slug} data={heroStatsJson}/>
       <SolutionsClientOverview data={clientOverviewJson}/>
       <SolutionsSeoStrategy data={strategyJson} />
       <BeforeAfterResults data={resultsJson}/>
       <SeoPerformanceDashboard heading={performanceDashboardJson.heading} data={performanceDashboardJson.stats}/>
-      <KeywordAndTrafficGrowth data={performanceDashboardJson.keywordRanking} data2={performanceDashboardJson.trafficChart} />
+      <KeywordAndTrafficGrowth data={performanceDashboardJson.keywordRanking} data2={performanceDashboardJson.trafficChart} data3={heroStatsJson.chart} />
       <TechnicalSeoAndContentGrowth data={technicalSeoJson}/>
       <BusinessImpactAndTestimonial data={businessImpactJson} data1={toolsJson}/>
       <SeoCtaBanner />

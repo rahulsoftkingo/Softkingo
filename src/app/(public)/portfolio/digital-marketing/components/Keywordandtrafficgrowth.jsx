@@ -32,18 +32,24 @@ function CustomTooltip({ active, payload }) {
   return null;
 }
 
-export default function KeywordAndTrafficGrowth({ data, data2 }) {
+export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
   // data = Keyword Ranking Growth
-  // data2 = Organic Traffic Growth
+  // data3 = Organic Traffic Growth Object
 
   const keywordRows = data?.rows || [];
 
-  // Convert chart values from strings to numbers
+  // data3 prioritize karenge graph payload ke liye
+  const chartSource = data3 || data2;
+
   const trafficData =
-    data2?.series?.map((item) => ({
+    chartSource?.series?.map((item) => ({
       month: item.month?.trim(),
       visits: Number(item.value),
     })) || [];
+
+  // After ki main value dikhane ke liye extraction
+  const afterValue = chartSource?.after?.value || chartSource?.value;
+  const afterUnit = chartSource?.after?.unit || chartSource?.unit;
 
   return (
     <section className="py-8 md:py-10 bg-white overflow-hidden">
@@ -96,19 +102,19 @@ export default function KeywordAndTrafficGrowth({ data, data2 }) {
           <div className="rounded-xl md:rounded-2xl border border-slate-100 bg-white p-5 sm:p-7">
 
             <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-              {data2?.heading || "Organic Traffic Growth"}
+              {chartSource?.title || "Organic Traffic Growth"}
             </h3>
 
-            {/* Dynamic current value */}
-            {data2?.value && (
+            {/* Direct After Value Display (Original UI style) */}
+            {afterValue && (
               <div className="mb-4">
                 <span className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                  {data2.value}
+                  {typeof afterValue === "number" ? afterValue.toLocaleString() : afterValue}
                 </span>
 
-                {data2?.unit && (
+                {afterUnit && (
                   <span className="ml-2 text-xs sm:text-sm text-slate-400 font-medium">
-                    {data2.unit}
+                    {afterUnit}
                   </span>
                 )}
               </div>

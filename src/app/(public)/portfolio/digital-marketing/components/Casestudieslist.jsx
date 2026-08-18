@@ -71,7 +71,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
     return (
         <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-3 hover:shadow-lg hover:shadow-slate-200/60 transition-shadow duration-300">
             {/* Grid layout with 150px width for Image column on desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-[140px_150px_1fr_280px] gap-5 md:gap-6 md:items-stretch">
+           <div className="grid grid-cols-1 md:grid-cols-[120px_200px_1fr_280px] gap-5 md:gap-6 md:items-stretch">
 
                 {/* Brand column */}
                 <div className="flex flex-col items-start gap-3">
@@ -146,13 +146,13 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                 <div
                     className={`rounded-xl border ${style.resultsBorder} ${style.resultsBg} p-3 sm:p-4 w-full h-full flex flex-col justify-center`}
                 >
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-3">
+                    <p className={`text-[10px] font-bold uppercase tracking-wide mb-3 ${style.statText}`}>
                         Results Achieved
                     </p>
 
                     {!businessImpact || businessImpact.length === 0 ? (
                         <div className="flex-1 flex items-center justify-center">
-                            <p className="text-[11px] text-slate-400">
+                            <p className={`text-[11px] ${style.statText}`}>
                                 No data available
                             </p>
                         </div>
