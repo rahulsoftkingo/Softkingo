@@ -112,12 +112,12 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                 {/* Content column */}
                 <div className="min-w-0 flex flex-col justify-between pt-1 md:mt-1">
                     <div>
-                        {/* <span
+                        <span
                             className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full ${style.badgeBg} ${style.badgeText}`}
                         >
-                            <CategoryIcon size={12} />
+                            {/* <CategoryIcon size={12} /> */}
                             {displayCategory}
-                        </span> */}
+                        </span>
 
                         <h3 className="mt-2.5 text-base sm:text-lg font-bold text-slate-900 leading-snug">
                             {study.title}
