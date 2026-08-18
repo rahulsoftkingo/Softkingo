@@ -533,6 +533,28 @@ export default function PortfolioSeoEditPage() {
       },
     }));
 
+
+  // ---------- Category multi-select (derived from form.category) ----------
+  const options = ['SEO', 'PPC', 'Social Media', 'ORM'];
+
+  // form.category is stored as a single comma-separated string
+  const selectedCategories = form.category
+    ? form.category.split(',').map((s) => s.trim()).filter(Boolean)
+    : [];
+
+  const handleSelect = (e) => {
+    const value = e.target.value;
+    if (!value || selectedCategories.includes(value)) return;
+    const updated = [...selectedCategories, value];
+    updateFormValue('category', updated.join(', '));
+    e.target.value = ''; // reset dropdown back to placeholder
+  };
+
+  const handleRemove = (cat) => {
+    const updated = selectedCategories.filter((c) => c !== cat);
+    updateFormValue('category', updated.join(', '));
+  };
+
   // ---------- Build JSON payloads ----------
   function buildHeroStatsJson() {
     return JSON.stringify({
@@ -1108,14 +1130,49 @@ export default function PortfolioSeoEditPage() {
 
 
                   <div>
-                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">Category / Services Tag</label>
-                    <input
-                      name="category"
-                      value={form.category}
-                      onChange={handleChange}
-                      placeholder="Technical SEO • On-Page SEO • Content Strategy • Link Building"
-                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                    />
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                      Category / Services Tag
+                    </label>
+
+                    {/* Outer wrapper mimicking the input border/padding styling */}
+                    <div className="w-full min-h-[38px] rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 flex flex-wrap items-center gap-1.5 focus-within:ring-2 focus-within:ring-sky-500">
+
+                      {/* Selected Tags Display */}
+                      {selectedCategories.map((cat) => (
+                        <span
+                          key={cat}
+                          className="inline-flex items-center gap-1 bg-sky-100 text-sky-800 text-xs font-medium px-2 py-0.5 rounded-md"
+                        >
+                          {cat}
+                          <button
+                            type="button"
+                            onClick={() => handleRemove(cat)}
+                            className="text-sky-600 hover:text-sky-900 focus:outline-none"
+                          >
+                            <X size={12} />
+                          </button>
+                        </span>
+                      ))}
+
+                      {/* Dropdown Select inside the box */}
+                      <select
+                        name="category"
+                        onChange={handleSelect}
+                        defaultValue=""
+                        className="flex-1 bg-transparent text-xs sm:text-sm text-slate-900 focus:outline-none cursor-pointer py-0.5 min-w-[120px]"
+                      >
+                        <option value="" disabled>
+                          {selectedCategories.length === 0 ? "Select options..." : "Add more..."}
+                        </option>
+                        {options
+                          .filter((option) => !selectedCategories.includes(option))
+                          .map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   </div>
 
                   <div>

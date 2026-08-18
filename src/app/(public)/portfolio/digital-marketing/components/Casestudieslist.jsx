@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -11,8 +11,6 @@ import {
     ShieldCheck,
     Sparkles,
 } from "lucide-react";
-
-const filters = ["All", "SEO", "PPC", "Social Media", "ORM"];
 
 const styleRotation = [
     {
@@ -68,15 +66,20 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
     const style = styleRotation[styleIndex % styleRotation.length];
     const CategoryIcon = style.icon;
 
+    // Helper to display category string in badge
+    const displayCategory = Array.isArray(study.category)
+        ? study.category.join(", ")
+        : study.category || "General";
+
     return (
         <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-3 hover:shadow-lg hover:shadow-slate-200/60 transition-shadow duration-300">
             {/* Grid layout with 150px width for Image column on desktop */}
-           <div className="grid grid-cols-1 md:grid-cols-[120px_200px_1fr_280px] gap-5 md:gap-6 md:items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-[120px_200px_1fr_280px] gap-5 md:gap-6 md:items-stretch">
 
                 {/* Brand column */}
                 <div className="flex flex-col items-start gap-3">
                     {study.companyLogo && (
-                        <div className="relative w-[100px] h-[80px] shrink-0 overflow-hidden">
+                        <div className="relative self-start w-[100px] h-[80px] shrink-0 overflow-hidden">
                             <Image
                                 src={study.companyLogo}
                                 alt="company logo"
@@ -109,12 +112,12 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                 {/* Content column */}
                 <div className="min-w-0 flex flex-col justify-between pt-1 md:mt-1">
                     <div>
-                        <span
+                        {/* <span
                             className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full ${style.badgeBg} ${style.badgeText}`}
                         >
                             <CategoryIcon size={12} />
-                            {study.category || "General"}
-                        </span>
+                            {displayCategory}
+                        </span> */}
 
                         <h3 className="mt-2.5 text-base sm:text-lg font-bold text-slate-900 leading-snug">
                             {study.title}
@@ -207,10 +210,43 @@ export default function CaseStudiesList({ data }) {
 
     const [activeFilter, setActiveFilter] = useState("All");
 
-    const visibleStudies =
-        activeFilter === "All"
-            ? caseStudies
-            : caseStudies.filter((study) => study.category === activeFilter);
+    // Extract unique categories dynamically from the data
+    const filters = useMemo(() => {
+        const extractedCategories = new Set();
+
+        caseStudies.forEach((study) => {
+            if (!study.category) return;
+
+            if (Array.isArray(study.category)) {
+                study.category.forEach((cat) => extractedCategories.add(cat.trim()));
+            } else if (typeof study.category === "string") {
+                // Split string if categories are comma-separated
+                study.category.split(",").forEach((cat) => extractedCategories.add(cat.trim()));
+            }
+        });
+
+        return ["All", ...Array.from(extractedCategories)];
+    }, [caseStudies]);
+
+    // Filter logic supporting single strings, arrays, or comma-separated category values
+    const visibleStudies = useMemo(() => {
+        if (activeFilter === "All") return caseStudies;
+
+        return caseStudies.filter((study) => {
+            if (!study.category) return false;
+
+            if (Array.isArray(study.category)) {
+                return study.category.includes(activeFilter);
+            }
+
+            if (typeof study.category === "string") {
+                const categories = study.category.split(",").map((c) => c.trim());
+                return categories.includes(activeFilter);
+            }
+
+            return false;
+        });
+    }, [caseStudies, activeFilter]);
 
     return (
         <section className="bg-white py-8 md:py-12">
@@ -225,8 +261,8 @@ export default function CaseStudiesList({ data }) {
                                         key={f}
                                         onClick={() => setActiveFilter(f)}
                                         className={`min-w-[90px] sm:min-w-[110px] px-5 py-3 rounded-xl border text-sm font-semibold transition-all duration-300 ${activeFilter === f
-                                            ? "bg-gradient-to-b from-sky-400 via-sky-500 to-sky-600 border-transparent text-white"
-                                            : "bg-white border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-600"
+                                                ? "bg-gradient-to-b from-sky-400 via-sky-500 to-sky-600 border-transparent text-white"
+                                                : "bg-white border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-600"
                                             }`}
                                     >
                                         {f}

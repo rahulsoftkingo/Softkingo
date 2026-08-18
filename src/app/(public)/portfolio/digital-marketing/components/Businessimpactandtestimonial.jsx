@@ -6,12 +6,7 @@ import { Quote } from "lucide-react";
 
 export default function BusinessImpactAndTestimonial({ data, data1 }) {
 
-  console.log("BusinessImpactAndTestimonial data:", data);
-  console.log("BusinessImpactAndTestimonial data1:", data1);
-
   const testimonails = data1?.testimonial || [];
-  console.log("show me the testimonails", testimonails)
-
 
   // Safely normalize data
   const businessData = data || {};

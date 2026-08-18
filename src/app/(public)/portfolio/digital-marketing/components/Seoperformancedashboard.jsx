@@ -62,7 +62,6 @@ function Sparkline({ id }) {
 }
 
 export default function SeoPerformanceDashboard({ heading, data = [] }) {
-  console.log("seo performance dashboard", data);
 
   return (
     <section className="py-8 md:pt-0 md:pb-0 bg-white overflow-hidden">

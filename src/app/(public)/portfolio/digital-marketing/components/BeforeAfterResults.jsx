@@ -18,8 +18,7 @@ const metricIcons = [
 ];
 
 export default function BeforeAfterResults({ data }) {
-  console.log("show be the data of before and results jsx", data);
-
+  
   const heading = data?.heading || "Before vs After Results";
   const description = data?.description || "";
 
