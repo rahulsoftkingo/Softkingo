@@ -74,7 +74,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
     return (
         <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-3 hover:shadow-lg hover:shadow-slate-200/60 transition-shadow duration-300">
             {/* Grid layout with 150px width for Image column on desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-[120px_200px_1fr_280px] gap-5 md:gap-6 md:items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-[120px_200px_1fr_320px] gap-5 md:gap-6 md:items-stretch">
 
                 {/* Brand column */}
                 <div className="flex flex-col items-start gap-3">
@@ -95,7 +95,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                 </div>
 
                 {/* Image column - 150px Width */}
-                <div className="relative w-full h-48 sm:h-50 md:h-56 rounded-xl overflow-hidden bg-slate-100 shrink-0">
+                <div className="relative w-full h-48 sm:h-50 md:h-64 rounded-xl overflow-hidden bg-slate-100 shrink-0">
                     {study.image && (
                         <Image
                             src={study.image}
@@ -112,12 +112,20 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                 {/* Content column */}
                 <div className="min-w-0 flex flex-col justify-between pt-1 md:mt-1">
                     <div>
-                        <span
-                            className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full ${style.badgeBg} ${style.badgeText}`}
-                        >
-                            {/* <CategoryIcon size={12} /> */}
-                            {displayCategory}
-                        </span>
+                        <div className="flex flex-wrap gap-2">
+                            {displayCategory.split(",").map((category, index) => {
+                                const categoryName = category.trim();
+
+                                return (
+                                    <span
+                                        key={index}
+                                        className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full ${style.badgeBg} ${style.badgeText}`}
+                                    >
+                                        {categoryName}
+                                    </span>
+                                );
+                            })}
+                        </div>
 
                         <h3 className="mt-2.5 text-base sm:text-lg font-bold text-slate-900 leading-snug">
                             {study.title}
@@ -149,7 +157,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                 <div
                     className={`rounded-xl border ${style.resultsBorder} ${style.resultsBg} p-3 sm:p-4 w-full h-full flex flex-col justify-center`}
                 >
-                    <p className={`text-[10px] font-bold uppercase tracking-wide mb-3 ${style.statText}`}>
+                    <p className={`text-[12px] font-extrabold uppercase tracking-wide mb-3 ${style.statText}`}>
                         Results Achieved
                     </p>
 
@@ -167,12 +175,12 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                                     className="rounded-lg border border-white/80 bg-white/80 px-2 py-2 min-h-[70px] flex flex-col items-center justify-center text-center"
                                 >
                                     <p
-                                        className={`text-sm sm:text-base font-extrabold leading-none ${style.statText}`}
+                                        className={`text-medium sm:text-base font-extrabold leading-none ${style.statText}`}
                                     >
                                         {stat.value}
                                     </p>
 
-                                    <p className="mt-1 text-[9px] sm:text-[10px] text-slate-500 font-medium leading-tight">
+                                    <p className="mt-2 text-[10px] sm:text-[10px] text-slate-900 font-medium font-extrabold leading-tight">
                                         {stat.label}
                                     </p>
                                 </div>
@@ -252,7 +260,7 @@ export default function CaseStudiesList({ data }) {
         <section className="bg-white py-8 md:py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
 
-                <div className="relative z-10 -mt-14 px-4 sm:px-6">
+                {/* <div className="relative z-10 -mt-14 px-4 sm:px-6">
                     <div className="mx-auto max-w-7xl rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-[0_15px_50px_rgba(15,23,42,0.08)]">
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
                             <div className="flex flex-wrap gap-3">
@@ -261,8 +269,8 @@ export default function CaseStudiesList({ data }) {
                                         key={f}
                                         onClick={() => setActiveFilter(f)}
                                         className={`min-w-[90px] sm:min-w-[110px] px-5 py-3 rounded-xl border text-sm font-semibold transition-all duration-300 ${activeFilter === f
-                                                ? "bg-gradient-to-b from-sky-400 via-sky-500 to-sky-600 border-transparent text-white"
-                                                : "bg-white border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-600"
+                                            ? "bg-gradient-to-b from-sky-400 via-sky-500 to-sky-600 border-transparent text-white"
+                                            : "bg-white border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-600"
                                             }`}
                                     >
                                         {f}
@@ -271,7 +279,7 @@ export default function CaseStudiesList({ data }) {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="mt-8 space-y-4">
                     {visibleStudies.length === 0 ? (
