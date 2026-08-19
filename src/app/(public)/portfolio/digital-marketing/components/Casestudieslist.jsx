@@ -141,7 +141,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                             {study.tagline || study.description || "No description available."}
                         </p>
 
-                        {/* <Link
+                        <Link
                             href={`/portfolio/digital-marketing/${study.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -149,7 +149,7 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                         >
                             View Case Study
                             <ArrowRight size={14} />
-                        </Link> */}
+                        </Link>
                     </div>
                 </div>
 

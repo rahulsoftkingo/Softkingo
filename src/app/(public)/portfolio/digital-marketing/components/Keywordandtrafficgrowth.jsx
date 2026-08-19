@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { ArrowUp } from "lucide-react";
+import { ArrowUp, ChevronDown } from "lucide-react";
 import {
-  AreaChart,
-  Area,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -12,19 +12,23 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function CustomTooltip({ active, payload }) {
+function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
-    const value = Number(payload[0].value);
-
     return (
-      <div className="rounded-lg bg-white border border-slate-100 shadow-lg px-3 py-2">
-        <p className="text-sm font-bold text-slate-900">
-          {value.toLocaleString()}
-        </p>
-
-        <p className="text-[11px] text-slate-400 font-medium">
-          Visits/Month
-        </p>
+      <div className="rounded-lg bg-white border border-slate-100 shadow-lg px-3 py-2 space-y-1">
+        <p className="text-[11px] text-slate-400 font-medium">{label}</p>
+        {payload.map((entry) => (
+          <p
+            key={entry.dataKey}
+            className="text-sm font-bold"
+            style={{ color: entry.color }}
+          >
+            {Number(entry.value).toLocaleString()}{" "}
+            <span className="text-[11px] font-medium text-slate-400">
+              {entry.dataKey === "clicks" ? "Clicks" : "Impressions"}
+            </span>
+          </p>
+        ))}
       </div>
     );
   }
@@ -32,24 +36,37 @@ function CustomTooltip({ active, payload }) {
   return null;
 }
 
+// "66K" / "1.34M" style values -> plain numbers for K-formatting axis ticks
+function formatAxisTick(value) {
+  if (value >= 1000000) return `${(value / 1000000).toFixed(value % 1000000 === 0 ? 0 : 1)}M`;
+  if (value >= 1000) return `${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}K`;
+  return value;
+}
+
 export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
   // data = Keyword Ranking Growth
-  // data3 = Organic Traffic Growth Object
+  // data2 / data3 = Organic Traffic Growth Object (GSC-style: stats + series[{month, clicks, impressions}])
 
   const keywordRows = data?.rows || [];
 
-  // data3 prioritize karenge graph payload ke liye
-  const chartSource = data3 || data2;
+  const chartSource = data2 || data3;
 
   const trafficData =
     chartSource?.series?.map((item) => ({
       month: item.month?.trim(),
-      visits: Number(item.value),
+      clicks: Number(item.clicks) || 0,
+      impressions: Number(item.impressions) || 0,
     })) || [];
 
-  // After ki main value dikhane ke liye extraction
-  const afterValue = chartSource?.after?.value || chartSource?.value;
-  const afterUnit = chartSource?.after?.unit || chartSource?.unit;
+  const stats = chartSource?.stats || [];
+  const period = chartSource?.period || "Monthly";
+
+  // Match top stat card backgrounds with Sky Blue & Pink
+  const cardTheme = [
+    { bg: "bg-sky-500", text: "text-white", sub: "text-sky-100" },
+    { bg: "bg-pink-500", text: "text-white", sub: "text-pink-100" },
+  ];
+  let coloredIndex = 0;
 
   return (
     <section className="py-8 md:py-10 bg-white overflow-hidden">
@@ -58,7 +75,7 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
 
           {/* LEFT: Keyword Ranking Growth */}
           <div className="rounded-xl md:rounded-2xl border border-slate-100 bg-white p-5 sm:p-7">
-            
+
             <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-4 sm:mb-6">
               {data?.heading || "Keyword Ranking Growth"}
             </h3>
@@ -99,115 +116,139 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
           </div>
 
           {/* RIGHT: Organic Traffic Growth */}
-          <div className="rounded-xl md:rounded-2xl border border-slate-100 bg-white p-5 sm:p-7">
+          <div className="rounded-xl md:rounded-2xl border border-slate-100 bg-white overflow-hidden">
 
-            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2">
-              {chartSource?.title || "Organic Traffic Growth"}
-            </h3>
+            {/* Stat cards row + period dropdown */}
+            <div className="flex flex-col sm:flex-row sm:items-stretch border-b border-slate-100">
+              <div className="flex flex-1 flex-wrap sm:flex-nowrap">
+                {stats.slice(0, 2).map((stat, idx) => {
+                  const isColored = stat.checked && coloredIndex < 2;
+                  const theme = isColored ? cardTheme[coloredIndex] : null;
+                  if (isColored) coloredIndex += 1;
 
-            {/* Direct After Value Display (Original UI style) */}
-            {afterValue && (
-              <div className="mb-4">
-                <span className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                  {typeof afterValue === "number" ? afterValue.toLocaleString() : afterValue}
-                </span>
+                  return (
+                    <div
+                      key={idx}
+                      className={`flex-1 min-w-[130px] px-4 py-3 sm:py-4 border-r border-slate-100 last:border-r-0 ${theme ? theme.bg : "bg-white"
+                        }`}
+                    >
+                      <label className="flex items-center gap-1.5 cursor-default">
+                        <span
+                          className={`h-4 w-4 rounded-[4px] border flex items-center justify-center shrink-0 ${stat.checked
+                              ? "bg-white/20 border-white"
+                              : "border-slate-300"
+                            }`}
+                        >
+                          {stat.checked && (
+                            <svg
+                              viewBox="0 0 16 16"
+                              className={`h-2.5 w-2.5 ${theme ? "fill-white" : "fill-slate-500"}`}
+                            >
+                              <path d="M13.5 3.5 6 11 2.5 7.5l1-1L6 9l6.5-6.5z" />
+                            </svg>
+                          )}
+                        </span>
+                        <span
+                          className={`text-xs sm:text-sm font-medium truncate ${theme ? theme.sub : "text-slate-500"
+                            }`}
+                        >
+                          {stat.label}
+                        </span>
+                      </label>
+                      <p
+                        className={`mt-1.5 text-xl sm:text-2xl font-bold ${theme ? theme.text : "text-slate-900"
+                          }`}
+                      >
+                        {stat.value}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
 
-                {afterUnit && (
-                  <span className="ml-2 text-xs sm:text-sm text-slate-400 font-medium">
-                    {afterUnit}
-                  </span>
+              {/* <div className="flex items-center justify-end px-4 py-3 sm:py-0 shrink-0">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700"
+                >
+                  {period}
+                  <ChevronDown size={14} className="text-slate-400" />
+                </button>
+              </div> */}
+            </div>
+
+            {/* Chart */}
+            <div className="p-5 sm:p-7">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs sm:text-sm font-medium text-slate-500">Clicks</span>
+                <span className="text-xs sm:text-sm font-medium text-slate-500">Impressions</span>
+              </div>
+
+              <div className="h-64 sm:h-72">
+                {trafficData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={trafficData}
+                      margin={{ top: 10, right: 10, left: -10, bottom: 0 }}
+                    >
+                      <CartesianGrid vertical={false} stroke="#f1f5f9" />
+
+                      <XAxis
+                        dataKey="month"
+                        tickLine={false}
+                        axisLine={{ stroke: "#334155" }}
+                        tick={{ fontSize: 11, fill: "#94a3b8" }}
+                        interval="preserveStartEnd"
+                      />
+
+                      <YAxis
+                        yAxisId="clicks"
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{ fontSize: 11, fill: "#94a3b8" }}
+                        tickFormatter={formatAxisTick}
+                      />
+
+                      <YAxis
+                        yAxisId="impressions"
+                        orientation="right"
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{ fontSize: 11, fill: "#94a3b8" }}
+                        tickFormatter={formatAxisTick}
+                      />
+
+                      <Tooltip content={<CustomTooltip />} />
+
+                      {/* Clicks Line: Sky Blue */}
+                      <Line
+                        yAxisId="clicks"
+                        type="monotone"
+                        dataKey="clicks"
+                        stroke="#0ea5e9"
+                        strokeWidth={2.5}
+                        dot={false}
+                        activeDot={{ r: 5 }}
+                      />
+
+                      {/* Impressions Line: Pink */}
+                      <Line
+                        yAxisId="impressions"
+                        type="monotone"
+                        dataKey="impressions"
+                        stroke="#ec4899"
+                        strokeWidth={2.5}
+                        dot={false}
+                        activeDot={{ r: 5 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-sm text-slate-400">
+                    No traffic data available.
+                  </div>
                 )}
               </div>
-            )}
-
-            <div className="h-64 sm:h-72">
-              {trafficData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
-                    data={trafficData}
-                    margin={{
-                      top: 10,
-                      right: 10,
-                      left: -10,
-                      bottom: 0,
-                    }}
-                  >
-                    <defs>
-                      <linearGradient
-                        id="trafficFill"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="0%"
-                          stopColor="#0ea5e9"
-                          stopOpacity={0.25}
-                        />
-
-                        <stop
-                          offset="100%"
-                          stopColor="#0ea5e9"
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    </defs>
-
-                    <CartesianGrid
-                      vertical={false}
-                      stroke="#f1f5f9"
-                    />
-
-                    <XAxis
-                      dataKey="month"
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{
-                        fontSize: 11,
-                        fill: "#94a3b8",
-                      }}
-                      interval="preserveStartEnd"
-                    />
-
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{
-                        fontSize: 11,
-                        fill: "#94a3b8",
-                      }}
-                      tickFormatter={(value) =>
-                        value >= 1000
-                          ? `${value / 1000}K`
-                          : value
-                      }
-                    />
-
-                    <Tooltip content={<CustomTooltip />} />
-
-                    <Area
-                      type="monotone"
-                      dataKey="visits"
-                      stroke="#0ea5e9"
-                      strokeWidth={2.5}
-                      fill="url(#trafficFill)"
-                      dot={{
-                        r: 3,
-                        fill: "#0ea5e9",
-                        strokeWidth: 0,
-                      }}
-                      activeDot={{
-                        r: 5,
-                      }}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-full flex items-center justify-center text-sm text-slate-400">
-                  No traffic data available.
-                </div>
-              )}
             </div>
           </div>
 
