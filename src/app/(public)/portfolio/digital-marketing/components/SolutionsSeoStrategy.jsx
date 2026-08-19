@@ -25,7 +25,7 @@ export default function SolutionsSeoStrategy({ data }) {
   const cards = Array.isArray(data?.cards) ? data.cards : [];
 
   return (
-    <section className="md:pb-12 pt-3 bg-[#F1F9FF]">
+    <section className="md:pb-12 pt-5 bg-[#F1F9FF]">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}

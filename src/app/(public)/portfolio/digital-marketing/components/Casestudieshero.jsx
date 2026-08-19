@@ -61,7 +61,7 @@ export default function CaseStudiesHero() {
     <section className="relative bg-[#080d24] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-6 pb-12 lg:pb-16">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-8">
+        <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium mb-5 mt-8">
           <Link href="/" className="hover:text-sky-400 transition-colors">
             Home
           </Link>

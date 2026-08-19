@@ -188,14 +188,14 @@ export default function PortfolioSeoEditPage() {
     // Tools & Technologies (toolsJson)
     toolsHeading: 'Tools & Technologies',
     tools: [
-      { name: 'Google Search Console', logo: '' },
-      { name: 'Google Analytics', logo: '' },
-      { name: 'Google Business Profile', logo: '' },
-      { name: 'ahrefs', logo: '' },
-      { name: 'SEMrush', logo: '' },
-      { name: 'Screaming Frog', logo: '' },
-      { name: 'PageSpeed Insights', logo: '' },
-      { name: 'Google Tag Manager', logo: '' },
+      { name: 'Google Search Console', logo: '/uploads/admin/portfolio-seo/google-search-console.webp' },
+      { name: 'Google Analytics', logo: '/uploads/admin/portfolio-seo/google-analytics.webp' },
+      { name: 'Keyword Planner', logo: '/uploads/admin/portfolio-seo/keyword-planner.webp' },
+      { name: 'Google Tag Manager', logo: '/uploads/admin/portfolio-seo/google-tag-manager.webp' },
+      { name: 'SEMrush', logo: '/uploads/admin/portfolio-seo/semrush-logo.webp' },
+      { name: 'Screaming Frog', logo: '/uploads/admin/portfolio-seo/screaming-frog-logo.webp' },
+      { name: 'PageSpeed Insights', logo: '/uploads/admin/portfolio-seo/google-pagespeed.webp' },
+      { name: 'ahrefs', logo: '/uploads/admin/portfolio-seo/ahrefs-logo.webp' },
     ],
     // Client testimonial shown alongside Tools & Tech
     testimonial: {
@@ -2277,7 +2277,7 @@ export default function PortfolioSeoEditPage() {
                           <input
                             value={tool.logo}
                             onChange={(e) => updateArrayItem('tools', idx, 'logo', e.target.value)}
-                            placeholder="/images/tools/gsc.png"
+                            placeholder={tool.logo ? '' : 'Logo URL (optional)'}
                             className="flex-1 rounded-lg border border-slate-200 px-2 sm:px-2.5 py-1.5 text-[10px] focus:outline-none focus:ring-2 focus:ring-sky-500"
                           />
                           {tool.logo && (

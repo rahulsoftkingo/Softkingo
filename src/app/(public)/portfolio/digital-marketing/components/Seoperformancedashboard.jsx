@@ -66,7 +66,7 @@ export default function SeoPerformanceDashboard({ heading, data = [] }) {
   return (
     <section className="py-8 md:pt-0 md:pb-0 bg-white overflow-hidden">
       <div className="mx-auto px-4 sm:px-8 lg:px-20">
-        <div className="rounded-xl md:rounded-2xl border border-slate-100 bg-[#F1F9FF] p-3 sm:p-3">
+        <div className="rounded-xl md:rounded-2xl border border-slate-100 bg-[#F1F9FF] p-3 sm:p-3 sm:pt-5">
           
           <h3 className="text-center text-base sm:text-lg font-bold text-slate-900 mb-6 sm:mb-8">
             {heading} <span className="text-sky-500">Dashboard</span>

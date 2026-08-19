@@ -168,11 +168,11 @@ function CaseStudyCard({ study, businessImpact, styleIndex }) {
                             </p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-2 gap-x-2 gap-y-3">
+                        <div className="grid grid-cols-2 gap-x-2 gap-y-2">
                             {businessImpact.slice(0, 4).map((stat, i) => (
                                 <div
                                     key={i}
-                                    className="rounded-lg border border-white/80 bg-white/80 px-2 py-2 min-h-[70px] flex flex-col items-center justify-center text-center"
+                                    className="rounded-lg border border-slate-100 bg-white/80 px-2 py-2 min-h-[70px] flex flex-col items-center justify-center text-center"
                                 >
                                     <p
                                         className={`text-medium sm:text-base font-extrabold leading-none ${style.statText}`}
