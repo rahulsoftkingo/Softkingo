@@ -143,9 +143,16 @@ export default function PortfolioSeoEditPage() {
     keywordRankingHeading: 'Keyword Ranking Growth',
     keywordRankings: [{ keyword: '', before: '', after: '' }],
     trafficChartHeading: 'Organic Traffic Growth (6 Months)',
-    trafficChartValue: '24,680',
-    trafficChartUnit: 'Visits/Month',
-    trafficChartSeries: [{ month: 'Jan', value: '' }],
+    trafficChartPeriod: 'Monthly',
+    trafficChartStats: [
+      { label: 'Total clicks', value: '66K', checked: true },
+      { label: 'Total impressions', value: '1.34M', checked: true },
+      { label: 'Average CTR', value: '4.9%', checked: false },
+      { label: 'Average position', value: '8.7', checked: false },
+    ],
+    trafficChartSeries: [
+      { month: 'May 2026', clicks: '', impressions: '' },
+    ],
 
     // Technical SEO (technicalSeoJson)
     technicalHeading: 'Technical SEO Improvements',
@@ -315,8 +322,8 @@ export default function PortfolioSeoEditPage() {
           keywordRankingHeading: dashboard.keywordRanking?.heading || prev.keywordRankingHeading,
           keywordRankings: dashboard.keywordRanking?.rows?.length ? dashboard.keywordRanking.rows : prev.keywordRankings,
           trafficChartHeading: dashboard.trafficChart?.heading || prev.trafficChartHeading,
-          trafficChartValue: dashboard.trafficChart?.value ?? prev.trafficChartValue,
-          trafficChartUnit: dashboard.trafficChart?.unit || prev.trafficChartUnit,
+          trafficChartPeriod: dashboard.trafficChart?.period || prev.trafficChartPeriod,
+          trafficChartStats: dashboard.trafficChart?.stats?.length ? dashboard.trafficChart.stats : prev.trafficChartStats,
           trafficChartSeries: dashboard.trafficChart?.series?.length ? dashboard.trafficChart.series : prev.trafficChartSeries,
 
           technicalHeading: technical.heading || prev.technicalHeading,
@@ -624,8 +631,8 @@ export default function PortfolioSeoEditPage() {
       },
       trafficChart: {
         heading: form.trafficChartHeading,
-        value: form.trafficChartValue,
-        unit: form.trafficChartUnit,
+        period: form.trafficChartPeriod,
+        stats: (form.trafficChartStats || []).filter((s) => s.label),
         series: (form.trafficChartSeries || []).filter((s) => s.month),
       },
     });
@@ -1905,9 +1912,11 @@ export default function PortfolioSeoEditPage() {
                 </div>
 
                 {/* Traffic growth chart */}
+                {/* Traffic growth chart (Search Console style) */}
                 <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-sky-50 border border-sky-200 space-y-3 sm:space-y-4">
-                  <h4 className="text-xs sm:text-sm font-semibold text-sky-900">Organic Traffic Growth Chart (6 Months)</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                  <h4 className="text-xs sm:text-sm font-semibold text-sky-900">Organic Traffic Growth Chart</h4>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                     <input
                       name="trafficChartHeading"
                       value={form.trafficChartHeading}
@@ -1916,27 +1925,56 @@ export default function PortfolioSeoEditPage() {
                       className="rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500"
                     />
                     <input
-                      name="trafficChartValue"
-                      value={form.trafficChartValue}
+                      name="trafficChartPeriod"
+                      value={form.trafficChartPeriod}
                       onChange={handleChange}
-                      placeholder="24,680"
-                      className="rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-sky-500"
-                    />
-                    <input
-                      name="trafficChartUnit"
-                      value={form.trafficChartUnit}
-                      onChange={handleChange}
-                      placeholder="Visits/Month"
+                      placeholder="Monthly"
                       className="rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500"
                     />
                   </div>
 
+                  {/* 4 stat cards */}
+                  <div>
+                    <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-2">
+                      Stat Cards (Total clicks, Total impressions, Average CTR, Average position)
+                    </label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      {form.trafficChartStats.map((stat, idx) => (
+                        <div key={idx} className="p-2.5 rounded-lg border border-slate-200 bg-white space-y-1.5">
+                          <label className="flex items-center gap-1.5">
+                            <input
+                              type="checkbox"
+                              checked={!!stat.checked}
+                              onChange={(e) => updateArrayItem('trafficChartStats', idx, 'checked', e.target.checked)}
+                              className="h-3 w-3"
+                            />
+                            <input
+                              value={stat.label}
+                              onChange={(e) => updateArrayItem('trafficChartStats', idx, 'label', e.target.value)}
+                              placeholder="Total clicks"
+                              className="flex-1 rounded border border-slate-200 px-1.5 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-sky-500"
+                            />
+                          </label>
+                          <input
+                            value={stat.value}
+                            onChange={(e) => updateArrayItem('trafficChartStats', idx, 'value', e.target.value)}
+                            placeholder="66K"
+                            className="w-full rounded-lg border border-slate-200 px-2 py-1.5 text-sm font-bold text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Monthly points: month + clicks + impressions */}
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-[10px] xs:text-xs font-medium text-slate-700">Monthly Data Points</label>
+                      <label className="block text-[10px] xs:text-xs font-medium text-slate-700">
+                        Monthly Data Points (Clicks + Impressions)
+                      </label>
                       <button
                         type="button"
-                        onClick={() => addArrayItem('trafficChartSeries', { month: '', value: '' })}
+                        onClick={() => addArrayItem('trafficChartSeries', { month: '', clicks: '', impressions: '' })}
                         className="inline-flex items-center gap-1 px-2 py-1 rounded bg-white border border-sky-200 text-sky-700 hover:bg-sky-100 text-[10px] font-medium transition-colors"
                       >
                         <Plus className="h-3 w-3" />
@@ -1956,14 +1994,20 @@ export default function PortfolioSeoEditPage() {
                           <input
                             value={pt.month}
                             onChange={(e) => updateArrayItem('trafficChartSeries', idx, 'month', e.target.value)}
-                            placeholder="Jan"
+                            placeholder="May 2026"
                             className="w-full rounded border border-slate-200 px-1.5 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-sky-500"
                           />
                           <input
-                            value={pt.value}
-                            onChange={(e) => updateArrayItem('trafficChartSeries', idx, 'value', e.target.value)}
-                            placeholder="8420"
-                            className="w-full rounded border border-slate-200 px-1.5 py-1 text-[10px] focus:outline-none focus:ring-1 focus:ring-sky-500"
+                            value={pt.clicks}
+                            onChange={(e) => updateArrayItem('trafficChartSeries', idx, 'clicks', e.target.value)}
+                            placeholder="Clicks e.g. 21000"
+                            className="w-full rounded border border-blue-200 px-1.5 py-1 text-[10px] text-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          />
+                          <input
+                            value={pt.impressions}
+                            onChange={(e) => updateArrayItem('trafficChartSeries', idx, 'impressions', e.target.value)}
+                            placeholder="Impressions e.g. 620000"
+                            className="w-full rounded border border-purple-200 px-1.5 py-1 text-[10px] text-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-500"
                           />
                         </div>
                       ))}
