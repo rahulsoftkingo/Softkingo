@@ -225,7 +225,7 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
                         yAxisId="clicks"
                         type="monotone"
                         dataKey="clicks"
-                        stroke="#0ea5e9"
+                        stroke="#50c6fd"
                         strokeWidth={2.5}
                         dot={false}
                         activeDot={{ r: 5 }}
@@ -236,11 +236,12 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
                         yAxisId="impressions"
                         type="monotone"
                         dataKey="impressions"
-                        stroke="#ec4899"
+                        stroke="#ff8dc6"
                         strokeWidth={2.5}
                         dot={false}
                         activeDot={{ r: 5 }}
                       />
+                      
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (

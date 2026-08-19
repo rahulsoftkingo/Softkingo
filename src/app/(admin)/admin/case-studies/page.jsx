@@ -680,7 +680,7 @@ export default function CaseStudiesPage() {
   const columns = [
     {
       key: 'digital',
-      label: 'Digital',
+      label: 'Software',
       icon: Smartphone,
       color: 'text-sky-600',
       bg: 'bg-sky-50',
@@ -690,7 +690,7 @@ export default function CaseStudiesPage() {
     },
     {
       key: 'seo',
-      label: 'Portfolio SEO',
+      label: 'Digital Marketing',
       icon: SearchCheck,
       color: 'text-emerald-600',
       bg: 'bg-emerald-50',
