@@ -2277,7 +2277,7 @@ export default function PortfolioSeoEditPage() {
                           <input
                             value={tool.logo}
                             onChange={(e) => updateArrayItem('tools', idx, 'logo', e.target.value)}
-                            placeholder={tool.logo ? '' : 'Logo URL (optional)'}
+                            placeholder={tool.logo}
                             className="flex-1 rounded-lg border border-slate-200 px-2 sm:px-2.5 py-1.5 text-[10px] focus:outline-none focus:ring-2 focus:ring-sky-500"
                           />
                           {tool.logo && (
