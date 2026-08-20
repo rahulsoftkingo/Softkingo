@@ -22,6 +22,9 @@ export default async function Page({ params }) {
   const challengeJson = JSON.parse(caseStudy.challengeJson || '{}');
   const solutionJson = JSON.parse(caseStudy.solutionJson || '{}');
   const performanceJson = JSON.parse(caseStudy.performanceJson || '{}');  
+  const achievementsJson = JSON.parse(caseStudy.achievementsJson || '{}'); 
+
+  
 
   const heroStatsJson = JSON.parse(caseStudy.heroStatsJson || '{}');
   const detailsJson = JSON.parse(caseStudy.detailsJson || '{}');
@@ -38,7 +41,9 @@ export default async function Page({ params }) {
         projectOverviewJson={projectOverviewJson}
          challengeJson={ challengeJson }
          solutionJson={solutionJson}
-         performanceJson={performanceJson}/>
+         performanceJson={performanceJson}
+         achievementsJson={achievementsJson}
+         />
       <PPCTestimonialRow data={testimonialJson} />
       <PPCCTABanner />
     </div>

@@ -126,9 +126,9 @@ function CustomTooltip({ active, payload, label }) {
 
 // ---- Main component ---------------------------------------------------
 
-export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson, solutionJson, performanceJson }) {
+export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson, solutionJson, performanceJson, achievementsJson }) {
 
-  console.log("content of the performanceJson", performanceJson)
+  console.log("content of the performanceJson", achievementsJson)
 
 
   const performanceData = performanceJson
@@ -415,19 +415,20 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
               </div>
 
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-                {achievements.map((a, i) => {
-                  const Icon = a.icon;
+                {achievementsJson?.items?.map((a, i) => {
                   return (
                     <div
                       key={i}
                       className="rounded-xl border border-slate-100 flex flex-col items-center text-center gap-2 py-4 px-2"
                     >
                       <span className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500 text-white">
-                        <Icon size={16} />
+                        <TrendingUp size={16} />
                       </span>
+
                       <p className="text-base sm:text-lg font-extrabold text-slate-900">
                         {a.value}
                       </p>
+
                       <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium leading-tight">
                         {a.label}
                       </p>
