@@ -50,6 +50,92 @@ const DEFAULT_CAMPAIGN = { name: '', link: '', clicks: '', conversions: '', cpl:
 const DEFAULT_PLATFORM = { name: '', icon: '' };
 const DEFAULT_FEATURE = { icon: 'BarChart3', title: '', description: '' };
 
+
+// Small reusable "labeled input" for compact array rows
+const MiniInput = ({ label, value, onChange, placeholder, className = '' }) => (
+  <div className={className}>
+    <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1 sm:mb-1.5">
+      {label}
+    </label>
+    <input
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      className="w-full rounded-lg border border-slate-200 bg-white px-2 sm:px-2.5 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+    />
+  </div>
+);
+
+function ImageUploadField({ label, name, value, placeholder, uploadingField, onChange, onFileUpload, onBrowse, onPreview }) {
+  return (
+    <div className="space-y-2">
+      <label className="block text-xs sm:text-sm font-medium text-slate-700">{label}</label>
+      <input
+        type="text"
+        name={name}
+        value={value || ''}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+      />
+
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 cursor-pointer transition-colors">
+          {uploadingField === name ? (
+            <>
+              <Loader2 className="h-3 w-3 animate-spin" />
+              <span className="hidden xs:inline">Uploading...</span>
+            </>
+          ) : (
+            <>
+              <Upload className="h-3 w-3" />
+              <span className="hidden sm:inline">Upload</span>
+              <span className="sm:hidden">📤</span>
+            </>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => onFileUpload(e, name)}
+            disabled={uploadingField === name}
+          />
+        </label>
+
+        <button
+          type="button"
+          onClick={() => onBrowse(name)}
+          className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 transition-colors"
+        >
+          <Folder className="h-3 w-3" />
+          <span className="hidden sm:inline">Browse</span>
+          <span className="sm:hidden">📁</span>
+        </button>
+
+        {value && uploadingField !== name && (
+          <>
+            <button
+              type="button"
+              onClick={() => onPreview(value)}
+              className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-[10px] sm:text-xs font-medium text-emerald-700 transition-colors"
+            >
+              <ZoomIn className="h-3 w-3" />
+              <span className="hidden sm:inline">Preview</span>
+              <span className="sm:hidden">🔍</span>
+            </button>
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <div className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
+                <img src={value} alt="preview" className="h-full w-full object-cover" />
+              </div>
+              <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-emerald-500" />
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function PortfolioPpcEditPage() {
   const router = useRouter();
   const params = useParams();
@@ -612,88 +698,8 @@ export default function PortfolioPpcEditPage() {
     );
   }
 
-  const ImageUploadField = ({ label, name, value, placeholder }) => (
-    <div className="space-y-2">
-      <label className="block text-xs sm:text-sm font-medium text-slate-700">{label}</label>
-      <input
-        type="text"
-        name={name}
-        value={value || ''}
-        onChange={handleChange}
-        placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
-      />
 
-      <div className="flex flex-wrap items-center gap-2">
-        <label className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 cursor-pointer transition-colors">
-          {uploadingField === name ? (
-            <>
-              <Loader2 className="h-3 w-3 animate-spin" />
-              <span className="hidden xs:inline">Uploading...</span>
-            </>
-          ) : (
-            <>
-              <Upload className="h-3 w-3" />
-              <span className="hidden sm:inline">Upload</span>
-              <span className="sm:hidden">📤</span>
-            </>
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => handleFileUpload(e, name)}
-            disabled={uploadingField === name}
-          />
-        </label>
 
-        <button
-          type="button"
-          onClick={() => openImageBrowser(name)}
-          className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 transition-colors"
-        >
-          <Folder className="h-3 w-3" />
-          <span className="hidden sm:inline">Browse</span>
-          <span className="sm:hidden">📁</span>
-        </button>
-
-        {value && uploadingField !== name && (
-          <>
-            <button
-              type="button"
-              onClick={() => setImagePreview(value)}
-              className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-[10px] sm:text-xs font-medium text-emerald-700 transition-colors"
-            >
-              <ZoomIn className="h-3 w-3" />
-              <span className="hidden sm:inline">Preview</span>
-              <span className="sm:hidden">🔍</span>
-            </button>
-            <div className="flex items-center gap-1 sm:gap-1.5">
-              <div className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
-                <img src={value} alt="preview" className="h-full w-full object-cover" />
-              </div>
-              <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-emerald-500" />
-            </div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-
-  // Small reusable "labeled input" for compact array rows
-  const MiniInput = ({ label, value, onChange, placeholder, className = '' }) => (
-    <div className={className}>
-      <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1 sm:mb-1.5">
-        {label}
-      </label>
-      <input
-        value={value || ''}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-200 bg-white px-2 sm:px-2.5 py-1.5 sm:py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-      />
-    </div>
-  );
 
   const ImageBrowserModal = () => {
     if (!showImageBrowser) return null;
@@ -910,9 +916,8 @@ export default function PortfolioPpcEditPage() {
               <p className="text-xs sm:text-sm text-slate-500 truncate mt-0.5">
                 {form.title || 'Untitled'}
                 {form.status && (
-                  <span className={`ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide ${
-                    form.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
-                  }`}>
+                  <span className={`ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide ${form.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                    }`}>
                     {form.status}
                   </span>
                 )}
@@ -1859,7 +1864,17 @@ export default function PortfolioPpcEditPage() {
                     </p>
                   </div>
 
-                  <ImageUploadField label="Social Share Image (OG Image)" name="seoImage" value={form.seoImage} placeholder="/images/portfolio-ppc/urbandrive-og.jpg" />
+                  <ImageUploadField
+                    label="Social Share Image (OG Image)"
+                    name="seoImage"
+                    value={form.seoImage}
+                    placeholder="/images/portfolio-ppc/urbandrive-og.jpg"
+                    uploadingField={uploadingField}
+                    onChange={handleChange}
+                    onFileUpload={handleFileUpload}
+                    onBrowse={openImageBrowser}
+                    onPreview={setImagePreview}
+                  />
 
                   <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-sky-50 border border-sky-200">
                     <h4 className="text-[10px] xs:text-xs font-semibold text-sky-900 mb-2 sm:mb-3">Google Search Preview</h4>

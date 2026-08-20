@@ -811,7 +811,7 @@ export default function CaseStudiesPage() {
               {/* 3. PPC Button */}
               <button
                 type="button"
-                onClick={() => router.push('#')}
+                onClick={() => router.push('/admin/portfolio-ppc/new')}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg hover:bg-white/25 hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
                 <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />

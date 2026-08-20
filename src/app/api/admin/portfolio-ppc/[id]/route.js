@@ -15,122 +15,198 @@ function parseId(idParam) {
 }
 
 export async function GET(request, { params }) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-  }
+  try {
+    const session = await getServerSession(authOptions);
 
-  const id = parseId(params.id);
-  if (id === null) {
-    return NextResponse.json({ message: 'Invalid id.' }, { status: 400 });
-  }
+    if (!session) {
+      return NextResponse.json(
+        { message: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
 
-  const row = await prisma.portfolioPpc.findUnique({ where: { id } });
-  if (!row) {
-    return NextResponse.json({ message: 'Not found.' }, { status: 404 });
-  }
+    const { id: rawId } = await params;
+    const id = parseId(rawId);
 
-  return NextResponse.json(row);
+    if (id === null) {
+      return NextResponse.json(
+        { message: 'Invalid id.' },
+        { status: 400 }
+      );
+    }
+
+    const row = await prisma.portfolioPpc.findUnique({
+      where: { id },
+    });
+
+    if (!row) {
+      return NextResponse.json(
+        { message: 'Not found.' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(row);
+  } catch (error) {
+    console.error('GET /portfolio-ppc/[id] error:', error);
+
+    return NextResponse.json(
+      { message: 'Internal server error.' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PATCH(request, { params }) {
-  const session = await getServerSession(authOptions);
-  if (!session || !isAdminOrManager(session)) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-  }
+  try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
 
-  const id = parseId(params.id);
-  if (id === null) {
-    return NextResponse.json({ message: 'Invalid id.' }, { status: 400 });
-  }
-
-  const existing = await prisma.portfolioPpc.findUnique({ where: { id } });
-  if (!existing) {
-    return NextResponse.json({ message: 'Not found.' }, { status: 404 });
-  }
-
-  const body = await request.json();
-  const {
-    slug,
-    title,
-    subtitle,
-    category,
-    status,
-    publishedAt,
-
-    heroBgImage,
-    seoImage,
-    companyLogo,
-    companyDescription,
-
-    heroJson,
-    projectOverviewJson,
-    challengeJson,
-    solutionJson,
-    adPlatformsJson,
-    toolsJson,
-    performanceJson,
-    achievementsJson,
-    campaignsJson,
-    testimonialJson,
-    ctaBannerJson,
-    portfolioCardContent,
-
-    seoTitle,
-    seoDescription,
-  } = body;
-
-  if (!slug || !title) {
-    return NextResponse.json(
-      { message: 'Slug and title are required.' },
-      { status: 400 },
-    );
-  }
-
-  if (slug !== existing.slug) {
-    const slugTaken = await prisma.portfolioPpc.findUnique({ where: { slug } });
-    if (slugTaken) {
+    if (!session || !isAdminOrManager(session)) {
       return NextResponse.json(
-        { message: 'A PPC case study with this slug already exists.' },
-        { status: 409 },
+        { message: 'Unauthorized' },
+        { status: 401 }
       );
     }
-  }
 
-  const row = await prisma.portfolioPpc.update({
-    where: { id },
-    data: {
+    // Next.js 15+: params is a Promise
+    const { id: rawId } = await params;
+
+    console.log('raw id:', rawId);
+
+    const id = parseId(rawId);
+
+    console.log('id in patch route:', id);
+
+    // Validate ID
+    if (id === null) {
+      return NextResponse.json(
+        { message: 'Invalid id.' },
+        { status: 400 }
+      );
+    }
+
+    // Check if record exists
+    const existing = await prisma.portfolioPpc.findUnique({
+      where: { id },
+    });
+
+    if (!existing) {
+      return NextResponse.json(
+        { message: 'Not found.' },
+        { status: 404 }
+      );
+    }
+
+    // Get request body
+    const body = await request.json();
+
+    const {
       slug,
       title,
-      subtitle: subtitle || null,
-      category: category || null,
-      status: status || 'draft',
-      publishedAt: publishedAt ? new Date(publishedAt) : null,
+      subtitle,
+      category,
+      status,
+      publishedAt,
 
-      heroBgImage: heroBgImage || null,
-      seoImage: seoImage || null,
-      companyLogo: companyLogo || null,
-      companyDescription: companyDescription || null,
+      heroBgImage,
+      seoImage,
+      companyLogo,
+      companyDescription,
 
-      heroJson: heroJson || null,
-      projectOverviewJson: projectOverviewJson || null,
-      challengeJson: challengeJson || null,
-      solutionJson: solutionJson || null,
-      adPlatformsJson: adPlatformsJson || null,
-      toolsJson: toolsJson || null,
-      performanceJson: performanceJson || null,
-      achievementsJson: achievementsJson || null,
-      campaignsJson: campaignsJson || null,
-      testimonialJson: testimonialJson || null,
-      ctaBannerJson: ctaBannerJson || null,
-      portfolioCardContent: portfolioCardContent || null,
+      heroJson,
+      projectOverviewJson,
+      challengeJson,
+      solutionJson,
+      adPlatformsJson,
+      toolsJson,
+      performanceJson,
+      achievementsJson,
+      campaignsJson,
+      testimonialJson,
+      ctaBannerJson,
+      portfolioCardContent,
 
-      seoTitle: seoTitle || null,
-      seoDescription: seoDescription || null,
-    },
-  });
+      seoTitle,
+      seoDescription,
+    } = body;
 
-  return NextResponse.json(row);
+    // Required fields
+    if (!slug || !title) {
+      return NextResponse.json(
+        { message: 'Slug and title are required.' },
+        { status: 400 }
+      );
+    }
+
+    // Check duplicate slug
+    if (slug !== existing.slug) {
+      const slugTaken = await prisma.portfolioPpc.findUnique({
+        where: { slug },
+      });
+
+      if (slugTaken) {
+        return NextResponse.json(
+          {
+            message:
+              'A PPC case study with this slug already exists.',
+          },
+          { status: 409 }
+        );
+      }
+    }
+
+    // Update record
+    const row = await prisma.portfolioPpc.update({
+      where: { id },
+      data: {
+        slug,
+        title,
+        subtitle: subtitle || null,
+        category: category || null,
+        status: status || 'draft',
+        publishedAt: publishedAt
+          ? new Date(publishedAt)
+          : null,
+
+        heroBgImage: heroBgImage || null,
+        seoImage: seoImage || null,
+        companyLogo: companyLogo || null,
+        companyDescription: companyDescription || null,
+
+        heroJson: heroJson || null,
+        projectOverviewJson: projectOverviewJson || null,
+        challengeJson: challengeJson || null,
+        solutionJson: solutionJson || null,
+        adPlatformsJson: adPlatformsJson || null,
+        toolsJson: toolsJson || null,
+        performanceJson: performanceJson || null,
+        achievementsJson: achievementsJson || null,
+        campaignsJson: campaignsJson || null,
+        testimonialJson: testimonialJson || null,
+        ctaBannerJson: ctaBannerJson || null,
+        portfolioCardContent: portfolioCardContent || null,
+
+        seoTitle: seoTitle || null,
+        seoDescription: seoDescription || null,
+      },
+    });
+
+    return NextResponse.json(row, { status: 200 });
+  } catch (error) {
+    console.error('PATCH portfolio PPC error:', error);
+
+    return NextResponse.json(
+      {
+        message: 'Failed to update portfolio PPC.',
+        error:
+          process.env.NODE_ENV === 'development'
+            ? error.message
+            : undefined,
+      },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(request, { params }) {

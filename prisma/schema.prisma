@@ -903,10 +903,8 @@ model PortfolioPpc {
   title    String
   subtitle String? @db.Text
   category String?
-
   heroBgImage String?
   seoImage    String?
-
   heroJson             String? @db.Text
   projectOverviewJson  String? @db.Text
   challengeJson        String? @db.Text
@@ -918,21 +916,15 @@ model PortfolioPpc {
   campaignsJson        String? @db.Text
   testimonialJson      String? @db.Text
   ctaBannerJson        String? @db.Text
-
-  companyLogo         String?
-  companyDescription  String?
-
+  companyLogo          String?
+  companyDescription   String?
   portfolioCardContent String? @db.Text
-
   status      String    @default("draft")
   publishedAt DateTime?
-
   seoTitle       String?
   seoDescription String?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   @@map("portfolioppc")
 }
 

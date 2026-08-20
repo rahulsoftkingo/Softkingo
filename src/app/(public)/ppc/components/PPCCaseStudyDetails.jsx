@@ -126,7 +126,29 @@ function CustomTooltip({ active, payload, label }) {
 
 // ---- Main component ---------------------------------------------------
 
-export default function PPCCaseStudyDetails() {
+export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson, solutionJson, performanceJson }) {
+
+  console.log("content of the performanceJson", performanceJson)
+
+
+  const performanceData = performanceJson
+    ? {
+      ...performanceJson,
+      parsedChartData: performanceJson.chartData
+        .split("\n")
+        .map((row) => {
+          const [month, clicks, conversions, cost] = row.split(",");
+
+          return {
+            month,
+            clicks: Number(clicks),
+            conversions: Number(conversions),
+            cost: Number(cost),
+          };
+        }),
+    }
+    : null;
+
   return (
     <section className="py-8 md:py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
@@ -135,33 +157,48 @@ export default function PPCCaseStudyDetails() {
           <div className="lg:col-span-4 space-y-5">
             <SectionCard icon={ClipboardList} title="Project Overview">
               <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-                UrbanDrive wanted to increase quality leads and online
-                bookings for their self-drive car rental service through PPC
-                advertising.
+                {projectOverviewJson.description}
               </p>
             </SectionCard>
 
-            <SectionCard icon={AlertTriangle} title="The Challenge">
+            <SectionCard
+              icon={AlertTriangle}
+              title={challengeJson?.title || "The Challenge"}
+            >
               <ul className="space-y-2">
-                {challenges.map((c, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-slate-600">
-                    <Check size={14} className="text-sky-500 mt-0.5 flex-shrink-0" />
+                {challengeJson?.items?.map((c, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-xs sm:text-sm text-slate-600"
+                  >
+                    <Check
+                      size={14}
+                      className="text-sky-500 mt-0.5 flex-shrink-0"
+                    />
                     <span>{c}</span>
                   </li>
                 ))}
               </ul>
             </SectionCard>
 
-            <SectionCard icon={Lightbulb} title="Our Solution">
+            <SectionCard
+              icon={Lightbulb}
+              title={solutionJson?.title || "Our Solution"}
+            >
               <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-3">
-                We built a data-driven PPC strategy focused on high-intent
-                keywords, compelling ad copy, audience targeting and
-                continuous optimization.
+                {solutionJson?.description}
               </p>
+
               <ul className="space-y-2">
-                {solutionPoints.map((s, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-slate-600">
-                    <Check size={14} className="text-sky-500 mt-0.5 flex-shrink-0" />
+                {solutionJson?.items?.map((s, i) => (
+                  <li
+                    key={i}
+                    className="flex items-start gap-2 text-xs sm:text-sm text-slate-600"
+                  >
+                    <Check
+                      size={14}
+                      className="text-sky-500 mt-0.5 flex-shrink-0"
+                    />
                     <span>{s}</span>
                   </li>
                 ))}
@@ -202,115 +239,169 @@ export default function PPCCaseStudyDetails() {
           {/* RIGHT MAIN COLUMN */}
           <div className="lg:col-span-8 space-y-5">
             {/* Performance Overview */}
-            <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
-              <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
-                    <BarChart3 size={14} className="text-sky-500" />
-                  </span>
-                  <h3 className="text-sm font-semibold text-slate-800">
-                    Performance Overview
-                  </h3>
-                </div>
-                <button className="flex items-center gap-2 text-xs font-medium text-slate-600 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition-colors">
-                  Last 3 Months <ChevronDown size={14} />
-                </button>
-              </div>
+            {performanceData && (
+              <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
+                <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
+                      <BarChart3 size={14} className="text-sky-500" />
+                    </span>
 
-              {/* Legend */}
-              <div className="flex items-center gap-5 mb-4">
-                <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
-                  <span className="w-2.5 h-2.5 rounded-full bg-sky-500" /> Clicks
-                </span>
-                <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
-                  <span className="w-2.5 h-2.5 rounded-full bg-sky-700" /> Conversions
-                </span>
-                <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
-                  <span className="w-2.5 h-2.5 rounded-full bg-sky-300" /> Cost
-                </span>
-              </div>
-
-              <div className="w-full h-[260px] sm:h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={chartData}
-                    margin={{ top: 5, right: 10, left: -10, bottom: 0 }}
-                  >
-                    <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                    <XAxis
-                      dataKey="month"
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 11, fill: "#94a3b8" }}
-                    />
-                    <YAxis
-                      yAxisId="left"
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 11, fill: "#94a3b8" }}
-                      tickFormatter={(v) => (v >= 1000 ? `${v / 1000}K` : v)}
-                    />
-                    <YAxis
-                      yAxisId="right"
-                      orientation="right"
-                      tickLine={false}
-                      axisLine={false}
-                      tick={{ fontSize: 11, fill: "#38bdf8" }}
-                      tickFormatter={(v) => `$${v >= 1000 ? `${v / 1000}K` : v}`}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Line
-                      yAxisId="left"
-                      type="monotone"
-                      dataKey="clicks"
-                      name="Clicks"
-                      stroke="#0ea5e9"
-                      strokeWidth={2.5}
-                      dot={{ r: 3, fill: "#0ea5e9", strokeWidth: 0 }}
-                    />
-                    <Line
-                      yAxisId="left"
-                      type="monotone"
-                      dataKey="conversions"
-                      name="Conversions"
-                      stroke="#0369a1"
-                      strokeWidth={2.5}
-                      dot={{ r: 3, fill: "#0369a1", strokeWidth: 0 }}
-                    />
-                    <Line
-                      yAxisId="right"
-                      type="monotone"
-                      dataKey="cost"
-                      name="Cost"
-                      stroke="#7dd3fc"
-                      strokeWidth={2.5}
-                      dot={{ r: 3, fill: "#7dd3fc", strokeWidth: 0 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-
-              {/* Stat row */}
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-5 pt-5 border-t border-slate-100">
-                {performanceStats.map((s, i) => (
-                  <div key={i}>
-                    <p className="text-[11px] text-slate-400 font-medium">
-                      {s.label}
-                    </p>
-                    <p className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
-                      {s.value}
-                    </p>
-                    <p
-                      className={`text-[11px] font-semibold flex items-center gap-0.5 mt-0.5 ${
-                        s.up ? "text-sky-600" : "text-slate-400"
-                      }`}
-                    >
-                      {s.up ? "▲" : "▼"} {s.change}
-                    </p>
+                    <h3 className="text-sm font-semibold text-slate-800">
+                      {performanceData.title}
+                    </h3>
                   </div>
-                ))}
+
+                  <button className="flex items-center gap-2 text-xs font-medium text-slate-600 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition-colors">
+                    {performanceData.dateRangeLabel}
+                    <ChevronDown size={14} />
+                  </button>
+                </div>
+
+                {/* Legend */}
+                <div className="flex items-center gap-5 mb-4 flex-wrap">
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
+                    <span className="w-2.5 h-2.5 rounded-full bg-sky-500" />
+                    Clicks
+                  </span>
+
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
+                    <span className="w-2.5 h-2.5 rounded-full bg-sky-700" />
+                    Conversions
+                  </span>
+
+                  <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
+                    <span className="w-2.5 h-2.5 rounded-full bg-sky-300" />
+                    Cost
+                  </span>
+                </div>
+
+                {/* Chart */}
+                <div className="w-full h-[260px] sm:h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={performanceData.parsedChartData}
+                      margin={{ top: 5, right: 10, left: -10, bottom: 0 }}
+                    >
+                      <CartesianGrid
+                        vertical={false}
+                        stroke="#f1f5f9"
+                      />
+
+                      <XAxis
+                        dataKey="month"
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{
+                          fontSize: 11,
+                          fill: "#94a3b8",
+                        }}
+                      />
+
+                      <YAxis
+                        yAxisId="left"
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{
+                          fontSize: 11,
+                          fill: "#94a3b8",
+                        }}
+                        tickFormatter={(v) =>
+                          v >= 1000 ? `${v / 1000}K` : v
+                        }
+                      />
+
+                      <YAxis
+                        yAxisId="right"
+                        orientation="right"
+                        tickLine={false}
+                        axisLine={false}
+                        tick={{
+                          fontSize: 11,
+                          fill: "#38bdf8",
+                        }}
+                        tickFormatter={(v) =>
+                          `$${v >= 1000 ? `${v / 1000}K` : v}`
+                        }
+                      />
+
+                      <Tooltip content={<CustomTooltip />} />
+
+                      <Line
+                        yAxisId="left"
+                        type="monotone"
+                        dataKey="clicks"
+                        name="Clicks"
+                        stroke="#0ea5e9"
+                        strokeWidth={2.5}
+                        dot={{
+                          r: 3,
+                          fill: "#0ea5e9",
+                          strokeWidth: 0,
+                        }}
+                      />
+
+                      <Line
+                        yAxisId="left"
+                        type="monotone"
+                        dataKey="conversions"
+                        name="Conversions"
+                        stroke="#0369a1"
+                        strokeWidth={2.5}
+                        dot={{
+                          r: 3,
+                          fill: "#0369a1",
+                          strokeWidth: 0,
+                        }}
+                      />
+
+                      <Line
+                        yAxisId="right"
+                        type="monotone"
+                        dataKey="cost"
+                        name="Cost"
+                        stroke="#7dd3fc"
+                        strokeWidth={2.5}
+                        dot={{
+                          r: 3,
+                          fill: "#7dd3fc",
+                          strokeWidth: 0,
+                        }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Dynamic Stats */}
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-5 pt-5 border-t border-slate-100">
+                  {performanceData.metrics?.map((metric, index) => {
+                    const isUp = metric.direction === "up";
+
+                    return (
+                      <div key={`${metric.label}-${index}`}>
+                        <p className="text-[11px] text-slate-400 font-medium">
+                          {metric.label}
+                        </p>
+
+                        <p className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
+                          {metric.value}
+                        </p>
+
+                        <p
+                          className={`text-[11px] font-semibold flex items-center gap-0.5 mt-0.5 ${isUp ? "text-sky-600" : "text-slate-400"
+                            }`}
+                        >
+                          {isUp ? "▲" : "▼"} {metric.change}
+                          {metric.change && !String(metric.change).includes("%")
+                            ? "%"
+                            : ""}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Key Achievements */}
             <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
