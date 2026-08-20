@@ -896,3 +896,43 @@ model BotPolicy {
 
   @@map("botpolicy")
 }
+
+model PortfolioPpc {
+  id       Int     @id @default(autoincrement())
+  slug     String  @unique(map: "PortfolioPpc_slug_key")
+  title    String
+  subtitle String? @db.Text
+  category String?
+
+  heroBgImage String?
+  seoImage    String?
+
+  heroJson             String? @db.Text
+  projectOverviewJson  String? @db.Text
+  challengeJson        String? @db.Text
+  solutionJson         String? @db.Text
+  adPlatformsJson      String? @db.Text
+  toolsJson            String? @db.Text
+  performanceJson      String? @db.Text
+  achievementsJson     String? @db.Text
+  campaignsJson        String? @db.Text
+  testimonialJson      String? @db.Text
+  ctaBannerJson        String? @db.Text
+
+  companyLogo         String?
+  companyDescription  String?
+
+  portfolioCardContent String? @db.Text
+
+  status      String    @default("draft")
+  publishedAt DateTime?
+
+  seoTitle       String?
+  seoDescription String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("portfolioppc")
+}
+
