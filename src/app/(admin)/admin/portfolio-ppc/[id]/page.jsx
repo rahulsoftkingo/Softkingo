@@ -682,9 +682,9 @@ export default function PortfolioPpcEditPage() {
 
     setSaving(false);
     setSuccess('Saved successfully!');
-    setTimeout(() => {
-      router.push('/admin/portfolio-ppc');
-    }, 1000);
+    // setTimeout(() => {
+    //   router.push('/admin/portfolio-ppc');
+    // }, 1000);
   }
 
   if (loading) {
