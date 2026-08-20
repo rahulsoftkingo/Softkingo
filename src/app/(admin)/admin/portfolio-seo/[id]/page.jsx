@@ -754,9 +754,9 @@ export default function PortfolioSeoEditPage() {
 
     setSaving(false);
     setSuccess('Saved successfully!');
-    setTimeout(() => {
-      router.push('/admin/case-studies');
-    }, 1000);
+    // setTimeout(() => {
+    //   router.push('/admin/case-studies');
+    // }, 1000);
   }
 
   if (loading) {
