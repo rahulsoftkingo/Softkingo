@@ -98,9 +98,9 @@ export default function SolutionsFeatureGrid({ data }) {
                   "
                 >
                   {/* Repeating Title on Back for Context */}
-                  <h4 className="text-white font-bold text-lg sm:text-xl mb-4 sm:mb-6 break-words shrink-0">
+                  {/* <h4 className="text-white font-bold text-lg sm:text-xl mb-4 sm:mb-6 break-words shrink-0">
                     {item.title || item.name || "Enterprise Feature"}
-                  </h4>
+                  </h4> */}
 
                   <div className="w-16 h-1 bg-white/30 rounded-full mb-4 sm:mb-6 shrink-0"></div>
 
