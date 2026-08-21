@@ -580,6 +580,8 @@ import {
   Smartphone,
   SearchCheck,
   Layers,
+  MousePointerClick,
+  Share2,
 } from 'lucide-react';
 
 export default function CaseStudiesPage() {
@@ -588,38 +590,86 @@ export default function CaseStudiesPage() {
   const roles = session?.user?.roles || [];
   const isAdminOrManager = roles.some((r) => ['admin', 'manager'].includes(r));
 
-  const [items, setItems] = useState({ digital: [], seo: [] });
+  // Store data for all categories
+  const [items, setItems] = useState({
+    digital: [],
+    seo: [],
+    ppc: [],
+    social: [],
+  });
+  
+  // Tab selector inside the Digital Marketing column: 'seo' | 'ppc' | 'social'
+  const [marketingTab, setMarketingTab] = useState('seo');
+  
   const [q, setQ] = useState('');
   const [loading, setLoading] = useState(true);
 
   const [selectedIds, setSelectedIds] = useState([]);
   const [bulkDeleting, setBulkDeleting] = useState(false);
 
+  // Helper for dynamic API paths
+  const apiPathFor = (type) => {
+    switch (type) {
+      case 'seo':
+        return '/api/admin/portfolio-seo';
+      case 'ppc':
+        return '/api/admin/portfolio-ppc';
+      case 'social':
+        return '/api/admin/portfolio-social-media';
+      case 'digital':
+      default:
+        return '/api/admin/case-studies';
+    }
+  };
+
+  // Helper for dynamic Edit page routes
+  const editPathFor = (row) => {
+    switch (row._type) {
+      case 'seo':
+        return `/admin/portfolio-seo/${row.id}`;
+      case 'ppc':
+        return `/admin/portfolio-ppc/${row.id}`;
+      case 'social':
+        return `/admin/portfolio-social-media/${row.id}`;
+      case 'digital':
+      default:
+        return `/admin/case-studies/${row.id}`;
+    }
+  };
+
   async function fetchItems(params = {}) {
     setLoading(true);
     const search = new URLSearchParams({ q: params.q ?? q });
 
     try {
-      const [digitalRes, seoRes] = await Promise.all([
+      const [digitalRes, seoRes, ppcRes, socialRes] = await Promise.all([
         fetch(`/api/admin/case-studies?${search.toString()}`).then((res) =>
           res.ok ? res.json() : []
         ),
         fetch(`/api/admin/portfolio-seo?${search.toString()}`).then((res) =>
           res.ok ? res.json() : []
         ),
+        fetch(`/api/admin/portfolio-ppc?${search.toString()}`).then((res) =>
+          res.ok ? res.json() : []
+        ),
+        fetch(`/api/admin/portfolio-social-media?${search.toString()}`).then((res) =>
+          res.ok ? res.json() : []
+        ),
       ]);
 
-      const digital = (digitalRes || [])
-        .map((row) => ({ ...row, _type: 'digital' }))
-        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      const sortDesc = (arr, type) =>
+        (arr || [])
+          .map((row) => ({ ...row, _type: type }))
+          .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
-      const seo = (seoRes || [])
-        .map((row) => ({ ...row, _type: 'seo' }))
-        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      const digital = sortDesc(digitalRes, 'digital');
+      const seo = sortDesc(seoRes, 'seo');
+      const ppc = sortDesc(ppcRes, 'ppc');
+      const social = sortDesc(socialRes, 'social');
 
-      setItems({ digital, seo });
+      setItems({ digital, seo, ppc, social });
 
-      const allIds = [...digital, ...seo].map((x) => x.id);
+      const allIds = [...digital, ...seo, ...ppc, ...social].map((x) => x.id);
       setSelectedIds((prev) => prev.filter((id) => allIds.includes(id)));
     } finally {
       setLoading(false);
@@ -636,12 +686,6 @@ export default function CaseStudiesPage() {
     return () => clearTimeout(t);
   }, [q]);
 
-  const apiPathFor = (type) =>
-    type === 'seo' ? '/api/admin/portfolio-seo' : '/api/admin/case-studies';
-
-  const editPathFor = (row) =>
-    row._type === 'seo' ? `/admin/portfolio-seo/${row.id}` : `/admin/case-studies/${row.id}`;
-
   const toggleOne = (id) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
@@ -650,8 +694,7 @@ export default function CaseStudiesPage() {
 
   const handleDelete = async (row) => {
     if (!isAdminOrManager) return;
-    const label = row._type === 'seo' ? 'Portfolio SEO case study' : 'case study';
-    if (!confirm(`Delete this ${label}?`)) return;
+    if (!confirm(`Delete this item?`)) return;
     const res = await fetch(`${apiPathFor(row._type)}/${row.id}`, {
       method: 'DELETE',
     });
@@ -663,7 +706,7 @@ export default function CaseStudiesPage() {
     if (!confirm(`Delete ${selectedIds.length} items?`)) return;
     setBulkDeleting(true);
     try {
-      const allRows = [...items.digital, ...items.seo];
+      const allRows = [...items.digital, ...items.seo, ...items.ppc, ...items.social];
       const selectedRows = allRows.filter((x) => selectedIds.includes(x.id));
       await Promise.all(
         selectedRows.map((row) =>
@@ -677,30 +720,18 @@ export default function CaseStudiesPage() {
     }
   };
 
-  const columns = [
-    {
-      key: 'digital',
-      label: 'Software',
-      icon: Smartphone,
-      color: 'text-sky-600',
-      bg: 'bg-sky-50',
-      badgeBg: 'bg-sky-50',
-      badgeText: 'text-sky-700',
-      badgeBorder: 'border-sky-200',
-    },
-    {
-      key: 'seo',
-      label: 'Digital Marketing',
-      icon: SearchCheck,
-      color: 'text-emerald-600',
-      bg: 'bg-emerald-50',
-      badgeBg: 'bg-emerald-50',
-      badgeText: 'text-emerald-700',
-      badgeBorder: 'border-emerald-200',
-    },
+  const totalCount =
+    items.digital.length + items.seo.length + items.ppc.length + items.social.length;
+
+  // Configurations for the sub-tabs under Digital Marketing
+  const marketingSubTabs = [
+    { key: 'seo', label: 'SEO', icon: SearchCheck, color: 'text-emerald-600', bg: 'bg-emerald-50', badgeBg: 'bg-emerald-50', badgeText: 'text-emerald-700', badgeBorder: 'border-emerald-200' },
+    { key: 'ppc', label: 'PPC', icon: MousePointerClick, color: 'text-amber-600', bg: 'bg-amber-50', badgeBg: 'bg-amber-50', badgeText: 'text-amber-700', badgeBorder: 'border-amber-200' },
+    { key: 'social', label: 'Social Media', icon: Share2, color: 'text-indigo-600', bg: 'bg-indigo-50', badgeBg: 'bg-indigo-50', badgeText: 'text-indigo-700', badgeBorder: 'border-indigo-200' },
   ];
 
-  const totalCount = items.digital.length + items.seo.length;
+  const activeMarketingConfig =
+    marketingSubTabs.find((t) => t.key === marketingTab) || marketingSubTabs[0];
 
   const Row = ({ row, col }) => (
     <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all group">
@@ -740,7 +771,7 @@ export default function CaseStudiesPage() {
           </div>
         </div>
 
-        {/* RIGHT: action buttons, same line */}
+        {/* RIGHT: action buttons */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => router.push(editPathFor(row))}
@@ -785,49 +816,40 @@ export default function CaseStudiesPage() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-
-                {/* 1. Case Study Button */}
               <button
                 type="button"
                 onClick={() => router.push('/admin/case-studies/new')}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg hover:bg-white/25 hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
                 <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="hidden xs:inline">App</span>
-                <span className="xs:hidden">App</span>
+                <span>App</span>
               </button>
 
-              {/* 2. SEO Button */}
               <button
                 type="button"
                 onClick={() => router.push('/admin/portfolio-seo/new')}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg hover:bg-white/25 hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
                 <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="hidden xs:inline">Portfolio SEO</span>
-                <span className="xs:hidden">SEO</span>
+                <span>Portfolio SEO</span>
               </button>
 
-              {/* 3. PPC Button */}
               <button
                 type="button"
                 onClick={() => router.push('/admin/portfolio-ppc/new')}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg hover:bg-white/25 hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
                 <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="hidden xs:inline">PPC</span>
-                <span className="xs:hidden">PPC</span>
+                <span>PPC</span>
               </button>
 
-              {/* 4. Social Media Button */}
               <button
                 type="button"
-                onClick={() => router.push('#')}
+                onClick={() => router.push('/admin/portfolio-social-media/new')}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-purple-700 shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
               >
                 <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                <span className="hidden xs:inline">Social Media</span>
-                <span className="xs:hidden">Social</span>
+                <span>Social Media</span>
               </button>
             </div>
           </div>
@@ -853,7 +875,7 @@ export default function CaseStudiesPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  Digital
+                  Software
                 </p>
                 <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
                   {items.digital.length}
@@ -869,10 +891,10 @@ export default function CaseStudiesPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-wider">
-                  SEO
+                  Digital Marketing
                 </p>
                 <p className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
-                  {items.seo.length}
+                  {items.seo.length + items.ppc.length + items.social.length}
                 </p>
               </div>
               <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-emerald-50 flex items-center justify-center">
@@ -920,46 +942,107 @@ export default function CaseStudiesPage() {
           </div>
         )}
 
-        {/* 2 Column Grid — 50% / 50% */}
+        {/* 2 Column Grid — Exactly 50% / 50% as requested */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          {columns.map((col) => {
-            const rows = items[col.key] || [];
-
-            return (
-              <div
-                key={col.key}
-                className="bg-slate-50/50 rounded-xl sm:rounded-2xl border border-slate-200 shadow-lg flex flex-col h-full overflow-hidden"
-              >
-                <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className={`p-2 rounded-lg ${col.bg}`}>
-                      <col.icon size={18} className={col.color} />
-                    </div>
-                    <h3 className="text-sm font-bold text-slate-800">{col.label}</h3>
-                  </div>
-                  <span className="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded-md border border-slate-200">
-                    {rows.length}
-                  </span>
+          
+          {/* COLUMN 1: Software */}
+          <div className="bg-slate-50/50 rounded-xl sm:rounded-2xl border border-slate-200 shadow-lg flex flex-col h-full overflow-hidden">
+            <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-lg bg-sky-50">
+                  <Smartphone size={18} className="text-sky-600" />
                 </div>
-
-                <div className="p-4 overflow-y-auto h-[calc(100vh-460px)] min-h-[320px] space-y-3">
-                  {loading ? (
-                    <div className="h-40 flex flex-col items-center justify-center text-slate-400">
-                      <Loader2 size={20} className="mb-2 animate-spin" />
-                      <p className="text-xs font-medium opacity-60">Loading...</p>
-                    </div>
-                  ) : rows.length > 0 ? (
-                    rows.map((row) => <Row key={`${row._type}-${row.id}`} row={row} col={col} />)
-                  ) : (
-                    <div className="h-40 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 rounded-xl">
-                      <Layers size={24} className="mb-2 opacity-30" />
-                      <p className="text-xs font-medium opacity-60">No case studies found</p>
-                    </div>
-                  )}
-                </div>
+                <h3 className="text-sm font-bold text-slate-800">Software</h3>
               </div>
-            );
-          })}
+              <span className="text-xs font-bold bg-slate-100 text-slate-500 px-2 py-1 rounded-md border border-slate-200">
+                {items.digital.length}
+              </span>
+            </div>
+
+            <div className="p-4 overflow-y-auto h-[calc(100vh-460px)] min-h-[320px] space-y-3">
+              {loading ? (
+                <div className="h-40 flex flex-col items-center justify-center text-slate-400">
+                  <Loader2 size={20} className="mb-2 animate-spin" />
+                  <p className="text-xs font-medium opacity-60">Loading...</p>
+                </div>
+              ) : items.digital.length > 0 ? (
+                items.digital.map((row) => (
+                  <Row
+                    key={`digital-${row.id}`}
+                    row={row}
+                    col={{
+                      badgeBg: 'bg-sky-50',
+                      badgeText: 'text-sky-700',
+                      badgeBorder: 'border-sky-200',
+                    }}
+                  />
+                ))
+              ) : (
+                <div className="h-40 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 rounded-xl">
+                  <Layers size={24} className="mb-2 opacity-30" />
+                  <p className="text-xs font-medium opacity-60">No case studies found</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* COLUMN 2: Digital Marketing with Sub-tabs for SEO, PPC, Social Media */}
+          <div className="bg-slate-50/50 rounded-xl sm:rounded-2xl border border-slate-200 shadow-lg flex flex-col h-full overflow-hidden">
+            <div className="p-4 sm:p-5 border-b border-slate-200 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <div className={`p-2 rounded-lg ${activeMarketingConfig.bg}`}>
+                  <activeMarketingConfig.icon size={18} className={activeMarketingConfig.color} />
+                </div>
+                <h3 className="text-sm font-bold text-slate-800">Digital Marketing</h3>
+              </div>
+
+              {/* Sub-tab Switcher inside Column 2 */}
+              <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+                {marketingSubTabs.map((tab) => (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    onClick={() => setMarketingTab(tab.key)}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all flex items-center gap-1.5 ${
+                      marketingTab === tab.key
+                        ? 'bg-white text-purple-700 shadow-sm'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>{tab.label}</span>
+                    <span className="text-[10px] opacity-75 px-1 bg-slate-200/60 rounded">
+                      {items[tab.key]?.length || 0}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-4 overflow-y-auto h-[calc(100vh-460px)] min-h-[320px] space-y-3">
+              {loading ? (
+                <div className="h-40 flex flex-col items-center justify-center text-slate-400">
+                  <Loader2 size={20} className="mb-2 animate-spin" />
+                  <p className="text-xs font-medium opacity-60">Loading...</p>
+                </div>
+              ) : items[marketingTab]?.length > 0 ? (
+                items[marketingTab].map((row) => (
+                  <Row
+                    key={`${marketingTab}-${row.id}`}
+                    row={row}
+                    col={activeMarketingConfig}
+                  />
+                ))
+              ) : (
+                <div className="h-40 flex flex-col items-center justify-center text-slate-400 border-2 border-dashed border-slate-200 rounded-xl">
+                  <Layers size={24} className="mb-2 opacity-30" />
+                  <p className="text-xs font-medium opacity-60">
+                    No {activeMarketingConfig.label} items found
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

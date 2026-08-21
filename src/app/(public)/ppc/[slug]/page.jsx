@@ -23,12 +23,13 @@ export default async function Page({ params }) {
   const solutionJson = JSON.parse(caseStudy.solutionJson || '{}');
   const performanceJson = JSON.parse(caseStudy.performanceJson || '{}');  
   const achievementsJson = JSON.parse(caseStudy.achievementsJson || '{}'); 
-
-  
-
   const heroStatsJson = JSON.parse(caseStudy.heroStatsJson || '{}');
   const detailsJson = JSON.parse(caseStudy.detailsJson || '{}');
   const testimonialJson = JSON.parse(caseStudy.testimonialJson || '{}');
+  const campaignsJson =  JSON.parse(caseStudy.campaignsJson || '{}');
+  const heroJson= JSON.parse(caseStudy.heroJson|| '{}');
+  const toolsJson = JSON.parse(caseStudy.toolsJson|| '{}');
+  const adPlatformsJson = JSON.parse(caseStudy.adPlatformsJson|| '{}');
 
   return (
     <div>
@@ -36,6 +37,7 @@ export default async function Page({ params }) {
         title={caseStudy.title}
         subtitle={caseStudy.subtitle}
         data={heroStatsJson}
+        heroJson={heroJson}
       />
       <PPCCaseStudyDetails data={detailsJson}
         projectOverviewJson={projectOverviewJson}
@@ -43,7 +45,11 @@ export default async function Page({ params }) {
          solutionJson={solutionJson}
          performanceJson={performanceJson}
          achievementsJson={achievementsJson}
-         />
+         campaignsJson={campaignsJson}
+         toolsJson={toolsJson}
+         adPlatformsJson={adPlatformsJson}
+         />      
+         
       <PPCTestimonialRow data={testimonialJson} />
       <PPCCTABanner />
     </div>

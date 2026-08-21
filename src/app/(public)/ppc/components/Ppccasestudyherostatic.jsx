@@ -20,8 +20,13 @@ import {
 } from "lucide-react";
 import PopupQuoteModal from "@/components/PopupQuoteModal";
 
-export default function PPCCaseStudyHero() {
+export default function PPCCaseStudyHero({ title, subtitle, data, heroJson }) {
+  console.log("show me the data of the herosectoin", heroJson);
+
   const [showModal, setShowModal] = useState(false);
+
+  // Fallback data structure if heroJson is empty or loading
+  const hj = heroJson || {};
 
   return (
     <section className="relative bg-[#060913] text-slate-100 overflow-hidden">
@@ -40,25 +45,32 @@ export default function PPCCaseStudyHero() {
             Case Studies
           </Link>
           <span className="text-slate-600">›</span>
-          <span className="text-white font-semibold">UrbanDrive – Car Rental</span>
+          <span className="text-white font-semibold">
+            {hj.industry ? `${hj.industry} Case Study` : "UrbanDrive – Car Rental"}
+          </span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           {/* LEFT COLUMN */}
           <div className="lg:col-span-5 space-y-5 z-20">
+            {/* Badge */}
             <span className="inline-flex w-fit items-center rounded-full bg-sky-500/10 border border-sky-500/30 px-4 py-1.5 text-[11px] font-bold tracking-wide text-sky-400">
-              PPC CASE STUDY
+              {hj.badge || "PPC CASE STUDY"}
             </span>
 
+            {/* Headline with Highlight */}
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white leading-[1.2]">
-              How We Generated 4X More Leads with{" "}
-              <span className="text-sky-400">Lower Cost</span> Using PPC
+              {hj.headline?.split(hj.highlight || "")[0] || "How We Generated 4X More Leads with "}
+              {hj.highlight && (
+                <span className="text-sky-400">{hj.highlight}</span>
+              )}
+              {hj.headline?.split(hj.highlight || "")[1] || " Using PPC"}
             </h1>
 
+            {/* Description */}
             <p className="text-xs sm:text-sm md:text-base text-slate-400 leading-[1.8] max-w-xl">
-              Explore how our data-driven PPC campaigns helped UrbanDrive, a
-              car rental service, increase leads, reduce cost per lead and
-              achieve exceptional ROI.
+              {hj.description ||
+                "Explore how our data-driven PPC campaigns helped UrbanDrive, a car rental service, increase leads, reduce cost per lead and achieve exceptional ROI."}
             </p>
 
             {/* Info items */}
@@ -72,7 +84,7 @@ export default function PPCCaseStudyHero() {
                     Industry
                   </p>
                   <p className="text-sm font-bold text-white leading-tight">
-                    Automotive
+                    {hj.industry || "Automotive"}
                   </p>
                 </div>
               </div>
@@ -86,7 +98,7 @@ export default function PPCCaseStudyHero() {
                     Duration
                   </p>
                   <p className="text-sm font-bold text-white leading-tight">
-                    3 Months
+                    {hj.duration || "3 Months"}
                   </p>
                 </div>
               </div>
@@ -100,7 +112,7 @@ export default function PPCCaseStudyHero() {
                     Services
                   </p>
                   <p className="text-sm font-bold text-white leading-tight">
-                    PPC Advertising
+                    {hj.services || "PPC Advertising"}
                   </p>
                 </div>
               </div>
@@ -125,35 +137,37 @@ export default function PPCCaseStudyHero() {
                   <TrendingUp size={16} className="text-white" />
                 </span>
                 <span className="font-semibold text-slate-800 text-sm sm:text-base">
-                  Google Ads
+                  {hj.adPreview?.platformName || "Google Ads"}
                 </span>
               </div>
 
               {/* Ad preview */}
               <div className="mt-4 rounded-xl border border-slate-100 p-4">
-                <p className="text-[11px] text-slate-400 font-medium mb-1">Ad</p>
+                <p className="text-[11px] text-slate-400 font-medium mb-1">
+                  {hj.adPreview?.label || "Ad"}
+                </p>
                 <p className="text-sky-600 font-semibold text-sm sm:text-base leading-snug">
-                  Book Self Drive Cars Online | UrbanDrive
+                  {hj.adPreview?.headline || "Book Self Drive Cars Online | UrbanDrive"}
                 </p>
                 <p className="text-emerald-700 text-xs font-medium mt-1">
-                  urbandrive.com
+                  {hj.adPreview?.url || "urbandrive.com"}
                 </p>
                 <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
-                  Wide Range of Cars. Best Prices. Easy Booking. 24/7 Support.
+                  {hj.adPreview?.description || "Wide Range of Cars. Best Prices. Easy Booking. 24/7 Support."}
                 </p>
                 <button className="mt-4 px-4 py-2 rounded-md bg-blue-600 text-white text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors">
-                  Book Now
+                  {hj.adPreview?.ctaText || "Book Now"}
                 </button>
               </div>
 
-              {/* Feature icon row */}
+              {/* Feature icon row (Fixed static icons, dynamic text) */}
               <div className="mt-4 grid grid-cols-4 gap-2 pt-4 border-t border-slate-100">
                 <div className="flex flex-col items-center gap-1.5 text-center">
                   <span className="flex items-center justify-center w-9 h-9 rounded-full bg-sky-50 text-sky-500">
                     <Search size={16} />
                   </span>
                   <p className="text-[10px] text-slate-500 font-medium leading-tight">
-                    Search Ads
+                    {hj.adPreview?.icons?.[0]?.name || "Search Ads"}
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-1.5 text-center">
@@ -161,7 +175,7 @@ export default function PPCCaseStudyHero() {
                     <MonitorPlay size={16} />
                   </span>
                   <p className="text-[10px] text-slate-500 font-medium leading-tight">
-                    Display Ads
+                    {hj.adPreview?.icons?.[1]?.name || "Display Ads"}
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-1.5 text-center">
@@ -169,7 +183,7 @@ export default function PPCCaseStudyHero() {
                     <RefreshCw size={16} />
                   </span>
                   <p className="text-[10px] text-slate-500 font-medium leading-tight">
-                    Remarketing
+                    {hj.adPreview?.icons?.[2]?.name || "Remarketing"}
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-1.5 text-center">
@@ -177,7 +191,7 @@ export default function PPCCaseStudyHero() {
                     <Target size={16} />
                   </span>
                   <p className="text-[10px] text-slate-500 font-medium leading-tight">
-                    Conversion Tracking
+                    {hj.adPreview?.icons?.[3]?.name || "Conversion Tracking"}
                   </p>
                 </div>
               </div>
@@ -187,10 +201,12 @@ export default function PPCCaseStudyHero() {
             <div className="hidden sm:flex flex-col gap-4 absolute -top-4 right-0 lg:right-4 z-30">
               {/* ROAS card */}
               <div className="rounded-2xl bg-white shadow-xl px-5 py-3 min-w-[150px]">
-                <p className="text-[11px] text-slate-400 font-medium">ROAS</p>
+                <p className="text-[11px] text-slate-400 font-medium">
+                  {hj.statCards?.[0]?.label || "ROAS"}
+                </p>
                 <div className="flex items-center justify-between gap-3 mt-1">
                   <p className="text-lg sm:text-xl font-extrabold text-emerald-600">
-                    620%
+                    {hj.statCards?.[0]?.value || "620%"}
                   </p>
                   <svg width="56" height="24" viewBox="0 0 56 24" fill="none">
                     <polyline
@@ -208,11 +224,11 @@ export default function PPCCaseStudyHero() {
               {/* Conversions card */}
               <div className="rounded-2xl bg-white shadow-xl px-5 py-3 min-w-[150px]">
                 <p className="text-[11px] text-slate-400 font-medium">
-                  Conversions
+                  {hj.statCards?.[1]?.label || "Conversions"}
                 </p>
                 <div className="flex items-center justify-between gap-3 mt-1">
                   <p className="text-lg sm:text-xl font-extrabold text-slate-900">
-                    1,248
+                    {hj.statCards?.[1]?.value || "1,248"}
                   </p>
                   <div className="flex items-end gap-0.5 h-6">
                     {[4, 8, 6, 14, 18, 22].map((h, idx) => (
@@ -230,73 +246,79 @@ export default function PPCCaseStudyHero() {
         </div>
       </div>
 
-      {/* Floating stats card - overlaps hero bottom edge */}
-      <div className="relative z-20 max-w-[1400px] mx-auto top-12 px-6 lg:px-12 -mt-8 sm:-mt-10">
+      {/* Floating stats card (Fixed static icons, dynamic values and labels) */}
+      <div className="relative z-20 max-w-[1400px] mx-auto top-12 px-6 lg:px-12 -mt-8 sm:-mt-10 top-[10px]">
         <div className="rounded-3xl bg-white shadow-2xl">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-y sm:divide-y-0 divide-slate-100">
+            {/* Stat 1 */}
             <div className="flex flex-col items-center text-center gap-3 py-8 px-4">
               <TrendingUp size={30} strokeWidth={2.5} className="text-emerald-500" />
               <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                4X
+                {hj.statsBar?.[0]?.value || "4X"}
               </p>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                Increase in Leads
+                {hj.statsBar?.[0]?.label || "Increase in Leads"}
               </p>
             </div>
 
+            {/* Stat 2 */}
             <div className="flex flex-col items-center text-center gap-3 py-8 px-4">
               <span className="flex items-center justify-center w-9 h-9 rounded-full bg-blue-500 text-white">
                 <ArrowDown size={18} strokeWidth={2.5} />
               </span>
               <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                52%
+                {hj.statsBar?.[1]?.value || "52%"}
               </p>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                Decrease in CPL
+                {hj.statsBar?.[1]?.label || "Decrease in CPL"}
               </p>
             </div>
 
+            {/* Stat 3 */}
             <div className="flex flex-col items-center text-center gap-3 py-8 px-4">
               <MousePointer size={28} strokeWidth={2.5} className="text-violet-500 fill-violet-500" />
               <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                68%
+                {hj.statsBar?.[2]?.value || "68%"}
               </p>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                Increase in Clicks
+                {hj.statsBar?.[2]?.label || "Increase in Clicks"}
               </p>
             </div>
 
+            {/* Stat 4 */}
             <div className="flex flex-col items-center text-center gap-3 py-8 px-4">
               <span className="flex items-center justify-center w-9 h-9 rounded-full bg-orange-500 text-white">
                 <Users size={18} strokeWidth={2.5} />
               </span>
               <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                1,248
+                {hj.statsBar?.[3]?.value || "1,248"}
               </p>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                Total Conversions
+                {hj.statsBar?.[3]?.label || "Total Conversions"}
               </p>
             </div>
 
+            {/* Stat 5 */}
             <div className="flex flex-col items-center text-center gap-3 py-8 px-4">
               <span className="flex items-center justify-center w-9 h-9 rounded-full bg-emerald-500 text-white">
                 <DollarSign size={18} strokeWidth={2.5} />
               </span>
               <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                620%
+                {hj.statsBar?.[4]?.value || "620%"}
               </p>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                ROAS Achieved
+                {hj.statsBar?.[4]?.label || "ROAS Achieved"}
               </p>
             </div>
 
+            {/* Stat 6 */}
             <div className="flex flex-col items-center text-center gap-3 py-8 px-4">
               <BarChart3 size={30} strokeWidth={2.5} className="text-sky-500" />
               <p className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                180%
+                {hj.statsBar?.[5]?.value || "180%"}
               </p>
               <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                Increase in Revenue
+                {hj.statsBar?.[5]?.label || "Increase in Revenue"}
               </p>
             </div>
           </div>

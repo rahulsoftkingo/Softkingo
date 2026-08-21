@@ -928,3 +928,82 @@ model PortfolioPpc {
   @@map("portfolioppc")
 }
 
+model PortfolioSocialMedia {
+  id       Int     @id @default(autoincrement())
+  slug     String  @unique(map: "PortfolioSocialMedia_slug_key")
+  title    String
+  subtitle String? @db.Text
+  category String?
+  heroBgImage String?
+  seoImage    String?
+
+  // 1. Hero section
+  // { badge, headline, highlight, description, industry, duration, services,
+  //   socialPreview: { platformHandle, platformIcon, postImage, caption, likes, ctaText },
+  //   platformIcons: [{ name, icon }],           // Instagram / Facebook / TikTok row
+  //   brandGrowthStat: { label, value },          // "Brand Growth 300%" side card
+  //   statsBar: [{ icon, value, label }] }        // 6-stat strip under hero
+  heroJson String? @db.Text
+
+  // 2. Project Overview
+  // { description }
+  projectOverviewJson String? @db.Text
+
+  // 3. The Challenge
+  // { title, items: [string] }
+  challengeJson String? @db.Text
+
+  // 4. Our Solution
+  // { title, description, items: [string] }
+  solutionJson String? @db.Text
+
+  // 5. Platforms Managed
+  // { items: [{ name, icon }] }   // Instagram, Facebook, TikTok, YouTube, LinkedIn...
+  platformsJson String? @db.Text
+
+  // 6. Tools & Technologies
+  // { items: [{ name, icon }] }   // Meta Business Suite, Hootsuite, Canva, Later, GA, SEMrush
+  toolsJson String? @db.Text
+
+  // 7. Results Overview
+  // { title, dateRangeLabel, chartData: "month,engagement,reach,followers\n...",
+  //   metrics: [{ label, value, change, direction }] }  // Engagement/Reach/Followers/Visits/Leads/Revenue
+  performanceJson String? @db.Text
+
+  // 8. Key Achievements
+  // { title, items: [{ icon, value, label }] }
+  achievementsJson String? @db.Text
+
+  // 9. Top Performing Content  (unique to social-media case studies)
+  // { title, items: [{ type: "post"|"reel"|"story", image, label, metricLabel, metricValue }] }
+  topContentJson String? @db.Text
+
+  // 10. Testimonial
+  // { quote, avatar, name, designation, companyTag }
+  testimonialJson String? @db.Text
+
+  // 11. CTA (Next Steps box + bottom banner + feature row)
+  // { nextStepsTitle, nextStepsDescription, nextStepsButtonText, nextStepsButtonLink,
+  //   bannerTitle, bannerDescription, bannerButtonText, bannerButtonLink,
+  //   features: [{ icon, title, description }] }
+  ctaBannerJson String? @db.Text
+
+  companyLogo        String?
+  companyDescription  String?
+
+  // 12. Portfolio Card (listing grid preview)
+  // { title, description, image, tag }
+  portfolioCardContent String? @db.Text
+
+  status      String    @default("draft")
+  publishedAt DateTime?
+
+  seoTitle       String?
+  seoDescription String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("portfoliosocialmedia")
+}
+

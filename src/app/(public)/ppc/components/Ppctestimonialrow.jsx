@@ -5,7 +5,7 @@ import { Quote, ClipboardList, ArrowRight } from "lucide-react";
 
 export default function PPCTestimonialRow() {
   return (
-    <section className="bg-white py-6 md:py-8">
+    <section className="bg-white py-6 md:py-8 md:pb-0">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* LEFT: What Our Client Says */}

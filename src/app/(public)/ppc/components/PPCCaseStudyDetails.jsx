@@ -126,9 +126,9 @@ function CustomTooltip({ active, payload, label }) {
 
 // ---- Main component ---------------------------------------------------
 
-export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson, solutionJson, performanceJson, achievementsJson }) {
+export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson, solutionJson, performanceJson, achievementsJson, campaignsJson, toolsJson, adPlatformsJson }) {
 
-  console.log("content of the performanceJson", achievementsJson)
+  console.log("Tools of the performanceJson", adPlatformsJson)
 
 
   const performanceData = performanceJson
@@ -207,13 +207,21 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
 
             <SectionCard icon={LayoutGrid} title="Ad Platforms Managed">
               <div className="flex flex-wrap gap-4">
-                {adPlatforms.map((p, i) => (
-                  <div key={i} className="flex items-center gap-2">
+                {adPlatformsJson?.items?.map((platform, i) => (
+                  <div
+                    key={`${platform.name}-${i}`}
+                    className="flex items-center gap-2"
+                  >
                     <span className="flex items-center justify-center w-7 h-7 rounded-full bg-sky-50">
-                      <span className="w-2.5 h-2.5 rounded-full bg-sky-500" />
+                      <img
+                        src={platform.icon}
+                        alt={platform.name}
+                        className="w-4 h-4 object-contain"
+                      />
                     </span>
+
                     <span className="text-xs sm:text-sm font-medium text-slate-700">
-                      {p}
+                      {platform.name}
                     </span>
                   </div>
                 ))}
@@ -222,18 +230,25 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
 
             <SectionCard icon={Wrench} title="Tools & Technologies">
               <div className="grid grid-cols-2 gap-3">
-                {tools.map((t, i) => (
-                  <div key={i} className="flex items-center gap-2">
+                {toolsJson?.items?.map((tool, i) => (
+                  <div key={`${tool.name}-${i}`} className="flex items-center gap-2">
                     <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
-                      <span className="w-2 h-2 rounded-full bg-sky-500" />
+                      <img
+                        src={tool.icon}
+                        alt={tool.name}
+                        className="w-4 h-4 object-contain"
+                      />
                     </span>
+
                     <span className="text-xs text-slate-600 font-medium">
-                      {t}
+                      {tool.name}
                     </span>
                   </div>
                 ))}
               </div>
             </SectionCard>
+
+
           </div>
 
           {/* RIGHT MAIN COLUMN */}
@@ -444,8 +459,9 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
                 <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
                   <ListChecks size={14} className="text-sky-500" />
                 </span>
+
                 <h3 className="text-sm font-semibold text-slate-800">
-                  Top Campaign Performance
+                  {campaignsJson?.title || "Top Campaign Performance"}
                 </h3>
               </div>
 
@@ -461,28 +477,58 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
                       <th className="font-medium pb-2 pl-4">ROAS</th>
                     </tr>
                   </thead>
+
                   <tbody>
-                    {campaigns.map((c, i) => (
+                    {campaignsJson?.items?.map((campaign, index) => (
                       <tr
-                        key={i}
+                        key={campaign.link || index}
                         className="border-b border-slate-50 last:border-0"
                       >
-                        <td className="py-3 pr-4 font-semibold text-sky-600">
-                          {c.name}
+                        <td className="py-3 pr-4">
+                          <a
+                            href={campaign.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-sky-600 hover:text-sky-700"
+                          >
+                            {campaign.name}
+                          </a>
                         </td>
-                        <td className="py-3 px-4 text-slate-700">{c.clicks}</td>
+
                         <td className="py-3 px-4 text-slate-700">
-                          {c.conversions}
+                          {campaign.clicks}
                         </td>
-                        <td className="py-3 px-4 text-slate-700">{c.cpl}</td>
-                        <td className="py-3 px-4 text-slate-700">{c.ctr}</td>
+
+                        <td className="py-3 px-4 text-slate-700">
+                          {campaign.conversions}
+                        </td>
+
+                        <td className="py-3 px-4 text-slate-700">
+                          {campaign.cpl}
+                        </td>
+
+                        <td className="py-3 px-4 text-slate-700">
+                          {campaign.ctr}
+                        </td>
+
                         <td className="py-3 pl-4">
                           <span className="inline-block text-[11px] font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full">
-                            {c.roas}
+                            {campaign.roas}
                           </span>
                         </td>
                       </tr>
                     ))}
+
+                    {(!campaignsJson?.items || campaignsJson.items.length === 0) && (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="py-6 text-center text-slate-400"
+                        >
+                          No campaign data available
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
