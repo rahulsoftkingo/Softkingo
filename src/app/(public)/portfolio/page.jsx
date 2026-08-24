@@ -114,7 +114,7 @@ export default async function PortfolioPage() {
                 </Link>
 
                 <Link
-                  href="case-studies/seo"
+                  href="/portfolio/digital-marketing"
                   className="px-4 md:px-6 py-2.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs md:text-sm font-semibold hover:bg-cyan-500/30 hover:text-white transform hover:-translate-y-1 transition-all duration-300 shadow-md backdrop-blur-sm inline-flex items-center gap-1.5"
                 >
                   Digital Marketing <ArrowRight className="h-3.5 w-3.5" />
