@@ -120,14 +120,17 @@ const topPosts = [
 
 // ---- UI Helper Components ------------------------------------------------
 
-function SectionCard({ icon: Icon, title, children }) {
+
+function SectionCard({ icon: Icon, title, children, color = "text-sky-500", bgColor = "bg-sky-50" }) {
   return (
     <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50 text-sky-600">
-          <Icon size={14} />
-        </span>
-        <h3 className="text-sm font-bold text-slate-800">{title}</h3>
+      <div className="flex items-center gap-2.5 mb-3">
+        {Icon && (
+          <span className={`flex items-center justify-center w-8 h-8 rounded-lg ${bgColor}`}>
+            <Icon size={18} className={color} />
+          </span>
+        )}
+        <h3 className="text-base font-semibold text-slate-800">{title}</h3>
       </div>
       {children}
     </div>
@@ -189,14 +192,14 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
 
   return (
     <section className="py-8 md:py-20 bg-[#F8F9FD] min-h-screen">
-      <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
+      <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
           {/* LEFT SIDEBAR */}
           <div className="lg:col-span-4 space-y-5">
 
             {/* Project Overview */}
-            <SectionCard icon={ClipboardList} title="Project Overview">
+            <SectionCard icon={ClipboardList} title="Project Overview" color="text-sky-500">
               <p className="text-xs text-slate-500 leading-relaxed">
                 {projectOverviewJson?.description || "No project overview available."}
               </p>
@@ -206,6 +209,8 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
             <SectionCard
               icon={AlertTriangle}
               title={challengeJson?.title || "The Challenge"}
+              color="text-red-500"
+              bgColor="bg-red-50"
             >
               <ul className="space-y-2">
                 {challengeJson?.items?.map((challenge, i) => (
@@ -227,6 +232,8 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
             <SectionCard
               icon={UserCheck}
               title={solutionJson?.title || "Our Solution"}
+              color="text-green-500"
+              bgColor="bg-green-50"
             >
               <p className="text-xs text-slate-500 leading-relaxed mb-3">
                 {solutionJson?.description || "No solution description available."}
@@ -296,19 +303,19 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
             <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
               <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
                 <div className="flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50 text-sky-600">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-md bg-sky-50 text-sky-600">
                     <BarChart3 size={14} />
                   </span>
 
-                  <h3 className="text-sm font-bold text-slate-800">
+                  <h3 className="text-base font-semibold text-slate-800">
                     {performanceJson?.title || "Results Overview"}
                   </h3>
                 </div>
-
+                {/* 
                 <button className="flex items-center gap-2 text-xs font-medium text-slate-600 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50">
                   📅 {performanceJson?.dateRangeLabel || "Last 6 Months"}
                   <ChevronDown size={14} />
-                </button>
+                </button> */}
               </div>
 
               {/* Chart Legend */}
@@ -410,31 +417,47 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                 </ResponsiveContainer>
               </div>
 
-              {/* Stat Counters */}
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-5 pt-5 border-t border-slate-100 text-center">
-                {performanceJson?.metrics?.map((metric, index) => (
-                  <div key={index}>
-                    <p className="text-base sm:text-lg font-extrabold text-slate-900">
-                      {metric?.value || "-"}
-                    </p>
+              {/* Stat Counters Card */}
+              <div className="mt-5 border border-slate-100 rounded-2xl p-5 bg-slate-50/40">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/50">
+                  {performanceJson?.metrics?.map((metric, index) => {
+                    const isUp = metric.direction !== "down";
 
-                    <p className="text-[11px] text-slate-400 font-medium">
-                      {metric?.label || "-"}
-                    </p>
-
-                    {metric?.change && (
-                      <p
-                        className={`text-[11px] font-semibold flex items-center justify-center gap-0.5 mt-0.5 ${metric?.direction === "down"
-                          ? "text-red-600"
-                          : "text-emerald-600"
+                    return (
+                      <div
+                        key={`${metric.label}-${index}`}
+                        className={`flex flex-col items-center justify-center text-center ${index !== 0 ? "pt-3 sm:pt-0 sm:pl-2" : ""
                           }`}
                       >
-                        {metric?.direction === "down" ? "▼" : "▲"}{" "}
-                        {metric.change}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                        {/* 1. Label Top */}
+                        <p className="text-xs font-semibold text-slate-800 tracking-tight mb-1">
+                          {metric.label}
+                        </p>
+
+                        {/* 2. Value Middle */}
+                        <p className="text-2xl font-black text-slate-900 tracking-tight mb-2">
+                          {metric.value}
+                        </p>
+
+                        {/* 3. Percentage / Direction Bottom */}
+                        <div className="inline-flex items-center gap-1">
+                          {metric.change && (
+                            <span
+                              className={`text-[11px] font-bold flex items-center gap-0.5 px-1.5 py-0.5 rounded ${isUp
+                                  ? "text-emerald-600 bg-emerald-50"
+                                  : "text-rose-600 bg-rose-50"
+                                }`}
+                            >
+                              <span className="text-[8px]">{isUp ? "▲" : "▼"}</span>
+                              {metric.change}
+                              {!String(metric.change).includes("%") ? "%" : ""}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
@@ -449,7 +472,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-6 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-6 gap-2">
                 {achievementsJson?.items?.map((item, i) => {
                   const IconComp = keyAchievements?.[i]?.icon || TrendingUp;
 

@@ -280,7 +280,7 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
                 return (
                   <div
                     key={`${stat.label}-${index}`}
-                    className="flex flex-col items-center text-center gap-2 py-5 px-3"
+                    className="flex flex-col items-center text-center gap-2 py-7 px-3"
                   >
                     {IconComponent ? (
                       <IconComponent

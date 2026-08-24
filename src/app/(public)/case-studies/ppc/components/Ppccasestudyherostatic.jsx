@@ -245,7 +245,7 @@ export default function PPCCaseStudyHero({ title, subtitle, data, heroJson }) {
       </div>
 
       {/* Floating stats card — overlaps the dark section's bottom edge onto the white content below */}
-      <div className="relative z-30 max-w-[1400px] mx-auto px-6 lg:px-12 mt-16 sm:mt-20 -mb-16 sm:-mb-20">
+      <div className="relative z-30 max-w-[1400px] mx-auto px-6 lg:px-12 mt-16 sm:mt-20 -mb-16 sm:-mb-20 mb:top-[22px]">
         <div className="rounded-3xl bg-white shadow-2xl">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-y sm:divide-y-0 divide-slate-100">
             {/* Stat 1 */}
