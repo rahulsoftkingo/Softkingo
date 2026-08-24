@@ -32,7 +32,7 @@ export default async function Page({ params }) {
   const adPlatformsJson = JSON.parse(caseStudy.adPlatformsJson|| '{}');
 
   return (
-    <div>
+    <div className='bg-white'>
       <PPCCaseStudyHero
         title={caseStudy.title}
         subtitle={caseStudy.subtitle}

@@ -30,7 +30,7 @@ export default function PPCCaseStudyHero({ title, subtitle, data, heroJson }) {
 
   return (
     <section className="relative bg-[#060913] text-slate-100 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-10 lg:pt-14 pb-20 lg:pb-24">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-10 lg:pt-14">
         {/* Breadcrumb */}
         <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-slate-400 mb-6">
           <Link href="/" className="hover:text-sky-400 transition-colors">
@@ -247,7 +247,7 @@ export default function PPCCaseStudyHero({ title, subtitle, data, heroJson }) {
       </div>
 
       {/* Floating stats card (Fixed static icons, dynamic values and labels) */}
-      <div className="relative z-20 max-w-[1400px] mx-auto top-12 px-6 lg:px-12 -mt-8 sm:-mt-10 top-[10px]">
+      <div className="relative z-20 max-w-[1400px] mx-auto top-12 px-6 lg:px-12 -mt-8 sm:-mt-10 top-[65px]">
         <div className="rounded-3xl bg-white shadow-2xl">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-y sm:divide-y-0 divide-slate-100">
             {/* Stat 1 */}
