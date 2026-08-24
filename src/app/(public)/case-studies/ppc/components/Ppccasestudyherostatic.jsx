@@ -21,15 +21,13 @@ import {
 import PopupQuoteModal from "@/components/PopupQuoteModal";
 
 export default function PPCCaseStudyHero({ title, subtitle, data, heroJson }) {
-  console.log("show me the data of the herosectoin", heroJson);
-
   const [showModal, setShowModal] = useState(false);
 
   // Fallback data structure if heroJson is empty or loading
   const hj = heroJson || {};
 
   return (
-    <section className="relative bg-[#060913] text-slate-100 overflow-hidden">
+    <section className="relative bg-[#060913] text-slate-100">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-10 lg:pt-14">
         {/* Breadcrumb */}
         <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-slate-400 mb-6">
@@ -246,8 +244,8 @@ export default function PPCCaseStudyHero({ title, subtitle, data, heroJson }) {
         </div>
       </div>
 
-      {/* Floating stats card (Fixed static icons, dynamic values and labels) */}
-      <div className="relative z-20 max-w-[1400px] mx-auto top-12 px-6 lg:px-12 -mt-8 sm:-mt-10 top-[65px]">
+      {/* Floating stats card — overlaps the dark section's bottom edge onto the white content below */}
+      <div className="relative z-30 max-w-[1400px] mx-auto px-6 lg:px-12 mt-16 sm:mt-20 -mb-16 sm:-mb-20">
         <div className="rounded-3xl bg-white shadow-2xl">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-y sm:divide-y-0 divide-slate-100">
             {/* Stat 1 */}
@@ -324,9 +322,6 @@ export default function PPCCaseStudyHero({ title, subtitle, data, heroJson }) {
           </div>
         </div>
       </div>
-
-      {/* Spacer so the floating card doesn't overlap content below */}
-      <div className="h-8 sm:h-10 bg-white" />
 
       <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </section>

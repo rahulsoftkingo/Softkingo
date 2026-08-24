@@ -32,6 +32,7 @@ import {
   Facebook,
   Youtube,
   Linkedin,
+  TrendingUp,
 } from "lucide-react";
 
 // ---- Static Data ---------------------------------------------------------
@@ -123,7 +124,7 @@ function SectionCard({ icon: Icon, title, children }) {
   return (
     <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
       <div className="flex items-center gap-2 mb-3">
-        <span className="flex items-center justify-center w-6 h-6 rounded-md bg-purple-50 text-purple-600">
+        <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50 text-sky-600">
           <Icon size={14} />
         </span>
         <h3 className="text-sm font-bold text-slate-800">{title}</h3>
@@ -140,7 +141,7 @@ function CustomTooltip({ active, payload }) {
         <p className="font-bold text-[11px] text-slate-700 mb-1">May '24</p>
         <div className="flex items-center justify-between gap-4 text-slate-600">
           <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-purple-600" />
+            <span className="w-2 h-2 rounded-full bg-sky-500" />
             Engagement:
           </span>
           <span className="font-bold text-slate-900">18.2K</span>
@@ -167,13 +168,10 @@ function CustomTooltip({ active, payload }) {
 
 // ---- Main Component -----------------------------------------------------
 
-export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJson, solutionJson, performanceJson, achievementsJson, platformsJson,toolsJson,adPlatformsJson}) {
+export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJson, solutionJson, performanceJson, achievementsJson, platformsJson, toolsJson, adPlatformsJson }) {
 
   const platforms = platformsJson?.items ?? [];
   const tools = toolsJson?.items ?? [];
-
-  console.log("achievement of the json string ",adPlatformsJson)
-
 
   const chartData = (performanceJson?.chartData || "")
     .split("\n")
@@ -217,7 +215,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                   >
                     <Check
                       size={14}
-                      className="text-purple-600 mt-0.5 flex-shrink-0"
+                      className="text-sky-500 mt-0.5 flex-shrink-0"
                     />
                     <span>{challenge}</span>
                   </li>
@@ -242,7 +240,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                   >
                     <Check
                       size={14}
-                      className="text-purple-600 mt-0.5 flex-shrink-0"
+                      className="text-sky-500 mt-0.5 flex-shrink-0"
                     />
                     <span>{item}</span>
                   </li>
@@ -298,7 +296,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
             <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
               <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
                 <div className="flex items-center gap-2">
-                  <span className="flex items-center justify-center w-6 h-6 rounded-md bg-purple-50 text-purple-600">
+                  <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50 text-sky-600">
                     <BarChart3 size={14} />
                   </span>
 
@@ -316,7 +314,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
               {/* Chart Legend */}
               <div className="flex items-center gap-5 mb-4 text-xs font-medium text-slate-600">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-purple-600" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-sky-500" />
                   Engagement
                 </span>
 
@@ -340,7 +338,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                   >
                     <defs>
                       <linearGradient
-                        id="purpleGrad"
+                        id="skyGrad"
                         x1="0"
                         y1="0"
                         x2="0"
@@ -348,12 +346,12 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                       >
                         <stop
                           offset="5%"
-                          stopColor="#9333ea"
+                          stopColor="#0ea5e9"
                           stopOpacity={0.1}
                         />
                         <stop
                           offset="95%"
-                          stopColor="#9333ea"
+                          stopColor="#0ea5e9"
                           stopOpacity={0}
                         />
                       </linearGradient>
@@ -385,10 +383,10 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                     <Area
                       type="monotone"
                       dataKey="engagement"
-                      stroke="#9333ea"
+                      stroke="#0ea5e9"
                       strokeWidth={2}
-                      fill="url(#purpleGrad)"
-                      dot={{ r: 3, fill: "#9333ea" }}
+                      fill="url(#skyGrad)"
+                      dot={{ r: 3, fill: "#0ea5e9" }}
                     />
 
                     <Area
@@ -443,7 +441,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
             {/* Key Achievements */}
             <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
               <div className="flex items-center gap-2 mb-4">
-                <span className="flex items-center justify-center w-6 h-6 rounded-md bg-purple-50 text-purple-600">
+                <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50 text-sky-600">
                   <Award size={14} />
                 </span>
                 <h3 className="text-sm font-bold text-slate-800">
@@ -460,7 +458,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                       key={i}
                       className="rounded-xl border border-slate-100 flex flex-col items-center text-center gap-1.5 py-4 px-2"
                     >
-                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-50 text-purple-600">
+                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-50 text-sky-600">
                         <IconComp size={16} />
                       </span>
 
@@ -516,7 +514,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                 {/* What Our Client Says */}
                 <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5 relative">
                   <div className="flex items-center justify-between mb-2">
-                    <Quote className="text-purple-600 fill-purple-600" size={20} />
+                    <Quote className="text-sky-600 fill-sky-600" size={20} />
                     <span className="text-xs font-bold text-slate-800">
                       What Our Client Says
                     </span>
@@ -553,7 +551,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                 {/* Next Steps CTA */}
                 <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-md bg-purple-50 text-purple-600">
+                    <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50 text-sky-600">
                       <ClipboardList size={14} />
                     </span>
                     <h3 className="text-sm font-bold text-slate-800">
@@ -564,7 +562,7 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                     Ready to achieve similar results for your brand?
                     Let's create a winning social media strategy for your business.
                   </p>
-                  <button className="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white font-medium text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
+                  <button className="w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-medium text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
                     Get Free Consultation
                     <ArrowRight size={14} />
                   </button>

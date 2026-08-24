@@ -11,16 +11,17 @@ function TargetArrowIcon({ className }) {
       xmlns="http://www.w3.org/2000/svg"
     >
       <circle cx="50" cy="50" r="46" fill="#ffffff" />
-      <circle cx="50" cy="50" r="46" fill="none" stroke="#1d4ed8" strokeWidth="6" />
-      <circle cx="50" cy="50" r="32" fill="none" stroke="#1d4ed8" strokeWidth="6" />
-      <circle cx="50" cy="50" r="18" fill="none" stroke="#1d4ed8" strokeWidth="6" />
-      <circle cx="50" cy="50" r="6" fill="#1d4ed8" />
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#0ea5e9" strokeWidth="6" />
+      <circle cx="50" cy="50" r="32" fill="none" stroke="#0ea5e9" strokeWidth="6" />
+      <circle cx="50" cy="50" r="18" fill="none" stroke="#0ea5e9" strokeWidth="6" />
+      <circle cx="50" cy="50" r="6" fill="#0ea5e9" />
       <g transform="rotate(45 50 50)">
-        <line x1="50" y1="50" x2="82" y2="18" stroke="#f97316" strokeWidth="5" strokeLinecap="round" />
-        <polygon points="82,10 92,12 90,22" fill="#f97316" />
-        <polygon points="50,50 42,44 44,52" fill="#f97316" />
+        <line x1="50" y1="50" x2="82" y2="18" stroke="#0284c7" strokeWidth="5" strokeLinecap="round" />
+        <polygon points="82,10 92,12 90,22" fill="#0284c7" />
+        <polygon points="50,50 42,44 44,52" fill="#0284c7" />
       </g>
     </svg>
+
   );
 }
 

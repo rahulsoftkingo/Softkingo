@@ -55,7 +55,7 @@ export default function PPCTestimonialRow() {
           <div className="rounded-2xl bg-white border border-slate-100 p-6 flex flex-col justify-between">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-sky-600">
+                <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-sky-500">
                   <ClipboardList size={16} className="text-white" />
                 </span>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900">
@@ -68,7 +68,7 @@ export default function PPCTestimonialRow() {
               </p>
             </div>
 
-            <button className="mt-6 w-fit inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-sky-600 text-white text-xs sm:text-sm font-semibold hover:bg-sky-700 transition-colors">
+            <button className="mt-6 w-fit inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-sky-500 text-white text-xs sm:text-sm font-semibold hover:bg-sky-500 transition-colors">
               Get Free Consultation <ArrowRight size={16} />
             </button>
           </div>

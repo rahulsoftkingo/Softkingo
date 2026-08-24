@@ -48,7 +48,7 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-6 lg:pt-10 pb-20 lg:pb-24">
         {/* Breadcrumb */}
         <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-slate-400 mb-4">
-          <Link href="/" className="hover:text-purple-400 transition-colors">
+          <Link href="/" className="hover:text-sky-400 transition-colors">
             Home
           </Link>
 
@@ -56,7 +56,7 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
 
           <Link
             href="/our-work"
-            className="hover:text-purple-400 transition-colors"
+            className="hover:text-sky-400 transition-colors"
           >
             Our Work
           </Link>
@@ -65,7 +65,7 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
 
           <Link
             href="/case-studies"
-            className="hover:text-purple-400 transition-colors"
+            className="hover:text-sky-400 transition-colors"
           >
             Case Studies
           </Link>
@@ -81,7 +81,7 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
           {/* LEFT COLUMN */}
           <div className="lg:col-span-6 space-y-4 z-20">
             {/* Badge */}
-            <span className="inline-flex w-fit items-center rounded-full bg-purple-600/20 border border-purple-500/30 px-3.5 py-1 text-[11px] font-bold tracking-wide text-purple-300">
+            <span className="inline-flex w-fit items-center rounded-full bg-sky-600/20 border border-sky-500/30 px-3.5 py-1 text-[11px] font-bold tracking-wide text-sky-300">
               {data.badge}
             </span>
 
@@ -90,7 +90,7 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
               {data.headline?.split(data.highlight || "")[0]}
 
               {data.highlight && (
-                <span className="text-purple-400">{data.highlight}</span>
+                <span className="text-sky-400">{data.highlight}</span>
               )}
 
               {data.headline?.split(data.highlight || "")[1]}
@@ -104,8 +104,8 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
             {/* Info items */}
             <div className="flex flex-wrap gap-2.5 pt-1">
               {/* Industry */}
-              <div className="rounded-xl bg-[#120a2e] border border-purple-900/40 px-3.5 py-2.5 flex items-center gap-2.5">
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-purple-500/10 text-purple-400">
+              <div className="rounded-xl bg-[#120a2e] border border-sky-900/40 px-3.5 py-2.5 flex items-center gap-2.5">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-sky-500/10 text-sky-400">
                   <Calendar size={15} />
                 </span>
 
@@ -121,8 +121,8 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
               </div>
 
               {/* Duration */}
-              <div className="rounded-xl bg-[#120a2e] border border-purple-900/40 px-3.5 py-2.5 flex items-center gap-2.5">
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-purple-500/10 text-purple-400">
+              <div className="rounded-xl bg-[#120a2e] border border-sky-900/40 px-3.5 py-2.5 flex items-center gap-2.5">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-sky-500/10 text-sky-400">
                   <Clock size={15} />
                 </span>
 
@@ -138,8 +138,8 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
               </div>
 
               {/* Services */}
-              <div className="rounded-xl bg-[#120a2e] border border-purple-900/40 px-3.5 py-2.5 flex items-center gap-2.5">
-                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-purple-500/10 text-purple-400">
+              <div className="rounded-xl bg-[#120a2e] border border-sky-900/40 px-3.5 py-2.5 flex items-center gap-2.5">
+                <span className="flex items-center justify-center w-7 h-7 rounded-full bg-sky-500/10 text-sky-400">
                   <Layers size={15} />
                 </span>
 
@@ -159,7 +159,7 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
             <div className="pt-1">
               <button
                 onClick={() => setShowModal(true)}
-                className="w-fit px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-500 text-white text-xs md:text-sm font-medium hover:opacity-90 transform hover:-translate-y-0.5 shadow-lg shadow-purple-900/40 transition-all duration-300 items-center cursor-pointer inline-flex gap-2"
+                className="w-fit px-5 py-2.5 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-xs md:text-sm font-medium hover:opacity-90 transform hover:-translate-y-0.5 shadow-lg shadow-sky-900/40 transition-all duration-300 items-center cursor-pointer inline-flex gap-2"
               >
                 Let's Work Together
                 <ArrowRight size={16} />
@@ -248,12 +248,12 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
             </div>
 
             {/* Brand Growth */}
-            <div className="absolute bottom-2 -right-2 sm:right-0 z-30 rounded-xl bg-[#140b36]/90 backdrop-blur-md border border-purple-500/30 p-3 shadow-2xl min-w-[160px]">
-              <p className="text-[10px] text-purple-300 font-medium">
+            <div className="absolute bottom-2 -right-2 sm:right-0 z-30 rounded-xl bg-[#140b36]/90 backdrop-blur-md border border-sky-500/30 p-3 shadow-2xl min-w-[160px]">
+              <p className="text-[10px] text-sky-300 font-medium">
                 {data.brandGrowthStat?.label}
               </p>
 
-              <p className="text-xl font-black text-purple-400 mt-0.5">
+              <p className="text-xl font-black text-sky-400 mt-0.5">
                 {data.brandGrowthStat?.value}
               </p>
 
@@ -286,13 +286,13 @@ export default function SocialMediaCaseStudyHero({ heroJson }) {
                       <IconComponent
                         size={24}
                         strokeWidth={2.5}
-                        className="text-purple-600"
+                        className="text-sky-600"
                       />
                     ) : (
                       <BarChart3
                         size={24}
                         strokeWidth={2.5}
-                        className="text-purple-600"
+                        className="text-sky-600"
                       />
                     )}
 

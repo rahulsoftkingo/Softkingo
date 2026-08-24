@@ -26,6 +26,7 @@ import {
   MousePointer,
   Users,
   DollarSign,
+  UserCheck, // Customer/Lead icon ke liye
 } from "lucide-react";
 
 // ---- Static data ---------------------------------------------------------
@@ -94,20 +95,21 @@ const campaigns = [
 
 // ---- Small building blocks ------------------------------------------------
 
-function SectionCard({ icon: Icon, title, children }) {
+function SectionCard({ icon: Icon, title, children, color = "text-sky-500", bgColor = "bg-sky-50" }) {
   return (
     <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
-          <Icon size={14} className="text-sky-500" />
-        </span>
-        <h3 className="text-sm font-semibold text-slate-800">{title}</h3>
+      <div className="flex items-center gap-2.5 mb-3">
+        {Icon && (
+          <span className={`flex items-center justify-center w-8 h-8 rounded-lg ${bgColor}`}>
+            <Icon size={18} className={color} />
+          </span>
+        )}
+        <h3 className="text-base font-semibold text-slate-800">{title}</h3>
       </div>
       {children}
     </div>
   );
 }
-
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
     return (
@@ -150,12 +152,12 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
     : null;
 
   return (
-    <section className="my-8 md:py-16 bg-white overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12">
+    <section className="my-8 md:pt-[123px] bg-white overflow-hidden">
+      <div className="container mx-auto sm:px-6 md:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* LEFT SIDEBAR */}
           <div className="lg:col-span-4 space-y-5">
-            <SectionCard icon={ClipboardList} title="Project Overview">
+            <SectionCard icon={ClipboardList} title="Project Overview" color="text-sky-500">
               <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
                 {projectOverviewJson.description}
               </p>
@@ -164,6 +166,8 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
             <SectionCard
               icon={AlertTriangle}
               title={challengeJson?.title || "The Challenge"}
+              color="text-red-500"
+              bgColor="bg-red-50"
             >
               <ul className="space-y-2">
                 {challengeJson?.items?.map((c, i) => (
@@ -184,6 +188,8 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
             <SectionCard
               icon={Lightbulb}
               title={solutionJson?.title || "Our Solution"}
+              color="text-green-500"
+              bgColor="bg-green-50"
             >
               <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-3">
                 {solutionJson?.description}
@@ -257,20 +263,20 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
             {performanceData && (
               <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
                 <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
-                  <div className="flex items-center gap-2">
-                    <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
-                      <BarChart3 size={14} className="text-sky-500" />
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-sky-50">
+                      <BarChart3 size={18} className="text-sky-500" />
                     </span>
 
-                    <h3 className="text-sm font-semibold text-slate-800">
+                    <h3 className="text-base font-semibold text-slate-800">
                       {performanceData.title}
                     </h3>
                   </div>
 
-                  <button className="flex items-center gap-2 text-xs font-medium text-slate-600 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition-colors">
-                    {performanceData.dateRangeLabel}
-                    <ChevronDown size={14} />
-                  </button>
+                  {/* <button className="flex items-center gap-2 text-xs font-medium text-slate-600 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50 transition-colors">
+        {performanceData.dateRangeLabel}
+        <ChevronDown size={14} />
+      </button> */}
                 </div>
 
                 {/* Legend */}
@@ -281,12 +287,12 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
                   </span>
 
                   <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
-                    <span className="w-2.5 h-2.5 rounded-full bg-sky-700" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-green-600" />
                     Conversions
                   </span>
 
                   <span className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
-                    <span className="w-2.5 h-2.5 rounded-full bg-sky-300" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
                     Cost
                   </span>
                 </div>
@@ -361,11 +367,11 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
                         type="monotone"
                         dataKey="conversions"
                         name="Conversions"
-                        stroke="#0369a1"
+                        stroke="#16a34a"
                         strokeWidth={2.5}
                         dot={{
                           r: 3,
-                          fill: "#0369a1",
+                          fill: "#16a34a",
                           strokeWidth: 0,
                         }}
                       />
@@ -375,11 +381,11 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
                         type="monotone"
                         dataKey="cost"
                         name="Cost"
-                        stroke="#7dd3fc"
+                        stroke="#f97316"
                         strokeWidth={2.5}
                         dot={{
                           r: 3,
-                          fill: "#7dd3fc",
+                          fill: "#f97316",
                           strokeWidth: 0,
                         }}
                       />
@@ -387,64 +393,89 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
                   </ResponsiveContainer>
                 </div>
 
-                {/* Dynamic Stats */}
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-5 pt-5 border-t border-slate-100">
-                  {performanceData.metrics?.map((metric, index) => {
-                    const isUp = metric.direction === "up";
+                {/* Dynamic Stats (Updated as per Image 2 UI) */}
+                <div className="mt-5 border border-slate-100 rounded-xl p-4 bg-slate-50/50">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-slate-200/60">
+                    {performanceData.metrics?.map((metric, index) => {
+                      const isUp = metric.direction === "up";
 
-                    return (
-                      <div key={`${metric.label}-${index}`}>
-                        <p className="text-[11px] text-slate-400 font-medium">
-                          {metric.label}
-                        </p>
-
-                        <p className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
-                          {metric.value}
-                        </p>
-
-                        <p
-                          className={`text-[11px] font-semibold flex items-center gap-0.5 mt-0.5 ${isUp ? "text-sky-600" : "text-slate-400"
+                      return (
+                        <div
+                          key={`${metric.label}-${index}`}
+                          className={`flex flex-col items-center justify-center text-center ${index !== 0 ? "pt-3 sm:pt-0 sm:pl-2" : ""
                             }`}
                         >
-                          {isUp ? "▲" : "▼"} {metric.change}
-                          {metric.change && !String(metric.change).includes("%")
-                            ? "%"
-                            : ""}
-                        </p>
-                      </div>
-                    );
-                  })}
+                          <p className="text-xs text-slate-800 font-semibold mb-1">
+                            {metric.label}
+                          </p>
+
+                          <p className="text-xl font-bold text-slate-900 tracking-tight">
+                            {metric.value}
+                          </p>
+
+                          <div className="mt-2 inline-flex items-center gap-1">
+                            <span
+                              className={`text-[11px] font-bold flex items-center gap-0.5 ${isUp
+                                ? "text-emerald-600 bg-emerald-50"
+                                : "text-rose-600 bg-rose-50"
+                                }`}
+                            >
+                              <span className="text-[9px]">{isUp ? "▲" : "▼"}</span>
+                              {metric.change}
+                              {metric.change && !String(metric.change).includes("%") ? "%" : ""}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}
 
+
             {/* Key Achievements */}
-            <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
-                  <Award size={14} className="text-sky-500" />
+            <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-6">
+              {/* Header */}
+              <div className="flex items-center gap-2.5 mb-5">
+                <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-sky-50 text-sky-600">
+                  <Award size={18} />
                 </span>
-                <h3 className="text-sm font-semibold text-slate-800">
-                  Key Achievements
-                </h3>
+                <h3 className="text-base font-bold text-slate-800">Key Achievements</h3>
               </div>
 
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+              {/* Cards Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
                 {achievementsJson?.items?.map((a, i) => {
+                  {/* Icon and Color Mapping according to image */ }
+                  const config = [
+                    { icon: Users, color: "text-emerald-500 bg-emerald-50" },       // Increase in Leads
+                    { icon: ArrowDown, color: "text-rose-500 bg-rose-50" },          // Decrease in CPL
+                    { icon: MousePointer, color: "text-blue-500 bg-blue-50" },       // Increase in Clicks
+                    { icon: Users, color: "text-amber-500 bg-amber-50" },           // Total Conversions
+                    { icon: DollarSign, color: "text-purple-600 bg-purple-50" },     // ROAS Achieved
+                    { icon: BarChart3, color: "text-blue-600 bg-blue-50" },          // Increase in Revenue
+                  ][i % 6];
+
+                  const IconComponent = config.icon;
+
                   return (
                     <div
                       key={i}
-                      className="rounded-xl border border-slate-100 flex flex-col items-center text-center gap-2 py-4 px-2"
+                      className="rounded-xl border border-slate-100 bg-white flex flex-col items-center text-center p-4 shadow-[0_1px_3px_rgba(0,0,0,0.02)] transition-all hover:shadow-md"
                     >
-                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-sky-500 text-white">
-                        <TrendingUp size={16} />
+                      {/* Circular Icon Wrapper */}
+                      <span className={`flex items-center justify-center w-9 h-9 rounded-full mb-3 ${config.color}`}>
+                        <IconComponent size={18} />
                       </span>
 
-                      <p className="text-base sm:text-lg font-extrabold text-slate-900">
+                      {/* Metric Value */}
+                      <p className="text-xl font-bold text-slate-900 tracking-tight mb-1">
                         {a.value}
                       </p>
 
-                      <p className="text-[10px] sm:text-[11px] text-slate-400 font-medium leading-tight">
+                      {/* Metric Label */}
+                      <p className="text-[11px] font-semibold text-slate-500 leading-tight">
                         {a.label}
                       </p>
                     </div>
@@ -456,19 +487,21 @@ export default function PPCCaseStudyDetails({ projectOverviewJson, challengeJson
             {/* Top Campaign Performance */}
             <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
               <div className="flex items-center gap-2 mb-4">
-                <span className="flex items-center justify-center w-6 h-6 rounded-md bg-sky-50">
-                  <ListChecks size={14} className="text-sky-500" />
-                </span>
+                <div className="flex items-center gap-2.5 mb-5">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-sky-50 text-sky-600">
+                    <ListChecks size={18} />
+                  </span>
 
-                <h3 className="text-sm font-semibold text-slate-800">
-                  {campaignsJson?.title || "Top Campaign Performance"}
-                </h3>
+                  <h3 className="text-base font-bold text-slate-800">
+                    {campaignsJson?.title || "Top Campaign Performance"}
+                  </h3>
+                </div>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-xs sm:text-sm">
                   <thead>
-                    <tr className="text-left text-slate-400 border-b border-slate-100">
+                    <tr className="text-left text-slate-800 border-b border-slate-100">
                       <th className="font-medium pb-2 pr-4">Campaign</th>
                       <th className="font-medium pb-2 px-4">Clicks</th>
                       <th className="font-medium pb-2 px-4">Conversions</th>
