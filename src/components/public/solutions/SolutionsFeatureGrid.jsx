@@ -102,7 +102,7 @@ export default function SolutionsFeatureGrid({ data }) {
                     {item.title || item.name || "Enterprise Feature"}
                   </h4> */}
 
-                  <div className="w-16 h-1 bg-white/30 rounded-full mb-4 sm:mb-6 shrink-0"></div>
+                  {/* <div className="w-16 h-1 bg-white/30 rounded-full mb-4 sm:mb-6 shrink-0"></div> */}
 
                   <div
                     className="text-sky-50 text-sm sm:text-base leading-relaxed font-medium rich-text break-words w-full"

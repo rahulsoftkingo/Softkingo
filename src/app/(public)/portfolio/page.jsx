@@ -11,8 +11,8 @@ import InquirySection from '@/components/footer/InquirySection';
 
 export const dynamic = 'force-dynamic';
 export const metadata = {
-  title: 'Our Portfolio - Successful Digital Projects by Softkingo',
-  description: 'Explore our portfolio of successful mobile apps, websites, and digital marketing campaigns built for startups and enterprises worldwide.',
+  title: 'Our Portfolio',
+  description: "Browse Softkingo's portfolio of 400+ successful mobile app, website, and digital marketing projects delivered for clients worldwide.",
   alternates: { canonical: "/portfolio" }
 };
 

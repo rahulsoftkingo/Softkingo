@@ -25,6 +25,15 @@ function safeImg(src, fallback = FALLBACK_THUMB) {
   return fallback;
 }
 
+
+export const metadata = {
+  title: "Blog",
+  description:
+    "Explore expert articles from Softkingo on app development, web design, SEO, and digital marketing strategies to grow your business.",
+  alternates: { canonical: "/testimonials" }
+};
+
+
 async function fetchPostsByCategory(categorySlug, take = 4) {
   return prisma.blogPost.findMany({
     where: {

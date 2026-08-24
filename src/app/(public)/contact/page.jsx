@@ -10,11 +10,18 @@ import CommonTitle from "@/components/ui/CommonTitle";
 import AwardsSection from "@/components/common/AwardsSection";
 import { commonSchemas } from "@/lib/commonSchema";
 
+// export const metadata = {
+//   title: "Contact Softkingo - Get a Free Quote for Your Digital Project",
+//   description: "Have a project idea? Contact Softkingo for expert consultation on mobile apps, web development, and digital marketing. We reply within 2 hours!",
+//   alternates: { canonical: "/contact" }
+// }
+
 export const metadata = {
-  title: "Contact Softkingo - Get a Free Quote for Your Digital Project",
-  description: "Have a project idea? Contact Softkingo for expert consultation on mobile apps, web development, and digital marketing. We reply within 2 hours!",
+  title: "Contact Us",
+  description: "Have a project in mind? Contact Softkingo's team for a free consultation on app development, web development, or digital marketing services.",
   alternates: { canonical: "/contact" }
 }
+
 export default function ContactPage() {
   return (
     <main className="min-h-screen  text-slate-900">

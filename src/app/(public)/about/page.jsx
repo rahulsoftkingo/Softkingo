@@ -11,9 +11,15 @@ import FAQAccordion from '@/components/common/Faqaccordion';
 import { commonSchemas } from "@/lib/commonSchema";
 
 
+// export const metadata = {
+//   title: "About Softkingo - Leading Software Development Company in India",
+//   description: "Learn about Softkingo's journey, our mission to drive digital transformation and the team behind our world-class software solutions. ISO-certified IT company in India.",
+//   alternates: { canonical: "/about" }
+// };
+
 export const metadata = {
-  title: "About Softkingo - Leading Software Development Company in India",
-  description: "Learn about Softkingo's journey, our mission to drive digital transformation and the team behind our world-class software solutions. ISO-certified IT company in India.",
+  title: "About Us",
+  description: "About Softkingo — an ISO-certified mobile app, web development, and digital marketing company trusted by 400+ clients across the US, UK, Canada, and Australia.",
   alternates: { canonical: "/about" }
 };
 

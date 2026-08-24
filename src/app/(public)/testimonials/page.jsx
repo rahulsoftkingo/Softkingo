@@ -5,9 +5,9 @@ import { commonSchemas } from "@/lib/commonSchema";
 import Script from "next/script";
 
 export const metadata = {
-  title: "Client Testimonials - Client Reviews",
+  title: "Client Testimonials",
   description:
-    "What our clients say about Softkingo across Clutch, DesignRush, and more.",
+    "Read real client reviews and testimonials on Softkingo's app development, web development, and SEO services — rated 5.0 on Clutch and Trustpilot.",
   alternates: { canonical: "/testimonials" }
 };
 
