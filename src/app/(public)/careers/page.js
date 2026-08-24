@@ -13,12 +13,12 @@ import InquirySection from '@/components/footer/InquirySection';
 import { commonSchemas } from "@/lib/commonSchema";
 
 
-export const metadata = {
-  title: "Careers",
-  description:
-    "Explore open roles at Softkingo and build your career with one of India's fastest-growing app and web development companies.",
-  alternates: { canonical: "/careers" }
-};
+// export const metadata = {
+//   title: "Careers",
+//   description:
+//     "Explore open roles at Softkingo and build your career with one of India's fastest-growing app and web development companies.",
+//   alternates: { canonical: "/careers" }
+// };
 // Static fallback jobs shown before API loads or on error
 const FALLBACK_JOBS = [
     { id: 1, title: 'React.js Developer', location: 'Noida (On-site)', experience: '2-3 Years', type: 'Full Time', department: 'Development', salary: 'Competitive' },
