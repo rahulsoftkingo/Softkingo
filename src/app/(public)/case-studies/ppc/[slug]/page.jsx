@@ -16,8 +16,6 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  console.log("casestudy",caseStudy)
-
   const projectOverviewJson = JSON.parse(caseStudy.projectOverviewJson || '{}');
   const challengeJson = JSON.parse(caseStudy.challengeJson || '{}');
   const solutionJson = JSON.parse(caseStudy.solutionJson || '{}');
@@ -30,6 +28,8 @@ export default async function Page({ params }) {
   const heroJson= JSON.parse(caseStudy.heroJson|| '{}');
   const toolsJson = JSON.parse(caseStudy.toolsJson|| '{}');
   const adPlatformsJson = JSON.parse(caseStudy.adPlatformsJson|| '{}');
+  const topContentJson = JSON.parse(caseStudy.topContentJson || '{}');
+
 
   return (
     <div className='bg-white'>
@@ -39,6 +39,7 @@ export default async function Page({ params }) {
         data={heroStatsJson}
         heroJson={heroJson}
       />
+
       <PPCCaseStudyDetails data={detailsJson}
         projectOverviewJson={projectOverviewJson}
          challengeJson={ challengeJson }
@@ -48,7 +49,8 @@ export default async function Page({ params }) {
          campaignsJson={campaignsJson}
          toolsJson={toolsJson}
          adPlatformsJson={adPlatformsJson}
-         />      
+         topContentJson={topContentJson}
+        />      
          
       <PPCTestimonialRow data={testimonialJson} />
       <PPCCTABanner />

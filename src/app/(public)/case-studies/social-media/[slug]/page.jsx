@@ -15,7 +15,7 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  // console.log("social media case study", caseStudy);
+  console.log("social media case study", caseStudy);
 
   const projectOverviewJson = JSON.parse(caseStudy.projectOverviewJson || '{}');
   const challengeJson = JSON.parse(caseStudy.challengeJson || '{}');
@@ -26,6 +26,9 @@ export default async function Page({ params }) {
   const toolsJson = JSON.parse(caseStudy.toolsJson || '{}');
   const heroJson = JSON.parse(caseStudy.heroJson || '{}');
   const adPlatformsJson = JSON.parse(caseStudy.heroJson || '{}')
+  const testimonialJson = JSON.parse(caseStudy.testimonialJson || '{}')
+  const ctaBannerJson = JSON.parse(caseStudy.ctaBannerJson || '{}')
+  const topContentJson = JSON.parse(caseStudy.topContentJson || '{}');
 
 
   return (
@@ -43,6 +46,9 @@ export default async function Page({ params }) {
         platformsJson={platformsJson}
         toolsJson={toolsJson}
         adPlatformsJson={adPlatformsJson}
+        testimonialJson={testimonialJson}
+        ctaBannerJson={ctaBannerJson}
+        topContentJson={topContentJson}
       />
       <PPCCTABanner />
     </main>

@@ -171,7 +171,10 @@ function CustomTooltip({ active, payload }) {
 
 // ---- Main Component -----------------------------------------------------
 
-export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJson, solutionJson, performanceJson, achievementsJson, platformsJson, toolsJson, adPlatformsJson }) {
+export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJson, solutionJson, performanceJson, achievementsJson, platformsJson, toolsJson, adPlatformsJson, testimonialJson, ctaBannerJson, topContentJson }) {
+
+
+  console.log("show the data of the testimonali josn", topContentJson)
 
   const platforms = platformsJson?.items ?? [];
   const tools = toolsJson?.items ?? [];
@@ -444,8 +447,8 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                           {metric.change && (
                             <span
                               className={`text-[11px] font-bold flex items-center gap-0.5 px-1.5 py-0.5 rounded ${isUp
-                                  ? "text-emerald-600 bg-emerald-50"
-                                  : "text-rose-600 bg-rose-50"
+                                ? "text-emerald-600 bg-emerald-50"
+                                : "text-rose-600 bg-rose-50"
                                 }`}
                             >
                               <span className="text-[8px]">{isUp ? "▲" : "▼"}</span>
@@ -504,32 +507,49 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
               {/* Top Performing Content */}
               <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
                 <h3 className="text-sm font-bold text-slate-800 mb-4">
-                  Top Performing Content
+                  {topContentJson.title}
                 </h3>
+
                 <div className="grid grid-cols-3 gap-3">
-                  {topPosts.map((post, index) => (
+                  {topContentJson.items.map((post, index) => (
                     <div key={index} className="space-y-1.5">
                       <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-slate-100 border border-slate-100">
-                        <img
-                          src={post.image}
-                          alt={post.type}
-                          className="w-full h-full object-cover"
-                        />
+                        {post.image ? (
+                          <img
+                            src={post.image}
+                            alt={post.label || post.type}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-xs text-slate-400">
+                            No Image
+                          </div>
+                        )}
                       </div>
+
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                         {post.type}
                       </p>
+
                       <p className="text-[11px] text-slate-500">
                         {post.label}
                       </p>
+
                       <p className="text-xs font-bold text-slate-900 flex items-center gap-1">
-                        <Heart size={12} className="text-red-500 fill-red-500" />
-                        {post.value}
+                        <Heart
+                          size={12}
+                          className="text-red-500 fill-red-500"
+                        />
+                        {post.metricValue}
+                        <span className="text-[10px] text-slate-400 font-medium">
+                          {post.metricLabel}
+                        </span>
                       </p>
                     </div>
                   ))}
                 </div>
               </div>
+
 
               {/* Right Column (Client Feedback & Next Steps) */}
               <div className="space-y-5">
@@ -538,38 +558,42 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                 <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5 relative">
                   <div className="flex items-center justify-between mb-2">
                     <Quote className="text-sky-600 fill-sky-600" size={20} />
+
                     <span className="text-xs font-bold text-slate-800">
                       What Our Client Says
                     </span>
                   </div>
+
                   <p className="text-xs text-slate-500 leading-relaxed mb-4">
-                    Softkingo completely transformed our social media presence.
-                    Their creative content, timely communication and strategic
-                    approach helped us build a strong community and achieve
-                    amazing results.
+                    {testimonialJson?.quote}
                   </p>
 
                   <div className="flex items-center justify-between pt-2">
                     <div className="flex items-center gap-2.5">
                       <img
-                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80"
-                        alt="Rahul Mehta"
+                        src={testimonialJson?.avatar}
+                        alt={testimonialJson?.name}
                         className="w-8 h-8 rounded-full object-cover"
                       />
+
                       <div>
                         <p className="text-xs font-bold text-slate-800">
-                          Rahul Mehta
+                          {testimonialJson?.name}
                         </p>
+
                         <p className="text-[10px] text-slate-400">
-                          Marketing Manager, FitLife Nutrition
+                          {testimonialJson?.designation}
                         </p>
                       </div>
                     </div>
+
                     <div className="flex items-center gap-1 text-emerald-600 font-extrabold text-xs">
-                      <span>🍃</span> FitLife
+                      <span>🍃</span>
+                      {/* {testimonialJson?.companyTag} */}
                     </div>
                   </div>
                 </div>
+
 
                 {/* Next Steps CTA */}
                 <div className="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
@@ -578,12 +602,11 @@ export default function SocialMediaCaseStudy({ projectOverviewJson, challengeJso
                       <ClipboardList size={14} />
                     </span>
                     <h3 className="text-sm font-bold text-slate-800">
-                      Next Steps
+                      {ctaBannerJson.nextStepsTitle}
                     </h3>
                   </div>
                   <p className="text-xs text-slate-500 leading-relaxed mb-4">
-                    Ready to achieve similar results for your brand?
-                    Let's create a winning social media strategy for your business.
+                    {ctaBannerJson.nextStepsDescription}
                   </p>
                   <button className="w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-medium text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors">
                     Get Free Consultation

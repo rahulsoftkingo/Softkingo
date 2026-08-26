@@ -66,67 +66,135 @@ const MiniInput = ({ label, value, onChange, placeholder, className = '' }) => (
   </div>
 );
 
-function ImageUploadField({ label, name, value, placeholder, uploadingField, onChange, onFileUpload, onBrowse, onPreview }) {
+function ImageUploadField({
+  label,
+  name,
+  value,
+  placeholder,
+  uploadingField,
+  onChange,
+  onFileUpload,
+  onBrowse,
+  onPreview,
+}) {
+  const handleUpload = (e) => {
+    if (typeof onFileUpload === "function") {
+      onFileUpload(e, name);
+    }
+  };
+
+  const handleBrowse = () => {
+    if (typeof onBrowse === "function") {
+      onBrowse(name);
+    }
+  };
+
+  const handlePreview = () => {
+    if (typeof onPreview === "function") {
+      onPreview(value);
+    }
+  };
+
   return (
     <div className="space-y-2">
-      <label className="block text-xs sm:text-sm font-medium text-slate-700">{label}</label>
+      <label className="block text-xs sm:text-sm font-medium text-slate-700">
+        {label}
+      </label>
+
+      {/* Image URL */}
       <input
         type="text"
         name={name}
-        value={value || ''}
+        value={value || ""}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all"
+        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 md:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-all"
       />
 
+      {/* Action Buttons */}
       <div className="flex flex-wrap items-center gap-2">
-        <label className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 cursor-pointer transition-colors">
+
+        {/* 1. Upload from Device */}
+        <label
+          className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 cursor-pointer transition-colors"
+        >
           {uploadingField === name ? (
             <>
               <Loader2 className="h-3 w-3 animate-spin" />
-              <span className="hidden xs:inline">Uploading...</span>
+              <span className="hidden xs:inline">
+                Uploading...
+              </span>
             </>
           ) : (
             <>
               <Upload className="h-3 w-3" />
-              <span className="hidden sm:inline">Upload</span>
-              <span className="sm:hidden">📤</span>
+              <span className="hidden sm:inline">
+                Upload
+              </span>
+              <span className="sm:hidden">
+                📤
+              </span>
             </>
           )}
+
           <input
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => onFileUpload(e, name)}
+            onChange={handleUpload}
             disabled={uploadingField === name}
           />
         </label>
 
+        {/* 2. Browse from Public Folder */}
         <button
           type="button"
-          onClick={() => onBrowse(name)}
+          onClick={handleBrowse}
           className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-[10px] sm:text-xs font-medium text-slate-700 transition-colors"
         >
           <Folder className="h-3 w-3" />
-          <span className="hidden sm:inline">Browse</span>
-          <span className="sm:hidden">📁</span>
+
+          <span className="hidden sm:inline">
+            Browse
+          </span>
+
+          <span className="sm:hidden">
+            📁
+          </span>
         </button>
 
+        {/* 3. Preview */}
         {value && uploadingField !== name && (
           <>
             <button
               type="button"
-              onClick={() => onPreview(value)}
-              className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-[10px] sm:text-xs font-medium text-emerald-700 transition-colors"
+              onClick={handlePreview}
+              className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg border border-sky-300 bg-sky-50 hover:bg-sky-100 text-[10px] sm:text-xs font-medium text-sky-700 transition-colors"
             >
               <ZoomIn className="h-3 w-3" />
-              <span className="hidden sm:inline">Preview</span>
-              <span className="sm:hidden">🔍</span>
+
+              <span className="hidden sm:inline">
+                Preview
+              </span>
+
+              <span className="sm:hidden">
+                🔍
+              </span>
             </button>
+
+            {/* Thumbnail */}
             <div className="flex items-center gap-1 sm:gap-1.5">
               <div className="h-6 w-6 sm:h-8 sm:w-8 md:h-10 md:w-10 rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
-                <img src={value} alt="preview" className="h-full w-full object-cover" />
+                <img
+                  src={value}
+                  alt={`${label || "Image"} preview`}
+                  className="h-full w-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
               </div>
+
               <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 text-emerald-500" />
             </div>
           </>
@@ -135,6 +203,7 @@ function ImageUploadField({ label, name, value, placeholder, uploadingField, onC
     </div>
   );
 }
+
 
 export default function PortfolioPpcEditPage() {
   const router = useRouter();
