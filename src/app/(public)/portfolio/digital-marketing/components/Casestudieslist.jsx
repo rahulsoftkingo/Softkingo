@@ -370,7 +370,6 @@
 //     );
 // }
 
-
 "use client";
 
 import React, { useState, useMemo } from "react";
@@ -440,6 +439,16 @@ const routeByType = {
     seo: "seo",
     ppc: "ppc",
     "social-media": "social-media",
+};
+
+// ---- fixed top-level filters (by data source / type) ----
+const TYPE_FILTERS = ["All", "seo", "ppc", "social-media"];
+
+const TYPE_FILTER_LABELS = {
+    All: "All",
+    seo: "SEO",
+    ppc: "PPC",
+    "social-media": "Social Media",
 };
 
 function CaseStudyCard({ study, businessImpact, styleIndex }) {
@@ -626,8 +635,6 @@ function normalizeSocial(record) {
 
 export default function CaseStudiesList({ seoData, ppcData, socialData, data }) {
 
-    console.log("show me the ppcData of the caseStudiesList of the Rahul Thapliyal",ppcData);
-
     const seoRecords = Array.isArray(seoData) ? seoData : Array.isArray(data) ? data : [];
     const ppcRecords = Array.isArray(ppcData) ? ppcData : [];
     const socialRecords = Array.isArray(socialData) ? socialData : [];
@@ -647,52 +654,61 @@ export default function CaseStudiesList({ seoData, ppcData, socialData, data }) 
         });
     }, [seoRecords, ppcRecords, socialRecords]);
 
+    // Top-level filter is now fixed: All / seo / ppc / social-media
     const [activeFilter, setActiveFilter] = useState("All");
 
     const [activeIndustry, setActiveIndustry] = useState("All Industries");
 
-    const industries = ["All Industries", "SEO", "PPC", "Digital Media"];
+    // Industry list shown in the dropdown (matches the screenshot list)
+    const industries = [
+        "All Industries",
+        "Healthcare",
+        "Travel & Tourism",
+        "Retail & E-Commerce",
+        "Social Networking",
+        "Construction",
+        "Education / E-Learning",
+        "Food & Restaurant",
+        "Logistics/Transportation",
+        "Finance / FinTech",
+        "Manufacturing",
+        "Real Estate",
+        "Fitness & Wellness",
+        "Media & Entertainment",
+        "Automotive",
+        "Sports",
+    ];
 
-    const industryToType = {
-        SEO: "seo",
-        PPC: "ppc",
-        "Digital Media": "social-media",
+    // small helper: check whether a study's `category` field contains a given value
+    // (still used for the Industry dropdown on the right)
+    const matchesCategory = (study, value) => {
+        if (!value || value === "All" || value === "All Industries") return true;
+
+        if (Array.isArray(study.category)) {
+            return study.category.map((c) => c.trim()).includes(value);
+        }
+
+        if (typeof study.category === "string") {
+            return study.category
+                .split(",")
+                .map((c) => c.trim())
+                .includes(value);
+        }
+
+        return false;
     };
-
-    const filters = useMemo(() => {
-        const extractedCategories = new Set();
-
-        caseStudies.forEach((study) => {
-            if (!study.category) return;
-
-            if (Array.isArray(study.category)) {
-                study.category.forEach((cat) => extractedCategories.add(cat.trim()));
-            } else if (typeof study.category === "string") {
-                study.category.split(",").forEach((cat) => extractedCategories.add(cat.trim()));
-            }
-        });
-
-        return ["All", ...Array.from(extractedCategories)];
-    }, [caseStudies]);
 
     const visibleStudies = useMemo(() => {
         return caseStudies.filter((study) => {
-            const categoryMatch =
-                activeFilter === "All" ||
-                (Array.isArray(study.category)
-                    ? study.category.includes(activeFilter)
-                    : typeof study.category === "string"
-                        ? study.category
-                            .split(",")
-                            .map((c) => c.trim())
-                            .includes(activeFilter)
-                        : false);
+            // Filter by data source / type: All | seo | ppc | social-media
+            const typeMatch =
+                activeFilter === "All" || study.type === activeFilter;
 
             const industryMatch =
                 activeIndustry === "All Industries" ||
-                study.type === industryToType[activeIndustry];
+                matchesCategory(study, activeIndustry);
 
-            return categoryMatch && industryMatch;
+            return typeMatch && industryMatch;
         });
     }, [caseStudies, activeFilter, activeIndustry]);
 
@@ -705,9 +721,9 @@ export default function CaseStudiesList({ seoData, ppcData, socialData, data }) 
                     <div className="mx-auto max-w-7xl rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-[0_15px_50px_rgba(15,23,42,0.08)]">
                         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
 
-                            {/* LEFT SIDE - sirf pehle 5 category filters dikhayenge */}
+                            {/* LEFT SIDE - All / SEO / PPC / Social Media (filters by data source) */}
                             <div className="flex flex-wrap gap-3">
-                                {filters.slice(0,4).map((f) => (
+                                {TYPE_FILTERS.map((f) => (
                                     <button
                                         key={f}
                                         onClick={() => setActiveFilter(f)}
@@ -716,7 +732,7 @@ export default function CaseStudiesList({ seoData, ppcData, socialData, data }) 
                                                 : "bg-white border-slate-200 text-slate-700 hover:bg-sky-50 hover:border-sky-300 hover:text-sky-600"
                                             }`}
                                     >
-                                        {f}
+                                        {TYPE_FILTER_LABELS[f]}
                                     </button>
                                 ))}
                             </div>
@@ -726,7 +742,7 @@ export default function CaseStudiesList({ seoData, ppcData, socialData, data }) 
                                 <select
                                     value={activeIndustry}
                                     onChange={(e) => setActiveIndustry(e.target.value)}
-                                    className="appearance-none w-full lg:w-[180px] px-4 py-3 pr-10 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-700 outline-none focus:border-sky-400"
+                                    className="appearance-none w-full lg:w-[220px] px-4 py-3 pr-10 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-700 outline-none focus:border-sky-400"
                                 >
                                     {industries.map((industry) => (
                                         <option key={industry} value={industry}>

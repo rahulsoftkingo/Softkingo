@@ -1051,14 +1051,32 @@ export default function PortfolioSocialMediaEditPage() {
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
                       Category
                     </label>
-                    <input
+
+                    <select
                       name="category"
                       value={form.category}
                       onChange={handleChange}
-                      placeholder="Health & Wellness"
-                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
-                    />
+                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
+                    >
+                      <option value="">Select Category</option>
+                      <option value="Healthcare">Healthcare</option>
+                      <option value="Education / E-Learning">Education / E-Learning</option>
+                      <option value="Real Estate">Real Estate</option>
+                      <option value="Travel & Tourism">Travel & Tourism</option>
+                      <option value="Food & Restaurant">Food & Restaurant</option>
+                      <option value="Fitness & Wellness">Fitness & Wellness</option>
+                      <option value="Retail & E-Commerce">Retail & E-Commerce</option>
+                      <option value="Logistics/Transportation">Logistics/Transportation</option>
+                      <option value="Media & Entertainment">Media & Entertainment</option>
+                      <option value="Social Networking">Social Networking</option>
+                      <option value="Finance / FinTech">Finance / FinTech</option>
+                      <option value="Automotive">Automotive</option>
+                      <option value="Construction">Construction</option>
+                      <option value="Manufacturing">Manufacturing</option>
+                      <option value="Sports">Sports</option>
+                    </select>
                   </div>
+
 
                   <div className="sm:col-span-2">
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
@@ -1995,7 +2013,7 @@ export default function PortfolioSocialMediaEditPage() {
           scrollbar-width: none;
         }
       `}</style>
-      
+
     </div>
   );
 }
