@@ -1049,7 +1049,7 @@ export default function PortfolioSocialMediaEditPage() {
 
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
-                      Category
+                      Industries
                     </label>
 
                     <select
