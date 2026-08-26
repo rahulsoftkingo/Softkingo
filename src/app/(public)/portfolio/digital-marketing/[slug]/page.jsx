@@ -20,7 +20,7 @@ export default async function Page({ params }) {
     notFound(); 
   }
 
-  console.log('PortfolioSeo data for slug', slug, ':', caseStudy); 
+  // console.log('PortfolioSeo data for slug', slug, ':', caseStudy); 
 
   // JSON text columns ko parse karke bhi dekhna ho to:
   const heroStatsJson = JSON.parse(caseStudy.heroStatsJson || '{}');
