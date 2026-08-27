@@ -1439,7 +1439,7 @@ export default function PortfolioSeoEditPage() {
                         className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500"
                       />
                     </div>
-                    <div>
+                    {/* <div>
                       <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5">Industry</label>
                       <input
                         name="clientIndustry"
@@ -1448,7 +1448,34 @@ export default function PortfolioSeoEditPage() {
                         placeholder="Healthcare / Medical Services"
                         className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs focus:outline-none focus:ring-2 focus:ring-sky-500"
                       />
+                    </div> */}
+                    <div>
+                      <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5">Industry</label>
+                      <select
+                        name="clientIndustry"
+                        value={form.clientIndustry}
+                        onChange={handleChange}
+                        className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      >
+                        <option value="">Select Industry</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Education / E-Learning">Education / E-Learning</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Travel & Tourism">Travel & Tourism</option>
+                        <option value="Food & Restaurant">Food & Restaurant</option>
+                        <option value="Fitness & Wellness">Fitness & Wellness</option>
+                        <option value="Retail & E-Commerce">Retail & E-Commerce</option>
+                        <option value="Logistics/Transportation">Logistics/Transportation</option>
+                        <option value="Media & Entertainment">Media & Entertainment</option>
+                        <option value="Social Networking">Social Networking</option>
+                        <option value="Finance / FinTech">Finance / FinTech</option>
+                        <option value="Automotive">Automotive</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Sports">Sports</option>
+                      </select>
                     </div>
+                    
                     <div>
                       <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5">Website</label>
                       <input

@@ -77,12 +77,40 @@ export default async function CaseStudiesPage() {
     ]);
 
     // ---- SEO case studies ----
+    // const seoCaseStudies = seoRecords.map((r) => ({
+    //     id: r.id,
+    //     slug: r.slug,
+    //     title: r.title,
+    //     subtitle: r.subtitle,
+    //     category: r.category,
+    //     industries: safeParse(r.clientOverviewJson),
+    //     // industries: r.clientOverview.clientindustry,
+    //     companyLogo: r.companyLogo,
+    //     companyDescription: r.companyDescription,
+    //     heroBgImage: r.heroBgImage,
+    //     seoImage: r.seoImage,
+    //     heroStats: safeParse(r.heroStatsJson),
+    //     clientOverview: safeParse(r.clientOverviewJson),
+    //     strategy: safeParse(r.strategyJson),
+    //     results: safeParse(r.resultsJson),
+    //     performanceDashboard: safeParse(r.performanceDashboardJson),
+    //     technicalSeo: safeParse(r.technicalSeoJson),
+    //     businessImpact: safeParse(r.businessImpactJson),
+    //     tools: safeParse(r.toolsJson),
+    //     portfolioCardContent: safeParse(r.portfolioCardContent),
+    //     seoTitle: r.seoTitle,
+    //     seoDescription: r.seoDescription,
+    //     createdAt: r.createdAt,
+    //     updatedAt: r.updatedAt,
+    // }));
+
     const seoCaseStudies = seoRecords.map((r) => ({
         id: r.id,
         slug: r.slug,
         title: r.title,
         subtitle: r.subtitle,
         category: r.category,
+        industries: safeParse(r.clientOverviewJson)?.client?.industry ?? "",
         companyLogo: r.companyLogo,
         companyDescription: r.companyDescription,
         heroBgImage: r.heroBgImage,
@@ -96,11 +124,13 @@ export default async function CaseStudiesPage() {
         businessImpact: safeParse(r.businessImpactJson),
         tools: safeParse(r.toolsJson),
         portfolioCardContent: safeParse(r.portfolioCardContent),
+
         seoTitle: r.seoTitle,
         seoDescription: r.seoDescription,
         createdAt: r.createdAt,
         updatedAt: r.updatedAt,
     }));
+
 
     // ---- PPC case studies ----
     const ppcCaseStudies = ppcRecords.map((r) => ({
@@ -164,6 +194,8 @@ export default async function CaseStudiesPage() {
         updatedAt: r.updatedAt,
     }));
 
+    console.log("Seo case studies", seoCaseStudies);
+
     return (
         <>
             <CaseStudiesHero />
@@ -174,4 +206,5 @@ export default async function CaseStudiesPage() {
             />
         </>
     );
+
 }

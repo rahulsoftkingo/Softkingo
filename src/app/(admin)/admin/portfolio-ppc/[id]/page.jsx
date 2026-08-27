@@ -1160,6 +1160,33 @@ export default function PortfolioPpcEditPage() {
                     />
                   </div>
 
+                  <div className="sm:col-span-2">
+                    <ImageUploadField
+                      label="Company Logo"
+                      name="companyLogo"
+                      value={form.companyLogo}
+                      placeholder="/images/clients/urbandrive-logo.png"
+                      uploadingField={uploadingField}
+                      onChange={handleChange}
+                      onFileUpload={handleFileUpload}
+                      onBrowse={openImageBrowser}
+                      onPreview={setImagePreview}
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                      Company Description / Tagline
+                    </label>
+                    <input
+                      name="companyDescription"
+                      value={form.companyDescription}
+                      onChange={handleChange}
+                      placeholder="SELF DRIVE CARS"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
                       Status
@@ -1205,12 +1232,19 @@ export default function PortfolioPpcEditPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4 sm:gap-5">
+
                   <ImageUploadField
                     label="Hero Background Image"
                     name="heroBgImage"
                     value={form.heroBgImage}
                     placeholder="/images/portfolio-ppc/urbandrive-hero-bg.jpg"
+                    uploadingField={uploadingField}
+                    onChange={handleChange}
+                    onFileUpload={handleFileUpload}
+                    onBrowse={openImageBrowser}
+                    onPreview={setImagePreview}
                   />
+
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
                       Badge / Eyebrow
@@ -1746,7 +1780,17 @@ export default function PortfolioPpcEditPage() {
                 <div className="p-3 xs:p-4 sm:p-5 rounded-lg bg-purple-50 border border-purple-200 space-y-3 sm:space-y-4">
                   <h4 className="text-xs sm:text-sm font-semibold text-purple-900">Client Branding</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <ImageUploadField label="Company Logo" name="companyLogo" value={form.companyLogo} placeholder="/images/clients/urbandrive-logo.png" />
+
+                    <ImageUploadField
+                      label="Company Logo" name="companyLogo"
+                      value={form.companyLogo}
+                      placeholder="/images/clients/urbandrive-logo.png"
+                      uploadingField={uploadingField}
+                      onChange={handleChange}
+                      onFileUpload={handleFileUpload}
+                      onBrowse={openImageBrowser}
+                      onPreview={setImagePreview}
+                    />
                     <div>
                       <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5">
                         Company Description / Tagline
@@ -1777,7 +1821,19 @@ export default function PortfolioPpcEditPage() {
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <ImageUploadField label="Reviewer Avatar" name="testimonialAvatar" value={form.testimonialAvatar} placeholder="/images/clients/rohit.jpg" />
+
+                    <ImageUploadField
+                      label="Reviewer Avatar"
+                      name="testimonialAvatar"
+                      value={form.testimonialAvatar}
+                      placeholder="/images/clients/rohit.jpg"
+                      uploadingField={uploadingField}
+                      onChange={handleChange}
+                      onFileUpload={handleFileUpload}
+                      onBrowse={openImageBrowser}
+                      onPreview={setImagePreview}
+                    />
+
                     <div className="space-y-3">
                       <MiniInput label="Name" value={form.testimonialName} onChange={(v) => updateFormValue('testimonialName', v)} placeholder="Rohit Malhotra" />
                       <MiniInput label="Designation" value={form.testimonialDesignation} onChange={(v) => updateFormValue('testimonialDesignation', v)} placeholder="Marketing Head, UrbanDrive" />
@@ -1899,7 +1955,18 @@ export default function PortfolioPpcEditPage() {
                       className="w-full rounded-lg border border-slate-200 bg-white px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     />
                   </div>
-                  <ImageUploadField label="Card Thumbnail" name="cardImage" value={form.cardImage} placeholder="/images/portfolio-ppc/urbandrive-card.jpg" />
+                  <ImageUploadField
+                    label="Card Thumbnail"
+                    name="cardImage"
+                    value={form.cardImage}
+                    placeholder="/images/portfolio-ppc/urbandrive-card.jpg"
+                    uploadingField={uploadingField}
+                    onChange={handleChange}
+                    onFileUpload={handleFileUpload}
+                    onBrowse={openImageBrowser}
+                    onPreview={setImagePreview}
+                  />
+
                   <MiniInput label="Card Tag" value={form.cardTag} onChange={(v) => updateFormValue('cardTag', v)} placeholder="PPC · Automotive" />
                 </div>
               </div>

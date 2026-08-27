@@ -189,7 +189,7 @@ export default function PortfolioSocialMediaEditPage() {
     // Social preview card
     socialPlatformHandle: 'fitlife.nutrition',
     socialPlatformIcon: 'Instagram',
-    socialPostImage: '',
+    socialPostImages: [],
     socialCaption: 'STRONGER EVERY DAY',
     socialLikes: '3,275',
     socialCtaText: 'View Post',
@@ -337,7 +337,10 @@ export default function PortfolioSocialMediaEditPage() {
 
         socialPlatformHandle: hero.socialPreview?.platformHandle || prev.socialPlatformHandle,
         socialPlatformIcon: hero.socialPreview?.platformIcon || prev.socialPlatformIcon,
-        socialPostImage: hero.socialPreview?.postImage || '',
+        socialPostImages: hero.socialPreview?.postImages?.length
+          ? hero.socialPreview.postImages
+          : (hero.socialPreview?.postImage ? [hero.socialPreview.postImage] : []),
+
         socialCaption: hero.socialPreview?.caption || prev.socialCaption,
         socialLikes: hero.socialPreview?.likes || prev.socialLikes,
         socialCtaText: hero.socialPreview?.ctaText || prev.socialCtaText,
@@ -406,6 +409,18 @@ export default function PortfolioSocialMediaEditPage() {
     setForm((prev) => {
       const parts = path.split('.');
       if (parts.length === 1) return { ...prev, [path]: value };
+
+      // NAYA: plain string arrays ke liye (e.g. "socialPostImages.0")
+      if (parts.length === 2) {
+        const [arrayField, indexStr] = parts;
+        const index = parseInt(indexStr);
+        if (!isNaN(index) && Array.isArray(prev[arrayField])) {
+          const copy = [...prev[arrayField]];
+          copy[index] = value;
+          return { ...prev, [arrayField]: copy };
+        }
+      }
+
       if (parts.length === 3) {
         const [arrayField, indexStr, subField] = parts;
         const index = parseInt(indexStr);
@@ -547,7 +562,7 @@ export default function PortfolioSocialMediaEditPage() {
       socialPreview: {
         platformHandle: form.socialPlatformHandle,
         platformIcon: form.socialPlatformIcon,
-        postImage: form.socialPostImage,
+        postImages: form.socialPostImages,
         caption: form.socialCaption,
         likes: form.socialLikes,
         ctaText: form.socialCtaText,
@@ -1109,6 +1124,33 @@ export default function PortfolioSocialMediaEditPage() {
                     />
                   </div>
 
+                  <div className="sm:col-span-2">
+                    <ImageUploadField
+                      label="Company Logo"
+                      name="companyLogo"
+                      value={form.companyLogo}
+                      placeholder="/images/clients/urbandrive-logo.png"
+                      uploadingField={uploadingField}
+                      onChange={handleChange}
+                      onFileUpload={handleFileUpload}
+                      onBrowse={openImageBrowser}
+                      onPreview={setImagePreview}
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
+                      Company Description / Tagline
+                    </label>
+                    <input
+                      name="companyDescription"
+                      value={form.companyDescription}
+                      onChange={handleChange}
+                      placeholder="SELF DRIVE CARS"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-2.5 xs:px-3 sm:px-4 py-1.5 xs:py-2 sm:py-2.5 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-slate-700 mb-1.5 sm:mb-2">
                       Status
@@ -1236,7 +1278,7 @@ export default function PortfolioSocialMediaEditPage() {
                     <MiniInput label="Likes" value={form.socialLikes} onChange={(v) => updateFormValue('socialLikes', v)} placeholder="3,275" />
                     <MiniInput label="CTA Text (optional)" value={form.socialCtaText} onChange={(v) => updateFormValue('socialCtaText', v)} placeholder="View Post" />
                   </div>
-                  <ImageUploadField
+                  {/* <ImageUploadField
                     label="Post Image"
                     name="socialPostImage"
                     value={form.socialPostImage}
@@ -1246,8 +1288,51 @@ export default function PortfolioSocialMediaEditPage() {
                     onFileUpload={handleFileUpload}
                     onBrowse={openImageBrowser}
                     onPreview={setImagePreview}
-                  />
+                  /> */}
+                  {/* PURANA single ImageUploadField hataa ke ye lagao */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-slate-700">
+                        Post Images
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => addStringItem('socialPostImages')}
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded bg-fuchsia-50 text-fuchsia-700 hover:bg-fuchsia-100 text-[10px] font-medium"
+                      >
+                        <Plus className="h-3 w-3" /> Add Image
+                      </button>
+                    </div>
 
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {form.socialPostImages.map((img, idx) => (
+                        <div key={idx} className="p-2.5 rounded-lg border border-slate-200 bg-slate-50 relative">
+                          <button
+                            type="button"
+                            onClick={() => removeStringItem('socialPostImages', idx)}
+                            className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 z-10"
+                          >
+                            <X size={12} />
+                          </button>
+                          <ImageUploadField
+                            label={`Image ${idx + 1}`}
+                            name={`socialPostImages.${idx}`}
+                            value={img}
+                            placeholder="/images/portfolio-social-media/fitlife-post.jpg"
+                            uploadingField={uploadingField}
+                            onChange={(e) => updateStringItem('socialPostImages', idx, e.target.value)}
+                            onFileUpload={handleFileUpload}
+                            onBrowse={openImageBrowser}
+                            onPreview={setImagePreview}
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    {form.socialPostImages.length === 0 && (
+                      <p className="text-[10px] text-slate-400 mt-1">No images added yet — click "Add Image" to start.</p>
+                    )}
+                  </div>
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <label className="block text-[10px] xs:text-xs font-medium text-slate-700">
