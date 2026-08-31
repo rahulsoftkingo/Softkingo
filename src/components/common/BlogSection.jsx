@@ -64,11 +64,11 @@ export default function BlogSection({
 
     return (
         <section className={`relative bg-white overflow-hidden ${className}`}>
-            <div className="max-w-7xl mx-auto py-8 md:py-16">
+            <div className="max-w-7xl mx-auto py-8 md:py-16 px-4 md:px-8">
                 <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
                     {/* Left Content - Header & CTA */}
-                    <div className="lg:col-span-4  flex items-start justify- md:justify-center md:flex-col  md:items-start  spac-8">
+                    <div className="lg:col-span-4 flex items-start justify- md:justify-center md:flex-col md:items-start spac-8">
 
                            <div className="[&_.text-left]:!pl-0"> 
                             <CommonTitle
@@ -98,7 +98,7 @@ export default function BlogSection({
                     </div>
 
                     {/* Right Content - Blog Carousel */}
-                    <div className="lg:col-span-8 relative group/carousel overflow-hidden">
+                    <div className="lg:col-span-8 relative group/carousel px-3">
                         <div
                             ref={scrollRef}
                             onScroll={checkScroll}
@@ -130,7 +130,7 @@ export default function BlogSection({
                         {canScrollLeft && (
                             <button
                                 onClick={() => scroll('left')}
-                                className="absolute -left-4 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
+                                className="absolute left-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
                             >
                                 <FaArrowLeft />
                             </button>
@@ -138,7 +138,7 @@ export default function BlogSection({
                         {canScrollRight && (
                             <button
                                 onClick={() => scroll('right')}
-                                className="absolute -right-4 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
+                                className="absolute right-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
                             >
                                 <FaArrowRight />
                             </button>
