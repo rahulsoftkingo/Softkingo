@@ -101,7 +101,7 @@ function Crafting() {
               key={i}
               className="rounded-b-xl min-h-[170px] p-4 bg-white border border-sky-100 shadow-[0_7px_0_0_rgba(14,165,233,0.18)] hover:shadow-[0_10px_0_0_rgba(14,165,233,0.25)] hover:-translate-y-1 transition-all duration-300"
             >
-              <h3 className="font-bold text-3xl 2xl:text-3xl text-sky-800 mb-1">
+              <h3 className="font-bold text-3xl md:text-4xl 2xl:text-3xl text-sky-800 mb-1">
                 {item.name}
               </h3>
 
@@ -109,7 +109,7 @@ function Crafting() {
                 {item.featurs}
               </p>
 
-              <p className="text-gray-400 text-[11px] leading-relaxed">
+              <p className="text-gray-400 text-[12px] leading-relaxed">
                 {item.description}
               </p>
             </div>
