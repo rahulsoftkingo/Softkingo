@@ -64,23 +64,24 @@ export default function BlogSection({
 
     return (
         <section className={`relative bg-white overflow-hidden ${className}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+            <div className="max-w-7xl mx-auto py-8 md:py-16">
                 <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
                     {/* Left Content - Header & CTA */}
                     <div className="lg:col-span-4  flex items-start justify- md:justify-center md:flex-col  md:items-start  spac-8">
-                        <div className="max-w-xs lg:max-w-none -mb-6 ">
+
+                           <div className="[&_.text-left]:!pl-0"> 
                             <CommonTitle
                                 title={title}
                                 subtitle={subtitle}
                                 align="left"
                                 gradientText={gradientText}
                             />
-                        </div>
+                            </div>                  
 
                         <Link
                             href={`/blog/category/${category}`}
-                            className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0 md:ml-10"
+                            className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0"
                         >
                             <div className="relative flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
                                 <FaArrowRight className="text-lg md:text-xl text-slate-700 group-hover:text-sky-500 transition-colors duration-500 group-hover:translate-x-1" />

@@ -12,15 +12,13 @@ import CommonTitle from '@/components/ui/CommonTitle';
 const HomePortfolio = () => {
     const realCount = homePortfolioData.length;
 
-    const extendedData = [
+    // Dynamic array system jo infinite loop me Seamless movement deta hai
+    const [extendedData, setExtendedData] = useState(() => [
         ...homePortfolioData,
         ...homePortfolioData,
         ...homePortfolioData,
-    ];
-    const totalItems = extendedData.length;
+    ]);
 
-    // Responsive peek: 0 on mobile (single full-width card, no side slivers),
-    // 18 on desktop (unchanged multi-peek layout)
     const [peek, setPeek] = useState(18);
 
     useEffect(() => {
@@ -32,25 +30,49 @@ const HomePortfolio = () => {
         return () => window.removeEventListener('resize', updatePeek);
     }, []);
 
+    const totalItems = extendedData.length;
     const CARD_WIDTH = 100 - peek * 2;
     const TRACK_WIDTH_VP = totalItems * CARD_WIDTH;
 
-    const slideOffsetPercentOfTrack = (i) => {
+    // NOTE: now accepts an explicit item count (defaults to the CURRENT
+    // totalItems). This lets us compute the correct x value for a track
+    // length that hasn't been rendered yet (i.e. right after we grow
+    // extendedData), instead of using a stale track width.
+    const slideOffsetPercentOfTrack = (i, itemsCount = totalItems) => {
+        const trackWidthVp = itemsCount * CARD_WIDTH;
         const xVp = peek - i * CARD_WIDTH;
-        return (xVp / TRACK_WIDTH_VP) * 100;
+        return (xVp / trackWidthVp) * 100;
     };
 
     const [virtualIndex, setVirtualIndex] = useState(realCount);
     const [isDragging, setIsDragging] = useState(false);
     const containerRef = useRef(null);
-    const x = useMotionValue(slideOffsetPercentOfTrack(realCount));
+    const x = useMotionValue(slideOffsetPercentOfTrack(realCount, totalItems));
 
-    // Native Framer Motion transform for smooth percentage dynamic calculation
     const xPercentage = useTransform(x, (val) => `${val}%`);
 
+    // Dynamic array index se active dot calculate karne ke liye
     const activeIndex = ((virtualIndex % realCount) + realCount) % realCount;
 
-    // Snap track to the correct offset whenever peek changes (e.g. resize crossing breakpoint)
+    // Buffer check: Jab user end/start ke paas pahunchne wala ho tab chupke se
+    // array expand karna. Ab dono cases (append + prepend) me hum turant
+    // naye track-length ke hisaab se `x` ko re-sync karte hain, taaki
+    // repeat/loop hote waqt koi visual jump ya glitch na ho.
+    useEffect(() => {
+        if (virtualIndex >= extendedData.length - realCount) {
+            const newLength = extendedData.length + realCount;
+            setExtendedData((prev) => [...prev, ...homePortfolioData]);
+            x.set(slideOffsetPercentOfTrack(virtualIndex, newLength));
+        } else if (virtualIndex < realCount) {
+            const newLength = extendedData.length + realCount;
+            const newVirtualIndex = virtualIndex + realCount;
+            setExtendedData((prev) => [...homePortfolioData, ...prev]);
+            setVirtualIndex(newVirtualIndex);
+            x.set(slideOffsetPercentOfTrack(newVirtualIndex, newLength));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [virtualIndex, extendedData.length, realCount]);
+
     useEffect(() => {
         if (!isDragging) {
             x.set(slideOffsetPercentOfTrack(virtualIndex));
@@ -67,27 +89,16 @@ const HomePortfolio = () => {
                 stiffness: 160,
                 damping: 26,
                 mass: 1.1,
-                onComplete: () => {
-                    if (virtualIndex >= realCount * 2) {
-                        const resetIndex = virtualIndex - realCount;
-                        setVirtualIndex(resetIndex);
-                        x.set(slideOffsetPercentOfTrack(resetIndex));
-                    } else if (virtualIndex < realCount) {
-                        const resetIndex = virtualIndex + realCount;
-                        setVirtualIndex(resetIndex);
-                        x.set(slideOffsetPercentOfTrack(resetIndex));
-                    }
-                }
             });
 
             return () => controls.stop();
         }
-    }, [virtualIndex, isDragging, x, realCount]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [virtualIndex, isDragging, x, totalItems]);
 
     // KEYBOARD NAVIGATION HANDLER
     useEffect(() => {
         const handleKeyDown = (event) => {
-            // Avoid intercepting arrow key inputs if user is focused inside input elements
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
                 return;
             }
@@ -106,7 +117,7 @@ const HomePortfolio = () => {
     const goToSlide = (idx) => {
         const currentReal = ((virtualIndex % realCount) + realCount) % realCount;
         const diff = idx - currentReal;
-        setVirtualIndex(prev => prev + diff);
+        setVirtualIndex((prev) => prev + diff);
     };
 
     const handleDragEnd = (_, info) => {
@@ -133,7 +144,7 @@ const HomePortfolio = () => {
                 <div className="w-full px-4 sm:px-6 md:px-10 lg:px-50 shrink-0 relative z-20 mb-6 md:mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
 
                     {/* LEFT SIDE TITLE */}
-                   <div className="flex-1 min-w-0 -mb-10 md:mb-0">
+                    <div className="flex-1 min-w-0 -mb-10 md:mb-0">
                         <CommonTitle
                             title="Our Portfolio"
                             gradientText=""
@@ -141,7 +152,7 @@ const HomePortfolio = () => {
                         />
                     </div>
 
-                    {/* RIGHT SIDE BUTTONS (HORIZONTAL SCROLL ON MOBILE, STACK RIGHT ON DESKTOP) */}
+                    {/* RIGHT SIDE BUTTONS */}
                     <div className="flex flex-row items-center justify-start md:justify-end gap-2.5 md:gap-3 shrink-0 w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0">
                         {homePortfolioData.map((project, idx) => {
                             const isActive = activeIndex === idx;
@@ -282,7 +293,7 @@ const HomePortfolio = () => {
                                                 </div>
                                             </div>
 
-                                            {/* RIGHT SHOWCASE MOCKUP AREA (DESKTOP) */}
+                                            {/* RIGHT SHOWCASE MOCKUP AREA */}
                                             <div className="hidden md:block relative w-full md:w-[50%] lg:w-[48%] h-full">
                                                 <div className="relative w-full h-full pointer-events-none">
                                                     <Image

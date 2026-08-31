@@ -18,19 +18,16 @@ const defaultLeftFeatures = [
     title: "Daily Horoscopes",
     description:
       "Get accurate daily forecasts based on your zodiac sign to help you know what to expect from your day, your relationships, and your chances.",
-    active: true,
   },
   {
     title: "Astrologer Chat",
     description:
       "You can also interact with professional astrologers via chat to get advice on general questions about life, relationships, or work.",
-    active: false,
   },
   {
     title: "Astrology Reports",
     description:
       "For more information about your life journey, access complete birth charts, compatibility reports, and future outlook.",
-    active: false,
   },
 ];
 
@@ -52,8 +49,7 @@ const defaultRightFeatures = [
   },
 ];
 
-// --- Helper: data (array of { header, description }) se features merge karta hai ---
-// header -> title ki jagah replace hoga, description -> description ki jagah
+// --- Helper: data array to features mapper ---
 function buildFeatures(data) {
   const safeData = Array.isArray(data) ? data : [];
 
@@ -78,27 +74,17 @@ function buildFeatures(data) {
   return { leftFeatures, rightFeatures };
 }
 
-function FeatureCard({ title, description, active }) {
+function FeatureCard({ title, description }) {
   return (
-    <div
-      className={[
-        "rounded-2xl p-5 shadow-sm",
-        active ? "bg-sky-500 text-white" : "bg-slate-800 text-white",
-      ].join(" ")}
-    >
+    <div className="group rounded-2xl bg-slate-800 p-5 text-white shadow-sm transition-colors duration-300 hover:bg-sky-500">
       <div className="flex items-center gap-2">
         <CheckCircle2
-          className={active ? "h-5 w-5 text-white" : "h-5 w-5 text-sky-400"}
+          className="h-5 w-5 text-sky-400 transition-colors duration-300 group-hover:text-white"
           strokeWidth={2.5}
         />
         <h3 className="text-md font-bold leading-normal">{title}</h3>
       </div>
-      <p
-        className={[
-          "mt-2 text-sm leading-relaxed",
-          active ? "text-sky-50" : "text-slate-300",
-        ].join(" ")}
-      >
+      <p className="mt-2 text-sm leading-relaxed text-slate-300 transition-colors duration-300 group-hover:text-sky-50">
         {description}
       </p>
     </div>
@@ -156,87 +142,90 @@ function PhoneMockup() {
             <Grid3x3 className="h-4 w-4 text-white/80" />
           </div>
 
-        {/* About me */}
-        <div className="mt-4 px-4">
-          <p className="text-[10px] uppercase tracking-wide text-slate-400">About Me</p>
-          <div className="mt-1 flex items-start justify-between">
-            <div className="space-y-1.5 text-[10px] text-slate-400">
-              <p>
-                Sign <span className="block text-xs font-medium text-white">Capricorn</span>
-              </p>
-              <p>
-                Ruler <span className="block text-xs font-medium text-white">Mercury</span>
-              </p>
-              <p>
-                Professional
-                <span className="block text-xs font-medium text-white">Politician</span>
-              </p>
-            </div>
-            <div className="relative flex h-20 w-20 items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-sky-400/20 blur-xl" />
-              <Sparkles className="h-10 w-10 text-sky-300" strokeWidth={1.5} />
+          {/* About me */}
+          <div className="mt-4 px-4">
+            <p className="text-[10px] uppercase tracking-wide text-slate-400">About Me</p>
+            <div className="mt-1 flex items-start justify-between">
+              <div className="space-y-1.5 text-[10px] text-slate-400">
+                <p>
+                  Sign <span className="block text-xs font-medium text-white">Capricorn</span>
+                </p>
+                <p>
+                  Ruler <span className="block text-xs font-medium text-white">Mercury</span>
+                </p>
+                <p>
+                  Professional
+                  <span className="block text-xs font-medium text-white">Politician</span>
+                </p>
+              </div>
+              <div className="relative flex h-20 w-20 items-center justify-center">
+                <div className="absolute inset-0 rounded-full bg-sky-400/20 blur-xl" />
+                <Sparkles className="h-10 w-10 text-sky-300" strokeWidth={1.5} />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Tabs */}
-        <div className="mt-4 flex gap-1.5 px-4">
-          {["Today", "Tomorrow", "Week", "Month"].map((tab, i) => (
-            <span
-              key={tab}
-              className={[
-                "rounded-full px-2.5 py-1 text-[10px] font-medium",
-                i === 0 ? "bg-white text-slate-900" : "text-slate-300",
-              ].join(" ")}
-            >
-              {tab}
-            </span>
-          ))}
-        </div>
+          {/* Tabs */}
+          <div className="mt-4 flex gap-1.5 px-4">
+            {["Today", "Tomorrow", "Week", "Month"].map((tab, i) => (
+              <span
+                key={tab}
+                className={[
+                  "rounded-full px-2.5 py-1 text-[10px] font-medium",
+                  i === 0 ? "bg-white text-slate-900" : "text-slate-300",
+                ].join(" ")}
+              >
+                {tab}
+              </span>
+            ))}
+          </div>
 
-        {/* Progress bars */}
-        <div className="mt-4 px-4">
-          <ProgressRow label="Love" value={80} barColor="bg-pink-400" />
-          <ProgressRow label="Work" value={64} barColor="bg-sky-400" />
-          <ProgressRow label="Mood" value={80} barColor="bg-purple-400" />
-        </div>
+          {/* Progress bars */}
+          <div className="mt-4 px-4">
+            <ProgressRow label="Love" value={80} barColor="bg-pink-400" />
+            <ProgressRow label="Work" value={64} barColor="bg-sky-400" />
+            <ProgressRow label="Mood" value={80} barColor="bg-purple-400" />
+          </div>
 
-        {/* Description */}
-        <div className="mt-4 px-4">
-          <p className="text-[10px] uppercase tracking-wide text-slate-400">
-            General Description
-          </p>
-          <div className="mt-1.5 rounded-xl bg-white/5 p-2.5">
-            <p className="text-[10px] leading-relaxed text-slate-200">
-              You are even more charming and attractive than usual, so you can use this great
-              advantage to attract new contacts, especially with the opposite sex.
+          {/* Description */}
+          <div className="mt-4 px-4">
+            <p className="text-[10px] uppercase tracking-wide text-slate-400">
+              General Description
             </p>
-          </div>
-        </div>
-
-        {/* Bottom nav */}
-        <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between rounded-b-[2.25rem] border-t border-white/10 bg-[#120c28]/90 px-4 py-2.5">
-          {[
-            { icon: Sun, label: "Horoscope" },
-            { icon: SmilePlus, label: "Compatibility" },
-            { icon: Hand, label: "Palm Reader" },
-            { icon: MessageCircleHeart, label: "Mood Tracker" },
-            { icon: Wand2, label: "Ask AI" },
-          ].map(({ icon: Icon, label }) => (
-            <div key={label} className="flex flex-col items-center gap-0.5">
-              <Icon className="h-3.5 w-3.5 text-slate-400" />
-              <span className="text-[7px] text-slate-500">{label}</span>
+            <div className="mt-1.5 rounded-xl bg-white/5 p-2.5">
+              <p className="text-[10px] leading-relaxed text-slate-200">
+                You are even more charming and attractive than usual, so you can use this great
+                advantage to attract new contacts, especially with the opposite sex.
+              </p>
             </div>
-          ))}
-        </div>
+          </div>
+
+          {/* Bottom nav */}
+          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between rounded-b-[2.25rem] border-t border-white/10 bg-[#120c28]/90 px-4 py-2.5">
+            {[
+              { icon: Sun, label: "Horoscope" },
+              { icon: SmilePlus, label: "Compatibility" },
+              { icon: Hand, label: "Palm Reader" },
+              { icon: MessageCircleHeart, label: "Mood Tracker" },
+              { icon: Wand2, label: "Ask AI" },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex flex-col items-center gap-0.5">
+                <Icon className="h-3.5 w-3.5 text-slate-400" />
+                <span className="text-[7px] text-slate-500">{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-// --- data prop: array of { header, description } ---
-export default function AstrologyAppFeatures({ data,appfeaturebasixtext,appfeaturebasixgradient }) {
+export default function AstrologyAppFeatures({
+  data,
+  appfeaturebasixtext,
+  appfeaturebasixgradient,
+}) {
   const { leftFeatures, rightFeatures } = buildFeatures(data);
 
   return (
