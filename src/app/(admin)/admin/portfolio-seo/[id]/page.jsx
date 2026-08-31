@@ -151,7 +151,7 @@ export default function PortfolioSeoEditPage() {
       { label: 'Average position', value: '8.7', checked: false },
     ],
     trafficChartSeries: [
-      { month: 'May 2026', clicks: '', impressions: '' },
+      { month: 'May 2026', clicks: '', impressions: '', avgCtr: '', avgPosition: '' },
     ],
 
     // Technical SEO (technicalSeoJson)
@@ -1475,7 +1475,7 @@ export default function PortfolioSeoEditPage() {
                         <option value="Sports">Sports</option>
                       </select>
                     </div>
-                    
+
                     <div>
                       <label className="block text-[10px] xs:text-xs font-medium text-slate-700 mb-1.5">Website</label>
                       <input
@@ -2001,7 +2001,7 @@ export default function PortfolioSeoEditPage() {
                       </label>
                       <button
                         type="button"
-                        onClick={() => addArrayItem('trafficChartSeries', { month: '', clicks: '', impressions: '' })}
+                        onClick={() => addArrayItem('trafficChartSeries', { month: '', clicks: '', impressions: '', avgCtr: '', avgPosition: '' })}
                         className="inline-flex items-center gap-1 px-2 py-1 rounded bg-white border border-sky-200 text-sky-700 hover:bg-sky-100 text-[10px] font-medium transition-colors"
                       >
                         <Plus className="h-3 w-3" />
@@ -2035,6 +2035,18 @@ export default function PortfolioSeoEditPage() {
                             onChange={(e) => updateArrayItem('trafficChartSeries', idx, 'impressions', e.target.value)}
                             placeholder="Impressions e.g. 620000"
                             className="w-full rounded border border-purple-200 px-1.5 py-1 text-[10px] text-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          />
+                          <input
+                            value={pt.avgCtr}
+                            onChange={(e) => updateArrayItem('trafficChartSeries', idx, 'avgCtr', e.target.value)}
+                            placeholder="Avg CTR e.g. 4.9%"
+                            className="w-full rounded border border-amber-200 px-1.5 py-1 text-[10px] text-amber-700 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                          />
+                          <input
+                            value={pt.avgPosition}
+                            onChange={(e) => updateArrayItem('trafficChartSeries', idx, 'avgPosition', e.target.value)}
+                            placeholder="Avg Position e.g. 8.7"
+                            className="w-full rounded border border-teal-200 px-1.5 py-1 text-[10px] text-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500"
                           />
                         </div>
                       ))}

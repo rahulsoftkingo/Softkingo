@@ -11,6 +11,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useState } from "react";
 
 function CustomTooltip({ active, payload, label }) {
   if (active && payload && payload.length) {
@@ -45,7 +46,7 @@ function formatAxisTick(value) {
 
 export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
   // data = Keyword Ranking Growth
-  // data2 / data3 = Organic Traffic Growth Object (GSC-style: stats + series[{month, clicks, impressions}])
+  // data2 / data3 = Organic Traffic Growth Object (GSC-style: stats + series[{month, clicks, impressions, avgCtr, avgPosition}])
 
   const keywordRows = data?.rows || [];
 
@@ -56,17 +57,34 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
       month: item.month?.trim(),
       clicks: Number(item.clicks) || 0,
       impressions: Number(item.impressions) || 0,
+      avgCtr: parseFloat(item.avgCtr) || 0,
+      avgPosition: parseFloat(item.avgPosition) || 0,
     })) || [];
 
   const stats = chartSource?.stats || [];
   const period = chartSource?.period || "Monthly";
 
-  // Match top stat card backgrounds with Sky Blue & Pink
-  const cardTheme = [
-    { bg: "bg-sky-500", text: "text-white", sub: "text-sky-100" },
-    { bg: "bg-pink-500", text: "text-white", sub: "text-pink-100" },
+  // Order matches the admin form's fixed trafficChartStats order:
+  // [0] Total clicks, [1] Total impressions, [2] Average CTR, [3] Average position
+  const metricConfig = [
+    { key: "clicks", color: "#50c6fd", bg: "bg-sky-500", sub: "text-sky-100" },
+    { key: "impressions", color: "#ff8dc6", bg: "bg-pink-500", sub: "text-pink-100" },
+    { key: "avgCtr", color: "#f59e0b", bg: "bg-amber-500", sub: "text-amber-100" },
+    { key: "avgPosition", color: "#14b8a6", bg: "bg-teal-500", sub: "text-teal-100" },
   ];
-  let coloredIndex = 0;
+
+  // Which metrics are toggled ON — start from each stat's saved `checked` value
+  const [activeMetrics, setActiveMetrics] = useState(() => {
+    const initial = {};
+    metricConfig.forEach((m, idx) => {
+      initial[m.key] = stats[idx]?.checked ?? (idx < 2); // default: clicks & impressions on
+    });
+    return initial;
+  });
+
+  const toggleMetric = (key) => {
+    setActiveMetrics((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   return (
     <section className="py-8 md:py-10 bg-white overflow-hidden">
@@ -118,50 +136,57 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
           {/* RIGHT: Organic Traffic Growth */}
           <div className="rounded-xl md:rounded-2xl border border-slate-100 bg-white overflow-hidden">
 
-            {/* Stat cards row + period dropdown */}
+            {/* Stat cards row — now clickable toggles for chart lines */}
             <div className="flex flex-col sm:flex-row sm:items-stretch border-b border-slate-100">
               <div className="flex flex-1 flex-wrap sm:flex-nowrap">
-                {stats.slice(0, 2).map((stat, idx) => {
-                  const isColored = stat.checked && coloredIndex < 2;
-                  const theme = isColored ? cardTheme[coloredIndex] : null;
-                  if (isColored) coloredIndex += 1;
+                {stats.slice(0, 4).map((stat, idx) => {
+                  const config = metricConfig[idx];
+                  if (!config) return null;
+
+                  const isActive = activeMetrics[config.key];
 
                   return (
-                    <div
+                    <button
                       key={idx}
-                      className={`flex-1 min-w-[130px] px-4 py-3 sm:py-4 border-r border-slate-100 last:border-r-0 ${theme ? theme.bg : "bg-white"
-                        }`}
+                      type="button"
+                      onClick={() => toggleMetric(config.key)}
+                      className={`flex-1 min-w-[130px] px-4 py-3 sm:py-4 border-r border-slate-100 last:border-r-0 text-left transition-colors cursor-pointer ${
+                        isActive ? config.bg : "bg-white hover:bg-slate-50"
+                      }`}
                     >
-                      <label className="flex items-center gap-1.5 cursor-default">
+                      <label className="flex items-center gap-1.5 cursor-pointer">
                         <span
-                          className={`h-4 w-4 rounded-[4px] border flex items-center justify-center shrink-0 ${stat.checked
+                          className={`h-4 w-4 rounded-[4px] border flex items-center justify-center shrink-0 ${
+                            isActive
                               ? "bg-white/20 border-white"
                               : "border-slate-300"
-                            }`}
+                          }`}
                         >
-                          {stat.checked && (
+                          {isActive && (
                             <svg
                               viewBox="0 0 16 16"
-                              className={`h-2.5 w-2.5 ${theme ? "fill-white" : "fill-slate-500"}`}
+                              className="h-2.5 w-2.5 fill-white"
                             >
                               <path d="M13.5 3.5 6 11 2.5 7.5l1-1L6 9l6.5-6.5z" />
                             </svg>
                           )}
                         </span>
                         <span
-                          className={`text-xs sm:text-sm font-medium truncate ${theme ? theme.sub : "text-slate-500"
-                            }`}
+                          className={`text-xs sm:text-sm font-medium truncate ${
+                            isActive ? config.sub : "text-slate-500"
+                          }`}
                         >
                           {stat.label}
                         </span>
                       </label>
                       <p
-                        className={`mt-1.5 text-xl sm:text-2xl font-bold ${theme ? theme.text : "text-slate-900"
-                          }`}
+                        className={`mt-1.5 text-xl sm:text-2xl font-bold ${
+                          isActive ? "text-white" : "text-slate-900"
+                        }`}
                       >
                         {stat.value}
                       </p>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -179,9 +204,18 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
 
             {/* Chart */}
             <div className="p-5 sm:p-7">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs sm:text-sm font-medium text-slate-500">Clicks</span>
-                <span className="text-xs sm:text-sm font-medium text-slate-500">Impressions</span>
+              <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
+                {metricConfig.map((m, idx) => (
+                  <span
+                    key={m.key}
+                    className="text-xs sm:text-sm font-medium"
+                    style={{
+                      color: activeMetrics[m.key] ? m.color : "#cbd5e1",
+                    }}
+                  >
+                    {stats[idx]?.label || m.key}
+                  </span>
+                ))}
               </div>
 
               <div className="h-64 sm:h-72">
@@ -218,30 +252,64 @@ export default function KeywordAndTrafficGrowth({ data, data2, data3 }) {
                         tickFormatter={formatAxisTick}
                       />
 
+                      {/* Hidden axes just for scaling the CTR / Position lines independently */}
+                      <YAxis yAxisId="ctr" hide domain={[0, 'dataMax + 2']} />
+                      <YAxis yAxisId="position" hide reversed domain={[0, 'dataMax + 5']} />
+
                       <Tooltip content={<CustomTooltip />} />
 
                       {/* Clicks Line: Sky Blue */}
-                      <Line
-                        yAxisId="clicks"
-                        type="monotone"
-                        dataKey="clicks"
-                        stroke="#50c6fd"
-                        strokeWidth={2.5}
-                        dot={false}
-                        activeDot={{ r: 5 }}
-                      />
+                      {activeMetrics.clicks && (
+                        <Line
+                          yAxisId="clicks"
+                          type="monotone"
+                          dataKey="clicks"
+                          stroke="#50c6fd"
+                          strokeWidth={2.5}
+                          dot={false}
+                          activeDot={{ r: 5 }}
+                        />
+                      )}
 
                       {/* Impressions Line: Pink */}
-                      <Line
-                        yAxisId="impressions"
-                        type="monotone"
-                        dataKey="impressions"
-                        stroke="#ff8dc6"
-                        strokeWidth={2.5}
-                        dot={false}
-                        activeDot={{ r: 5 }}
-                      />
-                      
+                      {activeMetrics.impressions && (
+                        <Line
+                          yAxisId="impressions"
+                          type="monotone"
+                          dataKey="impressions"
+                          stroke="#ff8dc6"
+                          strokeWidth={2.5}
+                          dot={false}
+                          activeDot={{ r: 5 }}
+                        />
+                      )}
+
+                      {/* Avg CTR Line: Amber */}
+                      {activeMetrics.avgCtr && (
+                        <Line
+                          yAxisId="ctr"
+                          type="monotone"
+                          dataKey="avgCtr"
+                          stroke="#f59e0b"
+                          strokeWidth={2.5}
+                          dot={false}
+                          activeDot={{ r: 5 }}
+                        />
+                      )}
+
+                      {/* Avg Position Line: Teal */}
+                      {activeMetrics.avgPosition && (
+                        <Line
+                          yAxisId="position"
+                          type="monotone"
+                          dataKey="avgPosition"
+                          stroke="#14b8a6"
+                          strokeWidth={2.5}
+                          dot={false}
+                          activeDot={{ r: 5 }}
+                        />
+                      )}
+
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
