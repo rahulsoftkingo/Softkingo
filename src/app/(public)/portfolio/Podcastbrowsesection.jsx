@@ -451,104 +451,6 @@ function PopularTopics() {
   );
 }
 
-function InquirySection() {
-  const [email, setEmail] = useState("");
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    // Wire this up to your newsletter API route, e.g.:
-    // await fetch("/api/newsletter", { method: "POST", body: JSON.stringify({ email }) });
-  };
-
-  return (
-    <footer className="bg-slate-900 text-slate-300 mt-14">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
-          <div className="md:col-span-2">
-            <p className="text-white text-base font-semibold mb-2">Podeddy</p>
-            <p className="text-[13px] text-slate-400 leading-relaxed max-w-xs">
-              Your destination for the world&apos;s best podcasts, curated across business, culture, science and more.
-            </p>
-            <div className="flex items-center gap-3 mt-5">
-              {[
-                { Icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-                { Icon: Instagram, href: "https://instagram.com", label: "Instagram" },
-                { Icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-                { Icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-                { Icon: Facebook, href: "https://facebook.com", label: "Facebook" },
-              ].map(({ Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition"
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <p className="text-[12px] font-semibold text-white uppercase tracking-wide mb-3">Explore</p>
-            <ul className="space-y-2 text-[13px] text-slate-400">
-              <li><Link href="/podcasts" className="hover:text-white transition">Podcasts</Link></li>
-              <li><Link href="/categories" className="hover:text-white transition">Categories</Link></li>
-              <li><Link href="/top-charts" className="hover:text-white transition">Top charts</Link></li>
-              <li><Link href="/new-releases" className="hover:text-white transition">New releases</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <p className="text-[12px] font-semibold text-white uppercase tracking-wide mb-3">Company</p>
-            <ul className="space-y-2 text-[13px] text-slate-400">
-              <li><Link href="/about" className="hover:text-white transition">About us</Link></li>
-              <li><Link href="/careers" className="hover:text-white transition">Careers</Link></li>
-              <li><Link href="/press" className="hover:text-white transition">Press kit</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <p className="text-[12px] font-semibold text-white uppercase tracking-wide mb-3">For creators</p>
-            <ul className="space-y-2 text-[13px] text-slate-400 mb-4">
-              <li><Link href="/submit" className="hover:text-white transition">Submit your podcast</Link></li>
-              <li><Link href="/app-services" className="hover:text-white transition">Build your app</Link></li>
-              <li><Link href="/resources" className="hover:text-white transition">Creator resources</Link></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-[12px] text-slate-500">© 2026 Podeddy. All rights reserved.</p>
-          <form onSubmit={handleSubscribe} className="flex items-center gap-2 w-full sm:w-auto">
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              className="text-[13px] bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 w-full sm:w-56"
-            />
-            <button
-              type="submit"
-              className="text-[13px] font-medium bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-2 rounded-lg transition whitespace-nowrap"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
-        <div className="flex gap-4 mt-4 text-[11px] text-slate-500">
-          <Link href="/privacy" className="hover:text-slate-300">Privacy policy</Link>
-          <Link href="/terms" className="hover:text-slate-300">Terms of use</Link>
-          <Link href="/cookies" className="hover:text-slate-300">Cookie policy</Link>
-        </div>
-      </div>
-    </footer>
-  );
-}
 
 /* --------------------------------- Page --------------------------------- */
 
@@ -624,8 +526,6 @@ export default function PodcastBrowseSection({
           </aside>
         </section>
       </div>
-
-      <InquirySection />
     </section>
   );
 }
