@@ -94,7 +94,6 @@ export const commonSchemas = [
       "name": "About Us",
       "url": "https://www.softkingo.com/about",
       "hasPart": [
-        { "@type": "SiteNavigationElement", "name": "About Us", "url": "https://www.softkingo.com/about" },
         { "@type": "SiteNavigationElement", "name": "Our Team", "url": "https://www.softkingo.com/our-team" },
         { "@type": "SiteNavigationElement", "name": "Testimonials", "url": "https://www.softkingo.com/testimonials" },
         { "@type": "SiteNavigationElement", "name": "Career", "url": "https://www.softkingo.com/careers" },
