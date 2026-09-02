@@ -1,24 +1,43 @@
 "use client";
 import React from 'react';
 
-export default function SolutionsStats({ data }) {
-  if (!data?.items) return null;
+const defaultData = {
+  heading: "Trusted by Businesses Worldwide",
+  items: [
+    { label: "LoveLocal" },
+    { label: "Traveloka" },
+    { label: "ODA CLASS" },
+    { label: "Eventbrite" },
+    { label: "Moglix" },
+    { label: "Potafo" },
+  ],
+};
+
+export default function TrustedBySection({ data = defaultData }) {
+  data= defaultData;
+  const sectionData = data ;
+
+
+  if (!sectionData?.items) return null;
 
   return (
-    <section className="bg-sky-400 relative -top-20 py-6 rounded-tr-[4rem] lg:w-[90%] mr-[10%] z-20 shadow-xl shadow-sky-100">
+    <section className="bg-sky-400 relative -top-20 py-4 rounded-[2rem] w-[85%] max-w-6xl mx-auto z-20 shadow-xl shadow-sky-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex md:grid md:grid-cols-4 overflow-x-auto gap-4 md:gap-8 text-center divide-x divide-sky-100/40 pb-2 md:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {data.items.map((stat, index) => (
+        {sectionData.heading && (
+          <h2 className="text-center text-white text-xl md:text-2xl font-bold mb-6">
+            {sectionData.heading}
+          </h2>
+        )}
+
+        <div className="flex md:justify-center md:flex-wrap overflow-x-auto gap-8 md:gap-12 items-center pb-2 md:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {sectionData.items.map((brand, index) => (
             <div
               key={index}
-              className="px-4 flex-shrink-0 min-w-[140px] md:min-w-0 md:flex-shrink snap-center"
+              className="flex-shrink-0 snap-center"
             >
-              <h3 className="text-2xl md:text-4xl font-bold text-white mb-1">
-                {stat.value}
-              </h3>
-              <p className="text-sky-50 text-[10px] md:text-sm font-bold tracking-wide">
-                {stat.label}
-              </p>
+              <span className="text-white text-lg md:text-2xl font-bold tracking-tight whitespace-nowrap">
+                {brand.label}
+              </span>
             </div>
           ))}
         </div>

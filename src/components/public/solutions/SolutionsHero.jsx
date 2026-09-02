@@ -1,11 +1,11 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ArrowRight, Calendar } from 'lucide-react';
+import { ArrowRight, Calendar, Rocket, Users, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 
-export default function SolutionsHero({ data,endpoint }) {
+export default function SolutionsHero({ data, endpoint }) {
 
   // 1. Initialize State
   const [imgSrc, setImgSrc] = useState(data?.image);
@@ -17,6 +17,25 @@ export default function SolutionsHero({ data,endpoint }) {
   }, [data?.image]);
 
   if (!data) return null;
+
+  // ✅ NEW: Stats cards data (agar aage chal ke API se dynamic karna ho to yaha se prop bana lena)
+  const stats = [
+    {
+      icon: <Rocket size={18} className="text-sky-500" />,
+      value: "400+",
+      label: "Projects Delivered Worldwide",
+    },
+    {
+      icon: <Users size={18} className="text-sky-500" />,
+      value: "100+",
+      label: "Expert App Developers",
+    },
+    {
+      icon: <ShieldCheck size={18} className="text-sky-500" />,
+      value: "96%",
+      label: "Client Retention",
+    },
+  ];
 
   return (
     <section className="relative max-w-7xl mx-auto overflow-hidden">
@@ -48,7 +67,7 @@ export default function SolutionsHero({ data,endpoint }) {
               dangerouslySetInnerHTML={{ __html: data.description }}
             />
 
-            <div className="flex  sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300 pb-20">
+            <div className="flex  sm:flex-row gap-4 pt-2 animate-fadeInUp delay-300">
               <button
                 onClick={() => setShowModal(true)}
                 // href="/contact"
@@ -62,6 +81,29 @@ export default function SolutionsHero({ data,endpoint }) {
                 <Calendar size={18} /> Schedule Meeting
               </Link>
             </div>
+
+            {/* ✅ NEW: 3 Stat Cards - icon top-right corner sai overflow horaha */}
+            <div className="grid grid-cols-3 gap-4 pt-4 pb-16 animate-fadeInUp delay-400">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="relative bg-white rounded-2xl shadow-md p-4 md:p-5 pt-5"
+                >
+                  {/* Icon badge - overflowing top-right corner */}
+                  <div className="absolute -top-3 -right-3 w-9 h-9 md:w-10 md:h-10 bg-white rounded-full shadow-md flex items-center justify-center">
+                    {stat.icon}
+                  </div>
+
+                  <p className="text-xl md:text-2xl font-extrabold text-slate-900">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs md:text-sm text-slate-600 leading-tight mt-1">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
           </div>
 
           {/* Right Side - Hero Image */}
