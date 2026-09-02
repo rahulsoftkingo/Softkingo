@@ -1,4 +1,4 @@
-// src/app/(admin)/podcasts/page.jsx
+// src/app/(admin)/podcast/page.jsx
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export const dynamic = "force-dynamic";
 
-async function deleteEpisode(formData) {
+async function deletePodcast(formData) {
   "use server";
   const id = formData.get("id");
   if (!id) return;
@@ -15,7 +15,7 @@ async function deleteEpisode(formData) {
 }
 
 export default async function AdminPodcastsListPage() {
-  const episodes = await prisma.podcast.findMany({
+  const podcasts = await prisma.podcast.findMany({
     orderBy: { createdAt: "desc" },
   });
 
@@ -68,7 +68,7 @@ export default async function AdminPodcastsListPage() {
               <div>
                 <h1 className="text-2xl font-bold text-slate-900">Podcast Management</h1>
                 <p className="text-slate-600 mt-1">
-                  Manage all podcast episodes and track their performance
+                  Manage all podcast shows and track their performance
                 </p>
               </div>
             </div>
@@ -79,7 +79,7 @@ export default async function AdminPodcastsListPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              New Episode
+              New Podcast
             </Link>
           </div>
 
@@ -88,8 +88,8 @@ export default async function AdminPodcastsListPage() {
             <div className="bg-white rounded-xl border border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Total Episodes</p>
-                  <p className="text-2xl font-bold text-slate-900 mt-1">{episodes.length}</p>
+                  <p className="text-sm font-medium text-slate-600">Total Podcasts</p>
+                  <p className="text-2xl font-bold text-slate-900 mt-1">{podcasts.length}</p>
                 </div>
                 <div className="w-10 h-10 bg-violet-50 rounded-lg flex items-center justify-center">
                   <svg className="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,7 +104,7 @@ export default async function AdminPodcastsListPage() {
                 <div>
                   <p className="text-sm font-medium text-slate-600">Published</p>
                   <p className="text-2xl font-bold text-slate-900 mt-1">
-                    {episodes.filter(e => e.status === 'published').length}
+                    {podcasts.filter((p) => p.status === "published").length}
                   </p>
                 </div>
                 <div className="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center">
@@ -120,7 +120,7 @@ export default async function AdminPodcastsListPage() {
                 <div>
                   <p className="text-sm font-medium text-slate-600">Drafts</p>
                   <p className="text-2xl font-bold text-slate-900 mt-1">
-                    {episodes.filter(e => e.status === 'draft').length}
+                    {podcasts.filter((p) => p.status === "draft").length}
                   </p>
                 </div>
                 <div className="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center">
@@ -134,14 +134,14 @@ export default async function AdminPodcastsListPage() {
             <div className="bg-white rounded-xl border border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600">Total Plays</p>
+                  <p className="text-sm font-medium text-slate-600">Total Followers</p>
                   <p className="text-2xl font-bold text-slate-900 mt-1">
-                    {episodes.reduce((sum, ep) => sum + (ep.playCount || 0), 0)}
+                    {podcasts.reduce((sum, p) => sum + (p.followersCount || 0), 0).toLocaleString()}
                   </p>
                 </div>
                 <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
                   <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.94-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.06 2.772m0 0A5.995 5.995 0 006 18.719m6-15.44a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" />
                   </svg>
                 </div>
               </div>
@@ -151,19 +151,19 @@ export default async function AdminPodcastsListPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {episodes.length > 0 ? (
+        {podcasts.length > 0 ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {episodes.map((episode) => (
+            {podcasts.map((podcast) => (
               <div
-                key={episode.id}
+                key={podcast.id}
                 className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group"
               >
                 {/* Cover Image */}
                 <div className="relative h-48 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
-                  {episode.coverImage ? (
+                  {podcast.coverImage ? (
                     <Image
-                      src={episode.coverImage}
-                      alt={episode.title}
+                      src={podcast.coverImage}
+                      alt={podcast.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -177,22 +177,25 @@ export default async function AdminPodcastsListPage() {
                   <div className="absolute top-4 right-4">
                     <span
                       className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(
-                        episode.status
+                        podcast.status
                       )}`}
                     >
-                      {getStatusIcon(episode.status)}
-                      {episode.status}
+                      {getStatusIcon(podcast.status)}
+                      {podcast.status}
                     </span>
                   </div>
-                  <div className="absolute bottom-4 left-4">
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-black/70 text-white">
-                      {episode.playCount || 0} plays
+                      ★ {podcast.rating?.toFixed(1) ?? "0.0"}
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-black/70 text-white">
+                      {(podcast.followersCount || 0).toLocaleString()} followers
                     </span>
                   </div>
-                  {episode.episodeNumber && (
+                  {podcast.episodeCount > 0 && (
                     <div className="absolute bottom-4 right-4">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/90 text-slate-700">
-                        Ep. {episode.episodeNumber}
+                        {podcast.episodeCount} episodes
                       </span>
                     </div>
                   )}
@@ -202,30 +205,30 @@ export default async function AdminPodcastsListPage() {
                 <div className="p-6">
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <h3 className="font-semibold text-slate-900 line-clamp-2 flex-1 group-hover:text-violet-600 transition-colors duration-200">
-                      {episode.title}
+                      {podcast.title}
                     </h3>
                   </div>
 
                   <p className="text-slate-600 text-sm leading-relaxed line-clamp-2 mb-4">
-                    {episode.description || episode.summary || "No description provided"}
+                    {podcast.description || podcast.summary || "No description provided"}
                   </p>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 text-sm text-slate-500">
-                      {episode.category && (
+                      {podcast.category && (
                         <span className="inline-flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                           </svg>
-                          {episode.category}
+                          {podcast.category}
                         </span>
                       )}
-                      {episode.durationText && (
+                      {podcast.frequency && (
                         <span className="inline-flex items-center gap-1">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          {episode.durationText}
+                          {podcast.frequency}
                         </span>
                       )}
                     </div>
@@ -234,13 +237,16 @@ export default async function AdminPodcastsListPage() {
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-4 mt-4 border-t border-slate-100">
                     <div className="text-sm text-slate-500">
-                      {episode.hostName && (
-                        <span>Hosted by {episode.hostName}</span>
+                      {podcast.hostName && (
+                        <span>
+                          Hosted by {podcast.hostName}
+                          {podcast.hostRole ? ` · ${podcast.hostRole}` : ""}
+                        </span>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
                       <Link
-                        href={`/podcast/${episode.slug}`}
+                        href={`/podcast/${podcast.slug}`}
                         target="_blank"
                         className="p-2 text-slate-400 hover:text-slate-600 transition-colors duration-200"
                         title="Preview"
@@ -251,7 +257,7 @@ export default async function AdminPodcastsListPage() {
                         </svg>
                       </Link>
                       <Link
-                        href={`/admin/podcast/${episode.id}`}
+                        href={`/admin/podcast/${podcast.id}`}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors duration-200"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,8 +265,8 @@ export default async function AdminPodcastsListPage() {
                         </svg>
                         Edit
                       </Link>
-                      <form action={deleteEpisode}>
-                        <input type="hidden" name="id" value={episode.id} />
+                      <form action={deletePodcast}>
+                        <input type="hidden" name="id" value={podcast.id} />
                         <button
                           type="submit"
                           title="Delete"
@@ -284,9 +290,9 @@ export default async function AdminPodcastsListPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">No Episodes Yet</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">No Podcasts Yet</h3>
             <p className="text-slate-600 mb-6 max-w-sm mx-auto">
-              Get started by publishing your first podcast episode to share with your audience.
+              Get started by publishing your first podcast to share with your audience.
             </p>
             <Link
               href="/admin/podcast/new"
@@ -295,7 +301,7 @@ export default async function AdminPodcastsListPage() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
-              Create Your First Episode
+              Create Your First Podcast
             </Link>
           </div>
         )}

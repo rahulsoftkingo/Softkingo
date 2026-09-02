@@ -3,39 +3,65 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 function normalizePayload(body) {
+  const parseRating = () => {
+    if (body.rating === "" || body.rating === null || body.rating === undefined) return null;
+    const n = parseFloat(body.rating);
+    return isNaN(n) ? null : n;
+  };
+
+  const parseIntOrZero = (val) => {
+    const n = parseInt(val, 10);
+    return isNaN(n) ? 0 : n;
+  };
+
   return {
     title: body.title?.trim() || "",
     slug: body.slug?.trim() || "",
-    episodeNumber:
-      body.episodeNumber === "" || body.episodeNumber === null || body.episodeNumber === undefined
-        ? null
-        : parseInt(body.episodeNumber, 10),
-    hostName: body.hostName || null,
-    hostRole: body.hostRole || null,
-    guestName: body.guestName || null,
     coverImage: body.coverImage || null,
     category: body.category || null,
+    language: body.language || "English",
+    frequency: body.frequency || null,
+
+    hostName: body.hostName || null,
+    hostRole: body.hostRole || null,
+    hostAvatar: body.hostAvatar || null,
+
+    rating: parseRating(),
+    followersCount: parseIntOrZero(body.followersCount),
+    episodeCount: parseIntOrZero(body.episodeCount),
+
+    latestEpisodeTitle: body.latestEpisodeTitle || null,
+    latestEpisodeAudioUrl: body.latestEpisodeAudioUrl || null,
+    latestEpisodeDuration: body.latestEpisodeDuration || null,
+
     description: body.description || null,
-    durationText: body.durationText || null,
     summary: body.summary || null,
-    segmentsJson: body.segmentsJson || null,
-    audioUrl: body.audioUrl || null,
+    aboutText: body.aboutText || null,
+    quoteText: body.quoteText || null,
+    quoteAuthor: body.quoteAuthor || null,
+    whatItsAbout: body.whatItsAbout || null,
+    whoShouldListen: body.whoShouldListen || null,
+
+    topicsJson: body.topicsJson || null,
+    socialLinksJson: body.socialLinksJson || null,
+    platformLinksJson: body.platformLinksJson || null,
+
     status: body.status || "draft",
     publishedAt: body.publishedAt ? new Date(body.publishedAt) : null,
   };
 }
 
-// GET /api/admin/podcasts/[id] -> fetch a single episode
-export async function GET(request, { params }) {
+// GET /api/admin/podcasts/[id] -> fetch a single podcast
+export async function GET(request, context) {
   try {
-    const { id } = params;
-    const episode = await prisma.podcast.findUnique({ where: { id } });
+    const { id } = await context.params;
+    const podcast = await prisma.podcast.findUnique({ where: { id } });
 
-    if (!episode) {
-      return NextResponse.json({ error: "Episode not found" }, { status: 404 });
+    if (!podcast) {
+      return NextResponse.json({ error: "Podcast not found" }, { status: 404 });
     }
 
-    return NextResponse.json(episode);
+    return NextResponse.json(podcast);
   } catch (err) {
     console.error("GET /api/admin/podcasts/[id] error:", err);
     return NextResponse.json(
@@ -45,10 +71,10 @@ export async function GET(request, { params }) {
   }
 }
 
-// PUT /api/admin/podcasts/[id] -> update an episode
-export async function PUT(request, { params }) {
+// PUT /api/admin/podcasts/[id] -> update a podcast
+export async function PUT(request, context) {
   try {
-    const { id } = params;
+    const { id } = await context.params;
     const body = await request.json();
 
     if (!body.title?.trim()) {
@@ -70,12 +96,12 @@ export async function PUT(request, { params }) {
       );
     }
 
-    const episode = await prisma.podcast.update({
+    const podcast = await prisma.podcast.update({
       where: { id },
       data,
     });
 
-    return NextResponse.json(episode);
+    return NextResponse.json(podcast);
   } catch (err) {
     console.error("PUT /api/admin/podcasts/[id] error:", err);
     return NextResponse.json(
@@ -85,10 +111,10 @@ export async function PUT(request, { params }) {
   }
 }
 
-// DELETE /api/admin/podcasts/[id] -> delete an episode
-export async function DELETE(request, { params }) {
+// DELETE /api/admin/podcasts/[id] -> delete a podcast
+export async function DELETE(request, context) {
   try {
-    const { id } = params;
+    const { id } = await context.params;
     await prisma.podcast.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (err) {

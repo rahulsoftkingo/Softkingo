@@ -109,7 +109,7 @@ function Crafting() {
                 {item.featurs}
               </p>
 
-              <p className="text-gray-400 text-[12px] leading-relaxed">
+              <p className="text-gray-400 text-[13px] leading-relaxed">
                 {item.description}
               </p>
             </div>

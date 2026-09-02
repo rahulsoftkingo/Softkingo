@@ -246,27 +246,58 @@ model Ebook {
   @@map("ebook")
 }
 
+
 model Podcast {
-  id             String    @id @default(cuid())
-  title          String
-  slug           String    @unique
-  episodeNumber  Int?
-  hostName       String?
-  hostRole       String?
-  guestName      String?
-  coverImage     String?
-  category       String?
-  description    String?
-  durationText   String?
-  summary        String?
-  segmentsJson   String?
-  audioUrl       String?
-  status         String    @default("draft")
-  publishedAt    DateTime?
-  playCount      Int       @default(0)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id                String    @id @default(cuid())
+  
+  // Basic Info
+  title             String
+  slug              String    @unique
+  coverImage        String?
+  category          String?
+  language          String?   @default("English")
+  frequency         String?              // e.g. "Weekly"
+  
+  // Host Info
+  hostName          String?
+  hostRole          String?
+  hostAvatar        String?
+  
+  // Stats
+  rating            Float?    @default(0)
+  followersCount    Int       @default(0)
+  episodeCount      Int       @default(0)
+  
+  // Latest Episode (for "Play Latest Episode" button)
+  latestEpisodeTitle    String?
+  latestEpisodeAudioUrl String?
+  latestEpisodeDuration String?
+
+  // Overview Section
+  description       String?              // short desc (used in list card)
+  summary           String?   @db.Text   // long "About This Podcast" text
+  aboutText         String?   @db.Text   // "About [Podcast Name]" main section
+  quoteText         String?              // pull quote
+  quoteAuthor        String?
+  whatItsAbout      String?   @db.Text   // "What This Podcast Is About"
+  whoShouldListen   String?   @db.Text   // "Who Should Listen"
+
+  // Topics We Explore — stored as JSON array string, e.g. ["Creative Process","Storytelling"]
+  topicsJson        String?
+
+  // Social Links — JSON string, e.g. {"website":"...","instagram":"...","twitter":"...","linkedin":"..."}
+  socialLinksJson    String?
+
+  // Platform Links — JSON string, e.g. {"spotify":"...","applePodcasts":"...","youtubeMusic":"...","soundcloud":"..."}
+  platformLinksJson String?
+
+  status            String    @default("draft")
+  publishedAt       DateTime?
+  playCount         Int       @default(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
+
 
 model ContentItem {
   id             Int       @id @default(autoincrement())

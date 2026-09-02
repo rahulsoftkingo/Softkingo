@@ -3,15 +3,28 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-function getParsedSegments(segmentsJson) {
-  if (!segmentsJson?.trim()) return [];
+function getParsedArray(json) {
+  if (!json?.trim()) return [];
   try {
-    const arr = JSON.parse(segmentsJson);
+    const arr = JSON.parse(json);
     return Array.isArray(arr) ? arr : [];
   } catch {
     return [];
   }
 }
+
+function getParsedObject(json, defaults) {
+  if (!json?.trim()) return { ...defaults };
+  try {
+    const obj = JSON.parse(json);
+    return typeof obj === "object" && obj !== null ? { ...defaults, ...obj } : { ...defaults };
+  } catch {
+    return { ...defaults };
+  }
+}
+
+const SOCIAL_DEFAULTS = { website: "", instagram: "", twitter: "", linkedin: "" };
+const PLATFORM_DEFAULTS = { spotify: "", applePodcasts: "", youtubeMusic: "", soundcloud: "" };
 
 export default function PodcastForm({ mode, podcast }) {
   const router = useRouter();
@@ -19,47 +32,87 @@ export default function PodcastForm({ mode, podcast }) {
 
   const [autoSlug, setAutoSlug] = useState(!isEdit);
 
-  const initialSegments = getParsedSegments(podcast?.segmentsJson || "");
+  const initialTopics = getParsedArray(podcast?.topicsJson || "");
+  const initialSocialLinks = getParsedObject(podcast?.socialLinksJson || "", SOCIAL_DEFAULTS);
+  const initialPlatformLinks = getParsedObject(podcast?.platformLinksJson || "", PLATFORM_DEFAULTS);
 
   const [form, setForm] = useState({
     title: podcast?.title || "",
     slug: podcast?.slug || "",
-    episodeNumber: podcast?.episodeNumber || "",
-    hostName: podcast?.hostName || "",
-    hostRole: podcast?.hostRole || "",
-    guestName: podcast?.guestName || "",
     coverImage: podcast?.coverImage || "",
     category: podcast?.category || "",
+    language: podcast?.language || "English",
+    frequency: podcast?.frequency || "",
+
+    hostName: podcast?.hostName || "",
+    hostRole: podcast?.hostRole || "",
+    hostAvatar: podcast?.hostAvatar || "",
+
+    rating: podcast?.rating ?? "",
+    followersCount: podcast?.followersCount ?? 0,
+    episodeCount: podcast?.episodeCount ?? 0,
+
+    latestEpisodeTitle: podcast?.latestEpisodeTitle || "",
+    latestEpisodeAudioUrl: podcast?.latestEpisodeAudioUrl || "",
+    latestEpisodeDuration: podcast?.latestEpisodeDuration || "",
+
     description: podcast?.description || "",
-    durationText: podcast?.durationText || "",
     summary: podcast?.summary || "",
-    segmentsJson: podcast?.segmentsJson || "",
-    audioUrl: podcast?.audioUrl || "",
+    aboutText: podcast?.aboutText || "",
+    quoteText: podcast?.quoteText || "",
+    quoteAuthor: podcast?.quoteAuthor || "",
+    whatItsAbout: podcast?.whatItsAbout || "",
+    whoShouldListen: podcast?.whoShouldListen || "",
+
+    topicsJson: podcast?.topicsJson || "",
+    socialLinksJson: podcast?.socialLinksJson || "",
+    platformLinksJson: podcast?.platformLinksJson || "",
+
     status: podcast?.status || "draft",
     publishedAt: podcast?.publishedAt
       ? new Date(podcast.publishedAt).toISOString().slice(0, 16)
       : "",
   });
 
-  const [segments, setSegments] = useState(initialSegments);
+  const [topics, setTopics] = useState(initialTopics);
+  const [socialLinks, setSocialLinks] = useState(initialSocialLinks);
+  const [platformLinks, setPlatformLinks] = useState(initialPlatformLinks);
+
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [jsonError, setJsonError] = useState("");
   const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingHostAvatar, setUploadingHostAvatar] = useState(false);
   const [uploadingAudio, setUploadingAudio] = useState(false);
 
-  const syncSegmentsJson = (nextSegments) => {
-    setSegments(nextSegments);
+  const syncTopicsJson = (nextTopics) => {
+    setTopics(nextTopics);
     try {
-      const json = JSON.stringify(nextSegments, null, 2);
-      setForm((prev) => ({
-        ...prev,
-        segmentsJson: json,
-      }));
+      setForm((prev) => ({ ...prev, topicsJson: JSON.stringify(nextTopics) }));
       setJsonError("");
     } catch {
-      setJsonError("Failed to serialise segments.");
+      setJsonError("Failed to serialise topics.");
+    }
+  };
+
+  const syncSocialLinksJson = (nextObj) => {
+    setSocialLinks(nextObj);
+    try {
+      setForm((prev) => ({ ...prev, socialLinksJson: JSON.stringify(nextObj) }));
+      setJsonError("");
+    } catch {
+      setJsonError("Failed to serialise social links.");
+    }
+  };
+
+  const syncPlatformLinksJson = (nextObj) => {
+    setPlatformLinks(nextObj);
+    try {
+      setForm((prev) => ({ ...prev, platformLinksJson: JSON.stringify(nextObj) }));
+      setJsonError("");
+    } catch {
+      setJsonError("Failed to serialise platform links.");
     }
   };
 
@@ -118,14 +171,26 @@ export default function PodcastForm({ mode, podcast }) {
     setError("");
     try {
       const url = await uploadFile(file);
-      setForm((prev) => ({
-        ...prev,
-        coverImage: url,
-      }));
+      setForm((prev) => ({ ...prev, coverImage: url }));
     } catch (err) {
       setError(err.message);
     } finally {
       setUploadingCover(false);
+    }
+  };
+
+  const handleHostAvatarUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingHostAvatar(true);
+    setError("");
+    try {
+      const url = await uploadFile(file);
+      setForm((prev) => ({ ...prev, hostAvatar: url }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploadingHostAvatar(false);
     }
   };
 
@@ -136,10 +201,7 @@ export default function PodcastForm({ mode, podcast }) {
     setError("");
     try {
       const url = await uploadFile(file);
-      setForm((prev) => ({
-        ...prev,
-        audioUrl: url,
-      }));
+      setForm((prev) => ({ ...prev, latestEpisodeAudioUrl: url }));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -153,14 +215,19 @@ export default function PodcastForm({ mode, podcast }) {
     setError("");
 
     try {
+      const payload = {
+        ...form,
+        rating: form.rating === "" ? null : Number(form.rating),
+        followersCount: Number(form.followersCount) || 0,
+        episodeCount: Number(form.episodeCount) || 0,
+      };
+
       const res = await fetch(
-        isEdit
-          ? `/api/admin/podcasts/${podcast.id}`
-          : "/api/admin/podcasts",
+        isEdit ? `/api/admin/podcasts/${podcast.id}` : "/api/admin/podcasts",
         {
           method: isEdit ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
+          body: JSON.stringify(payload),
         }
       );
 
@@ -182,7 +249,7 @@ export default function PodcastForm({ mode, podcast }) {
     if (!isEdit || !podcast?.id) return;
 
     const confirmed = window.confirm(
-      `Delete "${form.title || "this episode"}"? This cannot be undone.`
+      `Delete "${form.title || "this podcast"}"? This cannot be undone.`
     );
     if (!confirmed) return;
 
@@ -196,10 +263,10 @@ export default function PodcastForm({ mode, podcast }) {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Failed to delete episode");
+        throw new Error(data.error || "Failed to delete podcast");
       }
 
-      router.push("/admin/podcasts");
+      router.push("/admin/podcast");
       router.refresh();
     } catch (err) {
       setError(err.message);
@@ -207,34 +274,27 @@ export default function PodcastForm({ mode, podcast }) {
     }
   };
 
-  const addSegment = () => {
-    const next = [
-      ...segments,
-      { timestamp: "00:00", heading: "New segment", body: "" },
-    ];
-    syncSegmentsJson(next);
+  // ----- Topics editor -----
+  const addTopic = () => {
+    syncTopicsJson([...topics, ""]);
   };
 
-  const updateSegment = (index, field, value) => {
-    const next = segments.map((seg, i) =>
-      i === index ? { ...seg, [field]: value } : seg
-    );
-    syncSegmentsJson(next);
+  const updateTopic = (index, value) => {
+    const next = topics.map((t, i) => (i === index ? value : t));
+    syncTopicsJson(next);
   };
 
-  const removeSegment = (index) => {
-    const next = segments.filter((_, i) => i !== index);
-    syncSegmentsJson(next);
+  const removeTopic = (index) => {
+    syncTopicsJson(topics.filter((_, i) => i !== index));
   };
 
-  const moveSegment = (index, dir) => {
-    const newIndex = index + dir;
-    if (newIndex < 0 || newIndex >= segments.length) return;
-    const next = [...segments];
-    const temp = next[index];
-    next[index] = next[newIndex];
-    next[newIndex] = temp;
-    syncSegmentsJson(next);
+  // ----- Social / platform link editors -----
+  const updateSocialLink = (key, value) => {
+    syncSocialLinksJson({ ...socialLinks, [key]: value });
+  };
+
+  const updatePlatformLink = (key, value) => {
+    syncPlatformLinksJson({ ...platformLinks, [key]: value });
   };
 
   return (
@@ -243,10 +303,10 @@ export default function PodcastForm({ mode, podcast }) {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-3">
           <div>
             <h1 className="text-lg font-semibold text-slate-900">
-              {isEdit ? "Edit Episode" : "New Episode"}
+              {isEdit ? "Edit Podcast" : "New Podcast"}
             </h1>
             <p className="text-xs text-slate-500">
-              Manage title, metadata, show notes and audio file.
+              Manage show info, overview content, links and stats.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -257,12 +317,12 @@ export default function PodcastForm({ mode, podcast }) {
                 disabled={deleting || saving}
                 className="text-xs font-medium text-rose-600 hover:text-rose-700 disabled:opacity-50"
               >
-                {deleting ? "Deleting..." : "Delete episode"}
+                {deleting ? "Deleting..." : "Delete podcast"}
               </button>
             )}
             <button
               type="button"
-              onClick={() => router.push("/admin/podcasts")}
+              onClick={() => router.push("/admin/podcast")}
               className="text-xs text-slate-500 hover:text-slate-700"
             >
               Back to list
@@ -286,9 +346,7 @@ export default function PodcastForm({ mode, podcast }) {
               )}
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Title *
-                </label>
+                <label className="text-xs font-medium text-slate-700">Title *</label>
                 <input
                   name="title"
                   value={form.title}
@@ -300,16 +358,14 @@ export default function PodcastForm({ mode, podcast }) {
 
               <div className="grid gap-3 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] items-end">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-700">
-                    Slug *
-                  </label>
+                  <label className="text-xs font-medium text-slate-700">Slug *</label>
                   <input
                     name="slug"
                     value={form.slug}
                     onChange={onChange}
                     required
                     className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                    placeholder="scaling-your-startup-ep-12"
+                    placeholder="the-creative-current"
                   />
                 </div>
                 <label className="inline-flex items-center gap-2 text-[11px] text-slate-600">
@@ -325,33 +381,20 @@ export default function PodcastForm({ mode, podcast }) {
 
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-700">
-                  Episode number
-                </label>
-                <input
-                  name="episodeNumber"
-                  value={form.episodeNumber}
-                  onChange={onChange}
-                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  placeholder="12"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Short description
+                  Short description (used on list cards)
                 </label>
                 <textarea
                   name="description"
                   value={form.description}
                   onChange={onChange}
-                  rows={3}
+                  rows={2}
                   className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 />
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-slate-700">
-                  Summary (What listeners will learn)
+                  Summary (sidebar "About This Podcast")
                 </label>
                 <textarea
                   name="summary"
@@ -361,93 +404,153 @@ export default function PodcastForm({ mode, podcast }) {
                   className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
                 />
               </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-slate-700">
+                  About text (main "About [Podcast]" section)
+                </label>
+                <textarea
+                  name="aboutText"
+                  value={form.aboutText}
+                  onChange={onChange}
+                  rows={3}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-700">Pull quote</label>
+                  <textarea
+                    name="quoteText"
+                    value={form.quoteText}
+                    onChange={onChange}
+                    rows={2}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-700">Quote author</label>
+                  <input
+                    name="quoteAuthor"
+                    value={form.quoteAuthor}
+                    onChange={onChange}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-slate-700">
+                  What This Podcast Is About
+                </label>
+                <textarea
+                  name="whatItsAbout"
+                  value={form.whatItsAbout}
+                  onChange={onChange}
+                  rows={3}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-slate-700">Who Should Listen</label>
+                <textarea
+                  name="whoShouldListen"
+                  value={form.whoShouldListen}
+                  onChange={onChange}
+                  rows={3}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                />
+              </div>
             </div>
 
-            {/* Segments editor */}
+            {/* Topics editor */}
             <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
               <div className="flex items-center justify-between">
                 <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                  Show Notes / Segments
+                  Topics We Explore
                 </h2>
-                {jsonError && (
-                  <span className="text-[11px] text-rose-600">
-                    {jsonError}
-                  </span>
-                )}
+                {jsonError && <span className="text-[11px] text-rose-600">{jsonError}</span>}
               </div>
 
-              <div className="space-y-3 max-h-72 overflow-auto pr-1">
-                {segments.map((seg, index) => (
-                  <div
-                    key={index}
-                    className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 space-y-2"
-                  >
-                    <div className="flex items-center justify-between gap-2">
-                      <input
-                        value={seg.timestamp || ""}
-                        onChange={(e) =>
-                          updateSegment(index, "timestamp", e.target.value)
-                        }
-                        placeholder="00:00"
-                        className="w-20 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-violet-500"
-                      />
-                      <input
-                        value={seg.heading || ""}
-                        onChange={(e) =>
-                          updateSegment(index, "heading", e.target.value)
-                        }
-                        placeholder={`Segment ${index + 1} heading`}
-                        className="flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-violet-500"
-                      />
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={() => moveSegment(index, -1)}
-                          className="px-2 py-1 text-[10px] rounded-md border border-slate-300 text-slate-600 hover:bg-slate-100"
-                        >
-                          ↑
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => moveSegment(index, 1)}
-                          className="px-2 py-1 text-[10px] rounded-md border border-slate-300 text-slate-600 hover:bg-slate-100"
-                        >
-                          ↓
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => removeSegment(index)}
-                          className="px-2 py-1 text-[10px] rounded-md border border-rose-200 text-rose-600 hover:bg-rose-50"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                    <textarea
-                      value={seg.body || ""}
-                      onChange={(e) =>
-                        updateSegment(index, "body", e.target.value)
-                      }
-                      rows={3}
-                      placeholder="Segment notes (plain text or markdown-style)"
-                      className="w-full rounded-md border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-violet-500"
+              <div className="space-y-2 max-h-56 overflow-auto pr-1">
+                {topics.map((topic, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <input
+                      value={topic}
+                      onChange={(e) => updateTopic(index, e.target.value)}
+                      placeholder={`Topic ${index + 1}`}
+                      className="flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-violet-500"
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeTopic(index)}
+                      className="px-2 py-1 text-[10px] rounded-md border border-rose-200 text-rose-600 hover:bg-rose-50"
+                    >
+                      Delete
+                    </button>
                   </div>
                 ))}
-                {!segments.length && (
+                {!topics.length && (
                   <p className="text-[11px] text-slate-500">
-                    No segments yet. Add your first show-notes segment below.
+                    No topics yet. Add the ones this podcast covers.
                   </p>
                 )}
               </div>
 
               <button
                 type="button"
-                onClick={addSegment}
+                onClick={addTopic}
                 className="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
               >
-                + Add segment
+                + Add topic
               </button>
+            </div>
+
+            {/* Social links editor */}
+            <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Follow &amp; Connect (Social Links)
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {Object.keys(SOCIAL_DEFAULTS).map((key) => (
+                  <div key={key} className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-700 capitalize">{key}</label>
+                    <input
+                      value={socialLinks[key] || ""}
+                      onChange={(e) => updateSocialLink(key, e.target.value)}
+                      placeholder={`https://...`}
+                      className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Platform links editor */}
+            <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Listen On (Platform Links)
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {[
+                  { key: "spotify", label: "Spotify" },
+                  { key: "applePodcasts", label: "Apple Podcasts" },
+                  { key: "youtubeMusic", label: "YouTube Music" },
+                  { key: "soundcloud", label: "SoundCloud" },
+                ].map(({ key, label }) => (
+                  <div key={key} className="space-y-1.5">
+                    <label className="text-xs font-medium text-slate-700">{label}</label>
+                    <input
+                      value={platformLinks[key] || ""}
+                      onChange={(e) => updatePlatformLink(key, e.target.value)}
+                      placeholder="https://..."
+                      className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -460,9 +563,7 @@ export default function PodcastForm({ mode, podcast }) {
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-700">
-                    Status
-                  </label>
+                  <label className="text-xs font-medium text-slate-700">Status</label>
                   <select
                     name="status"
                     value={form.status}
@@ -475,9 +576,7 @@ export default function PodcastForm({ mode, podcast }) {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-slate-700">
-                    Published at
-                  </label>
+                  <label className="text-xs font-medium text-slate-700">Published at</label>
                   <input
                     type="datetime-local"
                     name="publishedAt"
@@ -488,10 +587,85 @@ export default function PodcastForm({ mode, podcast }) {
                 </div>
               </div>
 
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-700">Category</label>
+                  <input
+                    name="category"
+                    value={form.category}
+                    onChange={onChange}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    placeholder="Society & Culture"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-700">Language</label>
+                  <input
+                    name="language"
+                    value={form.language}
+                    onChange={onChange}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Host name
-                </label>
+                <label className="text-xs font-medium text-slate-700">Frequency</label>
+                <input
+                  name="frequency"
+                  value={form.frequency}
+                  onChange={onChange}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  placeholder="Weekly"
+                />
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-700">Rating</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="5"
+                    name="rating"
+                    value={form.rating}
+                    onChange={onChange}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-700">Followers</label>
+                  <input
+                    type="number"
+                    min="0"
+                    name="followersCount"
+                    value={form.followersCount}
+                    onChange={onChange}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-slate-700">Episode count</label>
+                  <input
+                    type="number"
+                    min="0"
+                    name="episodeCount"
+                    value={form.episodeCount}
+                    onChange={onChange}
+                    className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Host
+              </h2>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-slate-700">Host name</label>
                 <input
                   name="hostName"
                   value={form.hostName}
@@ -501,54 +675,41 @@ export default function PodcastForm({ mode, podcast }) {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Host role
-                </label>
+                <label className="text-xs font-medium text-slate-700">Host role</label>
                 <input
                   name="hostRole"
                   value={form.hostRole}
                   onChange={onChange}
                   className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  placeholder="Host"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Guest name
-                </label>
+                <label className="text-xs font-medium text-slate-700">Host avatar URL</label>
                 <input
-                  name="guestName"
-                  value={form.guestName}
+                  name="hostAvatar"
+                  value={form.hostAvatar}
                   onChange={onChange}
                   className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  placeholder="Optional"
                 />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Category
-                </label>
                 <input
-                  name="category"
-                  value={form.category}
-                  onChange={onChange}
-                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  placeholder="Business, Technology..."
+                  type="file"
+                  accept="image/*"
+                  onChange={handleHostAvatarUpload}
+                  disabled={uploadingHostAvatar}
+                  className="block w-full text-[11px] text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-slate-800 hover:file:bg-slate-200"
                 />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Duration text
-                </label>
-                <input
-                  name="durationText"
-                  value={form.durationText}
-                  onChange={onChange}
-                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  placeholder="42 min"
-                />
+                {uploadingHostAvatar && (
+                  <p className="text-[11px] text-slate-500">Uploading avatar...</p>
+                )}
+                {form.hostAvatar && (
+                  <img
+                    src={form.hostAvatar}
+                    alt="Host avatar preview"
+                    className="mt-1 h-10 w-10 rounded-full border border-slate-200 object-cover"
+                  />
+                )}
               </div>
             </div>
 
@@ -558,19 +719,15 @@ export default function PodcastForm({ mode, podcast }) {
               </h2>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Cover URL
-                </label>
+                <label className="text-xs font-medium text-slate-700">Cover URL</label>
                 <input
                   name="coverImage"
                   value={form.coverImage}
                   onChange={onChange}
                   className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  placeholder="/images/podcasts/ep-12.png"
+                  placeholder="/images/podcasts/creative-current.png"
                 />
-                <p className="text-[11px] text-slate-500">
-                  Paste a URL or upload a file below.
-                </p>
+                <p className="text-[11px] text-slate-500">Paste a URL or upload a file below.</p>
               </div>
 
               <div className="space-y-1.5">
@@ -582,15 +739,11 @@ export default function PodcastForm({ mode, podcast }) {
                   className="block w-full text-[11px] text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-slate-800 hover:file:bg-slate-200"
                 />
                 {uploadingCover && (
-                  <p className="text-[11px] text-slate-500">
-                    Uploading cover...
-                  </p>
+                  <p className="text-[11px] text-slate-500">Uploading cover...</p>
                 )}
                 {form.coverImage && (
                   <div className="mt-1 flex items-center gap-2">
-                    <span className="text-[11px] text-slate-500">
-                      Preview:
-                    </span>
+                    <span className="text-[11px] text-slate-500">Preview:</span>
                     <img
                       src={form.coverImage}
                       alt="Cover preview"
@@ -603,23 +756,39 @@ export default function PodcastForm({ mode, podcast }) {
 
             <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
               <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Episode audio
+                Latest episode
               </h2>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-slate-700">
-                  Audio URL
-                </label>
+                <label className="text-xs font-medium text-slate-700">Latest episode title</label>
                 <input
-                  name="audioUrl"
-                  value={form.audioUrl}
+                  name="latestEpisodeTitle"
+                  value={form.latestEpisodeTitle}
                   onChange={onChange}
                   className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                  placeholder="/audio/podcasts/ep-12.mp3"
                 />
               </div>
 
               <div className="space-y-1.5">
+                <label className="text-xs font-medium text-slate-700">Duration</label>
+                <input
+                  name="latestEpisodeDuration"
+                  value={form.latestEpisodeDuration}
+                  onChange={onChange}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  placeholder="48m"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-medium text-slate-700">Audio URL</label>
+                <input
+                  name="latestEpisodeAudioUrl"
+                  value={form.latestEpisodeAudioUrl}
+                  onChange={onChange}
+                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  placeholder="/audio/podcasts/latest.mp3"
+                />
                 <input
                   type="file"
                   accept="audio/*"
@@ -628,21 +797,10 @@ export default function PodcastForm({ mode, podcast }) {
                   className="block w-full text-[11px] text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-slate-800 hover:file:bg-slate-200"
                 />
                 {uploadingAudio && (
-                  <p className="text-[11px] text-slate-500">
-                    Uploading audio...
-                  </p>
+                  <p className="text-[11px] text-slate-500">Uploading audio...</p>
                 )}
-                {form.audioUrl && (
-                  <div className="space-y-1">
-                    <p className="text-[11px] text-slate-500 truncate">
-                      Current: {form.audioUrl}
-                    </p>
-                    <audio
-                      src={form.audioUrl}
-                      controls
-                      className="w-full h-8"
-                    />
-                  </div>
+                {form.latestEpisodeAudioUrl && (
+                  <audio src={form.latestEpisodeAudioUrl} controls className="w-full h-8" />
                 )}
               </div>
             </div>
@@ -650,7 +808,7 @@ export default function PodcastForm({ mode, podcast }) {
             <div className="flex justify-end gap-2 pt-1">
               <button
                 type="button"
-                onClick={() => router.push("/admin/podcasts")}
+                onClick={() => router.push("/admin/podcast")}
                 className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
               >
                 Cancel
@@ -660,11 +818,7 @@ export default function PodcastForm({ mode, podcast }) {
                 disabled={saving || deleting}
                 className="rounded-md bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-violet-500 disabled:opacity-60"
               >
-                {saving
-                  ? "Saving..."
-                  : isEdit
-                  ? "Save changes"
-                  : "Create Episode"}
+                {saving ? "Saving..." : isEdit ? "Save changes" : "Create Podcast"}
               </button>
             </div>
           </div>

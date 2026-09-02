@@ -46,6 +46,7 @@ export async function POST(req) {
     const result = await validateAndProcessUpload(file, {
       maxSize: 10 * 1024 * 1024,
       subFolder: `admin/${folder.replace(/^admin\//, '')}`,
+      allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml', 'audio/mpeg', 'audio/mp3'],
     });
 
     console.log(`\n📁 Upload result:`, result);

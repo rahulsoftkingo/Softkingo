@@ -6,8 +6,7 @@ import PodcastForm from "../shared/PodcastForm";
 export const dynamic = "force-dynamic";
 
 export default async function PodcastFormPage({ params }) {
-  
-  const resolvedParams = await params; 
+  const resolvedParams = await params;
   const id = resolvedParams?.id;
 
   if (id === "new") {

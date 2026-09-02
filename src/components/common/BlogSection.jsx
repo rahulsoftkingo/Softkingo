@@ -70,14 +70,14 @@ export default function BlogSection({
                     {/* Left Content - Header & CTA */}
                     <div className="lg:col-span-4 flex items-start justify- md:justify-center md:flex-col md:items-start spac-8">
 
-                           <div className="[&_.text-left]:!pl-0"> 
+                        <div className="[&_.text-left]:!pl-0"> 
                             <CommonTitle
                                 title={title}
                                 subtitle={subtitle}
                                 align="left"
                                 gradientText={gradientText}
                             />
-                            </div>                  
+                        </div>                  
 
                         <Link
                             href={`/blog/category/${category}`}
@@ -98,20 +98,20 @@ export default function BlogSection({
                     </div>
 
                     {/* Right Content - Blog Carousel */}
-                    <div className="lg:col-span-8 relative group/carousel px-3">
+                    <div className="lg:col-span-8 relative group/carousel px-3 min-w-0">
                         <div
                             ref={scrollRef}
                             onScroll={checkScroll}
-                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-0 md:pb-8 sm:snap-x sm:snap-mandatory cursor-grab active:cursor-grabbing w-full"
+                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-0 md:pb-8 sm:snap-x sm:snap-mandatory overscroll-x-contain cursor-grab active:cursor-grabbing w-full"
                         >
                             {blogs.map((blog, idx) => (
-                                <div key={blog.id} className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start">
+                                <div key={blog.id} className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start select-none">
                                     <BlogCard blog={blog} priority={idx < 2} />
                                 </div>
                             ))}
 
-                            {/* View All Card - shown at the end of scroll, mainly useful on mobile */}
-                            <div className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start flex items-center justify-center sm:hidden">
+                            {/* View All Card - shown at the end of scroll on mobile */}
+                            <div className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start flex items-center justify-center sm:hidden select-none">
                                 <Link
                                     href={`/blog/category/${category}`}
                                     className="group flex flex-col items-center justify-center gap-4 w-full h-full min-h-[280px] rounded-sm border border-dashed border-slate-200 hover:border-sky-500 transition-all duration-300 bg-slate-50/50"
@@ -167,11 +167,10 @@ function BlogCard({ blog, priority }) {
                     width={800}
                     height={600}
                     priority={priority}
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    draggable={false}
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-
             </div>
 
             {/* Content */}
