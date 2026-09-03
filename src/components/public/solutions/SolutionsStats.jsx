@@ -11,8 +11,7 @@ const defaultData = {
     "/images/logo/LoveLocal-logo.webp",
     "/images/logo/Snoonu-logo.webp",
      "/images/logo/Moglix_logo.webp",
-     "/images/logo/ezydash.webp"
-    //  "/images/logo/odatrans.png"
+     "/images/logo/CoreValentLogo.png"
   ],
 };
 
