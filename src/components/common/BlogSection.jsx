@@ -80,7 +80,7 @@ export default function BlogSection({
                         </div>                  
 
                         <Link
-                            href={`/blog/category/${category}`}
+                            href={`/blog`}
                             className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0"
                         >
                             <div className="relative flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
@@ -130,7 +130,8 @@ export default function BlogSection({
                         {canScrollLeft && (
                             <button
                                 onClick={() => scroll('left')}
-                                className="absolute left-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
+                                className="absolute left-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100"
+
                             >
                                 <FaArrowLeft />
                             </button>
@@ -138,8 +139,7 @@ export default function BlogSection({
                         {canScrollRight && (
                             <button
                                 onClick={() => scroll('right')}
-                                className="absolute right-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
-                            >
+                              className="absolute right-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100">
                                 <FaArrowRight />
                             </button>
                         )}

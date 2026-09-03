@@ -6,6 +6,11 @@ import Image from 'next/image';
 export default function SolutionsFeatureGrid({ data }) {
   const [flippedIdx, setFlippedIdx] = useState(null);
 
+  const title= data?.title || "Our Solutions";
+
+  const title1 = title.split(" ")[0];
+  const title2 = title.split(" ").slice(1).join(" ");
+
   if (!data) return null;
 
   return (
@@ -13,8 +18,8 @@ export default function SolutionsFeatureGrid({ data }) {
       <div className="max-w-7xl mx-auto px-6">
         <CommonTitle
           align="center"
-          title={data.title}
-          gradientText={data.highlight}
+          title={title1}
+          gradientText={title2}
           subtitle={data.subtitle}
         />
 

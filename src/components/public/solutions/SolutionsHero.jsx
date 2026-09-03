@@ -5,7 +5,9 @@ import { ArrowRight, Calendar, Rocket, Users, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import PopupQuoteModal from '@/components/PopupQuoteModal';
 
-export default function SolutionsHero({ data, endpoint }) {
+export default function SolutionsHero({ data2, data, endpoint }) {
+
+  console.log("SolutionsHero data2:", data2);
 
   // 1. Initialize State
   const [imgSrc, setImgSrc] = useState(data?.image);
@@ -22,18 +24,18 @@ export default function SolutionsHero({ data, endpoint }) {
   const stats = [
     {
       icon: <Rocket size={28} className="text-sky-500" />,
-      value: "6+",
-      label: "Years of Industry Experience",
+      value: data2.items?.[0]?.value,
+      label: data2.items?.[0]?.label,
     },
     {
       icon: <Users size={28} className="text-sky-500" />,
-      value: "350+",
-      label: "Apps Successfully Delivered",
+      value: data2.items?.[1]?.value,
+      label: data2.items?.[1]?.label,
     },
     {
       icon: <ShieldCheck size={28} className="text-sky-500" />,
-      value: "100%",
-      label: "Client Satisfaction",
+      value: data2.items?.[2]?.value,
+      label: data2.items?.[2]?.label,
     },
   ];
 
@@ -74,6 +76,7 @@ export default function SolutionsHero({ data, endpoint }) {
               >
                 Let's Work Together <ArrowRight size={18} />
               </button>
+
               <Link
                 href="https://calendly.com/paramhans-softkingo/30min"
                 target="_blank"
@@ -88,22 +91,23 @@ export default function SolutionsHero({ data, endpoint }) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1 pb-8 sm:pb-16 animate-fadeInUp delay-400">
               {stats.map((stat, index) => (
                 <div key={index} className="relative group filter drop-shadow-md">
+
                   {/* SVG Clip Path Definition */}
                   <svg className="absolute w-0 h-0" aria-hidden="true" focusable="false">
                     <defs>
                       <clipPath id={`card-clip-${index}`} clipPathUnits="objectBoundingBox">
                         {/* Custom path defining top-right cutout */}
-                        <path d="M 0,0 
-                      L 0.65,0 
-                      A 0.08,0.08 0 0,1 0.73,0.08 
-                      L 0.73,0.20 
-                      A 0.08,0.08 0 0,0 0.81,0.28 
-                      L 0.85,0.28 
-                      A 0.15,0.15 0 0,1 1,0.43 
-                      L 1,0.85 
-                      A 0.15,0.15 0 0,1 0.85,1 
-                      L 0.15,1 
-                      A 0.15,0.15 0 0,1 0,0.85 
+                        <path d="M 0,0  
+                      L 0.65,0  
+                      A 0.08,0.08 0 0,1 0.73,0.08  
+                      L 0.73,0.20  
+                      A 0.08,0.08 0 0,0 0.81,0.28  
+                      L 0.85,0.28  
+                      A 0.15,0.15 0 0,1 1,0.43  
+                      L 1,0.85  
+                      A 0.15,0.15 0 0,1 0.85,1  
+                      L 0.15,1  
+                      A 0.15,0.15 0 0,1 0,0.85  
                       L 0,0 Z" />
                       </clipPath>
                     </defs>
@@ -160,6 +164,7 @@ export default function SolutionsHero({ data, endpoint }) {
 
         </div>
       </div>
+
       <PopupQuoteModal open={showModal} onClose={() => setShowModal(false)} />
     </section>
   );

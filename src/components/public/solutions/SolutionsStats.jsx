@@ -6,11 +6,13 @@ import Image from "next/image";
 const defaultData = {
   heading: "Trusted by Businesses Worldwide",
   items: [
-    "/images/logo/CoreValentLogo.png",
-    "/images/logo/potafologo.png",
+    "/images/logo/careclinictransparent.png",
+    "/images/logo/transparentpotafo.png",
     "/images/logo/LoveLocal-logo.webp",
     "/images/logo/Snoonu-logo.webp",
      "/images/logo/Moglix_logo.webp",
+     "/images/logo/ezydash.webp"
+    //  "/images/logo/odatrans.png"
   ],
 };
 
@@ -37,8 +39,8 @@ export default function TrustedBySection({ data = defaultData }) {
               <Image
                 src={logo}
                 alt={`Partner logo ${index + 1}`}
-                width={140}
-                height={48}
+                width={150}
+                height={50}
                 style={{
                   width: "100%",
                   height: "100%",

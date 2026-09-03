@@ -484,7 +484,7 @@ export default async function DynamicSolutionPage(props) {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
                 />
             )}
-            {show('hero') && <section className='bg-sky-50'><SolutionsHero data={hero} endpoint={endpoint} /></section>}
+            {show('hero') && <section className='bg-sky-50'><SolutionsHero data2={stats} data={hero} endpoint={endpoint} /></section>}
             {show('stats') && <SolutionsStats data={stats} />}
             {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}

@@ -282,12 +282,12 @@ const HeroSection = () => {
           <motion.div className="flex flex-wrap justify-center gap-4 mb-10">
             <button
               onClick={() => setShowModal(true)}
-              className="px-3 py-3 h-[45px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
+              className="px-5 py-3 h-[45px] w-[170px] rounded-full bg-gradient-to-r from-sky-600 to-sky-400 text-white text-sm font-medium shadow-lg inline-flex items-center gap-3"
             >
               Get A Quote
-              <FaArrowRight />
-              <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                <FaPhoneAlt className="text-black text-sm" />
+              {/* <FaArrowRight /> */}
+              <span className="ml-2 w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                <FaPhoneAlt className="text-sky-500 text-sm" />
               </span>
             </button>
 
@@ -299,7 +299,7 @@ const HeroSection = () => {
             >
               Book A Meeting
               <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                <FaBook className="text-black text-sm" />
+                <FaBook className="text-sky-500 text-sm" />
               </span>
             </Link>
           </motion.div>
