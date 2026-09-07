@@ -7,7 +7,7 @@ import PopupQuoteModal from '@/components/PopupQuoteModal';
 
 export default function SolutionsHero({ data2, data, endpoint }) {
 
-  console.log("SolutionsHero data2:", data2);
+
 
   // 1. Initialize State
   const [imgSrc, setImgSrc] = useState(data?.image);

@@ -486,7 +486,7 @@ export default async function DynamicSolutionPage(props) {
             )}
             {show('hero') && <section className='bg-sky-50'><SolutionsHero data2={stats} data={hero} endpoint={endpoint} /></section>}
             {show('stats') && <SolutionsStats data={stats} />}
-            {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
+            {show('intro') && <SolutionsContentSplit data={intro} reverse={false} endpoint={endpoint} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}
              {/* /////////// */}
              {show('appModules') && (

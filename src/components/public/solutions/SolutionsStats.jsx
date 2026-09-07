@@ -6,10 +6,10 @@ import Image from "next/image";
 const defaultData = {
   heading: "Trusted by Businesses Worldwide",
   items: [
-    "/images/logo/careclinictransparent.png",
-    "/images/logo/transparentpotafo.png",
-    "/images/logo/LoveLocal-logo.webp",
-    "/images/logo/Snoonu-logo.webp",
+     "/images/logo/careclinictransparent.png",
+     "/images/logo/transparentpotafo.png",
+     "/images/logo/LoveLocal-logo.webp",
+     "/images/logo/Snoonu-logo.webp",
      "/images/logo/Moglix_logo.webp",
      "/images/logo/CoreValentLogo.png"
   ],
