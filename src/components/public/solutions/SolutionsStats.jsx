@@ -6,12 +6,12 @@ import Image from "next/image";
 const defaultData = {
   heading: "Trusted by Businesses Worldwide",
   items: [
-     "/images/logo/careclinictransparent.png",
-     "/images/logo/transparentpotafo.png",
-     "/images/logo/LoveLocal-logo.webp",
-     "/images/logo/Snoonu-logo.webp",
-     "/images/logo/Moglix_logo.webp",
-     "/images/logo/CoreValentLogo.png"
+    "/images/logo/careclinictransparent.png",
+    "/images/logo/transparentpotafo.png",
+    "/images/logo/LoveLocal-logo.webp",
+    "/images/logo/Snoonu-logo.webp",
+    "/images/logo/Moglix_logo.webp",
+    "/images/logo/CoreValentLogo.png"
   ],
 };
 
@@ -21,7 +21,7 @@ export default function TrustedBySection({ data = defaultData }) {
   if (!sectionData?.items?.length) return null;
 
   return (
-    <section className="bg-sky-400 relative -top-20 py-6 rounded-[2rem] w-[85%] max-w-6xl mx-auto z-20 shadow-xl shadow-sky-100">
+    <section className="bg-sky-400 relative -top-20 py-6 rounded-none md:rounded-[2rem] w-full md:w-[85%] max-w-6xl mx-auto z-20 shadow-xl shadow-sky-100">
       <div className="max-w-7xl mx-auto px-6">
         {sectionData.heading && (
           <h2 className="text-center text-white text-xl md:text-2xl font-bold mb-6">
