@@ -130,7 +130,7 @@ export default function BlogSection({
                         {canScrollLeft && (
                             <button
                                 onClick={() => scroll('left')}
-                                className="absolute left-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100"
+                                className="absolute left-0 top-1/3 -translate-y-1/2 z-20 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100"
 
                             >
                                 <FaArrowLeft />
@@ -139,7 +139,7 @@ export default function BlogSection({
                         {canScrollRight && (
                             <button
                                 onClick={() => scroll('right')}
-                              className="absolute right-0 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100">
+                              className="absolute right-0 top-1/3 -translate-y-1/2 z-20 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100">
                                 <FaArrowRight />
                             </button>
                         )}
