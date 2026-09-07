@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaBriefcase, FaMicrochip, FaHeartbeat, FaGraduationCap, FaBullhorn, FaTheaterMasks, FaUsers, FaHashtag } from "react-icons/fa";
 import prisma from "@/lib/prisma";
 import InquirySection from "@/components/footer/InquirySection";
 import PodcastBrowseSection from "../portfolio/Podcastbrowsesection";
@@ -20,6 +20,22 @@ function safeImg(src, fallback = "/images/insights/hero-default.png") {
   if (s.startsWith("/")) return s;
   if (s.startsWith("http://") || s.startsWith("https://")) return s;
   return fallback;
+}
+
+// Icon lookup for category chips — falls back to a generic tag icon
+// for any category name that isn't explicitly mapped.
+const CATEGORY_ICONS = {
+  business: FaBriefcase,
+  technology: FaMicrochip,
+  "health & wellness": FaHeartbeat,
+  education: FaGraduationCap,
+  marketing: FaBullhorn,
+  comedy: FaTheaterMasks,
+  "society & culture": FaUsers,
+};
+
+function getCategoryIcon(name) {
+  return CATEGORY_ICONS[(name || "").toLowerCase()] || FaHashtag;
 }
 
 export default async function PodcastPage(props) {
@@ -139,9 +155,10 @@ export default async function PodcastPage(props) {
             alt="Podcast Header Background"
             fill
             priority
-            className="object-cover opacity-70"
+            className="object-cover opacity-60"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-slate-900/70 to-slate-900/30" />
+          {/* Sky-toned wash instead of the previous neutral/violet gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-sky-950/80 to-sky-900/40" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 text-slate-50 flex flex-col justify-between min-h-[340px]">
@@ -154,6 +171,12 @@ export default async function PodcastPage(props) {
             <span className="text-sky-300 font-medium">Podcast</span>
           </nav>
 
+          {/* Eyebrow pill */}
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-1 text-[11px] text-sky-200 mb-4">
+            <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+            Discover. Listen. Get inspired.
+          </div>
+
           {/* Header Main Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-end">
             {/* Left Column: Text, Search, Chips */}
@@ -163,10 +186,12 @@ export default async function PodcastPage(props) {
               </p>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-normal">
-                Deep dives into tech & architecture
+                Deep dives into
+                <br />
+                <span className="text-sky-400">tech &amp; architecture</span>
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-100/90">
+              <p className="text-sm sm:text-base text-slate-100/90 max-w-md">
                 In-depth articles and discussions on cloud, AI, app architecture, performance and more.
               </p>
 
@@ -181,7 +206,7 @@ export default async function PodcastPage(props) {
                     name="q"
                     defaultValue={q}
                     placeholder="Search by title or topic..."
-                    className="w-full pl-9 pr-3 py-2.5 rounded-full bg-slate-900/70 border border-slate-500 text-sm text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-full bg-slate-900/70 border border-sky-500/30 text-sm text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400"
                   />
                   {category && <input type="hidden" name="category" value={category} />}
                 </div>
@@ -229,7 +254,7 @@ export default async function PodcastPage(props) {
                     <div
                       key={i}
                       title={platform.name}
-                      className="relative w-[100px] sm:w-[125px] lg:w-[130px] h-10 sm:h-11 px-1.5 sm:px-2 py-1 flex items-center justify-center hover:-translate-y-0.5 transition-all shrink-0 bg-slate-900/50 rounded-xl border border-slate-700/60 backdrop-blur-sm"
+                      className="relative w-[100px] sm:w-[125px] lg:w-[130px] h-10 sm:h-11 px-1.5 sm:px-2 py-1 flex items-center justify-center hover:-translate-y-0.5 transition-all shrink-0 bg-slate-900/50 rounded-xl border border-sky-700/40 backdrop-blur-sm"
                     >
                       <Image
                         src={safeImg(platform.src)}
@@ -262,7 +287,8 @@ export default async function PodcastPage(props) {
   );
 }
 
-{/* Row Card Component — image left, title/host/play right, description spans full width below */ }
+{/* Row Card Component — image left, title/host/play right, description spans full width below.
+    Restyled to the "Featured Podcasts" list treatment from the reference, sky-blue accents. */}
 function PodcastRowCard({ episode }) {
   const dateText = episode.publishedAt
     ? new Date(episode.publishedAt).toLocaleDateString("en-US", {
@@ -273,10 +299,10 @@ function PodcastRowCard({ episode }) {
     : null;
 
   return (
-    <article className="bg-[#e7e7e7] border border-slate-200 p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all">
+    <article className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all">
       {/* Category + Date */}
       <div className="flex items-center justify-between mb-4">
-        <span className="inline-block px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wide bg-[#1ed860] text-white">
+        <span className="inline-block px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wide bg-sky-500 text-white">
           {episode.category || "Podcast"}
         </span>
         {dateText && (
@@ -306,7 +332,7 @@ function PodcastRowCard({ episode }) {
           {episode.guestName && (
             <p className="text-sm text-slate-800">
               - Hosted By{" "}
-              <span className="text-rose-500 font-medium">{episode.guestName}</span>
+              <span className="text-sky-600 font-medium">{episode.guestName}</span>
             </p>
           )}
 
@@ -330,7 +356,7 @@ function PodcastRowCard({ episode }) {
   );
 }
 
-{/* Sidebar Compact Card Component (unchanged) */ }
+{/* Sidebar Compact Card Component */}
 function PodcastCompactCard({ episode }) {
   return (
     <div className="border-b border-slate-100 pb-2.5 last:border-0 last:pb-0">
