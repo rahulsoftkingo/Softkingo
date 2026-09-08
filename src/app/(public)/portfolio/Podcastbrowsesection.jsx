@@ -570,7 +570,7 @@ function StartPodcastForm() {
         </label>
 
         {/* Project Type */}
-        <select
+        {/* <select
           value={form.type}
           onChange={update("type")}
           name="type"
@@ -580,7 +580,7 @@ function StartPodcastForm() {
           <option>Independent creator</option>
           <option>Media company</option>
           <option>Enterprise</option>
-        </select>
+        </select> */}
 
         {/* Submit */}
         <button

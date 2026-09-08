@@ -498,27 +498,6 @@ export default function OptimizedChatWidget() {
               <div className="absolute -bottom-1 right-5 w-2 h-2 bg-white border-r border-b border-sky-50 transform rotate-45"></div>
             </div>
           </div>
-
-          <style jsx>{`
-  @keyframes chatAttentionPulse {
-    0%   { transform: scale(1); }
-    10%  { transform: scale(1.1); }   /* big */
-    20%  { transform: scale(0.9); }    /* small */
-    30%  { transform: scale(1.1); }   /* big again, softer */
-    40%  { transform: scale(0.9); }    /* small again, softer */
-    50%  { transform: scale(1); }      /* settle */
-    100% { transform: scale(1); }      /* hold still until next loop */
-  }
-  .chat-bubble-attention {
-    animation: chatAttentionPulse 5s ease-in-out infinite;
-    transform-origin: center;
-    will-change: transform;
-  }
-  .group:hover .chat-bubble-attention {
-    animation-play-state: paused;
-    transform: scale(1.1);
-  }
-`}</style>
         </button>
       )}
 
