@@ -3,22 +3,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import EbookPromoCard from "@/components/public/EbookPromoCard";
 
-import {
-  Play,
-  Briefcase,
-  Cpu,
-  Pause,
-  GraduationCap,
-  TrendingUp,
-  Star,
-  Mail,
-  Phone,
-  User,
-  ChevronRight,
-  Download,
-
-} from "lucide-react";
+import {Play,Briefcase,Cpu,Pause,GraduationCap,TrendingUp,Star,Mail,Phone,User,ChevronRight,Download,} from "lucide-react";
 
 /* ----------------------------- Dummy data ------------------------------ */
 
@@ -29,14 +16,7 @@ const defaultCategories = [
   { name: "Marketing", icon: TrendingUp, slug: "marketing" },
 ];
 
-const covers = [
-  "from-violet-600 via-fuchsia-500 to-sky-700",
-  "from-sky-500 via-cyan-400 to-blue-600",
-  "from-rose-500 via-orange-400 to-amber-500",
-  "from-slate-700 via-slate-600 to-slate-900",
-  "from-emerald-500 via-teal-400 to-green-600",
-  "from-red-600 via-rose-500 to-red-800",
-];
+const covers = ["from-violet-600 via-fuchsia-500 to-sky-700","from-sky-500 via-cyan-400 to-blue-600","from-rose-500 via-orange-400 to-amber-500","from-slate-700 via-slate-600 to-slate-900","from-emerald-500 via-teal-400 to-green-600","from-red-600 via-rose-500 to-red-800",];
 
 const defaultEpisodes = [
   {
@@ -151,26 +131,38 @@ const popularTopics = [
 
 /* ------------------------------ Subcomponents --------------------------- */
 
-function CategoryStrip({ categories = defaultCategories }) {
+// NOTE: `category` and `q` are passed down so the category cards can build
+// a link to /podcast?category=... (same pattern as the "Browse by topic"
+// chips on the hero) instead of the old static /categories/{slug} route,
+// which had no matching page and never actually filtered anything.
+function CategoryStrip({ categories = defaultCategories, category = "", q = "" }) {
+  const buildCategoryHref = (name) => {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    params.set("category", name);
+    return `/podcast?${params.toString()}`;
+  };
+
   return (
     <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
       <h1 className="text-base font-semibold text-slate-800">
         Browse by category
       </h1>
 
-      <Link
+      {/* <Link
         href="/categories"
         className="text-xs font-medium text-sky-600 hover:text-sky-700 inline-flex items-center gap-0.5"
       >
         View all categories
         <ChevronRight className="w-3.5 h-3.5" />
-      </Link>
+      </Link> */}
 
       <div className="w-full grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-3">
         {categories.map(({ name, icon: Icon, slug }) => (
           <Link
             key={slug}
-            href={`/categories/${slug}`}
+            href={buildCategoryHref(name)}
+            scroll={false}
             className="flex flex-col items-center justify-center gap-2 bg-white border border-slate-200 rounded-2xl px-3 py-4 text-center hover:border-sky-300 hover:shadow-sm transition"
           >
             <span className="w-9 h-9 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center">
@@ -193,10 +185,10 @@ function PodcastRowCard({ episode }) {
 
   const formattedDate = episode.publishedAt
     ? new Date(episode.publishedAt).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      })
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
     : null;
 
   return (
@@ -291,10 +283,9 @@ function PodcastRowCard({ episode }) {
               setIsPlaying((prev) => !prev);
             }}
             className={`shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition
-              ${
-                isPlaying
-                  ? "bg-sky-600 text-white border-sky-600"
-                  : "border-slate-300 text-slate-800 hover:bg-sky-600 hover:text-white hover:border-sky-600"
+              ${isPlaying
+                ? "bg-sky-600 text-white border-sky-600"
+                : "border-slate-300 text-slate-800 hover:bg-sky-600 hover:text-white hover:border-sky-600"
               }`}
           >
             {isPlaying ? (
@@ -416,7 +407,7 @@ function buildUrl(q, category, targetPage) {
 
   const qs = params.toString();
 
-  return qs ? `/podcasts?${qs}` : "/podcasts";
+  return qs ? `/podcast?${qs}` : "/podcast";
 }
 
 /* ------------------------------ Pagination UI ---------------------------- */
@@ -609,9 +600,19 @@ function StartPodcastForm() {
 function GrowthPlaybookPromo() {
   return (
     <div className="bg-gradient-to-br from-sky-600 to-violet-700 rounded-2xl p-4 text-white relative overflow-hidden">
-      <span className="inline-block text-[10px] font-semibold uppercase tracking-wide bg-white/15 rounded-full px-2 py-0.5 mb-3">
-        New ebook
-      </span>
+      <div className="relative w-32 sm:w-36 h-28 sm:h-32 mx-auto rounded-xl overflow-hidden mb-3 bg-black/10">
+        <Image
+          src="/uploads/general/software-development-eboook-guide.webp"
+          alt="The Podcast Growth Playbook ebook cover"
+          fill
+          sizes="144px"
+          className="object-cover"
+        />
+
+        <span className="absolute top-2 left-2 inline-block text-[10px] font-semibold uppercase tracking-wide bg-white/15 backdrop-blur-sm rounded-full px-2 py-0.5">
+          New ebook
+        </span>
+      </div>
 
       <p className="text-[15px] font-semibold leading-snug mb-1">
         The Podcast Growth Playbook
@@ -621,39 +622,39 @@ function GrowthPlaybookPromo() {
         Proven strategies to grow your audience and boost engagement.
       </p>
 
-      <a
+      <Link
         href="/downloads/podcast-growth-playbook.pdf"
         className="bg-white text-sky-700 text-[12px] font-medium px-3.5 py-2 rounded-lg inline-flex items-center gap-1.5 hover:bg-sky-50 transition"
       >
         <Download className="w-3.5 h-3.5" />
         Download free
-      </a>
+      </Link>
     </div>
   );
 }
 
 /* ------------------------------ Build App Card --------------------------- */
 
-function BuildAppCard() {
-  return (
-    <div className="bg-slate-900 rounded-2xl p-4 text-white">
-      <p className="text-[15px] font-semibold leading-snug mb-1">
-        Build your own podcast app
-      </p>
+// function BuildAppCard() {
+//   return (
+//     <div className="bg-slate-900 rounded-2xl p-4 text-white">
+//       <p className="text-[15px] font-semibold leading-snug mb-1">
+//         Build your own podcast app
+//       </p>
 
-      <p className="text-[12px] text-slate-300 mb-4 leading-relaxed">
-        Custom iOS, Android and web experiences for creators and brands.
-      </p>
+//       <p className="text-[12px] text-slate-300 mb-4 leading-relaxed">
+//         Custom iOS, Android and web experiences for creators and brands.
+//       </p>
 
-      <Link
-        href="/app-services"
-        className="w-full border border-white/25 text-[12px] font-medium py-2 rounded-lg hover:bg-white/10 transition flex items-center justify-center"
-      >
-        View app services
-      </Link>
-    </div>
-  );
-}
+//       <Link
+//         href="/app-services"
+//         className="w-full border border-white/25 text-[12px] font-medium py-2 rounded-lg hover:bg-white/10 transition flex items-center justify-center"
+//       >
+//         View app services
+//       </Link>
+//     </div>
+//   );
+// }
 
 /* ----------------------------- Popular Topics --------------------------- */
 
@@ -699,11 +700,6 @@ export default function PodcastBrowseSection({
   const categoriesData =
     categoriesProp ?? defaultCategories;
 
-  console.log(
-    "PodcastBrowseSection props:",
-    episodesProp
-  );
-
   const perPage = 6;
 
   const totalCount =
@@ -727,7 +723,7 @@ export default function PodcastBrowseSection({
         <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.9fr)_minmax(0,260px)] gap-6 lg:gap-8 items-start">
           {/* Left Column */}
           <div>
-            <CategoryStrip categories={categoriesData} />
+            <CategoryStrip categories={categoriesData} category={category} q={q} />
 
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm sm:text-base font-semibold text-slate-800">
@@ -792,11 +788,12 @@ export default function PodcastBrowseSection({
           <aside className="hidden md:flex flex-col gap-4 sticky top-8">
             <StartPodcastForm />
 
-            <GrowthPlaybookPromo />
+            {/* <GrowthPlaybookPromo /> */}
+            <EbookPromoCard/>
 
-            <BuildAppCard />
+            {/* <BuildAppCard /> */}
+            {/* <PopularTopics /> */}
 
-            <PopularTopics />
           </aside>
         </section>
       </div>

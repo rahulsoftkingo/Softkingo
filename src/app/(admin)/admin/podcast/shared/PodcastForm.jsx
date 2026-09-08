@@ -23,7 +23,7 @@ function getParsedObject(json, defaults) {
   }
 }
 
-const SOCIAL_DEFAULTS = { website: "", instagram: "", twitter: "", linkedin: "" };
+const SOCIAL_DEFAULTS = { website: "", instagram: "", X: "", linkedin: "" };
 const PLATFORM_DEFAULTS = { spotify: "", applePodcasts: "", youtubeMusic: "", soundcloud: "" };
 
 export default function PodcastForm({ mode, podcast }) {
@@ -146,7 +146,7 @@ export default function PodcastForm({ mode, podcast }) {
       try {
         const data = await res.json();
         msg = data.message || msg;
-      } catch {}
+      } catch { }
       throw new Error(msg);
     }
 
@@ -590,14 +590,20 @@ export default function PodcastForm({ mode, podcast }) {
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-slate-700">Category</label>
-                  <input
+                  <select
                     name="category"
                     value={form.category}
                     onChange={onChange}
                     className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-violet-500"
-                    placeholder="Society & Culture"
-                  />
+                  >
+                    <option value="">Select Category</option>
+                    <option value="Business">Business</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Education">Education</option>
+                    <option value="Marketing">Marketing</option>
+                  </select>
                 </div>
+
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-slate-700">Language</label>
                   <input

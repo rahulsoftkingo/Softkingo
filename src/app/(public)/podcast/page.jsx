@@ -38,6 +38,11 @@ function getCategoryIcon(name) {
   return CATEGORY_ICONS[(name || "").toLowerCase()] || FaHashtag;
 }
 
+// Fixed set of browsable categories shown as filter chips.
+// (Podcasts can still have other category values in the DB —
+// those just won't get a dedicated chip in the header.)
+const CATEGORIES = ["Business", "Technology", "Education", "Marketing"];
+
 export default async function PodcastPage(props) {
   const searchParams = await props.searchParams;
   const q = (searchParams?.q || "").toString().trim();
@@ -48,6 +53,11 @@ export default async function PodcastPage(props) {
   const page = Math.max(1, parseInt(searchParams?.page || "1", 10) || 1);
   const skip = (page - 1) * pageSize;
 
+  // NOTE: `mode: "insensitive"` removed — it's a Postgres-only Prisma
+  // feature and was throwing PrismaClientValidationError on this DB
+  // provider ("Unknown argument `mode`"). Also `guestName` doesn't
+  // exist on the Podcast model — the field is `hostName`, which was
+  // causing a second, separate crash.
   const where = {
     status: "published",
     AND: [
@@ -55,15 +65,15 @@ export default async function PodcastPage(props) {
         ? [
           {
             OR: [
-              { title: { contains: q, mode: "insensitive" } },
-              { description: { contains: q, mode: "insensitive" } },
-              { summary: { contains: q, mode: "insensitive" } },
-              { guestName: { contains: q, mode: "insensitive" } },
+              { title: { contains: q } },
+              { description: { contains: q } },
+              { summary: { contains: q } },
+              { hostName: { contains: q } },
             ],
           },
         ]
         : []),
-      ...(category ? [{ category: { equals: category, mode: "insensitive" } }] : []),
+      ...(category ? [{ category: { equals: category } }] : []),
     ],
   };
 
@@ -76,15 +86,6 @@ export default async function PodcastPage(props) {
     skip,
     take: pageSize,
   });
-
-  // Extract topics dynamically from published episodes
-  const allCategories = await prisma.podcast.findMany({
-    where: { status: "published" },
-    select: { category: true },
-  });
-  const topics = Array.from(
-    new Set(allCategories.map((item) => item.category).filter(Boolean))
-  );
 
   const mostRead = episodes.slice(0, 3);
 
@@ -212,7 +213,7 @@ export default async function PodcastPage(props) {
                 </div>
               </form>
 
-              {/* Topic Filter Chips */}
+              {/* Topic Filter Chips — fixed 4 categories, with icons */}
               <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 text-[11px] sm:text-xs pt-1">
                 <span className="text-slate-200 shrink-0">Browse by topic:</span>
 
@@ -226,18 +227,23 @@ export default async function PodcastPage(props) {
                   All
                 </Link>
 
-                {topics.map((t) => (
-                  <Link
-                    key={t}
-                    href={buildUrl(q, t, 1)}
-                    className={`px-3 py-1 rounded-full border shrink-0 ${category === t
-                      ? "bg-sky-500 text-slate-900 border-sky-300 font-medium"
-                      : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
-                      } text-[11px] transition-colors`}
-                  >
-                    {t}
-                  </Link>
-                ))}
+                {CATEGORIES.map((t) => {
+                  const Icon = getCategoryIcon(t);
+                  const active = category?.toLowerCase() === t.toLowerCase();
+                  return (
+                    <Link
+                      key={t}
+                      href={buildUrl(q, t, 1)}
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full border shrink-0 ${active
+                        ? "bg-sky-500 text-slate-900 border-sky-300 font-medium"
+                        : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
+                        } text-[11px] transition-colors`}
+                    >
+                      <Icon className="h-3 w-3" />
+                      {t}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
@@ -329,10 +335,10 @@ function PodcastRowCard({ episode }) {
             {episode.title}
           </Link>
 
-          {episode.guestName && (
+          {episode.hostName && (
             <p className="text-sm text-slate-800">
               - Hosted By{" "}
-              <span className="text-sky-600 font-medium">{episode.guestName}</span>
+              <span className="text-sky-600 font-medium">{episode.hostName}</span>
             </p>
           )}
 

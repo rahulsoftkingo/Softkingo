@@ -87,7 +87,7 @@ export default function SolutionsAICapabilities({ data }) {
                 <div className="grid lg:grid-cols-12 gap-4 lg:gap-0 items-center mt-8 md:mt-10">
 
                     {/* 2. LEFT SIDE: Tabs Navigation */}
-                    <div className="lg:col-span-5 bg-sky-50 rounded-xl p-4 lg:p-6 lg:max-h-[600px] lg:overflow-x-auto custom-scrollbar-stylish relative z-20 lg:translate-x-12">
+                    <div className="lg:col-span-5 bg-sky-50 rounded-xl p-4 lg:p-6 lg:max-h-[600px] overflow-x-auto custom-scrollbar-stylish relative z-20 lg:translate-x-12">
                         <div
                             ref={tabListRef}
                             className="flex lg:flex-col overflow-x-auto lg:overflow-visible touch-pan-x gap-4 lg:gap-3 pb-4 lg:pb-0 snap-x snap-mandatory lg:snap-none scroll-smooth [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
