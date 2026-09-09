@@ -636,14 +636,14 @@ export default async function HireSlugPage({ params }) {
       )}
 
       {/* 9 PORTFOLIO SECTION */}
-      {content.activeSections?.includes('portfolio') && (
+      {/* {content.activeSections?.includes('portfolio') && (
         <DynamicPortfolioCard
           category={content.portfolioCategory || ""}
           portfolioType="app"
           title={content.portfolioTitle}
           subtitle={content.portfolioSubtitle}
         />
-      )}
+      )} */}
 
       {/* 10 TECH STACK */}
       {content.activeSections?.includes('techStack') && (

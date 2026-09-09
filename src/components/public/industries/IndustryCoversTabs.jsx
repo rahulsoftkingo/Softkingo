@@ -115,10 +115,10 @@ export function IndustryCoversTabs({ data }) {
           />
         </div>
 
-        <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-0 lg:min-h-[500px] border border-slate-100 shadow-2xl">
+        <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-0 lg:min-h-[500px] border border-white shadow-2xl">
           {/* LEFT SIDE: TABS (Sky Background) */}
           <div className="w-full lg:min-w-[40%] lg:w-fit bg-sky-500 p-4 sm:p-6 lg:p-8 flex flex-col">
-            <div className="flex flex-row lg:flex-col gap-2 sm:gap-4 overflow-x-auto lg:overflow-y-auto flex-1 max-h-none lg:max-h-[500px] pb-2 lg:pb-0 scrollbar-none">
+            <div className="flex flex-row lg:flex-col gap-2 sm:gap-4 flex-1 pb-2 lg:pb-0 scrollbar-none">
               {data.items.map((item, index) => (
                 <button
                   key={index}

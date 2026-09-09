@@ -268,7 +268,7 @@ export default async function IndustryPage(props) {
 
                             {/* Left Side: Content & List */}
                             <div className="order-2 lg:order-1">
-                                <div className="mb-0">
+                                <div className="mb-0 px-0 pl-0">
                                     <CommonTitle
                                         align="left"
                                         title={challenges?.title || "Challenges We Solve"}
@@ -278,7 +278,7 @@ export default async function IndustryPage(props) {
                                     />
                                 </div>
 
-                                <ul className="space-y-4">
+                                <ul className="space-y-4 pl-12">
                                     {challenges?.items?.map((item, i) => (
                                         <li key={i} className="flex items-start gap-3 group">
                                             <div className="mt-1 p-1 bg-sky-100 rounded-full text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-all duration-300">
