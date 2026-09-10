@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
 import CommonTitle from "@/components/ui/CommonTitle";
 
@@ -153,85 +152,74 @@ export const AI_SERVICES_DEFAULT = [
     }
 ];
 
-// ─── Sticky Service Card Component ───────────────────────────────────────────
-function StickyServiceCard({ service, index }) {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start end", "start start"],
-    });
-
-    const scale = useTransform(scrollYProgress, [0, 0.8, 1], [0.95, 1, 1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
-
+// ─── Tailwind Service Card Component ─────────────────────────────────────────
+function TailwindServiceCard({ service, index }) {
     return (
-        <motion.div
-            ref={ref}
-            style={{ scale, opacity }}
-            className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative"
-        >
-            <Link href={service?.link || "/contact"} className="block h-full w-full p-6 md:p-10 relative z-10">
-                {/* Navigation Arrow Top Right */}
-                <div className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 group-hover:bg-white group-hover:text-sky-500 transition-all duration-500 z-20 shadow-lg">
-                    <FaArrowRight className="text-xl" />
+        <div className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative w-full shadow-xl animate-card-fade-in p-6 md:p-10">
+            {/* Navigation Arrow Top Right - Only this element triggers navigation */}
+            <a 
+                href={service?.link || "/contact"} 
+                className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 transition-all duration-500 z-20 shadow-lg hover:border-white"
+            >
+                <FaArrowRight className="text-xl" />
+            </a>
+
+            {/* Decorative Background Elements */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl opacity-30 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-300/10 rounded-full -ml-32 -mb-32 blur-3xl opacity-20 pointer-events-none"></div>
+
+            <div className="space-y-4 flex-1 relative z-10">
+                <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 flex items-center justify-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl shrink-0">
+                        {String(index + 1).padStart(2, "0")}
+                    </div>
+                    <h3 className="text-white font-bold text-2xl md:text-3xl lg:text-4xl pr-16 md:pr-20">
+                        {service?.title || service?.name || "Service"}
+                    </h3>
                 </div>
 
-                {/* Decorative Background Elements */}
-                <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl opacity-30 pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-300/10 rounded-full -ml-32 -mb-32 blur-3xl opacity-20 pointer-events-none"></div>
+                <div
+                    className="text-sm md:text-md text-sky-50 max-w-4xl opacity-90 rich-text mb-8"
+                    dangerouslySetInnerHTML={{ __html: service?.description || service?.desc || "" }}
+                />
 
-                <div className="space-y-4 flex-1">
-                    <div className="flex items-center gap-5">
-                        <div className="w-14 h-14 flex items-center justify-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl shrink-0">
-                            {String(index + 1).padStart(2, "0")}
-                        </div>
-                        <h3 className="text-white font-bold text-2xl md:text-3xl lg:text-4xl pr-16 md:pr-20">
-                            {service?.title || service?.name || "Service"}
-                        </h3>
-                    </div>
+                {/* Capabilities */}
+                <div className="space-y-4 mb-8">
+                    <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Key Capabilities</h4>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {(service?.capabilities || []).map((cap, i) => (
+                            <li key={i} className="flex items-start gap-3 text-base text-white opacity-90 font-medium">
+                                <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1"> 
+                                    <FaArrowRight className="h-2 w-2" /> 
+                                </span>
+                                {cap}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
-                    <div
-                        className="text-sm md:text-md text-sky-50 max-w-4xl opacity-90 rich-text mb-8"
-                        dangerouslySetInnerHTML={{ __html: service?.description || service?.desc || "" }}
-                    />
-
-                    {/* Capabilities */}
-                    <div className="space-y-4 mb-8">
-                        <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Key Capabilities</h4>
-                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            {(service?.capabilities || []).map((cap, i) => (
-                                <li key={i} className="flex items-start gap-3 text-base text-white opacity-90 font-medium">
-                                    <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1"> <FaArrowRight className="h-2 w-2" /> </span>
-                                    {cap}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Technologies (HORIZONTAL SCROLL) */}
-                    <div className="space-y-4">
-                        <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Technologies We Use</h4>
-                        <div className="flex flex-row gap-4 overflow-x-auto hide-scrollbar whitespace-nowrap pb-4 px-1">
-                            {(service?.tech || service?.technologies || []).map((t, idx) => (
-                                <div key={idx} className="group/tech relative w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl p-2.5 shadow-lg shadow-sky-900/10 transition-all duration-300 flex items-center justify-center hover:scale-110 shrink-0">
-                                    <div className="relative w-full h-full">
-                                        <Image
-                                            src={typeof t === 'string' ? `/images/tech/${t}.png` : (t.img || t.image)}
-                                            alt={typeof t === 'string' ? t : t.name}
-                                            fill
-                                            className="object-contain"
-                                        />
-                                    </div>
-                                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-sky-600 font-bold text-[10px] py-1 px-2 rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-30 shadow-lg">
-                                        {typeof t === 'string' ? t : t.name}
-                                    </div>
+                {/* Technologies (HORIZONTAL SCROLL) */}
+                <div className="space-y-4">
+                    <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Technologies We Use</h4>
+                    <div className="flex flex-row gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap pb-4 px-1">
+                        {(service?.tech || service?.technologies || []).map((t, idx) => (
+                            <div key={idx} className="group/tech relative w-16 h-16 md:w-20 md:h-20 bg-white rounded-xl p-2.5 shadow-lg shadow-sky-900/10 transition-all duration-300 flex items-center justify-center hover:scale-110 shrink-0">
+                                <div className="relative w-full h-full">
+                                    <img
+                                        src={typeof t === 'string' ? `/images/tech/${t}.png` : (t.img || t.image)}
+                                        alt={typeof t === 'string' ? t : t.name}
+                                        className="w-full h-full object-contain"
+                                    />
                                 </div>
-                            ))}
-                        </div>
+                                <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-sky-600 font-bold text-[10px] py-1 px-2 rounded opacity-0 group-hover/tech:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none z-30 shadow-lg">
+                                    {typeof t === 'string' ? t : t.name}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </Link>
-        </motion.div>
+            </div>
+        </div>
     );
 }
 
@@ -244,120 +232,122 @@ export default function CoreServicesSection({
     bgClass = "bg-white",
 }) {
     const [activeIndex, setActiveIndex] = useState(0);
-    const scrollContainerRef = useRef(null);
+    const mobileScrollRef = useRef(null);
 
-    // Intersection Observer for sidebar highlight
-    useEffect(() => {
-        const observerOptions = {
-            root: null,
-            rootMargin: '-20% 0px -50% 0px',
-            threshold: 0.1
-        };
+    const handleTabChange = (index) => {
+        setActiveIndex(index);
 
-        const observerCallback = (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const index = parseInt(entry.target.id.split('-')[1]);
-                    if (!isNaN(index)) {
-                        setActiveIndex(index);
-                        // Sync mobile scroll
-                        const btn = document.getElementById(`nav-btn-${index}`);
-                        if (btn && scrollContainerRef.current) {
-                            const container = scrollContainerRef.current;
-                            container.scrollTo({
-                                left: btn.offsetLeft - (container.offsetWidth / 2) + (btn.offsetWidth / 2),
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                }
+        // Auto-center current selection inside mobile nav container
+        const btn = document.getElementById(`nav-btn-${index}`);
+        if (btn && mobileScrollRef.current) {
+            const container = mobileScrollRef.current;
+            container.scrollTo({
+                left: btn.offsetLeft - (container.offsetWidth / 2) + (btn.offsetWidth / 2),
+                behavior: 'smooth'
             });
-        };
-
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-        const serviceElements = document.querySelectorAll('[id^="service-"]');
-        serviceElements.forEach((el) => observer.observe(el));
-
-        return () => observer.disconnect();
-    }, [services]);
-
-    const scrollToService = (index) => {
-        const el = document.getElementById(`service-${index}`);
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
 
     return (
-        <section id={sectionId} className={`${bgClass}relative`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-1">
-                <CommonTitle align="center" title={title} subtitle={subtitle} />
+        <section
+            id={sectionId}
+            className={`${bgClass} relative py-12 md:py-20`}
+        >
+            <div className="flex flex-col justify-center overflow-hidden">
+                <style>{`
+                    @keyframes cardFadeIn {
+                        from {
+                            opacity: 0;
+                            transform: translateY(12px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    .animate-card-fade-in {
+                        animation: cardFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                    }
+                `}</style>
 
-                {/* Mobile / Tablet Horizontal Navigation (NEW) */}
-                <div className="lg:hidden mt-10 mb-8 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
-                    <div
-                        ref={scrollContainerRef}
-                        className="flex flex-row gap-3 overflow-x-auto hide-scrollbar whitespace-nowrap"
-                    >
-                        {services.map((s, idx) => (
-                            <button
-                                key={idx}
-                                id={`nav-btn-${idx}`}
-                                onClick={() => scrollToService(idx)}
-                                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all shrink-0 border ${activeIndex === idx
-                                    ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
-                                    : "bg-white text-sky-600 border-sky-100 hover:border-sky-300"
-                                    }`}
-                            >
-                                {s?.title || s?.name || `Service ${idx + 1}`}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
+                    {/* Title Section */}
+                    <CommonTitle
+                        title={title}
+                        subtitle={subtitle}
+                        alignment="center"
+                    />
 
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-12 lg:mt-20 items-start">
-                    {/* Dashboard Navigation Sidebar (Left Side Sticky) */}
-                    <div className="hidden lg:block w-80 shrink-0 sticky top-32 self-start bg-white rounded-3xl p-3 shadow-2xl shadow-sky-200/50 border border-sky-100 z-10">
-                        {/* <div className="bg-sky-500 rounded-2xl p-6 mb-2">
-                            <h4 className="text-[10px] font-semibold text-white/80 uppercase tracking-[0.2em]">Solution Navigator</h4>
-                            <p className="text-white text-lg font-bold leading-normal mt-1">Explore Core Expertise</p>
-                        </div> */}
-                        <div className="space-y-1 p-2">
+                    {/* Mobile / Tablet Horizontal Navigation Header */}
+                    <div className="lg:hidden mt-8 mb-6 sticky top-20 z-30 bg-white/80 backdrop-blur-md py-4 -mx-4 px-4 border-b border-sky-100">
+                        <div
+                            ref={mobileScrollRef}
+                            className="flex flex-row gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden whitespace-nowrap"
+                        >
                             {services.map((s, idx) => (
                                 <button
                                     key={idx}
-                                    onClick={() => scrollToService(idx)}
-                                    className={`w-full text-left px-5 py-4 rounded-xl text-[13px] font-semibold transition-all duration-300 flex items-center gap-4 group active:scale-[0.98] ${activeIndex === idx
-                                        ? "bg-sky-50 text-sky-600 shadow-sm"
-                                        : "text-slate-500 hover:bg-slate-50 hover:text-sky-500"
-                                        }`}
+                                    id={`nav-btn-${idx}`}
+                                    type="button"
+                                    onClick={() => handleTabChange(idx)}
+                                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shrink-0 border ${
+                                        activeIndex === idx
+                                            ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
+                                            : "bg-white text-sky-600 border-sky-100 hover:border-sky-300"
+                                    }`}
                                 >
-                                    <span className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-semibold transition-all shrink-0 ${activeIndex === idx
-                                        ? "bg-sky-500 text-white shadow-lg shadow-sky-200"
-                                        : "bg-slate-100 text-slate-400 group-hover:bg-sky-100 group-hover:text-sky-500"
-                                        }`}>
-                                        {String(idx + 1).padStart(2, '0')}
-                                    </span>
-                                    <span className="leading-normal overflow-hidden text-ellipsis whitespace-nowrap  tracking-wider">
-                                        {s?.title || s?.name || `Service ${idx + 1}`}
-                                    </span>
+                                    {s?.title || s?.name || `Service ${idx + 1}`}
                                 </button>
                             ))}
                         </div>
                     </div>
 
-                    {/* Cards Stack (Right Side) */}
-                    <div className="flex-1 w-full space-y-8">
-                        {services.map((service, index) => (
-                            <div
-                                key={index}
-                                id={`service-${index}`}
-                                style={{ zIndex: index + 1 }}
-                                className="sticky top-32"
-                            >
-                                <StickyServiceCard service={service} index={index} />
+                    <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-10 lg:mt-16 items-start">
+                        {/* ─── LEFT NAVIGATION SIDEBAR (DESKTOP) ───────────────── */}
+                        <div className="hidden lg:block w-80 shrink-0 rounded-2xl border-0 bg-slate-50/50 backdrop-blur-md shadow-lg shadow-sky-900/5 p-2">
+                            <div className="space-y-2.5">
+                                {services.map((s, idx) => {
+                                    const isActive = activeIndex === idx;
+                                    return (
+                                        <button
+                                            key={idx}
+                                            type="button"
+                                            onClick={() => setActiveIndex(idx)}
+                                            onMouseEnter={() => setActiveIndex(idx)}
+                                            className={`w-full text-left px-5 py-6 min-h-[72px] rounded-xl transition-all duration-300 group relative flex items-center border-none outline-none ${
+                                                isActive
+                                                    ? "bg-white shadow-md"
+                                                    : "text-slate-600 hover:bg-white/60"
+                                            }`}
+                                        >
+                                            {/* Service Title */}
+                                            <div className="flex-1 min-w-0">
+                                                <h4
+                                                    className={`text-base font-semibold leading-snug transition-colors duration-300 ${
+                                                        isActive
+                                                            ? "text-sky-600 font-bold"
+                                                            : "text-slate-700"
+                                                    }`}
+                                                >
+                                                    {s?.title || s?.name || `Service ${idx + 1}`}
+                                                </h4>
+                                            </div>
+                                        </button>
+                                    );
+                                })}
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Active Component Wrapper (Right Side Content Container) */}
+                        <div className="flex-1 w-full min-h-[450px]">
+                            {services[activeIndex] && (
+                                <TailwindServiceCard 
+                                    key={activeIndex} 
+                                    service={services[activeIndex]} 
+                                    index={activeIndex} 
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

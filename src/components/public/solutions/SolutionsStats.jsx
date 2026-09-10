@@ -1,24 +1,53 @@
 "use client";
-import React from 'react';
 
-export default function SolutionsStats({ data }) {
-  if (!data?.items) return null;
+import React from "react";
+import Image from "next/image";
+
+const defaultData = {
+  heading: "Trusted by Businesses Worldwide",
+  items: [
+    "/images/logo/careclinictransparent.png",
+    "/images/logo/transparentpotafo.png",
+    "/images/logo/LoveLocal-logo.webp",
+    "/images/logo/Snoonu-logo.webp",
+    "/images/logo/Moglix_logo.webp",
+    "/images/logo/CoreValentLogo.png"
+  ],
+};
+
+export default function TrustedBySection({ data = defaultData }) {
+  const sectionData = defaultData;
+
+  if (!sectionData?.items?.length) return null;
 
   return (
-    <section className="bg-sky-400 relative -top-20 py-6 rounded-tr-[4rem] lg:w-[90%] mr-[10%] z-20 shadow-xl shadow-sky-100">
+    <section className="bg-sky-400 relative -top-20 py-6 rounded-none md:rounded-[2rem] w-full md:w-[85%] max-w-6xl mx-auto z-20 shadow-xl shadow-sky-100">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex md:grid md:grid-cols-4 overflow-x-auto gap-4 md:gap-8 text-center divide-x divide-sky-100/40 pb-2 md:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {data.items.map((stat, index) => (
+        {sectionData.heading && (
+          <h2 className="text-center text-white text-xl md:text-2xl font-bold mb-6">
+            {sectionData.heading}
+          </h2>
+        )}
+
+        <div className="flex md:justify-center md:flex-wrap overflow-x-auto gap-8 md:gap-12 items-center pb-2 md:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {sectionData.items.map((logo, index) => (
             <div
               key={index}
-              className="px-4 flex-shrink-0 min-w-[140px] md:min-w-0 md:flex-shrink snap-center"
+              className="flex-shrink-0 snap-center flex items-center justify-center h-12 w-36 relative"
             >
-              <h3 className="text-2xl md:text-4xl font-bold text-white mb-1">
-                {stat.value}
-              </h3>
-              <p className="text-sky-50 text-[10px] md:text-sm font-bold tracking-wide">
-                {stat.label}
-              </p>
+              <Image
+                src={logo}
+                alt={`Partner logo ${index + 1}`}
+                width={150}
+                height={50}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "contain",
+                  filter: "brightness(0) invert(1)",
+                }}
+                priority={index < 4}
+              />
             </div>
           ))}
         </div>

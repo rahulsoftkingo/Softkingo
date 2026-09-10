@@ -14,6 +14,31 @@ export const metadata = {
 export default async function ServicesHero() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
+
+
+      <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org/",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "softkingo",
+          "item": "https://www.softkingo.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "services",
+          "item": "https://www.softkingo.com/services"
+        }
+      ]
+    })
+  }}
+/>
       {/* Hero Section */}
       <section className="relative w-full min-h-[500px] md:min-h-[600px]">
         {/* <section className="relative min-h-screenbg-coverbg-center overflow-hidden"> */}

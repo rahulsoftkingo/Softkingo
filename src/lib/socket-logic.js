@@ -110,6 +110,8 @@ function initSocket(io) {
           COMPANY INFO:
           - Services: Web/Mobile App Development, UI/UX, AI/ML, Blockchain.
           - Contact: sales@softkingo.com | +91 74287 50870.
+
+          CEO: Mr. Parahmans. He is a tech visionary and AI enthusiast.
           
           PORTFOLIO KNOWLEDGE (Prioritize These Examples):
           - ASTROLOGY: We built "Anytime Astro" (top-rated), "MyNaksh", and "Bodhi". We are experts in Astrology tech (celestial APIs, horoscopes).
@@ -221,7 +223,7 @@ function initSocket(io) {
 
             } catch (error) {
                 console.error('[Socket] AI Error:', error.message);
-                const errorMsg = "I'm having trouble connecting to my brain. Please try again or email support@softkingo.com.";
+                const errorMsg = "I'm sorry, I'm currently having technical difficulties. Please contact our support support@softkingo.com.";
                 socket.emit('receive-message', { content: errorMsg, sender: 'bot', timestamp: new Date() });
             }
         });

@@ -29,14 +29,17 @@ const SectionWrapper = ({ id, icon: Icon, title, children, activeSections }) => 
 
 // --- 3. MAIN SERVICE EDITOR ---
 export default function ServiceEditor({ formData, updateField, MediaInput, TipTapEditor, activeSections, portfolioCategories }) {
+
+
     const content = formData?.content || {};
+
 
     return (
         <div className="space-y-8 max-w-4xl mx-auto pb-20">
 
             {/* 1. HERO SECTION */}
             <SectionWrapper id="hero" icon={Smartphone} title="1. Hero Section" activeSections={activeSections}>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                     <input className={inputStyle} placeholder="Hero Title" value={content.heroTitle || ''} onChange={e => updateField('content.heroTitle', e.target.value)} />
                     <div className="space-y-1">
                         <label className={labelStyle}>Hero Subtitle (Rich Text)</label>
@@ -60,8 +63,18 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 <MediaInput label="Hero Background Image" value={content.heroBg} path="content.heroBg" />
             </SectionWrapper>
 
+
+            {/* 16. SEO SETTINGS */}
+            <SectionWrapper id="seo" icon={Search} title="2. SEO Settings" activeSections={activeSections}>
+                <div className="space-y-4">
+                    <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
+                    <textarea className={inputStyle} rows={3} placeholder="SEO Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
+                    <MediaInput label="SEO Image (OpenGraph)" value={formData.seoImage} path="seoImage" />
+                </div>
+            </SectionWrapper>
+
             {/* 2. STATISTICS */}
-            <SectionWrapper id="stats" icon={BarChart3} title="2. Statistics Section" activeSections={activeSections}>
+            <SectionWrapper id="stats" icon={BarChart3} title="3. Statistics Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                         <label className={labelStyle}>Primary Metrics</label>
@@ -113,7 +126,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 3. AWARDS SECTION */}
-            <SectionWrapper id="awards" icon={Award} title="3. Awards Section" activeSections={activeSections}>
+            <SectionWrapper id="awards" icon={Award} title="4. Awards Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title (e.g. Our)" value={content.awards?.title || ''} onChange={e => updateField('content.awards.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Gradient Text (e.g. Awards & Recognitions)" value={content.awards?.gradientText || ''} onChange={e => updateField('content.awards.gradientText', e.target.value)} />
@@ -138,7 +151,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 4. SERVICE CATEGORIES */}
-            <SectionWrapper id="services" icon={Layout} title="4. Service Categories (Tabs Layout)" activeSections={activeSections}>
+            <SectionWrapper id="services" icon={Layout} title="5. Service Categories (Tabs Layout)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.services?.title || ''} onChange={e => updateField('content.services.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.services?.subtitle || ''} onChange={e => updateField('content.services.subtitle', e.target.value)} />
@@ -209,7 +222,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 5. CONSULTATION CTA */}
-            <SectionWrapper id="consultation" icon={TrendingUp} title="5. Consultation CTA" activeSections={activeSections}>
+            <SectionWrapper id="consultation" icon={TrendingUp} title="6. Consultation CTA" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="CTA Title" value={content.consultation?.title || ''} onChange={e => updateField('content.consultation.title', e.target.value)} />
@@ -223,7 +236,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 6. TECH STACK (TABBED) */}
-            <SectionWrapper id="tech" icon={Code} title="6. Tech Stack (Tabbed)" activeSections={activeSections}>
+            <SectionWrapper id="tech" icon={Code} title="7. Tech Stack (Tabbed)" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.techStack?.title || ''} onChange={e => updateField('content.techStack.title', e.target.value)} />
@@ -244,7 +257,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
 
                                     <div className="space-y-3">
                                         <label className={labelStyle}>Technologies in this Category</label>
-                                        
+
                                         <div className="flex flex-wrap gap-2 p-3 bg-white rounded-xl border border-dashed border-slate-200">
                                             <label className="w-full text-[10px] font-black text-slate-400 uppercase mb-1">Quick Add Common Tech:</label>
                                             {COMMON_TECH.map((tech) => (
@@ -254,7 +267,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                                                     onClick={() => updateField(`content.techStack.tabs.${i}.items`, (prev) => [...(prev || []), { ...tech }])}
                                                     className="p-1 px-2 bg-slate-50 hover:bg-sky-50 hover:text-sky-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
                                                 >
-                                                    <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                                    <img src={tech.image} className="w-3.5 h-3.5" alt="techimage" />
                                                     {tech.name}
                                                 </button>
                                             ))}
@@ -280,7 +293,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 7. PROCESS */}
-            <SectionWrapper id="process" icon={Settings} title="7. Our Process" activeSections={activeSections}>
+            <SectionWrapper id="process" icon={Settings} title="8. Our Process" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <input className={inputStyle} placeholder="Section Title" value={content.process?.title || ''} onChange={e => updateField('content.process.title', e.target.value)} />
                     <input className={inputStyle} placeholder="Section Subtitle" value={content.process?.subtitle || ''} onChange={e => updateField('content.process.subtitle', e.target.value)} />
@@ -317,7 +330,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 8. SOLUTION HIGHLIGHT */}
-            <SectionWrapper id="highlight" icon={Zap} title="8. Solution Highlight (Mockup Design)" activeSections={activeSections}>
+            <SectionWrapper id="highlight" icon={Zap} title="9. Solution Highlight (Mockup Design)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -393,7 +406,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 9. PORTFOLIO */}
-            <SectionWrapper id="portfolio" icon={Globe} title="9. Portfolio Section" activeSections={activeSections}>
+            <SectionWrapper id="portfolio" icon={Globe} title="10. Portfolio Section" activeSections={activeSections}>
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                         <input className={inputStyle} placeholder="Section Title" value={content.portfolioTitle || ''} onChange={e => updateField('content.portfolioTitle', e.target.value)} />
@@ -417,7 +430,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 10. INDUSTRY SOLUTIONS */}
-            <SectionWrapper id="solutions" icon={Zap} title="10. Industry Solutions (Grid)" activeSections={activeSections}>
+            <SectionWrapper id="solutions" icon={Zap} title="11. Industry Solutions (Grid)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -474,7 +487,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 11. INDUSTRIES WE SERVE */}
-            <SectionWrapper id="industries" icon={Layers} title="11. Industries We Serve (Slider)" activeSections={activeSections}>
+            <SectionWrapper id="industries" icon={Layers} title="12. Industries We Serve (Slider)" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -531,7 +544,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 12. USER GUIDE */}
-            <SectionWrapper id="user-guide" icon={BookOpen} title="12. User Guide" activeSections={activeSections}>
+            <SectionWrapper id="user-guide" icon={BookOpen} title="13. User Guide" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -617,7 +630,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 13. FAQ Section */}
-            <SectionWrapper id="faq" icon={HelpCircle} title="13. FAQ Section" activeSections={activeSections}>
+            <SectionWrapper id="faq" icon={HelpCircle} title="14. FAQ Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-1">
                         <label className={labelStyle}>Section Title</label>
@@ -646,7 +659,7 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
             </SectionWrapper>
 
             {/* 14. BLOG SECTION */}
-            <SectionWrapper id="blogs" icon={MessageSquare} title="14. Blog Section" activeSections={activeSections}>
+            <SectionWrapper id="blogs" icon={MessageSquare} title="15. Blog Section" activeSections={activeSections}>
                 <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <label className={labelStyle}>Blog Section Title</label>
@@ -679,15 +692,6 @@ export default function ServiceEditor({ formData, updateField, MediaInput, TipTa
                 <div className="grid md:grid-cols-2 gap-4 mt-4">
                     <input className={inputStyle} placeholder="Main Title (e.g. Connect)" value={content.inquiry?.title || ''} onChange={e => updateField('content.inquiry.title', e.target.value)} />
                     <textarea className={inputStyle} rows={2} placeholder="Description/Subtitle" value={content.inquiry?.subtitle || ''} onChange={e => updateField('content.inquiry.subtitle', e.target.value)} />
-                </div>
-            </SectionWrapper>
-
-            {/* 16. SEO SETTINGS */}
-            <SectionWrapper id="seo" icon={Search} title="16. SEO Settings" activeSections={activeSections}>
-                <div className="space-y-4">
-                    <input className={inputStyle} placeholder="SEO Title" value={formData.seoTitle || ''} onChange={e => updateField('seoTitle', e.target.value)} />
-                    <textarea className={inputStyle} rows={3} placeholder="SEO Description" value={formData.seoDescription || ''} onChange={e => updateField('seoDescription', e.target.value)} />
-                    <MediaInput label="SEO Image (OpenGraph)" value={formData.seoImage} path="seoImage" />
                 </div>
             </SectionWrapper>
 

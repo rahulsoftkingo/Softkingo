@@ -1,4 +1,5 @@
 "use client"
+import Script from "next/script";
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { FaBriefcase, FaMapMarkerAlt, FaSearch, FaChevronRight, FaClock, FaCheckCircle, FaSpinner } from 'react-icons/fa';
@@ -9,7 +10,15 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 import FAQAccordion from '@/components/common/Faqaccordion';
 import InquirySection from '@/components/footer/InquirySection';
+import { commonSchemas } from "@/lib/commonSchema";
 
+
+// export const metadata = {
+//   title: "Careers",
+//   description:
+//     "Explore open roles at Softkingo and build your career with one of India's fastest-growing app and web development companies.",
+//   alternates: { canonical: "/careers" }
+// };
 // Static fallback jobs shown before API loads or on error
 const FALLBACK_JOBS = [
     { id: 1, title: 'React.js Developer', location: 'Noida (On-site)', experience: '2-3 Years', type: 'Full Time', department: 'Development', salary: 'Competitive' },
@@ -79,7 +88,15 @@ const WhyJoinUs = () => {
 
     const handleApplyNow = (job) => {
         setSelectedJob(job);
-        const formElement = document.getElementById('career-form');
+        const formElement = document.getElementById('findyourdream');
+        if (formElement) {
+            formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const handleApplyNow1 = (job) => {
+        setSelectedJob(job);
+        const formElement = document.getElementById('findyourdream1');
         if (formElement) {
             formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -87,6 +104,58 @@ const WhyJoinUs = () => {
 
     return (
         <div className="bg-white">
+
+            <Script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@graph": [
+                            {
+                                "@type": "Service",
+                                "@id": "https://softkingo.com/#mobile-app-development",
+                                "name": "Mobile App Development",
+                                "serviceType": "App Development",
+                                "category": "Software Development Service",
+                                "description": "Custom mobile app solutions...",
+                                "areaServed": {
+                                    "@type": "Place",
+                                    "name": "Worldwide"
+                                },
+                                "isRelatedTo": {
+                                    "@type": "Thing",
+                                    "name": "App Development"
+                                }
+                            },
+                            {
+                                "@type": "BreadcrumbList",
+                                "itemListElement": [
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 1,
+                                        "name": "softkingo",
+                                        "item": "https://www.softkingo.com"
+                                    },
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 2,
+                                        "name": "careers",
+                                        "item": "https://www.softkingo.com/careers"
+                                    }
+                                ]
+                            },
+                            {
+                                "@type": "ImageObject",
+                                "contentUrl": "https://www.softkingo.com/images/about/ceo.png",
+                                "width": 937,
+                                "height": 937,
+                                "associatedMedia": "https://www.softkingo.com/careers"
+                            },
+                            ...commonSchemas
+                        ]
+                    })
+                }}
+            />
             {/* Hero Section */}
             <section className="relative w-full overflow-hidden bg-gradient-to-br from-white via-sky-50 to-blue-50">
                 <div className="container mx-auto px-4 py-20 lg:py-32">
@@ -129,9 +198,10 @@ const WhyJoinUs = () => {
                                         <FaChevronRight className="text-sm group-hover:translate-x-1 transition-transform" />
                                     </button>
                                     <button
-                                        onClick={() => setShowModal(true)}
+                                         onClick={() => handleApplyNow1(null)}
+                                        // onClick={() => setShowModal(true)}
                                         className="w-full sm:w-auto bg-white border border-sky-600 text-sky-600 px-10 py-5 rounded-2xl font-bold text-lg shadow-sm hover:bg-sky-50 transition-all cursor-pointer">
-                                        Hear from Team
+                                        Apply Now
                                     </button>
                                 </div>
                             </div>
@@ -144,7 +214,7 @@ const WhyJoinUs = () => {
             <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-px bg-slate-200"></div>
                 <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-16" id="findyourdream">
                         <CommonTitle
                             align="center"
                             pill="CURRENT OPENINGS"

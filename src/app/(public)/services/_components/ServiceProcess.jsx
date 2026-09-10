@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import CommonTitle from '@/components/ui/CommonTitle';
 import * as LucideIcons from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export default function ServiceProcess({ data }) {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -12,11 +12,20 @@ export default function ServiceProcess({ data }) {
 
     const items = data.items;
 
+    // Handlers for cycling cards left and right
+    const handlePrev = () => {
+        setActiveIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1));
+    };
+
+    const handleNext = () => {
+        setActiveIndex((prev) => (prev === items.length - 1 ? 0 : prev + 1));
+    };
+
     // Helper to render dynamic icon
     const renderIcon = (iconName, color = "currentColor", size = 24) => {
         let IconComponent = LucideIcons[iconName];
 
-        if (!IconComponent || typeof IconComponent === 'object' && !IconComponent.$$typeof && !IconComponent.render) {
+        if (!IconComponent || (typeof IconComponent === 'object' && !IconComponent.$$typeof && !IconComponent.render)) {
             IconComponent = LucideIcons.Zap;
         }
 
@@ -39,7 +48,26 @@ export default function ServiceProcess({ data }) {
                     />
                 )}
 
-                <div className="mt-16 flex flex-row gap-3 sm:gap-4 h-[420px] overflow-x-auto no-scrollbar pb-4">
+                {/* Navigation controls header */}
+                <div className="mt-12 flex justify-end items-center gap-2">
+                    <button
+                        onClick={handlePrev}
+                        aria-label="Previous step"
+                        className="p-2.5 rounded-full border border-slate-200 text-slate-600 hover:bg-sky-50 hover:border-sky-200 hover:text-sky-600 transition-colors"
+                    >
+                        <LucideIcons.ChevronLeft size={20} />
+                    </button>
+                    <button
+                        onClick={handleNext}
+                        aria-label="Next step"
+                        className="p-2.5 rounded-full border border-slate-200 text-slate-600 hover:bg-sky-50 hover:border-sky-200 hover:text-sky-600 transition-colors"
+                    >
+                        <LucideIcons.ChevronRight size={20} />
+                    </button>
+                </div>
+
+                {/* Accordion Container */}
+                <div className="mt-4 flex flex-row gap-3 sm:gap-4 h-[420px] overflow-x-auto no-scrollbar pb-4">
                     {items.map((item, idx) => {
                         const isActive = activeIndex === idx;
 
@@ -48,6 +76,7 @@ export default function ServiceProcess({ data }) {
                                 key={idx}
                                 layout
                                 onMouseEnter={() => setActiveIndex(idx)}
+                                onClick={() => setActiveIndex(idx)}
                                 className={`
                                     relative cursor-pointer transition-all duration-500 ease-out group
                                     flex-shrink-0 overflow-hidden rounded-xl md:rounded-xl border
@@ -108,8 +137,10 @@ export default function ServiceProcess({ data }) {
                 {/* Pagination Dots */}
                 <div className="mt-8 sm:mt-12 flex justify-center gap-2">
                     {items.map((_, i) => (
-                        <div
+                        <button
                             key={i}
+                            onClick={() => setActiveIndex(i)}
+                            aria-label={`Go to slide ${i + 1}`}
                             className={`h-1.5 rounded-full transition-all duration-500 ${activeIndex === i ? 'w-8 bg-sky-500' : 'w-2 bg-slate-200'}`}
                         />
                     ))}
@@ -118,4 +149,3 @@ export default function ServiceProcess({ data }) {
         </section>
     );
 }
-

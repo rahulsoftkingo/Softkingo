@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { io } from 'socket.io-client';
 import ReactMarkdown from 'react-markdown';
@@ -8,6 +9,8 @@ import remarkGfm from 'remark-gfm';
 import { ImagePlus, X, Send, Paperclip, Loader2 } from 'lucide-react';
 
 export default function OptimizedChatWidget() {
+  const router = useRouter(); // NEW: for navigating to /careers on click
+
   const [isOpen, setIsOpen] = useState(false);
   const [onboardingStep, setOnboardingStep] = useState(null); // 'name', 'phone', 'email', null (complete)
   const [visitorInfo, setVisitorInfo] = useState({ name: '', email: '', phone: '' });
@@ -102,6 +105,7 @@ export default function OptimizedChatWidget() {
   }, []);
 
   const [greetingTriggered, setGreetingTriggered] = useState(false);
+  const [showChoice, setShowChoice] = useState(false); // NEW: shows "Looking for a Job / Send a Message" options
 
   // Track open status globally for mutual exclusion with Popup
   useEffect(() => {
@@ -145,17 +149,19 @@ export default function OptimizedChatWidget() {
     if (isOpen && !greetingTriggered && messages.length === 0 && onboardingStep === 'name') {
       setGreetingTriggered(true);
 
-      // Sequence: Short pause -> Typing -> Message + Sound -> Next Question
+      // Sequence: Short pause -> Typing -> Welcome Message + Sound -> Show Choice (Job / Send Message)
       setTimeout(() => {
         setIsTyping(true);
 
         setTimeout(() => {
           setIsTyping(false);
-          addBotMessage("Hii! Welcome to Softkingo. How can we help you today?");
+          addBotMessage("Hi, welcome to Softkingo! 👋 How can I help you today?");
           playNotificationSound();
 
+          // NEW: Show "Looking for a Job?" / "Send a Message" options.
+          // The name question waits until the user picks "Send a Message".
           setTimeout(() => {
-            addBotMessage("Before we start, could you please tell me your full name?");
+            setShowChoice(true);
           }, 1200);
         }, 1500);
       }, 600);
@@ -199,6 +205,18 @@ export default function OptimizedChatWidget() {
       sender: 'bot',
       timestamp: new Date()
     }]);
+  };
+
+  // NEW: "Looking for a Job?" option clicked -> go straight to the careers page.
+  const handleJobChoice = () => {
+    setShowChoice(false);
+    router.push('/careers');
+  };
+
+  // NEW: "Send a Message" option clicked -> continue the normal onboarding flow.
+  const handleSendMessageChoice = () => {
+    setShowChoice(false);
+    addBotMessage("Before we start, could you please tell me your full name?");
   };
 
   const fetchMessages = async (id) => {
@@ -445,6 +463,7 @@ export default function OptimizedChatWidget() {
   return (
     <div className="fixed bottom-[100px] lg:bottom-4 right-4 z-50 font-sans">
       {/* Chat Button - Refined White Theme */}
+      {/* Chat Button - Refined White Theme */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -454,7 +473,7 @@ export default function OptimizedChatWidget() {
           <span className="absolute inset-0 rounded-full bg-sky-400/20 animate-ping duration-1000"></span>
 
           {/* Main Button Body - Clean & Premium */}
-          <div className="relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-all duration-500 hover:scale-110 active:scale-95 overflow-visible">
+          <div className="chat-bubble-attention relative w-14 h-14 lg:w-16 lg:h-16 bg-white rounded-full shadow-[0_10px_25px_-5px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.3)] flex items-center justify-center border border-sky-100 transition-shadow duration-500 active:scale-95 overflow-visible">
 
             {/* Subtle Blue Border Inner Ring */}
             <div className="absolute inset-0 rounded-full border-2 border-sky-500/10 group-hover:border-sky-500/30 transition-all duration-500"></div>
@@ -474,7 +493,7 @@ export default function OptimizedChatWidget() {
             <span className="absolute top-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-[0_0_8px_rgba(34,197,94,0.4)] animate-pulse"></span>
 
             {/* Floating Message Badge */}
-            <div className="absolute -top-11 right-0 bg-white text-slate-800 text-[10px]  px-3 py-1.5 rounded-xl shadow-xl border border-sky-50 whitespace-nowrap animate-bounce-slow">
+            <div className="absolute -top-11 right-0 bg-white text-slate-800 text-[10px] px-3 py-1.5 rounded-xl shadow-xl border border-sky-50 whitespace-nowrap animate-bounce-slow">
               Need help? Ask us
               <div className="absolute -bottom-1 right-5 w-2 h-2 bg-white border-r border-b border-sky-50 transform rotate-45"></div>
             </div>
@@ -540,9 +559,9 @@ export default function OptimizedChatWidget() {
                   className={`max-w-[85%] space-y-1 ${message.sender === 'visitor' ? 'items-end' : 'items-start'}`}
                 >
                   <div
-                    className={`p-3.5 rounded-2xl shadow-sm text-sm ${message.sender === 'visitor'
+                    className={`p-3.5 rounded-2xl  text-sm ${message.sender === 'visitor'
                       ? 'bg-sky-600 text-white rounded-tr-none'
-                      : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'
+                      : 'bg-[#e8e8e8] text-slate-800 rounded-tl-none'
                       }`}
                   >
                     {message.image && (
@@ -562,6 +581,26 @@ export default function OptimizedChatWidget() {
                 </div>
               </div>
             ))}
+
+            {/* NEW: "Looking for a Job?" / "Send a Message" choice buttons */}
+            {showChoice && (
+              <div className="flex justify-start animate-in slide-in-from-bottom-2 duration-300">
+                <div className="flex flex-col gap-2 max-w-[85%]">
+                  <button
+                    onClick={handleJobChoice}
+                    className="flex items-center gap-2 bg-white border border-sky-200 text-slate-700 text-sm font-medium px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm hover:bg-sky-50 hover:border-sky-300 transition-colors text-left active:scale-95"
+                  >
+                    💼 Looking for a Job?
+                  </button>
+                  <button
+                    onClick={handleSendMessageChoice}
+                    className="flex items-center gap-2 bg-white border border-sky-200 text-slate-700 text-sm font-medium px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm hover:bg-sky-50 hover:border-sky-300 transition-colors text-left active:scale-95"
+                  >
+                    💬 Send a Message
+                  </button>
+                </div>
+              </div>
+            )}
 
             {isTyping && (
               <div className="flex justify-start animate-pulse">

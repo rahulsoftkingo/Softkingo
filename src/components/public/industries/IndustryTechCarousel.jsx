@@ -5,6 +5,9 @@ import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import CommonTitle from '@/components/ui/CommonTitle';
 
 export default function IndustryTechCarousel({ title, description, items, gradientText, detailedDescription }) {
+
+    console.log("show me the items of the industry ",items);
+    
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {

@@ -1,20 +1,71 @@
 import Link from "next/link";
 import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
+import { commonSchemas } from "@/lib/commonSchema";
+import Script from "next/script";
 
 export const metadata = {
-  title: "Client Testimonials - Client Reviews",
+  title: "Client Testimonials",
   description:
-    "What our clients say about Softkingo across Clutch, DesignRush, and more.",
+    "Read real client reviews and testimonials on Softkingo's app development, web development, and SEO services — rated 5.0 on Clutch and Trustpilot.",
   alternates: { canonical: "/testimonials" }
 };
 
 export default function TestimonialsPage() {
   return (
-    <main className="bg-[#f6f9ff]">
+    <main className="bg-[#f6f9ff] overflow-x-hidden">
       {/* HERO (enhanced like your Terms hero) */}
+
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Testimonials",
+                    "item": "https://softkingo.com/testimonials"
+                  }
+                ]
+              },
+              ...commonSchemas,
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                },
+
+              }
+            ]
+          })
+        }}
+      />
+
       <section
-        className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat"
+        className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{ backgroundImage: "url('/images/terms-hero.png')" }}
       >
         {/* Enhanced background effects */}
@@ -60,6 +111,24 @@ export default function TestimonialsPage() {
               </span>
             </div>
           </div>
+        </div>
+      </section>
+      
+
+     {/* VIDEO SECTION */}
+      <section className="max-w-7xl mx-auto px-4 pt-14">
+        <div className="relative w-full h-[45vh] md:h-[60vh] lg:h-[75vh] rounded-3xl overflow-hidden shadow-[0_14px_40px_rgba(2,6,23,0.10)] border border-slate-100 bg-slate-950">
+          <iframe
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/yUL97dFOfHA?si=hzIyMVW9FmaQj5d8&rel=0&modestbranding=1"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full"
+          ></iframe>
         </div>
       </section>
 

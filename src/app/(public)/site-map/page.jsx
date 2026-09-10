@@ -62,7 +62,7 @@
 //     // Services pages (from servicesData)
 //     // "/services/mobile-app-development", "/services/android-app-development", "/services/ios-app-development",
 //     // "/services/hybrid-app-development", "/services/react-native-app-development",
-//     // "/services/flutter-native-app-development", "/services/app-ui-ux-design",
+//     // "/services/flutter-mobile-app-development", "/services/app-ui-ux-design",
 //     // "/services/web-development", "/services/custom-website-development", "/services/cms-development",
 //     // "/services/web-application-development", "/services/enterprise-web-development",
 //     // "/services/website-redesign", "/services/website-maintenance", "/services/ecommerce-development",
@@ -581,6 +581,72 @@ export default async function SiteMapPage() {
     select: { title: true, slug: true }
   });
 
+const pages = await prisma.page.findMany({
+  where: {
+    status: "published",
+    type: "service",
+  },
+  select: {
+    title: true,
+    slug: true,
+  },
+});
+
+console.log("Pages:", pages);
+
+const servicePages = pages.map((page) => ({
+  url: `/services/${page.slug}`,
+  title: page.title,
+}));
+
+
+const industry_pages = await prisma.page.findMany({
+  where: {
+    status: "published",
+    type: "industry",
+  },
+  select: {
+    title: true,
+    slug: true,
+  },
+});
+
+console.log("Industry Pages:", industry_pages);
+
+const industryPages = industry_pages.map((page) => ({
+  url: `/industries/${page.slug}`,
+  title: page.title,
+}));
+
+console.log("Industry Pages 2:", industry_pages);
+
+
+const solution_pages = await prisma.page.findMany({
+  where: {
+    status: "published",
+    type: "solution",
+  },
+  select: {
+    title: true,
+    slug: true,
+  },
+});
+
+const solutionPages = solution_pages.map((page) => ({
+  url: `/solutions/${page.slug}`,
+  title: page.title,
+}));
+
+
+// sirf "services" match karne ke liye keyword-based filter (DB driven)
+const matchedPages = pages
+  .filter((p) => p.slug?.includes("service") || p.title)
+  .map((p) => ({
+    title: p.title,
+    slug: p.slug,
+    url: `/services/${p.slug}`,
+  }));
+
   // 2. STATIC & CONFIG DATA
   const staticPages = [
     { url: "", title: "Home" },
@@ -605,56 +671,56 @@ export default async function SiteMapPage() {
     { url: '/hire/react-native-developers', title: "Hire React Native Devs" },
   ];
 
-  const servicePages = [
-    { url: "/services/software-development", title: "Software Development" },
-    { url: "/services/mobile-app-development", title: "Mobile App Development" },
-    { url: "/services/web-application-development", title: "Web App Development" },
-    { url: "/services/ios-app-development", title: "iOS App Development" },
-    { url: "/services/android-app-development", title: "Android App Development" },
-    { url: "/services/mobile-app-design", title: "UI/UX Design" },
-    { url: "/services/digital-marketing", title: "Digital Marketing" },
-    { url: "/services/seo", title: "SEO Services" },
-    { url: "/services/custom-database-development", title: "Database Development" },
-    { url: "/services/iot-app-development", title: "IoT Solutions" },
-    { url: "/services/machine-learning-development", title: "AI/ML Development" },
-    { url: "/services/amazon-cloud", title: "Cloud Services (AWS)" },
-  ];
+  // const servicePages = [
+  //   { url: "/services/software-development", title: "Software Development" },
+  //   { url: "/services/mobile-app-development", title: "Mobile App Development" },
+  //   { url: "/services/web-application-development", title: "Web App Development" },
+  //   { url: "/services/ios-app-development", title: "iOS App Development" },
+  //   { url: "/services/android-app-development", title: "Android App Development" },
+  //   { url: "/services/mobile-app-design", title: "UI/UX Design" },
+  //   { url: "/services/digital-marketing", title: "Digital Marketing" },
+  //   { url: "/services/seo", title: "SEO Services" },
+  //   { url: "/services/custom-database-development", title: "Database Development" },
+  //   { url: "/services/iot-app-development", title: "IoT Solutions" },
+  //   { url: "/services/machine-learning-development", title: "AI/ML Development" },
+  //   { url: "/services/amazon-cloud", title: "Cloud Services (AWS)" },
+  // ];
 
-  const industryPages = [
-    { url: "/industries/healthcare", title: "Healthcare" },
-    { url: "/industries/education", title: "Education & E-Learning" },
-    { url: "/industries/real-estate", title: "Real Estate" },
-    { url: "/industries/travel", title: "Travel & Hospitality" },
-    { url: "/industries/food-delivery", title: "Food & Restaurant" },
-    { url: "/industries/fitness", title: "Fitness & Wellness" },
-    { url: "/industries/ecommerce", title: "Retail & E-Commerce" },
-    { url: "/industries/logistics", title: "Logistics" },
-    { url: "/industries/fintech", title: "Banking & FinTech" },
-    { url: "/industries/automotive", title: "Automotive" },
-    { url: "/industries/construction", title: "Construction" },
-    { url: "/industries/manufacturing", title: "Manufacturing" },
-    { url: "/industries/event-management", title: "Event Management" },
-    { url: "/industries/social-media", title: "Social Networking" },
-    { url: "/industries/media-entertainment", title: "Media & Entertainment" },
-  ];
+  // const industryPages = [
+  //   { url: "/industries/healthcare", title: "Healthcare" },
+  //   { url: "/industries/education", title: "Education & E-Learning" },
+  //   { url: "/industries/real-estate", title: "Real Estate" },
+  //   { url: "/industries/travel", title: "Travel & Hospitality" },
+  //   { url: "/industries/food-delivery", title: "Food & Restaurant" },
+  //   { url: "/industries/fitness", title: "Fitness & Wellness" },
+  //   { url: "/industries/ecommerce", title: "Retail & E-Commerce" },
+  //   { url: "/industries/logistics", title: "Logistics" },
+  //   { url: "/industries/fintech", title: "Banking & FinTech" },
+  //   { url: "/industries/automotive", title: "Automotive" },
+  //   { url: "/industries/construction", title: "Construction" },
+  //   { url: "/industries/manufacturing", title: "Manufacturing" },
+  //   { url: "/industries/event-management", title: "Event Management" },
+  //   { url: "/industries/social-media", title: "Social Networking" },
+  //   { url: "/industries/media-entertainment", title: "Media & Entertainment" },
+  // ];
 
-  const solutionPages = [
-    { url: '/solutions/grocery-delivery-app-development', title: "Grocery Delivery Solution" },
-    { url: '/solutions/food-delivery-app-development', title: "Food Delivery Solution" },
-    { url: '/solutions/taxi-booking-app-development', title: "Taxi Booking Solution" },
-    { url: '/solutions/dating-app-development', title: "Dating App Solution" },
-    { url: '/solutions/learning-management-system-development', title: "LMS Solution" },
-    { url: '/solutions/hrms-software-development', title: "HRMS Solution" },
-    { url: '/solutions/ecommerce-app-development', title: "E-Commerce App" },
-    { url: '/solutions/realestate-app-development', title: "Real Estate App" },
-    { url: '/solutions/uber-clone-app-development', title: "Uber Clone" },
-    { url: '/solutions/zomato-clone-app-development', title: "Zomato Clone" },
-    { url: '/solutions/amazon-clone-app-development', title: "Amazon Clone" },
-    { url: '/solutions/tinder-clone-app-development', title: "Tinder Clone" },
-    { url: '/solutions/instagram-clone-app-development', title: "Instagram Clone" },
-    { url: '/solutions/naukri-clone-app-development', title: "Naukri Clone" },
-    { url: '/solutions/olx-clone-app-development', title: "OLX Clone" },
-  ];
+  // const solutionPages = [
+  //   { url: '/solutions/grocery-delivery-app-development', title: "Grocery Delivery Solution" },
+  //   { url: '/solutions/food-delivery-app-development', title: "Food Delivery Solution" },
+  //   { url: '/solutions/taxi-booking-app-development', title: "Taxi Booking Solution" },
+  //   { url: '/solutions/dating-app-development', title: "Dating App Solution" },
+  //   { url: '/solutions/learning-management-system-development', title: "LMS Solution" },
+  //   { url: '/solutions/hrms-software-development', title: "HRMS Solution" },
+  //   { url: '/solutions/ecommerce-app-development', title: "E-Commerce App" },
+  //   { url: '/solutions/realestate-app-development', title: "Real Estate App" },
+  //   { url: '/solutions/uber-clone-app-development', title: "Uber Clone" },
+  //   { url: '/solutions/zomato-clone-app-development', title: "Zomato Clone" },
+  //   { url: '/solutions/amazon-clone-app-development', title: "Amazon Clone" },
+  //   { url: '/solutions/tinder-clone-app-development', title: "Tinder Clone" },
+  //   { url: '/solutions/instagram-clone-app-development', title: "Instagram Clone" },
+  //   { url: '/solutions/naukri-clone-app-development', title: "Naukri Clone" },
+  //   { url: '/solutions/olx-clone-app-development', title: "OLX Clone" },
+  // ];
 
   // 3. PROCESS DYNAMIC DATA
   const blogList = posts.map(p => ({ url: `/blog/${p.slug}`, title: p.title, type: p.type }));

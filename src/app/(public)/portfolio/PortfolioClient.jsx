@@ -57,6 +57,8 @@ export default function PortfolioClient({ projects: initialProjects = [], catego
     return filtered.slice(start, start + perPage);
   }, [filtered, page, perPage]);
 
+
+  console.log("show me the projects", currentItems);
   return (
     <>
       {/* Tabs strip */}
@@ -334,13 +336,13 @@ function ProjectCard({ p }) {
           <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-3 mt-5">
             {p.badges?.play && (
               <Link
-                href={p.badges.play.href || "#"}
+                href={p.badges.play.href || p.badges.play.url || "#"}
                 target="_blank"
                 rel="noreferrer"
                 className="flex justify-start"
               >
                 <Image
-                  src={p.badges.play.src}
+                  src={p.badges.play.src || p.badges.play.image}
                   alt="Google Play"
                   width={130}
                   height={40}
@@ -348,15 +350,16 @@ function ProjectCard({ p }) {
                 />
               </Link>
             )}
+
             {p.badges?.app && (
               <Link
-                href={p.badges.app.href || "#"}
+                href={p.badges.app.href || p.badges.app.url || "#"}
                 target="_blank"
                 rel="noreferrer"
                 className="flex justify-start"
               >
                 <Image
-                  src={p.badges.app.src}
+                  src={p.badges.app.src || p.badges.app.image}
                   alt="App Store"
                   width={130}
                   height={40}
@@ -364,15 +367,16 @@ function ProjectCard({ p }) {
                 />
               </Link>
             )}
+
             {p.badges?.web && (
               <Link
-                href={p.badges.web.href || "#"}
+                href={p.badges.web.href || p.badges.web.url || "#"}
                 target="_blank"
                 rel="noreferrer"
                 className="flex justify-start"
               >
                 <Image
-                  src={p.badges.web.src}
+                  src={p.badges.web.src || p.badges.web.image}
                   alt="Web"
                   width={120}
                   height={36}

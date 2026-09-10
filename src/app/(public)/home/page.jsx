@@ -11,13 +11,56 @@ import Strengths_Scroll from "./_components/StrengthsScroll";
 import ReviewSection from "./_components/ClientsReview";
 import FooterForm from "@/components/footer/InquirySection";
 import BlogSection from "@/components/common/BlogSection";
+import { commonSchemas } from "@/lib/commonSchema";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+export const metadata = {
+  alternates: {
+    canonical: "https://www.softkingo.com/",
+  },
+};
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.softkingo.com/#website",
+      "url": "https://www.softkingo.com",
+      "name": "Softkingo",
+      "description": "Softkingo is a software development company.",
+      "inLanguage": "en"
+    },
+    {
+      "@type": "SiteNavigationElement",
+      "@id": "https://www.softkingo.com/#navigation",
+      "name": "Main Navigation",
+      "hasPart": [
+        { "@type": "WebPage", "name": "Home", "url": "https://www.softkingo.com/" },
+        { "@type": "WebPage", "name": "About", "url": "https://www.softkingo.com/about" },
+        { "@type": "WebPage", "name": "Services", "url": "https://www.softkingo.com/services" },
+        { "@type": "WebPage", "name": "Hire", "url": "https://www.softkingo.com/hire" },
+        { "@type": "WebPage", "name": "Solutions", "url": "https://www.softkingo.com/solutions" },
+        { "@type": "WebPage", "name": "Industries", "url": "https://www.softkingo.com/industries" },
+        { "@type": "WebPage", "name": "Contact", "url": "https://www.softkingo.com/contact" },
+        { "@type": "WebPage", "name": "Blog", "url": "https://www.softkingo.com/blog" }
+      ]
+    },
+    ...commonSchemas
+  ]
+};
+
 export default function Home() {
   return (
     <div className="bg-white">
+    <link rel="canonical" href="https://www.softkingo.com/" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
+
       <HeroSection />
       <Feature />
       <Crafting />
@@ -27,16 +70,13 @@ export default function Home() {
       <Tech />
       <Process />
       <Strengths_Scroll />
-
       <BlogSection
         category=""
         title="Our Latest Blogs"
         subtitle="Explore our latest insights, product lessons, and engineering best practices."
       />
       <ReviewSection />
-
       <FooterForm />
     </div>
   );
 }
-

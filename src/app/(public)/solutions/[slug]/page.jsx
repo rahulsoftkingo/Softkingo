@@ -1,7 +1,8 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/db'; // Database connection
-
+import probe from "probe-image-size";
+import { commonSchemas } from "@/lib/commonSchema2";
 // --- SOLUTIONS COMPONENTS (Existing) ---
 import SolutionsHero from '@/components/public/solutions/SolutionsHero';
 import SolutionsStats from '@/components/public/solutions/SolutionsStats';
@@ -46,43 +47,121 @@ import ConsultationCTA from '@/components/common/Consultation-Cta';
 import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 
+
+async function getImageDimensions(url) {
+    try {
+        const result = await probe(url);
+        return { width: result.width, height: result.height };
+    } catch (err) {
+        console.error(`Failed to probe dimensions for ${url}:`, err.message);
+        return { width: 1200, height: 630 };
+    }
+}
 // --- 1. HELPER: FETCH DATA FROM DB ---
 async function getSolutionPage(slug) {
     try {
         const page = await prisma.page.findUnique({ where: { slug: slug } });
         if (!page) return null;
         const jsonContent = page.contentJson ? JSON.parse(page.contentJson) : {};
+        jsonContent.content["endpoint"]=page.title;
 
-        // Fetch selected industries data if present
+        async function extractAllImages(obj) {
+            const images = [];
+
+            function isImagePath(str) {
+                return (
+                    typeof str === "string" &&
+                    str.trim() !== "" &&
+                    /\.(png|jpg|jpeg|webp|svg|gif)(\?.*)?$/i.test(str.trim())
+                );
+            }
+
+            function traverse(value) {
+                if (value === null || value === undefined) return;
+
+                if (isImagePath(value)) {
+                    images.push({ src: value });
+                    return;
+                }
+
+                if (
+                    typeof value === "object" &&
+                    !Array.isArray(value) &&
+                    isImagePath(value.src)
+                ) {
+                    images.push({
+                        src: value.src,
+                        width: value.width,
+                        height: value.height,
+                    });
+                    return;
+                }
+
+                if (Array.isArray(value)) {
+                    value.forEach(traverse);
+                    return;
+                }
+
+                if (typeof value === "object") {
+                    Object.values(value).forEach(traverse);
+                }
+            }
+
+            traverse(obj);
+
+            const uniqueImages = images.filter(
+                (img, index, self) => index === self.findIndex(i => i.src === img.src)
+            );
+
+            const withDimensions = await Promise.all(
+                uniqueImages.map(async (img) => {
+                    if (img.width && img.height) {
+                        return { src: img.src, width: img.width, height: img.height };
+                    }
+                    const fullUrl = img.src.startsWith("http")
+                        ? img.src
+                        : `https://www.softkingo.com${img.src}`;
+                    const dims = await getImageDimensions(fullUrl);
+                    return { src: img.src, width: dims.width, height: dims.height };
+                })
+            );
+
+            return withDimensions;
+        }
+
+        const pageImages = await extractAllImages(jsonContent);
+
+        const imageObjects = [
+            ...(page.seoImage
+                ? [{
+                    "@type": "ImageObject",
+                    "url": `https://www.softkingo.com${page.seoImage}`,
+                    "width": 1200,
+                    "height": 630
+                }]
+                : []
+            ),
+
+            ...pageImages.map(img => ({
+                "@type": "ImageObject",
+                "url": img.src.startsWith("http") ? img.src : `https://www.softkingo.com${img.src}`,
+                "width": img.width,
+                "height": img.height,
+            }))
+        ];
+
+        // ... baaki existing code same
         let industryPages = [];
         const industryConfig = jsonContent.content?.industries;
-
-        if (industryConfig?.items?.length > 0) {
-            const selectedSlugs = industryConfig.items.map(i => i.slug);
-            const rawIndustries = await prisma.page.findMany({
-                where: {
-                    slug: { in: selectedSlugs },
-                    type: 'industry'
-                }
-            });
-
-            // Map and parse content for each industry
-            industryPages = rawIndustries.map(ind => ({
-                ...ind,
-                content: ind.contentJson ? JSON.parse(ind.contentJson).content : {}
-            }));
-
-            // Maintain selection order
-            industryPages.sort((a, b) =>
-                selectedSlugs.indexOf(a.slug) - selectedSlugs.indexOf(b.slug)
-            );
-        }
+        // ... (existing industry fetch code)
 
         return {
             ...page,
+            endpoint: jsonContent.endpoint,  
             activeSections: jsonContent.activeSections || [],
             sections: jsonContent.content || {},
-            industryPages
+            industryPages,
+            imageObjects, // ✅ return mein add karo
         };
     } catch (error) {
         console.error("Error fetching solution page:", error);
@@ -137,6 +216,7 @@ export default async function DynamicSolutionPage(props) {
     // =========================================================
     if (data.type === 'clone') {
         const {
+            endpoint,
             hero, about, verticalSuite, aiFeatures, aiSolutions,
             investment, revenue, techStack, portfolio, process, faq
         } = data.sections;
@@ -157,6 +237,55 @@ export default async function DynamicSolutionPage(props) {
 
         return (
             <main className="min-h-screen bg-white overflow-x-clip">
+
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify([
+                            ...commonSchemas,
+                            {
+                                "@context": "https://schema.org",
+                                "@type": "BreadcrumbList",
+                                "@id": "https://www.softkingo.com/#breadcrumb",
+                                "itemListElement": [
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 1,
+                                        "name": "Home",
+                                        "item": "https://www.softkingo.com"
+                                    },
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 2,
+                                        "name": "Solutions",
+                                        "item": "https://www.softkingo.com/solutions"
+                                    },
+                                    {
+                                        "@type": "ListItem",
+                                        "position": 3,
+                                        "name": data?.title ?? params.slug,
+                                        "item": `https://www.softkingo.com/solutions/${params.slug}`
+                                    }
+                                ]
+                            },
+                            {
+                                "@context": "https://schema.org",
+                                "@type": "Service",
+                                "@id": `https://www.softkingo.com/solutions/${params.slug}/#service`,
+                                "name": data?.seoTitle || data?.title,
+                                "description": data?.seoDescription || "",
+                                "image": data.imageObjects,
+                                "url": `https://www.softkingo.com/solutions/${params.slug}`,
+                                "provider": {
+                                    "@type": "Organization",
+                                    "@id": "https://softkingo.com/#organization",
+                                    "name": "Softkingo"
+                                },
+
+                            }
+                        ])
+                    }}
+                />
                 {faqSchema && (
                     <script
                         type="application/ld+json"
@@ -265,6 +394,7 @@ export default async function DynamicSolutionPage(props) {
     // ✅ CASE B: STANDARD SOLUTION PAGE (Existing Logic)
     // =========================================================
     const {
+        endpoint,
         hero, stats, intro, features, awards, whyNeed,
         servicesList, appModules,
         aiCapabilities, portfolio, process, techStack,
@@ -273,6 +403,7 @@ export default async function DynamicSolutionPage(props) {
         cta, inquiry,
         userApp, vendorApp, adminPanel // Legacy fields as siblings
     } = data.sections;
+    
 
     // --- LEGACY SUPPORT: appModules ---
     let finalModules = appModules?.tabs || [];
@@ -318,32 +449,72 @@ export default async function DynamicSolutionPage(props) {
 
     return (
         <main className="min-h-screen bg-white overflow-x-clip">
+            {/* CASE A: Clone page schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify([
+                        ...commonSchemas,
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "BreadcrumbList",
+                            "@id": "https://www.softkingo.com/#breadcrumb",
+                            "itemListElement": [
+                                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.softkingo.com" },
+                                { "@type": "ListItem", "position": 2, "name": "Solutions", "item": "https://www.softkingo.com/solutions" },
+                                { "@type": "ListItem", "position": 3, "name": data?.title ?? params.slug, "item": `https://www.softkingo.com/solutions/${params.slug}` }
+                            ]
+                        },
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Service",
+                            "@id": `https://www.softkingo.com/solutions/${params.slug}/#service`,
+                            "name": data?.seoTitle || data?.title,
+                            "description": data?.seoDescription || "",
+                            "url": `https://www.softkingo.com/solutions/${params.slug}`,
+                            // ✅ ImageObject array
+                            "image": data.imageObjects
+                        }
+                    ])
+                }}
+            />
             {faqSchema && (
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
                 />
             )}
-            {show('hero') && <section className='bg-sky-50'><SolutionsHero data={hero} /></section>}
+            {show('hero') && <section className='bg-sky-50'><SolutionsHero data2={stats} data={hero} endpoint={endpoint} /></section>}
             {show('stats') && <SolutionsStats data={stats} />}
-            {show('intro') && <SolutionsContentSplit data={intro} reverse={false} />}
+            {show('intro') && <SolutionsContentSplit data={intro} reverse={false} endpoint={endpoint} />}
             {show('features') && <SolutionsFeatureGrid data={features} />}
-            {show('awards') && (
-                <AwardsSection 
-                    awards={awards?.items} 
-                    title={awards?.title} 
-                    subtitle={awards?.subtitle} 
-                />
-            )}
-            {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
-            {show('servicesList') && <SolutionsServicesList data={servicesList} />}
-            {show('appModules') && (
+             {/* /////////// */}
+             {show('appModules') && (
                 <SolutionsAppModuleTabs data={{ ...appModules, tabs: finalModules }} />
             )}
             {show('aiCapabilities') && <SolutionsAICapabilities data={aiCapabilities} />}
+
             {show('portfolio') && <DynamicPortfolioCard category={portfolio?.category || data.slug} portfolioType="app" title={portfolio?.title} subtitle={portfolio?.subtitle} />}
+
+             {show('servicesList') && <SolutionsServicesList data={servicesList} />}
+
             {show('process') && <SolutionsProcess data={process} />}
             {show('techStack') && <SolutionsTechStack data={finalTechStack} />}
+            {/* ///////////////////// */}
+
+
+            {show('awards') && (
+                <AwardsSection
+                    awards={awards?.items}
+                    title={awards?.title}
+                    subtitle={awards?.subtitle}
+                />
+            )}
+            {show('whyNeed') && <SolutionsWhyNeed data={whyNeed} />}
+           
+           
+          
+        
             {show('monetization') && <SolutionsMonetization data={monetization} />}
             {show('whyChoose') && <SolutionsSecurity data={whyChoose} />}
             {show('consultation') && (

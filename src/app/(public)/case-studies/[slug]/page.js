@@ -14,6 +14,9 @@ import FindYourApp from './_components/FindYourApp';
 import AppScreensShowcase from './_components/AppScreensShowcase';
 import ChallengesSolutions from './_components/ChallengesSolutions';
 import TestimonialSection from './_components/TestimonialSection';
+import DevelopmentApproach from './_components/DevelopmentApproach';
+import ContentBanner from './_components/ContentBanner';
+import FeatureSection1 from './_components/FeatureSection1';
 
 // ---------- helpers ----------
 function parseJson(value, fallback) {
@@ -33,6 +36,17 @@ async function getCaseStudy(slug) {
   });
 
   if (!row) return null;
+
+  const matchedProject = await prisma.portfolioProject.findFirst({
+    where: {
+      title: row.title,
+    },
+  });
+
+  const badges = matchedProject?.badgesJson
+    ? JSON.parse(matchedProject.badgesJson)
+    : {};
+
 
   const branding = parseJson(
     row.brandingJson,
@@ -153,20 +167,20 @@ async function getCaseStudy(slug) {
         row.heroMockups || '/images/case-studies/screen1.png',
       ],
     },
-    downloads: parseJson(row.portfolioProjects?.[0]?.badgesJson, {
+    downloads: {
       googlePlay: {
-        url: '#',
-        image: '/images/badges/google-play.png',
+        url: badges?.play?.url || "",
+        image: badges?.play?.image || "/images/badges/google-play.png",
       },
       appStore: {
-        url: '#',
-        image: '/images/badges/app-store.png',
+        url: badges?.app?.url || "",
+        image: badges?.app?.image || "/images/badges/app-store.png",
       },
       web: {
-        url: '#',
-        image: '/images/badges/web-badge.png',
+        url: badges?.web?.url || "",
+        image: badges?.web?.image || "/images/badges/web-badge.png",
       },
-    }),
+    },
     branding,
     team,
     client,
@@ -216,17 +230,31 @@ export default async function CaseStudyPage({ params }) {
 
         <Stats data={data} />
 
-        <Branding data={data} />
+        {/* <Branding data={data} /> */}
 
-        <TechStack data={data} />
+       
 
-        <FeatureSection
+        {/* <FeatureSection
           title="Project Overview"
           description={data.overview.description}
           mockup={data.overview.mockup}
           branding={branding}
           imagePosition="right"
+          client={data.client}
+        /> */}
+
+           <FeatureSection1
+          title="Project Overview"
+          description={data.overview.description}
+          listItems={data.overview.listItems}
+          mockup={data.requirements.mockup}
+          branding={branding}
+          client={data.client}
+          contentPosition="left" // text left, branding right
         />
+
+
+         <TechStack data={data} />
 
         <FeatureSection
           title="Project Requirements"
@@ -238,6 +266,7 @@ export default async function CaseStudyPage({ params }) {
           isDark={false}
         />
 
+      
         <FeatureSection
           title="Goals & Objectives"
           listItems={data.goals.items}
@@ -246,6 +275,15 @@ export default async function CaseStudyPage({ params }) {
           imagePosition="right"
           isDark={false}
         />
+        {/* 
+        <ContentBanner
+         title="Goals & Objectives"
+          listItems={data.goals.items}
+          bgImage={data.goals.backgroundImage}
+          branding={branding}
+          imagePosition="right"
+          isDark={false}
+        /> */}
 
         <ChallengesSolutions
           data={data}
@@ -254,9 +292,21 @@ export default async function CaseStudyPage({ params }) {
 
         <AppScreensShowcase data={data.appScreens} branding={branding} />
 
-        <Results results={data.results} branding={branding} />
+        <Results
+          results={[
+            {
+              ...data.results[0],
+              description: "Since launch, the platform has delivered measurable impact across every stage of the workflow. Early feedback from internal teams and stakeholders has been overwhelmingly positive, with the solution providing a strong, scalable foundation for continued growth. Significant operational efficiencies and strategic benefits have already been realized, setting the stage for long-term success.",
+            },
+          ]}
+          branding={branding}
+        />
 
-        <FindYourApp data={data} branding={branding} />
+        {/* <FindYourApp data={data} branding={branding} /> */}
+
+        <DevelopmentApproach branding={branding} />
+
+        <ContentBanner data={data} branding={branding} />
 
         <TestimonialSection
           data={data.client}

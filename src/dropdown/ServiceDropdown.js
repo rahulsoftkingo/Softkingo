@@ -95,7 +95,7 @@ const servicesData = [
       { href: "/services/ios-app-development", title: "iOS App Development", description: "Reliable apps for iPhone & iPad.", icon: <FaApple /> },
       { href: "/services/hybrid-app-development", title: "Hybrid App Development", description: "One app for Android & iOS.", icon: <FaMobileAlt /> },
       { href: "/services/react-native-app-development", title: "React Native App Development", description: "Cross-platform apps with native feel.", icon: <FaReact /> },
-      { href: "/services/flutter-native-app-development", title: "Flutter App Development", description: "Beautiful apps with smooth performance.", icon: <FaReact /> },
+      { href: "/services/flutter-app-development", title: "Flutter App Development", description: "Beautiful apps with smooth performance.", icon: <FaReact /> },
       { href: "/services/app-ui-ux-design", title: "App UI/UX Design", description: "Intuitive designs people love.", icon: <FaRegFileCode /> },
     ],
   },
@@ -203,7 +203,7 @@ const servicesData = [
     title: "Top Digital Marketing Company",
     description: "Services that grow your brand, attract the right customers, and boost your online visibility and engagement.",
     links: [
-      { href: "/services/seo-services", title: "SEO Services", description: "Get found by the right audience.", icon: <FaSearch /> },
+      { href: "/services/seo", title: "SEO Services", description: "Get found by the right audience.", icon: <FaSearch /> },
       { href: "/services/paid-marketing", title: "Paid Marketing", description: "Ads that reach and convert customers.", icon: <FaBullseye /> },
       { href: "/services/online-reputation-management", title: "Online Reputation Management", description: "Keep your brand trusted and credible.", icon: <FaEye /> },
       { href: "/services/app-marketing", title: "App Marketing", description: "Promote apps to the right users.", icon: <FaMobileAlt /> },

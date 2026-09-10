@@ -64,22 +64,23 @@ export default function BlogSection({
 
     return (
         <section className={`relative bg-white overflow-hidden ${className}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-16">
+            <div className="max-w-7xl mx-auto py-8 md:py-16 px-4 md:px-8">
                 <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
 
                     {/* Left Content - Header & CTA */}
-                    <div className="lg:col-span-4  flex items-start justify- md:justify-center md:flex-col  md:items-start  spac-8">
-                        <div className="space-y-4 max-w-xs lg:max-w-none ">
+                    <div className="lg:col-span-4 flex items-start justify- md:justify-center md:flex-col md:items-start spac-8">
+
+                        <div className="[&_.text-left]:!pl-0"> 
                             <CommonTitle
                                 title={title}
                                 subtitle={subtitle}
                                 align="left"
                                 gradientText={gradientText}
                             />
-                        </div>
+                        </div>                  
 
                         <Link
-                            href={`/blog?category=${category}`}
+                            href={`/blog`}
                             className="group flex flex-row items-center gap-3 transition-all duration-300 flex-shrink-0"
                         >
                             <div className="relative flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
@@ -97,24 +98,40 @@ export default function BlogSection({
                     </div>
 
                     {/* Right Content - Blog Carousel */}
-                    <div className="lg:col-span-8 relative group/carousel overflow-hidden">
+                    <div className="lg:col-span-8 relative group/carousel px-3 min-w-0">
                         <div
                             ref={scrollRef}
                             onScroll={checkScroll}
-                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-8 sm:snap-x sm:snap-mandatory touch-pan-x cursor-grab active:cursor-grabbing w-full"
+                            className="flex gap-6 overflow-x-auto scrollbar-hide pb-0 md:pb-8 sm:snap-x sm:snap-mandatory overscroll-x-contain cursor-grab active:cursor-grabbing w-full"
                         >
                             {blogs.map((blog, idx) => (
-                                <div key={blog.id} className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start">
+                                <div key={blog.id} className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start select-none">
                                     <BlogCard blog={blog} priority={idx < 2} />
                                 </div>
                             ))}
+
+                            {/* View All Card - shown at the end of scroll on mobile */}
+                            <div className="flex-shrink-0 w-[280px] sm:w-[320px] snap-start flex items-center justify-center sm:hidden select-none">
+                                <Link
+                                    href={`/blog/category/${category}`}
+                                    className="group flex flex-col items-center justify-center gap-4 w-full h-full min-h-[280px] rounded-sm border border-dashed border-slate-200 hover:border-sky-500 transition-all duration-300 bg-slate-50/50"
+                                >
+                                    <div className="relative flex items-center justify-center w-14 h-14 rounded-full border border-slate-300 group-hover:border-sky-500 transition-colors duration-500">
+                                        <FaArrowRight className="text-lg text-slate-700 group-hover:text-sky-500 transition-colors duration-500 group-hover:translate-x-1" />
+                                    </div>
+                                    <span className="text-sm font-bold text-slate-800 group-hover:text-sky-600 transition-colors duration-300">
+                                        View All Blogs
+                                    </span>
+                                </Link>
+                            </div>
                         </div>
 
                         {/* Navigation Arrows */}
                         {canScrollLeft && (
                             <button
                                 onClick={() => scroll('left')}
-                                className="absolute -left-4 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
+                                className="absolute left-0 top-1/3 -translate-y-1/2 z-20 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100"
+
                             >
                                 <FaArrowLeft />
                             </button>
@@ -122,8 +139,7 @@ export default function BlogSection({
                         {canScrollRight && (
                             <button
                                 onClick={() => scroll('right')}
-                                className="absolute -right-4 top-1/3 -translate-y-1/2 z-30 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-0 group-hover/carousel:opacity-100"
-                            >
+                              className="absolute right-0 top-1/3 -translate-y-1/2 z-20 p-3 bg-white shadow-xl rounded-full text-sky-600 border border-sky-100 hover:bg-sky-50 transition-all opacity-100 lg:opacity-100">
                                 <FaArrowRight />
                             </button>
                         )}
@@ -151,15 +167,14 @@ function BlogCard({ blog, priority }) {
                     width={800}
                     height={600}
                     priority={priority}
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    draggable={false}
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-
             </div>
 
             {/* Content */}
-            <div className="pt-6 pb-4 flex flex-col flex-1 space-y-4">
+            <div className="pt-6 pb-0 md:pb-4 flex flex-col flex-1 space-y-4">
                 {/* Meta */}
                 <div className="flex items-center justify-between text-[10px] font-bold tracking-wider">
                     <span className="text-rose-600 uppercase">{categoryName}</span>

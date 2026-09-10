@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LayoutDashboard, FileText, Layers3, Mail, Lightbulb, BookOpenText,
+  LayoutDashboard, FileText, Layers3, Mail, Lightbulb, BookOpenText,Mic,
   FolderKanban, Briefcase, Rocket, Inbox, MessageCircle, Image as ImageIcon,
   CalendarDays, Users, UserCog, Users2, Settings, ChevronDown, LogOut,
   MessageSquare, Send, Megaphone, MailOpen, Clock, FileCheck, DollarSign,
@@ -21,7 +21,8 @@ const sections = [
       { label: 'Blog Posts', href: '/admin/blog', icon: FileText, roles: ['admin', 'manager', 'writer'] },
       { label: 'Categories', href: '/admin/categories', icon: Layers3, roles: ['admin', 'manager', 'writer'] },
       { label: 'Ebooks', href: '/admin/ebooks', icon: BookOpenText, roles: ['admin', 'manager', 'writer'] },
-      { label: 'Blog Analytics', href: '/admin/blog-analytics', icon: Lightbulb, roles: ['admin', 'manager'] },
+      { label: 'Blog Analytics', href: '/admin/blog-analytics', icon: Mic, roles: ['admin', 'manager'] },
+      { label: 'Podcast', href: '/admin/podcast', icon: Lightbulb, roles: ['admin', 'manager'] },
     ]
   },
   {

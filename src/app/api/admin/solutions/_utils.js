@@ -52,7 +52,7 @@ export async function trackPageInDB(section, slug) {
         key: `${section}-${slug}`,
         title,
         type: section === "solutions" ? "solution" : "industry",
-        status: "draft",
+        status: "published",
       },
       create: {
         key: `${section}-${slug}`,
@@ -67,7 +67,7 @@ export async function trackPageInDB(section, slug) {
             subheading: `Placeholder hero for ${title}. Edit contentJson in DB or replace page.jsx`,
           }
         }),
-        status: "draft",
+        status: "published",
         featured: false,
       },
     });
