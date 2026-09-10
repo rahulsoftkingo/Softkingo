@@ -123,7 +123,10 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                             <button
                                 key={tech.name}
                                 type="button"
-                                onClick={() => updateField(`content.technologies.items`, (prev) => [...(prev || []), { ...tech }])}
+                                onClick={() => updateField(`content.technologies.items`, (prev) => [
+                                    ...(prev || []),
+                                    { ...tech, name: (tech.name || '').toLowerCase() }
+                                ])}
                                 className="p-1 px-2 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
                             >
                                 <img src={tech.image} className="w-3.5 h-3.5" alt="techimage" />
@@ -150,7 +153,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                                         className="w-full p-2 bg-white border rounded text-sm font-bold"
                                         placeholder="Tech Name"
                                         value={item.name || ''}
-                                        onChange={e => updateField(`content.technologies.items.${i}.name`, e.target.value)}
+                                        onChange={e => updateField(`content.technologies.items.${i}.name`, e.target.value.toLowerCase())}
                                     />
                                 </div>
 
