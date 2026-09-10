@@ -364,7 +364,7 @@ export default async function IndustryPage(props) {
                                         <div className="flex-1 flex flex-col items-end text-right">
                                             <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
                                             {item.description && (
-                                                <p className="text-sm text-slate-500 mb-3 line-clamp-2 max-w-[250px]">{item.description}</p>
+                                                <p className="text-sm text-slate-500 mb-3  max-w-[250px]">{item.description}</p>
                                             )}
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
@@ -421,7 +421,7 @@ export default async function IndustryPage(props) {
                                         <div className="flex-1 flex flex-col items-start text-left">
                                             <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
                                             {item.description && (
-                                                <p className="text-sm text-slate-500 mb-3 line-clamp-2 max-w-[250px]">{item.description}</p>
+                                                <p className="text-sm text-slate-500 mb-3 max-w-[250px]">{item.description}</p>
                                             )}
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
@@ -473,14 +473,6 @@ export default async function IndustryPage(props) {
 
             {show('faq') && (
                 <section className="py-8 md:py-16 bg-white px-6">
-                    <div className="max-w-7xl mx-auto">
-                        <CommonTitle
-                            title={faq?.title || "Frequently Asked Questions"}
-                            subtitle={faq?.subtitle || ""}
-                            pill={true}
-                            gradientText={faq?.gradientText || "FAQ"}
-                        />
-                    </div>
                     <FAQAccordion data={faq} />
                 </section>
             )}
