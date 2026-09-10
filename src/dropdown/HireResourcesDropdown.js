@@ -476,7 +476,7 @@ const HireResourcesDropdown = () => {
                   </div>
 
                   <Link
-                    href="/contact/hire-developers"
+                    href="/contact"
                     className="mt-4 px-4 md:px-6 py-2 rounded-full bg-sky-600 text-white text-[11px] font-semibold shadow-[0_10px_24px_rgba(15,23,42,0.18)] hover:bg-sky-500 transition-colors flex items-center justify-center gap-2 w-full"
                   >
                     Discuss Your Requirements
