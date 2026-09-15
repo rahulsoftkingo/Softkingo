@@ -1,7 +1,6 @@
 'use client';
-
 import { ArrowUpRight, ArrowLeft, ArrowRight, ImageOff } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useMotionValue, animate } from "framer-motion";
 import CommonTitle from "@/components/ui/CommonTitle";
 import Image from "next/image";
@@ -312,7 +311,16 @@ export default function CaseStudiesSection({ title, data }) {
   const [virtualIndex, setVirtualIndex] = useState(realCount);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
+  
+  // Set initial position without recalculating on render layout pass
   const x = useMotionValue(-realCount * STEP);
+
+  const updateIndex = useCallback(
+    (newIndex) => {
+      setVirtualIndex(newIndex);
+    },
+    []
+  );
 
   useEffect(() => {
     if (!isDragging) {
@@ -322,6 +330,7 @@ export default function CaseStudiesSection({ title, data }) {
         stiffness: 260,
         damping: 28,
         onComplete: () => {
+          // Infinite loop boundary checks without jump flickering
           if (virtualIndex >= realCount * 2) {
             const resetIndex = virtualIndex - realCount;
             setVirtualIndex(resetIndex);
@@ -391,7 +400,11 @@ export default function CaseStudiesSection({ title, data }) {
           <motion.div
             className="flex cursor-grab gap-5 pb-4 select-none active:cursor-grabbing"
             drag="x"
-            dragElastic={0.15}
+            dragConstraints={{
+              left: -((extendedData.length - 1) * STEP),
+              right: 0,
+            }}
+            dragElastic={0.05}
             dragMomentum={false}
             onDragStart={() => setIsDragging(true)}
             onDragEnd={(e, info) => {
@@ -402,11 +415,11 @@ export default function CaseStudiesSection({ title, data }) {
 
               if (Math.abs(velocity) > 400) {
                 newVirtualIndex = velocity < 0 ? virtualIndex + 1 : virtualIndex - 1;
-              } else if (Math.abs(offset) > CARD_WIDTH * 0.25) {
+              } else if (Math.abs(offset) > CARD_WIDTH * 0.2) {
                 newVirtualIndex = offset < 0 ? virtualIndex + 1 : virtualIndex - 1;
               }
 
-              setVirtualIndex(newVirtualIndex);
+              updateIndex(newVirtualIndex);
             }}
             style={{ x, touchAction: "pan-y" }}
           >

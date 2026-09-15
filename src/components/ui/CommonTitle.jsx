@@ -6,6 +6,7 @@ const CommonTitle = ({
     gradientText = null,
     align = "center", // "left" | "center" | "right"
     textSize = "text-2xl sm:text-3xl md:text-4xl", // Default size
+    paddingLeft = "" // Default padding left
 }) => {
     const textAlignClass = {
         left: "text-left",
@@ -36,7 +37,7 @@ const CommonTitle = ({
         gradientText || (title ? title.split(" ").slice(1).join(" ") : "");
 
     return (
-        <div className={`${textAlignClass} ${containerClass} mb-8 sm:mb-12`}>
+        <div className={`${textAlignClass} ${containerClass} ${paddingLeft}  hbmb-8 sm:mb-12`}>
             {pill && (typeof pill === "string" || typeof pill === "number") && (
                 <div
                     className={`inline-flex items-center gap-2 px-4 py-2 bg-cyan-50 text-cyan-700 rounded-full text-sm font-medium border border-cyan-200 mb-4 ${pillAlignClass} max-w-max`}

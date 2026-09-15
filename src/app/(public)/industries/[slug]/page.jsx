@@ -4,7 +4,7 @@ import prisma from '@/lib/db';
 import probe from "probe-image-size";
 import Image from 'next/image';
 import Link from 'next/link';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ArrowRight, Building2, Rocket } from 'lucide-react';
 import { commonSchemas } from "@/lib/commonSchema2";
 
 // --- SHARED COMPONENTS (Reuse existing ones where possible) ---
@@ -21,6 +21,7 @@ import IndustryProcess from '@/components/public/industries/IndustryProcess';
 import BlogSection from '@/components/common/BlogSection';
 import TestimonialsCarousel from '@/components/public/TestimonialCarousel2';
 import FooterForm from "@/components/footer/InquirySection";
+
 
 
 async function getImageDimensions(url) {
@@ -340,6 +341,8 @@ export default async function IndustryPage(props) {
 
 
             {/* 6. OTHER INDUSTRIES (Fixed Alignment) */}
+
+
             {show('otherIndustries') && (
                 <section className="py-8 md:py-16 bg-slate-50 px-6 relative overflow-hidden">
                     <div className="max-w-7xl mx-auto relative z-10">
@@ -362,9 +365,13 @@ export default async function IndustryPage(props) {
 
                                         {/* Text Content (Aligned Right) */}
                                         <div className="flex-1 flex flex-col items-end text-right">
-                                            <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">
+                                                {item.title}
+                                            </h4>
                                             {item.description && (
-                                                <p className="text-sm text-slate-500 mb-3  max-w-[250px]">{item.description}</p>
+                                                <p className="text-sm text-slate-500 mb-3 max-w-[250px]">
+                                                    {item.description}
+                                                </p>
                                             )}
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
@@ -372,19 +379,15 @@ export default async function IndustryPage(props) {
                                             </div>
                                         </div>
 
-                                        {/* Icon (With Premium Container) */}
+                                        {/* Blue Lucide Building Icon */}
                                         <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30px_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300 mt-1">
-                                            {item.icon && item.icon.includes('/') ? (
-                                                <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
-                                            ) : (
-                                                <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🏢"}</span>
-                                            )}
+                                            <Building2 className="w-8 h-8 text-sky-600 group-hover:scale-110 transition-transform duration-300" />
                                         </div>
                                     </div>
                                 ))}
                             </div>
 
-                            {/* CENTER COLUMN (Image with Premium Frame) */}
+                            {/* CENTER COLUMN (Circular Image Frame) */}
                             <div className="relative flex justify-center py-10 lg:py-0 col-span-1 min-h-[400px] items-center">
                                 {/* Decorative Pulsing Rings */}
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] aspect-square border border-sky-200/50 rounded-full animate-pulse"></div>
@@ -392,13 +395,13 @@ export default async function IndustryPage(props) {
 
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] aspect-square bg-gradient-to-br from-sky-400/10 to-transparent rounded-full blur-3xl -z-10 animate-pulse"></div>
 
-                                <div className="relative w-full max-w-[340px] flex items-center justify-center group">
+                                {/* Circle Image Wrapper */}
+                                <div className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white shadow-xl flex items-center justify-center group z-10">
                                     <Image
                                         src={otherIndustries?.image || "/images/industry-center.jpg"}
                                         alt="Industries Center"
-                                        width={400}
-                                        height={600}
-                                        className="w-full h-auto object-contain max-h-[500px]  relative z-10 transition-transform duration-500 group-hover:scale-105"
+                                        fill
+                                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                                     />
                                 </div>
                             </div>
@@ -408,20 +411,20 @@ export default async function IndustryPage(props) {
                                 {otherIndustries?.items?.slice(3, 6).map((item, i) => (
                                     <div key={i} className="flex items-start justify-start group gap-6 cursor-pointer">
 
-                                        {/* Icon (With Premium Container) */}
-                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300 mt-1">
-                                            {item.icon && item.icon.includes('/') ? (
-                                                <Image src={item.icon} alt="icon" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
-                                            ) : (
-                                                <span className="text-2xl group-hover:scale-110 transition-transform duration-300">{item.icon || "🚀"}</span>
-                                            )}
+                                        {/* Blue Lucide Rocket Icon */}
+                                        <div className="w-16 h-16 flex items-center justify-center flex-shrink-0 bg-white rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 group-hover:shadow-[0_8px_30px_rgb(14,165,233,0.15)] group-hover:border-sky-200 group-hover:-translate-y-1 transition-all duration-300 mt-1">
+                                            <Rocket className="w-8 h-8 text-sky-600 group-hover:scale-110 transition-transform duration-300" />
                                         </div>
 
                                         {/* Text Content (Aligned Left) */}
                                         <div className="flex-1 flex flex-col items-start text-left">
-                                            <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">{item.title}</h4>
+                                            <h4 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-sky-600 transition-colors duration-300">
+                                                {item.title}
+                                            </h4>
                                             {item.description && (
-                                                <p className="text-sm text-slate-500 mb-3 max-w-[250px]">{item.description}</p>
+                                                <p className="text-sm text-slate-500 mb-3 max-w-[250px]">
+                                                    {item.description}
+                                                </p>
                                             )}
                                             {/* Advanced Line Hover */}
                                             <div className="relative h-[2px] w-20 bg-slate-200 overflow-hidden rounded-full">
@@ -478,7 +481,7 @@ export default async function IndustryPage(props) {
             )}
 
             {/* 10. TESTIMONIALS */}
-            {show('testimonials') && (
+            {/* {show('testimonials') && (
                 <section className="py-8 md:py-16 bg-white px-6">
                     <div className="max-w-7xl mx-auto">
                         <CommonTitle
@@ -492,7 +495,7 @@ export default async function IndustryPage(props) {
                         </div>
                     </div>
                 </section>
-            )}
+            )} */}
 
             {/* 11. Call To Action */}
             {show('consultation') && (

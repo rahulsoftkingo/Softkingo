@@ -32,6 +32,7 @@ export default function IndustryTechCarousel({ title, description, items, gradie
                             pill={true}
                             align="left"
                             gradientText={gradientText || "Tech"}
+                            paddingLeft="!pl-0"
                         />
                     </div>
 

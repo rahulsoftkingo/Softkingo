@@ -16,7 +16,7 @@ export default function SolutionsHero({ data2, data, endpoint }) {
     setImgSrc(data?.image);
   }, [data?.image]);
 
-  if (!data) return null;
+  if (!data || !data2) return null;
 
   // Stats cards data
   const stats = [
@@ -87,52 +87,54 @@ export default function SolutionsHero({ data2, data, endpoint }) {
             </div>
 
             {/* Stat Cards - 3 columns in 1 row on mobile, styled small for mobile & original size for laptop */}
-            <div className="grid grid-cols-3 gap-1.5 sm:gap-4 pt-1 pb-8 sm:pb-16 animate-fadeInUp delay-400">
-              {stats.map((stat, index) => (
-                <div key={index} className="relative group filter drop-shadow-md">
+            {stats && stats.length > 0 ? (
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-4 pt-1 pb-8 sm:pb-16 animate-fadeInUp delay-400">
+                {stats.map((stat, index) => (
+                  <div key={index} className="relative group filter drop-shadow-md">
 
-                  {/* SVG Clip Path Definition */}
-                  <svg className="absolute w-0 h-0" aria-hidden="true" focusable="false">
-                    <defs>
-                      <clipPath id={`card-clip-${index}`} clipPathUnits="objectBoundingBox">
-                        <path d="M 0,0 
-                      L 0.65,0 
-                      A 0.08,0.08 0 0,1 0.73,0.08 
-                      L 0.73,0.20 
-                      A 0.08,0.08 0 0,0 0.81,0.28 
-                      L 0.85,0.28 
-                      A 0.15,0.15 0 0,1 1,0.43 
-                      L 1,0.85 
-                      A 0.15,0.15 0 0,1 0.85,1 
-                      L 0.15,1 
-                      A 0.15,0.15 0 0,1 0,0.85 
-                      L 0,0 Z" />
-                      </clipPath>
-                    </defs>
-                  </svg>
+                    {/* SVG Clip Path Definition */}
+                    <svg className="absolute w-0 h-0" aria-hidden="true" focusable="false">
+                      <defs>
+                        <clipPath id={`card-clip-${index}`} clipPathUnits="objectBoundingBox">
+                          <path d="M 0,0 
+            L 0.65,0 
+            A 0.08,0.08 0 0,1 0.73,0.08 
+            L 0.73,0.20 
+            A 0.08,0.08 0 0,0 0.81,0.28 
+            L 0.85,0.28 
+            A 0.15,0.15 0 0,1 1,0.43 
+            L 1,0.85 
+            A 0.15,0.15 0 0,1 0.85,1 
+            L 0.15,1 
+            A 0.15,0.15 0 0,1 0,0.85 
+            L 0,0 Z" />
+                        </clipPath>
+                      </defs>
+                    </svg>
 
-                  {/* Main White Card with Cutout */}
-                  <div
-                    className="bg-white p-2 sm:p-5 pt-4 sm:pt-6 min-h-[85px] sm:min-h-[140px] flex flex-col justify-between"
-                    style={{ clipPath: `url(#card-clip-${index})` }}
-                  >
-                    <div>
-                      <p className="text-sm sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                        {stat.value}
-                      </p>
-                      <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-700 leading-tight sm:leading-snug mt-0.5 sm:mt-2 max-w-[90%] sm:max-w-[85%]">
-                        {stat.label}
-                      </p>
+                    {/* Main White Card with Cutout */}
+                    <div
+                      className="bg-white p-2 sm:p-5 pt-4 sm:pt-6 min-h-[85px] sm:min-h-[140px] flex flex-col justify-between"
+                      style={{ clipPath: `url(#card-clip-${index})` }}
+                    >
+                      <div>
+                        <p className="text-sm sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
+                          {stat.value}
+                        </p>
+                        <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-700 leading-tight sm:leading-snug mt-0.5 sm:mt-2 max-w-[90%] sm:max-w-[85%]">
+                          {stat.label}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Icon positioned in the cut-out section */}
+                    <div className="absolute top-[-4px] sm:top-[-5px] right-1 sm:right-2 w-6 h-6 sm:w-10 sm:h-10 flex items-center justify-center text-sky-500">
+                      {stat.icon}
                     </div>
                   </div>
-
-                  {/* Icon positioned in the cut-out section */}
-                  <div className="absolute top-[-4px] sm:top-[-5px] right-1 sm:right-2 w-6 h-6 sm:w-10 sm:h-10 flex items-center justify-center text-sky-500">
-                    {stat.icon}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : null}
 
           </div>
 
