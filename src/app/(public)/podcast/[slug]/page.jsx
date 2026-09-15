@@ -129,12 +129,12 @@ export default async function PodcastDetailPage({ params }) {
             <Link href="/podcast" className="hover:text-sky-500 transition-colors">
               Podcasts
             </Link>
-            {podcast.category && (
+            {/* {podcast.category && (
               <>
                 <span>›</span>
                 <span className="text-slate-500">{podcast.category}</span>
               </>
-            )}
+            )} */}
             <span>›</span>
             <span className="text-sky-500 font-medium line-clamp-1">{podcast.title}</span>
           </nav>
