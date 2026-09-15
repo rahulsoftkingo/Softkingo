@@ -214,7 +214,7 @@ export default async function PodcastPage(props) {
               </form>
 
               {/* Topic Filter Chips — fixed 4 categories, with icons */}
-              <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 text-[11px] sm:text-xs pt-1">
+              {/* <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 text-[11px] sm:text-xs pt-1">
                 <span className="text-slate-200 shrink-0">Browse by topic:</span>
 
                 <Link
@@ -244,7 +244,7 @@ export default async function PodcastPage(props) {
                     </Link>
                   );
                 })}
-              </div>
+              </div> */}
             </div>
 
             {/* Right Column: Compact Inline Row with Minimal Margins */}
