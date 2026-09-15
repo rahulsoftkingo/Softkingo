@@ -312,19 +312,27 @@ export default async function PodcastDetailPage({ params }) {
                     {podcast.category && (
                       <li className="flex items-center gap-2 pt-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                        <span>{podcast.category}</span>
+                        <span>
+                          <strong>Category:</strong> {podcast.category}
+                        </span>
                       </li>
                     )}
+
                     {podcast.language && (
                       <li className="flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                        <span>{podcast.language}</span>
+                        <span>
+                          <strong>Language:</strong> {podcast.language}
+                        </span>
                       </li>
                     )}
+
                     {podcast.frequency && (
                       <li className="flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                        <span>{podcast.frequency}</span>
+                        <span>
+                          <strong>Frequency:</strong> {podcast.frequency}
+                        </span>
                       </li>
                     )}
                   </ul>

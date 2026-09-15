@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import EbookPromoCard from "@/components/public/EbookPromoCard";
 
-import {Play,Briefcase,Cpu,Pause,GraduationCap,TrendingUp,Star,Mail,Phone,User,ChevronRight,Download,} from "lucide-react";
+import { Play, Briefcase, Cpu, Pause, GraduationCap, TrendingUp, Star, Mail, Phone, User, ChevronRight, Download, } from "lucide-react";
 
 /* ----------------------------- Dummy data ------------------------------ */
 
@@ -16,7 +16,7 @@ const defaultCategories = [
   { name: "Marketing", icon: TrendingUp, slug: "marketing" },
 ];
 
-const covers = ["from-violet-600 via-fuchsia-500 to-sky-700","from-sky-500 via-cyan-400 to-blue-600","from-rose-500 via-orange-400 to-amber-500","from-slate-700 via-slate-600 to-slate-900","from-emerald-500 via-teal-400 to-green-600","from-red-600 via-rose-500 to-red-800",];
+const covers = ["from-violet-600 via-fuchsia-500 to-sky-700", "from-sky-500 via-cyan-400 to-blue-600", "from-rose-500 via-orange-400 to-amber-500", "from-slate-700 via-slate-600 to-slate-900", "from-emerald-500 via-teal-400 to-green-600", "from-red-600 via-rose-500 to-red-800",];
 
 const defaultEpisodes = [
   {
@@ -180,7 +180,7 @@ function CategoryStrip({ categories = defaultCategories, category = "", q = "" }
 }
 
 /* ---------------------------- Podcast Row Card -------------------------- */
-function PodcastRowCard({ episode }) {
+export function PodcastRowCard({ episode }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const formattedDate = episode.publishedAt
@@ -194,110 +194,110 @@ function PodcastRowCard({ episode }) {
   return (
     <Link
       href={`/podcast/${episode.slug}`}
-      className="group flex items-center gap-4 sm:gap-6 bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 hover:shadow-md hover:border-slate-300 transition"
+      className="group flex items-center bg-white border border-slate-200 rounded-3xl min-h-[170px] overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-200"
     >
-      {/* Column 1: Cover Image */}
-      <div className="relative shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-slate-100">
+      {/* Column 1: Image Container */}
+      <div className="relative shrink-0 w-44 sm:w-52 self-stretch my-3 ml-3 sm:my-4 sm:ml-4 rounded-2xl overflow-hidden bg-slate-100">
         {episode.coverImage ? (
           <Image
             src={episode.coverImage}
             alt={episode.title || "Podcast cover"}
             fill
-            sizes="(max-width: 640px) 80px, 96px"
-            className="object-cover"
+            sizes="(max-width: 640px) 176px, 208px"
+            className="object-cover group-hover:scale-105 transition duration-300"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-violet-600 to-sky-700 flex items-center justify-center">
-            <span className="text-white/90 text-[10px] font-semibold tracking-wide uppercase text-center px-2 leading-tight">
+          <div className="w-full h-full bg-gradient-to-br from-violet-600 to-sky-700 flex items-center justify-center p-3">
+            <span className="text-white/90 text-xs sm:text-sm font-semibold tracking-wide uppercase text-center leading-tight">
               {episode.title}
             </span>
           </div>
         )}
       </div>
 
-      {/* Column 2 */}
-      <div className="flex-1 min-w-0 flex flex-col gap-1">
-        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 truncate group-hover:text-sky-600 transition">
-          {episode.title}
-        </h3>
+      {/* Main Content & Right Section Area */}
+      <div className="flex-1 flex items-center justify-between gap-6 p-5 sm:p-6 min-w-0">
+        {/* Left Info: Title, Host, Category & Description */}
+        <div className="flex-1 min-w-0 flex flex-col gap-2">
+          <div>
+            <h3 className="text-lg sm:text-xl font-black text-slate-900 truncate group-hover:text-sky-600 transition">
+              {episode.title}
+            </h3>
+            <p className="text-sm font-medium text-slate-500">
+              {episode.hostName}
+            </p>
+          </div>
 
-        <span className="text-[11px] sm:text-xs text-slate-400">
-          {episode.hostName}
-        </span>
+          {episode.category && (
+            <span className="w-fit text-xs font-semibold text-violet-600 bg-violet-50 px-3 py-0.5 rounded-full">
+              {episode.category}
+            </span>
+          )}
 
-        {episode.category && (
-          <span className="w-fit text-[10px] font-semibold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-full mt-0.5">
-            {episode.category}
-          </span>
-        )}
-
-        {episode.description && (
-          <p className="text-[11px] sm:text-xs text-slate-500 line-clamp-2 mt-0.5">
-            {episode.description}
-          </p>
-        )}
-      </div>
-
-      {/* Column 3 */}
-      <div className="hidden sm:flex shrink-0 flex-col items-start gap-1 w-28">
-        <div className="flex items-center gap-1 text-[13px] text-slate-700 font-medium">
-          <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-          <span>{episode.rating}</span>
+          {episode.description && (
+            <p className="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed">
+              {episode.description}
+            </p>
+          )}
         </div>
 
-        <span className="text-[11px] text-slate-400">
-          &middot; {episode.episodeCount} episodes
-        </span>
-      </div>
-
-      {/* Column 4 */}
-      <div className="shrink-0 flex items-center gap-3 sm:gap-4">
-        <div className="hidden md:block min-w-0 max-w-[160px]">
-          <p className="text-[11px] text-slate-400">
-            Latest Episode
-          </p>
-
-          <p className="text-xs sm:text-[13px] font-semibold text-slate-800 truncate">
-            {episode.latestEpisodeTitle}
-          </p>
-
-          <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
-            {formattedDate}
-
-            {formattedDate && episode.latestEpisodeDuration && (
+        {/* Center/Right Info: Rating ke Niche Latest Episode Block */}
+        <div className="hidden md:flex flex-col items-start gap-3 min-w-0 max-w-[220px] shrink-0">
+          {/* Top Line: Rating & Episodes Count */}
+          {episode.rating && (
+            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 font-medium whitespace-nowrap">
+              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              <span className="font-bold text-slate-800">{episode.rating}</span>
               <span>&middot;</span>
-            )}
+              <span>{episode.episodeCount} episodes</span>
+            </div>
+          )}
 
-            {episode.latestEpisodeDuration}
-          </p>
+          {/* Bottom Line: Latest Episode details directly under Rating */}
+          {episode.latestEpisodeTitle && (
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold text-slate-400">
+                Latest Episode
+              </p>
+              <p className="text-xs sm:text-sm font-bold text-slate-800 truncate mt-0.5">
+                {episode.latestEpisodeTitle}
+              </p>
+              <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5 font-medium">
+                {formattedDate}
+                {formattedDate && episode.latestEpisodeDuration && (
+                  <span>&middot;</span>
+                )}
+                {episode.latestEpisodeDuration}
+              </p>
+            </div>
+          )}
         </div>
 
-        {/* Play Button */}
+        {/* Separate Play Button on the Far Right */}
         {episode.latestEpisodeAudioUrl && (
           <button
             type="button"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-
               setIsPlaying((prev) => !prev);
             }}
-            className={`shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition
+            className={`shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-full border flex items-center justify-center transition-all duration-200
               ${isPlaying
-                ? "bg-sky-600 text-white border-sky-600"
-                : "border-slate-300 text-slate-800 hover:bg-sky-600 hover:text-white hover:border-sky-600"
+                ? "bg-sky-600 text-white border-sky-600 scale-105"
+                : "border-slate-200 text-slate-900 bg-slate-50 hover:bg-sky-600 hover:text-white hover:border-sky-600 hover:scale-105"
               }`}
           >
             {isPlaying ? (
-              <Pause className="w-3.5 h-3.5 fill-current" />
+              <Pause className="w-5 h-5 fill-current" />
             ) : (
-              <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+              <Play className="w-5 h-5 fill-current ml-0.5" />
             )}
           </button>
         )}
       </div>
 
-      {/* Audio */}
+      {/* Hidden Audio Element */}
       {isPlaying && episode.latestEpisodeAudioUrl && (
         <audio
           src={episode.latestEpisodeAudioUrl}
@@ -789,7 +789,7 @@ export default function PodcastBrowseSection({
             <StartPodcastForm />
 
             {/* <GrowthPlaybookPromo /> */}
-            <EbookPromoCard/>
+            <EbookPromoCard />
 
             {/* <BuildAppCard /> */}
             {/* <PopularTopics /> */}
