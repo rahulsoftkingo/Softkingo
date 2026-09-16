@@ -194,7 +194,7 @@ export function PodcastRowCard({ episode }) {
   return (
     <Link
       href={`/podcast/${episode.slug}`}
-      className="group flex items-center bg-white border border-slate-200 rounded-3xl min-h-[170px] overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-200"
+      className="group flex items-center bg-white border border-slate-200 rounded-3xl min-h-[220px] overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-200"
     >
       {/* Column 1: Image Container */}
       <div className="relative shrink-0 w-44 sm:w-52 self-stretch my-3 ml-3 sm:my-4 sm:ml-4 rounded-2xl overflow-hidden bg-slate-100">

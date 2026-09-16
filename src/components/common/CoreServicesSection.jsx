@@ -157,8 +157,8 @@ function TailwindServiceCard({ service, index }) {
     return (
         <div className="bg-gradient-to-br from-sky-600 via-sky-500 to-sky-400 rounded-3xl overflow-hidden min-h-[450px] flex flex-col group transition-all duration-500 relative w-full shadow-xl animate-card-fade-in p-6 md:p-10">
             {/* Navigation Arrow Top Right - Only this element triggers navigation */}
-            <a 
-                href={service?.link || "/contact"} 
+            <a
+                href={service?.link || "/contact"}
                 className="absolute top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/30 flex items-center justify-center text-white -rotate-45 group-hover:rotate-0 transition-all duration-500 z-20 shadow-lg hover:border-white"
             >
                 <FaArrowRight className="text-xl" />
@@ -170,10 +170,10 @@ function TailwindServiceCard({ service, index }) {
 
             <div className="space-y-4 flex-1 relative z-10">
                 <div className="flex items-center gap-5">
-                    <div className="w-14 h-14 flex items-center justify-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl shrink-0">
+                    {/* <div className="w-14 h-14 flex items-center justify-center text-white font-semibold text-2xl md:text-3xl lg:text-4xl shrink-0">
                         {String(index + 1).padStart(2, "0")}
-                    </div>
-                    <h3 className="text-white font-bold text-2xl md:text-3xl lg:text-4xl pr-16 md:pr-20">
+                    </div> */}
+                    <h3 className="text-white font-bold text-xl md:text-2xl lg:text-3xl pr-16 md:pr-20">
                         {service?.title || service?.name || "Service"}
                     </h3>
                 </div>
@@ -185,12 +185,11 @@ function TailwindServiceCard({ service, index }) {
 
                 {/* Capabilities */}
                 <div className="space-y-4 mb-8">
-                    <h4 className="text-sm font-bold text-white/70 uppercase tracking-widest">Key Capabilities</h4>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {(service?.capabilities || []).map((cap, i) => (
                             <li key={i} className="flex items-start gap-3 text-base text-white opacity-90 font-medium">
-                                <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1"> 
-                                    <FaArrowRight className="h-2 w-2" /> 
+                                <span className="p-1 border border-white/50 rounded-full shrink-0 mt-1">
+                                    <FaArrowRight className="h-2 w-2" />
                                 </span>
                                 {cap}
                             </li>
@@ -290,11 +289,10 @@ export default function CoreServicesSection({
                                     id={`nav-btn-${idx}`}
                                     type="button"
                                     onClick={() => handleTabChange(idx)}
-                                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shrink-0 border ${
-                                        activeIndex === idx
+                                    className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 shrink-0 border ${activeIndex === idx
                                             ? "bg-sky-500 text-white border-sky-400 shadow-lg shadow-sky-500/20"
                                             : "bg-white text-sky-600 border-sky-100 hover:border-sky-300"
-                                    }`}
+                                        }`}
                                 >
                                     {s?.title || s?.name || `Service ${idx + 1}`}
                                 </button>
@@ -304,7 +302,7 @@ export default function CoreServicesSection({
 
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 mt-10 lg:mt-16 items-start">
                         {/* ─── LEFT NAVIGATION SIDEBAR (DESKTOP) ───────────────── */}
-                        <div className="hidden lg:block w-80 shrink-0 rounded-2xl border-0 bg-slate-50/50 backdrop-blur-md shadow-lg shadow-sky-900/5 p-2">
+                        <div className="hidden lg:block w-80 shrink-0 rounded-2xl border-0 bg-slate-50/50 backdrop-blur-md shadow-lg shadow-sky-900/5 p-2 h-[500px] overflow-y-auto">
                             <div className="space-y-2.5">
                                 {services.map((s, idx) => {
                                     const isActive = activeIndex === idx;
@@ -314,20 +312,18 @@ export default function CoreServicesSection({
                                             type="button"
                                             onClick={() => setActiveIndex(idx)}
                                             onMouseEnter={() => setActiveIndex(idx)}
-                                            className={`w-full text-left px-5 py-6 min-h-[72px] rounded-xl transition-all duration-300 group relative flex items-center border-none outline-none ${
-                                                isActive
+                                            className={`w-full text-left px-5 py-6 min-h-[72px] rounded-xl transition-all duration-300 group relative flex items-center border-none outline-none ${isActive
                                                     ? "bg-white shadow-md"
                                                     : "text-slate-600 hover:bg-white/60"
-                                            }`}
+                                                }`}
                                         >
                                             {/* Service Title */}
                                             <div className="flex-1 min-w-0">
                                                 <h4
-                                                    className={`text-base font-semibold leading-snug transition-colors duration-300 ${
-                                                        isActive
+                                                    className={`text-base font-semibold leading-snug transition-colors duration-300 ${isActive
                                                             ? "text-sky-600 font-bold"
                                                             : "text-slate-700"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {s?.title || s?.name || `Service ${idx + 1}`}
                                                 </h4>
@@ -341,10 +337,10 @@ export default function CoreServicesSection({
                         {/* Active Component Wrapper (Right Side Content Container) */}
                         <div className="flex-1 w-full min-h-[450px]">
                             {services[activeIndex] && (
-                                <TailwindServiceCard 
-                                    key={activeIndex} 
-                                    service={services[activeIndex]} 
-                                    index={activeIndex} 
+                                <TailwindServiceCard
+                                    key={activeIndex}
+                                    service={services[activeIndex]}
+                                    index={activeIndex}
                                 />
                             )}
                         </div>

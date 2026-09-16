@@ -6,6 +6,7 @@ import prisma from "@/lib/prisma";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import InquirySection from "@/components/footer/InquirySection";
 import PlayEpisodeButton from "./PlayEpisodeButton";
+import RelatedPlayButton from "./RelatedPlayButton";
 
 export const dynamic = "force-dynamic";
 
@@ -52,11 +53,6 @@ const SOCIAL_ICONS = {
       <rect x="3" y="3" width="18" height="18" rx="5" />
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  ),
-  twitter: (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-      <path d="M20 4.5c-.7.3-1.4.5-2.2.6.8-.5 1.4-1.2 1.6-2.1-.7.4-1.6.8-2.4.9A3.7 3.7 0 0011 6.9c0 .3 0 .6.1.8-3-.1-5.7-1.6-7.5-3.8-.3.6-.5 1.2-.5 1.9 0 1.3.6 2.4 1.6 3.1-.6 0-1.1-.2-1.6-.4v.1c0 1.8 1.3 3.3 3 3.7-.3.1-.6.1-1 .1-.2 0-.5 0-.7-.1.5 1.5 1.9 2.6 3.5 2.6a7.4 7.4 0 01-5.4 1.5A10.4 10.4 0 009 18.5c6.2 0 9.6-5.1 9.6-9.6v-.4c.7-.5 1.2-1.1 1.4-1.9" />
     </svg>
   ),
   linkedin: (
@@ -201,7 +197,11 @@ export default async function PodcastDetailPage({ params }) {
               )}
 
               <div className="flex flex-wrap items-center gap-3 pt-1 animate-fadeInUp delay-400">
-                {(podcast.latestEpisodeAudioUrl || episodesList.length > 0) && <PlayEpisodeButton />}
+                {(podcast.latestEpisodeAudioUrl || episodesList.length > 0) && (
+                  <PlayEpisodeButton
+                    audioUrl={podcast.latestEpisodeAudioUrl || episodesList[0]?.audioUrl}
+                  />
+                )}
                 <button
                   type="button"
                   className="inline-flex items-center gap-2 rounded-full border border-sky-400 bg-white text-sky-600 hover:bg-sky-50 text-sm font-medium px-5 py-2.5 shadow-md shadow-sky-900/10 transform hover:-translate-y-1 transition-all duration-300"
@@ -256,232 +256,113 @@ export default async function PodcastDetailPage({ params }) {
             {/* LEFT SIDEBAR */}
             <aside className="space-y-5 lg:sticky lg:top-24">
               {/* About This Podcast */}
-              {podcast.summary && (
-                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm">
-                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 mb-2">
-                    About This Podcast
-                  </h2>
-                  <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-line">
-                    {podcast.summary}
-                  </p>
-                </div>
-              )}
+              <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm space-y-5">
 
-              {/* Host card */}
-              {podcast.hostName && (
-                <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="relative w-9 h-9 rounded-full overflow-hidden bg-sky-100 shrink-0">
-                      {podcast.hostAvatar ? (
-                        <Image
-                          src={safeImg(podcast.hostAvatar)}
-                          alt={podcast.hostName}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-sky-700 text-xs font-bold">
-                          {podcast.hostName[0]}
-                        </div>
-                      )}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-[10px] text-slate-400 uppercase tracking-wide">Host</p>
-                      <p className="text-sm font-semibold text-slate-900 truncate">{podcast.hostName}</p>
-                      {podcast.hostRole && (
-                        <p className="text-[11px] text-slate-500 truncate">{podcast.hostRole}</p>
-                      )}
-                    </div>
+                {/* About This Podcast */}
+                {podcast.summary && (
+                  <div className="space-y-2 text-xs text-slate-600 pt-3 border-b border-slate-100">
+                    <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 mb-2">
+                      About This Podcast
+                    </h2>
+
+                    <p className="text-xs text-slate-600 leading-relaxed whitespace-pre-line">
+                      {podcast.summary}
+                    </p>
                   </div>
+                )}
 
-                  <ul className="space-y-2 text-xs text-slate-600 pt-1 border-t border-slate-100">
-                    {podcast.category && (
-                      <li className="flex items-center gap-2 pt-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                        <span>
-                          <strong>Category:</strong> {podcast.category}
-                        </span>
-                      </li>
-                    )}
+                {/* Host */}
+                {podcast.hostName && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-9 h-9 rounded-full overflow-hidden bg-sky-100 shrink-0">
+                        {podcast.hostAvatar ? (
+                          <Image
+                            src={safeImg(podcast.hostAvatar)}
+                            alt={podcast.hostName}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-sky-700 text-xs font-bold">
+                            {podcast.hostName[0]}
+                          </div>
+                        )}
+                      </div>
 
-                    {podcast.language && (
-                      <li className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                        <span>
-                          <strong>Language:</strong> {podcast.language}
-                        </span>
-                      </li>
-                    )}
+                      <div className="min-w-0">
+                        <p className="text-[10px] text-slate-400 uppercase tracking-wide">
+                          Host
+                        </p>
 
-                    {podcast.frequency && (
-                      <li className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
-                        <span>
-                          <strong>Frequency:</strong> {podcast.frequency}
-                        </span>
-                      </li>
-                    )}
-                  </ul>
+                        <p className="text-sm font-semibold text-slate-900 truncate">
+                          {podcast.hostName}
+                        </p>
 
-                  {activeSocials.length > 0 && (
-                    <div className="pt-2 border-t border-slate-100">
-                      <p className="text-[10px] text-slate-400 uppercase tracking-wide mb-2">
-                        Follow &amp; Connect
-                      </p>
-                      <div className="flex items-center gap-2">
-                        {activeSocials.map(([key, url]) => (
-                          <a
-                            key={key}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="w-7 h-7 rounded-full bg-slate-100 hover:bg-sky-100 text-slate-500 hover:text-sky-700 flex items-center justify-center transition-colors"
-                            title={key}
-                          >
-                            {SOCIAL_ICONS[key]}
-                          </a>
-                        ))}
+                        {podcast.hostRole && (
+                          <p className="text-[11px] text-slate-500 truncate">
+                            {podcast.hostRole}
+                          </p>
+                        )}
                       </div>
                     </div>
-                  )}
-                </div>
-              )}
 
-              {/* EPISODES / AUDIO SECTION (MATCHING SCREENSHOT UI) */}
-              {(podcast.latestEpisodeAudioUrl || episodesList.length > 0) && (
-                <div
-                  id="latest-episode"
-                  className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm scroll-mt-24 space-y-4"
-                >
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <h2 className="text-sm font-bold text-slate-800">
-                      Podcast Episodes
-                    </h2>
-                    {episodesList.length > 0 && (
-                      <span className="text-[11px] font-medium text-sky-600 bg-sky-50 px-2 py-0.5 rounded-full">
-                        {episodesList.length} Episodes
-                      </span>
-                    )}
-                  </div>
+                    <ul className="space-y-2 text-xs text-slate-600 pt-3 border-t border-slate-100">
+                      {podcast.category && (
+                        <li className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
+                          <span>
+                            <strong>Category:</strong> {podcast.category}
+                          </span>
+                        </li>
+                      )}
 
-                  {episodesList.length > 0 ? (
-                    <div className="space-y-3 max-h-[440px] overflow-y-auto pr-1">
-                      {episodesList.map((ep, idx) => (
-                        <div
-                          key={ep.id || ep.slug || idx}
-                          className="flex items-center justify-between gap-3 p-2 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-sky-50/30 transition-colors"
-                        >
-                          {/* Image Box */}
-                          <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
-                            <Image
-                              src={safeImg(ep.coverImage || podcast.coverImage)}
-                              alt={ep.title || "Episode Thumbnail"}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
+                      {podcast.language && (
+                        <li className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
+                          <span>
+                            <strong>Language:</strong> {podcast.language}
+                          </span>
+                        </li>
+                      )}
 
-                          {/* Info */}
-                          <div className="min-w-0 flex-1">
-                            <h3 className="text-xs font-semibold text-slate-900 line-clamp-1">
-                              {ep.title}
-                            </h3>
-                            <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
-                              {ep.author || ep.hostName || podcast.hostName || `Episode ${ep.episodeNumber || idx + 1}`}
-                            </p>
-                            <div className="flex items-center gap-2 text-[10px] text-amber-500 font-medium mt-1">
-                              {ep.rating ? (
-                                <span className="inline-flex items-center gap-0.5">
-                                  ★ {ep.rating.toFixed(1)}
-                                </span>
-                              ) : (
-                                <span className="text-slate-400">
-                                  {ep.duration || "Audio"}
-                                </span>
-                              )}
-                            </div>
-                          </div>
+                      {podcast.frequency && (
+                        <li className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0" />
+                          <span>
+                            <strong>Frequency:</strong> {podcast.frequency}
+                          </span>
+                        </li>
+                      )}
+                    </ul>
 
-                          {/* Circular Play Button */}
-                          {ep.audioUrl ? (
+                    {activeSocials.length > 0 && (
+                      <div className="pt-3 border-t border-slate-100">
+                        <p className="text-[10px] text-slate-400 uppercase tracking-wide mb-2">
+                          Follow &amp; Connect
+                        </p>
+
+                        <div className="flex items-center gap-2">
+                          {activeSocials.map(([key, url]) => (
                             <a
-                              href={ep.audioUrl}
+                              key={key}
+                              href={url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 hover:text-sky-600 flex items-center justify-center shrink-0 shadow-sm transition-all"
-                              title="Play Episode"
+                              className="w-7 h-7 rounded-full bg-slate-100 hover:bg-sky-100 text-slate-500 hover:text-sky-700 flex items-center justify-center transition-colors"
+                              title={key}
                             >
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="w-4 h-4 translate-x-[1px]"
-                              >
-                                <path d="M8 5v14l11-7z" />
-                              </svg>
+                              {SOCIAL_ICONS[key]}
                             </a>
-                          ) : ep.slug ? (
-                            <Link
-                              href={`/podcast/${podcast.slug}/${ep.slug}`}
-                              className="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 hover:text-sky-600 flex items-center justify-center shrink-0 shadow-sm transition-all"
-                              title="View Episode"
-                            >
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="w-4 h-4 translate-x-[1px]"
-                              >
-                                <path d="M8 5v14l11-7z" />
-                              </svg>
-                            </Link>
-                          ) : null}
+                          ))}
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    /* Fallback Single Episode */
-                    <div className="flex items-center justify-between gap-3 p-2 rounded-xl border border-slate-100 bg-slate-50/50">
-                      <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
-                        <Image
-                          src={safeImg(podcast.coverImage)}
-                          alt={podcast.latestEpisodeTitle || podcast.title}
-                          fill
-                          className="object-cover"
-                        />
                       </div>
+                    )}
+                  </div>
+                )}
 
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-xs font-semibold text-slate-900 line-clamp-1">
-                          {podcast.latestEpisodeTitle || podcast.title}
-                        </h3>
-                        <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
-                          {podcast.hostName || "Latest Episode"}
-                        </p>
-                        <p className="text-[10px] text-slate-400 mt-1">
-                          {podcast.latestEpisodeDuration || "Audio"}
-                        </p>
-                      </div>
+              </div>
 
-                      {podcast.latestEpisodeAudioUrl && (
-                        <a
-                          href={podcast.latestEpisodeAudioUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 hover:text-sky-600 flex items-center justify-center shrink-0 shadow-sm transition-all"
-                          title="Play Episode"
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-4 h-4 translate-x-[1px]"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
 
               {/* You may also like */}
               {related.length > 0 && (
@@ -503,15 +384,7 @@ export default async function PodcastDetailPage({ params }) {
                             <p className="text-[11px] text-amber-500 font-medium">★ {p.rating.toFixed(1)}</p>
                           )}
                         </div>
-                        <svg
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          className="w-3.5 h-3.5 text-slate-300 group-hover:text-sky-500 shrink-0"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                        </svg>
+                        <RelatedPlayButton audioUrl={p.latestEpisodeAudioUrl} />
                       </Link>
                     ))}
                   </div>

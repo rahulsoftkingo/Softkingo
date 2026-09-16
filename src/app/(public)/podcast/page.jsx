@@ -162,6 +162,17 @@ export default async function PodcastPage(props) {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-sky-950/80 to-sky-900/40" />
         </div>
 
+        {/* NEW: Featured podcast image placed in the circled area */}
+        {/* <div className="absolute top-2 right-6 sm:right-10 lg:right-16 w-[220px] sm:w-[280px] lg:w-[340px] h-[160px] sm:h-[200px] lg:h-[240px] z-[5] pointer-events-none">
+          <Image
+            src="/images/podcast/pngimage.png"
+            alt="Featured podcast"
+            fill
+            priority
+            className="object-contain drop-shadow-2xl"
+          />
+        </div> */}
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pt-8 sm:pb-16 text-slate-50 flex flex-col justify-between min-h-[340px]">
           {/* Breadcrumb Navigation */}
           <nav className="flex items-center gap-2 text-[11px] sm:text-xs text-slate-200 mb-4">
@@ -172,20 +183,10 @@ export default async function PodcastPage(props) {
             <span className="text-sky-300 font-medium">Podcast</span>
           </nav>
 
-          {/* Eyebrow pill */}
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-1 text-[11px] text-sky-200 mb-4">
-            <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
-            Discover. Listen. Get inspired.
-          </div>
-
           {/* Header Main Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-end">
             {/* Left Column: Text, Search, Chips */}
             <div className="lg:col-span-6 xl:col-span-6 space-y-5">
-              <p className="text-[11px] sm:text-xs tracking-[0.24em] uppercase text-sky-300 font-semibold">
-                PODCAST & TALKS
-              </p>
-
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white leading-normal">
                 Deep dives into
                 <br />
@@ -212,39 +213,6 @@ export default async function PodcastPage(props) {
                   {category && <input type="hidden" name="category" value={category} />}
                 </div>
               </form>
-
-              {/* Topic Filter Chips — fixed 4 categories, with icons */}
-              {/* <div className="flex items-center overflow-x-auto scrollbar-hide gap-2 text-[11px] sm:text-xs pt-1">
-                <span className="text-slate-200 shrink-0">Browse by topic:</span>
-
-                <Link
-                  href={buildUrl(q, "", 1)}
-                  className={`px-3 py-1 rounded-full border ${!category
-                    ? "bg-sky-500 text-slate-900 border-sky-300 font-medium"
-                    : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
-                    } text-[11px] transition-colors shrink-0`}
-                >
-                  All
-                </Link>
-
-                {CATEGORIES.map((t) => {
-                  const Icon = getCategoryIcon(t);
-                  const active = category?.toLowerCase() === t.toLowerCase();
-                  return (
-                    <Link
-                      key={t}
-                      href={buildUrl(q, t, 1)}
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-full border shrink-0 ${active
-                        ? "bg-sky-500 text-slate-900 border-sky-300 font-medium"
-                        : "bg-slate-900/60 text-slate-100 border-slate-500 hover:bg-slate-800"
-                        } text-[11px] transition-colors`}
-                    >
-                      <Icon className="h-3 w-3" />
-                      {t}
-                    </Link>
-                  );
-                })}
-              </div> */}
             </div>
 
             {/* Right Column: Compact Inline Row with Minimal Margins */}
@@ -362,7 +330,7 @@ function PodcastRowCard({ episode }) {
   );
 }
 
-{/* Sidebar Compact Card Component */}
+{/* Sidebar Compact Card Component */ }
 function PodcastCompactCard({ episode }) {
   return (
     <div className="border-b border-slate-100 pb-2.5 last:border-0 last:pb-0">

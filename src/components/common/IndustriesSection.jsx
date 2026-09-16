@@ -173,7 +173,7 @@ export default function IndustriesSection({ data, industries }) {
                 />
 
                 {/* Tabs: Separated Underlined style */}
-                <div className="relative flex lg:justify-center w-full overflow-hidden">
+                <div className="relative flex lg:justify-center w-full overflow-auto">
                     <div className="flex gap-4 md:gap-5 lg:gap-8 overflow-x-auto no-scrollbar [&::-webkit-scrollbar]:hidden pb-4 relative z-10 w-full px-4 items-center justify-start lg:justify-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {activeIndustriesList.map((ind, i) => (
                             <button

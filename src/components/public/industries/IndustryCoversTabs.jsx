@@ -117,8 +117,9 @@ export function IndustryCoversTabs({ data }) {
 
         <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-0 lg:min-h-[500px] shadow-2xl">
           {/* LEFT SIDE: TABS (Sky Background) */}
-          <div className="w-full lg:min-w-[40%] lg:w-fit bg-sky-500 p-4 sm:p-6 lg:p-8 flex flex-col">
-            <div className="flex flex-row lg:flex-col gap-2 sm:gap-4 flex-1 pb-2 lg:pb-0 scrollbar-none">
+          <div className="w-full lg:w-[35%] lg:min-w-[300px] bg-sky-500 p-4 sm:p-6 lg:p-8 flex flex-col">
+            {/* Added overflow-x-auto for mobile horizontal scroll */}
+            <div className="flex flex-row lg:flex-col gap-2 sm:gap-4 flex-1 pb-2 lg:pb-0 overflow-x-auto lg:overflow-x-visible scrollbar-none">
               {data.items.map((item, index) => (
                 <button
                   key={index}
@@ -126,7 +127,7 @@ export function IndustryCoversTabs({ data }) {
                   onMouseEnter={() => setActiveTab(index)}
                   className={`text-left px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all duration-300 flex items-center justify-between whitespace-nowrap lg:whitespace-normal shrink-0 lg:shrink group w-auto lg:w-full ${activeTab === index
                       ? "bg-white text-sky-700 shadow-lg translate-x-0 lg:translate-x-2"
-                      : "hover:bg-sky-500/50 text-sky-50"
+                      : "hover:bg-sky-400/50 text-sky-50"
                     }`}
                 >
                   <span className="font-bold text-sm sm:text-base md:text-lg mr-2 lg:mr-0">
@@ -168,7 +169,7 @@ export function IndustryCoversTabs({ data }) {
                   <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
                     <Image
                       src={activeItem.icon}
-                      alt="icon"
+                      alt={activeItem.title || "icon"}
                       fill
                       className="object-contain"
                     />
@@ -177,8 +178,8 @@ export function IndustryCoversTabs({ data }) {
               </div>
 
               {/* Description */}
-              <div className="prose prose-sm sm:prose-base md:prose-lg text-slate-600 leading-relaxed">
-                <p
+              <div className="prose prose-sm sm:prose-base md:prose-lg text-slate-600 leading-relaxed max-w-none">
+                <div
                   className="rich-text"
                   dangerouslySetInnerHTML={{
                     __html: activeItem.description,

@@ -963,7 +963,7 @@ export default async function ServicePage({ params }) {
                   </Link>
                   <span className="text-gray-400">›</span>
                   <Link href="/services" className="hover:text-cyan-400 transition-colors">
-                    Our services
+                    Services
                   </Link>
                   <span className="text-gray-400">›</span>
                   <span className="text-cyan-400 ">{service.title}</span>
