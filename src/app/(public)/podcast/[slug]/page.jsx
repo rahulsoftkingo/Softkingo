@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import ConsultationCTA from "@/components/common/Consultation-Cta";
 import InquirySection from "@/components/footer/InquirySection";
+import PlayEpisodeButton from "./PlayEpisodeButton";
 
 export const dynamic = "force-dynamic";
 
@@ -95,6 +96,7 @@ export default async function PodcastDetailPage({ params }) {
   }
 
   const topics = parseArray(podcast.topicsJson);
+  const episodesList = parseArray(podcast.episodesJson);
   const socialLinks = parseObject(podcast.socialLinksJson, SOCIAL_DEFAULTS);
   const platformLinks = parseObject(podcast.platformLinksJson, PLATFORM_DEFAULTS);
 
@@ -129,12 +131,6 @@ export default async function PodcastDetailPage({ params }) {
             <Link href="/podcast" className="hover:text-sky-500 transition-colors">
               Podcasts
             </Link>
-            {/* {podcast.category && (
-              <>
-                <span>›</span>
-                <span className="text-slate-500">{podcast.category}</span>
-              </>
-            )} */}
             <span>›</span>
             <span className="text-sky-500 font-medium line-clamp-1">{podcast.title}</span>
           </nav>
@@ -205,17 +201,7 @@ export default async function PodcastDetailPage({ params }) {
               )}
 
               <div className="flex flex-wrap items-center gap-3 pt-1 animate-fadeInUp delay-400">
-                {podcast.latestEpisodeAudioUrl && (
-                  <a
-                    href="#latest-episode"
-                    className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-600 via-sky-500 to-sky-400 text-white text-sm font-medium px-5 py-2.5 shadow-lg shadow-sky-900/30 hover:bg-gradient-to-l hover:from-sky-500 hover:to-sky-400 transform hover:-translate-y-1 transition-all duration-300"
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                    Play Latest Episode
-                  </a>
-                )}
+                {(podcast.latestEpisodeAudioUrl || episodesList.length > 0) && <PlayEpisodeButton />}
                 <button
                   type="button"
                   className="inline-flex items-center gap-2 rounded-full border border-sky-400 bg-white text-sky-600 hover:bg-sky-50 text-sm font-medium px-5 py-2.5 shadow-md shadow-sky-900/10 transform hover:-translate-y-1 transition-all duration-300"
@@ -361,32 +347,138 @@ export default async function PodcastDetailPage({ params }) {
                 </div>
               )}
 
-              {/* Latest episode / audio */}
-              {podcast.latestEpisodeAudioUrl && (
+              {/* EPISODES / AUDIO SECTION (MATCHING SCREENSHOT UI) */}
+              {(podcast.latestEpisodeAudioUrl || episodesList.length > 0) && (
                 <div
                   id="latest-episode"
-                  className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm scroll-mt-24"
+                  className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm scroll-mt-24 space-y-4"
                 >
-                  <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 mb-2">
-                    Latest Episode
-                  </h2>
-                  {podcast.latestEpisodeTitle && (
-                    <p className="text-sm font-medium text-slate-800 mb-2 line-clamp-2">
-                      {podcast.latestEpisodeTitle}
-                    </p>
-                  )}
-                  <audio
-                    src={podcast.latestEpisodeAudioUrl}
-                    controls
-                    controlsList="nodownload noplaybackrate"
-                    className="w-full h-9"
-                  >
-                    Your browser does not support the audio element.
-                  </audio>
-                  {podcast.latestEpisodeDuration && (
-                    <p className="text-[11px] text-slate-400 mt-2">
-                      Duration: {podcast.latestEpisodeDuration}
-                    </p>
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h2 className="text-sm font-bold text-slate-800">
+                      Podcast Episodes
+                    </h2>
+                    {episodesList.length > 0 && (
+                      <span className="text-[11px] font-medium text-sky-600 bg-sky-50 px-2 py-0.5 rounded-full">
+                        {episodesList.length} Episodes
+                      </span>
+                    )}
+                  </div>
+
+                  {episodesList.length > 0 ? (
+                    <div className="space-y-3 max-h-[440px] overflow-y-auto pr-1">
+                      {episodesList.map((ep, idx) => (
+                        <div
+                          key={ep.id || ep.slug || idx}
+                          className="flex items-center justify-between gap-3 p-2 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-sky-50/30 transition-colors"
+                        >
+                          {/* Image Box */}
+                          <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                            <Image
+                              src={safeImg(ep.coverImage || podcast.coverImage)}
+                              alt={ep.title || "Episode Thumbnail"}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+
+                          {/* Info */}
+                          <div className="min-w-0 flex-1">
+                            <h3 className="text-xs font-semibold text-slate-900 line-clamp-1">
+                              {ep.title}
+                            </h3>
+                            <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
+                              {ep.author || ep.hostName || podcast.hostName || `Episode ${ep.episodeNumber || idx + 1}`}
+                            </p>
+                            <div className="flex items-center gap-2 text-[10px] text-amber-500 font-medium mt-1">
+                              {ep.rating ? (
+                                <span className="inline-flex items-center gap-0.5">
+                                  ★ {ep.rating.toFixed(1)}
+                                </span>
+                              ) : (
+                                <span className="text-slate-400">
+                                  {ep.duration || "Audio"}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Circular Play Button */}
+                          {ep.audioUrl ? (
+                            <a
+                              href={ep.audioUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 hover:text-sky-600 flex items-center justify-center shrink-0 shadow-sm transition-all"
+                              title="Play Episode"
+                            >
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                className="w-4 h-4 translate-x-[1px]"
+                              >
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </a>
+                          ) : ep.slug ? (
+                            <Link
+                              href={`/podcast/${podcast.slug}/${ep.slug}`}
+                              className="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 hover:text-sky-600 flex items-center justify-center shrink-0 shadow-sm transition-all"
+                              title="View Episode"
+                            >
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                className="w-4 h-4 translate-x-[1px]"
+                              >
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </Link>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    /* Fallback Single Episode */
+                    <div className="flex items-center justify-between gap-3 p-2 rounded-xl border border-slate-100 bg-slate-50/50">
+                      <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
+                        <Image
+                          src={safeImg(podcast.coverImage)}
+                          alt={podcast.latestEpisodeTitle || podcast.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-xs font-semibold text-slate-900 line-clamp-1">
+                          {podcast.latestEpisodeTitle || podcast.title}
+                        </h3>
+                        <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
+                          {podcast.hostName || "Latest Episode"}
+                        </p>
+                        <p className="text-[10px] text-slate-400 mt-1">
+                          {podcast.latestEpisodeDuration || "Audio"}
+                        </p>
+                      </div>
+
+                      {podcast.latestEpisodeAudioUrl && (
+                        <a
+                          href={podcast.latestEpisodeAudioUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-300 text-slate-700 hover:text-sky-600 flex items-center justify-center shrink-0 shadow-sm transition-all"
+                          title="Play Episode"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-4 h-4 translate-x-[1px]"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
                   )}
                 </div>
               )}
@@ -427,23 +519,17 @@ export default async function PodcastDetailPage({ params }) {
               )}
 
               {/* Build your own podcast app promo */}
-              {/* Build your own podcast app promo */}
               <div className="relative bg-white rounded-2xl p-5 text-gray-900 shadow-sm border border-gray-100 min-h-[290px] overflow-visible">
-
-                {/* Text Section */}
                 <div className="relative z-10 w-[58%] translate-x-[5px] space-y-1.5">
                   <h2 className="text-sm font-semibold leading-tight text-slate-900">
                     Build Your Own Podcast App
                   </h2>
-
                   <p className="text-[11px] text-gray-500 leading-relaxed">
                     Launch your podcast with a beautiful, branded mobile app that grows
                     your audience.
                   </p>
                 </div>
 
-
-                {/* Phone Image */}
                 <div className="absolute -top-7 right-[-15px] w-[215px] h-[285px] z-20 pointer-events-none">
                   <Image
                     src="/images/podcast/phone.png"
@@ -455,7 +541,6 @@ export default async function PodcastDetailPage({ params }) {
                   />
                 </div>
 
-                {/* Button */}
                 <div className="absolute bottom-5 left-5 right-5 z-30">
                   <Link
                     href="/services"
@@ -465,7 +550,6 @@ export default async function PodcastDetailPage({ params }) {
                     <span className="text-sm">→</span>
                   </Link>
                 </div>
-
               </div>
 
               <Link

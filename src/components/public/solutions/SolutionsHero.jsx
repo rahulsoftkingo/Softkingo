@@ -7,6 +7,7 @@ import PopupQuoteModal from '@/components/PopupQuoteModal';
 
 export default function SolutionsHero({ data2, data, endpoint }) {
 
+
   // 1. Initialize State
   const [imgSrc, setImgSrc] = useState(data?.image);
   const [showModal, setShowModal] = useState(false);
@@ -16,24 +17,24 @@ export default function SolutionsHero({ data2, data, endpoint }) {
     setImgSrc(data?.image);
   }, [data?.image]);
 
-  if (!data || !data2) return null;
+  if (!data) return null;
 
   // Stats cards data
   const stats = [
     {
       icon: <Rocket className="w-4 h-4 sm:w-7 sm:h-7 text-sky-500" />,
-      value: data2.items?.[0]?.value,
-      label: data2.items?.[0]?.label,
+      value: data2?.items?.[0]?.value ?? "100+",
+      label: data2?.items?.[0]?.label ?? "Projects Completed",
     },
     {
       icon: <Users className="w-4 h-4 sm:w-7 sm:h-7 text-sky-500" />,
-      value: data2.items?.[1]?.value,
-      label: data2.items?.[1]?.label,
+      value: data2?.items?.[1]?.value ?? "50+",
+      label: data2?.items?.[1]?.label ?? "Happy Clients",
     },
     {
       icon: <ShieldCheck className="w-4 h-4 sm:w-7 sm:h-7 text-sky-500" />,
-      value: data2.items?.[2]?.value,
-      label: data2.items?.[2]?.label,
+      value: data2?.items?.[2]?.value ?? "99%",
+      label: data2?.items?.[2]?.label ?? "Client Satisfaction",
     },
   ];
 
