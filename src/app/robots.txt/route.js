@@ -8,18 +8,35 @@ export async function GET() {
   const content = `User-agent: *
 Allow: /
 
-# Block private areas
-Disallow: /login/
-Disallow: /admin/
-Disallow: /api/
-
+# Core AI Discovery Files
+Sitemap: https://www.softkingo.com/sitemap.xml
+Sitemap: https://www.softkingo.com/llms.txt
+Sitemap: https://www.softkingo.com/llms-full.txt
+ 
+# AI Context File
+Allow: /llms.txt
+Allow: /llms-full.txt
+ 
+# Important Sections
+Allow: /services/
+Allow: /blog/
+Allow: /case-studies/
+Allow: /portfolio/
+Allow: /guides/
+Allow: /articles/
+ 
+# Block internal/private areas
+Disallow: /login
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api
+ 
 # Optional (keep if these paths exist)
 Disallow: /phpmyadmin/
 Disallow: /cgi-bin/
 Disallow: /scripts/
 Disallow: /private/
 Disallow: /temp/
-
 Sitemap: ${siteUrl}/sitemap.xml
 `;
 

@@ -50,3 +50,7 @@ prisma/*.log
 
 # Uploads (recommended to NOT commit)
 # public/uploads/
+
+src/app/(admin)/admin/services/page.jsx
+src/app/(public)/seo/
+

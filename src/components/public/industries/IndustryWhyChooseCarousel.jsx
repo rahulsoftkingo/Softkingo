@@ -7,26 +7,39 @@ export default function IndustryWhyChooseCarousel({ items }) {
 
     const scroll = (direction) => {
         const { current } = scrollRef;
-        if (current) {
-            const scrollAmount = direction === 'left' ? -400 : 400;
-            current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        }
+        if (!current) return;
+
+        // Grab the first card to measure its real rendered width
+        const card = current.querySelector('[data-carousel-card]');
+        if (!card) return;
+
+        const gap = 24; // matches gap-6 (6 * 4px = 24px)
+        const cardWidth = card.getBoundingClientRect().width + gap;
+        const scrollAmount = direction === 'left' ? -cardWidth : cardWidth;
+
+        current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     };
 
     if (!items?.length) return null;
 
     return (
-        <div className="relative">
+        <div className="relative px-6">
             
-            {/* Controls (Top Right) */}
-            <div className="flex justify-end gap-3 mb-6 px-2">
-                <button onClick={() => scroll('left')} className="p-3 rounded-full border border-slate-200 hover:bg-sky-50 hover:border-sky-200 text-slate-500 hover:text-sky-600 transition-all shadow-sm">
-                    <ChevronLeft size={20} />
-                </button>
-                <button onClick={() => scroll('right')} className="p-3 rounded-full border border-slate-200 hover:bg-sky-50 hover:border-sky-200 text-slate-500 hover:text-sky-600 transition-all shadow-sm">
-                    <ChevronRight size={20} />
-                </button>
-            </div>
+            {/* Left Button - Half inside, half outside */}
+            <button 
+                onClick={() => scroll('left')} 
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 p-3 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-200 text-slate-500 hover:text-sky-600 transition-all shadow-md"
+            >
+                <ChevronLeft size={20} />
+            </button>
+
+            {/* Right Button - Half inside, half outside */}
+            <button 
+                onClick={() => scroll('right')} 
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 p-3 rounded-full border border-slate-200 bg-white hover:bg-sky-50 hover:border-sky-200 text-slate-500 hover:text-sky-600 transition-all shadow-md"
+            >
+                <ChevronRight size={20} />
+            </button>
 
             {/* Carousel Container */}
             <div 
@@ -36,7 +49,8 @@ export default function IndustryWhyChooseCarousel({ items }) {
             >
                 {items.map((item, i) => (
                     <div 
-                        key={i} 
+                        key={i}
+                        data-carousel-card
                         className="relative flex-shrink-0 w-[85%] md:w-[45%] lg:w-[30%] snap-start"
                     >
                         <div className="h-full p-8 bg-white rounded-2xl border border-slate-100 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">

@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-
+import Script from "next/script";
 import Image from 'next/image';
 import { FaStar, FaBrain, FaEye, FaTasks, FaTools, FaLightbulb, FaFlag } from "react-icons/fa";
 import { FiArrowRight, FiTarget } from "react-icons/fi";
@@ -8,12 +8,258 @@ import Link from 'next/link';
 import CommonTitle from '@/components/ui/CommonTitle';
 import InquirySection from '@/components/footer/InquirySection';
 import FAQAccordion from '@/components/common/Faqaccordion';
+import { commonSchemas } from "@/lib/commonSchema";
+
+
+// export const metadata = {
+//   title: "About Softkingo - Leading Software Development Company in India",
+//   description: "Learn about Softkingo's journey, our mission to drive digital transformation and the team behind our world-class software solutions. ISO-certified IT company in India.",
+//   alternates: { canonical: "/about" }
+// };
 
 export const metadata = {
-  title: "About Softkingo - Leading Software Development Company in India",
-  description: "Learn about Softkingo's journey, our mission to drive digital transformation and the team behind our world-class software solutions. ISO-certified IT company in India.",
+  title: "About Us",
+  description: "About Softkingo — an ISO-certified mobile app, web development, and digital marketing company trusted by 400+ clients across the US, UK, Canada, and Australia.",
   alternates: { canonical: "/about" }
 };
+
+
+const jsonLd =
+{
+  "@context": "https://schema.org",
+  "@graph": [
+
+    {
+      "@type": "WebPage",
+      "@id": "https://www.softkingo.com/about",
+      "url": "https://www.softkingo.com/about",
+      "name": "About Softkingo",
+      "description": "Learn about Softkingo's journey, mission and team.",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Softkingo"
+      }
+    },
+
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "softkingo",
+          "item": "https://www.softkingo.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "about",
+          "item": "https://www.softkingo.com/about"
+        }
+      ]
+    },
+
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://asthatechnologies.org/wp-content/uploads/2025/09/Food-Delivery_.webp",
+      "width": 937,
+      "height": 937,
+      "associatedArticle": "https://www.softkingo.com/about"
+    },
+
+    {
+      "@type": "Organization",
+      "@id": "https://softkingo.com/#organization",
+      "name": "Softkingo",
+      "url": "https://softkingo.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://softkingo.com/logo.png",
+        "width": 200,
+        "height": 60
+      },
+      "description": "Softkingo is a global IT services company specializing in mobile app development, web development, AI solutions, and digital transformation services.",
+      "telephone": "+91-7428750870",
+      "email": "sales@softkingo.com",
+      "foundingDate": "2018",
+      "numberOfEmployees": {
+        "@type": "QuantitativeValue",
+        "value": 50
+      },
+      "areaServed": "Worldwide",
+      "sameAs": [
+        "https://www.facebook.com/softkingo",
+        "https://www.linkedin.com/company/softkingo",
+        "https://www.instagram.com/softkingo"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "telephone": "+91-7428750870",
+          "email": "sales@softkingo.com",
+          "availableLanguage": ["English", "Hindi"],
+          "areaServed": "Worldwide"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "telephone": "+91-7428750870",
+          "email": "sales@softkingo.com",
+          "availableLanguage": ["English", "Hindi"]
+        }
+      ],
+      "address": [
+        {
+          "@type": "PostalAddress",
+          "streetAddress": "A179, Block ED, New Ashok Nagar",
+          "addressLocality": "New Delhi",
+          "addressRegion": "Delhi",
+          "postalCode": "110096",
+          "addressCountry": "IN",
+          "name": "Delhi Office"
+        },
+        {
+          "@type": "PostalAddress",
+          "streetAddress": "B-148, Block B, Sector 63",
+          "addressLocality": "Noida",
+          "addressRegion": "Uttar Pradesh",
+          "postalCode": "201301",
+          "addressCountry": "IN",
+          "name": "Noida Office"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "120",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "name": "Outstanding Mobile App Development",
+          "author": { "@type": "Person", "name": "James Carter" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-11-10",
+          "reviewBody": "Softkingo delivered our mobile app on time and exceeded our expectations. The team was professional, communicative, and highly skilled. Highly recommend for any mobile development project."
+        },
+        {
+          "@type": "Review",
+          "name": "Excellent Web Development Partner",
+          "author": { "@type": "Person", "name": "Priya Sharma" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-10-22",
+          "reviewBody": "We hired Softkingo for our web development project and were truly impressed. The team has deep technical expertise and delivered a flawless product. Great value for money."
+        },
+        {
+          "@type": "Review",
+          "name": "Game-changing AI Solution",
+          "author": { "@type": "Person", "name": "Michael Thompson" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-09-15",
+          "reviewBody": "Their AI solution transformed our business operations. Softkingo understood our requirements perfectly and built a scalable, intelligent system. Exceptional work!"
+        },
+        {
+          "@type": "Review",
+          "name": "Reliable Digital Transformation Partner",
+          "author": { "@type": "Person", "name": "Sarah Mitchell" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-08-05",
+          "reviewBody": "Softkingo helped us digitally transform our entire workflow. From planning to delivery, their team was thorough and transparent. A trusted technology partner."
+        },
+        {
+          "@type": "Review",
+          "name": "Top-notch Flutter App Development",
+          "author": { "@type": "Person", "name": "Rahul Verma" },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5",
+            "bestRating": "5"
+          },
+          "datePublished": "2024-07-18",
+          "reviewBody": "The Flutter app built by Softkingo is fast, beautiful, and bug-free. Their developers are top-notch and the project management was smooth throughout. Will definitely work with them again."
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "IT Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mobile App Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Development" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Solutions" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Digital Transformation" } }
+        ]
+      }
+    },
+
+    {
+      "@type": "FAQPage",
+      "@id": "https://softkingo.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What services does Softkingo offer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Softkingo offers mobile app development (iOS & Android), web development, AI & machine learning solutions, UI/UX design, and digital transformation consulting for businesses worldwide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is Softkingo located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Softkingo has two offices in India — Delhi: A179, Block ED, New Ashok Nagar, New Delhi 110096, and Noida: B-148, Block B, Sector 63, Noida 201301. We serve clients globally."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I contact Softkingo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can reach Softkingo by phone at +91-7428750870 or by email at sales@softkingo.com. Our team is available Monday to Friday, 9:00 AM to 6:30 PM IST."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take to develop a mobile app?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A basic app typically takes 4–8 weeks, while a complex enterprise application may take 4–6 months. Softkingo provides a detailed estimate after an initial consultation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Softkingo provide post-launch support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Softkingo offers post-launch support and maintenance packages including bug fixes, performance optimization, and feature updates to keep your application running smoothly."
+          }
+        }
+      ]
+    }
+
+  ]
+}
+
 
 const FaqData = {
   title: "About Us",
@@ -180,6 +426,61 @@ const featuredLogos = [
 export default async function AboutUs() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
+
+      <Script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "About us",
+                    "item": "https://softkingo.com/about"
+                  }
+                ]
+              },
+              ...commonSchemas,
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+                "provider": {
+                  "@type": "Organization",
+                  "@id": "https://softkingo.com/#organization",
+                  "name": "Softkingo",
+                  "url": "https://softkingo.com"
+                },
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                }
+              }
+            ]
+          })
+        }}
+      />
+
       {/* Hero Section */}
       <section className="relative w-full min-h-[500px] md:min-h-[600px] ">
         <Image
@@ -273,16 +574,17 @@ export default async function AboutUs() {
               <FiArrowRight size={20} className="ml-4" />
             </div>
 
-            <div className='flex justify-between text-white items-center'>
-              <a href="gallery" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
-                Inside  Gallery
-              </a>
-              <FiArrowRight size={20} className="ml-4" />
-            </div>
+           
 
             <div className='flex justify-between text-white items-center'>
               <a href="careers" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
                 Careers
+              </a>
+              <FiArrowRight size={20} className="ml-4" />
+            </div>
+             <div className='flex justify-between text-white items-center'>
+              <a href="testimonials" className="text-white text-xl lg:text-2xl font-semibold hover:text-cyan-400 transition py-6 border-b border-white/30 flex-1">
+                Testimonials
               </a>
               <FiArrowRight size={20} className="ml-4" />
             </div>
@@ -660,31 +962,64 @@ async function GallerySectionSafe() {
         <CommonTitle
           align="center"
           pill={false}
-          title="Softkingo"
-          gradientText="Gallery"
-          subtitle="We believe in cultivating a work culture that goes beyond projects. Where creativity flourishes, and ideas thrive with a shared commitment to excellence."
+          title="A Culture of"
+          gradientText="Continuous Growth"
+          subtitle="A great workplace is built with intention—by creating an environment where people can learn, collaborate, and grow every day. This is a glimpse into the teamwork, shared moments, and vibrant culture at Softkingo that brings together passionate minds to create impactful digital solutions."
         />
 
-        <div className="flex flex-wrap gap-4 md:gap-6 lg:gap-8 justify-center">
-          {galleryImages.length > 0 ? (
-            galleryImages.map((image) => (
-              <div key={image.id} className="group relative w-full sm:w-[calc(50%-8px)] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-21.33px)] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  width={400}
-                  height={300}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                />
-              </div>
-            ))
-          ) : (
-            <div className="w-full text-center py-16">
-              <div className="text-gray-400 text-6xl mb-4">📸</div>
-              <p className="text-gray-500 text-lg">Gallery coming soon...</p>
-            </div>
-          )}
+        <div className="relative w-full overflow-hidden">
+          <div className="flex gap-3 md:gap-4 w-max animate-scroll-left hover:[animation-play-state:paused]">
+            {[...galleryImages, ...galleryImages].reduce((acc, image, index, arr) => {
+              // Har 3rd image ko tall banao, baaki 2 ko stack karo
+              if (index % 3 === 0) {
+                // Tall image - dono rows cover karegi
+                acc.push(
+                  <div
+                    key={`tall-${image.id}-${index}`}
+                    className="group relative flex-shrink-0 w-[220px] sm:w-[260px] md:w-[300px] h-[338px] md:h-[398px] lg:h-[438px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300"
+                  >
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 768px) 260px, 300px"
+                    />
+                  </div>
+                );
+              } else if (index % 3 === 1) {
+                // 2 chhoti images stacked
+                const nextImage = arr[index + 1] || image;
+                acc.push(
+                  <div
+                    key={`stack-${image.id}-${index}`}
+                    className="flex flex-col gap-3 md:gap-4 flex-shrink-0"
+                  >
+                    <div className="group relative w-[220px] sm:w-[260px] md:w-[300px] h-[160px] md:h-[190px] lg:h-[210px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 260px, 300px"
+                      />
+                    </div>
+                    <div className="group relative w-[220px] sm:w-[260px] md:w-[300px] h-[160px] md:h-[190px] lg:h-[210px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                      <Image
+                        src={nextImage.src}
+                        alt={nextImage.alt}
+                        fill
+                        className="object-cover transform group-hover:scale-110 transition-transform duration-500"
+                        sizes="(max-width: 768px) 260px, 300px"
+                      />
+                    </div>
+                  </div>
+                );
+              }
+              // index % 3 === 2 skip karo kyunki wo upar stacked ho chuka hai
+              return acc;
+            }, [])}
+          </div>
         </div>
       </div>
     </section>

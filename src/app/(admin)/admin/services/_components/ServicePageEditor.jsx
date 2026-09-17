@@ -25,11 +25,10 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
 
             <input
                 className="flex-1 p-2.5 bg-transparent border-none text-xs font-medium text-slate-700 outline-none placeholder:text-slate-400"
-                value={value || ''}
-                onChange={(e) => onUpdate(path, e.target.value)}
+                value={(value || '').toLowerCase()}
+                onChange={(e) => onUpdate(path, e.target.value.toLowerCase())}
                 placeholder="Paste URL or Select Image..."
             />
-
             {value && (
                 <button onClick={() => onUpdate(path, "")} className="px-2 text-slate-400 hover:text-red-500" title="Clear">
                     <X size={14} />
@@ -47,13 +46,26 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
         {value && (
             <div className="mt-2 h-32 w-full bg-slate-50 rounded-lg border border-slate-100 overflow-hidden relative group/preview">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={value} className="w-full h-full object-contain" alt="preview" />
+                <img src={value?.toLowerCase()} className="w-full h-full object-contain" alt="preview" />
             </div>
         )}
     </div>
 );
 
 export default function ServicePageEditor({ data, onBack }) {
+
+    const parseContentJson = (raw) => {
+        try {
+            if (typeof raw === 'string') {
+                const parsed = JSON.parse(raw);
+                return parsed?.content || parsed || {};
+            }
+            return raw?.content || raw || {};
+        } catch (e) {
+            console.error("Invalid contentJson:", e);
+            return {};
+        }
+    };
 
     // --- CONFIGURATION ---
     const config = {
@@ -62,21 +74,22 @@ export default function ServicePageEditor({ data, onBack }) {
         uploadDir: "uploads/services",
         sections: [
             { id: 'hero', label: '1. Hero Section', icon: Smartphone },
-            { id: 'stats', label: '2. Stats Section', icon: BarChart3 },
-            { id: 'awards', label: '3. Awards Section', icon: Award },
-            { id: 'services', label: '4. Service Categories', icon: Layout },
-            { id: 'consultation', label: '5. Consultation CTA', icon: TrendingUp },
-            { id: 'tech', label: '6. Tech Stack', icon: Code },
-            { id: 'process', label: '7. Our Process', icon: Settings },
-            { id: 'highlight', label: '8. Solution Highlight', icon: Zap },
-            { id: 'portfolio', label: '9. Portfolio', icon: Globe },
-            { id: 'solutions', label: '10. Industry Solutions', icon: Grid },
-            { id: 'industries', label: '11. Industries We Serve', icon: Layers },
-            { id: 'user-guide', label: '12. User Guide', icon: BookOpen },
-            { id: 'faq', label: '13. FAQ Section', icon: HelpCircle },
-            { id: 'blogs', label: '14. Blog Section', icon: MessageSquare },
-            { id: 'inquiry', label: '15. Inquiry Section', icon: MessageSquare },
-            { id: 'seo', label: '16. SEO Settings', icon: Search }
+            { id: 'seo', label: '2. SEO Settings', icon: Search },
+            { id: 'stats', label: '3. Stats Section', icon: BarChart3 },
+            { id: 'awards', label: '4. Awards Section', icon: Award },
+            { id: 'services', label: '5. Service Categories', icon: Layout },
+            { id: 'consultation', label: '6. Consultation CTA', icon: TrendingUp },
+            { id: 'tech', label: '7. Tech Stack', icon: Code },
+            { id: 'process', label: '8. Our Process', icon: Settings },
+            { id: 'highlight', label: '9. Solution Highlight', icon: Zap },
+            { id: 'portfolio', label: '10. Portfolio', icon: Globe },
+            { id: 'solutions', label: '11. Industry Solutions', icon: Grid },
+            { id: 'industries', label: '12. Industries We Serve', icon: Layers },
+            { id: 'user-guide', label: '13. User Guide', icon: BookOpen },
+            { id: 'faq', label: '14. FAQ Section', icon: HelpCircle },
+            { id: 'blogs', label: '15. Blog Section', icon: MessageSquare },
+            { id: 'inquiry', label: '16. Inquiry Section', icon: MessageSquare },
+
         ]
     };
 
@@ -88,8 +101,25 @@ export default function ServicePageEditor({ data, onBack }) {
         slug: '',
         ...data,
         activeSections: data?.activeSections || config.sections.map(s => s.id),
-        content: data?.content || { hero: {} }
+        content: data?.content && Object.keys(data.content).length
+            ? data.content
+            : (parseContentJson(data?.contentJson) || { hero: {} })
     });
+
+    useEffect(() => {
+        if (data) {
+            setFormData({
+                title: '',
+                slug: '',
+                ...data,
+                activeSections:
+                    data?.activeSections || config.sections.map(s => s.id),
+                content: data?.content && Object.keys(data.content).length
+                    ? data.content
+                    : (parseContentJson(data?.contentJson) || { hero: {} })
+            });
+        }
+    }, [data]);
 
     const [loading, setLoading] = useState(false);
     const [portfolioCategories, setPortfolioCategories] = useState([]);
@@ -173,7 +203,11 @@ export default function ServicePageEditor({ data, onBack }) {
 
         setLoading(true);
         try {
-            const payload = { ...formData, type: 'service' };
+            const payload = {
+                ...formData,
+                contentJson: JSON.stringify({ content: formData.content }),
+                type: 'service'
+            };
             const isEdit = !!formData.id;
             const apiEndpoint = isEdit ? `/api/admin/services/${formData.id}` : "/api/admin/services";
 

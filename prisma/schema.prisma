@@ -246,6 +246,59 @@ model Ebook {
   @@map("ebook")
 }
 
+
+model Podcast {
+  id                String    @id @default(cuid())
+  
+  // Basic Info
+  title             String
+  slug              String    @unique
+  coverImage        String?
+  category          String?
+  language          String?   @default("English")
+  frequency         String?              // e.g. "Weekly"
+  
+  // Host Info
+  hostName          String?
+  hostRole          String?
+  hostAvatar        String?
+  
+  // Stats
+  rating            Float?    @default(0)
+  followersCount    Int       @default(0)
+  episodeCount      Int       @default(0)
+  
+  // Latest Episode (for "Play Latest Episode" button)
+  latestEpisodeTitle    String?
+  latestEpisodeAudioUrl String?
+  latestEpisodeDuration String?
+
+  // Overview Section
+  description       String?              // short desc (used in list card)
+  summary           String?   @db.Text   // long "About This Podcast" text
+  aboutText         String?   @db.Text   // "About [Podcast Name]" main section
+  quoteText         String?              // pull quote
+  quoteAuthor        String?
+  whatItsAbout      String?   @db.Text   // "What This Podcast Is About"
+  whoShouldListen   String?   @db.Text   // "Who Should Listen"
+
+  // Topics We Explore — stored as JSON array string, e.g. ["Creative Process","Storytelling"]
+  topicsJson        String?
+
+  // Social Links — JSON string, e.g. {"website":"...","instagram":"...","twitter":"...","linkedin":"..."}
+  socialLinksJson    String?
+
+  // Platform Links — JSON string, e.g. {"spotify":"...","applePodcasts":"...","youtubeMusic":"...","soundcloud":"..."}
+  platformLinksJson String?
+
+  status            String    @default("draft")
+  publishedAt       DateTime?
+  playCount         Int       @default(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+
 model ContentItem {
   id             Int       @id @default(autoincrement())
   type           String
@@ -327,6 +380,53 @@ model CaseStudy {
   @@map("casestudy")
 }
 
+model PortfolioSeo {
+  id                Int      @id @default(autoincrement())
+  slug              String   @unique(map: "PortfolioSeo_slug_key")
+  title             String
+  subtitle          String?
+  category          String?  // e.g. "Technical SEO • On-Page SEO • Content Strategy • Link Building"
+  heroBgImage       String?
+  seoImage          String?
+
+  // 1. Hero section
+  heroStatsJson     String?  @db.Text
+
+  // 2. Client Overview
+  clientOverviewJson String? @db.Text
+
+  // 3. Our SEO Strategy
+  strategyJson      String?  @db.Text
+
+   // 4. Before vs After Results
+  resultsJson       String?  @db.Text
+
+  // 5. SEO Performance Dashboard
+  performanceDashboardJson String? @db.Text
+
+  // 6. Technical SEO Improvements
+  technicalSeoJson  String?  @db.Text
+
+  // 7. Business Impact
+  businessImpactJson String? @db.Text
+
+  // 8. Tools & Technologies
+  toolsJson         String?  @db.Text
+
+  // 9. Portfolio Card Content
+  portfolioCardContent String? @db.Text
+
+  companyLogo         String?          
+  companyDescription  String?
+
+  seoTitle          String?
+  seoDescription    String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("portfolioseo")
+}
+
 model Page {
   id             Int              @id @default(autoincrement())
   key            String
@@ -335,7 +435,7 @@ model Page {
   type           String
   excerpt        String?          @db.LongText
   contentJson    String?          @db.LongText
-  status         String           @default("draft")
+  status         String           @default("published")
   featured       Boolean          @default(false)
   seoTitle       String?
   seoDescription String?          @db.LongText
@@ -827,3 +927,114 @@ model BotPolicy {
 
   @@map("botpolicy")
 }
+
+model PortfolioPpc {
+  id       Int     @id @default(autoincrement())
+  slug     String  @unique(map: "PortfolioPpc_slug_key")
+  title    String
+  subtitle String? @db.Text
+  category String?
+  heroBgImage String?
+  seoImage    String?
+  heroJson             String? @db.Text
+  projectOverviewJson  String? @db.Text
+  challengeJson        String? @db.Text
+  solutionJson         String? @db.Text
+  adPlatformsJson      String? @db.Text
+  toolsJson            String? @db.Text
+  performanceJson      String? @db.Text
+  achievementsJson     String? @db.Text
+  campaignsJson        String? @db.Text
+  testimonialJson      String? @db.Text
+  ctaBannerJson        String? @db.Text
+  companyLogo          String?
+  companyDescription   String?
+  portfolioCardContent String? @db.Text
+  status      String    @default("draft")
+  publishedAt DateTime?
+  seoTitle       String?
+  seoDescription String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("portfolioppc")
+}
+
+model PortfolioSocialMedia {
+  id       Int     @id @default(autoincrement())
+  slug     String  @unique(map: "PortfolioSocialMedia_slug_key")
+  title    String
+  subtitle String? @db.Text
+  category String?
+  heroBgImage String?
+  seoImage    String?
+
+  // 1. Hero section
+  // { badge, headline, highlight, description, industry, duration, services,
+  //   socialPreview: { platformHandle, platformIcon, postImage, caption, likes, ctaText },
+  //   platformIcons: [{ name, icon }],           // Instagram / Facebook / TikTok row
+  //   brandGrowthStat: { label, value },          // "Brand Growth 300%" side card
+  //   statsBar: [{ icon, value, label }] }        // 6-stat strip under hero
+  heroJson String? @db.Text
+
+  // 2. Project Overview
+  // { description }
+  projectOverviewJson String? @db.Text
+
+  // 3. The Challenge
+  // { title, items: [string] }
+  challengeJson String? @db.Text
+
+  // 4. Our Solution
+  // { title, description, items: [string] }
+  solutionJson String? @db.Text
+
+  // 5. Platforms Managed
+  // { items: [{ name, icon }] }   // Instagram, Facebook, TikTok, YouTube, LinkedIn...
+  platformsJson String? @db.Text
+
+  // 6. Tools & Technologies
+  // { items: [{ name, icon }] }   // Meta Business Suite, Hootsuite, Canva, Later, GA, SEMrush
+  toolsJson String? @db.Text
+
+  // 7. Results Overview
+  // { title, dateRangeLabel, chartData: "month,engagement,reach,followers\n...",
+  //   metrics: [{ label, value, change, direction }] }  // Engagement/Reach/Followers/Visits/Leads/Revenue
+  performanceJson String? @db.Text
+
+  // 8. Key Achievements
+  // { title, items: [{ icon, value, label }] }
+  achievementsJson String? @db.Text
+
+  // 9. Top Performing Content  (unique to social-media case studies)
+  // { title, items: [{ type: "post"|"reel"|"story", image, label, metricLabel, metricValue }] }
+  topContentJson String? @db.Text
+
+  // 10. Testimonial
+  // { quote, avatar, name, designation, companyTag }
+  testimonialJson String? @db.Text
+
+  // 11. CTA (Next Steps box + bottom banner + feature row)
+  // { nextStepsTitle, nextStepsDescription, nextStepsButtonText, nextStepsButtonLink,
+  //   bannerTitle, bannerDescription, bannerButtonText, bannerButtonLink,
+  //   features: [{ icon, title, description }] }
+  ctaBannerJson String? @db.Text
+
+  companyLogo        String?
+  companyDescription  String?
+
+  // 12. Portfolio Card (listing grid preview)
+  // { title, description, image, tag }
+  portfolioCardContent String? @db.Text
+
+  status      String    @default("draft")
+  publishedAt DateTime?
+
+  seoTitle       String?
+  seoDescription String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("portfoliosocialmedia")
+}
+

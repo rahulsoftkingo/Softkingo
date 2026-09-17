@@ -1,0 +1,129 @@
+// src/app/api/admin/portfolio-ppc/route.js
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+
+function isAdminOrManager(session) {
+  const roles = session?.user?.roles || [];
+  return roles.includes('admin') || roles.includes('manager');
+}
+
+export async function GET(request) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const q = searchParams.get('q') || '';
+  const status = searchParams.get('status') || '';
+
+  const where = {
+    ...(q
+      ? {
+        OR: [
+          { title: { contains: q } },
+          { subtitle: { contains: q } },
+          { slug: { contains: q } },
+          { category: { contains: q } },
+        ],
+      }
+      : {}),
+    ...(status ? { status } : {}),
+  };
+
+  const rows = await prisma.portfolioPpc.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return NextResponse.json(rows);
+}
+
+export async function POST(request) {
+  const session = await getServerSession(authOptions);
+  if (!session || !isAdminOrManager(session)) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
+  const body = await request.json();
+  const {
+    slug,
+    title,
+    subtitle,
+    category,
+    status,
+    publishedAt,
+
+    heroBgImage,
+    seoImage,
+    companyLogo,
+    companyDescription,
+
+    heroJson,
+    projectOverviewJson,
+    challengeJson,
+    solutionJson,
+    adPlatformsJson,
+    toolsJson,
+    performanceJson,
+    achievementsJson,
+    campaignsJson,
+    testimonialJson,
+    ctaBannerJson,
+    portfolioCardContent,
+
+    seoTitle,
+    seoDescription,
+  } = body;
+
+  if (!slug || !title) {
+    return NextResponse.json(
+      { message: 'Slug and title are required.' },
+      { status: 400 },
+    );
+  }
+
+  const existing = await prisma.portfolioPpc.findUnique({ where: { slug } });
+  if (existing) {
+    return NextResponse.json(
+      { message: 'A PPC case study with this slug already exists.' },
+      { status: 409 },
+    );
+  }
+
+  const row = await prisma.portfolioPpc.create({
+    data: {
+      slug,
+      title,
+      subtitle: subtitle || null,
+      category: category || null,
+      status: status || 'draft',
+      publishedAt: publishedAt ? new Date(publishedAt) : null,
+
+      heroBgImage: heroBgImage || null,
+      seoImage: seoImage || null,
+      companyLogo: companyLogo || null,
+      companyDescription: companyDescription || null,
+
+      heroJson: heroJson || null,
+      projectOverviewJson: projectOverviewJson || null,
+      challengeJson: challengeJson || null,
+      solutionJson: solutionJson || null,
+      adPlatformsJson: adPlatformsJson || null,
+      toolsJson: toolsJson || null,
+      performanceJson: performanceJson || null,
+      achievementsJson: achievementsJson || null,
+      campaignsJson: campaignsJson || null,
+      testimonialJson: testimonialJson || null,
+      ctaBannerJson: ctaBannerJson || null,
+      portfolioCardContent: portfolioCardContent || null,
+
+      seoTitle: seoTitle || null,
+      seoDescription: seoDescription || null,
+    },
+  });
+
+  return NextResponse.json(row, { status: 201 });
+}

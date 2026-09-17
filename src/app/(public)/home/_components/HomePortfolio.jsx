@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, animate, useTransform } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaApple, FaGlobe, FaGooglePlay } from 'react-icons/fa';
@@ -10,239 +10,348 @@ import { homePortfolioData } from '@/data/home-portfolio';
 import CommonTitle from '@/components/ui/CommonTitle';
 
 const HomePortfolio = () => {
-    const targetRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: targetRef,
-        offset: ["start start", "end end"]
-    });
+    const realCount = homePortfolioData.length;
 
-    const numItems = homePortfolioData.length;
+    // Dynamic array system jo infinite loop me Seamless movement deta hai
+    const [extendedData, setExtendedData] = useState(() => [
+        ...homePortfolioData,
+        ...homePortfolioData,
+        ...homePortfolioData,
+    ]);
 
-    // Left scroll indicator height (Smoothly from 20% to 100%)
-    const indicatorHeight = useTransform(scrollYProgress, [0, 1], ["20%", "100%"]);
-
-    // STRICTLY BALANCED SCROLL ZONING FOR 4 ITEMS
-    // Total vertical scroll (0 to 1.0) is divided into 4 segments.
-    // Since the horizontal track width is 400% (numItems * 100), 
-    // each card transition should be 1/numItems = 25%.
-
-    // We hold each card centered at each dot milestone.
-    // Milestones: 0% (Dot 1), 33% (Dot 2), 66% (Dot 3), 100% (Dot 4)
-
-    const inputRanges = [
-        0, 0.15,               // Card 1 plateau
-        0.30, 0.45,            // Card 2 plateau
-        0.60, 0.75,            // Card 3 plateau
-        0.90, 1.0              // Card 4 plateau
-    ];
-
-    const outputRanges = [
-        "0%", "0%",            // Card 1
-        "-25%", "-25%",        // Card 2 (Moves by 1/4 of the 400% track)
-        "-50%", "-50%",        // Card 3
-        "-75%", "-75%"         // Card 4
-    ];
-
-    // Horizontal transform with strict zoning
-    const xBase = useTransform(scrollYProgress, inputRanges, outputRanges);
-
-    // Snappy spring for professional feedback
-    const x = useSpring(xBase, { stiffness: 100, damping: 20, mass: 0.5 });
-
-    // Dots Sync Logic: Active index matches the current Plateau
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [peek, setPeek] = useState(18);
 
     useEffect(() => {
-        return scrollYProgress.on("change", v => {
-            if (v < 0.25) setActiveIndex(0);
-            else if (v < 0.55) setActiveIndex(1);
-            else if (v < 0.85) setActiveIndex(2);
-            else setActiveIndex(3);
-        });
-    }, [scrollYProgress]);
+        const updatePeek = () => {
+            setPeek(window.innerWidth < 768 ? 0 : 18);
+        };
+        updatePeek();
+        window.addEventListener('resize', updatePeek);
+        return () => window.removeEventListener('resize', updatePeek);
+    }, []);
+
+    const totalItems = extendedData.length;
+    const CARD_WIDTH = 100 - peek * 2;
+    const TRACK_WIDTH_VP = totalItems * CARD_WIDTH;
+
+    // NOTE: now accepts an explicit item count (defaults to the CURRENT
+    // totalItems). This lets us compute the correct x value for a track
+    // length that hasn't been rendered yet (i.e. right after we grow
+    // extendedData), instead of using a stale track width.
+    const slideOffsetPercentOfTrack = (i, itemsCount = totalItems) => {
+        const trackWidthVp = itemsCount * CARD_WIDTH;
+        const xVp = peek - i * CARD_WIDTH;
+        return (xVp / trackWidthVp) * 100;
+    };
+
+    const [virtualIndex, setVirtualIndex] = useState(realCount);
+    const [isDragging, setIsDragging] = useState(false);
+    const containerRef = useRef(null);
+    const x = useMotionValue(slideOffsetPercentOfTrack(realCount, totalItems));
+
+    const xPercentage = useTransform(x, (val) => `${val}%`);
+
+    // Dynamic array index se active dot calculate karne ke liye
+    const activeIndex = ((virtualIndex % realCount) + realCount) % realCount;
+
+    // Buffer check: Jab user end/start ke paas pahunchne wala ho tab chupke se
+    // array expand karna. Ab dono cases (append + prepend) me hum turant
+    // naye track-length ke hisaab se `x` ko re-sync karte hain, taaki
+    // repeat/loop hote waqt koi visual jump ya glitch na ho.
+    useEffect(() => {
+        if (virtualIndex >= extendedData.length - realCount) {
+            const newLength = extendedData.length + realCount;
+            setExtendedData((prev) => [...prev, ...homePortfolioData]);
+            x.set(slideOffsetPercentOfTrack(virtualIndex, newLength));
+        } else if (virtualIndex < realCount) {
+            const newLength = extendedData.length + realCount;
+            const newVirtualIndex = virtualIndex + realCount;
+            setExtendedData((prev) => [...homePortfolioData, ...prev]);
+            setVirtualIndex(newVirtualIndex);
+            x.set(slideOffsetPercentOfTrack(newVirtualIndex, newLength));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [virtualIndex, extendedData.length, realCount]);
+
+    useEffect(() => {
+        if (!isDragging) {
+            x.set(slideOffsetPercentOfTrack(virtualIndex));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [peek]);
+
+    useEffect(() => {
+        if (!isDragging) {
+            const targetX = slideOffsetPercentOfTrack(virtualIndex);
+
+            const controls = animate(x, targetX, {
+                type: 'spring',
+                stiffness: 160,
+                damping: 26,
+                mass: 1.1,
+            });
+
+            return () => controls.stop();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [virtualIndex, isDragging, x, totalItems]);
+
+    // KEYBOARD NAVIGATION HANDLER
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+                return;
+            }
+
+            if (event.key === 'ArrowLeft') {
+                setVirtualIndex((prev) => prev - 1);
+            } else if (event.key === 'ArrowRight') {
+                setVirtualIndex((prev) => prev + 1);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    const goToSlide = (idx) => {
+        const currentReal = ((virtualIndex % realCount) + realCount) % realCount;
+        const diff = idx - currentReal;
+        setVirtualIndex((prev) => prev + diff);
+    };
+
+    const handleDragEnd = (_, info) => {
+        setIsDragging(false);
+
+        const offset = info.offset.x;
+        const velocity = info.velocity.x;
+        let newVirtualIndex = virtualIndex;
+
+        if (Math.abs(velocity) > 350) {
+            newVirtualIndex = velocity < 0 ? virtualIndex + 1 : virtualIndex - 1;
+        } else if (Math.abs(offset) > 70) {
+            newVirtualIndex = offset < 0 ? virtualIndex + 1 : virtualIndex - 1;
+        }
+
+        setVirtualIndex(newVirtualIndex);
+    };
 
     return (
-        <section ref={targetRef} className="relative bg-white" style={{ height: `${numItems * 100}vh` }}>
-            {/* STICKY CONTAINER */}
-            <div className="sticky top-0 w-full h-screen overflow-hidden bg-[radial-gradient(circle_at_center,_white_0%,_#f0f9ff_60%,_#e0f2fe_100%)] flex flex-col pt-16 pb-8 md:pt-20 md:pb-12 border-b border-sky-100">
+        <section className="relative bg-white py-10 pt-6 md:py-16 select-none overflow-hidden">
+            <div className="w-full bg-white flex flex-col">
 
-                {/* HEADER */}
-                <div className="w-full px-4 shrink-0 absolute top-12 sm:top-20 z-20 pointer-events-none">
-                    <CommonTitle
-                        title="Our Portfolio"
-                        gradientText=""
-                        subtitle="Discover our most impactful work across various industries, from logistics to international dating apps."
-                        align="center"
-                    />
-                </div>
+                {/* HEADER SECTION */}
+                <div className="w-full px-4 sm:px-6 md:px-10 lg:px-50 shrink-0 relative z-20 mb-6 md:mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
 
-                {/* MAIN CONTENT AREA */}
-                <div className="flex-1 w-full max-w-[1440px] mx-auto flex items-center relative mt-20 sm:mt-24 px-4 md:px-10 lg:px-20 min-h-0">
-
-                    {/* LEFT SCROLL INDICATOR */}
-                    <div className="hidden md:flex flex-col items-center gap-6 py-10 w-12 shrink-0 z-30 relative mr-8 lg:mr-16">
-                        {/* THE BAR */}
-                        <div className="relative h-64 w-[10px] bg-sky-100 rounded-full overflow-hidden shadow-inner border border-white/50">
-                            <motion.div
-                                className="absolute top-0 w-full bg-[#00AEEF] rounded-full"
-                                style={{ height: indicatorHeight }}
-                            />
-                        </div>
-
-                        {/* THE 4 DOTS */}
-                        <div className="flex flex-col gap-4">
-                            {homePortfolioData.map((_, idx) => (
-                                <div
-                                    key={idx}
-                                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 border ${activeIndex === idx
-                                        ? "bg-[#00AEEF] border-[#00AEEF] scale-125 shadow-[0_0_8px_rgba(0,174,239,0.4)]"
-                                        : "bg-white border-sky-300"
-                                        }`}
-                                />
-                            ))}
-                        </div>
+                    {/* LEFT SIDE TITLE */}
+                    <div className="flex-1 min-w-0 -mb-10 md:mb-0">
+                        <CommonTitle
+                            title="Our Portfolio"
+                            gradientText=""
+                            align="left"
+                        />
                     </div>
 
-                    {/* VIEWPORT FOR CARDS */}
-                    <div className="flex-1 h-full max-h-[480px] relative overflow-hidden">
-                        {/* HORIZONTAL TRACK */}
+                    {/* RIGHT SIDE BUTTONS */}
+                    <div className="flex flex-row items-center justify-start md:justify-end gap-2.5 md:gap-3 shrink-0 w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0">
+                        {homePortfolioData.map((project, idx) => {
+                            const isActive = activeIndex === idx;
+                            return (
+                                <button
+                                    key={project.id}
+                                    type="button"
+                                    onClick={() => goToSlide(idx)}
+                                    className={`flex flex-col items-center justify-center gap-1.5 rounded-2xl min-w-[85px] sm:min-w-[120px] px-3 py-2 ml-2.5 md:py-2.5 border transition-all duration-300 cursor-pointer shrink-0 ${isActive
+                                            ? "scale-105 border-white/20 shadow-md"
+                                            : "bg-slate-900/90 border-white/10 hover:bg-slate-900 hover:scale-105"
+                                        }`}
+                                    style={
+                                        isActive
+                                            ? {
+                                                background: `linear-gradient(135deg, ${project.gradientColors[0]}, ${project.gradientColors[1]})`,
+                                            }
+                                            : undefined
+                                    }
+                                >
+                                    <div className="w-9 sm:w-12 h-4 md:h-5 relative flex items-center justify-center">
+                                        <Image
+                                            src={project.logo}
+                                            alt={project.title}
+                                            fill
+                                            draggable={false}
+                                            className="object-contain filter brightness-0 invert pointer-events-none"
+                                        />
+                                    </div>
+
+                                    <span className="text-[10px] md:text-xs font-medium text-white/90 whitespace-nowrap text-center">
+                                        {project.type}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* CAROUSEL VIEWPORT AREA */}
+                <div className="w-full flex items-center relative py-2">
+                    <div ref={containerRef} className="w-full min-h-[370px] sm:min-h-[480px] md:h-[480px] lg:h-[500px] relative overflow-hidden cursor-default">
                         <motion.div
-                            style={{ x, width: `${numItems * 100}%` }}
-                            className="flex h-full items-center"
+                            drag="x"
+                            dragElastic={0.12}
+                            dragMomentum={false}
+                            onDragStart={() => setIsDragging(true)}
+                            onDragEnd={handleDragEnd}
+                            style={{ x: xPercentage, width: `${TRACK_WIDTH_VP}%` }}
+                            className="flex h-full items-stretch touch-pan-y"
                         >
-                            {homePortfolioData.map((project, idx) => (
-                                <div key={project.id} className="w-full h-full flex justify-center items-center py-4 px-2 sm:px-4" style={{ width: `${100 / numItems}%` }}>
+                            {extendedData.map((project, idx) => {
+                                const isActive = idx === virtualIndex;
+                                return (
                                     <div
-                                        className="relative overflow-hidden rounded-[2.5rem] text-white w-full lg:max-w-[1200px] h-[460px] flex flex-col md:flex-row  transition-all duration-300 border border-white/10"
-                                        style={{
-                                            background: `radial-gradient(circle at bottom right, ${project.gradientColors[0]} 0%, ${project.gradientColors[1]} 50%, ${project.gradientColors[2]} 100%)`,
-                                        }}
+                                        key={`${project.id}-${idx}`}
+                                        className="h-full flex-shrink-0 py-2 px-2 cursor-default"
+                                        style={{ width: `${100 / totalItems}%` }}
                                     >
-                                        {/* Left Content Column */}
-                                        <div className="relative p-6 md:p-10 lg:p-12 z-10 w-full md:w-[55%] flex flex-col justify-between h-full">
-                                            <div>
-                                                {/* Logo */}
-                                                <div className="flex items-center gap-4 mb-4 md:mb-6">
-                                                    <div className="w-16 md:w-20 h-10 md:h-14 relative flex-shrink-0">
-                                                        <Image
-                                                            src={project.logo}
-                                                            alt={project.title}
-                                                            fill
-                                                            className="object-contain filter brightness-0 invert"
-                                                        />
-                                                    </div>
-                                                </div>
+                                        <div
+                                            className={`relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] text-white w-full h-full flex flex-col md:flex-row border border-white/10 select-none transition-all duration-700 ease-out ${isActive ? "opacity-100 scale-100" : "opacity-100 scale-100 md:opacity-60 md:scale-[0.94]"
+                                                }`}
+                                            style={{
+                                                background: `linear-gradient(135deg, ${project.gradientColors[0]} 0%, ${project.gradientColors[1]} 50%, ${project.gradientColors[2]} 100%)`,
+                                            }}
+                                        >
+                                            {!isActive && (
+                                                <div className="hidden md:block absolute inset-0 bg-black/40 z-20 transition-opacity duration-700 pointer-events-none" />
+                                            )}
 
-                                                {/* Description Text */}
-                                                <p className="text-white/95 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed max-w-xl mb-4 md:mb-8 font-medium drop-shadow-sm line-clamp-4 md:line-clamp-none">
-                                                    {project.description}
-                                                </p>
-
-                                                {/* Info Box */}
-                                                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-[1.25rem] p-4 md:p-5 mb-6 md:mb-8 max-w-lg shadow-inner">
-                                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:gap-5">
-                                                        <div>
-                                                            <p className="text-[10px] md:text-xs uppercase tracking-widest text-white/70 mb-1 font-bold">Country</p>
-                                                            <div className="flex items-center gap-2">
-                                                                <span className="text-xs md:text-sm font-bold text-white">{project.stats.country}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <p className="text-[10px] md:text-xs uppercase tracking-widest text-white/70 mb-1 font-bold">Platforms</p>
-                                                            <div className="flex items-center gap-2 md:gap-3 text-sm md:text-base lg:text-lg">
-                                                                {project.stats.platforms.includes('iOS') && <FaApple title="iOS" className="drop-shadow-sm" />}
-                                                                {project.stats.platforms.includes('Android') && <FaGooglePlay title="Android" className="drop-shadow-sm" />}
-                                                                {project.stats.platforms.includes('Web') && <FaGlobe title="Web" className="drop-shadow-sm" />}
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-span-2 sm:col-span-1 min-w-0">
-                                                            <p className="text-[10px] md:text-xs uppercase tracking-widest text-white/70 mb-1 font-bold">Techstack</p>
-                                                            <p className="text-[10px] md:text-xs font-bold leading-normal truncate text-white" title={project.stats.techStack}>{project.stats.techStack}</p>
+                                            {/* LEFT CONTENT AREA */}
+                                            <div className="relative p-5 sm:p-6 md:p-10 lg:p-12 z-10 w-full md:w-[50%] lg:w-[52%] flex flex-col justify-between h-full">
+                                                <div>
+                                                    <div className="flex items-center mb-4 md:mb-6">
+                                                        <div className="w-20 sm:w-24 md:w-32 h-8 sm:h-10 md:h-12 relative flex-shrink-0">
+                                                            <Image
+                                                                src={project.logo}
+                                                                alt={project.title}
+                                                                draggable={false}
+                                                                fill
+                                                                className="object-contain object-left filter brightness-0 invert pointer-events-none"
+                                                            />
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                {/* Store Buttons - ALWAYS SHOW ALL 3 BASED ON DATA */}
-                                                <div className="flex flex-wrap gap-2 md:gap-3">
-                                                    <Link href={project.playStoreUrl || '#'} className="bg-black/90 hover:bg-black transition-colors rounded-xl px-2 md:px-3 py-1.5 flex items-center gap-2 border border-white/10 shadow-lg">
-                                                        <FaGooglePlay className="text-sm md:text-lg text-white" />
-                                                        <div className="flex flex-col leading-none">
-                                                            <span className="text-[8px] md:text-[9px] text-white/60 uppercase">Get it on</span>
-                                                            <span className="text-[10px] md:text-xs font-bold text-white">Google Play</span>
-                                                        </div>
-                                                    </Link>
+                                                    <p className="text-white/90 text-xs sm:text-sm md:text-base leading-relaxed max-w-lg mb-4 md:mb-6 font-normal line-clamp-3 md:line-clamp-4">
+                                                        {project.description}
+                                                    </p>
 
-                                                    <Link href={project.appStoreUrl || '#'} className="bg-black/90 hover:bg-black transition-colors rounded-xl px-2 md:px-3 py-1.5 flex items-center gap-2 border border-white/10 shadow-lg">
-                                                        <FaApple className="text-base md:text-xl text-white" />
-                                                        <div className="flex flex-col leading-none">
-                                                            <span className="text-[8px] md:text-[9px] text-white/60 uppercase">Download on the</span>
-                                                            <span className="text-[10px] md:text-xs font-bold text-white">App Store</span>
+                                                    {/* INFO PILL BOX */}
+                                                    <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 md:p-5 mb-4 md:mb-6 max-w-lg">
+                                                        <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 items-center">
+                                                            <div>
+                                                                <p className="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wider text-white/70 mb-1 font-semibold">COUNTRY</p>
+                                                                <p className="text-xs md:text-sm font-bold text-white truncate">{project.stats.country}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wider text-white/70 mb-1 font-semibold">PLATFORMS</p>
+                                                                <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm md:text-base text-white">
+                                                                    {project.stats.platforms.includes('iOS') && <FaApple title="iOS" />}
+                                                                    {project.stats.platforms.includes('Android') && <FaGooglePlay title="Android" />}
+                                                                    {project.stats.platforms.includes('Web') && <FaGlobe title="Web" />}
+                                                                </div>
+                                                            </div>
+                                                            <div className="min-w-0">
+                                                                <p className="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wider text-white/70 mb-1 font-semibold">TECHSTACK</p>
+                                                                <p className="text-[9px] sm:text-[10px] md:text-xs font-bold truncate text-white" title={project.stats.techStack}>{project.stats.techStack}</p>
+                                                            </div>
                                                         </div>
-                                                    </Link>
+                                                    </div>
 
-                                                    <Link href={project.webUrl || '#'} className="bg-black/90 hover:bg-black transition-colors rounded-xl px-2 md:px-3 py-1.5 flex items-center gap-2 border border-white/10 shadow-lg">
-                                                        <FaGlobe className="text-sm md:text-lg text-white" />
-                                                        <div className="flex flex-col leading-none">
-                                                            <span className="text-[8px] md:text-[9px] text-white/60 uppercase">Available on the</span>
-                                                            <span className="text-[10px] md:text-xs font-bold text-white">Web</span>
-                                                        </div>
-                                                    </Link>
+                                                    {/* STORE BUTTONS */}
+                                                    <div className="flex flex-wrap gap-2 md:gap-3 z-30 relative">
+                                                        <Link href={project.playStoreUrl || '#'} className="bg-black hover:bg-black/80 transition-colors rounded-xl px-2.5 sm:px-3 py-1.5 flex items-center gap-2 border border-white/10 cursor-pointer">
+                                                            <FaGooglePlay className="text-xs sm:text-sm md:text-base text-white" />
+                                                            <div className="flex flex-col leading-none">
+                                                                <span className="text-[7px] md:text-[8px] text-white/70 uppercase">Get it on</span>
+                                                                <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-white">Google Play</span>
+                                                            </div>
+                                                        </Link>
+
+                                                        <Link href={project.appStoreUrl || '#'} className="bg-black hover:bg-black/80 transition-colors rounded-xl px-2.5 sm:px-3 py-1.5 flex items-center gap-2 border border-white/10 cursor-pointer">
+                                                            <FaApple className="text-sm sm:text-base md:text-lg text-white" />
+                                                            <div className="flex flex-col leading-none">
+                                                                <span className="text-[7px] md:text-[8px] text-white/70 uppercase">Download on the</span>
+                                                                <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-white">App Store</span>
+                                                            </div>
+                                                        </Link>
+
+                                                        <Link href={project.webUrl || '#'} className="bg-black hover:bg-black/80 transition-colors rounded-xl px-2.5 sm:px-3 py-1.5 flex items-center gap-2 border border-white/10 cursor-pointer">
+                                                            <FaGlobe className="text-xs sm:text-sm md:text-base text-white" />
+                                                            <div className="flex flex-col leading-none">
+                                                                <span className="text-[7px] md:text-[8px] text-white/70 uppercase">Available on the</span>
+                                                                <span className="text-[9px] sm:text-[10px] md:text-xs font-bold text-white">Web</span>
+                                                            </div>
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        {/* Right Mockup Column - HIDDEN ON MOBILE */}
-                                        <div className="hidden md:block relative w-full md:w-[45%] h-full overflow-hidden">
-                                            <div className="relative w-full h-full transform scale-110 md:scale-125 md:translate-x-12 translate-y-6 md:translate-y-0">
-                                                <Image
-                                                    src={project.mockup}
-                                                    alt={`${project.title} Mockups`}
-                                                    fill
-                                                    className="object-contain drop-shadow-2xl"
-                                                />
+                                            {/* RIGHT SHOWCASE MOCKUP AREA */}
+                                            <div className="hidden md:block relative w-full md:w-[50%] lg:w-[48%] h-full">
+                                                <div className="relative w-full h-full pointer-events-none">
+                                                    <Image
+                                                        src={project.mockup}
+                                                        alt={`${project.title} Showcase`}
+                                                        fill
+                                                        draggable={false}
+                                                        className="object-cover object-center select-none"
+                                                    />
+                                                </div>
+
+                                                {project.caseStudyUrl && project.caseStudyUrl !== '#' && (
+                                                    <Link
+                                                        href={project.caseStudyUrl}
+                                                        className="absolute bottom-6 right-6 z-30 bg-white/20 backdrop-blur-md border border-white/40 px-5 py-2.5 rounded-full font-medium flex items-center gap-2 text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
+                                                    >
+                                                        <span className="text-xs md:text-sm font-semibold">View Project</span>
+                                                        <IoIosArrowForward className="text-sm" />
+                                                    </Link>
+                                                )}
                                             </div>
 
-                                            {/* View Project Button */}
-                                            {project.caseStudyUrl && project.caseStudyUrl !== '#' && (
-                                                <Link
-                                                    href={project.caseStudyUrl}
-                                                    className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-30 bg-white/20 backdrop-blur-xl border border-white/30 px-5 md:px-6 py-2 md:py-3 rounded-full font-bold flex items-center gap-2 hover:bg-white text-white hover:text-sky-600 transition-all duration-300 group shadow-xl"
-                                                >
-                                                    <span className="text-xs md:text-sm">View Project</span>
-                                                    <IoIosArrowForward className="group-hover:translate-x-1 transition-transform" />
-                                                </Link>
-                                            )}
-                                        </div>
-
-                                        {/* Mobile View Project Button */}
-                                        <div className="md:hidden p-6 pt-0">
-                                            {project.caseStudyUrl && project.caseStudyUrl !== '#' && (
-                                                <Link
-                                                    href={project.caseStudyUrl}
-                                                    className="w-full bg-white/20 backdrop-blur-xl border border-white/30 px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 text-white transition-all active:scale-95 shadow-lg"
-                                                >
-                                                    <span className="text-sm">View Project</span>
-                                                    <IoIosArrowForward />
-                                                </Link>
-                                            )}
+                                            {/* MOBILE VIEW BUTTON */}
+                                            <div className="md:hidden p-5 pt-0 relative z-20 mt-auto">
+                                                {project.caseStudyUrl && project.caseStudyUrl !== '#' && (
+                                                    <Link
+                                                        href={project.caseStudyUrl}
+                                                        className="w-full bg-white/20 backdrop-blur-md border border-white/40 px-6 py-2.5 rounded-full font-medium flex items-center justify-center gap-2 text-white transition-all active:scale-95 cursor-pointer"
+                                                    >
+                                                        <span className="text-xs md:text-sm font-semibold">View Project</span>
+                                                        <IoIosArrowForward />
+                                                    </Link>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </motion.div>
                     </div>
                 </div>
-            </div>
 
-            {/* MOBILE DOTS */}
-            <div className="md:hidden flex justify-center gap-3 absolute bottom-12 w-full z-40">
-                {homePortfolioData.map((_, idx) => (
-                    <div
-                        key={idx}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${activeIndex === idx ? "bg-[#00AEEF] w-6" : "bg-sky-200"
-                            }`}
-                    />
-                ))}
+                {/* BOTTOM DOT INDICATORS */}
+                <div className="flex flex-col items-center gap-3 mt-4 md:mt-8 shrink-0 px-4">
+                    <div className="flex flex-row gap-3 md:gap-4">
+                        {homePortfolioData.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => goToSlide(idx)}
+                                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 border cursor-pointer ${activeIndex === idx
+                                        ? "bg-[#00AEEF] border-[#00AEEF] scale-125"
+                                        : "bg-[#00AEEF]/20 border-sky-300"
+                                    }`}
+                            />
+                        ))}
+                    </div>
+                </div>
+
             </div>
         </section>
     );

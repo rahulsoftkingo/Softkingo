@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle2 } from 'lucide-react';
 import LeadForm from '../LeadForm';
 
-export default function SolutionsContentSplit({ data, reverse = false }) {
+export default function SolutionsContentSplit({ data, reverse = false,endpoint}) {
     // Props: title, subtitle, image, listItems[], buttonText
     if (!data) return null;
 
@@ -55,7 +55,7 @@ export default function SolutionsContentSplit({ data, reverse = false }) {
                             formType="solutions"
                             formKey="solutions"
                             serviceName="Solutions"
-                            title={data.title}
+                            title={endpoint}
                             subtitle="Get matched with top talent in 24 Hours! "
                             variant="solid"
                             showLogo={true}

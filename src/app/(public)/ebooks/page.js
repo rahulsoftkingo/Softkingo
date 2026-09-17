@@ -7,9 +7,9 @@ import InquirySection from "@/components/footer/InquirySection";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "E-books - Download Our Playbooks",
+  title: "Free Ebooks",
   description:
-    "Download expert-crafted E-books by Softkingo on mobile apps, product strategy, UX and emerging technologies.",
+    "Download free Softkingo ebooks packed with actionable insights on mobile app development, web design, and digital marketing.",
   alternates: { canonical: "/ebooks" }
 };
 

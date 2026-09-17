@@ -54,7 +54,7 @@ export default function CloneTechStack({ data }) {
     const tabs = techData.tabs;
 
     return (
-        <section className="py-8 md:py-16 bg-white relative overflow-clip">
+        <section className="pt-7 pb-0 md:pt-16 md:pb-16 bg-white relative overflow-clip">
             <div className="max-w-7xl mx-auto px-6">
 
                 <CommonTitle
@@ -65,14 +65,14 @@ export default function CloneTechStack({ data }) {
                 />
 
                 {/* Scrollable Tab Navigation (Limit Radius) */}
-                <div className="mt-10 mb-16 relative">
+                <div className="mt-2 mb-2 md:mt-10 md:mb-16 relative">
                     <div className="flex overflow-x-auto scrollbar-hide pb-2 gap-3 md:gap-4 snap-x snap-mandatory">
                         <div className="flex gap-3 md:gap-4 mx-auto">
                             {tabs.map((tab, idx) => (
                                 <button
                                     key={idx}
                                     onMouseEnter={() => setActiveTab(idx)}
-                                    className={`px-8 py-3 rounded-xl text-sm font-extrabold transition-all duration-300 border whitespace-nowrap snap-center ${activeTab === idx
+                                    className={`ml-4 px-8 py-3 rounded-xl text-sm font-extrabold transition-all duration-300 border whitespace-nowrap snap-center ${activeTab === idx
                                         ? "bg-[#2FB3E0] text-white border-[#2FB3E0] transform scale-105"
                                         : "bg-slate-50 text-slate-500 border-slate-200 hover:border-[#2FB3E0]/30 hover:text-[#2FB3E0] hover:bg-[#2FB3E0]/5"
                                         }`}
@@ -85,17 +85,18 @@ export default function CloneTechStack({ data }) {
                 </div>
 
                 {/* Tech Grid Display (Limit Radius) */}
-                <div className="min-h-[200px]">
-                    <div className="flex justify-center">
-                        <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-6xl animate-fadeIn">
+                <div className=" min-h-[150px] md:min-h-[200px]">
+                    {/* Mobile: single-row horizontal scroll. Desktop (md+): unchanged wrap/center layout */}
+                    <div className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 md:overflow-visible md:pb-0 md:justify-center">
+                        <div className="flex flex-nowrap md:flex-wrap items-center justify-start md:justify-center gap-6 md:gap-8 max-w-6xl animate-fadeIn mx-auto">
                             {tabs?.[activeTab]?.items?.map((tech, idx) => (
                                 <div
                                     key={idx}
-                                    className="group flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-sky-500/10 hover:border-sky-200 transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px]"
+                                    className="group flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-white border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-sky-500/10 hover:border-sky-200 transition-all duration-500 hover:-translate-y-2 cursor-default w-[140px] sm:w-[160px] flex-shrink-0 snap-center"
                                 >
                                     <div className="relative w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
                                         <Image
-                                            src={tech.image}
+                                            src={tech.image.toLowerCase()}
                                             alt={tech.name}
                                             fill
                                             className="object-contain transition-all duration-500"

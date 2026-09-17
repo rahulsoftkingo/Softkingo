@@ -21,8 +21,8 @@ export default function ConsultationCTA({
   const isWhite = theme === "white";
 
   return (
-    <section className="py-8 md:py-16">
-      <div className="max-w-7xl mx-auto px-6 pt-24">
+    <section className="py-8 md:py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-6 pt-10 md:pt-24">
         <div className={`relative rounded-[28px]  ${isWhite
           ? "bg-white border border-slate-100 shadow-xl shadow-slate-200/50"
           : "bg-gradient-to-br from-[#28AFDF] to-[#06465D]"
@@ -59,7 +59,7 @@ export default function ConsultationCTA({
               <div className="mt-8">
                 <button
                   onClick={() => setShowModal(true)}
-                  className={`inline-flex items-center gap-4 px-8 py-3 rounded-full font-bold shadow-2xl transition-all hover:-translate-y-1 active:scale-95 cursor-pointer relative z-30 ${isWhite
+                  className={`inline-flex items-center gap-4 px-8 py-3 rounded-full font-bold shadow-2xl transition-all hover:-translate-y-1 active:scale-95 cursor-pointer relative z-0 ${isWhite
                     ? "bg-sky-600 text-white shadow-sky-200 hover:bg-sky-700"
                     : "bg-gradient-to-r from-sky-600 via-sky-600 to-sky-400 text-white shadow-sky-800"
                     }`}

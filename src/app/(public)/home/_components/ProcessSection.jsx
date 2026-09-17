@@ -20,7 +20,7 @@ function Process() {
   }, []);
 
   const process = [
-    { id: 1, title: "Discovery & Strategy", description: "We start by diving deep into your business needs and objectives. This phase includes comprehensive research, market analysis, and strategic planning to create a roadmap aligned with your goals.", image: "/images/process/Rectangle 10.png" },
+    { id: 1, title: "Discovery & Strategy", description: "We start by diving deep into your business needs and objectives. This phase includes comprehensive research, market analysis, and strategic planning to create a roadmap aligned with your goals.", image: "/images/black.jpg" },
     { id: 2, title: "Design & Development", description: "Transforming ideas into practical designs and scalable, high-performance digital solutions.", image: "/images/black.jpg" },
     { id: 3, title: "Testing & Quality Assurance", description: "Ensuring every feature works flawlessly through rigorous testing and validation processes.", image: "/images/black.jpg" },
     { id: 4, title: "Launch & Deployment", description: "Deploying the solution securely and efficiently, ensuring a smooth rollout with minimal downtime.", image: "/images/black.jpg" },
@@ -36,7 +36,7 @@ function Process() {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-white to-white py-8 md:py-12 px-4 sm:px-6">
+    <div className="h-full bg-gradient-to-br from-white to-white py-8 pt-7 md:py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">

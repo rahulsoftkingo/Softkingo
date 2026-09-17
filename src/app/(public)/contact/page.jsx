@@ -8,15 +8,73 @@ import InquiryForm from "@/components/public/InquiryForm";
 import TechAheadSection from "@/components/public/TechAheadSection";
 import CommonTitle from "@/components/ui/CommonTitle";
 import AwardsSection from "@/components/common/AwardsSection";
+import { commonSchemas } from "@/lib/commonSchema";
+
+// export const metadata = {
+//   title: "Contact Softkingo - Get a Free Quote for Your Digital Project",
+//   description: "Have a project idea? Contact Softkingo for expert consultation on mobile apps, web development, and digital marketing. We reply within 2 hours!",
+//   alternates: { canonical: "/contact" }
+// }
+
 export const metadata = {
-  title: "Contact Softkingo - Get a Free Quote for Your Digital Project",
-  description: "Have a project idea? Contact Softkingo for expert consultation on mobile apps, web development, and digital marketing. We reply within 2 hours!",
+  title: "Contact Us",
+  description: "Have a project in mind? Contact Softkingo's team for a free consultation on app development, web development, or digital marketing services.",
   alternates: { canonical: "/contact" }
 }
+
 export default function ContactPage() {
   return (
     <main className="min-h-screen  text-slate-900">
-      {/* HERO */}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Softkingo",
+                    "item": "https://softkingo.com"
+                  },
+                  {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Contact",
+                    "item": "https://softkingo.com/contact"
+                  }
+                ]
+              },
+
+              {
+                "@type": "Service",
+                "@id": "https://softkingo.com/#mobile-app-development",
+                "name": "Mobile App Development",
+                "serviceType": "App Development",
+                "category": "Software Development Service",
+                "description": "Custom mobile app solutions...",
+
+
+                "areaServed": {
+                  "@type": "Place",
+                  "name": "Worldwide"
+                },
+
+                "isRelatedTo": {
+                  "@type": "Thing",
+                  "name": "App Development"
+                }
+              },
+
+              ...commonSchemas
+            ]
+          })
+        }}
+      /> {/* HERO */}
       <section
         className="relative h-[260px] md:h-[320px] lg:h-[380px] bg-cover bg-center"
         style={{ backgroundImage: "url('/images/contact-hero.png')" }}

@@ -10,9 +10,9 @@ export async function generateMetadata({ params }) {
     where: { slug },
     select: { name: true }
   });
-  
+
   const title = category ? `${category.name} | Insights` : "Insights Category";
-  
+
   return {
     title: `${title}`,
     description: `Explore our latest insights and articles under the ${category?.name || 'various'} category.`,
@@ -21,13 +21,34 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params, searchParams }) {
   const { slug } = await params;
-  
-  // Merge slug into searchParams for SectionPage to consume as 'category'
+
+  const category = await prisma.blogCategory.findUnique({
+    where: { slug },
+    select: { name: true }
+  });
+
   const resolvedSearchParams = await searchParams;
   const mergedParams = {
     ...resolvedSearchParams,
     category: slug
   };
 
-  return <SectionPage sectionKey="blog" searchParams={mergedParams} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "softkingo", "item": "https://www.softkingo.com" },
+              { "@type": "ListItem", "position": 2, "name": category?.name ?? slug, "item": `https://www.softkingo.com/${slug}` }
+            ]
+          })
+        }}
+      />
+      <SectionPage sectionKey="blog" searchParams={mergedParams} />
+    </>
+  );
 }

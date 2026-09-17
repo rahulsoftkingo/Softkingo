@@ -148,7 +148,7 @@ export default function RecognitionSection() {
                 <div className="relative z-10 h-full flex flex-col justify-end items-center p-8 text-center">
 
                   <div className='mb-2'>
-                    <img src={recognition.image} className='max-h-[12rem]' />
+                    <img src={recognition.image} className='max-h-[12rem]' alt="recognition" />
                   </div>
                   {/* <div className="mb-8">
                     <div className="text-5xl font-bold text-blue-400 mb-2">{recognition.year}</div>

@@ -254,7 +254,7 @@ export default function MobileNav() {
 
       {isMobile && isMenuOpen && (
         <div ref={sidebarRef}>
-          <SideBar />
+          <SideBar onClose={() => setIsMenuOpen(false)} />
         </div>
       )}
     </>

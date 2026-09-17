@@ -1,84 +1,67 @@
 "use client";
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { CheckCircle2 } from 'lucide-react';
 
 export default function Results({ results, branding }) {
-    const { primaryColor, accentColor, secondaryColor } = branding;
+    const primaryColor = branding?.primaryColor || "#0369a1";   // sky-700
+    const secondaryColor = branding?.secondaryColor || "#0c4a6e"; // sky-900
+    const accentColor = branding?.accentColor || "#06b6d4";     // cyan-500
 
     return (
-        <div className="bg-white">
+        <div style={{ fontFamily: branding?.primaryFont }}>
             {results.map((result, index) => (
                 <section
                     key={index}
-                    className="py-12 sm:py-16 bg-white relative overflow-hidden"
+                    className="relative py-12 md:py-16 lg:py-20 bg-white overflow-hidden"
                 >
-                    {/* Background Soft Glow */}
-                    <div 
-                        className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-[150px] opacity-[0.08] pointer-events-none"
-                        style={{ backgroundColor: primaryColor }}
-                    />
-
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-12 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                        {/* Mockup Column */}
-                        <motion.div 
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            className={`relative flex justify-center ${result.position === "right" ? "lg:order-2" : ""}`}
+                    <div className="container max-w-7xl mx-auto px-6 lg:px-12">
+                        {/* Big card — gradient fully driven by branding colors */}
+                        <div
+                            className="relative rounded-[28px] px-6 sm:px-10 lg:px-16 pt-14 pb-32 sm:pb-40 shadow-2xl"
+                            style={{
+                                background: `linear-gradient(135deg, ${secondaryColor}, ${primaryColor})`,
+                            }}
                         >
-                            <div className="relative h-[400px] sm:h-[500px] w-auto aspect-[9/19]">
-                                {/* Primary Shadow Glow for Mockup */}
-                                <div 
-                                    className="absolute inset-[10%] blur-[80px] opacity-25 -z-10"
-                                    style={{ backgroundColor: primaryColor }}
-                                />
-                                <Image
-                                    src={result.mockup}
-                                    alt="Result Mockup"
-                                    fill
-                                    className="object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.15)]"
-                                />
-                            </div>
-                        </motion.div>
+                            <div className="max-w-3xl mx-auto text-center space-y-5">
+                                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+                                    {result.title || "Impact & Results"}
+                                </h2>
+                                <p className="text-sm sm:text-base leading-relaxed text-white/80">
+                                    {result.description}
+                                </p>
 
-                        {/* Content Column */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: result.position === "right" ? -30 : 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            className={`space-y-4 ${result.position === "right" ? "lg:order-1" : ""}`}
-                        >
-                            <div className="space-y-4">
-                                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
-                                    Results Delivered
-                                </h3>
-                                <div className="w-20 h-1 rounded-full" style={{ backgroundColor: primaryColor }} />
                             </div>
+                        </div>
 
-                            <ul className="space-y-5">
+                        {/* Checklist cards — white, accentColor-driven icon/hover border,
+                            pulled up to overlap the big card's bottom edge */}
+                        <div className="relative -mt-24 sm:-mt-28 px-2 sm:px-4">
+                            <div className="flex flex-wrap justify-center gap-5 sm:gap-6">
                                 {result.items.map((item, idx) => (
-                                    <motion.li 
+                                    <motion.div
                                         key={idx}
-                                        initial={{ opacity: 0, y: 10 }}
+                                        initial={{ opacity: 0, y: 20 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: idx * 0.1 }}
-                                        className="flex gap-4 group"
+                                        className="group w-[220px] rounded-2xl bg-white p-6 space-y-4 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                                        onMouseEnter={(e) => (e.currentTarget.style.borderColor = accentColor)}
+                                        onMouseLeave={(e) => (e.currentTarget.style.borderColor = "")}
                                     >
-                                        <span 
-                                            className="text-2xl flex-shrink-0 transition-transform group-hover:scale-125"
-                                            style={{ color: accentColor || primaryColor }}
+                                        <div
+                                            className="w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                                            style={{ backgroundColor: `${accentColor}15` }}
                                         >
-                                            ▸
-                                        </span>
-                                        <p className="font-bold text-lg text-slate-700 leading-relaxed">
+                                            <CheckCircle2 size={18} style={{ color: accentColor }} />
+                                        </div>
+                                        <p className="text-base font-semibold text-gray-900 leading-snug">
                                             {item}
                                         </p>
-                                    </motion.li>
+                                    </motion.div>
                                 ))}
-                            </ul>
-                        </motion.div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             ))}

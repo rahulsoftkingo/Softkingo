@@ -11,7 +11,7 @@ export default function NewServicePage() {
     title: "",
     slug: "",
     excerpt: "",
-    status: "draft",
+    status: "published",
     seoTitle: "",
     seoDescription: "",
     content: {

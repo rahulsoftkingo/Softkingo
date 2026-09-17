@@ -25,6 +25,15 @@ function safeImg(src, fallback = FALLBACK_THUMB) {
   return fallback;
 }
 
+
+export const metadata = {
+  title: "Blog",
+  description:
+    "Explore expert articles from Softkingo on app development, web design, SEO, and digital marketing strategies to grow your business.",
+  alternates: { canonical: "/testimonials" }
+};
+
+
 async function fetchPostsByCategory(categorySlug, take = 4) {
   return prisma.blogPost.findMany({
     where: {
@@ -205,17 +214,16 @@ export default async function BlogListPage(props) {
         </ContentRow>
 
         {/* letest Posts Carousel (Section 1) */}
-        <section className="space-y-4">
 
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x scrollbar-hide">
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x pt-[0px] scrollbar-hide m-0 p-0">
             {normalizedFeatured.map(post => (
               <PostSmallCard key={post.id} post={post} />
             ))}
           </div>
-        </section>
+       
 
         {/* Top Story + Lead Form (Section 2) */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch m-0">
           <div className="lg:col-span-8">
             {normalizedTopStory && (
               <Link href={normalizedTopStory.href} className="h-full flex flex-col bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden group relative">
@@ -252,7 +260,7 @@ export default async function BlogListPage(props) {
         </section>
 
         {/* Recent Grid (Section 3) */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-[77px]">
           {normalizedGridPosts.map(post => (
             <BlogCard key={post.id} post={post} variant="grid" />
           ))}

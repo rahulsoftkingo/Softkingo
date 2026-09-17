@@ -109,6 +109,7 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                 </div>
             </SectionWrapper>
 
+            {/* 4. ADVANCED TECHNOLOGIES WE USE */}
             <SectionWrapper id="technologies" icon={Code} title="4. Advanced Technologies We Use" activeSections={activeSections}>
                 <TitleInputs section="technologies" content={content} updateField={updateField} />
                 <div className="space-y-1 mb-4">
@@ -122,10 +123,13 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                             <button
                                 key={tech.name}
                                 type="button"
-                                onClick={() => updateField(`content.technologies.items`, (prev) => [...(prev || []), { ...tech }])}
+                                onClick={() => updateField(`content.technologies.items`, (prev) => [
+                                    ...(prev || []),
+                                    { ...tech, name: (tech.name || '').toLowerCase() }
+                                ])}
                                 className="p-1 px-2 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-600 rounded-md border border-slate-100 text-[10px] font-bold transition-all flex items-center gap-1.5 active:scale-95"
                             >
-                                <img src={tech.image} className="w-3.5 h-3.5" alt="" />
+                                <img src={tech.image} className="w-3.5 h-3.5" alt="techimage" />
                                 {tech.name}
                             </button>
                         ))}
@@ -134,14 +138,30 @@ export default function IndustryEditor({ formData, updateField, MediaInput, acti
                     <label className={labelStyle}>Selected Technologies</label>
                     <div className="grid md:grid-cols-2 gap-4">
                         {(content.technologies?.items || []).map((item, i) => (
-                            <div key={i} className="flex gap-4 items-center bg-slate-50 p-3 rounded-lg border border-slate-100 relative group/tech">
-                                <button type="button" onClick={() => updateField('content.technologies.items', (prev) => (prev || []).filter((_, idx) => idx !== i))} className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"><X size={12} /></button>
-                                <div className="flex-1">
-                                    <input className="w-full p-2 bg-white border rounded text-sm font-bold" placeholder="Tech Name" value={item.name || ''} onChange={e => updateField(`content.technologies.items.${i}.name`, e.target.value)} />
+                            <div key={i} className="flex flex-col gap-3 bg-slate-50 p-3 rounded-lg border border-slate-100 relative group/tech">
+                                <button
+                                    type="button"
+                                    onClick={() => updateField('content.technologies.items', (prev) => (prev || []).filter((_, idx) => idx !== i))}
+                                    className="absolute -top-2 -right-2 bg-white shadow-md border border-slate-100 text-rose-500 rounded-full p-1 opacity-0 group-hover/tech:opacity-100 transition-opacity z-10"
+                                >
+                                    <X size={12} />
+                                </button>
+
+                                <div className="space-y-1">
+                                    <label className={labelStyle}>Tech Name</label>
+                                    <input
+                                        className="w-full p-2 bg-white border rounded text-sm font-bold"
+                                        placeholder="Tech Name"
+                                        value={item.name || ''}
+                                        onChange={e => updateField(`content.technologies.items.${i}.name`, e.target.value.toLowerCase())}
+                                    />
                                 </div>
-                                <div className="w-1/2">
-                                    <MediaInput label="Icon" value={item.image} path={`content.technologies.items.${i}.image`} />
-                                </div>
+
+                                <MediaInput
+                                    label="Tech Icon"
+                                    value={item.image}
+                                    path={`content.technologies.items.${i}.image`}
+                                />
                             </div>
                         ))}
                     </div>

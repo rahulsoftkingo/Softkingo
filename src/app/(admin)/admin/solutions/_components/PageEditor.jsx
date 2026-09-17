@@ -43,7 +43,7 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
         {value && (
             <div className="mt-2 h-32 w-full bg-slate-50 rounded-lg border border-slate-100 overflow-hidden relative group/preview">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={value} className="w-full h-full object-contain" alt="preview" />
+                <img src={value ? value.toLowerCase() : ""} className="w-full h-full object-contain" alt="preview"/>
             </div>
         )}
     </div>
@@ -51,29 +51,46 @@ const MediaInput = ({ label, value, path, onUpdate, onBrowse }) => (
 
 export default function PageEditor({ data, type, onBack }) {
 
+     const [portfolioCategories, setPortfolioCategories] = useState([]);
+    
+        // Fetch Portfolio Categories
+        useEffect(() => {
+            const fetchCategories = async () => {
+                try {
+                    const res = await fetch("/api/admin/portfolio-projects/categories");
+                    if (res.ok) {
+                        const data = await res.json();
+                        setPortfolioCategories(data || []);
+                    }
+                } catch (err) {
+                    console.error("Error fetching portfolio categories:", err);
+                }
+            };
+            fetchCategories();
+        }, []);
     // --- CONFIGURATION ---
     const config = {
         solution: {
             theme: "sky", label: "Solution Page", uploadDir: "uploads/solutions",
             sections: [
                 { id: 'hero', label: '1. Hero Section', icon: Smartphone },
-                { id: 'stats', label: '2. Statistics Banner', icon: BarChart3 },
-                { id: 'intro', label: '3. Introduction Section', icon: Layout },
-                { id: 'features', label: '4. Core Features Grid', icon: Database },
-                { id: 'awards', label: '5. Client Recognition / Awards', icon: Award },
-                { id: 'whyNeed', label: '6. Growing Need / Why Choose', icon: HelpCircle },
-                { id: 'servicesList', label: '7. Extensive Services Provided', icon: Briefcase },
-                { id: 'appModules', label: '8. App Modules (Tab Style)', icon: Smartphone },
-                { id: 'aiCapabilities', label: '9. Advanced AI Capabilities', icon: Zap },
-                { id: 'portfolio', label: '10. Portfolio', icon: Layout },
-                { id: 'process', label: '11. Development Roadmap', icon: Settings },
-                { id: 'techStack', label: '12. Technology Stack (Tabbed)', icon: Code },
-                { id: 'monetization', label: '13. Revenue Models', icon: DollarSign },
-                { id: 'whyChoose', label: '14. Enterprise Security & Quality', icon: ShieldCheck },
-                { id: 'consultation', label: '15. Consultation CTA', icon: MessageSquare },
-                { id: 'blogs', label: '16. Blog Section', icon: MessageSquare },
-                { id: 'faq', label: '17. FAQ', icon: HelpCircle },
-                { id: 'seo', label: '18. SEO Settings', icon: Search },
+                { id: 'seo', label: '2. SEO Settings', icon: Search },
+                { id: 'stats', label: '3. Statistics Banner', icon: BarChart3 },
+                { id: 'intro', label: '4. Introduction Section', icon: Layout },
+                { id: 'features', label: '5. Core Features Grid', icon: Database },
+                { id: 'appModules', label: '6. App Modules (Tab Style)', icon: Smartphone },
+                { id: 'aiCapabilities', label: '7. Advanced AI Capabilities', icon: Zap },
+                { id: 'portfolio', label: '8. Portfolio', icon: Layout },
+                { id: 'servicesList', label: '9. Extensive Services Provided', icon: Briefcase }, 
+                { id: 'process', label: '10. Development Roadmap', icon: Settings },
+                { id: 'techStack', label: '11. Technology Stack (Tabbed)', icon: Code },  
+                { id: 'awards', label: '12. Client Recognition / Awards', icon: Award },
+                { id: 'whyNeed', label: '13. Growing Need / Why Choose', icon: HelpCircle },                 
+                { id: 'monetization', label: '14. Revenue Models', icon: DollarSign },
+                { id: 'whyChoose', label: '15. Enterprise Security & Quality', icon: ShieldCheck },
+                { id: 'consultation', label: '16. Consultation CTA', icon: MessageSquare },
+                { id: 'blogs', label: '17. Blog Section', icon: MessageSquare },
+                { id: 'faq', label: '18. FAQ', icon: HelpCircle },
                 { id: 'inquiry', label: '19. Inquiry Section', icon: MessageSquare }
             ]
         },
@@ -199,6 +216,7 @@ export default function PageEditor({ data, type, onBack }) {
 
         setLoading(true);
         try {
+
             const payload = { ...formData, type };
             // Determine API endpoint based on type
             const apiEndpoint = "/api/admin/solutions";
@@ -356,6 +374,7 @@ export default function PageEditor({ data, type, onBack }) {
                             updateField={updateField}
                             MediaInput={BoundMediaInput}
                             activeSections={formData.activeSections}
+                            portfolioCategories={portfolioCategories}
                         />
                     )}
 

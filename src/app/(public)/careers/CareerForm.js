@@ -119,7 +119,7 @@ export default function ApplicationForm({ selectedJob }) {
             <div className="max-w-7xl mx-auto">
 
                 {/* Header Section */}
-                <div className="text-center mb-8 lg:mb-16">
+                <div className="text-center mb-8 lg:mb-16" id="findyourdream1">
                     <CommonTitle
                         align="center"
                         pill="JOIN OUR TEAM"

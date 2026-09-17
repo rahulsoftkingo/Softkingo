@@ -56,7 +56,7 @@ export async function POST(request) {
         slug,
         key,
         excerpt: excerpt || '',
-        status: status || 'draft',
+        status: status || 'published',
         type,
         featured: !!featured,
         seoTitle: seoTitle || null,

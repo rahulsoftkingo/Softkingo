@@ -94,7 +94,7 @@ export default function TechView() {
     const [selectedTech, setSelectedTech] = useState('Frontend');
 
     return (
-        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-8 md:py-16 px-4 md:px-6 overflow-hidden">
+        <section className="bg-gradient-to-br from-white via-sky-50 to-sky-100 py-8 pt-7 md:py-16 px-4 md:px-6 overflow-hidden">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="mb-8 md:mb-12 text-center max-w-2xl mx-auto">
@@ -111,7 +111,7 @@ export default function TechView() {
                 <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
                     {/* Sidebar / Top Navigation */}
                     <aside className="w-full lg:w-64 bg-gradient-to-tl from-sky-300 via-sky-600 to-sky-400 rounded-xl p-2 md:p-4 lg:p-6 lg:sticky lg:top-4 h-fit">
-                        <ul className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 lg:gap-1 lg:space-y-1 pb-2 lg:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                        <ul className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 lg:gap-1 lg:space-y-1 lg:pb-0 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                             {sidebarItems.map((item) => (
                                 <li
                                     key={item}

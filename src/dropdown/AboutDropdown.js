@@ -15,13 +15,12 @@ import { FaUsers } from "react-icons/fa6";
 
 const NAV_ITEMS = [
   { title: "About Us", href: "/about", icon: <FaUserFriends className="text-lg inline-block text-sky-600" /> },
-  
   { title: "Our Team", href: "/our-team", icon: <FaUsers className="text-lg inline-block text-sky-600" /> },
   { title: "Testimonials", href: "/testimonials", icon: <FaConciergeBell className="text-lg inline-block text-sky-600" /> },
   { title: "Career", href: "/careers", icon: <FaBriefcase className="text-lg inline-block text-sky-600" /> },
   { title: "Insights", href: "/insights", icon: <FaCalendarAlt className="text-lg inline-block text-sky-600" /> },
   { title: "Portfolio", href: "/portfolio", icon: <FaCalendarAlt className="text-lg inline-block text-sky-600" /> },
-  { title: "Gallery", href: "/gallery", icon: <FaCalendarAlt className="text-lg inline-block text-sky-600" /> },
+  // { title: "Gallery", href: "/gallery", icon: <FaCalendarAlt className="text-lg inline-block text-sky-600" /> },
 ];
 
 const AboutUsDropdown = () => {

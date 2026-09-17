@@ -122,7 +122,9 @@ export default function IndustriesSection({ data, industries }) {
 
     // Determine the active source of truth.
     // If the admin passes 'industries' (Solutions page style) or 'data.items' (Services page style), use that.
+
     // Otherwise, fallback to the robust AI default list.
+    let activeIndustriesList1 = DEFAULT_AI_INDUSTRIES;
     let activeIndustriesList = DEFAULT_AI_INDUSTRIES;
 
     if (industries && industries.length > 0) {
@@ -171,7 +173,7 @@ export default function IndustriesSection({ data, industries }) {
                 />
 
                 {/* Tabs: Separated Underlined style */}
-                <div className="relative flex lg:justify-center w-full overflow-hidden">
+                <div className="relative flex lg:justify-center w-full overflow-auto">
                     <div className="flex gap-4 md:gap-5 lg:gap-8 overflow-x-auto no-scrollbar [&::-webkit-scrollbar]:hidden pb-4 relative z-10 w-full px-4 items-center justify-start lg:justify-center" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {activeIndustriesList.map((ind, i) => (
                             <button
@@ -259,19 +261,48 @@ export default function IndustriesSection({ data, industries }) {
                                 </div>
 
                                 {/* Custom CTA Button */}
+                                {/* Custom CTA Button */}
                                 <div className="pt-4">
-                                    <motion.div
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        className="inline-block"
-                                    >
-                                        <Link
-                                            href={`/industries/${activeIndustry.buttonLink || activeIndustry.slug || 'it-consulting'}`}
-                                            className="px-6 py-3 rounded-xl bg-[#1EAEDB] text-white font-bold text-sm md:text-base transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] flex items-center gap-2"
-                                        >
-                                            {activeIndustry.title || activeIndustry.itemTitle}
-                                        </Link>
-                                    </motion.div>
+                                    {(() => {
+                                        // Fallback matching logic
+                                        const rawTitle = activeIndustry?.title || activeIndustry?.itemTitle;
+                                        const fallbackMatch = DEFAULT_AI_INDUSTRIES.find(
+                                            (item) => item.title?.toLowerCase() === rawTitle?.toLowerCase()
+                                        ) || DEFAULT_AI_INDUSTRIES[activeIndex] || DEFAULT_AI_INDUSTRIES[0];
+
+                                        // Resolve link destination
+                                        const targetSlug =
+                                            activeIndustry?.slug ||
+                                            (activeIndustry?.itemTitle === "E-Commerce & Retails" ? "retail" : fallbackMatch?.slug) ||
+                                            "healthcare";
+
+                                        let destinationUrl = activeIndustry?.link || activeIndustry?.url || `/industries/${targetSlug}`;
+
+                                        // Force 'ecommerce' or 'e-commerce' to 'retail' in the final URL path
+                                        if (destinationUrl) {
+                                            destinationUrl = destinationUrl.replace(/\/(e-commerce|ecommerce)(\/|$)/i, '/retail$2');
+                                        }
+
+                                        const buttonText = rawTitle || fallbackMatch?.title || fallbackMatch?.itemTitle;
+
+                                        // Render nothing if no valid button text or active object exists
+                                        if (!buttonText) return null;
+
+                                        return (
+                                            <motion.div
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="inline-block"
+                                            >
+                                                <Link
+                                                    href={destinationUrl}
+                                                    className="px-6 py-3 rounded-xl bg-[#1EAEDB] text-white font-bold text-sm md:text-base transition-all shadow-[0_10px_20px_rgba(30,174,219,0.3)] flex items-center gap-2"
+                                                >
+                                                    {buttonText}
+                                                </Link>
+                                            </motion.div>
+                                        );
+                                    })()}
                                 </div>
                             </motion.div>
                         </AnimatePresence>

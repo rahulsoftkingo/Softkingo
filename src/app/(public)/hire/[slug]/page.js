@@ -1,6 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
+import probe from "probe-image-size";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,6 +15,7 @@ import CommonTitle from '@/components/ui/CommonTitle';
 import BlogSection from '@/components/common/BlogSection';
 import HireDevelopersPage from './SelectDeveloper';
 import CloneTechStack from '@/components/public/clone/CloneTechStack';
+import { commonSchemas } from "@/lib/commonSchema2";
 
 // --- ICONS ---
 import { BsCheckCircle, BsTransparency, BsFileEarmarkBarGraph } from 'react-icons/bs';
@@ -61,11 +63,70 @@ function getIcon(key, size = 24, className = "") {
   return map[key] || <FaUser size={size} className={className} />;
 }
 
+async function getImageDimensions(url) {
+  try {
+    const result = await probe(url);
+    return { width: result.width, height: result.height };
+  } catch (err) {
+    console.error(`Failed to probe dimensions for ${url}:`, err.message);
+    return { width: 937, height: 937 }; // is file ka existing fallback size
+  }
+}
+
 // --- DATA NORMALIZER ---
-function normalizeHireContent(page) {
+async function normalizeHireContent(page) {
   const c = parseJsonSafe(page?.contentJson);
 
+  // ✅ Image extraction
+  // ✅ Image extraction
+  function extractAllImages(obj) {
+    const images = [];
+    function traverse(value) {
+      if (typeof value === "string" && value.match(/\.(png|jpg|jpeg|webp|svg|gif)$/i)) {
+        images.push(value);
+      } else if (Array.isArray(value)) {
+        value.forEach(traverse);
+      } else if (typeof value === "object" && value !== null) {
+        Object.values(value).forEach(traverse);
+      }
+    }
+    traverse(obj);
+    return [...new Set(images)];
+  }
+
+  const pageImageUrls = extractAllImages(c);
+
+
+
+  // NEW: har image ke liye real width/height fetch karo (parallel me, fast)
+  const pageImagesWithDimensions = await Promise.all(
+    pageImageUrls.map(async (img) => {
+      const fullUrl = img.startsWith("http")
+        ? img
+        : `https://www.softkingo.com${img}`;
+      const dims = await getImageDimensions(fullUrl);
+      return { src: img, width: dims.width, height: dims.height };
+    })
+  );
+
+  // ✅ ImageObject array
+  const imageObjects = [
+    ...(page?.seoImage
+      ? [{ "@type": "ImageObject", "url": `https://www.softkingo.com${page.seoImage}`, "width": 1200, "height": 630 }]
+      : []
+    ),
+    ...pageImagesWithDimensions.map(img => ({
+      "@type": "ImageObject",
+      "url": img.src.startsWith("http") ? img.src : `https://www.softkingo.com${img.src}`,
+      "width": img.width,
+      "height": img.height,
+    }))
+  ];
+
   return {
+    // ✅ imageObjects sabse pehle
+    imageObjects,
+
     heroBg: c.heroBg || '',
     heroTitle: c.heroTitle || page?.title || '',
     heroSubtitle: c.heroSubtitle || '',
@@ -75,7 +136,6 @@ function normalizeHireContent(page) {
       network: c.metrics?.network || '',
       rating: c.metrics?.rating || '',
     },
-
     aboutTitle: c.aboutTitle || '',
     aboutSubtitle: c.aboutSubtitle || '',
     features: Array.isArray(c.features) ? c.features : [],
@@ -86,7 +146,6 @@ function normalizeHireContent(page) {
     portfolioCategory: c.portfolioCategory || "",
     portfolioTitle: c.portfolioTitle || "",
     portfolioSubtitle: c.portfolioSubtitle || "",
-
     profileSection: {
       enabled: c.profileSection?.enabled ?? false,
       title: c.profileSection?.title || '',
@@ -98,7 +157,6 @@ function normalizeHireContent(page) {
         rightBottom: '',
       },
     },
-
     ctaBanner: {
       enabled: c.ctaBanner?.enabled ?? false,
       title: c.ctaBanner?.title || '',
@@ -180,10 +238,60 @@ export default async function HireSlugPage({ params }) {
 
   if (!page) notFound();
 
-  const content = normalizeHireContent(page);
+  const content = await normalizeHireContent(page);
+
+  // ADD THIS ↓
+  const faqSchema = content.activeSections?.includes('faq') && content.faq?.items?.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": content.faq.items.map(item => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": (item.a || '').replace(/<[^>]*>?/gm, '')
+      }
+    }))
+  } : null;
 
   return (
     <main className="relative bg-white ">
+
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            ...commonSchemas,
+            {
+              "@context": "https://schema.org/",
+              "@type": "BreadcrumbList",
+              "@id": "https://www.softkingo.com/#breadcrumb",
+              "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "softkingo", "item": "https://www.softkingo.com" },
+                { "@type": "ListItem", "position": 2, "name": "Hire", "item": "https://www.softkingo.com/hire" },
+                { "@type": "ListItem", "position": 3, "name": slug, "item": `https://www.softkingo.com/hire/${slug}` }
+              ]
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Service",
+              "@id": `https://www.softkingo.com/hire/${slug}/#hire`,
+              "name": page?.seoTitle || page?.title,
+              "description": page?.seoDescription || page?.excerpt || "",
+              "image": content.imageObjects,
+              "url": `https://www.softkingo.com/hire/${slug}`,
+            }
+          ])
+        }}
+      />
+
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       {/* 1. HERO SECTION */}
       {content.activeSections?.includes('hero') && (
@@ -528,14 +636,14 @@ export default async function HireSlugPage({ params }) {
       )}
 
       {/* 9 PORTFOLIO SECTION */}
-      {content.activeSections?.includes('portfolio') && (
+      {/* {content.activeSections?.includes('portfolio') && (
         <DynamicPortfolioCard
           category={content.portfolioCategory || ""}
           portfolioType="app"
           title={content.portfolioTitle}
           subtitle={content.portfolioSubtitle}
         />
-      )}
+      )} */}
 
       {/* 10 TECH STACK */}
       {content.activeSections?.includes('techStack') && (

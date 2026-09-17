@@ -8,7 +8,7 @@ const crypto = require('crypto');
  */
 async function validateAndProcessUpload(file, options = {}) {
     const {
-        allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'],
+        allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf', 'audio/mpeg'],
         maxSize = 10 * 1024 * 1024, // 10MB default
         baseDir = 'public/uploads',
         subFolder = 'uncategorized'
@@ -45,19 +45,21 @@ async function validateAndProcessUpload(file, options = {}) {
     const ext = originalName.substring(lastDotIndex).toLowerCase();
 
     // Strict Whitelist
-    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif', '.pdf'];
+    const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.svg', '.gif', '.pdf', '.mp3'];
     if (!allowedExtensions.includes(ext)) {
         throw new Error(`Forbidden file extension: ${ext}`);
     }
 
     // 3. Magic Number Validation (Buffer check)
     const buffer = Buffer.from(await file.arrayBuffer());
+    // 3. Magic Number Validation (Buffer check)
     const magicNumbers = {
         'image/jpeg': [0xFF, 0xD8, 0xFF],
         'image/png': [0x89, 0x50, 0x4E, 0x47],
         'image/gif': [0x47, 0x49, 0x46, 0x38],
         'application/pdf': [0x25, 0x50, 0x44, 0x46],
-        'image/webp': [0x52, 0x49, 0x46, 0x46]
+        'image/webp': [0x52, 0x49, 0x46, 0x46],
+        'audio/mpeg': [0x49, 0x44, 0x33], 
     };
 
     let detectedMime = null;
@@ -73,6 +75,13 @@ async function validateAndProcessUpload(file, options = {}) {
                 detectedMime = mime;
                 break;
             }
+        }
+    }
+
+    // 👈 MP3 Fallback Check Add Karein (Agar ID3 tag missing ho)
+    if (!detectedMime && ext === '.mp3') {
+        if (buffer[0] === 0xFF && (buffer[1] & 0xE0) === 0xE0) {
+            detectedMime = 'audio/mpeg';
         }
     }
 

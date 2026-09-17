@@ -42,8 +42,11 @@ export default function SolutionHighlight({ data }) {
                 />
 
                 <div className="grid lg:grid-cols-12 gap-0 items-center mt-12 relative">
-                    {/* Left Sidebar: Feature Tabs */}
-                    <div className="lg:col-span-4 flex flex-col gap-4 relative z-20 lg:translate-x-6">
+                    {/* Left Sidebar: Feature Tabs (horizontal scroll on mobile, vertical stack on desktop — unchanged) */}
+                    <div
+                        className="lg:col-span-4 flex lg:flex-col overflow-x-auto lg:overflow-visible touch-pan-x gap-4 relative z-20 lg:translate-x-6 snap-x snap-mandatory lg:snap-none scroll-smooth pb-3 lg:pb-0 [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                        style={{ WebkitOverflowScrolling: 'touch' }}
+                    >
                         {data.tabs.map((tab, idx) => {
                             const Icon = iconMap[tab.iconName] || FaIcons.FaRobot;
                             const isActive = activeIdx === idx;
@@ -51,9 +54,10 @@ export default function SolutionHighlight({ data }) {
                                 <motion.div
                                     key={idx}
                                     onMouseEnter={() => setActiveIdx(idx)}
+                                    onClick={() => setActiveIdx(idx)}
                                     whileHover={{ x: isActive ? 0 : 5 }}
-                                    className={`p-4 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-4 border-2 ${isActive
-                                        ? "bg-white border-sky-100 shadow-[0_10px_25px_rgba(14,165,233,0.1)] scale-105"
+                                    className={`flex-shrink-0 snap-start w-[70vw] sm:w-[280px] lg:w-auto p-4 rounded-xl transition-all duration-300 cursor-pointer flex items-center gap-4 border-2 ${isActive
+                                        ? "bg-white border-sky-100 shadow-[0_10px_25px_rgba(14,165,233,0.1)] lg:scale-105"
                                         : "bg-white border-sky-100 text-slate-400 hover:border-sky-50"
                                         }`}
                                 >
@@ -120,33 +124,33 @@ export default function SolutionHighlight({ data }) {
                                 </div>
 
                                 {/* Footer: Capabilities & Action */}
-                                <div className="mt-auto pt-8 border-t border-white/20 flex flex-col md:flex-row items-center justify-between gap-8">
+                                {/* <div className="mt-auto pt-8 border-t border-white/20 flex flex-col md:flex-row items-center justify-between gap-8"> */}
                                     {/* Tech/Capability Icons */}
-                                    <div className="flex flex-wrap items-center justify-center gap-6">
-                                        {(activeTab.icons || []).map((iconObj, iIdx) => {
-                                            const BottomIcon = iconMap[iconObj.iconName] || FaIcons.FaRobot;
-                                            return (
-                                                <div key={iIdx} className="flex flex-col items-center gap-2">
-                                                    <div className="p-2.5 bg-white/10 rounded-lg backdrop-blur-md border border-white/10">
-                                                        <BottomIcon size={20} />
-                                                    </div>
-                                                    <span className="text-[7px] font-bold text-white/60 text-center">
-                                                        {iconObj.label}
-                                                    </span>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
+                                    {/* <div className="flex flex-wrap items-center justify-center gap-6"> */}
+                                        {/* {(activeTab.icons || []).map((iconObj, iIdx) => { */}
+                                            {/* const BottomIcon = iconMap[iconObj.iconName] || FaIcons.FaRobot; */}
+                                            {/* return ( */}
+                                                {/* <div key={iIdx} className="flex flex-col items-center gap-2"> */}
+                                                    {/* <div className="p-2.5 bg-white/10 rounded-lg backdrop-blur-md border border-white/10"> */}
+                                                        {/* <BottomIcon size={20} /> */}
+                                                    {/* </div> */}
+                                                    {/* <span className="text-[7px] font-bold text-white/60 text-center"> */}
+                                                        {/* {iconObj.label} */}
+                                                    {/* </span> */}
+                                                {/* </div> */}
+                                            {/* ); */}
+                                        {/* })} */}
+                                    {/* </div> */}
 
                                     {/* Primary CTA */}
-                                    <Link
+                                    {/* <Link
                                         href="/contact"
                                         className="inline-flex items-center gap-3 bg-white text-sky-500 px-6 py-3.5 rounded-xl font-bold text-base hover:bg-sky-50 transition-all shadow-lg hover:-translate-y-1 active:scale-95 group"
-                                    >
-                                        Get In Touch
-                                        <ArrowRight size={18} strokeWidth={2.5} className="group-hover:translate-x-1 transition-transform" />
-                                    </Link>
-                                </div>
+                                    > */}
+                                        {/* Get In Touch
+                                        <ArrowRight size={18} strokeWidth={2.5} className="group-hover:translate-x-1 transition-transform" /> */}
+                                    {/* </Link> */}
+                                {/* </div> */}
                             </motion.div>
                         </AnimatePresence>
                     </div>
