@@ -65,8 +65,8 @@ const SOCIAL_ICONS = {
 const podcastPlatforms = [
   { key: "google", name: "Google Podcasts", src: "/images/podcast/google-podcast.webp" },
   { key: "spotify", name: "Spotify", src: "/images/podcast/spotify-podcast.webp" },
-  { key: "apple", name: "Apple Podcasts", src: "/images/podcast/apple-podcast.webp" },
-  { key: "soundcloud", name: "Soundcloud", src: "/images/podcast/sound-cloud.webp" },
+  { key: "applePodcasts", name:"Apple Podcasts", src: "/images/podcast/apple-podcast.webp" },  
+  { key: "youtubeMusic", name: "YouTube Music", src: "/images/podcast/google-podcast.webp" },
 ];
 
 export async function generateMetadata({ params }) {
@@ -87,6 +87,7 @@ export default async function PodcastDetailPage({ params }) {
 
   const podcast = await prisma.podcast.findUnique({ where: { slug } });
 
+
   if (!podcast || podcast.status !== "published") {
     notFound();
   }
@@ -95,6 +96,7 @@ export default async function PodcastDetailPage({ params }) {
   const episodesList = parseArray(podcast.episodesJson);
   const socialLinks = parseObject(podcast.socialLinksJson, SOCIAL_DEFAULTS);
   const platformLinks = parseObject(podcast.platformLinksJson, PLATFORM_DEFAULTS);
+
 
   const related = await prisma.podcast.findMany({
     where: {
@@ -108,6 +110,7 @@ export default async function PodcastDetailPage({ params }) {
 
   const activeSocials = Object.entries(socialLinks).filter(([, v]) => v?.trim());
   const activePlatforms = Object.entries(platformLinks).filter(([, v]) => v?.trim());
+
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -202,15 +205,6 @@ export default async function PodcastDetailPage({ params }) {
                     audioUrl={podcast.latestEpisodeAudioUrl || episodesList[0]?.audioUrl}
                   />
                 )}
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 rounded-full border border-sky-400 bg-white text-sky-600 hover:bg-sky-50 text-sm font-medium px-5 py-2.5 shadow-md shadow-sky-900/10 transform hover:-translate-y-1 transition-all duration-300"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-4 h-4">
-                    <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z" />
-                  </svg>
-                  Follow
-                </button>
               </div>
 
               {activePlatforms.length > 0 && (
@@ -221,6 +215,7 @@ export default async function PodcastDetailPage({ params }) {
                       const platform = podcastPlatforms.find(
                         (p) => p.key === key || p.name.toLowerCase().includes(key.toLowerCase())
                       );
+
                       if (!platform) return null;
 
                       return (
@@ -260,7 +255,7 @@ export default async function PodcastDetailPage({ params }) {
 
                 {/* About This Podcast */}
                 {podcast.summary && (
-                  <div className="space-y-2 text-xs text-slate-600 pt-3 border-b border-slate-100">
+                  <div className="space-y-2 text-xs text-slate-600 pb-2 border-b border-slate-100">
                     <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 mb-2">
                       About This Podcast
                     </h2>
@@ -358,6 +353,7 @@ export default async function PodcastDetailPage({ params }) {
                         </div>
                       </div>
                     )}
+                    
                   </div>
                 )}
 

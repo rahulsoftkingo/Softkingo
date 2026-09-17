@@ -115,18 +115,18 @@ export function IndustryCoversTabs({ data }) {
           />
         </div>
 
-        <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-0 lg:min-h-[500px] shadow-2xl">
+        <div className="flex flex-col lg:flex-row rounded-2xl overflow-hidden min-h-0 lg:h-[500px] shadow-2xl">
           {/* LEFT SIDE: TABS (Sky Background) */}
-          <div className="w-full lg:w-[35%] lg:min-w-[300px] bg-sky-500 p-4 sm:p-6 lg:p-8 flex flex-col">
-            {/* Added overflow-x-auto for mobile horizontal scroll */}
-            <div className="flex flex-row lg:flex-col gap-2 sm:gap-4 flex-1 pb-2 lg:pb-0 overflow-x-auto lg:overflow-x-visible scrollbar-none">
+          <div className="w-full lg:w-[35%] lg:min-w-[300px] bg-sky-500 p-4 sm:p-6 lg:p-8 flex flex-col lg:h-full">
+            {/* Mobile: Horizontal Scroll | Desktop: Vertical Scroll */}
+            <div className="flex flex-row lg:flex-col gap-2 sm:gap-4 flex-1 pb-2 lg:pb-0 overflow-x-auto lg:overflow-x-hidden lg:overflow-y-auto lg:pr-2 scrollbar-none">
               {data.items.map((item, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveTab(index)}
                   onMouseEnter={() => setActiveTab(index)}
-                  className={`text-left px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all duration-300 flex items-center justify-between whitespace-nowrap lg:whitespace-normal shrink-0 lg:shrink group w-auto lg:w-full ${activeTab === index
-                      ? "bg-white text-sky-700 shadow-lg translate-x-0 lg:translate-x-2"
+                  className={`text-left px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all duration-300 flex items-center justify-between whitespace-nowrap lg:whitespace-normal shrink-0 lg:shrink-0 group w-auto lg:w-full ${activeTab === index
+                      ? "bg-white text-sky-700 shadow-lg translate-x-0 lg:translate-x-1"
                       : "hover:bg-sky-400/50 text-sky-50"
                     }`}
                 >
@@ -137,7 +137,7 @@ export function IndustryCoversTabs({ data }) {
                   {activeTab === index && (
                     <ChevronRight
                       size={20}
-                      className="hidden lg:block animate-in fade-in slide-in-from-left-2"
+                      className="hidden lg:block animate-in fade-in slide-in-from-left-2 shrink-0"
                     />
                   )}
                 </button>
@@ -146,7 +146,7 @@ export function IndustryCoversTabs({ data }) {
           </div>
 
           {/* RIGHT SIDE: CONTENT (White Background) */}
-          <div className="w-full lg:w-[65%] bg-white p-5 sm:p-8 md:p-12 flex flex-col justify-center relative my-0">
+          <div className="w-full lg:w-[65%] bg-white p-5 sm:p-8 md:p-12 flex flex-col justify-center relative my-0 lg:h-full lg:overflow-y-auto">
             {/* Decorative Background Pattern */}
             <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-sky-50 rounded-bl-full -z-0 opacity-50 pointer-events-none"></div>
 
