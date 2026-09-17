@@ -9,6 +9,7 @@ import CommonTitle from "@/components/ui/CommonTitle";
 /* ==========================================================================
    1. HERO COMPONENT (IndustriesHero)
    ========================================================================== */
+   
 export function IndustriesHero({ data }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -165,16 +166,6 @@ export function IndustryCoversTabs({ data }) {
                 </div>
 
                 {/* Icon */}
-                {activeItem.icon && activeItem.icon.includes("/") && (
-                  <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
-                    <Image
-                      src={activeItem.icon}
-                      alt={activeItem.title || "icon"}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                )}
               </div>
 
               {/* Description */}

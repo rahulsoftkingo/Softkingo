@@ -135,7 +135,8 @@ const tabs = [
       { title: "Soundcloud Clone", href: "/solutions/soundcloud-clone-app-development", icon: <FaMusic /> },
       { title: "Spotify Clone", href: "/solutions/spotify-clone-app-development", icon: <FaSpotify /> },
       { title: "Ghost Lens Clone", href: "/solutions/ghost-lens-clone-app-development", icon: <FaCameraRetro /> },
-      { title: "Olx/Airbnb Clone", href: "/solutions/olx-clone-app-development", icon: <FaHome /> },
+      { title: "Olx Clone", href: "/solutions/olx-clone-app-development", icon: <FaHome /> },
+      { title: "Airbnb Clone", href: "/solutions/airbnb-clone-app-development", icon: <FaHome /> },
     ],
   },
   // ✅ BUSINESS MODEL (main link: /solutions)

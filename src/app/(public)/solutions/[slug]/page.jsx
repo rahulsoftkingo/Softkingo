@@ -18,6 +18,7 @@ import SolutionsProcess from '@/components/public/solutions/SolutionsProcess';
 import SolutionsTechStack from '@/components/public/solutions/SolutionsTechStack';
 import SolutionsMonetization from '@/components/public/solutions/SolutionsMonetization';
 import SolutionsSecurity from '@/components/public/solutions/SolutionsSecurity';
+import testimonialCarousel from '@/components/public/TestimonialCarousel';
 import SolutionsCTA from '@/components/public/solutions/SolutionsCTA';
 
 // --- CLONE COMPONENTS (NEW) ---
@@ -528,6 +529,8 @@ export default async function DynamicSolutionPage(props) {
                 />
             )}
             {show('faq') && <FAQAccordion data={faq} />}
+
+            <testimonialCarousel/>
 
             {show('blogs') && (
                 <BlogSection

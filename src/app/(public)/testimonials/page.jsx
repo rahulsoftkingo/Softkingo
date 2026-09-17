@@ -2,6 +2,7 @@ import Link from "next/link";
 import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import { testimonials } from "@/data/testimonials";
 import { commonSchemas } from "@/lib/commonSchema";
+import VideoCarousel from "./Videocarousel"
 import Script from "next/script";
 
 export const metadata = {
@@ -113,10 +114,10 @@ export default function TestimonialsPage() {
           </div>
         </div>
       </section>
-      
 
-     {/* VIDEO SECTION */}
-      <section className="max-w-7xl mx-auto px-4 pt-14">
+
+      {/* VIDEO SECTION */}
+      {/* <section className="max-w-7xl mx-auto px-4 pt-14">
         <div className="relative w-full h-[45vh] md:h-[60vh] lg:h-[75vh] rounded-3xl overflow-hidden shadow-[0_14px_40px_rgba(2,6,23,0.10)] border border-slate-100 bg-slate-950">
           <iframe
             width="100%"
@@ -130,7 +131,11 @@ export default function TestimonialsPage() {
             className="absolute inset-0 w-full h-full"
           ></iframe>
         </div>
+      </section> */}
+      <section className="max-w-7xl mx-auto px-4 py-14">
+        <VideoCarousel />
       </section>
+
 
       {/* CONTENT */}
       <section className="max-w-7xl mx-auto px-4 py-14">

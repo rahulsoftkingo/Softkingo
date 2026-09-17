@@ -631,6 +631,7 @@ import AwardsSection from "@/components/common/AwardsSection";
 import SolutionHighlight from "../_components/SolutionHighlight";
 import IndustrySolutions from "../_components/IndustrySolutions";
 import UserGuide from "../_components/UserGuide";
+import TestimonialCarousel from "@/components/public/TestimonialCarousel";
 import BlogSection from "@/components/common/BlogSection";
 import CoreServicesSection from "@/components/common/CoreServicesSection";
 
@@ -888,7 +889,7 @@ export default async function ServicePage({ params }) {
   } : null;
 
   return (
-    <main className="text-gray-800">
+    <main className="text-gray-800 bg-white">
 
       <script
         type="application/ld+json"
@@ -1187,6 +1188,11 @@ export default async function ServicePage({ params }) {
       {show('faq') && (
         <FAQAccordion data={content.faq} />
       )}
+      
+      <div className="max-w-7xl mx-auto relative z-10 ">
+        <TestimonialCarousel/>
+      </div>
+      
 
       <BlogSection
         category={content.blogCategory || ""}
