@@ -8,6 +8,11 @@ const videos = [
     id: "v1",
     youtubeId: "yUL97dFOfHA",
   },
+  {
+    id: "v2",
+    youtubeId: "cFOI4GRFo5s",
+  }
+
 ];
 
 export default function VideoCarousel({
@@ -68,6 +73,7 @@ export default function VideoCarousel({
     </button>
   );
 
+  // Main featured video frame (full interactive: thumbnail -> click -> iframe)
   const VideoFrame = ({ video, uniqueKey }) => {
     const isActive = activeVideoKey === uniqueKey;
 
@@ -93,7 +99,7 @@ export default function VideoCarousel({
             <img
               src={thumbUrl(video)}
               alt="Video Thumbnail"
-              className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+              className="absolute inset-0 w-full h-full object-cover object-center opacity-90 group-hover:opacity-100 transition-opacity"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
             <div className="absolute inset-0 flex items-center justify-center">
@@ -104,6 +110,23 @@ export default function VideoCarousel({
       </div>
     );
   };
+
+  // Peek frame for the "up next" sliver on the right.
+  // No fixed oversized width here — the image simply object-covers its
+  // own real container, so what you see is a proper centered crop of
+  // the actual thumbnail, not a random slice of a bigger hidden card.
+  const PeekFrame = ({ video }) => (
+    <div className="relative w-full h-full rounded-3xl overflow-hidden bg-slate-950">
+      <img
+        src={thumbUrl(video)}
+        alt="Up next video thumbnail"
+        className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+      {/* subtle fade on the right edge so the partial-card peek reads as intentional */}
+      <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#E4F4FF] to-transparent" />
+    </div>
+  );
 
   const featured = videos[currentIndex];
   const upNext = videos[nextIndex];
@@ -139,14 +162,16 @@ export default function VideoCarousel({
           </div>
         </div>
 
-        {/* Peek of the next card */}
-        <div className="hidden lg:block overflow-hidden rounded-3xl">
-          <div className="bg-[#E4F4FF] rounded-3xl p-3 min-h-[420px] w-[420px] flex flex-col">
-            <div className="relative w-full flex-1 rounded-2xl overflow-hidden">
-              <VideoFrame video={upNext} uniqueKey={`desktop-upnext-${upNext.id}`} />
-            </div>
+        {/* Peek of the next card — clicking it also jumps to that video */}
+        <button
+          onClick={next}
+          className="hidden lg:flex flex-col bg-[#E4F4FF] rounded-3xl p-3 min-h-[420px] w-full overflow-hidden text-left"
+          aria-label="Show next video"
+        >
+          <div className="relative w-full flex-1 rounded-2xl overflow-hidden">
+            <PeekFrame video={upNext} />
           </div>
-        </div>
+        </button>
       </div>
 
       {/* Nav arrows */}

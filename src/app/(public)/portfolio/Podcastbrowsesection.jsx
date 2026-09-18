@@ -197,7 +197,7 @@ export function PodcastRowCard({ episode }) {
       className="group flex items-center bg-white border border-slate-200 rounded-3xl min-h-[220px] overflow-hidden hover:shadow-lg hover:border-slate-300 transition-all duration-200"
     >
       {/* Column 1: Image Container */}
-      <div className="relative shrink-0 w-44 sm:w-52 self-stretch my-3 ml-3 sm:my-4 sm:ml-4 rounded-2xl overflow-hidden bg-slate-100">
+      <div className="relative shrink-0 w-44 sm:w-70 self-stretch my-2 ml-2 sm:my-3 sm:ml-3 rounded-2xl overflow-hidden bg-slate-100">
         {episode.coverImage ? (
           <Image
             src={episode.coverImage}
@@ -220,7 +220,7 @@ export function PodcastRowCard({ episode }) {
         {/* Left Info: Title, Host, Category & Description */}
         <div className="flex-1 min-w-0 flex flex-col gap-2">
           <div>
-            <h3 className="text-lg sm:text-xl font-black text-slate-900 truncate group-hover:text-sky-600 transition">
+            <h3 className="text-lg sm:text-lg font-black text-slate-900 truncate group-hover:text-sky-600 transition">
               {episode.title}
             </h3>
             <p className="text-sm font-medium text-slate-500">
