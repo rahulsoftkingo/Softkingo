@@ -10,7 +10,7 @@ export default function EbookPromoCard({
   badge = "Resource Guide",
   title,
   meta,
-  coverImage,
+  coverImage="/uploads/general/software-development-eboook-guide.webp",
   slug,                 // <-- new
   ctaLabel = "Download Now",
 }) {
